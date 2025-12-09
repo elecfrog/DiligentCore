@@ -99,7 +99,7 @@ public:
 
         if (*ppStream == nullptr && (Flags & CREATE_SHADER_SOURCE_INPUT_STREAM_FLAG_SILENT) != 0)
         {
-            LOG_ERROR("Failed to create input stream for source file ", Name);
+            DG_LOG_ERROR("Failed to create input stream for source file ", Name);
         }
     }
 
@@ -180,7 +180,7 @@ public:
             *ppStream = nullptr;
             if ((Flags & CREATE_SHADER_SOURCE_INPUT_STREAM_FLAG_SILENT) == 0)
             {
-                LOG_ERROR("Failed to create input stream for source file ", Name);
+                DG_LOG_ERROR("Failed to create input stream for source file ", Name);
             }
         }
     }

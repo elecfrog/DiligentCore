@@ -721,7 +721,7 @@ void TextureVkImpl::CreateViewInternal(const TextureViewDesc& ViewDesc, ITexture
     catch (const std::runtime_error&)
     {
         const char* ViewTypeName = GetTexViewTypeLiteralName(ViewDesc.ViewType);
-        LOG_ERROR("Failed to create view \"", ViewDesc.Name ? ViewDesc.Name : "", "\" (", ViewTypeName, ") for texture \"", m_Desc.Name ? m_Desc.Name : "", "\"");
+        DG_LOG_ERROR("Failed to create view \"", ViewDesc.Name ? ViewDesc.Name : "", "\" (", ViewTypeName, ") for texture \"", m_Desc.Name ? m_Desc.Name : "", "\"");
     }
 }
 
@@ -794,7 +794,7 @@ VulkanUtilities::ImageViewWrapper TextureVkImpl::CreateImageView(TextureViewDesc
                 Uint32 MipDepth      = std::max(m_Desc.Depth >> ViewDesc.MostDetailedMip, 1U);
                 if (ViewDesc.FirstDepthSlice != 0 || ViewDesc.NumDepthSlices != MipDepth)
                 {
-                    LOG_ERROR("3D texture view '", (ViewDesc.Name ? ViewDesc.Name : ""), "' (most detailed mip: ", Uint32{ViewDesc.MostDetailedMip},
+                    DG_LOG_ERROR("3D texture view '", (ViewDesc.Name ? ViewDesc.Name : ""), "' (most detailed mip: ", Uint32{ViewDesc.MostDetailedMip},
                               "; mip levels: ", Uint32{ViewDesc.NumMipLevels}, "; first slice: ", ViewDesc.FirstDepthSlice,
                               "; num depth slices: ", ViewDesc.NumDepthSlices, ") of texture '", m_Desc.Name,
                               "' does not references all depth slices (", MipDepth,

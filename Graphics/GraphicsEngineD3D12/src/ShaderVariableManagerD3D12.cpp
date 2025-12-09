@@ -149,7 +149,7 @@ ShaderVariableD3D12Impl* ShaderVariableManagerD3D12::GetVariable(Uint32 Index) c
 {
     if (Index >= m_NumVariables)
     {
-        LOG_ERROR("Index ", Index, " is out of range");
+        DG_LOG_ERROR("Index ", Index, " is out of range");
         return nullptr;
     }
 
@@ -160,7 +160,7 @@ Uint32 ShaderVariableManagerD3D12::GetVariableIndex(const ShaderVariableD3D12Imp
 {
     if (m_pVariables == nullptr)
     {
-        LOG_ERROR("This shader variable manager has no variables");
+        DG_LOG_ERROR("This shader variable manager has no variables");
         return ~0u;
     }
 
@@ -171,7 +171,7 @@ Uint32 ShaderVariableManagerD3D12::GetVariableIndex(const ShaderVariableD3D12Imp
         return Index;
     else
     {
-        LOG_ERROR("Failed to get variable index. The variable ", &Variable, " does not belong to this shader variable manager");
+        DG_LOG_ERROR("Failed to get variable index. The variable ", &Variable, " does not belong to this shader variable manager");
         return ~0u;
     }
 }

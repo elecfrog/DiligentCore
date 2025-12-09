@@ -685,7 +685,7 @@ SHADER_TYPE D3D12ShaderVisibilityToShaderType(D3D12_SHADER_VISIBILITY ShaderVisi
 #   endif
         // clang-format on
         default:
-            LOG_ERROR("Unknown shader visibility (", ShaderVisibility, ")");
+            DG_LOG_ERROR("Unknown shader visibility (", ShaderVisibility, ")");
             return SHADER_TYPE_UNKNOWN;
     }
 }

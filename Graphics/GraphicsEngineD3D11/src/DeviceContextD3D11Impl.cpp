@@ -84,7 +84,7 @@ void DeviceContextD3D11Impl::SetPipelineState(IPipelineState* pPipelineState)
         ID3D11ComputeShader* pd3d11CS = m_pPipelineState->GetD3D11ComputeShader();
         if (pd3d11CS == nullptr)
         {
-            LOG_ERROR("Compute shader is not set in the pipeline");
+            DG_LOG_ERROR("Compute shader is not set in the pipeline");
             return;
         }
 
@@ -1106,7 +1106,7 @@ void DeviceContextD3D11Impl::UpdateTexture(ITexture*                      pTextu
 
     if (SubresData.pSrcBuffer != nullptr)
     {
-        LOG_ERROR("D3D11 does not support updating texture subresource from a GPU buffer");
+        DG_LOG_ERROR("D3D11 does not support updating texture subresource from a GPU buffer");
         return;
     }
 

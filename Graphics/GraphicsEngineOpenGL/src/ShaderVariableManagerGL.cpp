@@ -524,7 +524,7 @@ IShaderResourceVariable* ShaderVariableManagerGL::GetVariable(Uint32 Index) cons
     if (IShaderResourceVariable* pSSBO = VarLocator.TryResource<StorageBufferBindInfo>(GetNumStorageBuffers()))
         return pSSBO;
 
-    LOG_ERROR(Index, " is not a valid variable index.");
+    DG_LOG_ERROR(Index, " is not a valid variable index.");
     return nullptr;
 }
 
@@ -574,7 +574,7 @@ Uint32 ShaderVariableManagerGL::GetVariableIndex(const IShaderResourceVariable& 
 {
     if (m_pVariables == nullptr)
     {
-        LOG_ERROR("This shader variable manager does not have any resources");
+        DG_LOG_ERROR("This shader variable manager does not have any resources");
         return ~0u;
     }
 
@@ -592,7 +592,7 @@ Uint32 ShaderVariableManagerGL::GetVariableIndex(const IShaderResourceVariable& 
     if (IdxLocator.TryResource<StorageBufferBindInfo>(m_VariableEndOffset, GetNumStorageBuffers()))
         return IdxLocator.GetIndex();
 
-    LOG_ERROR("Failed to get variable index. The variable ", &Var, " does not belong to this shader variable manager");
+    DG_LOG_ERROR("Failed to get variable index. The variable ", &Var, " does not belong to this shader variable manager");
     return ~0u;
 }
 

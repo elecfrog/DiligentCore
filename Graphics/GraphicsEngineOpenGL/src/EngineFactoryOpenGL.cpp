@@ -286,7 +286,7 @@ void EngineFactoryOpenGLImpl::CreateDeviceAndSwapChainGL(const EngineGLCreateInf
             *ppSwapChain = nullptr;
         }
 
-        LOG_ERROR("Failed to initialize OpenGL-based render device");
+        DG_LOG_ERROR("Failed to initialize OpenGL-based render device");
     }
 }
 
@@ -373,7 +373,7 @@ void EngineFactoryOpenGLImpl::AttachToActiveGLContext(const EngineGLCreateInfo& 
             *ppImmediateContext = nullptr;
         }
 
-        LOG_ERROR("Failed to initialize OpenGL-based render device");
+        DG_LOG_ERROR("Failed to initialize OpenGL-based render device");
     }
 }
 

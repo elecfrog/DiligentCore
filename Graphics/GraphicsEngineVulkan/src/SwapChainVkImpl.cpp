@@ -947,7 +947,7 @@ void SwapChainVkImpl::Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFOR
             }
             catch (const std::runtime_error&)
             {
-                LOG_ERROR("Failed to resize the swap chain");
+                DG_LOG_ERROR("Failed to resize the swap chain");
             }
         }
     }

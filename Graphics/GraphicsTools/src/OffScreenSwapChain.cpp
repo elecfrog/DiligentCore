@@ -196,7 +196,7 @@ void CreateOffScreenSwapChain(IRenderDevice* pDevice, IDeviceContext* pContext, 
     }
     catch (...)
     {
-        LOG_ERROR("Failed to create off-screen swap chain");
+        DG_LOG_ERROR("Failed to create off-screen swap chain");
     }
 }
 

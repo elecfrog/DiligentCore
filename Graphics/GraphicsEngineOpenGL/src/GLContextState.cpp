@@ -593,7 +593,7 @@ void GLContextState::SetFillMode(FILL_MODE FillMode)
             else
             {
                 if (FillMode != FILL_MODE_SOLID)
-                    LOG_ERROR("This API/device only supports solid fill mode");
+                    DG_LOG_ERROR("This API/device only supports solid fill mode");
             }
 
             m_RSState.FillMode = FillMode;

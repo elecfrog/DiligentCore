@@ -224,7 +224,7 @@ GLContext::GLContext(const EngineGLCreateInfo& InitAttribs,
 #if DILIGENT_USE_OPENXR
     if (InitAttribs.Window.hWnd != nullptr && OpenXRRequiredGLVersion > APIVersion)
     {
-        LOG_ERROR("OpenGL version ", APIVersion.Major, '.', APIVersion.Minor, " does not meet minimum required version for OpenXR: ",
+        DG_LOG_ERROR("OpenGL version ", APIVersion.Major, '.', APIVersion.Minor, " does not meet minimum required version for OpenXR: ",
                   OpenXRRequiredGLVersion.Major, '.', OpenXRRequiredGLVersion.Minor);
     }
 #endif
@@ -255,7 +255,7 @@ void GLContext::SwapBuffers(int SwapInterval)
     }
     else
     {
-        LOG_ERROR("Swap buffer failed because window handle to device context is not initialized");
+        DG_LOG_ERROR("Swap buffer failed because window handle to device context is not initialized");
     }
 }
 

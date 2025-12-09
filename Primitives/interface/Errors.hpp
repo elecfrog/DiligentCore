@@ -74,7 +74,7 @@ void LogError(bool IsFatal, const char* Function, const char* FullFilePath, int 
 
 
 
-#define LOG_ERROR(...)                                                                                 \
+#define DG_LOG_ERROR(...)                                                                                 \
     do                                                                                                 \
     {                                                                                                  \
         Diligent::LogError<false>(/*IsFatal=*/false, __FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__); \
@@ -93,7 +93,7 @@ void LogError(bool IsFatal, const char* Function, const char* FullFilePath, int 
         static bool IsFirstTime = true; \
         if (IsFirstTime)                \
         {                               \
-            LOG_ERROR(##__VA_ARGS__);   \
+            DG_LOG_ERROR(##__VA_ARGS__);   \
             IsFirstTime = false;        \
         }                               \
     } while (false)

@@ -202,7 +202,7 @@ public:
 
         if (fileName.empty())
         {
-            LOG_ERROR("Failed to convert shader include file name ", fileName, ". File name must be ANSI string");
+            DG_LOG_ERROR("Failed to convert shader include file name ", fileName, ". File name must be ANSI string");
             return E_FAIL;
         }
 
@@ -214,7 +214,7 @@ public:
         m_pStreamFactory->CreateInputStream(fileName.c_str(), &pSourceStream);
         if (pSourceStream == nullptr)
         {
-            LOG_ERROR("Failed to open shader include file ", fileName, ". Check that the file exists");
+            DG_LOG_ERROR("Failed to open shader include file ", fileName, ". Check that the file exists");
             return E_FAIL;
         }
 
@@ -829,7 +829,7 @@ bool DXCompilerImpl::RemapResourceBindings(const TResourceBindingMap& ResourceMa
         DxcCreateInstanceProc CreateInstance = m_Library.GetDxcCreateInstance();
         if (CreateInstance == nullptr)
         {
-            LOG_ERROR("Failed to load DXCompiler");
+            DG_LOG_ERROR("Failed to load DXCompiler");
             return false;
         }
 
@@ -920,7 +920,7 @@ bool DXCompilerImpl::RemapResourceBindings(const TResourceBindingMap& ResourceMa
                         Ext.Type = RES_TYPE_UAV;
                         break;
                     default:
-                        LOG_ERROR("Unknown shader resource type");
+                        DG_LOG_ERROR("Unknown shader resource type");
                         return false;
                 }
 

@@ -118,7 +118,7 @@ void SwapChainGLImpl::Present(Uint32 SyncInterval)
     auto&               GLContext = pDeviceGL->m_GLContext;
     GLContext.SwapBuffers(static_cast<int>(SyncInterval));
 #elif PLATFORM_MACOS
-    LOG_ERROR("Swap buffers operation must be performed by the app on MacOS");
+    DG_LOG_ERROR("Swap buffers operation must be performed by the app on MacOS");
 #elif PLATFORM_WEB
     LOG_INFO_MESSAGE_ONCE("Swap buffers operation should be performed by the app on the Web");
 #else

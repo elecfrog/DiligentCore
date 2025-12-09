@@ -92,7 +92,7 @@ void GLContext::SwapBuffers(int SwapInterval)
     }
     else
     {
-        LOG_ERROR("Swap buffer failed because window and/or display handle is not initialized");
+        DG_LOG_ERROR("Swap buffer failed because window and/or display handle is not initialized");
     }
 }
 

@@ -1473,7 +1473,7 @@ void EngineFactoryVkImpl::AttachToVulkanDevice(std::shared_ptr<VulkanUtilities::
             }
         }
 
-        LOG_ERROR("Failed to create device and contexts");
+        DG_LOG_ERROR("Failed to create device and contexts");
     }
 }
 
@@ -1507,7 +1507,7 @@ void EngineFactoryVkImpl::CreateSwapChainVk(IRenderDevice*       pDevice,
             *ppSwapChain = nullptr;
         }
 
-        LOG_ERROR("Failed to create the swap chain");
+        DG_LOG_ERROR("Failed to create the swap chain");
     }
 }
 

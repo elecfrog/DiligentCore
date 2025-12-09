@@ -235,7 +235,7 @@ void BufferWebGPUImpl::CreateViewInternal(const BufferViewDesc& OrigViewDesc, IB
     catch (const std::runtime_error&)
     {
         const char* ViewTypeName = GetBufferViewTypeLiteralName(OrigViewDesc.ViewType);
-        LOG_ERROR("Failed to create view \"", OrigViewDesc.Name ? OrigViewDesc.Name : "", "\" (", ViewTypeName, ") for buffer \"", m_Desc.Name, "\"");
+        DG_LOG_ERROR("Failed to create view \"", OrigViewDesc.Name ? OrigViewDesc.Name : "", "\" (", ViewTypeName, ") for buffer \"", m_Desc.Name, "\"");
     }
 }
 

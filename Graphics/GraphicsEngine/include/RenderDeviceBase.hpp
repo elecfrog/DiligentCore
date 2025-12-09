@@ -460,11 +460,11 @@ protected:
             const std::string ObjectDescString = GetObjectDescString(Desc);
             if (!ObjectDescString.empty())
             {
-                LOG_ERROR("Failed to create ", ObjectTypeName, " '", (Desc.Name ? Desc.Name : ""), "'\n", ObjectDescString);
+                DG_LOG_ERROR("Failed to create ", ObjectTypeName, " '", (Desc.Name ? Desc.Name : ""), "'\n", ObjectDescString);
             }
             else
             {
-                LOG_ERROR("Failed to create ", ObjectTypeName, " '", (Desc.Name ? Desc.Name : ""), "'");
+                DG_LOG_ERROR("Failed to create ", ObjectTypeName, " '", (Desc.Name ? Desc.Name : ""), "'");
             }
         }
     }

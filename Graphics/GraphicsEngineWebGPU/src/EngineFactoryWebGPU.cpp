@@ -632,7 +632,7 @@ void EngineFactoryWebGPUImpl::CreateSwapChainWebGPU(IRenderDevice*       pDevice
             *ppSwapChain = nullptr;
         }
 
-        LOG_ERROR("Failed to create WebGPU-based swapchain");
+        DG_LOG_ERROR("Failed to create WebGPU-based swapchain");
     }
 }
 
@@ -718,7 +718,7 @@ void EngineFactoryWebGPUImpl::AttachToWebGPUDevice(void*                        
             *ppImmediateContext = nullptr;
         }
 
-        LOG_ERROR("Failed to create WebGPU-based render device and context");
+        DG_LOG_ERROR("Failed to create WebGPU-based render device and context");
     }
 }
 

@@ -326,12 +326,12 @@ static CComPtr<IDXGIAdapter1> DXGIAdapterFromD3D11Device(ID3D11Device* pd3d11Dev
         }
         else
         {
-            LOG_ERROR("Failed to get DXGI Adapter from DXGI Device.");
+            DG_LOG_ERROR("Failed to get DXGI Adapter from DXGI Device.");
         }
     }
     else
     {
-        LOG_ERROR("Failed to query IDXGIDevice from D3D device.");
+        DG_LOG_ERROR("Failed to query IDXGIDevice from D3D device.");
     }
 
     return nullptr;
@@ -424,7 +424,7 @@ void EngineFactoryD3D11Impl::AttachToD3D11Device(void*                        pd
             }
         }
 
-        LOG_ERROR("Failed to initialize D3D11 device and contexts");
+        DG_LOG_ERROR("Failed to initialize D3D11 device and contexts");
     }
 }
 
@@ -459,7 +459,7 @@ void EngineFactoryD3D11Impl::CreateSwapChainD3D11(IRenderDevice*            pDev
             *ppSwapChain = nullptr;
         }
 
-        LOG_ERROR("Failed to create the swap chain");
+        DG_LOG_ERROR("Failed to create the swap chain");
     }
 }
 

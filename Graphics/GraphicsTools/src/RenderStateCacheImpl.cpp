@@ -731,7 +731,7 @@ void CreateRenderStateCache(const RenderStateCacheCreateInfo& CreateInfo,
     }
     catch (...)
     {
-        LOG_ERROR("Failed to create the render state cache");
+        DG_LOG_ERROR("Failed to create the render state cache");
     }
 }
 

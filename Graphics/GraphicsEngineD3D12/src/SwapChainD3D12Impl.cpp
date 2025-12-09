@@ -232,7 +232,7 @@ void SwapChainD3D12Impl::UpdateSwapChain(bool CreateNew)
         }
         catch (const std::runtime_error&)
         {
-            LOG_ERROR("Failed to resize the swap chain");
+            DG_LOG_ERROR("Failed to resize the swap chain");
         }
     }
 }

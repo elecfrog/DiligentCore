@@ -130,7 +130,7 @@ ShaderVariableWebGPUImpl* ShaderVariableManagerWebGPU::GetVariable(Uint32 Index)
 {
     if (Index >= m_NumVariables)
     {
-        LOG_ERROR("Index ", Index, " is out of range");
+        DG_LOG_ERROR("Index ", Index, " is out of range");
         return nullptr;
     }
 
@@ -141,7 +141,7 @@ Uint32 ShaderVariableManagerWebGPU::GetVariableIndex(const ShaderVariableWebGPUI
 {
     if (m_pVariables == nullptr)
     {
-        LOG_ERROR("This shader variable manager has no variables");
+        DG_LOG_ERROR("This shader variable manager has no variables");
         return ~0u;
     }
 
@@ -152,7 +152,7 @@ Uint32 ShaderVariableManagerWebGPU::GetVariableIndex(const ShaderVariableWebGPUI
         return Index;
     else
     {
-        LOG_ERROR("Failed to get variable index. The variable ", &Variable, " does not belong to this shader variable manager");
+        DG_LOG_ERROR("Failed to get variable index. The variable ", &Variable, " does not belong to this shader variable manager");
         return ~0u;
     }
 }

@@ -326,7 +326,7 @@ void ValidateTextureRegion(const TextureDesc& TexDesc, Uint32 MipLevel, Uint32 S
     {                                                                                         \
         if (!(Expr))                                                                          \
         {                                                                                     \
-            LOG_ERROR("Texture '", (TexDesc.Name ? TexDesc.Name : ""), "': ", ##__VA_ARGS__); \
+            DG_LOG_ERROR("Texture '", (TexDesc.Name ? TexDesc.Name : ""), "': ", ##__VA_ARGS__); \
         }                                                                                     \
     } while (false)
 

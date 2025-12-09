@@ -550,7 +550,7 @@ DescriptorHeapAllocation DynamicSuballocationsManager::Allocate(Uint32 Count)
         DescriptorHeapAllocation NewDynamicSubAllocation = m_ParentGPUHeap.AllocateDynamic(SuballocationSize);
         if (NewDynamicSubAllocation.IsNull())
         {
-            LOG_ERROR("Dynamic space in ", GetD3D12DescriptorHeapTypeLiteralName(m_ParentGPUHeap.GetHeapDesc().Type), " GPU descriptor heap is exhausted.");
+            DG_LOG_ERROR("Dynamic space in ", GetD3D12DescriptorHeapTypeLiteralName(m_ParentGPUHeap.GetHeapDesc().Type), " GPU descriptor heap is exhausted.");
             return DescriptorHeapAllocation();
         }
         m_Suballocations.emplace_back(std::move(NewDynamicSubAllocation));

@@ -145,7 +145,7 @@ VulkanDynamicMemoryManager::MasterBlock VulkanDynamicMemoryManager::AllocateMast
 
     if (SizeInBytes > GetSize())
     {
-        LOG_ERROR("Requested dynamic allocation size ", SizeInBytes,
+        DG_LOG_ERROR("Requested dynamic allocation size ", SizeInBytes,
                   " exceeds maximum dynamic memory size ", GetSize(),
                   ". The app should increase dynamic heap size.");
         return MasterBlock{};

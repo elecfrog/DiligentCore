@@ -243,7 +243,7 @@ CComPtr<IDXGIAdapter1> DXGIAdapterFromD3D12Device(ID3D12Device* pd3d12Device)
     }
     else
     {
-        LOG_ERROR("Unable to create DXIFactory");
+        DG_LOG_ERROR("Unable to create DXIFactory");
     }
     return nullptr;
 }
@@ -511,7 +511,7 @@ void EngineFactoryD3D12Impl::CreateDeviceAndContextsD3D12(const EngineD3D12Creat
     }
     catch (const std::runtime_error&)
     {
-        LOG_ERROR("Failed to initialize D3D12 resources");
+        DG_LOG_ERROR("Failed to initialize D3D12 resources");
         return;
     }
 
@@ -542,7 +542,7 @@ void EngineFactoryD3D12Impl::CreateCommandQueueD3D12(void*                pd3d12
     }
     catch (const std::runtime_error&)
     {
-        LOG_ERROR("Failed to initialize D3D12 resources");
+        DG_LOG_ERROR("Failed to initialize D3D12 resources");
         return;
     }
 }
@@ -655,7 +655,7 @@ void EngineFactoryD3D12Impl::AttachToD3D12Device(void*                        pd
             }
         }
 
-        LOG_ERROR("Failed to create device and contexts");
+        DG_LOG_ERROR("Failed to create device and contexts");
     }
 }
 
@@ -690,7 +690,7 @@ void EngineFactoryD3D12Impl::CreateSwapChainD3D12(IRenderDevice*            pDev
             *ppSwapChain = nullptr;
         }
 
-        LOG_ERROR("Failed to create the swap chain");
+        DG_LOG_ERROR("Failed to create the swap chain");
     }
 }
 

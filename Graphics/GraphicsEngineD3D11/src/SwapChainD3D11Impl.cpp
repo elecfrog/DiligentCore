@@ -212,7 +212,7 @@ void SwapChainD3D11Impl::UpdateSwapChain(bool CreateNew)
         }
         catch (const std::runtime_error&)
         {
-            LOG_ERROR("Failed to resize the swap chain");
+            DG_LOG_ERROR("Failed to resize the swap chain");
         }
     }
 }
@@ -244,7 +244,7 @@ void SwapChainD3D11Impl::SetDXGIDeviceMaximumFrameLatency()
     }
     else
     {
-        LOG_ERROR("Failed to query IDXGIDevice1 interface from D3D11 device");
+        DG_LOG_ERROR("Failed to query IDXGIDevice1 interface from D3D11 device");
     }
 }
 

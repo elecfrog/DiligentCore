@@ -99,7 +99,7 @@ public:
         auto DXGIAdapters = FindCompatibleAdapters(MinVersion);
         if (AdapterId >= DXGIAdapters.size())
         {
-            LOG_ERROR("Incorrect adapter id ", AdapterId);
+            DG_LOG_ERROR("Incorrect adapter id ", AdapterId);
             return;
         }
 

@@ -92,7 +92,7 @@ GLuint TestingEnvironmentGL::CompileGLShader(const std::string& Source, GLenum S
             // doesn't care
             glGetShaderInfoLog(glShader, infoLogLen, &charsWritten, infoLog.data());
             VERIFY(charsWritten == infoLogLen - 1, "Unexpected info log length");
-            LOG_ERROR("Failed to compile GL shader\n", infoLog.data());
+            DG_LOG_ERROR("Failed to compile GL shader\n", infoLog.data());
         }
     }
 
