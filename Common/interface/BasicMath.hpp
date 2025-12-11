@@ -94,10 +94,10 @@ template <class T> struct Vector2
         };
     };
 
-    constexpr Vector2(const Vector2&) = default;
-    constexpr Vector2(Vector2&&)      = default;
+    constexpr Vector2(const Vector2&)            = default;
+    constexpr Vector2(Vector2&&)                 = default;
     constexpr Vector2& operator=(const Vector2&) = default;
-    constexpr Vector2& operator=(Vector2&&) = default;
+    constexpr Vector2& operator=(Vector2&&)      = default;
 
     constexpr Vector2 operator-(const Vector2<T>& right) const
     {
@@ -294,10 +294,10 @@ template <class T> struct Vector3
         };
     };
 
-    constexpr Vector3(const Vector3&) = default;
-    constexpr Vector3(Vector3&&)      = default;
+    constexpr Vector3(const Vector3&)            = default;
+    constexpr Vector3(Vector3&&)                 = default;
     constexpr Vector3& operator=(const Vector3&) = default;
-    constexpr Vector3& operator=(Vector3&&) = default;
+    constexpr Vector3& operator=(Vector3&&)      = default;
 
     constexpr Vector3 operator-(const Vector3& right) const
     {
@@ -514,10 +514,10 @@ template <class T> struct Vector4
         };
     };
 
-    constexpr Vector4(const Vector4&) = default;
-    constexpr Vector4(Vector4&&)      = default;
+    constexpr Vector4(const Vector4&)            = default;
+    constexpr Vector4(Vector4&&)                 = default;
     constexpr Vector4& operator=(const Vector4&) = default;
-    constexpr Vector4& operator=(Vector4&&) = default;
+    constexpr Vector4& operator=(Vector4&&)      = default;
 
     constexpr Vector4 operator-(const Vector4& right) const
     {
@@ -976,7 +976,7 @@ template <typename T>
 inline constexpr Matrix2x2<T> operator*(const Matrix2x2<T>& Mat, T s)
 {
     // clang-format off
-    return 
+    return
     {
         Mat._11 * s, Mat._12 * s,
         Mat._21 * s, Mat._22 * s
@@ -994,7 +994,7 @@ template <typename T>
 inline constexpr Matrix2x2<T> operator/(const Matrix2x2<T>& Mat, T s)
 {
     // clang-format off
-    return 
+    return
     {
         Mat._11 / s, Mat._12 / s,
         Mat._21 / s, Mat._22 / s
@@ -1334,7 +1334,7 @@ template <typename T>
 inline constexpr Matrix3x3<T> operator*(const Matrix3x3<T>& Mat, T s)
 {
     // clang-format off
-    return 
+    return
     {
         Mat._11 * s, Mat._12 * s, Mat._13 * s,
         Mat._21 * s, Mat._22 * s, Mat._23 * s,
@@ -1353,7 +1353,7 @@ template <typename T>
 inline constexpr Matrix3x3<T> operator/(const Matrix3x3<T>& Mat, T s)
 {
     // clang-format off
-    return 
+    return
     {
         Mat._11 / s, Mat._12 / s, Mat._13 / s,
         Mat._21 / s, Mat._22 / s, Mat._23 / s,
@@ -2010,7 +2010,7 @@ template <typename T>
 inline constexpr Matrix4x4<T> operator*(const Matrix4x4<T>& Mat, T s)
 {
     // clang-format off
-    return 
+    return
     {
         Mat._11 * s, Mat._12 * s, Mat._13 * s, Mat._14 * s,
         Mat._21 * s, Mat._22 * s, Mat._23 * s, Mat._24 * s,
@@ -2030,7 +2030,7 @@ template <typename T>
 inline constexpr Matrix4x4<T> operator/(const Matrix4x4<T>& Mat, T s)
 {
     // clang-format off
-    return 
+    return
     {
         Mat._11 / s, Mat._12 / s, Mat._13 / s, Mat._14 / s,
         Mat._21 / s, Mat._22 / s, Mat._23 / s, Mat._24 / s,
@@ -2502,6 +2502,8 @@ inline Quaternion<T> slerp(Quaternion<T> v0, Quaternion<T> v1, T t, bool DoNotNo
     }
     return v;
 }
+
+
 
 
 template <typename T>
