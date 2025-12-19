@@ -37,9 +37,9 @@ namespace Diligent
 
 Uint32 GetGeometryPrimitiveVertexSize(GEOMETRY_PRIMITIVE_VERTEX_FLAGS VertexFlags)
 {
-    return (((VertexFlags & GEOMETRY_PRIMITIVE_VERTEX_FLAG_POSITION) ? sizeof(float3) : 0) +
-            ((VertexFlags & GEOMETRY_PRIMITIVE_VERTEX_FLAG_NORMAL) ? sizeof(float3) : 0) +
-            ((VertexFlags & GEOMETRY_PRIMITIVE_VERTEX_FLAG_TEXCOORD) ? sizeof(float2) : 0));
+    return (((VertexFlags & GEOMETRY_PRIMITIVE_VERTEX_FLAG_POSITION) ? sizeof(Vector3f) : 0) +
+            ((VertexFlags & GEOMETRY_PRIMITIVE_VERTEX_FLAG_NORMAL) ? sizeof(Vector3f) : 0) +
+            ((VertexFlags & GEOMETRY_PRIMITIVE_VERTEX_FLAG_TEXCOORD) ? sizeof(Vector2f) : 0));
 }
 
 template <typename VertexHandlerType>
@@ -104,13 +104,13 @@ void CreateCubeGeometryInternal(Uint32                          NumSubdivisions,
         pIdx = pIndexData->GetDataPtr<Uint32>();
     }
 
-    static constexpr std::array<float3, NumFaces> FaceNormals{
-        float3{+1, 0, 0},
-        float3{-1, 0, 0},
-        float3{0, +1, 0},
-        float3{0, -1, 0},
-        float3{0, 0, +1},
-        float3{0, 0, -1},
+    static constexpr std::array<Vector3f, NumFaces> FaceNormals{
+        Vector3f{+1, 0, 0},
+        Vector3f{-1, 0, 0},
+        Vector3f{0, +1, 0},
+        Vector3f{0, -1, 0},
+        Vector3f{0, 0, +1},
+        Vector3f{0, 0, -1},
     };
 
     for (Uint32 FaceIndex = 0; FaceIndex < NumFaces; ++FaceIndex)
@@ -130,28 +130,28 @@ void CreateCubeGeometryInternal(Uint32                          NumSubdivisions,
             {
                 for (Uint32 x = 0; x <= NumSubdivisions; ++x)
                 {
-                    float2 UV{
+                    Vector2f UV{
                         static_cast<float>(x) / NumSubdivisions,
                         static_cast<float>(y) / NumSubdivisions,
                     };
 
-                    float2 XY{
+                    Vector2f XY{
                         UV.x - 0.5f,
                         0.5f - UV.y,
                     };
 
-                    float3 Pos;
+                    Vector3f Pos;
                     switch (FaceIndex)
                     {
-                        case 0: Pos = float3{+0.5f, XY.y, +XY.x}; break;
-                        case 1: Pos = float3{-0.5f, XY.y, -XY.x}; break;
-                        case 2: Pos = float3{XY.x, +0.5f, +XY.y}; break;
-                        case 3: Pos = float3{XY.x, -0.5f, -XY.y}; break;
-                        case 4: Pos = float3{-XY.x, XY.y, +0.5f}; break;
-                        case 5: Pos = float3{+XY.x, XY.y, -0.5f}; break;
+                        case 0: Pos = Vector3f{+0.5f, XY.y, +XY.x}; break;
+                        case 1: Pos = Vector3f{-0.5f, XY.y, -XY.x}; break;
+                        case 2: Pos = Vector3f{XY.x, +0.5f, +XY.y}; break;
+                        case 3: Pos = Vector3f{XY.x, -0.5f, -XY.y}; break;
+                        case 4: Pos = Vector3f{-XY.x, XY.y, +0.5f}; break;
+                        case 5: Pos = Vector3f{+XY.x, XY.y, -0.5f}; break;
                     }
 
-                    float3 Normal = FaceNormals[FaceIndex];
+                    Vector3f Normal = FaceNormals[FaceIndex];
                     HandleVertex(Pos, Normal, UV);
 
                     if (VertexFlags & GEOMETRY_PRIMITIVE_VERTEX_FLAG_POSITION)
@@ -226,7 +226,7 @@ void CreateCubeGeometry(const CubeGeometryPrimitiveAttributes& Attribs,
                                ppVertices,
                                ppIndices,
                                pInfo,
-                               [&](float3& Pos, float3& Normal, float2& UV) {
+                               [&](Vector3f& Pos, Vector3f& Normal, Vector2f& UV) {
                                    Pos *= Size;
                                });
 }
@@ -248,7 +248,7 @@ void CreateSphereGeometry(const SphereGeometryPrimitiveAttributes& Attribs,
                                ppVertices,
                                ppIndices,
                                pInfo,
-                               [&](float3& Pos, float3& Normal, float2& UV) {
+                               [&](Vector3f& Pos, Vector3f& Normal, Vector2f& UV) {
                                    Normal = normalize(Pos);
                                    Pos    = Normal * Radius;
 

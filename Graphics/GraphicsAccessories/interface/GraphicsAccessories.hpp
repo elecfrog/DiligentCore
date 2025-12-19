@@ -907,31 +907,31 @@ bool IsIdentityComponentMapping(const TextureComponentMapping& Mapping);
 /// and returns an array of buffer strides for each used input buffer slot.
 std::vector<Uint32> ResolveInputLayoutAutoOffsetsAndStrides(LayoutElement* pLayoutElements, Uint32 NumElements);
 
-inline void WriteShaderMatrix(void* pDst, const float4x4& Mat, bool Transpose)
+inline void WriteShaderMatrix(void* pDst, const Matrix4x4f& Mat, bool Transpose)
 {
     if (!Transpose)
     {
-        std::memcpy(pDst, &Mat, sizeof(float4x4));
+        std::memcpy(pDst, &Mat, sizeof(Matrix4x4f));
     }
     else
     {
-        const float4x4 TransposedMat = Mat.Transpose();
-        std::memcpy(pDst, &TransposedMat, sizeof(float4x4));
+        const Matrix4x4f TransposedMat = Mat.Transpose();
+        std::memcpy(pDst, &TransposedMat, sizeof(Matrix4x4f));
     }
 }
 
-inline void WriteShaderMatrices(void* pDst, const float4x4* pMat, size_t NumMatrices, bool Transpose)
+inline void WriteShaderMatrices(void* pDst, const Matrix4x4f* pMat, size_t NumMatrices, bool Transpose)
 {
     if (!Transpose)
     {
-        std::memcpy(pDst, pMat, sizeof(float4x4) * NumMatrices);
+        std::memcpy(pDst, pMat, sizeof(Matrix4x4f) * NumMatrices);
     }
     else
     {
         for (size_t i = 0; i < NumMatrices; ++i)
         {
-            const float4x4 TransposedMat = pMat[i].Transpose();
-            std::memcpy(static_cast<float4x4*>(pDst) + i, &TransposedMat, sizeof(float4x4));
+            const Matrix4x4f TransposedMat = pMat[i].Transpose();
+            std::memcpy(static_cast<Matrix4x4f*>(pDst) + i, &TransposedMat, sizeof(Matrix4x4f));
         }
     }
 }

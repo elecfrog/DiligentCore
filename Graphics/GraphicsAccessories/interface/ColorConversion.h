@@ -97,9 +97,9 @@ inline float FastGammaToLinear(float x)
 
 /// \param RGB - Linear color value in the range [0, 1]
 /// \return Gamma color value in the range [0, 1]
-inline float3 LinearToSRGB(const float3& RGB)
+inline Vector3f LinearToSRGB(const Vector3f& RGB)
 {
-    return float3{LinearToGamma(RGB.r), LinearToGamma(RGB.g), LinearToGamma(RGB.b)};
+    return Vector3f{LinearToGamma(RGB.r), LinearToGamma(RGB.g), LinearToGamma(RGB.b)};
 }
 
 
@@ -109,9 +109,9 @@ inline float3 LinearToSRGB(const float3& RGB)
 /// \return Gamma color value in the range [0, 1]
 ///
 /// \note Alpha channel is not converted
-inline float4 LinearToSRGBA(const float4& RGBA)
+inline Vector4f LinearToSRGBA(const Vector4f& RGBA)
 {
-    return float4{LinearToGamma(RGBA.r), LinearToGamma(RGBA.g), LinearToGamma(RGBA.b), RGBA.a};
+    return Vector4f{LinearToGamma(RGBA.r), LinearToGamma(RGBA.g), LinearToGamma(RGBA.b), RGBA.a};
 }
 
 
@@ -119,9 +119,9 @@ inline float4 LinearToSRGBA(const float4& RGBA)
 
 /// \param RGB - Gamma color value in the range [0, 1]
 /// \return Linear color value in the range [0, 1]
-inline float3 FastLinearToSRGB(const float3& RGB)
+inline Vector3f FastLinearToSRGB(const Vector3f& RGB)
 {
-    return float3{FastLinearToGamma(RGB.r), FastLinearToGamma(RGB.g), FastLinearToGamma(RGB.b)};
+    return Vector3f{FastLinearToGamma(RGB.r), FastLinearToGamma(RGB.g), FastLinearToGamma(RGB.b)};
 }
 
 
@@ -131,9 +131,9 @@ inline float3 FastLinearToSRGB(const float3& RGB)
 /// \return Linear color value in the range [0, 1]
 ///
 /// \note Alpha channel is not converted
-inline float4 FastLinearToSRGBA(const float4& RGBA)
+inline Vector4f FastLinearToSRGBA(const Vector4f& RGBA)
 {
-    return float4{FastLinearToGamma(RGBA.r), FastLinearToGamma(RGBA.g), FastLinearToGamma(RGBA.b), RGBA.a};
+    return Vector4f{FastLinearToGamma(RGBA.r), FastLinearToGamma(RGBA.g), FastLinearToGamma(RGBA.b), RGBA.a};
 }
 
 
@@ -141,9 +141,9 @@ inline float4 FastLinearToSRGBA(const float4& RGBA)
 
 /// \param RGB - Gamma color value in the range [0, 1]
 /// \return Linear color value in the range [0, 1]
-inline float3 SRGBToLinear(const float3& SRGB)
+inline Vector3f SRGBToLinear(const Vector3f& SRGB)
 {
-    return float3{GammaToLinear(SRGB.r), GammaToLinear(SRGB.g), GammaToLinear(SRGB.b)};
+    return Vector3f{GammaToLinear(SRGB.r), GammaToLinear(SRGB.g), GammaToLinear(SRGB.b)};
 }
 
 
@@ -153,9 +153,9 @@ inline float3 SRGBToLinear(const float3& SRGB)
 /// \return Linear color value in the range [0, 1]
 ///
 /// \note Alpha channel is not converted
-inline float4 SRGBAToLinear(const float4& SRGBA)
+inline Vector4f SRGBAToLinear(const Vector4f& SRGBA)
 {
-    return float4{GammaToLinear(SRGBA.r), GammaToLinear(SRGBA.g), GammaToLinear(SRGBA.b), SRGBA.a};
+    return Vector4f{GammaToLinear(SRGBA.r), GammaToLinear(SRGBA.g), GammaToLinear(SRGBA.b), SRGBA.a};
 }
 
 
@@ -163,9 +163,9 @@ inline float4 SRGBAToLinear(const float4& SRGBA)
 
 /// \param RGB - Gamma color value in the range [0, 1]
 /// \return Linear color value in the range [0, 1]
-inline float3 FastSRGBToLinear(const float3& SRGB)
+inline Vector3f FastSRGBToLinear(const Vector3f& SRGB)
 {
-    return float3{FastGammaToLinear(SRGB.r), FastGammaToLinear(SRGB.g), FastGammaToLinear(SRGB.b)};
+    return Vector3f{FastGammaToLinear(SRGB.r), FastGammaToLinear(SRGB.g), FastGammaToLinear(SRGB.b)};
 }
 
 
@@ -173,9 +173,9 @@ inline float3 FastSRGBToLinear(const float3& SRGB)
 
 /// \param RGBA - Gamma color value in the range [0, 1]
 /// \return Linear color value in the range [0, 1]
-inline float4 FastSRGBAToLinear(const float4& SRGBA)
+inline Vector4f FastSRGBAToLinear(const Vector4f& SRGBA)
 {
-    return float4{FastGammaToLinear(SRGBA.r), FastGammaToLinear(SRGBA.g), FastGammaToLinear(SRGBA.b), SRGBA.a};
+    return Vector4f{FastGammaToLinear(SRGBA.r), FastGammaToLinear(SRGBA.g), FastGammaToLinear(SRGBA.b), SRGBA.a};
 }
 
 DILIGENT_END_NAMESPACE // namespace Diligent

@@ -63,7 +63,7 @@ struct ITextureAtlasSuballocation : public IObject
     virtual uint2 GetSize() const = 0;
 
     /// Returns the texture coordinate scale (xy) and bias (zw).
-    virtual float4 GetUVScaleBias() const = 0;
+    virtual Vector4f GetUVScaleBias() const = 0;
 
     /// Returns the suballocation alignment.
     virtual Uint32 GetAlignment() const = 0;

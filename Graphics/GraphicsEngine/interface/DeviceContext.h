@@ -2658,13 +2658,12 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// explicitly manage the states using TransitionResourceStates() method.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(SetVertexBuffers)(THIS_
-                                          Uint32                         StartSlot,
-                                          Uint32                         NumBuffersSet,
-                                          IBuffer* const*                ppBuffers,
-                                          const Uint64*                  pOffsets,
-                                          RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
-                                          SET_VERTEX_BUFFERS_FLAGS       Flags DEFAULT_VALUE(SET_VERTEX_BUFFERS_FLAG_NONE)) PURE;
+    virtual void DILIGENT_CALL_TYPE SetVertexBuffers(Uint32 StartSlot,
+                                                     Uint32                         NumBuffersSet,
+                                                     IBuffer* const*                ppBuffers,
+                                                     const Uint64*                  pOffsets,
+                                                     RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
+                                                     SET_VERTEX_BUFFERS_FLAGS       Flags = SET_VERTEX_BUFFERS_FLAG_NONE) = 0;
 
 
     /// Invalidates the cached context state.

@@ -51,7 +51,7 @@ struct Plane3D
     ///
     /// \note  The normal does not have to be normalized as long
     ///        as it is measured in the same units as Distance.
-    float3 Normal;
+    Vector3f Normal;
 
     /// Distance from the plane to the coordinate system origin along the normal direction:
     ///
@@ -65,13 +65,13 @@ struct Plane3D
     /// \note   The distance is measured in the same units as the normal vector.
     float Distance = 0;
 
-    operator float4&()
+    operator Vector4f&()
     {
-        return *reinterpret_cast<float4*>(this);
+        return *reinterpret_cast<Vector4f*>(this);
     }
-    operator const float4&() const
+    operator const Vector4f&() const
     {
-        return *reinterpret_cast<const float4*>(this);
+        return *reinterpret_cast<const Vector4f*>(this);
     }
 };
 
@@ -112,7 +112,7 @@ struct ViewFrustum
 
 struct ViewFrustumExt : public ViewFrustum
 {
-    float3 FrustumCorners[8];
+    Vector3f FrustumCorners[8];
 };
 
 /// For OpenGL, matrix is still considered row-major. The only difference is that
@@ -125,7 +125,7 @@ struct ViewFrustumExt : public ViewFrustum
 ///
 /// However, to use the planes with other distances (e.g. for testing a sphere against the plane),
 /// the normal vectors must be normalized and the distances scaled accordingly.
-inline void ExtractViewFrustumPlanesFromMatrix(const float4x4& Matrix, ViewFrustum& Frustum, bool bIsOpenGL)
+inline void ExtractViewFrustumPlanesFromMatrix(const Matrix4x4f& Matrix, ViewFrustum& Frustum, bool bIsOpenGL)
 {
     // For more details, see Gribb G., Hartmann K., "Fast Extraction of Viewing Frustum Planes from the
     // World-View-Projection Matrix" (the paper is available at
@@ -180,17 +180,17 @@ inline void ExtractViewFrustumPlanesFromMatrix(const float4x4& Matrix, ViewFrust
     Frustum.FarPlane.Distance = Matrix._44 - Matrix._43;
 }
 
-inline void ExtractViewFrustumPlanesFromMatrix(const float4x4& Matrix, ViewFrustumExt& FrustumExt, bool bIsOpenGL)
+inline void ExtractViewFrustumPlanesFromMatrix(const Matrix4x4f& Matrix, ViewFrustumExt& FrustumExt, bool bIsOpenGL)
 {
     ExtractViewFrustumPlanesFromMatrix(Matrix, static_cast<ViewFrustum&>(FrustumExt), bIsOpenGL);
 
     // Compute frustum corners
-    float4x4 InvMatrix = Matrix.Inverse();
+    Matrix4x4f InvMatrix = Matrix.Inverse();
 
     float NearClipZ = bIsOpenGL ? -1.f : 0.f;
     for (Uint32 i = 0; i < 8; ++i)
     {
-        const float3 ProjSpaceCorner{
+        const Vector3f ProjSpaceCorner{
             (i & 0x01u) ? +1.f : -1.f,
             (i & 0x02u) ? +1.f : -1.f,
             (i & 0x04u) ? +1.f : NearClipZ,
@@ -201,32 +201,32 @@ inline void ExtractViewFrustumPlanesFromMatrix(const float4x4& Matrix, ViewFrust
 
 struct BoundBox
 {
-    float3 Min;
-    float3 Max;
+    Vector3f Min;
+    Vector3f Max;
 
     // Computes new bounding box by applying transform matrix m to the box
-    BoundBox Transform(const float4x4& m) const
+    BoundBox Transform(const Matrix4x4f& m) const
     {
         BoundBox NewBB;
-        NewBB.Min = float3::MakeVector(m[3]);
+        NewBB.Min = Vector3f::MakeVector(m[3]);
         NewBB.Max = NewBB.Min;
-        float3 v0, v1;
+        Vector3f v0, v1;
 
-        float3 right = float3::MakeVector(m[0]);
+        Vector3f right = Vector3f::MakeVector(m[0]);
 
         v0 = right * Min.x;
         v1 = right * Max.x;
         NewBB.Min += (std::min)(v0, v1);
         NewBB.Max += (std::max)(v0, v1);
 
-        float3 up = float3::MakeVector(m[1]);
+        Vector3f up = Vector3f::MakeVector(m[1]);
 
         v0 = up * Min.y;
         v1 = up * Max.y;
         NewBB.Min += (std::min)(v0, v1);
         NewBB.Max += (std::max)(v0, v1);
 
-        float3 back = float3::MakeVector(m[2]);
+        Vector3f back = Vector3f::MakeVector(m[2]);
 
         v0 = back * Min.z;
         v1 = back * Max.z;
@@ -236,7 +236,7 @@ struct BoundBox
         return NewBB;
     }
 
-    float3 GetCorner(size_t i) const
+    Vector3f GetCorner(size_t i) const
     {
         return {
             (i & 0x01u) ? Max.x : Min.x,
@@ -253,7 +253,7 @@ struct BoundBox
         };
     }
 
-    BoundBox Enclose(const float3& Point) const
+    BoundBox Enclose(const Vector3f& Point) const
     {
         return {
             (std::min)(Min, Point),
@@ -264,8 +264,8 @@ struct BoundBox
     static const BoundBox Invalid()
     {
         return {
-            float3{+FLT_MAX},
-            float3{-FLT_MAX},
+            Vector3f{+FLT_MAX},
+            Vector3f{-FLT_MAX},
         };
     }
 
@@ -294,8 +294,8 @@ struct BoundBox
 
 struct OrientedBoundingBox
 {
-    float3 Center;         // Center of the box
-    float3 Axes[3];        // Normalized axes
+    Vector3f Center;         // Center of the box
+    Vector3f Axes[3];        // Normalized axes
     float  HalfExtents[3]; // Half extents along each axis
 };
 
@@ -341,9 +341,9 @@ enum class BoxVisibility
 };
 
 /// Returns the nearest bounding box corner along the given direction
-inline float3 GetBoxNearestCorner(const float3& Direction, const BoundBox& Box)
+inline Vector3f GetBoxNearestCorner(const Vector3f& Direction, const BoundBox& Box)
 {
-    return float3 //
+    return Vector3f //
         {
             (Direction.x > 0) ? Box.Min.x : Box.Max.x,
             (Direction.y > 0) ? Box.Min.y : Box.Max.y,
@@ -352,9 +352,9 @@ inline float3 GetBoxNearestCorner(const float3& Direction, const BoundBox& Box)
 }
 
 /// Returns the farthest bounding box corner along the given direction
-inline float3 GetBoxFarthestCorner(const float3& Direction, const BoundBox& Box)
+inline Vector3f GetBoxFarthestCorner(const Vector3f& Direction, const BoundBox& Box)
 {
-    return float3 //
+    return Vector3f //
         {
             (Direction.x > 0) ? Box.Max.x : Box.Min.x,
             (Direction.y > 0) ? Box.Max.y : Box.Min.y,
@@ -585,7 +585,7 @@ inline BoxVisibility GetBoxVisibility(const ViewFrustumExt&      ViewFrustumExt,
     {
         // Test if the whole frustum is outside one of the bounding box planes.
 
-        const float3 Corners[] =
+        const Vector3f Corners[] =
             {
                 ViewFrustumExt.FrustumCorners[0] - Box.Center,
                 ViewFrustumExt.FrustumCorners[1] - Box.Center,
@@ -601,7 +601,7 @@ inline BoxVisibility GetBoxVisibility(const ViewFrustumExt&      ViewFrustumExt,
         for (int iBoundBoxPlane = 0; iBoundBoxPlane < 6; ++iBoundBoxPlane)
         {
             const int    AxisIdx = iBoundBoxPlane / 2;
-            const float3 Normal  = Box.Axes[AxisIdx] * (iBoundBoxPlane & 0x01 ? -1.f : +1.f);
+            const Vector3f Normal  = Box.Axes[AxisIdx] * (iBoundBoxPlane & 0x01 ? -1.f : +1.f);
 
             bool bAllCornersOutside = true;
             for (int iCorner = 0; iCorner < 8; iCorner++)
@@ -629,12 +629,12 @@ inline BoxVisibility GetBoxVisibility(const ViewFrustumExt&      ViewFrustumExt,
     return BoxVisibility::Intersecting;
 }
 
-inline float GetPointToBoxDistanceSqr(const BoundBox& BB, const float3& Pos)
+inline float GetPointToBoxDistanceSqr(const BoundBox& BB, const Vector3f& Pos)
 {
     VERIFY_EXPR(BB.Max.x >= BB.Min.x &&
                 BB.Max.y >= BB.Min.y &&
                 BB.Max.z >= BB.Min.z);
-    const float3 OffsetVec{
+    const Vector3f OffsetVec{
         (max)(Pos.x - BB.Max.x, BB.Min.x - Pos.x, 0.f),
         (max)(Pos.y - BB.Max.y, BB.Min.y - Pos.y, 0.f),
         (max)(Pos.z - BB.Max.z, BB.Min.z - Pos.z, 0.f),
@@ -642,14 +642,14 @@ inline float GetPointToBoxDistanceSqr(const BoundBox& BB, const float3& Pos)
     return dot(OffsetVec, OffsetVec);
 }
 
-inline float GetPointToBoxDistance(const BoundBox& BB, const float3& Pos)
+inline float GetPointToBoxDistance(const BoundBox& BB, const Vector3f& Pos)
 {
     return sqrt(GetPointToBoxDistanceSqr(BB, Pos));
 }
 
-inline float GetPointToBoxDistanceSqr(const OrientedBoundingBox& OBB, const float3& Pos)
+inline float GetPointToBoxDistanceSqr(const OrientedBoundingBox& OBB, const Vector3f& Pos)
 {
-    const float3 RelPos = Pos - OBB.Center;
+    const Vector3f RelPos = Pos - OBB.Center;
 
     const float Projs[3] =
         {
@@ -657,7 +657,7 @@ inline float GetPointToBoxDistanceSqr(const OrientedBoundingBox& OBB, const floa
             dot(RelPos, OBB.Axes[1]),
             dot(RelPos, OBB.Axes[2]),
         };
-    const float3 OffsetVec{
+    const Vector3f OffsetVec{
         (max)(Projs[0] - OBB.HalfExtents[0], -OBB.HalfExtents[0] - Projs[0], 0.f),
         (max)(Projs[1] - OBB.HalfExtents[1], -OBB.HalfExtents[1] - Projs[1], 0.f),
         (max)(Projs[2] - OBB.HalfExtents[2], -OBB.HalfExtents[2] - Projs[2], 0.f),
@@ -665,7 +665,7 @@ inline float GetPointToBoxDistanceSqr(const OrientedBoundingBox& OBB, const floa
     return dot(OffsetVec, OffsetVec);
 }
 
-inline float GetPointToBoxDistance(const OrientedBoundingBox& OBB, const float3& Pos)
+inline float GetPointToBoxDistance(const OrientedBoundingBox& OBB, const Vector3f& Pos)
 {
     return sqrt(GetPointToBoxDistanceSqr(OBB, Pos));
 }
@@ -718,7 +718,7 @@ inline void GetFrustumMinimumBoundingSphere(float   Proj_00,   ///< cot(HorzFOV 
                                             float   Proj_11,   ///< cot(VertFOV / 2) == proj_00 / AspectRatio
                                             float   NearPlane, ///< Near clip plane
                                             float   FarPlane,  ///< Far clip plane
-                                            float3& Center,    ///< Sphere center == (0, 0, c)
+                                            Vector3f& Center,    ///< Sphere center == (0, 0, c)
                                             float&  Radius     ///< Sphere radius
 )
 {
@@ -727,39 +727,39 @@ inline void GetFrustumMinimumBoundingSphere(float   Proj_00,   ///< cot(HorzFOV 
     float k2 = 1.f / (Proj_00 * Proj_00) + 1.f / (Proj_11 * Proj_11);
     if (k2 > (FarPlane - NearPlane) / (FarPlane + NearPlane))
     {
-        Center = float3(0, 0, FarPlane);
+        Center = Vector3f(0, 0, FarPlane);
         Radius = FarPlane * std::sqrt(k2);
     }
     else
     {
-        Center = float3(0, 0, 0.5f * (FarPlane + NearPlane) * (1 + k2));
+        Center = Vector3f(0, 0, 0.5f * (FarPlane + NearPlane) * (1 + k2));
         Radius = 0.5f * std::sqrt((FarPlane - NearPlane) * (FarPlane - NearPlane) + 2 * (FarPlane * FarPlane + NearPlane * NearPlane) * k2 + (FarPlane + NearPlane) * (FarPlane + NearPlane) * k2 * k2);
     }
 }
 
 /// Intersects a ray with 3D box and computes distances to intersections
-inline bool IntersectRayBox3D(const float3& RayOrigin,
-                              const float3& RayDirection,
-                              float3        BoxMin,
-                              float3        BoxMax,
+inline bool IntersectRayBox3D(const Vector3f& RayOrigin,
+                              const Vector3f& RayDirection,
+                              Vector3f        BoxMin,
+                              Vector3f        BoxMax,
                               float&        EnterDist,
                               float&        ExitDist)
 {
-    VERIFY_EXPR(RayDirection != float3(0, 0, 0));
+    VERIFY_EXPR(RayDirection != Vector3f(0, 0, 0));
 
     BoxMin -= RayOrigin;
     BoxMax -= RayOrigin;
 
     static constexpr float Epsilon = 1e-20f;
 
-    float3 AbsRayDir = abs(RayDirection);
-    float3 t_min //
+    Vector3f AbsRayDir = abs(RayDirection);
+    Vector3f t_min //
         {
             AbsRayDir.x > Epsilon ? BoxMin.x / RayDirection.x : +FLT_MAX,
             AbsRayDir.y > Epsilon ? BoxMin.y / RayDirection.y : +FLT_MAX,
             AbsRayDir.z > Epsilon ? BoxMin.z / RayDirection.z : +FLT_MAX //
         };
-    float3 t_max //
+    Vector3f t_max //
         {
             AbsRayDir.x > Epsilon ? BoxMax.x / RayDirection.x : -FLT_MAX,
             AbsRayDir.y > Epsilon ? BoxMax.y / RayDirection.y : -FLT_MAX,
@@ -775,8 +775,8 @@ inline bool IntersectRayBox3D(const float3& RayOrigin,
 }
 
 /// Intersects a ray with the axis-aligned bounding box and computes distances to intersections
-inline bool IntersectRayAABB(const float3&   RayOrigin,
-                             const float3&   RayDirection,
+inline bool IntersectRayAABB(const Vector3f&   RayOrigin,
+                             const Vector3f&   RayDirection,
                              const BoundBox& AABB,
                              float&          EnterDist,
                              float&          ExitDist)
@@ -785,27 +785,27 @@ inline bool IntersectRayAABB(const float3&   RayOrigin,
 }
 
 /// Intersects a 2D ray with the 2D axis-aligned bounding box and computes distances to intersections
-inline bool IntersectRayBox2D(const float2& RayOrigin,
-                              const float2& RayDirection,
-                              float2        BoxMin,
-                              float2        BoxMax,
+inline bool IntersectRayBox2D(const Vector2f& RayOrigin,
+                              const Vector2f& RayDirection,
+                              Vector2f        BoxMin,
+                              Vector2f        BoxMax,
                               float&        EnterDist,
                               float&        ExitDist)
 {
-    VERIFY_EXPR(RayDirection != float2(0, 0));
+    VERIFY_EXPR(RayDirection != Vector2f(0, 0));
 
     BoxMin -= RayOrigin;
     BoxMax -= RayOrigin;
 
     static constexpr float Epsilon = 1e-20f;
 
-    float2 AbsRayDir = abs(RayDirection);
-    float2 t_min //
+    Vector2f AbsRayDir = abs(RayDirection);
+    Vector2f t_min //
         {
             AbsRayDir.x > Epsilon ? BoxMin.x / RayDirection.x : +FLT_MAX,
             AbsRayDir.y > Epsilon ? BoxMin.y / RayDirection.y : +FLT_MAX //
         };
-    float2 t_max //
+    Vector2f t_max //
         {
             AbsRayDir.x > Epsilon ? BoxMax.x / RayDirection.x : -FLT_MAX,
             AbsRayDir.y > Epsilon ? BoxMax.y / RayDirection.y : -FLT_MAX //
@@ -824,17 +824,17 @@ inline bool IntersectRayBox2D(const float2& RayOrigin,
 /// the distance along the ray to the intersection point.
 /// If the intersection point is behind the ray origin, the distance will be negative.
 /// If there is no intersection, returns +FLT_MAX.
-inline float IntersectRayTriangle(const float3& V0,
-                                  const float3& V1,
-                                  const float3& V2,
-                                  const float3& RayOrigin,
-                                  const float3& RayDirection,
+inline float IntersectRayTriangle(const Vector3f& V0,
+                                  const Vector3f& V1,
+                                  const Vector3f& V2,
+                                  const Vector3f& RayOrigin,
+                                  const Vector3f& RayDirection,
                                   bool          CullBackFace = false)
 {
-    float3 V0_V1 = V1 - V0;
-    float3 V0_V2 = V2 - V0;
+    Vector3f V0_V1 = V1 - V0;
+    Vector3f V0_V2 = V2 - V0;
 
-    float3 PVec = cross(RayDirection, V0_V2);
+    Vector3f PVec = cross(RayDirection, V0_V2);
 
     float Det = dot(V0_V1, PVec);
 
@@ -844,13 +844,13 @@ inline float IntersectRayTriangle(const float3& V0,
     // If determinant is near zero, the ray lies in the triangle plane
     if (Det > Epsilon || (!CullBackFace && Det < -Epsilon))
     {
-        float3 V0_RO = RayOrigin - V0;
+        Vector3f V0_RO = RayOrigin - V0;
 
         // calculate U parameter and test bounds
         float u = dot(V0_RO, PVec) / Det;
         if (u >= 0 && u <= 1)
         {
-            float3 QVec = cross(V0_RO, V0_V1);
+            Vector3f QVec = cross(V0_RO, V0_V1);
 
             // calculate V parameter and test bounds
             float v = dot(RayDirection, QVec) / Det;
@@ -897,13 +897,13 @@ inline float IntersectRayTriangle(const float3& V0,
 ///      0           1          2
 ///
 template <typename TCallback>
-void TraceLineThroughGrid(float2    f2Start,
-                          float2    f2End,
+void TraceLineThroughGrid(Vector2f    f2Start,
+                          Vector2f    f2End,
                           int2      i2GridSize,
                           TCallback Callback)
 {
     VERIFY_EXPR(i2GridSize.x > 0 && i2GridSize.y > 0);
-    const float2 f2GridSize = i2GridSize.Recast<float>();
+    const Vector2f f2GridSize = i2GridSize.Recast<float>();
 
     if (f2Start == f2End)
     {
@@ -915,16 +915,16 @@ void TraceLineThroughGrid(float2    f2Start,
         return;
     }
 
-    float2 f2Direction = f2End - f2Start;
+    Vector2f f2Direction = f2End - f2Start;
 
     float EnterDist, ExitDist;
-    if (IntersectRayBox2D(f2Start, f2Direction, float2{0, 0}, f2GridSize, EnterDist, ExitDist))
+    if (IntersectRayBox2D(f2Start, f2Direction, Vector2f{0, 0}, f2GridSize, EnterDist, ExitDist))
     {
         f2End   = f2Start + f2Direction * (std::min)(ExitDist, 1.f);
         f2Start = f2Start + f2Direction * (std::max)(EnterDist, 0.f);
         // Clamp start and end points to avoid FP precision issues
-        f2Start = clamp(f2Start, float2{0, 0}, f2GridSize);
-        f2End   = clamp(f2End, float2{0, 0}, f2GridSize);
+        f2Start = clamp(f2Start, Vector2f{0, 0}, f2GridSize);
+        f2End   = clamp(f2End, Vector2f{0, 0}, f2GridSize);
 
         const int   dh = f2Direction.x > 0 ? 1 : -1;
         const int   dv = f2Direction.y > 0 ? 1 : -1;

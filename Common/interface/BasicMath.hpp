@@ -2284,39 +2284,6 @@ constexpr Vector2<T> operator*(const Matrix2x2<T>& m, const Vector2<T>& v)
 
 // Common HLSL-compatible vector typedefs
 
-using uint  = uint32_t;
-using uint2 = Vector2<uint>;
-using uint3 = Vector3<uint>;
-using uint4 = Vector4<uint>;
-
-using int2 = Vector2<int32_t>;
-using int3 = Vector3<int32_t>;
-using int4 = Vector4<int32_t>;
-
-using float2 = Vector2<float>;
-using float3 = Vector3<float>;
-using float4 = Vector4<float>;
-
-using double2 = Vector2<double>;
-using double3 = Vector3<double>;
-using double4 = Vector4<double>;
-
-using bool2 = Vector2<bool>;
-using bool3 = Vector3<bool>;
-using bool4 = Vector4<bool>;
-
-using float4x4 = Matrix4x4<float>;
-using float3x3 = Matrix3x3<float>;
-using float2x2 = Matrix2x2<float>;
-
-using double4x4 = Matrix4x4<double>;
-using double3x3 = Matrix3x3<double>;
-using double2x2 = Matrix2x2<double>;
-
-using int4x4 = Matrix4x4<Int32>;
-using int3x3 = Matrix3x3<Int32>;
-using int2x2 = Matrix2x2<Int32>;
-
 template <typename T = float>
 struct Quaternion
 {
@@ -2519,10 +2486,10 @@ constexpr T SmoothStep(T Left, T Right, T w)
     return t * t * (static_cast<T>(3) - static_cast<T>(2) * t);
 }
 
-constexpr inline float4 RGBA8Unorm_To_F4Color(Uint32 RGBA8)
+constexpr inline Vector4<float> RGBA8Unorm_To_F4Color(Uint32 RGBA8)
 {
     // clang-format off
-    return float4
+    return Vector4<float>
     {
             static_cast<float>((RGBA8 >>  0u) & 0xFF) / 255.f,
             static_cast<float>((RGBA8 >>  8u) & 0xFF) / 255.f,
@@ -2532,7 +2499,7 @@ constexpr inline float4 RGBA8Unorm_To_F4Color(Uint32 RGBA8)
     // clang-format on
 }
 
-constexpr inline Uint32 F4Color_To_RGBA8Unorm(const float4& f4Color)
+constexpr inline Uint32 F4Color_To_RGBA8Unorm(const Vector4<float>& f4Color)
 {
     Uint32 RGBA8U = 0;
     RGBA8U |= static_cast<Uint32>(clamp(f4Color.x, 0.f, 1.f) * 255.f) << 0u;
@@ -2756,42 +2723,42 @@ bool BasisFromDirection(const Vector3<T>& Dir, bool IsRightHanded, Vector3<T>& X
     return true;
 }
 
-inline std::ostream& operator<<(std::ostream& os, const float4& vec)
+inline std::ostream& operator<<(std::ostream& os, const Vector4<float>& vec)
 {
     return os << "float4(" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << ')';
 }
-inline std::ostream& operator<<(std::ostream& os, const float3& vec)
+inline std::ostream& operator<<(std::ostream& os, const Vector3<float>& vec)
 {
     return os << "float3(" << vec.x << ", " << vec.y << ", " << vec.z << ')';
 }
-inline std::ostream& operator<<(std::ostream& os, const float2& vec)
+inline std::ostream& operator<<(std::ostream& os, const Vector2<float>& vec)
 {
     return os << "float2(" << vec.x << ", " << vec.y << ')';
 }
 
-inline std::ostream& operator<<(std::ostream& os, const int4& vec)
+inline std::ostream& operator<<(std::ostream& os, const Vector4<int>& vec)
 {
     return os << "int4(" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << ')';
 }
-inline std::ostream& operator<<(std::ostream& os, const int3& vec)
+inline std::ostream& operator<<(std::ostream& os, const Vector3<int>& vec)
 {
     return os << "int3(" << vec.x << ", " << vec.y << ", " << vec.z << ')';
 }
-inline std::ostream& operator<<(std::ostream& os, const int2& vec)
+inline std::ostream& operator<<(std::ostream& os, const Vector2<int>& vec)
 {
     return os << "int2(" << vec.x << ", " << vec.y << ')';
 }
 
 
-inline std::ostream& operator<<(std::ostream& os, const uint4& vec)
+inline std::ostream& operator<<(std::ostream& os, const Vector4<uint32_t>& vec)
 {
     return os << "uint4(" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << ')';
 }
-inline std::ostream& operator<<(std::ostream& os, const uint3& vec)
+inline std::ostream& operator<<(std::ostream& os, const Vector3<uint32_t>& vec)
 {
     return os << "uint3(" << vec.x << ", " << vec.y << ", " << vec.z << ')';
 }
-inline std::ostream& operator<<(std::ostream& os, const uint2& vec)
+inline std::ostream& operator<<(std::ostream& os, const Vector2<uint32_t>& vec)
 {
     return os << "uint2(" << vec.x << ", " << vec.y << ')';
 }
@@ -3037,6 +3004,41 @@ constexpr T(min)(const T& x, const T& y, const T& z, const RestArgsType&... Rest
 }
 
 } // namespace Diligent
+
+using uint  = uint32_t;
+using uint2 = Diligent::Vector2<uint>;
+using uint3 = Diligent::Vector3<uint>;
+using uint4 = Diligent::Vector4<uint>;
+
+using int2 = Diligent::Vector2<int32_t>;
+using int3 = Diligent::Vector3<int32_t>;
+using int4 = Diligent::Vector4<int32_t>;
+
+using Vector2f = Diligent::Vector2<float>;
+using Vector3f = Diligent::Vector3<float>;
+using Vector4f = Diligent::Vector4<float>;
+
+using Vector2d = Diligent::Vector2<double>;
+using Vector3d = Diligent::Vector3<double>;
+using Vector4d = Diligent::Vector4<double>;
+
+using bool2 = Diligent::Vector2<bool>;
+using bool3 = Diligent::Vector3<bool>;
+using bool4 = Diligent::Vector4<bool>;
+
+using Matrix4x4f = Diligent::Matrix4x4<float>;
+using float3x3 = Diligent::Matrix3x3<float>;
+using float2x2 = Diligent::Matrix2x2<float>;
+
+using Matrix4x4d = Diligent::Matrix4x4<double>;
+using double3x3 = Diligent::Matrix3x3<double>;
+using double2x2 = Diligent::Matrix2x2<double>;
+
+using int4x4 = Diligent::Matrix4x4<Diligent::Int32>;
+using int3x3 = Diligent::Matrix3x3<Diligent::Int32>;
+using int2x2 = Diligent::Matrix2x2<Diligent::Int32>;
+
+
 
 #ifdef _MSC_VER
 #    pragma warning(pop)

@@ -106,7 +106,7 @@ public:
         return m_Size;
     }
 
-    virtual float4 GetUVScaleBias() const override final;
+    virtual Vector4f GetUVScaleBias() const override final;
 
     virtual Uint32 GetAlignment() const override final
     {
@@ -758,12 +758,12 @@ IDynamicTextureAtlas* TextureAtlasSuballocationImpl::GetAtlas()
     return m_pParentAtlas;
 }
 
-float4 TextureAtlasSuballocationImpl::GetUVScaleBias() const
+Vector4f TextureAtlasSuballocationImpl::GetUVScaleBias() const
 {
-    const float2       Origin    = GetOrigin().Recast<float>();
-    const float2       Size      = GetSize().Recast<float>();
+    const Vector2f       Origin    = GetOrigin().Recast<float>();
+    const Vector2f       Size      = GetSize().Recast<float>();
     const TextureDesc& AtlasDesc = m_pParentAtlas->GetAtlasDesc();
-    return float4 //
+    return Vector4f //
         {
             Size.x / static_cast<float>(AtlasDesc.Width),
             Size.y / static_cast<float>(AtlasDesc.Height),
