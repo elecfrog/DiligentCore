@@ -1658,10 +1658,10 @@ template <class T> struct Matrix4x4
 
         return Matrix4x4 // clang-format off
             {
-                 c,  s,  0,  0,
-                -s,  c,  0,  0,
-                 0,  0,  1,  0,
-                 0,  0,  0,  1 // clang-format on
+                c,  s,  0,  0,
+               -s,  c,  0,  0,
+                0,  0,  1,  0,
+                0,  0,  0,  1 // clang-format on
             };
     }
 
@@ -1806,11 +1806,11 @@ template <class T> struct Matrix4x4
         // clang-format off
         Matrix4x4 Proj
             {
-                         2   / (right - left),                                 0,   0,    0,
-                                            0,                2 / (top - bottom),   0,    0,
-                                            0,                                 0,   0,    0,
-                (left + right)/(left - right),   (top + bottom) / (bottom - top),   0,    1
-            };
+                2   / (right - left),                                 0,   0,    0,
+                                   0,                2 / (top - bottom),   0,    0,
+                                   0,                                 0,   0,    0,
+       (left + right)/(left - right),   (top + bottom) / (bottom - top),   0,    1
+   };
         // clang-format on
         Proj.SetNearFarClipPlanes(zNear, zFar, NegativeOneToOneZ);
         return Proj;
@@ -1988,16 +1988,29 @@ template <class T> struct Matrix4x4
         return inv;
     }
 
+    // clang-format off
     constexpr Matrix4x4 RemoveTranslation() const
     {
-        return Matrix4x4 // clang-format off
-            {
-                _11, _12, _13, _14,
-                _21, _22, _23, _24,
-                _31, _32, _33, _34,
-                  0,   0,   0, _44 // clang-format on
-            };
+        return Matrix4x4
+        {
+            _11, _12, _13, _14,
+            _21, _22, _23, _24,
+            _31, _32, _33, _34,
+              0,   0,   0, _44
+        };
     }
+
+    template <typename Y>
+    constexpr Matrix3x3<Y> GetRotationMatrix() const
+    {
+        return Matrix3x3<Y>
+        {
+            m00, m01, m02,
+            m10, m11, m12,
+            m20, m21, m22
+        };
+    }
+    // clang-format on
 
     template <typename Y>
     constexpr Matrix4x4<Y> Recast() const
@@ -2402,8 +2415,6 @@ struct Quaternion
         return v + T{2} * cross(axis, cross(axis, v) + q.w * v);
     }
 };
-using QuaternionF = Quaternion<float>;
-using QuaternionD = Quaternion<double>;
 
 template <typename T>
 constexpr inline Quaternion<T> operator*(const Quaternion<T>& q1, const Quaternion<T>& q2)
@@ -3027,18 +3038,19 @@ using bool3 = Diligent::Vector3<bool>;
 using bool4 = Diligent::Vector4<bool>;
 
 using Matrix4x4f = Diligent::Matrix4x4<float>;
-using float3x3 = Diligent::Matrix3x3<float>;
-using float2x2 = Diligent::Matrix2x2<float>;
+using Matrix3x3f = Diligent::Matrix3x3<float>;
+using float2x2   = Diligent::Matrix2x2<float>;
 
 using Matrix4x4d = Diligent::Matrix4x4<double>;
-using double3x3 = Diligent::Matrix3x3<double>;
-using double2x2 = Diligent::Matrix2x2<double>;
+using double3x3  = Diligent::Matrix3x3<double>;
+using double2x2  = Diligent::Matrix2x2<double>;
 
 using int4x4 = Diligent::Matrix4x4<Diligent::Int32>;
 using int3x3 = Diligent::Matrix3x3<Diligent::Int32>;
 using int2x2 = Diligent::Matrix2x2<Diligent::Int32>;
 
-
+using QuaternionF = Diligent::Quaternion<float>;
+using QuaternionD = Diligent::Quaternion<double>;
 
 #ifdef _MSC_VER
 #    pragma warning(pop)
