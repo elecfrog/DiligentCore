@@ -59,7 +59,7 @@ void TestEngineFactoryD3D12CInterface()
     struct ICommandQueueD3D12* pd3d12CmdQueues    = NULL;
     IEngineFactoryD3D12_AttachToD3D12Device(pFactory, pd3d12NativeDevice, (size_t)1, &pd3d12CmdQueues, &EngineCI, &pDevice, &pCtx);
 
-    Uint32                     NumDisplayModes = 0;
+    UInt32                     NumDisplayModes = 0;
     struct DisplayModeAttribs* DisplayModes    = NULL;
     struct Version             FeatureLevel    = {11, 0};
     IEngineFactoryD3D12_EnumerateDisplayModes(pFactory, FeatureLevel, 0, 0, TEX_FORMAT_RGBA8_UNORM, &NumDisplayModes, DisplayModes);

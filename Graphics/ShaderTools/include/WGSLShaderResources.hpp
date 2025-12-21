@@ -59,7 +59,7 @@ class StringPool;
 
 struct WGSLShaderResourceAttribs
 {
-    enum ResourceType : Uint8
+    enum ResourceType : UInt8
     {
         UniformBuffer,
         ROStorageBuffer,
@@ -77,7 +77,7 @@ struct WGSLShaderResourceAttribs
         NumResourceTypes
     };
 
-    enum TextureSampleType : Uint8
+    enum TextureSampleType : UInt8
     {
         Unknown,
         Float,
@@ -93,9 +93,9 @@ struct WGSLShaderResourceAttribs
     // clang-format off
 
 /*  0  */const char* const      Name;
-/*  8  */const Uint16           ArraySize;
+/*  8  */const UInt16           ArraySize;
 /* 10  */const ResourceType     Type;
-/* 11  */const Uint8            ResourceDim; // RESOURCE_DIMENSION
+/* 11  */const UInt8            ResourceDim; // RESOURCE_DIMENSION
 
 /* 12 */const TEXTURE_FORMAT    Format;      // Storage texture format
 /* 14 */const uint16_t          BindGroup;
@@ -103,24 +103,24 @@ struct WGSLShaderResourceAttribs
 /* 18 */const TextureSampleType SampleType;
 /* 19 */
 
-/* 20 */const Uint32            BufferStaticSize;
+/* 20 */const UInt32            BufferStaticSize;
 /* 24 */ // End of structure
 
     // clang-format on
 
     WGSLShaderResourceAttribs(const char*                             _Name,
                               const tint::inspector::ResourceBinding& TintBinding,
-                              Uint32                                  _ArraySize) noexcept;
+                              UInt32                                  _ArraySize) noexcept;
 
     WGSLShaderResourceAttribs(const char*        _Name,
                               ResourceType       _Type,
-                              Uint16             _ArraySize        = 1,
+                              UInt16             _ArraySize        = 1,
                               RESOURCE_DIMENSION _ResourceDim      = RESOURCE_DIM_UNDEFINED,
                               TEXTURE_FORMAT     _Format           = TEX_FORMAT_UNKNOWN,
                               TextureSampleType  _SampleType       = TextureSampleType::Unknown,
                               uint16_t           _BindGroup        = 0,
                               uint16_t           _BindIndex        = 0,
-                              Uint32             _BufferStaticSize = 0) noexcept;
+                              UInt32             _BufferStaticSize = 0) noexcept;
 
     ShaderResourceDesc GetResourceDesc() const
     {
@@ -167,25 +167,25 @@ public:
 
     // clang-format off
 
-    Uint32 GetNumUBs         ()const noexcept{ return (m_StorageBufferOffset   - 0);                      }
-    Uint32 GetNumSBs         ()const noexcept{ return (m_TextureOffset         - m_StorageBufferOffset);  }
-    Uint32 GetNumTextures    ()const noexcept{ return (m_StorageTextureOffset  - m_TextureOffset);        }
-    Uint32 GetNumStTextures  ()const noexcept{ return (m_SamplerOffset         - m_StorageTextureOffset); }
-    Uint32 GetNumSamplers    ()const noexcept{ return (m_ExternalTextureOffset - m_SamplerOffset);        }
-    Uint32 GetNumExtTextures ()const noexcept{ return (m_TotalResources        - m_ExternalTextureOffset);}
-    Uint32 GetTotalResources ()const noexcept{ return m_TotalResources; }
+    UInt32 GetNumUBs         ()const noexcept{ return (m_StorageBufferOffset   - 0);                      }
+    UInt32 GetNumSBs         ()const noexcept{ return (m_TextureOffset         - m_StorageBufferOffset);  }
+    UInt32 GetNumTextures    ()const noexcept{ return (m_StorageTextureOffset  - m_TextureOffset);        }
+    UInt32 GetNumStTextures  ()const noexcept{ return (m_SamplerOffset         - m_StorageTextureOffset); }
+    UInt32 GetNumSamplers    ()const noexcept{ return (m_ExternalTextureOffset - m_SamplerOffset);        }
+    UInt32 GetNumExtTextures ()const noexcept{ return (m_TotalResources        - m_ExternalTextureOffset);}
+    UInt32 GetTotalResources ()const noexcept{ return m_TotalResources; }
 
-    const WGSLShaderResourceAttribs& GetUB        (Uint32 n) const noexcept { return GetResAttribs(n, GetNumUBs(),          0                      ); }
-    const WGSLShaderResourceAttribs& GetSB        (Uint32 n) const noexcept { return GetResAttribs(n, GetNumSBs(),          m_StorageBufferOffset  ); }
-    const WGSLShaderResourceAttribs& GetTexture   (Uint32 n) const noexcept { return GetResAttribs(n, GetNumTextures(),     m_TextureOffset        ); }
-    const WGSLShaderResourceAttribs& GetStTexture (Uint32 n) const noexcept { return GetResAttribs(n, GetNumStTextures(),   m_StorageTextureOffset ); }
-    const WGSLShaderResourceAttribs& GetSampler   (Uint32 n) const noexcept { return GetResAttribs(n, GetNumSamplers(),     m_SamplerOffset        ); }
-    const WGSLShaderResourceAttribs& GetExtTexture(Uint32 n) const noexcept { return GetResAttribs(n, GetNumExtTextures(),  m_ExternalTextureOffset); }
-    const WGSLShaderResourceAttribs& GetResource  (Uint32 n) const noexcept { return GetResAttribs(n, GetTotalResources(),  0                      ); }
+    const WGSLShaderResourceAttribs& GetUB        (UInt32 n) const noexcept { return GetResAttribs(n, GetNumUBs(),          0                      ); }
+    const WGSLShaderResourceAttribs& GetSB        (UInt32 n) const noexcept { return GetResAttribs(n, GetNumSBs(),          m_StorageBufferOffset  ); }
+    const WGSLShaderResourceAttribs& GetTexture   (UInt32 n) const noexcept { return GetResAttribs(n, GetNumTextures(),     m_TextureOffset        ); }
+    const WGSLShaderResourceAttribs& GetStTexture (UInt32 n) const noexcept { return GetResAttribs(n, GetNumStTextures(),   m_StorageTextureOffset ); }
+    const WGSLShaderResourceAttribs& GetSampler   (UInt32 n) const noexcept { return GetResAttribs(n, GetNumSamplers(),     m_SamplerOffset        ); }
+    const WGSLShaderResourceAttribs& GetExtTexture(UInt32 n) const noexcept { return GetResAttribs(n, GetNumExtTextures(),  m_ExternalTextureOffset); }
+    const WGSLShaderResourceAttribs& GetResource  (UInt32 n) const noexcept { return GetResAttribs(n, GetTotalResources(),  0                      ); }
 
     // clang-format on
 
-    const ShaderCodeBufferDesc* GetUniformBufferDesc(Uint32 Index) const
+    const ShaderCodeBufferDesc* GetUniformBufferDesc(UInt32 Index) const
     {
         if (Index >= GetNumUBs())
         {
@@ -204,12 +204,12 @@ public:
 
     struct ResourceCounters
     {
-        Uint32 NumUBs         = 0;
-        Uint32 NumSBs         = 0;
-        Uint32 NumTextures    = 0;
-        Uint32 NumStTextures  = 0;
-        Uint32 NumSamplers    = 0;
-        Uint32 NumExtTextures = 0;
+        UInt32 NumUBs         = 0;
+        UInt32 NumSBs         = 0;
+        UInt32 NumTextures    = 0;
+        UInt32 NumStTextures  = 0;
+        UInt32 NumSamplers    = 0;
+        UInt32 NumExtTextures = 0;
     };
 
     SHADER_TYPE GetShaderType() const noexcept { return m_ShaderType; }
@@ -227,49 +227,49 @@ public:
                           THandleSamplers    HandleSampler,
                           THandleExtTextures HandleExtTexture) const
     {
-        for (Uint32 n = 0; n < GetNumUBs(); ++n)
+        for (UInt32 n = 0; n < GetNumUBs(); ++n)
         {
             const WGSLShaderResourceAttribs& UB = GetUB(n);
             HandleUB(UB, n);
         }
 
-        for (Uint32 n = 0; n < GetNumSBs(); ++n)
+        for (UInt32 n = 0; n < GetNumSBs(); ++n)
         {
             const WGSLShaderResourceAttribs& SB = GetSB(n);
             HandleSB(SB, n);
         }
 
-        for (Uint32 n = 0; n < GetNumTextures(); ++n)
+        for (UInt32 n = 0; n < GetNumTextures(); ++n)
         {
             const WGSLShaderResourceAttribs& Tex = GetTexture(n);
             HandleTexture(Tex, n);
         }
 
-        for (Uint32 n = 0; n < GetNumStTextures(); ++n)
+        for (UInt32 n = 0; n < GetNumStTextures(); ++n)
         {
             const WGSLShaderResourceAttribs& StTex = GetStTexture(n);
             HandleStTexture(StTex, n);
         }
 
-        for (Uint32 n = 0; n < GetNumSamplers(); ++n)
+        for (UInt32 n = 0; n < GetNumSamplers(); ++n)
         {
             const WGSLShaderResourceAttribs& Sam = GetSampler(n);
             HandleSampler(Sam, n);
         }
 
-        for (Uint32 n = 0; n < GetNumExtTextures(); ++n)
+        for (UInt32 n = 0; n < GetNumExtTextures(); ++n)
         {
             const WGSLShaderResourceAttribs& ExtTex = GetExtTexture(n);
             HandleExtTexture(ExtTex, n);
         }
 
-        static_assert(Uint32{WGSLShaderResourceAttribs::ResourceType::NumResourceTypes} == 13, "Please handle the new resource type here, if needed");
+        static_assert(UInt32{WGSLShaderResourceAttribs::ResourceType::NumResourceTypes} == 13, "Please handle the new resource type here, if needed");
     }
 
     template <typename THandler>
     void ProcessResources(THandler&& Handler) const
     {
-        for (Uint32 n = 0; n < GetTotalResources(); ++n)
+        for (UInt32 n = 0; n < GetTotalResources(); ++n)
         {
             const WGSLShaderResourceAttribs& Res = GetResource(n);
             Handler(Res, n);
@@ -294,14 +294,14 @@ private:
                     size_t                  ResourceNamesPoolSize,
                     StringPool&             ResourceNamesPool);
 
-    WGSLShaderResourceAttribs& GetResAttribs(Uint32 n, Uint32 NumResources, Uint32 Offset) noexcept
+    WGSLShaderResourceAttribs& GetResAttribs(UInt32 n, UInt32 NumResources, UInt32 Offset) noexcept
     {
         VERIFY(n < NumResources, "Resource index (", n, ") is out of range. Total resource count: ", NumResources);
         VERIFY_EXPR(Offset + n < m_TotalResources);
         return reinterpret_cast<WGSLShaderResourceAttribs*>(m_MemoryBuffer.get())[Offset + n];
     }
 
-    const WGSLShaderResourceAttribs& GetResAttribs(Uint32 n, Uint32 NumResources, Uint32 Offset) const noexcept
+    const WGSLShaderResourceAttribs& GetResAttribs(UInt32 n, UInt32 NumResources, UInt32 Offset) const noexcept
     {
         VERIFY(n < NumResources, "Resource index (", n, ") is out of range. Total resource count: ", NumResources);
         VERIFY_EXPR(Offset + n < m_TotalResources);
@@ -310,13 +310,13 @@ private:
 
     // clang-format off
 
-    WGSLShaderResourceAttribs& GetUB        (Uint32 n) noexcept { return GetResAttribs(n, GetNumUBs(),          0                      ); }
-    WGSLShaderResourceAttribs& GetSB        (Uint32 n) noexcept { return GetResAttribs(n, GetNumSBs(),          m_StorageBufferOffset  ); }
-    WGSLShaderResourceAttribs& GetTexture   (Uint32 n) noexcept { return GetResAttribs(n, GetNumTextures(),     m_TextureOffset        ); }
-    WGSLShaderResourceAttribs& GetStTexture (Uint32 n) noexcept { return GetResAttribs(n, GetNumStTextures(),   m_StorageTextureOffset ); }
-    WGSLShaderResourceAttribs& GetSampler   (Uint32 n) noexcept { return GetResAttribs(n, GetNumSamplers(),     m_SamplerOffset        ); }
-    WGSLShaderResourceAttribs& GetExtTexture(Uint32 n) noexcept { return GetResAttribs(n, GetNumExtTextures(),  m_ExternalTextureOffset); }
-    WGSLShaderResourceAttribs& GetResource  (Uint32 n) noexcept { return GetResAttribs(n, GetTotalResources(),  0                      ); }
+    WGSLShaderResourceAttribs& GetUB        (UInt32 n) noexcept { return GetResAttribs(n, GetNumUBs(),          0                      ); }
+    WGSLShaderResourceAttribs& GetSB        (UInt32 n) noexcept { return GetResAttribs(n, GetNumSBs(),          m_StorageBufferOffset  ); }
+    WGSLShaderResourceAttribs& GetTexture   (UInt32 n) noexcept { return GetResAttribs(n, GetNumTextures(),     m_TextureOffset        ); }
+    WGSLShaderResourceAttribs& GetStTexture (UInt32 n) noexcept { return GetResAttribs(n, GetNumStTextures(),   m_StorageTextureOffset ); }
+    WGSLShaderResourceAttribs& GetSampler   (UInt32 n) noexcept { return GetResAttribs(n, GetNumSamplers(),     m_SamplerOffset        ); }
+    WGSLShaderResourceAttribs& GetExtTexture(UInt32 n) noexcept { return GetResAttribs(n, GetNumExtTextures(),  m_ExternalTextureOffset); }
+    WGSLShaderResourceAttribs& GetResource  (UInt32 n) noexcept { return GetResAttribs(n, GetTotalResources(),  0                      ); }
 
     // clang-format on
 
@@ -331,7 +331,7 @@ private:
     const char* m_ShaderName               = nullptr;
     const char* m_EntryPoint               = nullptr;
 
-    using OffsetType                   = Uint16;
+    using OffsetType                   = UInt16;
     OffsetType m_StorageBufferOffset   = 0;
     OffsetType m_TextureOffset         = 0;
     OffsetType m_StorageTextureOffset  = 0;

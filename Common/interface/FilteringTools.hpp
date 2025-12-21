@@ -100,7 +100,7 @@ struct LinearTexFilterSampleInfo
 /// \param [in] u        - Texture sample coordinate.
 /// \return                Linear texture filter sample information, see Diligent::LinearTexFilterSampleInfo.
 template <TEXTURE_ADDRESS_MODE AddressMode, bool IsNormalizedCoord>
-LinearTexFilterSampleInfo GetLinearTexFilterSampleInfo(Uint32 Width, float u)
+LinearTexFilterSampleInfo GetLinearTexFilterSampleInfo(UInt32 Width, float u)
 {
     float x  = IsNormalizedCoord ? u * static_cast<float>(Width) : u;
     float x0 = FastFloor(x - 0.5f);
@@ -114,7 +114,7 @@ LinearTexFilterSampleInfo GetLinearTexFilterSampleInfo(Uint32 Width, float u)
     };
     // clang-format on
 
-    auto WrapCoord = [](Int32 i, Uint32 Width) //
+    auto WrapCoord = [](Int32 i, UInt32 Width) //
     {
         Int32 w = static_cast<Int32>(Width);
 
@@ -124,7 +124,7 @@ LinearTexFilterSampleInfo GetLinearTexFilterSampleInfo(Uint32 Width, float u)
         return i < 0 ? i + w : i;
     };
 
-    auto MirrorCoord = [WrapCoord](Int32 i, Uint32 Width) //
+    auto MirrorCoord = [WrapCoord](Int32 i, UInt32 Width) //
     {
         i = WrapCoord(i, Width * 2);
 
@@ -162,12 +162,12 @@ LinearTexFilterSampleInfo GetLinearTexFilterSampleInfo(Uint32 Width, float u)
 
 #ifdef DILIGENT_DEBUG
 template <TEXTURE_ADDRESS_MODE AddressMode>
-void _DbgVerifyFilterInfo(const LinearTexFilterSampleInfo& FilterInfo, Uint32 Width, const char* Direction, float u)
+void _DbgVerifyFilterInfo(const LinearTexFilterSampleInfo& FilterInfo, UInt32 Width, const char* Direction, float u)
 {
 }
 
 template <>
-inline void _DbgVerifyFilterInfo<TEXTURE_ADDRESS_UNKNOWN>(const LinearTexFilterSampleInfo& FilterInfo, Uint32 Width, const char* Direction, float u)
+inline void _DbgVerifyFilterInfo<TEXTURE_ADDRESS_UNKNOWN>(const LinearTexFilterSampleInfo& FilterInfo, UInt32 Width, const char* Direction, float u)
 {
     VERIFY(FilterInfo.i0 >= 0 && FilterInfo.i0 < static_cast<Int32>(Width), "First ", Direction, " sample index (", FilterInfo.i0,
            ") is out of allowed range [0, ", Width - 1, "]. Correct sample coordinate (", u, ") or use one of the texture address modes.");
@@ -196,8 +196,8 @@ template <typename SrcType,
           TEXTURE_ADDRESS_MODE AddressModeU,
           TEXTURE_ADDRESS_MODE AddressModeV,
           bool                 IsNormalizedCoord>
-DstType FilterTexture2DBilinear(Uint32         Width,
-                                Uint32         Height,
+DstType FilterTexture2DBilinear(UInt32         Width,
+                                UInt32         Height,
                                 const SrcType* pData,
                                 size_t         Stride,
                                 float          u,
@@ -223,8 +223,8 @@ DstType FilterTexture2DBilinear(Uint32         Width,
 /// Specialization of FilterTexture2DBilinear function that uses CLAMP texture address mode
 /// and takes normalized texture coordinates.
 template <typename SrcType, typename DstType>
-DstType FilterTexture2DBilinearClamp(Uint32         Width,
-                                     Uint32         Height,
+DstType FilterTexture2DBilinearClamp(UInt32         Width,
+                                     UInt32         Height,
                                      const SrcType* pData,
                                      size_t         Stride,
                                      float          u,
@@ -237,8 +237,8 @@ DstType FilterTexture2DBilinearClamp(Uint32         Width,
 /// Specialization of FilterTexture2DBilinear function that uses CLAMP texture address mode
 /// and takes unnormalized texture coordinates.
 template <typename SrcType, typename DstType>
-DstType FilterTexture2DBilinearClampUC(Uint32         Width,
-                                       Uint32         Height,
+DstType FilterTexture2DBilinearClampUC(UInt32         Width,
+                                       UInt32         Height,
                                        const SrcType* pData,
                                        size_t         Stride,
                                        float          u,

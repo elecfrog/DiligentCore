@@ -88,7 +88,7 @@ CComPtr<ID3D12GraphicsCommandList> TestingEnvironmentD3D12::CreateGraphicsComman
 
 void TestingEnvironmentD3D12::IdleCommandQueue(ID3D12CommandQueue* pd3d12Queue)
 {
-    Uint64 LastSignaledFenceValue = m_NextFenceValue;
+    UInt64 LastSignaledFenceValue = m_NextFenceValue;
     ++m_NextFenceValue;
 
     pd3d12Queue->Signal(m_pd3d12Fence, LastSignaledFenceValue);
@@ -124,7 +124,7 @@ GPUTestingEnvironment* CreateTestingEnvironmentD3D12(const GPUTestingEnvironment
 HRESULT TestingEnvironmentD3D12::CompileDXILShader(const std::string& Source,
                                                    LPCWSTR            strFunctionName,
                                                    const DxcDefine*   Defines,
-                                                   Uint32             DefinesCount,
+                                                   UInt32             DefinesCount,
                                                    LPCWSTR            profile,
                                                    ID3DBlob**         ppBlobOut)
 {
@@ -139,7 +139,7 @@ HRESULT TestingEnvironmentD3D12::CompileDXILShader(const std::string& Source,
 
     IDXCompiler::CompileAttribs CA;
     CA.Source                     = Source.c_str();
-    CA.SourceLength               = static_cast<Uint32>(Source.length());
+    CA.SourceLength               = static_cast<UInt32>(Source.length());
     CA.EntryPoint                 = strFunctionName;
     CA.Profile                    = profile;
     CA.pDefines                   = Defines;

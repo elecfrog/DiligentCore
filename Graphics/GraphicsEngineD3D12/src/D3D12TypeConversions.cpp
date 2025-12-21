@@ -188,7 +188,7 @@ static UINT GetPlaneSlice(TEXTURE_FORMAT Format)
 
 void TextureViewDesc_to_D3D12_SRV_DESC(const TextureViewDesc&           SRVDesc,
                                        D3D12_SHADER_RESOURCE_VIEW_DESC& D3D12SRVDesc,
-                                       Uint32                           SampleCount)
+                                       UInt32                           SampleCount)
 {
     TextureViewDesc_to_D3D_SRV_DESC(SRVDesc, D3D12SRVDesc, SampleCount);
     D3D12SRVDesc.Shader4ComponentMapping = TextureComponentMappingToD3D12Shader4ComponentMapping(SRVDesc.Swizzle);
@@ -243,7 +243,7 @@ void TextureViewDesc_to_D3D12_SRV_DESC(const TextureViewDesc&           SRVDesc,
 
 void TextureViewDesc_to_D3D12_RTV_DESC(const TextureViewDesc&         RTVDesc,
                                        D3D12_RENDER_TARGET_VIEW_DESC& D3D12RTVDesc,
-                                       Uint32                         SampleCount)
+                                       UInt32                         SampleCount)
 {
     TextureViewDesc_to_D3D_RTV_DESC(RTVDesc, D3D12RTVDesc, SampleCount);
     switch (RTVDesc.TextureDim)
@@ -284,7 +284,7 @@ void TextureViewDesc_to_D3D12_RTV_DESC(const TextureViewDesc&         RTVDesc,
 
 void TextureViewDesc_to_D3D12_DSV_DESC(const TextureViewDesc&         DSVDesc,
                                        D3D12_DEPTH_STENCIL_VIEW_DESC& D3D12DSVDesc,
-                                       Uint32                         SampleCount)
+                                       UInt32                         SampleCount)
 {
     TextureViewDesc_to_D3D_DSV_DESC(DSVDesc, D3D12DSVDesc, SampleCount);
 }
@@ -402,20 +402,20 @@ static D3D12_RESOURCE_STATES ResourceStateFlagToD3D12ResourceState(RESOURCE_STAT
 class StateFlagBitPosToD3D12ResourceState
 {
 public:
-    D3D12_RESOURCE_STATES operator()(Uint32 BitPos) const
+    D3D12_RESOURCE_STATES operator()(UInt32 BitPos) const
     {
         VERIFY(BitPos <= MaxFlagBitPos, "Resource state flag bit position (", BitPos, ") exceeds max bit position (", MaxFlagBitPos, ")");
         return FlagBitPosToResStateMap[BitPos];
     }
 
 private:
-    static constexpr Uint32 MaxFlagBitPos = 21;
+    static constexpr UInt32 MaxFlagBitPos = 21;
 
     const std::array<D3D12_RESOURCE_STATES, MaxFlagBitPos + 1> FlagBitPosToResStateMap{
         []() {
             std::array<D3D12_RESOURCE_STATES, MaxFlagBitPos + 1> BitPosToStateMap;
             static_assert((1 << MaxFlagBitPos) == RESOURCE_STATE_MAX_BIT, "This function must be updated to handle new resource state flag");
-            for (Uint32 bit = 0; bit < BitPosToStateMap.size(); ++bit)
+            for (UInt32 bit = 0; bit < BitPosToStateMap.size(); ++bit)
             {
                 BitPosToStateMap[bit] = ResourceStateFlagToD3D12ResourceState(static_cast<RESOURCE_STATE>(1 << bit));
             }
@@ -429,10 +429,10 @@ D3D12_RESOURCE_STATES ResourceStateFlagsToD3D12ResourceStates(RESOURCE_STATE Sta
     VERIFY(StateFlags < (RESOURCE_STATE_MAX_BIT << 1), "Resource state flags are out of range");
     static const StateFlagBitPosToD3D12ResourceState BitPosToD3D12ResState;
     D3D12_RESOURCE_STATES                            D3D12ResourceStates = static_cast<D3D12_RESOURCE_STATES>(0);
-    Uint32                                           Bits                = StateFlags;
+    UInt32                                           Bits                = StateFlags;
     while (Bits != 0)
     {
-        Uint32 lsb = PlatformMisc::GetLSB(Bits);
+        UInt32 lsb = PlatformMisc::GetLSB(Bits);
         D3D12ResourceStates |= BitPosToD3D12ResState(lsb);
         Bits &= ~(1 << lsb);
     }
@@ -517,19 +517,19 @@ static RESOURCE_STATE D3D12ResourceStateToResourceStateFlags(D3D12_RESOURCE_STAT
 class D3D12StateFlagBitPosToResourceState
 {
 public:
-    RESOURCE_STATE operator()(Uint32 BitPos) const
+    RESOURCE_STATE operator()(UInt32 BitPos) const
     {
         VERIFY(BitPos <= MaxFlagBitPos, "Resource state flag bit position (", BitPos, ") exceeds max bit position (", MaxFlagBitPos, ")");
         return FlagBitPosToResStateMap[BitPos];
     }
 
 private:
-    static constexpr Uint32 MaxFlagBitPos = 13;
+    static constexpr UInt32 MaxFlagBitPos = 13;
 
     const std::array<RESOURCE_STATE, MaxFlagBitPos + 1> FlagBitPosToResStateMap{
         []() {
             std::array<RESOURCE_STATE, MaxFlagBitPos + 1> BitPosToStateMap;
-            for (Uint32 bit = 0; bit < BitPosToStateMap.size(); ++bit)
+            for (UInt32 bit = 0; bit < BitPosToStateMap.size(); ++bit)
             {
                 BitPosToStateMap[bit] = D3D12ResourceStateToResourceStateFlags(static_cast<D3D12_RESOURCE_STATES>(1 << bit));
             }
@@ -545,11 +545,11 @@ RESOURCE_STATE D3D12ResourceStatesToResourceStateFlags(D3D12_RESOURCE_STATES Sta
 
     static const D3D12StateFlagBitPosToResourceState BitPosToResState;
 
-    Uint32 ResourceStates = 0;
-    Uint32 Bits           = StateFlags;
+    UInt32 ResourceStates = 0;
+    UInt32 Bits           = StateFlags;
     while (Bits != 0)
     {
-        Uint32 lsb = PlatformMisc::GetLSB(Bits);
+        UInt32 lsb = PlatformMisc::GetLSB(Bits);
         ResourceStates |= BitPosToResState(lsb);
         Bits &= ~(1 << lsb);
     }
@@ -713,7 +713,7 @@ D3D12_RAYTRACING_GEOMETRY_FLAGS GeometryFlagsToD3D12RTGeometryFlags(RAYTRACING_G
     D3D12_RAYTRACING_GEOMETRY_FLAGS Result = D3D12_RAYTRACING_GEOMETRY_FLAG_NONE;
     while (Flags != RAYTRACING_GEOMETRY_FLAG_NONE)
     {
-        RAYTRACING_GEOMETRY_FLAGS FlagBit = static_cast<RAYTRACING_GEOMETRY_FLAGS>(1 << PlatformMisc::GetLSB(Uint32{Flags}));
+        RAYTRACING_GEOMETRY_FLAGS FlagBit = static_cast<RAYTRACING_GEOMETRY_FLAGS>(1 << PlatformMisc::GetLSB(UInt32{Flags}));
         switch (FlagBit)
         {
             // clang-format off
@@ -735,7 +735,7 @@ D3D12_RAYTRACING_INSTANCE_FLAGS InstanceFlagsToD3D12RTInstanceFlags(RAYTRACING_I
     D3D12_RAYTRACING_INSTANCE_FLAGS Result = D3D12_RAYTRACING_INSTANCE_FLAG_NONE;
     while (Flags != RAYTRACING_INSTANCE_NONE)
     {
-        RAYTRACING_INSTANCE_FLAGS FlagBit = static_cast<RAYTRACING_INSTANCE_FLAGS>(1 << PlatformMisc::GetLSB(Uint32{Flags}));
+        RAYTRACING_INSTANCE_FLAGS FlagBit = static_cast<RAYTRACING_INSTANCE_FLAGS>(1 << PlatformMisc::GetLSB(UInt32{Flags}));
         switch (FlagBit)
         {
             // clang-format off
@@ -759,7 +759,7 @@ D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAGS BuildASFlagsToD3D12ASBuildFl
     D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAGS Result = D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAG_NONE;
     while (Flags != RAYTRACING_BUILD_AS_NONE)
     {
-        RAYTRACING_BUILD_AS_FLAGS FlagBit = static_cast<RAYTRACING_BUILD_AS_FLAGS>(1 << PlatformMisc::GetLSB(Uint32{Flags}));
+        RAYTRACING_BUILD_AS_FLAGS FlagBit = static_cast<RAYTRACING_BUILD_AS_FLAGS>(1 << PlatformMisc::GetLSB(UInt32{Flags}));
         switch (FlagBit)
         {
             // clang-format off
@@ -793,7 +793,7 @@ D3D12_RAYTRACING_ACCELERATION_STRUCTURE_COPY_MODE CopyASModeToD3D12ASCopyMode(CO
     }
 }
 
-DXGI_FORMAT TypeToRayTracingVertexFormat(VALUE_TYPE ValueType, Uint32 ComponentCount)
+DXGI_FORMAT TypeToRayTracingVertexFormat(VALUE_TYPE ValueType, UInt32 ComponentCount)
 {
     // Vertex format must be one of the following (https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_raytracing_geometry_triangles_desc):
     //  * DXGI_FORMAT_R32G32_FLOAT       - third component is assumed 0

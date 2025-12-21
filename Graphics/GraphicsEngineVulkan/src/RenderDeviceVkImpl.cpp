@@ -145,7 +145,7 @@ RenderDeviceVkImpl::RenderDeviceVkImpl(IReferenceCounters*                      
         GetRawAllocator(),
         *this,
         EngineCI.DynamicHeapSize,
-        ~Uint64{0}
+        ~UInt64{0}
     },
     m_pDxCompiler{CreateDXCompiler(DXCompilerTarget::Vulkan, m_PhysicalDevice->GetVkVersion(), EngineCI.pDxCompilerPath)}
 // clang-format on
@@ -156,7 +156,7 @@ RenderDeviceVkImpl::RenderDeviceVkImpl(IReferenceCounters*                      
         m_ImplicitRenderPassCache = std::make_unique<RenderPassCache>(*this);
     }
 
-    static_assert(sizeof(VulkanDescriptorPoolSize) == sizeof(Uint32) * 11, "Please add new descriptors to m_DescriptorSetAllocator and m_DynamicDescriptorPool constructors");
+    static_assert(sizeof(VulkanDescriptorPoolSize) == sizeof(UInt32) * 11, "Please add new descriptors to m_DescriptorSetAllocator and m_DynamicDescriptorPool constructors");
 
     const uint32_t vkVersion = m_PhysicalDevice->GetVkVersion();
     m_DeviceInfo.Type        = RENDER_DEVICE_TYPE_VULKAN;
@@ -181,7 +181,7 @@ RenderDeviceVkImpl::RenderDeviceVkImpl(IReferenceCounters*                      
     // Every queue family needs its own command pool.
     // Every queue needs its own query pool.
     m_QueryMgrs.reserve(CommandQueueCount);
-    for (Uint32 q = 0; q < CommandQueueCount; ++q)
+    for (UInt32 q = 0; q < CommandQueueCount; ++q)
     {
         const HardwareQueueIndex QueueFamilyIndex{GetCommandQueue(SoftwareQueueIndex{q}).GetQueueFamilyIndex()};
 
@@ -201,7 +201,7 @@ RenderDeviceVkImpl::RenderDeviceVkImpl(IReferenceCounters*                      
         m_QueryMgrs.emplace_back(std::make_unique<QueryManagerVk>(this, EngineCI.QueryPoolSizes, SoftwareQueueIndex{q}));
     }
 
-    for (Uint32 fmt = 1; fmt < m_TextureFormatsInfo.size(); ++fmt)
+    for (UInt32 fmt = 1; fmt < m_TextureFormatsInfo.size(); ++fmt)
         m_TextureFormatsInfo[fmt].Supported = true; // We will test every format on a specific hardware device
 
     InitShaderCompilationThreadPool(EngineCI.pAsyncShaderCompilationThreadPool, EngineCI.NumAsyncShaderCompilationThreads);
@@ -255,7 +255,7 @@ void RenderDeviceVkImpl::AllocateTransientCmdPool(SoftwareQueueIndex            
     HardwareQueueIndex QueueFamilyIndex{GetCommandQueue(CommandQueueId).GetQueueFamilyIndex()};
     auto               CmdPoolMgrIter = m_TransientCmdPoolMgrs.find(QueueFamilyIndex);
     VERIFY(CmdPoolMgrIter != m_TransientCmdPoolMgrs.end(),
-           "Con not find transient command pool manager for queue family index (", Uint32{QueueFamilyIndex}, ")");
+           "Con not find transient command pool manager for queue family index (", UInt32{QueueFamilyIndex}, ")");
 
     CmdPool = CmdPoolMgrIter->second.AllocateCommandPool(DebugPoolName);
 
@@ -324,7 +324,7 @@ void RenderDeviceVkImpl::ExecuteAndDisposeTransientCmdBuff(SoftwareQueueIndex   
     //
     // Since transient command buffers do not count as real command buffers, submit them directly to the queue
     // to avoid interference with the command buffer counter
-    Uint64 FenceValue = 0;
+    UInt64 FenceValue = 0;
     LockCmdQueueAndRun(CommandQueueId,
                        [&](ICommandQueueVk* pCmdQueueVk) //
                        {
@@ -386,7 +386,7 @@ void RenderDeviceVkImpl::ExecuteAndDisposeTransientCmdBuff(SoftwareQueueIndex   
     HardwareQueueIndex QueueFamilyIndex{GetCommandQueue(CommandQueueId).GetQueueFamilyIndex()};
     auto               CmdPoolMgrIter = m_TransientCmdPoolMgrs.find(QueueFamilyIndex);
     VERIFY(CmdPoolMgrIter != m_TransientCmdPoolMgrs.end(),
-           "Unable to find transient command pool manager for queue family index ", Uint32{QueueFamilyIndex}, ".");
+           "Unable to find transient command pool manager for queue family index ", UInt32{QueueFamilyIndex}, ".");
 
     // Discard command pool directly to the release queue since we know exactly which queue it was submitted to
     // as well as the associated FenceValue
@@ -405,9 +405,9 @@ void RenderDeviceVkImpl::ExecuteAndDisposeTransientCmdBuff(SoftwareQueueIndex   
 
 void RenderDeviceVkImpl::SubmitCommandBuffer(SoftwareQueueIndex                                          CommandQueueId,
                                              const VkSubmitInfo&                                         SubmitInfo,
-                                             Uint64&                                                     SubmittedCmdBuffNumber, // Number of the submitted command buffer
-                                             Uint64&                                                     SubmittedFenceValue,    // Fence value associated with the submitted command buffer
-                                             std::vector<std::pair<Uint64, RefCntAutoPtr<FenceVkImpl>>>* pSignalFences           // List of fences to signal
+                                             UInt64&                                                     SubmittedCmdBuffNumber, // Number of the submitted command buffer
+                                             UInt64&                                                     SubmittedFenceValue,    // Fence value associated with the submitted command buffer
+                                             std::vector<std::pair<UInt64, RefCntAutoPtr<FenceVkImpl>>>* pSignalFences           // List of fences to signal
 )
 {
     // Submit the command list to the queue
@@ -429,10 +429,10 @@ void RenderDeviceVkImpl::SubmitCommandBuffer(SoftwareQueueIndex                 
     }
 }
 
-Uint64 RenderDeviceVkImpl::ExecuteCommandBuffer(SoftwareQueueIndex CommandQueueId, const VkSubmitInfo& SubmitInfo, std::vector<std::pair<Uint64, RefCntAutoPtr<FenceVkImpl>>>* pSignalFences)
+UInt64 RenderDeviceVkImpl::ExecuteCommandBuffer(SoftwareQueueIndex CommandQueueId, const VkSubmitInfo& SubmitInfo, std::vector<std::pair<UInt64, RefCntAutoPtr<FenceVkImpl>>>* pSignalFences)
 {
-    Uint64 SubmittedFenceValue    = 0;
-    Uint64 SubmittedCmdBuffNumber = 0;
+    UInt64 SubmittedFenceValue    = 0;
+    UInt64 SubmittedCmdBuffNumber = 0;
     SubmitCommandBuffer(CommandQueueId, SubmitInfo, SubmittedCmdBuffNumber, SubmittedFenceValue, pSignalFences);
 
     m_MemoryMgr.ShrinkMemory();
@@ -753,15 +753,15 @@ void RenderDeviceVkImpl::CreateDeferredContext(IDeviceContext** ppDeferredContex
     CreateDeferredContextImpl(ppDeferredContext);
 }
 
-std::vector<uint32_t> RenderDeviceVkImpl::ConvertCmdQueueIdsToQueueFamilies(Uint64 CommandQueueMask) const
+std::vector<uint32_t> RenderDeviceVkImpl::ConvertCmdQueueIdsToQueueFamilies(UInt64 CommandQueueMask) const
 {
     std::bitset<MAX_COMMAND_QUEUES> QueueFamilyBits{};
 
     std::vector<uint32_t> QueueFamilyIndices;
     while (CommandQueueMask != 0)
     {
-        Uint64 CmdQueueInd = PlatformMisc::GetLSB(CommandQueueMask);
-        CommandQueueMask &= ~(Uint64{1} << Uint64{CmdQueueInd});
+        UInt64 CmdQueueInd = PlatformMisc::GetLSB(CommandQueueMask);
+        CommandQueueMask &= ~(UInt64{1} << UInt64{CmdQueueInd});
 
         const ICommandQueueVk& CmdQueue    = GetCommandQueue(SoftwareQueueIndex{CmdQueueInd});
         uint32_t               FamilyIndex = CmdQueue.GetQueueFamilyIndex();
@@ -782,7 +782,7 @@ HardwareQueueIndex RenderDeviceVkImpl::GetQueueFamilyIndex(SoftwareQueueIndex Cm
 
 SparseTextureFormatInfo RenderDeviceVkImpl::GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                        RESOURCE_DIMENSION Dimension,
-                                                                       Uint32             SampleCount) const
+                                                                       UInt32             SampleCount) const
 {
     const COMPONENT_TYPE ComponentType = CheckSparseTextureFormatSupport(TexFormat, Dimension, SampleCount, m_AdapterInfo.SparseResources);
     if (ComponentType == COMPONENT_TYPE_UNDEFINED)
@@ -796,7 +796,7 @@ SparseTextureFormatInfo RenderDeviceVkImpl::GetSparseTextureFormatInfo(TEXTURE_F
 
     // Texture with depth-stencil format may be implemented with two memory blocks per tile.
     VkSparseImageFormatProperties FmtProps[2]   = {};
-    Uint32                        FmtPropsCount = 0;
+    UInt32                        FmtPropsCount = 0;
 
     vkGetPhysicalDeviceSparseImageFormatProperties(vkDevice, vkFormat, vkType, vkSampleCount, vkDefaultUsage, VK_IMAGE_TILING_OPTIMAL, &FmtPropsCount, nullptr);
     if (FmtPropsCount != 1)
@@ -812,7 +812,7 @@ SparseTextureFormatInfo RenderDeviceVkImpl::GetSparseTextureFormatInfo(TEXTURE_F
     Info.Flags       = VkSparseImageFormatFlagsToSparseTextureFlags(FmtProps[0].flags);
 
     const auto CheckUsage = [&](VkImageUsageFlags vkUsage) {
-        Uint32 Count = 0;
+        UInt32 Count = 0;
         vkGetPhysicalDeviceSparseImageFormatProperties(vkDevice, vkFormat, vkType, vkSampleCount, vkDefaultUsage | vkUsage, VK_IMAGE_TILING_OPTIMAL, &Count, nullptr);
         return (Count != 0);
     };

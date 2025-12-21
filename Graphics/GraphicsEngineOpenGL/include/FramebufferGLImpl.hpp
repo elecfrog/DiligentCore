@@ -65,7 +65,7 @@ public:
         GLObjectWrappers::GLFrameBufferObj Resolve;
     };
 
-    SubpassFramebuffers& GetSubpassFramebuffer(Uint32 subpass)
+    SubpassFramebuffers& GetSubpassFramebuffer(UInt32 subpass)
     {
         return m_SubpassFramebuffers[subpass];
     }

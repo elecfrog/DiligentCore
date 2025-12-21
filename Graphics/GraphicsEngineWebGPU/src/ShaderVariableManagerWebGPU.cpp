@@ -41,13 +41,13 @@ namespace Diligent
 template <typename HandlerType>
 void ProcessSignatureResources(const PipelineResourceSignatureWebGPUImpl& Signature,
                                const SHADER_RESOURCE_VARIABLE_TYPE*       AllowedVarTypes,
-                               Uint32                                     NumAllowedTypes,
+                               UInt32                                     NumAllowedTypes,
                                SHADER_TYPE                                ShaderStages,
                                HandlerType&&                              Handler)
 {
     const bool UsingSeparateSamplers = Signature.IsUsingSeparateSamplers();
     Signature.ProcessResources(AllowedVarTypes, NumAllowedTypes, ShaderStages,
-                               [&](const PipelineResourceDesc& ResDesc, Uint32 Index) //
+                               [&](const PipelineResourceDesc& ResDesc, UInt32 Index) //
                                {
                                    const PipelineResourceAttribsWebGPU& ResAttr = Signature.GetResourceAttribs(Index);
 
@@ -63,16 +63,16 @@ void ProcessSignatureResources(const PipelineResourceSignatureWebGPUImpl& Signat
 
 size_t ShaderVariableManagerWebGPU::GetRequiredMemorySize(const PipelineResourceSignatureWebGPUImpl& Signature,
                                                           const SHADER_RESOURCE_VARIABLE_TYPE*       AllowedVarTypes,
-                                                          Uint32                                     NumAllowedTypes,
+                                                          UInt32                                     NumAllowedTypes,
                                                           SHADER_TYPE                                ShaderStages,
-                                                          Uint32*                                    pNumVariables)
+                                                          UInt32*                                    pNumVariables)
 {
-    Uint32 NumVariables = 0;
+    UInt32 NumVariables = 0;
     if (pNumVariables == nullptr)
         pNumVariables = &NumVariables;
     *pNumVariables = 0;
     ProcessSignatureResources(Signature, AllowedVarTypes, NumAllowedTypes, ShaderStages,
-                              [pNumVariables](Uint32) //
+                              [pNumVariables](UInt32) //
                               {
                                   ++(*pNumVariables);
                               });
@@ -84,7 +84,7 @@ size_t ShaderVariableManagerWebGPU::GetRequiredMemorySize(const PipelineResource
 void ShaderVariableManagerWebGPU::Initialize(const PipelineResourceSignatureWebGPUImpl& Signature,
                                              IMemoryAllocator&                          Allocator,
                                              const SHADER_RESOURCE_VARIABLE_TYPE*       AllowedVarTypes,
-                                             Uint32                                     NumAllowedTypes,
+                                             UInt32                                     NumAllowedTypes,
                                              SHADER_TYPE                                ShaderType)
 {
     VERIFY_EXPR(m_NumVariables == 0);
@@ -95,9 +95,9 @@ void ShaderVariableManagerWebGPU::Initialize(const PipelineResourceSignatureWebG
 
     TBase::Initialize(Signature, Allocator, MemSize);
 
-    Uint32 VarInd = 0;
+    UInt32 VarInd = 0;
     ProcessSignatureResources(Signature, AllowedVarTypes, NumAllowedTypes, ShaderType,
-                              [this, &VarInd](Uint32 ResIndex) //
+                              [this, &VarInd](UInt32 ResIndex) //
                               {
                                   ::new (m_pVariables + VarInd) ShaderVariableWebGPUImpl{*this, ResIndex};
                                   ++VarInd;
@@ -109,7 +109,7 @@ void ShaderVariableManagerWebGPU::Destroy(IMemoryAllocator& Allocator)
 {
     if (m_pVariables != nullptr)
     {
-        for (Uint32 v = 0; v < m_NumVariables; ++v)
+        for (UInt32 v = 0; v < m_NumVariables; ++v)
             m_pVariables[v].~ShaderVariableWebGPUImpl();
     }
     TBase::Destroy(Allocator);
@@ -117,7 +117,7 @@ void ShaderVariableManagerWebGPU::Destroy(IMemoryAllocator& Allocator)
 
 ShaderVariableWebGPUImpl* ShaderVariableManagerWebGPU::GetVariable(const Char* Name) const
 {
-    for (Uint32 v = 0; v < m_NumVariables; ++v)
+    for (UInt32 v = 0; v < m_NumVariables; ++v)
     {
         ShaderVariableWebGPUImpl& Var = m_pVariables[v];
         if (strcmp(Var.GetDesc().Name, Name) == 0)
@@ -126,7 +126,7 @@ ShaderVariableWebGPUImpl* ShaderVariableManagerWebGPU::GetVariable(const Char* N
     return nullptr;
 }
 
-ShaderVariableWebGPUImpl* ShaderVariableManagerWebGPU::GetVariable(Uint32 Index) const
+ShaderVariableWebGPUImpl* ShaderVariableManagerWebGPU::GetVariable(UInt32 Index) const
 {
     if (Index >= m_NumVariables)
     {
@@ -137,7 +137,7 @@ ShaderVariableWebGPUImpl* ShaderVariableManagerWebGPU::GetVariable(Uint32 Index)
     return m_pVariables + Index;
 }
 
-Uint32 ShaderVariableManagerWebGPU::GetVariableIndex(const ShaderVariableWebGPUImpl& Variable)
+UInt32 ShaderVariableManagerWebGPU::GetVariableIndex(const ShaderVariableWebGPUImpl& Variable)
 {
     if (m_pVariables == nullptr)
     {
@@ -145,9 +145,9 @@ Uint32 ShaderVariableManagerWebGPU::GetVariableIndex(const ShaderVariableWebGPUI
         return ~0u;
     }
 
-    const ptrdiff_t Offset = reinterpret_cast<const Uint8*>(&Variable) - reinterpret_cast<Uint8*>(m_pVariables);
+    const ptrdiff_t Offset = reinterpret_cast<const UInt8*>(&Variable) - reinterpret_cast<UInt8*>(m_pVariables);
     DEV_CHECK_ERR(Offset % sizeof(ShaderVariableWebGPUImpl) == 0, "Offset is not multiple of ShaderVariableWebGPUImpl class size");
-    const Uint32 Index = static_cast<Uint32>(Offset / sizeof(ShaderVariableWebGPUImpl));
+    const UInt32 Index = static_cast<UInt32>(Offset / sizeof(ShaderVariableWebGPUImpl));
     if (Index < m_NumVariables)
         return Index;
     else
@@ -157,13 +157,13 @@ Uint32 ShaderVariableManagerWebGPU::GetVariableIndex(const ShaderVariableWebGPUI
     }
 }
 
-const PipelineResourceDesc& ShaderVariableManagerWebGPU::GetResourceDesc(Uint32 Index) const
+const PipelineResourceDesc& ShaderVariableManagerWebGPU::GetResourceDesc(UInt32 Index) const
 {
     VERIFY_EXPR(m_pSignature);
     return m_pSignature->GetResourceDesc(Index);
 }
 
-const ShaderVariableManagerWebGPU::ResourceAttribs& ShaderVariableManagerWebGPU::GetResourceAttribs(Uint32 Index) const
+const ShaderVariableManagerWebGPU::ResourceAttribs& ShaderVariableManagerWebGPU::GetResourceAttribs(UInt32 Index) const
 {
     VERIFY_EXPR(m_pSignature);
     return m_pSignature->GetResourceAttribs(Index);
@@ -187,7 +187,7 @@ namespace
 #ifdef DILIGENT_DEVELOPMENT
 inline BUFFER_VIEW_TYPE DvpBindGroupEntryTypeToBufferView(BindGroupEntryType Type)
 {
-    static_assert(static_cast<Uint32>(BindGroupEntryType::Count) == 12, "Please update the switch below to handle the new bind group entry type");
+    static_assert(static_cast<UInt32>(BindGroupEntryType::Count) == 12, "Please update the switch below to handle the new bind group entry type");
     switch (Type)
     {
         case BindGroupEntryType::StorageBuffer_ReadOnly:
@@ -206,7 +206,7 @@ inline BUFFER_VIEW_TYPE DvpBindGroupEntryTypeToBufferView(BindGroupEntryType Typ
 
 inline TEXTURE_VIEW_TYPE DvpBindGroupEntryTypeToTextureView(BindGroupEntryType Type)
 {
-    static_assert(static_cast<Uint32>(BindGroupEntryType::Count) == 12, "Please update the switch below to handle the new bind group entry type");
+    static_assert(static_cast<UInt32>(BindGroupEntryType::Count) == 12, "Please update the switch below to handle the new bind group entry type");
     switch (Type)
     {
         case BindGroupEntryType::StorageTexture_WriteOnly:
@@ -228,8 +228,8 @@ struct BindResourceHelper
 {
     BindResourceHelper(const PipelineResourceSignatureWebGPUImpl& Signature,
                        ShaderResourceCacheWebGPU&                 ResourceCache,
-                       Uint32                                     ResIndex,
-                       Uint32                                     ArrayIndex);
+                       UInt32                                     ResIndex,
+                       UInt32                                     ArrayIndex);
 
     void operator()(const BindResourceInfo& BindInfo) const;
 
@@ -244,8 +244,8 @@ private:
     template <typename ObjectType>
     bool UpdateCachedResource(RefCntAutoPtr<ObjectType>&& pObject,
                               SET_SHADER_RESOURCE_FLAGS   Flags,
-                              Uint64                      BufferBaseOffset = 0,
-                              Uint64                      BufferRangeSize  = 0) const;
+                              UInt64                      BufferBaseOffset = 0,
+                              UInt64                      BufferRangeSize  = 0) const;
 
 private:
     using ResourceAttribs = PipelineResourceSignatureWebGPUImpl::ResourceAttribs;
@@ -253,19 +253,19 @@ private:
 
     const PipelineResourceSignatureWebGPUImpl& m_Signature;
     ShaderResourceCacheWebGPU&                 m_ResourceCache;
-    const Uint32                               m_ArrayIndex;
+    const UInt32                               m_ArrayIndex;
     const ResourceCacheContentType             m_CacheType;
     const PipelineResourceDesc&                m_ResDesc;
     const ResourceAttribs&                     m_Attribs;
-    const Uint32                               m_DstResCacheOffset;
+    const UInt32                               m_DstResCacheOffset;
     const BindGroup&                           m_BindGroup;
     const ShaderResourceCacheWebGPU::Resource& m_DstRes;
 };
 
 BindResourceHelper::BindResourceHelper(const PipelineResourceSignatureWebGPUImpl& Signature,
                                        ShaderResourceCacheWebGPU&                 ResourceCache,
-                                       Uint32                                     ResIndex,
-                                       Uint32                                     ArrayIndex) :
+                                       UInt32                                     ResIndex,
+                                       UInt32                                     ArrayIndex) :
     // clang-format off
     m_Signature         {Signature},
     m_ResourceCache     {ResourceCache},
@@ -288,7 +288,7 @@ void BindResourceHelper::operator()(const BindResourceInfo& BindInfo) const
 
     if (BindInfo.pObject != nullptr)
     {
-        static_assert(static_cast<Uint32>(BindGroupEntryType::Count) == 12, "Please update the switch below to handle the new bind group entry type");
+        static_assert(static_cast<UInt32>(BindGroupEntryType::Count) == 12, "Please update the switch below to handle the new bind group entry type");
         switch (m_DstRes.Type)
         {
             case BindGroupEntryType::UniformBuffer:
@@ -326,7 +326,7 @@ void BindResourceHelper::operator()(const BindResourceInfo& BindInfo) const
                 break;
 
             default:
-                UNEXPECTED("Unknown resource type ", static_cast<Uint32>(m_DstRes.Type));
+                UNEXPECTED("Unknown resource type ", static_cast<UInt32>(m_DstRes.Type));
         }
     }
     else
@@ -345,8 +345,8 @@ void BindResourceHelper::operator()(const BindResourceInfo& BindInfo) const
 template <typename ObjectType>
 bool BindResourceHelper::UpdateCachedResource(RefCntAutoPtr<ObjectType>&& pObject,
                                               SET_SHADER_RESOURCE_FLAGS   Flags,
-                                              Uint64                      BufferBaseOffset,
-                                              Uint64                      BufferRangeSize) const
+                                              UInt64                      BufferBaseOffset,
+                                              UInt64                      BufferRangeSize) const
 {
     if (pObject)
     {
@@ -501,7 +501,7 @@ void BindResourceHelper::CacheSampler(const BindResourceInfo& BindInfo) const
 } // namespace
 
 
-void ShaderVariableManagerWebGPU::BindResource(Uint32 ResIndex, const BindResourceInfo& BindInfo)
+void ShaderVariableManagerWebGPU::BindResource(UInt32 ResIndex, const BindResourceInfo& BindInfo)
 {
     BindResourceHelper BindHelper{
         *m_pSignature,
@@ -512,12 +512,12 @@ void ShaderVariableManagerWebGPU::BindResource(Uint32 ResIndex, const BindResour
     BindHelper(BindInfo);
 }
 
-void ShaderVariableManagerWebGPU::SetBufferDynamicOffset(Uint32 ResIndex,
-                                                         Uint32 ArrayIndex,
-                                                         Uint32 BufferDynamicOffset)
+void ShaderVariableManagerWebGPU::SetBufferDynamicOffset(UInt32 ResIndex,
+                                                         UInt32 ArrayIndex,
+                                                         UInt32 BufferDynamicOffset)
 {
     const PipelineResourceAttribsWebGPU& Attribs           = m_pSignature->GetResourceAttribs(ResIndex);
-    const Uint32                         DstResCacheOffset = Attribs.CacheOffset(m_ResourceCache.GetContentType()) + ArrayIndex;
+    const UInt32                         DstResCacheOffset = Attribs.CacheOffset(m_ResourceCache.GetContentType()) + ArrayIndex;
 #ifdef DILIGENT_DEVELOPMENT
     {
         const PipelineResourceDesc&                 ResDesc = m_pSignature->GetResourceDesc(ResIndex);
@@ -530,11 +530,11 @@ void ShaderVariableManagerWebGPU::SetBufferDynamicOffset(Uint32 ResIndex,
 }
 
 
-IDeviceObject* ShaderVariableManagerWebGPU::Get(Uint32 ArrayIndex, Uint32 ResIndex) const
+IDeviceObject* ShaderVariableManagerWebGPU::Get(UInt32 ArrayIndex, UInt32 ResIndex) const
 {
     const PipelineResourceDesc&          ResDesc     = GetResourceDesc(ResIndex);
     const PipelineResourceAttribsWebGPU& Attribs     = GetResourceAttribs(ResIndex);
-    const Uint32                         CacheOffset = Attribs.CacheOffset(m_ResourceCache.GetContentType());
+    const UInt32                         CacheOffset = Attribs.CacheOffset(m_ResourceCache.GetContentType());
 
     VERIFY_EXPR(ArrayIndex < ResDesc.ArraySize);
 

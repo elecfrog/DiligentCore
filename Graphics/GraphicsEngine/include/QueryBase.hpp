@@ -166,7 +166,7 @@ public:
         return m_State;
     }
 
-    void CheckQueryDataPtr(void* pData, Uint32 DataSize)
+    void CheckQueryDataPtr(void* pData, UInt32 DataSize)
     {
         DEV_CHECK_ERR(m_State == QueryState::Ended,
                       "Attempting to get data of query '", this->m_Desc.Name, "' that has not been ended.");

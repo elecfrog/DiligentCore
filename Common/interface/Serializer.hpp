@@ -31,7 +31,7 @@
 #include <cstring>
 #include <atomic>
 
-#include "../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "../../Primitives/interface/MemoryAllocator.h"
 #include "../../Primitives/interface/CheckBaseStructAlignment.hpp"
 #include "../../Platforms/Basic/interface/DebugUtilities.hpp"
@@ -163,7 +163,7 @@ public:
     template <typename T>
     using TReadOnly = typename std::enable_if_t<Mode == SerializerMode::Read, const T*>;
 
-    using TPointer = typename std::conditional_t<Mode == SerializerMode::Write, Uint8*, const Uint8*>;
+    using TPointer = typename std::conditional_t<Mode == SerializerMode::Write, UInt8*, const UInt8*>;
 
     template <typename T>
     using ConstQual = typename std::conditional_t<Mode == SerializerMode::Read, T, const T>;
@@ -209,17 +209,17 @@ public:
     /// Serializes Size bytes to/from pBytes
     ///
     ///  * Measure
-    ///      Writes Size as Uint32 (noop)
+    ///      Writes Size as UInt32 (noop)
     ///      Aligns up current offset to Alignment bytes
     ///      Writes Size bytes (noop)
     ///
     ///  * Write
-    ///      Writes Size as Uint32
+    ///      Writes Size as UInt32
     ///      Aligns up current offset to Alignment bytes
     ///      Writes Size bytes from pBytes
     ///
     ///  * Read
-    ///      Reads Size as Uint32
+    ///      Reads Size as UInt32
     ///      Aligns up current offset to Alignment bytes
     ///      Sets pBytes to m_Ptr
     ///      Moves m_Ptr by Size bytes
@@ -356,8 +356,8 @@ template <>
 template <typename T>
 typename Serializer<SerializerMode::Read>::TEnableStr<T> Serializer<SerializerMode::Read>::Serialize(CharPtr Str)
 {
-    Uint32 LenWithNull = 0;
-    if (!Serialize<Uint32>(LenWithNull))
+    UInt32 LenWithNull = 0;
+    if (!Serialize<UInt32>(LenWithNull))
         return false;
 
     CHECK_REMAINING_SIZE(LenWithNull, "Note enough data to read ", LenWithNull, " characters.");
@@ -373,8 +373,8 @@ template <typename T>
 typename Serializer<Mode>::template TEnableStr<T> Serializer<Mode>::Serialize(CharPtr Str)
 {
     static_assert(Mode == SerializerMode::Write || Mode == SerializerMode::Measure, "Unexpected mode");
-    const Uint32 LenWithNull = static_cast<Uint32>((Str != nullptr && Str[0] != '\0') ? strlen(Str) + 1 : 0);
-    if (!Serialize<Uint32>(LenWithNull))
+    const UInt32 LenWithNull = static_cast<UInt32>((Str != nullptr && Str[0] != '\0') ? strlen(Str) + 1 : 0);
+    if (!Serialize<UInt32>(LenWithNull))
         return false;
 
     return Copy(Str, LenWithNull);
@@ -384,8 +384,8 @@ typename Serializer<Mode>::template TEnableStr<T> Serializer<Mode>::Serialize(Ch
 template <>
 inline bool Serializer<SerializerMode::Read>::SerializeBytes(VoidPtr pBytes, ConstQual<size_t>& Size, size_t Alignment)
 {
-    Uint32 Size32 = 0;
-    if (!Serialize<Uint32>(Size32))
+    UInt32 Size32 = 0;
+    if (!Serialize<UInt32>(Size32))
         return false;
 
     Size = Size32;
@@ -404,7 +404,7 @@ template <SerializerMode Mode> // Write or Measure
 inline bool Serializer<Mode>::SerializeBytes(VoidPtr pBytes, ConstQual<size_t>& Size, size_t Alignment)
 {
     static_assert(Mode == SerializerMode::Write || Mode == SerializerMode::Measure, "Unexpected mode");
-    if (!Serialize<Uint32>(static_cast<Uint32>(Size)))
+    if (!Serialize<UInt32>(static_cast<UInt32>(Size)))
         return false;
     AlignOffset(Alignment);
     return Copy(pBytes, Size);

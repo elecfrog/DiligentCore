@@ -115,7 +115,7 @@ using BufferDescMappingType = std::vector<std::pair<std::string, const ShaderCod
 void CheckShaderConstantBuffers(IShader* pShader, bool PrintBufferContents, const BufferDescMappingType& Buffers)
 {
     auto ResCount = pShader->GetResourceCount();
-    for (Uint32 i = 0; i < ResCount; ++i)
+    for (UInt32 i = 0; i < ResCount; ++i)
     {
         ShaderResourceDesc ResDesc;
         pShader->GetResourceDesc(i, ResDesc);
@@ -247,14 +247,14 @@ std::pair<RefCntAutoPtr<IShader>, RefCntAutoPtr<IShader>> CreateTestShaders(cons
     {
         if (DeviceInfo.IsWebGPUDevice())
         {
-            Uint64 ByteCodeSize = 0;
+            UInt64 ByteCodeSize = 0;
             pShaderSrc->GetBytecode(reinterpret_cast<const void**>(&ShaderCI.Source), ByteCodeSize);
             ShaderCI.SourceLanguage = SHADER_SOURCE_LANGUAGE_WGSL;
             ShaderCI.ByteCodeSize   = static_cast<size_t>(ByteCodeSize);
         }
         else
         {
-            Uint64 ByteCodeSize = 0;
+            UInt64 ByteCodeSize = 0;
             pShaderSrc->GetBytecode(&ShaderCI.ByteCode, ByteCodeSize);
             ShaderCI.ByteCodeSize = static_cast<size_t>(ByteCodeSize);
             ShaderCI.Source       = nullptr;

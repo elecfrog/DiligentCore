@@ -29,7 +29,7 @@
 namespace Diligent
 {
 
-Uint64 AppleMisc::SetCurrentThreadAffinity(Uint64 Mask)
+UInt64 AppleMisc::SetCurrentThreadAffinity(UInt64 Mask)
 {
     // MacOS does not support affinity setting
     return 0;

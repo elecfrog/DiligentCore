@@ -507,7 +507,7 @@ m_pPSO->GetStaticShaderVariable(SHADER_TYPE_VERTEX, "Constants")->Set(m_VSConsta
   * Added `Flags` member to `DrawAttribs` structure (values from `DRAW_FLAGS`)
   * Added `IndirectAttribsBufferStateTransitionMode` member to `DrawAttribs` and `DispatchComputeAttribs` structures (values from `RESOURCE_STATE_TRANSITION_MODE`)
   * Added `StateTransitionDesc` structure that describes resource state transition barrier
-  * Added `IDeviceContext::TransitionResourceStates(Uint32 BarrierCount, StateTransitionDesc* pResourceBarriers)` method
+  * Added `IDeviceContext::TransitionResourceStates(UInt32 BarrierCount, StateTransitionDesc* pResourceBarriers)` method
   * Added `IBuffer::SetState()`, `IBuffer::GetState()`, `ITexture::SetState()`, `ITexture::GetState()` methods
   * Added `IShaderResourceBinding::InitializeStaticResources()` to explicitly initialize static resources and
     avoid problems in multi-threaded environments
@@ -550,8 +550,8 @@ m_pPSO->GetStaticShaderVariable(SHADER_TYPE_VERTEX, "Constants")->Set(m_VSConsta
 * API Changes:
   * Added `IFence` interface and `IDeviceContext::SignalFence()` method to enable CPU-GPU synchronization
   * Added `GetType`, `GetArraySize`, `GetName`, and `GetIndex` methods to `IShaderVariable` interface;
-    Added `GetVariableCount` and `GetShaderVariable(Uint32 Index)` methods to `IShader` interface; 
-    Added `GetVariableCount` and `GetVariable(SHADER_TYPE ShaderType, Uint32 Index)` to `IShaderResourceBinding` interface.
+    Added `GetVariableCount` and `GetShaderVariable(UInt32 Index)` methods to `IShader` interface; 
+    Added `GetVariableCount` and `GetVariable(SHADER_TYPE ShaderType, UInt32 Index)` to `IShaderResourceBinding` interface.
   * Added `BUFFER_MODE_RAW` mode allowing raw buffer views in D3D11/D3D12.
   * Moved `Format` member from `BufferDesc` to `BufferViewDesc`
   * Removed `IsIndirect` member from `DrawAttribs` as setting `pIndirectDrawAttribs` to a non-null buffer already indicates indirect rendering

@@ -106,7 +106,7 @@ struct VulkanDynamicAllocation
     size_t                      AlignedOffset  = 0; // Offset from the start of the buffer
     size_t                      Size           = 0; // Reserved size of this allocation
 #ifdef DILIGENT_DEVELOPMENT
-    Uint64 dvpFrameNumber = 0;
+    UInt64 dvpFrameNumber = 0;
 #endif
 };
 
@@ -132,8 +132,8 @@ public:
 
     VulkanDynamicMemoryManager(IMemoryAllocator&         Allocator,
                                class RenderDeviceVkImpl& DeviceVk,
-                               Uint32                    Size,
-                               Uint64                    CommandQueueMask);
+                               UInt32                    Size,
+                               UInt64                    CommandQueueMask);
     ~VulkanDynamicMemoryManager();
 
     // clang-format off
@@ -143,21 +143,21 @@ public:
     VulkanDynamicMemoryManager& operator= (      VulkanDynamicMemoryManager&&) = delete;
 
     VkBuffer GetVkBuffer()  const{return m_VkBuffer;}
-    Uint8*   GetCPUAddress()const{return m_CPUAddress;}
+    UInt8*   GetCPUAddress()const{return m_CPUAddress;}
     // clang-format on
 
     void Destroy();
 
-    static constexpr const Uint32 MasterBlockAlignment = 1024;
+    static constexpr const UInt32 MasterBlockAlignment = 1024;
     MasterBlock                   AllocateMasterBlock(OffsetType SizeInBytes, OffsetType Alignment);
 
 private:
     RenderDeviceVkImpl&                  m_DeviceVk;
     VulkanUtilities::BufferWrapper       m_VkBuffer;
     VulkanUtilities::DeviceMemoryWrapper m_BufferMemory;
-    Uint8*                               m_CPUAddress;
+    UInt8*                               m_CPUAddress;
     const VkDeviceSize                   m_DefaultAlignment;
-    const Uint64                         m_CommandQueueMask;
+    const UInt64                         m_CommandQueueMask;
     OffsetType                           m_TotalPeakSize = 0;
 };
 
@@ -192,7 +192,7 @@ class VulkanDynamicHeap
 {
 public:
     // clang-format off
-    VulkanDynamicHeap(VulkanDynamicMemoryManager& DynamicMemMgr, std::string HeapName, Uint32 PageSize) :
+    VulkanDynamicHeap(VulkanDynamicMemoryManager& DynamicMemMgr, std::string HeapName, UInt32 PageSize) :
         m_GlobalDynamicMemMgr{DynamicMemMgr},
         m_HeapName           {std::move(HeapName)},
         m_MasterBlockSize    (PageSize)
@@ -206,14 +206,14 @@ public:
 
     ~VulkanDynamicHeap();
 
-    VulkanDynamicAllocation Allocate(Uint32 SizeInBytes, Uint32 Alignment);
+    VulkanDynamicAllocation Allocate(UInt32 SizeInBytes, UInt32 Alignment);
 
     // Releases all master blocks that are later returned to the global dynamic memory manager.
     // CmdQueueMask indicates which command queues the allocations from this heap were used
     // with during the last frame.
     // As global dynamic memory manager is hosted by the render device, the dynamic heap can
     // be destroyed before the blocks are actually returned to the global dynamic memory manager.
-    void ReleaseMasterBlocks(RenderDeviceVkImpl& DeviceVkImpl, Uint64 CmdQueueMask);
+    void ReleaseMasterBlocks(RenderDeviceVkImpl& DeviceVkImpl, UInt64 CmdQueueMask);
 
     using OffsetType  = VulkanDynamicMemoryManager::OffsetType;
     using MasterBlock = VulkanDynamicMemoryManager::MasterBlock;
@@ -229,15 +229,15 @@ private:
     std::vector<MasterBlock> m_MasterBlocks;
 
     OffsetType   m_CurrOffset = InvalidOffset;
-    const Uint32 m_MasterBlockSize;
-    Uint32       m_AvailableSize = 0;
+    const UInt32 m_MasterBlockSize;
+    UInt32       m_AvailableSize = 0;
 
-    Uint32 m_CurrAlignedSize   = 0;
-    Uint32 m_CurrUsedSize      = 0;
-    Uint32 m_PeakAlignedSize   = 0;
-    Uint32 m_PeakUsedSize      = 0;
-    Uint32 m_CurrAllocatedSize = 0;
-    Uint32 m_PeakAllocatedSize = 0;
+    UInt32 m_CurrAlignedSize   = 0;
+    UInt32 m_CurrUsedSize      = 0;
+    UInt32 m_PeakAlignedSize   = 0;
+    UInt32 m_PeakUsedSize      = 0;
+    UInt32 m_CurrAllocatedSize = 0;
+    UInt32 m_PeakAllocatedSize = 0;
 };
 
 } // namespace Diligent

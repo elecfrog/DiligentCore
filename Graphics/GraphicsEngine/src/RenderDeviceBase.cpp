@@ -144,7 +144,7 @@ DeviceFeaturesVk EnableDeviceFeaturesVk(const DeviceFeaturesVk& SupportedFeature
 
 COMPONENT_TYPE CheckSparseTextureFormatSupport(TEXTURE_FORMAT                  TexFormat,
                                                RESOURCE_DIMENSION              Dimension,
-                                               Uint32                          SampleCount,
+                                               UInt32                          SampleCount,
                                                const SparseResourceProperties& SparseRes) noexcept
 {
     switch (Dimension)

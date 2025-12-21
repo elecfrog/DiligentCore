@@ -79,7 +79,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DeviceContextVk, TDeviceContextBase)
 
     /// Implementation of IDeviceContext::Begin() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE Begin(Uint32 ImmediateContextId) override final;
+    virtual void DILIGENT_CALL_TYPE Begin(UInt32 ImmediateContextId) override final;
 
     /// Implementation of IDeviceContext::SetPipelineState() in Vulkan backend.
     virtual void DILIGENT_CALL_TYPE SetPipelineState(IPipelineState* pPipelineState) override final;
@@ -92,16 +92,16 @@ public:
                                                           RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::SetStencilRef() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE SetStencilRef(Uint32 StencilRef) override final;
+    virtual void DILIGENT_CALL_TYPE SetStencilRef(UInt32 StencilRef) override final;
 
     /// Implementation of IDeviceContext::SetBlendFactors() in Vulkan backend.
     virtual void DILIGENT_CALL_TYPE SetBlendFactors(const float* pBlendFactors = nullptr) override final;
 
     /// Implementation of IDeviceContext::SetVertexBuffers() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE SetVertexBuffers(Uint32                         StartSlot,
-                                                     Uint32                         NumBuffersSet,
+    virtual void DILIGENT_CALL_TYPE SetVertexBuffers(UInt32                         StartSlot,
+                                                     UInt32                         NumBuffersSet,
                                                      IBuffer* const*                ppBuffers,
-                                                     const Uint64*                  pOffsets,
+                                                     const UInt64*                  pOffsets,
                                                      RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
                                                      SET_VERTEX_BUFFERS_FLAGS       Flags) override final;
 
@@ -110,20 +110,20 @@ public:
 
     /// Implementation of IDeviceContext::SetIndexBuffer() in Vulkan backend.
     virtual void DILIGENT_CALL_TYPE SetIndexBuffer(IBuffer*                       pIndexBuffer,
-                                                   Uint64                         ByteOffset,
+                                                   UInt64                         ByteOffset,
                                                    RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::SetViewports() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE SetViewports(Uint32          NumViewports,
+    virtual void DILIGENT_CALL_TYPE SetViewports(UInt32          NumViewports,
                                                  const Viewport* pViewports,
-                                                 Uint32          RTWidth,
-                                                 Uint32          RTHeight) override final;
+                                                 UInt32          RTWidth,
+                                                 UInt32          RTHeight) override final;
 
     /// Implementation of IDeviceContext::SetScissorRects() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE SetScissorRects(Uint32      NumRects,
+    virtual void DILIGENT_CALL_TYPE SetScissorRects(UInt32      NumRects,
                                                     const Rect* pRects,
-                                                    Uint32      RTWidth,
-                                                    Uint32      RTHeight) override final;
+                                                    UInt32      RTWidth,
+                                                    UInt32      RTHeight) override final;
 
     /// Implementation of IDeviceContext::SetRenderTargetsExt() in Vulkan backend.
     virtual void DILIGENT_CALL_TYPE SetRenderTargetsExt(const SetRenderTargetsAttribs& Attribs) override final;
@@ -162,13 +162,13 @@ public:
     // clang-format on
 
     /// Implementation of IDeviceContext::GetTileSize() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE GetTileSize(Uint32& TileSizeX, Uint32& TileSizeY) override final;
+    virtual void DILIGENT_CALL_TYPE GetTileSize(UInt32& TileSizeX, UInt32& TileSizeY) override final;
 
     /// Implementation of IDeviceContext::ClearDepthStencil() in Vulkan backend.
     virtual void DILIGENT_CALL_TYPE ClearDepthStencil(ITextureView*                  pView,
                                                       CLEAR_DEPTH_STENCIL_FLAGS      ClearFlags,
                                                       float                          fDepth,
-                                                      Uint8                          Stencil,
+                                                      UInt8                          Stencil,
                                                       RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::ClearRenderTarget() in Vulkan backend.
@@ -178,18 +178,18 @@ public:
 
     /// Implementation of IDeviceContext::UpdateBuffer() in Vulkan backend.
     virtual void DILIGENT_CALL_TYPE UpdateBuffer(IBuffer*                       pBuffer,
-                                                 Uint64                         Offset,
-                                                 Uint64                         Size,
+                                                 UInt64                         Offset,
+                                                 UInt64                         Size,
                                                  const void*                    pData,
                                                  RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::CopyBuffer() in Vulkan backend.
     virtual void DILIGENT_CALL_TYPE CopyBuffer(IBuffer*                       pSrcBuffer,
-                                               Uint64                         SrcOffset,
+                                               UInt64                         SrcOffset,
                                                RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
                                                IBuffer*                       pDstBuffer,
-                                               Uint64                         DstOffset,
-                                               Uint64                         Size,
+                                               UInt64                         DstOffset,
+                                               UInt64                         Size,
                                                RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) override final;
 
     /// Implementation of IDeviceContext::MapBuffer() in Vulkan backend.
@@ -203,8 +203,8 @@ public:
 
     /// Implementation of IDeviceContext::UpdateTexture() in Vulkan backend.
     virtual void DILIGENT_CALL_TYPE UpdateTexture(ITexture*                      pTexture,
-                                                  Uint32                         MipLevel,
-                                                  Uint32                         Slice,
+                                                  UInt32                         MipLevel,
+                                                  UInt32                         Slice,
                                                   const Box&                     DstBox,
                                                   const TextureSubResData&       SubresData,
                                                   RESOURCE_STATE_TRANSITION_MODE SrcBufferStateTransitionMode,
@@ -215,28 +215,28 @@ public:
 
     /// Implementation of IDeviceContext::MapTextureSubresource() in Vulkan backend.
     virtual void DILIGENT_CALL_TYPE MapTextureSubresource(ITexture*                 pTexture,
-                                                          Uint32                    MipLevel,
-                                                          Uint32                    ArraySlice,
+                                                          UInt32                    MipLevel,
+                                                          UInt32                    ArraySlice,
                                                           MAP_TYPE                  MapType,
                                                           MAP_FLAGS                 MapFlags,
                                                           const Box*                pMapRegion,
                                                           MappedTextureSubresource& MappedData) override final;
 
     /// Implementation of IDeviceContext::UnmapTextureSubresource() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE UnmapTextureSubresource(ITexture* pTexture, Uint32 MipLevel, Uint32 ArraySlice) override final;
+    virtual void DILIGENT_CALL_TYPE UnmapTextureSubresource(ITexture* pTexture, UInt32 MipLevel, UInt32 ArraySlice) override final;
 
     /// Implementation of IDeviceContext::FinishCommandList() in Vulkan backend.
     virtual void DILIGENT_CALL_TYPE FinishCommandList(ICommandList** ppCommandList) override final;
 
     /// Implementation of IDeviceContext::ExecuteCommandLists() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE ExecuteCommandLists(Uint32               NumCommandLists,
+    virtual void DILIGENT_CALL_TYPE ExecuteCommandLists(UInt32               NumCommandLists,
                                                         ICommandList* const* ppCommandLists) override final;
 
     /// Implementation of IDeviceContext::EnqueueSignal() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE EnqueueSignal(IFence* pFence, Uint64 Value) override final;
+    virtual void DILIGENT_CALL_TYPE EnqueueSignal(IFence* pFence, UInt64 Value) override final;
 
     /// Implementation of IDeviceContext::DeviceWaitForFence() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE DeviceWaitForFence(IFence* pFence, Uint64 Value) override final;
+    virtual void DILIGENT_CALL_TYPE DeviceWaitForFence(IFence* pFence, UInt64 Value) override final;
 
     /// Implementation of IDeviceContext::WaitForIdle() in Vulkan backend.
     virtual void DILIGENT_CALL_TYPE WaitForIdle() override final;
@@ -353,10 +353,10 @@ public:
     }
 
     void UpdateBufferRegion(BufferVkImpl*                  pBuffVk,
-                            Uint64                         DstOffset,
-                            Uint64                         NumBytes,
+                            UInt64                         DstOffset,
+                            UInt64                         NumBytes,
                             VkBuffer                       vkSrcBuffer,
-                            Uint64                         SrcOffset,
+                            UInt64                         SrcOffset,
                             RESOURCE_STATE_TRANSITION_MODE TransitionMode);
 
     void CopyTextureRegion(TextureVkImpl*                 pSrcTexture,
@@ -366,11 +366,11 @@ public:
                            const VkImageCopy&             CopyRegion);
 
     void UpdateTextureRegion(const void*                    pSrcData,
-                             Uint64                         SrcStride,
-                             Uint64                         SrcDepthStride,
+                             UInt64                         SrcStride,
+                             UInt64                         SrcDepthStride,
                              TextureVkImpl&                 TextureVk,
-                             Uint32                         MipLevel,
-                             Uint32                         Slice,
+                             UInt32                         MipLevel,
+                             UInt32                         Slice,
                              const Box&                     DstBox,
                              RESOURCE_STATE_TRANSITION_MODE TextureTransitionMode);
 
@@ -387,7 +387,7 @@ public:
 
     virtual void DILIGENT_CALL_TYPE FinishFrame() override final;
 
-    virtual void DILIGENT_CALL_TYPE TransitionResourceStates(Uint32 BarrierCount, const StateTransitionDesc* pResourceBarriers) override final;
+    virtual void DILIGENT_CALL_TYPE TransitionResourceStates(UInt32 BarrierCount, const StateTransitionDesc* pResourceBarriers) override final;
 
     virtual void DILIGENT_CALL_TYPE ResolveTextureSubresource(ITexture*                               pSrcTexture,
                                                               ITexture*                               pDstTexture,
@@ -400,7 +400,7 @@ public:
         return m_DynamicDescrSetAllocator.Allocate(SetLayout, DebugName);
     }
 
-    VulkanDynamicAllocation AllocateDynamicSpace(Uint64 SizeInBytes, Uint32 Alignment);
+    VulkanDynamicAllocation AllocateDynamicSpace(UInt64 SizeInBytes, UInt32 Alignment);
 
     virtual void ResetRenderTargets() override final;
 
@@ -420,7 +420,7 @@ private:
     void               CommitViewports();
     void               CommitScissorRects();
 
-    void Flush(Uint32               NumCommandLists,
+    void Flush(UInt32               NumCommandLists,
                ICommandList* const* ppCommandLists);
 
     __forceinline void TransitionOrVerifyBufferState(BufferVkImpl&                  Buffer,
@@ -461,26 +461,26 @@ private:
         }
     }
 
-    inline void DisposeVkCmdBuffer(SoftwareQueueIndex CmdQueue, VkCommandBuffer vkCmdBuff, Uint64 FenceValue);
-    inline void DisposeCurrentCmdBuffer(SoftwareQueueIndex CmdQueue, Uint64 FenceValue);
+    inline void DisposeVkCmdBuffer(SoftwareQueueIndex CmdQueue, VkCommandBuffer vkCmdBuff, UInt64 FenceValue);
+    inline void DisposeCurrentCmdBuffer(SoftwareQueueIndex CmdQueue, UInt64 FenceValue);
 
     void CopyBufferToTexture(VkBuffer                       vkSrcBuffer,
-                             Uint64                         SrcBufferOffset,
-                             Uint32                         SrcBufferRowStrideInTexels,
+                             UInt64                         SrcBufferOffset,
+                             UInt32                         SrcBufferRowStrideInTexels,
                              TextureVkImpl&                 DstTextureVk,
                              const Box&                     DstRegion,
-                             Uint32                         DstMipLevel,
-                             Uint32                         DstArraySlice,
+                             UInt32                         DstMipLevel,
+                             UInt32                         DstArraySlice,
                              RESOURCE_STATE_TRANSITION_MODE DstTextureTransitionMode);
 
     void CopyTextureToBuffer(TextureVkImpl&                 SrcTextureVk,
                              const Box&                     SrcRegion,
-                             Uint32                         SrcMipLevel,
-                             Uint32                         SrcArraySlice,
+                             UInt32                         SrcMipLevel,
+                             UInt32                         SrcArraySlice,
                              RESOURCE_STATE_TRANSITION_MODE SrcTextureTransitionMode,
                              VkBuffer                       vkDstBuffer,
-                             Uint64                         DstBufferOffset,
-                             Uint32                         DstBufferRowStrideInTexels);
+                             UInt64                         DstBufferOffset,
+                             UInt32                         DstBufferRowStrideInTexels);
 
     __forceinline void          PrepareForDraw(DRAW_FLAGS Flags);
     __forceinline void          PrepareForIndexedDraw(DRAW_FLAGS Flags, VALUE_TYPE IndexType);
@@ -514,15 +514,15 @@ private:
         /// Current graphics PSO uses no depth/render targets.
         bool NullRenderTargets = false;
 
-        Uint32 NumCommands = 0;
+        UInt32 NumCommands = 0;
 
         VkPipelineBindPoint vkPipelineBindPoint = VK_PIPELINE_BIND_POINT_MAX_ENUM;
     } m_State;
 
     // Graphics/mesh, compute, ray tracing
-    static constexpr Uint32 NUM_PIPELINE_BIND_POINTS = 3;
+    static constexpr UInt32 NUM_PIPELINE_BIND_POINTS = 3;
 
-    static constexpr Uint32 MAX_DESCR_SET_PER_SIGNATURE = PipelineResourceSignatureVkImpl::MAX_DESCRIPTOR_SETS;
+    static constexpr UInt32 MAX_DESCR_SET_PER_SIGNATURE = PipelineResourceSignatureVkImpl::MAX_DESCRIPTOR_SETS;
 
     struct ResourceBindInfo : CommittedShaderResources
     {
@@ -532,15 +532,15 @@ private:
             std::array<VkDescriptorSet, MAX_DESCR_SET_PER_SIGNATURE> vkSets = {};
 
             // Descriptor set base index given by Layout.GetFirstDescrSetIndex
-            Uint32 BaseInd = 0;
+            UInt32 BaseInd = 0;
 
             // The total number of descriptors with dynamic offset, given by pSignature->GetDynamicOffsetCount().
             // Note that this is not the actual number of dynamic buffers in the resource cache.
-            Uint32 DynamicOffsetCount = 0;
+            UInt32 DynamicOffsetCount = 0;
 
 #ifdef DILIGENT_DEVELOPMENT
             // The descriptor set base index that was used in the last BindDescriptorSets() call
-            Uint32 LastBoundBaseInd = ~0u;
+            UInt32 LastBoundBaseInd = ~0u;
 #endif
         };
         std::array<DescriptorSetInfo, MAX_RESOURCE_SIGNATURES> SetInfo;
@@ -554,7 +554,7 @@ private:
 
     __forceinline ResourceBindInfo& GetBindInfo(PIPELINE_TYPE Type);
 
-    __forceinline void CommitDescriptorSets(ResourceBindInfo& BindInfo, Uint32 CommitSRBMask);
+    __forceinline void CommitDescriptorSets(ResourceBindInfo& BindInfo, UInt32 CommitSRBMask);
 #ifdef DILIGENT_DEVELOPMENT
     void DvpValidateCommittedShaderResources(ResourceBindInfo& BindInfo);
 #endif
@@ -563,7 +563,7 @@ private:
     std::array<ResourceBindInfo, NUM_PIPELINE_BIND_POINTS> m_BindInfo;
 
     /// Memory to store dynamic buffer offsets for descriptor sets.
-    std::vector<Uint32> m_DynamicBufferOffsets;
+    std::vector<UInt32> m_DynamicBufferOffsets;
 
     /// Temporary array used by CommitDescriptorSets
     std::array<VkDescriptorSet, (MAX_RESOURCE_SIGNATURES * MAX_DESCR_SET_PER_SIGNATURE)> m_DescriptorSets = {};
@@ -595,14 +595,14 @@ private:
     std::vector<uint64_t> m_SignalSemaphoreValues;
 
     // List of fences to signal/wait next time the command context is flushed
-    std::vector<std::pair<Uint64, RefCntAutoPtr<FenceVkImpl>>> m_SignalFences;
-    std::vector<std::pair<Uint64, RefCntAutoPtr<FenceVkImpl>>> m_WaitFences;
+    std::vector<std::pair<UInt64, RefCntAutoPtr<FenceVkImpl>>> m_SignalFences;
+    std::vector<std::pair<UInt64, RefCntAutoPtr<FenceVkImpl>>> m_WaitFences;
 
     struct MappedTextureKey
     {
         TextureVkImpl* const Texture;
-        Uint32 const         MipLevel;
-        Uint32 const         ArraySlice;
+        UInt32 const         MipLevel;
+        UInt32 const         ArraySlice;
 
         constexpr bool operator==(const MappedTextureKey& rhs) const
         {
@@ -670,7 +670,7 @@ __forceinline size_t DeviceContextVkImpl::GetDynamicBufferOffset(const BufferVkI
     }
 #endif
 
-    const Uint32 DynamicBufferId = pBuffer->GetDynamicBufferId();
+    const UInt32 DynamicBufferId = pBuffer->GetDynamicBufferId();
     VERIFY(DynamicBufferId != ~0u, "Dynamic buffer '", pBuffer->GetDesc().Name, "' does not have dynamic buffer ID");
     return DynamicBufferId < m_MappedBuffers.size() ?
         m_MappedBuffers[DynamicBufferId].Allocation.AlignedOffset :

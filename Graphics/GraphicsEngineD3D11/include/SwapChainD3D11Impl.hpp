@@ -53,10 +53,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_SwapChainD3D11, TSwapChainBase)
 
     /// Implementation of ISwapChain::Present() in Direct3D11 backend.
-    virtual void DILIGENT_CALL_TYPE Present(Uint32 SyncInterval) override final;
+    virtual void DILIGENT_CALL_TYPE Present(UInt32 SyncInterval) override final;
 
     /// Implementation of ISwapChain::Resize() in Direct3D11 backend.
-    virtual void DILIGENT_CALL_TYPE Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
+    virtual void DILIGENT_CALL_TYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
 
     /// Implementation of ISwapChainD3D11::GetDXGISwapChain() in Direct3D11 backend.
     virtual IDXGISwapChain* DILIGENT_CALL_TYPE GetDXGISwapChain() override final { return m_pSwapChain; }

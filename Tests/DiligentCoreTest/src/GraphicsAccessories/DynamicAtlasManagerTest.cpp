@@ -202,34 +202,34 @@ TEST(GraphicsAccessories_DynamicAtlasManager, Allocate)
         Mgr.Free(std::move(R));
     }
 
-    for (Uint32 i = 0; i < 2; ++i)
+    for (UInt32 i = 0; i < 2; ++i)
     {
         static constexpr size_t N = 5;
 
-        std::array<Uint32, N> ids;
-        for (Uint32 id = 0; id < ids.size(); ++id)
+        std::array<UInt32, N> ids;
+        for (UInt32 id = 0; id < ids.size(); ++id)
             ids[id] = id;
 
-        const std::array<std::pair<Uint32, Uint32>, N> RegionSizes = //
+        const std::array<std::pair<UInt32, UInt32>, N> RegionSizes = //
             {
-                std::make_pair(Uint32{4}, Uint32{8}),
-                std::make_pair(Uint32{12}, Uint32{6}),
-                std::make_pair(Uint32{10}, Uint32{10}),
-                std::make_pair(Uint32{2}, Uint32{12}),
-                std::make_pair(Uint32{5}, Uint32{1}) //
+                std::make_pair(UInt32{4}, UInt32{8}),
+                std::make_pair(UInt32{12}, UInt32{6}),
+                std::make_pair(UInt32{10}, UInt32{10}),
+                std::make_pair(UInt32{2}, UInt32{12}),
+                std::make_pair(UInt32{5}, UInt32{1}) //
             };
 
         do
         {
-            Uint32 AtlasWidth  = 16;
-            Uint32 AtlasHeight = 20;
+            UInt32 AtlasWidth  = 16;
+            UInt32 AtlasHeight = 20;
             if (i == 1)
                 std::swap(AtlasWidth, AtlasHeight);
 
             DynamicAtlasManager Mgr{AtlasWidth, AtlasHeight};
 
             std::array<Region, N> Rs;
-            for (Uint32 r = 0; r < N; ++r)
+            for (UInt32 r = 0; r < N; ++r)
             {
                 auto w = RegionSizes[r].first;
                 auto h = RegionSizes[r].second;
@@ -448,8 +448,8 @@ TEST(GraphicsAccessories_DynamicAtlasManager, Allocate)
 TEST(GraphicsAccessories_DynamicAtlasManager, AllocateRandom)
 {
     DynamicAtlasManager Mgr{256, 256};
-    const Uint32        NumIterations = 10;
-    for (Uint32 i = 0; i < NumIterations; ++i)
+    const UInt32        NumIterations = 10;
+    for (UInt32 i = 0; i < NumIterations; ++i)
     {
         FastRandInt         rnd{static_cast<unsigned int>(i), 1, 16};
         std::vector<Region> Regions(i * 8);

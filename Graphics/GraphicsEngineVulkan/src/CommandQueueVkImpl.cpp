@@ -38,17 +38,17 @@ namespace Diligent
 CommandQueueVkImpl::CommandQueueVkImpl(IReferenceCounters*                             pRefCounters,
                                        std::shared_ptr<VulkanUtilities::LogicalDevice> LogicalDevice,
                                        SoftwareQueueIndex                              CommandQueueId,
-                                       Uint32                                          NumCommandQueues,
-                                       Uint32                                          vkQueueIndex,
+                                       UInt32                                          NumCommandQueues,
+                                       UInt32                                          vkQueueIndex,
                                        const ImmediateContextCreateInfo&               CreateInfo) :
     // clang-format off
     TBase{pRefCounters},
     m_LogicalDevice             {LogicalDevice},
     m_VkQueue                   {LogicalDevice->GetQueue(HardwareQueueIndex{CreateInfo.QueueId}, vkQueueIndex)},
     m_QueueFamilyIndex          {CreateInfo.QueueId},
-    m_CommandQueueId            {static_cast<Uint8>(CommandQueueId)},
+    m_CommandQueueId            {static_cast<UInt8>(CommandQueueId)},
     m_SupportedTimelineSemaphore{LogicalDevice->GetEnabledExtFeatures().TimelineSemaphore.timelineSemaphore == VK_TRUE},
-    m_NumCommandQueues          {static_cast<Uint8>(m_SupportedTimelineSemaphore ? 1u : NumCommandQueues)},
+    m_NumCommandQueues          {static_cast<UInt8>(m_SupportedTimelineSemaphore ? 1u : NumCommandQueues)},
     m_NextFenceValue            {1},
     m_SyncObjectManager         {std::make_shared<VulkanUtilities::SyncObjectManager>(*LogicalDevice)},
     m_SyncPointAllocator        {GetRawAllocator(), SyncPointVk::SizeOf(m_NumCommandQueues), 16}
@@ -79,19 +79,19 @@ CommandQueueVkImpl::~CommandQueueVkImpl()
 }
 
 SyncPointVk::SyncPointVk(SoftwareQueueIndex                  CommandQueueId,
-                         Uint32                              NumContexts,
+                         UInt32                              NumContexts,
                          VulkanUtilities::SyncObjectManager& SyncObjectMngr,
                          VkDevice                            vkDevice,
-                         Uint64                              dbgValue) :
+                         UInt64                              dbgValue) :
     m_CommandQueueId{CommandQueueId},
-    m_NumSemaphores{static_cast<Uint8>(NumContexts)},
+    m_NumSemaphores{static_cast<UInt8>(NumContexts)},
     m_Fence{SyncObjectMngr.CreateFence()}
 {
     VERIFY(m_CommandQueueId == CommandQueueId, "Not enough bits to store command queue index");
     VERIFY(m_NumSemaphores == NumContexts, "Not enough bits to store command queue count");
 
     // Call constructors for semaphores
-    for (Uint32 s = _countof(m_Semaphores); s < NumContexts; ++s)
+    for (UInt32 s = _countof(m_Semaphores); s < NumContexts; ++s)
         new (&m_Semaphores[s]) VulkanUtilities::RecycledSemaphore{};
 
     // Semaphores are used to synchronize between queues; they are not used for synchronization within one queue.
@@ -107,7 +107,7 @@ SyncPointVk::SyncPointVk(SoftwareQueueIndex                  CommandQueueId,
     String Name = String{"Queue ("} + std::to_string(CommandQueueId) + ") Value (" + std::to_string(dbgValue) + ")";
     VulkanUtilities::SetFenceName(vkDevice, m_Fence, Name.c_str());
 
-    for (Uint32 s = 0; s < m_NumSemaphores; ++s)
+    for (UInt32 s = 0; s < m_NumSemaphores; ++s)
     {
         if (m_Semaphores[s])
         {
@@ -121,20 +121,20 @@ SyncPointVk::SyncPointVk(SoftwareQueueIndex                  CommandQueueId,
 SyncPointVk::~SyncPointVk()
 {
     // Call destructors for semaphores
-    for (Uint32 s = _countof(m_Semaphores); s < m_NumSemaphores; ++s)
+    for (UInt32 s = _countof(m_Semaphores); s < m_NumSemaphores; ++s)
         m_Semaphores[s].~RecycledSyncObject();
 }
 
 __forceinline void SyncPointVk::GetSemaphores(std::vector<VkSemaphore>& Semaphores)
 {
-    for (Uint32 s = 0; s < m_NumSemaphores; ++s)
+    for (UInt32 s = 0; s < m_NumSemaphores; ++s)
     {
         if (m_Semaphores[s])
             Semaphores.push_back(m_Semaphores[s]);
     }
 }
 
-__forceinline SyncPointVkPtr CommandQueueVkImpl::CreateSyncPoint(Uint64 dbgValue)
+__forceinline SyncPointVkPtr CommandQueueVkImpl::CreateSyncPoint(UInt64 dbgValue)
 {
     FixedBlockMemoryAllocator* pAllocator = &m_SyncPointAllocator;
     void*                      ptr        = pAllocator->Allocate(SyncPointVk::SizeOf(m_NumCommandQueues), "SyncPointVk", __FILE__, __LINE__);
@@ -147,7 +147,7 @@ __forceinline SyncPointVkPtr CommandQueueVkImpl::CreateSyncPoint(Uint64 dbgValue
     return {new (ptr) SyncPointVk{m_CommandQueueId, m_NumCommandQueues, *m_SyncObjectManager, m_LogicalDevice->GetVkDevice(), dbgValue}, std::move(Deleter)};
 }
 
-Uint64 CommandQueueVkImpl::Submit(const VkSubmitInfo& InSubmitInfo)
+UInt64 CommandQueueVkImpl::Submit(const VkSubmitInfo& InSubmitInfo)
 {
     std::lock_guard<std::mutex> QueueGuard{m_QueueMutex};
 
@@ -176,7 +176,7 @@ Uint64 CommandQueueVkImpl::Submit(const VkSubmitInfo& InSubmitInfo)
         m_TempSignalSemaphores.push_back(InSubmitInfo.pSignalSemaphores[s]);
 
     VkSubmitInfo SubmitInfo         = InSubmitInfo;
-    SubmitInfo.signalSemaphoreCount = static_cast<Uint32>(m_TempSignalSemaphores.size());
+    SubmitInfo.signalSemaphoreCount = static_cast<UInt32>(m_TempSignalSemaphores.size());
     SubmitInfo.pSignalSemaphores    = m_TempSignalSemaphores.data();
 
     const uint32_t SubmitCount =
@@ -202,7 +202,7 @@ Uint64 CommandQueueVkImpl::Submit(const VkSubmitInfo& InSubmitInfo)
     return FenceValue;
 }
 
-Uint64 CommandQueueVkImpl::SubmitCmdBuffer(VkCommandBuffer cmdBuffer)
+UInt64 CommandQueueVkImpl::SubmitCmdBuffer(VkCommandBuffer cmdBuffer)
 {
     VkSubmitInfo SubmitInfo{};
     SubmitInfo.sType              = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -221,12 +221,12 @@ Uint64 CommandQueueVkImpl::SubmitCmdBuffer(VkCommandBuffer cmdBuffer)
     return Submit(SubmitInfo);
 }
 
-Uint64 CommandQueueVkImpl::WaitForIdle()
+UInt64 CommandQueueVkImpl::WaitForIdle()
 {
     std::lock_guard<std::mutex> QueueGuard{m_QueueMutex};
 
     // Update last completed fence value to unlock all waiting events.
-    const Uint64 FenceValue = m_NextFenceValue.fetch_add(1);
+    const UInt64 FenceValue = m_NextFenceValue.fetch_add(1);
 
     vkQueueWaitIdle(m_VkQueue);
     // For some reason after idling the queue not all fences are signaled
@@ -236,7 +236,7 @@ Uint64 CommandQueueVkImpl::WaitForIdle()
     return FenceValue;
 }
 
-Uint64 CommandQueueVkImpl::GetCompletedFenceValue()
+UInt64 CommandQueueVkImpl::GetCompletedFenceValue()
 {
     return m_pFence->GetCompletedValue();
 }
@@ -252,13 +252,13 @@ void CommandQueueVkImpl::EnqueueSignalFence(VkFence vkFence)
     (void)err;
 }
 
-void CommandQueueVkImpl::EnqueueSignal(VkSemaphore vkTimelineSemaphore, Uint64 Value)
+void CommandQueueVkImpl::EnqueueSignal(VkSemaphore vkTimelineSemaphore, UInt64 Value)
 {
     std::lock_guard<std::mutex> QueueGuard{m_QueueMutex};
     InternalSignalSemaphore(vkTimelineSemaphore, Value);
 }
 
-void CommandQueueVkImpl::InternalSignalSemaphore(VkSemaphore vkTimelineSemaphore, Uint64 Value)
+void CommandQueueVkImpl::InternalSignalSemaphore(VkSemaphore vkTimelineSemaphore, UInt64 Value)
 {
     DEV_CHECK_ERR(vkTimelineSemaphore != VK_NULL_HANDLE, "vkTimelineSemaphore must not be null");
     DEV_CHECK_ERR(m_SupportedTimelineSemaphore, "Timeline semaphore is not supported");
@@ -290,7 +290,7 @@ VkResult CommandQueueVkImpl::Present(const VkPresentInfoKHR& PresentInfo)
     return vkQueuePresentKHR(m_VkQueue, &PresentInfo);
 }
 
-Uint64 CommandQueueVkImpl::BindSparse(const VkBindSparseInfo& InBindInfo)
+UInt64 CommandQueueVkImpl::BindSparse(const VkBindSparseInfo& InBindInfo)
 {
     std::lock_guard<std::mutex> QueueGuard{m_QueueMutex};
 
@@ -319,7 +319,7 @@ Uint64 CommandQueueVkImpl::BindSparse(const VkBindSparseInfo& InBindInfo)
         m_TempSignalSemaphores.push_back(InBindInfo.pSignalSemaphores[s]);
 
     VkBindSparseInfo BindInfo     = InBindInfo;
-    BindInfo.signalSemaphoreCount = static_cast<Uint32>(m_TempSignalSemaphores.size());
+    BindInfo.signalSemaphoreCount = static_cast<UInt32>(m_TempSignalSemaphores.size());
     BindInfo.pSignalSemaphores    = m_TempSignalSemaphores.data();
 
     VkResult err = vkQueueBindSparse(m_VkQueue, 1, &BindInfo, NewSyncPoint->GetFence());

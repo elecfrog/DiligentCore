@@ -40,9 +40,9 @@ struct ResourceBinding
 {
     struct BindInfo
     {
-        Uint32 BindPoint = ~0u;
-        Uint32 Space     = ~0u;
-        Uint32 ArraySize = 0;
+        UInt32 BindPoint = ~0u;
+        UInt32 Space     = ~0u;
+        UInt32 ArraySize = 0;
 
 #ifdef DILIGENT_DEVELOPMENT
         SHADER_RESOURCE_TYPE ResType = SHADER_RESOURCE_TYPE_UNKNOWN;
@@ -51,7 +51,7 @@ struct ResourceBinding
         BindInfo() noexcept
         {}
 
-        BindInfo(Uint32 _BindPoint, Uint32 _Space, Uint32 _ArraySize, SHADER_RESOURCE_TYPE _ResType) noexcept :
+        BindInfo(UInt32 _BindPoint, UInt32 _Space, UInt32 _ArraySize, SHADER_RESOURCE_TYPE _ResType) noexcept :
             // clang-format off
             BindPoint{_BindPoint},
             Space    {_Space    },

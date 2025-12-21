@@ -101,14 +101,14 @@ public:
     template <typename HanlderType>
     static std::unique_ptr<AsyncInitializer> Start(IThreadPool*  pThreadPool,
                                                    IAsyncTask**  ppPrerequisites,
-                                                   Uint32        NumPrerequisites,
+                                                   UInt32        NumPrerequisites,
                                                    HanlderType&& Handler)
     {
         VERIFY_EXPR(pThreadPool != nullptr);
         return std::unique_ptr<AsyncInitializer>{
             new AsyncInitializer{
                 EnqueueAsyncWork(pThreadPool, ppPrerequisites, NumPrerequisites,
-                                 [Handler = std::forward<HanlderType>(Handler)](Uint32 ThreadId) mutable {
+                                 [Handler = std::forward<HanlderType>(Handler)](UInt32 ThreadId) mutable {
                                      Handler(ThreadId);
                                      return ASYNC_TASK_STATUS_COMPLETE;
                                  }),
@@ -122,7 +122,7 @@ public:
                                                    HanlderType&&                                 Handler)
     {
         std::vector<IAsyncTask*> PrerequisitePtrs{Prerequisites.begin(), Prerequisites.end()};
-        return Start(pThreadPool, PrerequisitePtrs.data(), static_cast<Uint32>(PrerequisitePtrs.size()), std::forward<HanlderType>(Handler));
+        return Start(pThreadPool, PrerequisitePtrs.data(), static_cast<UInt32>(PrerequisitePtrs.size()), std::forward<HanlderType>(Handler));
     }
 
     template <typename HanlderType>

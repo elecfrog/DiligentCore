@@ -53,13 +53,13 @@ DILIGENT_BEGIN_INTERFACE(ICommandQueueVk, ICommandQueue)
     /// Submits a given command buffer to the command queue
 
     /// \return Fence value associated with the submitted command buffer
-    VIRTUAL Uint64 METHOD(SubmitCmdBuffer)(THIS_
+    VIRTUAL UInt64 METHOD(SubmitCmdBuffer)(THIS_
                                            VkCommandBuffer cmdBuffer) PURE;
 
     /// Submits a given work batch to the internal Vulkan command queue
 
     /// \return Fence value associated with the submitted command buffer
-    VIRTUAL Uint64 METHOD(Submit)(THIS_
+    VIRTUAL UInt64 METHOD(Submit)(THIS_
                                   const VkSubmitInfo REF SubmitInfo) PURE;
 
     /// Presents the current swap chain image on the screen
@@ -69,7 +69,7 @@ DILIGENT_BEGIN_INTERFACE(ICommandQueueVk, ICommandQueue)
     /// Submits a sparse bind commands to the internal Vulkan command queue
 
     /// \return Fence value associated with the submitted sparse bind command
-    VIRTUAL Uint64 METHOD(BindSparse)(THIS_
+    VIRTUAL UInt64 METHOD(BindSparse)(THIS_
                                       const VkBindSparseInfo REF BindInfo) PURE;
 
     /// Returns Vulkan command queue handle. May return VK_NULL_HANDLE if queue is unavailable
@@ -91,7 +91,7 @@ DILIGENT_BEGIN_INTERFACE(ICommandQueueVk, ICommandQueue)
     /// \note  Requires NativeFence feature, see Diligent::DeviceFeatures.
     VIRTUAL void METHOD(EnqueueSignal)(THIS_
                                        VkSemaphore vkTimelineSemaphore,
-                                       Uint64      Value) PURE;
+                                       UInt64      Value) PURE;
 };
 DILIGENT_END_INTERFACE
 

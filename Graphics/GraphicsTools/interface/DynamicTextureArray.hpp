@@ -55,7 +55,7 @@ struct DynamicTextureArrayCreateInfo
 
     /// This value is only relevant when Desc.Usage == Diligent::USAGE_SPARSE and
     /// defines the number of texture array slices in one memory page.
-    Uint32 NumSlicesInMemoryPage = 1;
+    UInt32 NumSlicesInMemoryPage = 1;
 };
 
 /// Dynamically resizable texture 2D array
@@ -110,7 +110,7 @@ public:
     /// If `NewArraySize` is zero, internal buffer will be released.
     ITexture* Resize(IRenderDevice*  pDevice,
                      IDeviceContext* pContext,
-                     Uint32          NewArraySize,
+                     UInt32          NewArraySize,
                      bool            DiscardContent = false);
 
 
@@ -161,13 +161,13 @@ public:
     /// Returns dynamic texture version.
 
     /// The version is incremented every time a new internal texture is created.
-    Uint32 GetVersion() const
+    UInt32 GetVersion() const
     {
         return m_Version;
     }
 
     /// Returns the amount of memory currently used by the dynamic array, in bytes.
-    Uint64 GetMemoryUsage() const;
+    UInt64 GetMemoryUsage() const;
 
 private:
     void CommitResize(IRenderDevice*  pDevice,
@@ -182,21 +182,21 @@ private:
 
     const std::string m_Name;
     TextureDesc       m_Desc;
-    const Uint32      m_NumSlicesInPage;
+    const UInt32      m_NumSlicesInPage;
 
-    std::atomic<Uint32> m_Version{0};
+    std::atomic<UInt32> m_Version{0};
 
-    Uint32 m_PendingSize = 0;
+    UInt32 m_PendingSize = 0;
 
     RefCntAutoPtr<ITexture>      m_pTexture;
     RefCntAutoPtr<ITexture>      m_pStaleTexture;
     RefCntAutoPtr<IDeviceMemory> m_pMemory;
 
-    Uint64 m_MemoryPageSize = 0;
+    UInt64 m_MemoryPageSize = 0;
 
-    Uint64 m_NextBeforeResizeFenceValue = 1;
-    Uint64 m_NextAfterResizeFenceValue  = 1;
-    Uint64 m_LastAfterResizeFenceValue  = 0;
+    UInt64 m_NextBeforeResizeFenceValue = 1;
+    UInt64 m_NextAfterResizeFenceValue  = 1;
+    UInt64 m_LastAfterResizeFenceValue  = 0;
 
     RefCntAutoPtr<IFence> m_pBeforeResizeFence;
     RefCntAutoPtr<IFence> m_pAfterResizeFence;

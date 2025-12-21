@@ -39,10 +39,10 @@ void TestRasterizationRateMapMtl_CInterface(IRasterizationRateMapMtl* pRRM)
     }
     ITextureView* pView = IRasterizationRateMapMtl_GetView(pRRM);
     (void)pView;
-    IRasterizationRateMapMtl_GetPhysicalSizeForLayer(pRRM, 0, (Uint32*)NULL, (Uint32*)NULL);
-    IRasterizationRateMapMtl_GetPhysicalGranularity(pRRM, (Uint32*)NULL, (Uint32*)NULL);
+    IRasterizationRateMapMtl_GetPhysicalSizeForLayer(pRRM, 0, (UInt32*)NULL, (UInt32*)NULL);
+    IRasterizationRateMapMtl_GetPhysicalGranularity(pRRM, (UInt32*)NULL, (UInt32*)NULL);
     IRasterizationRateMapMtl_MapScreenToPhysicalCoordinates(pRRM, 0, 0.f, 0.f, (float*)NULL, (float*)NULL);
     IRasterizationRateMapMtl_MapPhysicalToScreenCoordinates(pRRM, 0, 0.f, 0.f, (float*)NULL, (float*)NULL);
-    IRasterizationRateMapMtl_GetParameterBufferSizeAndAlign(pRRM, (Uint64*)NULL, (Uint32*)NULL);
+    IRasterizationRateMapMtl_GetParameterBufferSizeAndAlign(pRRM, (UInt64*)NULL, (UInt32*)NULL);
     IRasterizationRateMapMtl_CopyParameterDataToBuffer(pRRM, (struct IBuffer*)NULL, 0);
 }

@@ -114,7 +114,7 @@ bool ArchiveSerializer<Mode>::SerializeShaders(ConstQual<ShadersVector>& Shaders
 {
     static_assert(Mode == SerializerMode::Measure || Mode == SerializerMode::Write, "Measure or Write mode is expected.");
 
-    Uint32 NumShaders = static_cast<Uint32>(Shaders.size());
+    UInt32 NumShaders = static_cast<UInt32>(Shaders.size());
     if (!Ser(NumShaders))
         return false;
 
@@ -130,7 +130,7 @@ bool ArchiveSerializer<Mode>::SerializeShaders(ConstQual<ShadersVector>& Shaders
 template <>
 bool ArchiveSerializer<SerializerMode::Read>::SerializeShaders(ShadersVector& Shaders) const
 {
-    Uint32 NumShaders = 0;
+    UInt32 NumShaders = 0;
     if (!Ser(NumShaders))
         return false;
 
@@ -146,7 +146,7 @@ bool ArchiveSerializer<SerializerMode::Read>::SerializeShaders(ShadersVector& Sh
 
 } // namespace
 
-DeviceObjectArchive::DeviceObjectArchive(Uint32 ContentVersion) noexcept :
+DeviceObjectArchive::DeviceObjectArchive(UInt32 ContentVersion) noexcept :
     m_ContentVersion{ContentVersion}
 {
 }
@@ -198,7 +198,7 @@ bool DeviceObjectArchive::Deserialize(const CreateInfo& CI) noexcept
 
     CHECK_ARCHIVE(ArchiveReader.Ser(Header.Version), "Failed to read device object archive version.");
 
-    CHECK_ARCHIVE(Header.Version == ArchiveVersion, "Unsupported device object archive version: ", Header.Version, ". Expected version: ", Uint32{ArchiveVersion});
+    CHECK_ARCHIVE(Header.Version == ArchiveVersion, "Unsupported device object archive version: ", Header.Version, ". Expected version: ", UInt32{ArchiveVersion});
 
     CHECK_ARCHIVE(ArchiveReader.Ser(Header.APIVersion), "Failed to read Diligent API version.");
 
@@ -210,10 +210,10 @@ bool DeviceObjectArchive::Deserialize(const CreateInfo& CI) noexcept
 
     CHECK_ARCHIVE(ArchiveReader.Ser(Header.GitHash), "Failed to read Git Hash.");
 
-    Uint32 NumResources = 0;
+    UInt32 NumResources = 0;
     CHECK_ARCHIVE(Reader(NumResources), "Failed to read the number of named resources in the device object archive.");
 
-    for (Uint32 res = 0; res < NumResources; ++res)
+    for (UInt32 res = 0; res < NumResources; ++res)
     {
         const char*  Name    = nullptr;
         ResourceType ResType = ResourceType::Undefined;
@@ -255,7 +255,7 @@ void DeviceObjectArchive::Serialize(IDataBlob** ppDataBlob) const
         auto res = ArchiveSer.SerializeHeader(Header);
         VERIFY(res, "Failed to serialize header");
 
-        Uint32 NumResources = StaticCast<Uint32>(m_NamedResources.size());
+        UInt32 NumResources = StaticCast<UInt32>(m_NamedResources.size());
         res                 = Ser(NumResources);
         VERIFY(res, "Failed to serialize the number of resources");
 
@@ -294,10 +294,10 @@ void DeviceObjectArchive::Serialize(IDataBlob** ppDataBlob) const
 namespace
 {
 
-const char* ArchiveDeviceTypeToString(Uint32 dev)
+const char* ArchiveDeviceTypeToString(UInt32 dev)
 {
     using DeviceType = DeviceObjectArchive::DeviceType;
-    static_assert(static_cast<Uint32>(DeviceType::Count) == 7, "Please handle the new archive device type below");
+    static_assert(static_cast<UInt32>(DeviceType::Count) == 7, "Please handle the new archive device type below");
     switch (static_cast<DeviceType>(dev))
     {
             // clang-format off
@@ -427,7 +427,7 @@ std::string DeviceObjectArchive::ToString() const
 
                 size_t MaxSize       = Res.Common.Size();
                 size_t MaxDevNameLen = strlen(CommonDataName);
-                for (Uint32 i = 0; i < Res.DeviceSpecific.size(); ++i)
+                for (UInt32 i = 0; i < Res.DeviceSpecific.size(); ++i)
                 {
                     const size_t DevDataSize = Res.DeviceSpecific[i].Size();
 
@@ -441,7 +441,7 @@ std::string DeviceObjectArchive::ToString() const
                        << std::setw(static_cast<int>(SizeFieldW)) << std::right << Res.Common.Size() << " bytes\n";
                 // ....Common     1015 bytes
 
-                for (Uint32 i = 0; i < Res.DeviceSpecific.size(); ++i)
+                for (UInt32 i = 0; i < Res.DeviceSpecific.size(); ++i)
                 {
                     const size_t DevDataSize = Res.DeviceSpecific[i].Size();
                     if (DevDataSize > 0)
@@ -480,7 +480,7 @@ std::string DeviceObjectArchive::ToString() const
             // ------------------
             // Compiled Shaders
 
-            for (Uint32 dev = 0; dev < m_DeviceShaders.size(); ++dev)
+            for (UInt32 dev = 0; dev < m_DeviceShaders.size(); ++dev)
             {
                 const std::vector<SerializedData>& Shaders = m_DeviceShaders[dev];
                 if (Shaders.empty())
@@ -508,7 +508,7 @@ std::string DeviceObjectArchive::ToString() const
 
                 const size_t IdxFieldW  = GetNumFieldWidth(Shaders.size());
                 const size_t SizeFieldW = GetNumFieldWidth(MaxSize);
-                for (Uint32 idx = 0; idx < Shaders.size(); ++idx)
+                for (UInt32 idx = 0; idx < Shaders.size(); ++idx)
                 {
                     Output << Ident2 << '[' << std::setw(static_cast<int>(IdxFieldW)) << std::right << idx << "] "
                            << std::setw(static_cast<int>(MaxNameLen)) << std::left << ShaderNames[idx] << ' '
@@ -568,12 +568,12 @@ void DeviceObjectArchive::Merge(const DeviceObjectArchive& Src) noexcept(false)
     DynamicLinearAllocator DynAllocator{Allocator, 512};
 
     // Copy shaders
-    std::array<Uint32, static_cast<size_t>(DeviceType::Count)> ShaderBaseIndices{};
+    std::array<UInt32, static_cast<size_t>(DeviceType::Count)> ShaderBaseIndices{};
     for (size_t i = 0; i < m_DeviceShaders.size(); ++i)
     {
         const auto& SrcShaders = Src.m_DeviceShaders[i];
         auto&       DstShaders = m_DeviceShaders[i];
-        ShaderBaseIndices[i]   = static_cast<Uint32>(DstShaders.size());
+        ShaderBaseIndices[i]   = static_cast<UInt32>(DstShaders.size());
         if (SrcShaders.empty())
             continue;
         DstShaders.reserve(DstShaders.size() + SrcShaders.size());
@@ -609,7 +609,7 @@ void DeviceObjectArchive::Merge(const DeviceObjectArchive& Src) noexcept(false)
         {
             for (size_t i = 0; i < static_cast<size_t>(DeviceType::Count); ++i)
             {
-                const Uint32 BaseIdx = ShaderBaseIndices[i];
+                const UInt32 BaseIdx = ShaderBaseIndices[i];
 
                 SerializedData& DeviceData = it_inserted.first->second.DeviceSpecific[i];
                 if (!DeviceData)
@@ -618,7 +618,7 @@ void DeviceObjectArchive::Merge(const DeviceObjectArchive& Src) noexcept(false)
                 if (IsStandaloneShader)
                 {
                     // For shaders, device-specific data is the serialized shader bytecode index
-                    Uint32 ShaderIndex = 0;
+                    UInt32 ShaderIndex = 0;
                     {
                         Serializer<SerializerMode::Read> Ser{DeviceData};
                         if (!Ser(ShaderIndex))
@@ -645,8 +645,8 @@ void DeviceObjectArchive::Merge(const DeviceObjectArchive& Src) noexcept(false)
                         VERIFY(Ser.IsEnded(), "No other data besides shader indices is expected");
                     }
 
-                    std::vector<Uint32> NewIndices{ShaderIndices.pIndices, ShaderIndices.pIndices + ShaderIndices.Count};
-                    for (Uint32& Idx : NewIndices)
+                    std::vector<UInt32> NewIndices{ShaderIndices.pIndices, ShaderIndices.pIndices + ShaderIndices.Count};
+                    for (UInt32& Idx : NewIndices)
                         Idx += BaseIdx;
 
                     {

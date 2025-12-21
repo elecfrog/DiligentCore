@@ -34,7 +34,7 @@
 
 #include <string.h>
 
-#include "../../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "../../../Primitives/interface/FlagEnum.h"
 #include "../../../Platforms/interface/NativeWindow.h"
 #include "../../../Common/interface/StringTools.h"
@@ -50,7 +50,7 @@ DILIGENT_BEGIN_NAMESPACE(Diligent)
 /// This enumeration describes value type. It is used by
 /// - BufferDesc structure to describe value type of a formatted buffer
 /// - DrawAttribs structure to describe index type for an indexed draw call
-DILIGENT_TYPED_ENUM(VALUE_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(VALUE_TYPE, UInt8)
 {
     VT_UNDEFINED = 0, ///< Undefined type
     VT_INT8,          ///< Signed 8-bit integer
@@ -67,7 +67,7 @@ DILIGENT_TYPED_ENUM(VALUE_TYPE, Uint8)
 
 
 /// Describes the shader type
-DILIGENT_TYPED_ENUM(SHADER_TYPE, Uint32)
+DILIGENT_TYPED_ENUM(SHADER_TYPE, UInt32)
 {
     SHADER_TYPE_UNKNOWN          = 0x0000, ///< Unknown shader type
     SHADER_TYPE_VERTEX           = 0x0001, ///< Vertex shader
@@ -125,7 +125,7 @@ DEFINE_FLAG_ENUM_OPERATORS(SHADER_TYPE);
 /// It generally mirrors [D3D11_BIND_FLAG][] enumeration. It is used by
 /// - BufferDesc to describe bind flags for a buffer
 /// - TextureDesc to describe bind flags for a texture
-DILIGENT_TYPED_ENUM(BIND_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(BIND_FLAGS, UInt32)
 {
     /// Undefined binding.
     BIND_NONE                = 0,
@@ -180,7 +180,7 @@ DEFINE_FLAG_ENUM_OPERATORS(BIND_FLAGS)
 /// The enumeration is used by
 /// - BufferDesc to describe usage for a buffer
 /// - TextureDesc to describe usage for a texture
-DILIGENT_TYPED_ENUM(USAGE, Uint8)
+DILIGENT_TYPED_ENUM(USAGE, UInt8)
 {
     /// A resource that can only be read by the GPU. It cannot be written by the GPU,
     /// and cannot be accessed at all by the CPU. This type of resource must be initialized
@@ -231,7 +231,7 @@ DILIGENT_TYPED_ENUM(USAGE, Uint8)
 /// - BufferDesc to describe CPU access mode for a buffer
 /// - TextureDesc to describe CPU access mode for a texture
 /// \note Only USAGE_DYNAMIC resources can be mapped
-DILIGENT_TYPED_ENUM(CPU_ACCESS_FLAGS, Uint8)
+DILIGENT_TYPED_ENUM(CPU_ACCESS_FLAGS, UInt8)
 {
     CPU_ACCESS_NONE  = 0u,       ///< No CPU access
     CPU_ACCESS_READ  = 1u << 0u, ///< A resource can be mapped for reading
@@ -248,7 +248,7 @@ DEFINE_FLAG_ENUM_OPERATORS(CPU_ACCESS_FLAGS)
 /// mirrors [D3D11_MAP][] enumeration. It is used by
 /// - IBuffer::Map to describe buffer mapping type
 /// - ITexture::Map to describe texture mapping type
-DILIGENT_TYPED_ENUM(MAP_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(MAP_TYPE, UInt8)
 {
     /// The resource is mapped for reading. \n
     /// D3D11 counterpart: D3D11_MAP_READ. OpenGL counterpart: GL_MAP_READ_BIT
@@ -269,7 +269,7 @@ DILIGENT_TYPED_ENUM(MAP_TYPE, Uint8)
 /// This enumeration is used by
 /// - IBuffer::Map to describe buffer mapping flags
 /// - ITexture::Map to describe texture mapping flags
-DILIGENT_TYPED_ENUM(MAP_FLAGS, Uint8)
+DILIGENT_TYPED_ENUM(MAP_FLAGS, UInt8)
 {
     /// No special flags
     MAP_FLAG_NONE         = 0x000,
@@ -299,7 +299,7 @@ DEFINE_FLAG_ENUM_OPERATORS(MAP_FLAGS)
 /// This enumeration is used by
 /// - TextureDesc to describe texture type
 /// - TextureViewDesc to describe texture view type
-DILIGENT_TYPED_ENUM(RESOURCE_DIMENSION, Uint8)
+DILIGENT_TYPED_ENUM(RESOURCE_DIMENSION, UInt8)
 {
     RESOURCE_DIM_UNDEFINED = 0,  ///< Texture type undefined
     RESOURCE_DIM_BUFFER,         ///< Buffer
@@ -317,7 +317,7 @@ DILIGENT_TYPED_ENUM(RESOURCE_DIMENSION, Uint8)
 
 /// This enumeration describes allowed view types for a texture view. It is used by TextureViewDesc
 /// structure.
-DILIGENT_TYPED_ENUM(TEXTURE_VIEW_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(TEXTURE_VIEW_TYPE, UInt8)
 {
     /// Undefined view type
     TEXTURE_VIEW_UNDEFINED = 0,
@@ -355,7 +355,7 @@ DILIGENT_TYPED_ENUM(TEXTURE_VIEW_TYPE, Uint8)
 
 /// This enumeration describes allowed view types for a buffer view. It is used by BufferViewDesc
 /// structure.
-DILIGENT_TYPED_ENUM(BUFFER_VIEW_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(BUFFER_VIEW_TYPE, UInt8)
 {
     /// Undefined view type
     BUFFER_VIEW_UNDEFINED = 0,
@@ -380,7 +380,7 @@ DILIGENT_TYPED_ENUM(BUFFER_VIEW_TYPE, Uint8)
 /// \sa <a href = "https://docs.microsoft.com/en-us/windows/win32/api/dxgiformat/ne-dxgiformat-dxgi_format">DXGI_FORMAT enumeration on MSDN</a>,
 ///     <a href = "https://www.opengl.org/wiki/Image_Format">OpenGL Texture Formats</a>
 ///
-DILIGENT_TYPED_ENUM(TEXTURE_FORMAT, Uint16)
+DILIGENT_TYPED_ENUM(TEXTURE_FORMAT, UInt16)
 {
     /// Unknown format
     TEX_FORMAT_UNKNOWN = 0,
@@ -940,7 +940,7 @@ DILIGENT_TYPED_ENUM(TEXTURE_FORMAT, Uint16)
 /// This enumeration defines filter type. It is used by SamplerDesc structure to define min, mag and mip filters.
 /// \note On D3D11, comparison filters only work with textures that have the following formats:
 /// R32_FLOAT_X8X24_TYPELESS, R32_FLOAT, R24_UNORM_X8_TYPELESS, R16_UNORM.
-DILIGENT_TYPED_ENUM(FILTER_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(FILTER_TYPE, UInt8)
 {
     FILTER_TYPE_UNKNOWN  = 0,           ///< Unknown filter type
     FILTER_TYPE_POINT,                  ///< Point filtering
@@ -965,7 +965,7 @@ DILIGENT_TYPED_ENUM(FILTER_TYPE, Uint8)
 /// Defines a technique for resolving texture coordinates that are outside of
 /// the boundaries of a texture. The enumeration generally mirrors [D3D11_TEXTURE_ADDRESS_MODE][]/[D3D12_TEXTURE_ADDRESS_MODE][] enumeration.
 /// It is used by SamplerDesc structure to define the address mode for U,V and W texture coordinates.
-DILIGENT_TYPED_ENUM(TEXTURE_ADDRESS_MODE, Uint8)
+DILIGENT_TYPED_ENUM(TEXTURE_ADDRESS_MODE, UInt8)
 {
     /// Unknown mode
     TEXTURE_ADDRESS_UNKNOWN = 0,
@@ -1007,7 +1007,7 @@ DILIGENT_TYPED_ENUM(TEXTURE_ADDRESS_MODE, Uint8)
 /// - SamplerDesc to define a comparison function if one of the comparison mode filters is used
 /// - StencilOpDesc to define a stencil function
 /// - DepthStencilStateDesc to define a depth function
-DILIGENT_TYPED_ENUM(COMPARISON_FUNCTION, Uint8)
+DILIGENT_TYPED_ENUM(COMPARISON_FUNCTION, UInt8)
 {
     /// Unknown comparison function
     COMPARISON_FUNC_UNKNOWN = 0,
@@ -1051,7 +1051,7 @@ DILIGENT_TYPED_ENUM(COMPARISON_FUNCTION, Uint8)
 /// Input primitive topology.
 
 /// This enumeration is used by GraphicsPipelineDesc structure to define input primitive topology.
-DILIGENT_TYPED_ENUM(PRIMITIVE_TOPOLOGY, Uint8)
+DILIGENT_TYPED_ENUM(PRIMITIVE_TOPOLOGY, UInt8)
 {
     /// Undefined topology
     PRIMITIVE_TOPOLOGY_UNDEFINED = 0,
@@ -1226,7 +1226,7 @@ DILIGENT_TYPED_ENUM(PRIMITIVE_TOPOLOGY, Uint8)
 
 
 /// Memory property flags.
-DILIGENT_TYPED_ENUM(MEMORY_PROPERTIES, Uint32)
+DILIGENT_TYPED_ENUM(MEMORY_PROPERTIES, UInt32)
 {
     /// Memory properties are unknown.
     MEMORY_PROPERTY_UNKNOWN       = 0x00,
@@ -1249,13 +1249,13 @@ struct DepthStencilClearValue
     Float32 Depth   DEFAULT_INITIALIZER(1.f);
 
     /// Stencil clear value
-    Uint8 Stencil   DEFAULT_INITIALIZER(0);
+    UInt8 Stencil   DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr DepthStencilClearValue() noexcept {}
 
     constexpr DepthStencilClearValue(Float32 _Depth,
-                                     Uint8   _Stencil) noexcept :
+                                     UInt8   _Stencil) noexcept :
         Depth   {_Depth  },
         Stencil {_Stencil}
     {}
@@ -1301,7 +1301,7 @@ struct OptimizedClearValue
         SetColor(fmt, RGBA[0], RGBA[1], RGBA[2], RGBA[3]);
     }
 
-    void SetDepthStencil(TEXTURE_FORMAT fmt, float Depth, Uint8 Stencil = 0)
+    void SetDepthStencil(TEXTURE_FORMAT fmt, float Depth, UInt8 Stencil = 0)
     {
         Format               = fmt;
         DepthStencil.Depth   = Depth;
@@ -1332,7 +1332,7 @@ struct DeviceObjectAttribs
 typedef struct DeviceObjectAttribs DeviceObjectAttribs;
 
 /// Hardware adapter type
-DILIGENT_TYPED_ENUM(ADAPTER_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(ADAPTER_TYPE, UInt8)
 {
     /// Adapter type is unknown
     ADAPTER_TYPE_UNKNOWN = 0,
@@ -1395,19 +1395,19 @@ enum SCANLINE_ORDER
 struct DisplayModeAttribs
 {
     /// Display resolution width
-    Uint32 Width                    DEFAULT_INITIALIZER(0);
+    UInt32 Width                    DEFAULT_INITIALIZER(0);
 
     /// Display resolution height
-    Uint32 Height                   DEFAULT_INITIALIZER(0);
+    UInt32 Height                   DEFAULT_INITIALIZER(0);
 
     /// Display format
     TEXTURE_FORMAT Format           DEFAULT_INITIALIZER(TEX_FORMAT_UNKNOWN);
 
     /// Refresh rate numerator
-    Uint32 RefreshRateNumerator     DEFAULT_INITIALIZER(0);
+    UInt32 RefreshRateNumerator     DEFAULT_INITIALIZER(0);
 
     /// Refresh rate denominator
-    Uint32 RefreshRateDenominator   DEFAULT_INITIALIZER(0);
+    UInt32 RefreshRateDenominator   DEFAULT_INITIALIZER(0);
 
     /// The scanline drawing mode.
     enum SCALING_MODE Scaling           DEFAULT_INITIALIZER(SCALING_MODE_UNSPECIFIED);
@@ -1418,7 +1418,7 @@ struct DisplayModeAttribs
 typedef struct DisplayModeAttribs DisplayModeAttribs;
 
 /// Defines allowed swap chain usage flags
-DILIGENT_TYPED_ENUM(SWAP_CHAIN_USAGE_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(SWAP_CHAIN_USAGE_FLAGS, UInt32)
 {
     /// No allowed usage
     SWAP_CHAIN_USAGE_NONE             = 0u,
@@ -1441,7 +1441,7 @@ DEFINE_FLAG_ENUM_OPERATORS(SWAP_CHAIN_USAGE_FLAGS)
 
 
 /// The transform applied to the image content prior to presentation.
-DILIGENT_TYPED_ENUM(SURFACE_TRANSFORM, Uint32)
+DILIGENT_TYPED_ENUM(SURFACE_TRANSFORM, UInt32)
 {
     /// Uset the most optimal surface transform.
     SURFACE_TRANSFORM_OPTIMAL = 0,
@@ -1476,10 +1476,10 @@ DILIGENT_TYPED_ENUM(SURFACE_TRANSFORM, Uint32)
 struct SwapChainDesc
 {
     /// The swap chain width. Default value is 0
-    Uint32 Width                        DEFAULT_INITIALIZER(0);
+    UInt32 Width                        DEFAULT_INITIALIZER(0);
 
     /// The swap chain height. Default value is 0
-    Uint32 Height                       DEFAULT_INITIALIZER(0);
+    UInt32 Height                       DEFAULT_INITIALIZER(0);
 
     /// Back buffer format. Default value is Diligent::TEX_FORMAT_RGBA8_UNORM_SRGB
     TEXTURE_FORMAT ColorBufferFormat    DEFAULT_INITIALIZER(TEX_FORMAT_RGBA8_UNORM_SRGB);
@@ -1505,13 +1505,13 @@ struct SwapChainDesc
     SURFACE_TRANSFORM PreTransform      DEFAULT_INITIALIZER(SURFACE_TRANSFORM_OPTIMAL);
 
     /// The number of buffers in the swap chain
-    Uint32 BufferCount                  DEFAULT_INITIALIZER(2);
+    UInt32 BufferCount                  DEFAULT_INITIALIZER(2);
 
     /// Default depth value, which is used as optimized depth clear value in D3D12
     Float32 DefaultDepthValue           DEFAULT_INITIALIZER(1.f);
 
     /// Default stencil value, which is used as optimized stencil clear value in D3D12
-    Uint8 DefaultStencilValue           DEFAULT_INITIALIZER(0);
+    UInt8 DefaultStencilValue           DEFAULT_INITIALIZER(0);
 
     /// Indicates if this is a primary swap chain. When Present() is called
     /// for the primary swap chain, the engine releases stale resources.
@@ -1527,13 +1527,13 @@ struct SwapChainDesc
     }
 
     /// Constructor initializes the structure members with default values
-    constexpr SwapChainDesc(Uint32         _Width,
-                            Uint32         _Height,
+    constexpr SwapChainDesc(UInt32         _Width,
+                            UInt32         _Height,
                             TEXTURE_FORMAT _ColorBufferFormat,
                             TEXTURE_FORMAT _DepthBufferFormat,
-                            Uint32         _BufferCount         = SwapChainDesc{}.BufferCount,
+                            UInt32         _BufferCount         = SwapChainDesc{}.BufferCount,
                             Float32        _DefaultDepthValue   = SwapChainDesc{}.DefaultDepthValue,
-                            Uint8          _DefaultStencilValue = SwapChainDesc{}.DefaultStencilValue,
+                            UInt8          _DefaultStencilValue = SwapChainDesc{}.DefaultStencilValue,
                             Bool           _IsPrimary           = SwapChainDesc{}.IsPrimary) :
         Width               {_Width              },
         Height              {_Height             },
@@ -1557,10 +1557,10 @@ struct FullScreenModeDesc
     Bool Fullscreen                 DEFAULT_INITIALIZER(False);
 
     /// Refresh rate numerator
-    Uint32 RefreshRateNumerator     DEFAULT_INITIALIZER(0);
+    UInt32 RefreshRateNumerator     DEFAULT_INITIALIZER(0);
 
     /// Refresh rate denominator
-    Uint32 RefreshRateDenominator   DEFAULT_INITIALIZER(0);
+    UInt32 RefreshRateDenominator   DEFAULT_INITIALIZER(0);
 
     /// The scanline drawing mode.
     enum SCALING_MODE    Scaling         DEFAULT_INITIALIZER(SCALING_MODE_UNSPECIFIED);
@@ -1619,7 +1619,7 @@ enum RENDER_DEVICE_TYPE
 
 
 /// Device feature state
-DILIGENT_TYPED_ENUM(DEVICE_FEATURE_STATE, Uint8)
+DILIGENT_TYPED_ENUM(DEVICE_FEATURE_STATE, UInt8)
 {
     /// Device feature is disabled.
     DEVICE_FEATURE_STATE_DISABLED = 0,
@@ -1791,7 +1791,7 @@ struct DeviceFeatures
     /// Indicates if device supports instance data step rates other than 1.
     DEVICE_FEATURE_STATE InstanceDataStepRate             DEFAULT_INITIALIZER(DEVICE_FEATURE_STATE_DISABLED);
 
-    /// Indicates if device natively supports fence with Uint64 counter.
+    /// Indicates if device natively supports fence with UInt64 counter.
     /// Native fence can wait on GPU for a signal from CPU, can be enqueued for wait operation for any value.
     /// If not natively supported by the device, the fence is emulated where possible.
     DEVICE_FEATURE_STATE NativeFence                      DEFAULT_INITIALIZER(DEVICE_FEATURE_STATE_DISABLED);
@@ -1939,7 +1939,7 @@ typedef struct DeviceFeatures DeviceFeatures;
 
 
 /// Graphics adapter vendor
-DILIGENT_TYPED_ENUM(ADAPTER_VENDOR, Uint8)
+DILIGENT_TYPED_ENUM(ADAPTER_VENDOR, UInt8)
 {
     /// Adapter vendor is unknown
     ADAPTER_VENDOR_UNKNOWN = 0,
@@ -1983,16 +1983,16 @@ DILIGENT_TYPED_ENUM(ADAPTER_VENDOR, Uint8)
 struct Version
 {
     /// Major revision
-    Uint32 Major DEFAULT_INITIALIZER(0);
+    UInt32 Major DEFAULT_INITIALIZER(0);
 
     /// Minor revision
-    Uint32 Minor DEFAULT_INITIALIZER(0);
+    UInt32 Minor DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr Version() noexcept
     {}
 
-    constexpr Version(Uint32 _Major, Uint32 _Minor) noexcept :
+    constexpr Version(UInt32 _Major, UInt32 _Minor) noexcept :
         Major{_Major},
         Minor{_Minor}
     {
@@ -2046,7 +2046,7 @@ typedef struct Version Version;
 /// In Vulkan backend, you should check which features are supported by device.
 /// In Direct3D12 backend, all shader model 6.0 wave functions are supported if WaveOp feature is enabled.
 /// see https://github.com/DiligentGraphics/DiligentCore/blob/master/doc/WaveOp.md
-DILIGENT_TYPED_ENUM(WAVE_FEATURE, Uint32)
+DILIGENT_TYPED_ENUM(WAVE_FEATURE, UInt32)
 {
     WAVE_FEATURE_UNKNOWN          = 0x00,
     WAVE_FEATURE_BASIC            = 0x01,
@@ -2063,7 +2063,7 @@ DEFINE_FLAG_ENUM_OPERATORS(WAVE_FEATURE);
 
 
 /// Common validation levels that translate to specific settings for different backends.
-DILIGENT_TYPED_ENUM(VALIDATION_LEVEL, Uint8)
+DILIGENT_TYPED_ENUM(VALIDATION_LEVEL, UInt8)
 {
     /// Validation is disabled.
     VALIDATION_LEVEL_DISABLED = 0,
@@ -2081,22 +2081,22 @@ DILIGENT_TYPED_ENUM(VALIDATION_LEVEL, Uint8)
 struct TextureProperties
 {
     /// Maximum dimension (width) of a 1D texture, or 0 if 1D textures are not supported.
-    Uint32 MaxTexture1DDimension   DEFAULT_INITIALIZER(0);
+    UInt32 MaxTexture1DDimension   DEFAULT_INITIALIZER(0);
 
     /// Maximum number of slices in a 1D texture array, or 0 if 1D texture arrays are not supported.
-    Uint32 MaxTexture1DArraySlices DEFAULT_INITIALIZER(0);
+    UInt32 MaxTexture1DArraySlices DEFAULT_INITIALIZER(0);
 
     /// Maximum dimension (width or height) of a 2D texture.
-    Uint32 MaxTexture2DDimension   DEFAULT_INITIALIZER(0);
+    UInt32 MaxTexture2DDimension   DEFAULT_INITIALIZER(0);
 
     /// Maximum number of slices in a 2D texture array, or 0 if 2D texture arrays are not supported.
-    Uint32 MaxTexture2DArraySlices DEFAULT_INITIALIZER(0);
+    UInt32 MaxTexture2DArraySlices DEFAULT_INITIALIZER(0);
 
     /// Maximum dimension (width, height, or depth) of a 3D texture, or 0 if 3D textures are not supported.
-    Uint32 MaxTexture3DDimension   DEFAULT_INITIALIZER(0);
+    UInt32 MaxTexture3DDimension   DEFAULT_INITIALIZER(0);
 
     /// Maximum dimension (width or height) of a cubemap face, or 0 if cubemap textures are not supported.
-    Uint32 MaxTextureCubeDimension DEFAULT_INITIALIZER(0);
+    UInt32 MaxTextureCubeDimension DEFAULT_INITIALIZER(0);
 
     /// Indicates if device supports 2D multisampled textures
     Bool Texture2DMSSupported      DEFAULT_INITIALIZER(False);
@@ -2150,7 +2150,7 @@ struct SamplerProperties
     /// Maximum anisotropy level supported by the device.
 
     /// If anisotropic filtering is not supported, this value is 1.
-    Uint8 MaxAnisotropy DEFAULT_INITIALIZER(1);
+    UInt8 MaxAnisotropy DEFAULT_INITIALIZER(1);
 
     /// Indicates if device supports MIP load bias
     Bool LODBiasSupported              DEFAULT_INITIALIZER(False);
@@ -2178,14 +2178,14 @@ typedef struct SamplerProperties SamplerProperties;
 struct WaveOpProperties
 {
     /// Minimum supported size of the wave.
-    Uint32       MinSize         DEFAULT_INITIALIZER(0);
+    UInt32       MinSize         DEFAULT_INITIALIZER(0);
 
     /// Maximum supported size of the wave.
 
     /// If variable wave size is not supported then this value is equal to MinSize.
     /// Direct3D12 backend: requires shader model 6.6.
     /// Vulkan backend: requires VK_EXT_subgroup_size_control.
-    Uint32       MaxSize         DEFAULT_INITIALIZER(0);
+    UInt32       MaxSize         DEFAULT_INITIALIZER(0);
 
     /// Shader stages in which wave operations can be used.
     SHADER_TYPE  SupportedStages DEFAULT_INITIALIZER(SHADER_TYPE_UNKNOWN);
@@ -2221,14 +2221,14 @@ struct BufferProperties
     /// The Offset parameter passed to IShaderResourceVariable::SetBufferRange() or to
     /// IShaderResourceVariable::SetBufferOffset() method used to set the offset of a
     /// constant buffer, must be an integer multiple of this limit.
-    Uint32 ConstantBufferOffsetAlignment DEFAULT_INITIALIZER(0);
+    UInt32 ConstantBufferOffsetAlignment DEFAULT_INITIALIZER(0);
 
     /// The minimum required alignment, in bytes, for the structured buffer offsets.
 
     /// The ByteOffset member of the BufferViewDesc used to create a structured buffer view or
     /// the Offset parameter passed to IShaderResourceVariable::SetBufferOffset() method used to
     /// set the offset of a structured buffer, must be an integer multiple of this limit.
-    Uint32 StructuredBufferOffsetAlignment DEFAULT_INITIALIZER(0);
+    UInt32 StructuredBufferOffsetAlignment DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     /// Comparison operator tests if two structures are equivalent
@@ -2249,7 +2249,7 @@ typedef struct BufferProperties BufferProperties;
 
 
 /// Ray tracing capability flags
-DILIGENT_TYPED_ENUM(RAY_TRACING_CAP_FLAGS, Uint8)
+DILIGENT_TYPED_ENUM(RAY_TRACING_CAP_FLAGS, UInt8)
 {
     /// No ray-tracing capabilities
     RAY_TRACING_CAP_FLAG_NONE                 = 0x00,
@@ -2273,41 +2273,41 @@ DEFINE_FLAG_ENUM_OPERATORS(RAY_TRACING_CAP_FLAGS)
 struct RayTracingProperties
 {
     /// Maximum supported value for RayTracingPipelineDesc::MaxRecursionDepth.
-    Uint32 MaxRecursionDepth        DEFAULT_INITIALIZER(0);
+    UInt32 MaxRecursionDepth        DEFAULT_INITIALIZER(0);
 
-    Uint32 ShaderGroupHandleSize    DEFAULT_INITIALIZER(0); ///< For internal use
-    Uint32 MaxShaderRecordStride    DEFAULT_INITIALIZER(0); ///< For internal use
-    Uint32 ShaderGroupBaseAlignment DEFAULT_INITIALIZER(0); ///< For internal use
+    UInt32 ShaderGroupHandleSize    DEFAULT_INITIALIZER(0); ///< For internal use
+    UInt32 MaxShaderRecordStride    DEFAULT_INITIALIZER(0); ///< For internal use
+    UInt32 ShaderGroupBaseAlignment DEFAULT_INITIALIZER(0); ///< For internal use
 
     /// The maximum total number of ray generation threads in one dispatch.
-    Uint32 MaxRayGenThreads         DEFAULT_INITIALIZER(0);
+    UInt32 MaxRayGenThreads         DEFAULT_INITIALIZER(0);
 
     /// The maximum number of instances in a top-level AS.
-    Uint32 MaxInstancesPerTLAS      DEFAULT_INITIALIZER(0);
+    UInt32 MaxInstancesPerTLAS      DEFAULT_INITIALIZER(0);
 
     /// The maximum number of primitives in a bottom-level AS.
-    Uint32 MaxPrimitivesPerBLAS     DEFAULT_INITIALIZER(0);
+    UInt32 MaxPrimitivesPerBLAS     DEFAULT_INITIALIZER(0);
 
     /// The maximum number of geometries in a bottom-level AS.
-    Uint32 MaxGeometriesPerBLAS     DEFAULT_INITIALIZER(0);
+    UInt32 MaxGeometriesPerBLAS     DEFAULT_INITIALIZER(0);
 
     /// The minimum alignment for vertex buffer offset in BLASBuildTriangleData::VertexOffset.
-    Uint32 VertexBufferAlignment   DEFAULT_INITIALIZER(0);
+    UInt32 VertexBufferAlignment   DEFAULT_INITIALIZER(0);
 
     /// The minimum alignment for index buffer offset in BLASBuildTriangleData::IndexOffset.
-    Uint32 IndexBufferAlignment     DEFAULT_INITIALIZER(0);
+    UInt32 IndexBufferAlignment     DEFAULT_INITIALIZER(0);
 
     /// The minimum alignment for transform buffer offset in BLASBuildTriangleData::TransformBufferOffset.
-    Uint32 TransformBufferAlignment DEFAULT_INITIALIZER(0);
+    UInt32 TransformBufferAlignment DEFAULT_INITIALIZER(0);
 
     /// The minimum alignment for box buffer offset in BLASBuildBoundingBoxData::BoxOffset.
-    Uint32 BoxBufferAlignment       DEFAULT_INITIALIZER(0);
+    UInt32 BoxBufferAlignment       DEFAULT_INITIALIZER(0);
 
     /// The minimum alignment for scratch buffer offset in BuildBLASAttribs::ScratchBufferOffset and BuildTLASAttribs::ScratchBufferOffset.
-    Uint32 ScratchBufferAlignment   DEFAULT_INITIALIZER(0);
+    UInt32 ScratchBufferAlignment   DEFAULT_INITIALIZER(0);
 
     /// The minimum alignment for instance buffer offset in BuildTLASAttribs::InstanceBufferOffset.
-    Uint32 InstanceBufferAlignment  DEFAULT_INITIALIZER(0);
+    UInt32 InstanceBufferAlignment  DEFAULT_INITIALIZER(0);
 
     /// Ray tracing capability flags, see Diligent::RAY_TRACING_CAP_FLAGS.
     RAY_TRACING_CAP_FLAGS CapFlags  DEFAULT_INITIALIZER(RAY_TRACING_CAP_FLAG_NONE);
@@ -2346,16 +2346,16 @@ typedef struct RayTracingProperties RayTracingProperties;
 struct MeshShaderProperties
 {
     /// The maximum number of mesh shader thread groups in X direction.
-    Uint32 MaxThreadGroupCountX DEFAULT_INITIALIZER(0);
+    UInt32 MaxThreadGroupCountX DEFAULT_INITIALIZER(0);
 
     /// The maximum number of mesh shader thread groups in Y direction.
-    Uint32 MaxThreadGroupCountY DEFAULT_INITIALIZER(0);
+    UInt32 MaxThreadGroupCountY DEFAULT_INITIALIZER(0);
 
     /// The maximum number of mesh shader thread groups in Z direction.
-    Uint32 MaxThreadGroupCountZ DEFAULT_INITIALIZER(0);
+    UInt32 MaxThreadGroupCountZ DEFAULT_INITIALIZER(0);
 
     /// The total maximum number of mesh shader groups per draw command.
-    Uint32 MaxThreadGroupTotalCount DEFAULT_INITIALIZER(0);
+    UInt32 MaxThreadGroupTotalCount DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     /// Comparison operator tests if two structures are equivalent
@@ -2380,24 +2380,24 @@ typedef struct MeshShaderProperties MeshShaderProperties;
 struct ComputeShaderProperties
 {
     /// Amount of shared memory available to threads in one group.
-    Uint32 SharedMemorySize         DEFAULT_INITIALIZER(0);
+    UInt32 SharedMemorySize         DEFAULT_INITIALIZER(0);
 
     /// The total maximum number of threads in one group.
-    Uint32 MaxThreadGroupInvocations  DEFAULT_INITIALIZER(0);
+    UInt32 MaxThreadGroupInvocations  DEFAULT_INITIALIZER(0);
 
     /// The maximum number of threads in group X dimension.
-    Uint32 MaxThreadGroupSizeX        DEFAULT_INITIALIZER(0);
+    UInt32 MaxThreadGroupSizeX        DEFAULT_INITIALIZER(0);
     /// The maximum number of threads in group Y dimension.
-    Uint32 MaxThreadGroupSizeY        DEFAULT_INITIALIZER(0);
+    UInt32 MaxThreadGroupSizeY        DEFAULT_INITIALIZER(0);
     /// The maximum number of threads in group Z dimension.
-    Uint32 MaxThreadGroupSizeZ        DEFAULT_INITIALIZER(0);
+    UInt32 MaxThreadGroupSizeZ        DEFAULT_INITIALIZER(0);
 
     /// The maximum number of thread groups that can be dispatched in X dimension.
-    Uint32 MaxThreadGroupCountX       DEFAULT_INITIALIZER(0);
+    UInt32 MaxThreadGroupCountX       DEFAULT_INITIALIZER(0);
     /// The maximum number of thread groups that can be dispatched in Y dimension.
-    Uint32 MaxThreadGroupCountY       DEFAULT_INITIALIZER(0);
+    UInt32 MaxThreadGroupCountY       DEFAULT_INITIALIZER(0);
     /// The maximum number of thread groups that can be dispatched in Z dimension.
-    Uint32 MaxThreadGroupCountZ       DEFAULT_INITIALIZER(0);
+    UInt32 MaxThreadGroupCountZ       DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     /// Comparison operator tests if two structures are equivalent
@@ -2571,7 +2571,7 @@ typedef struct RenderDeviceInfo RenderDeviceInfo;
 
 
 /// Common validation options.
-DILIGENT_TYPED_ENUM(VALIDATION_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(VALIDATION_FLAGS, UInt32)
 {
     /// Extra validation is disabled.
     VALIDATION_FLAG_NONE                        = 0x00,
@@ -2588,7 +2588,7 @@ DEFINE_FLAG_ENUM_OPERATORS(VALIDATION_FLAGS)
 
 
 /// Command queue type
-DILIGENT_TYPED_ENUM(COMMAND_QUEUE_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(COMMAND_QUEUE_TYPE, UInt8)
 {
     /// Queue type is unknown.
     COMMAND_QUEUE_TYPE_UNKNOWN        = 0,
@@ -2616,7 +2616,7 @@ DEFINE_FLAG_ENUM_OPERATORS(COMMAND_QUEUE_TYPE)
 
 
 /// Queue priority
-DILIGENT_TYPED_ENUM(QUEUE_PRIORITY, Uint8)
+DILIGENT_TYPED_ENUM(QUEUE_PRIORITY, UInt8)
 {
     /// Queue priority is unknown.
     QUEUE_PRIORITY_UNKNOWN = 0,
@@ -2654,14 +2654,14 @@ struct AdapterMemoryInfo
     ///
     /// On some devices it may not be possible to query the memory size,
     /// in which case all memory sizes will be zero.
-    Uint64  LocalMemory         DEFAULT_INITIALIZER(0);
+    UInt64  LocalMemory         DEFAULT_INITIALIZER(0);
 
 
     /// The amount of host-visible memory that can be accessed by CPU and is visible by GPU, in bytes.
 
     /// Host-visible memory is where USAGE_DYNAMIC and USAGE_STAGING resources
     /// are typically allocated.
-    Uint64  HostVisibleMemory  DEFAULT_INITIALIZER(0);
+    UInt64  HostVisibleMemory  DEFAULT_INITIALIZER(0);
 
 
     /// The amount of unified memory that can be directly accessed by both CPU and GPU, in bytes.
@@ -2669,12 +2669,12 @@ struct AdapterMemoryInfo
     /// Unified memory is where USAGE_UNIFIED resources are typically allocated, but
     /// resources with other usages may be allocated as well if there is no corresponding
     /// memory type.
-    Uint64  UnifiedMemory       DEFAULT_INITIALIZER(0);
+    UInt64  UnifiedMemory       DEFAULT_INITIALIZER(0);
 
     /// Maximum size of a continuous memory block.
 
     /// This is the maximum allowed size of non-sparse resources (IBuffer, ITexture, IDeviceMemory, IBottomLevelAS or ITopLevelAS).
-    Uint64  MaxMemoryAllocation DEFAULT_INITIALIZER(0);
+    UInt64  MaxMemoryAllocation DEFAULT_INITIALIZER(0);
 
     /// Supported access types for the unified memory.
     CPU_ACCESS_FLAGS UnifiedMemoryCPUAccess DEFAULT_INITIALIZER(CPU_ACCESS_NONE);
@@ -2714,7 +2714,7 @@ typedef struct AdapterMemoryInfo AdapterMemoryInfo;
 ///     ApplyCombiner(SHADING_RATE_COMBINER Combiner, SHADING_RATE OriginalRate, SHADING_RATE NewRate).
 ///
 /// See IDeviceContext::SetShadingRate() for details.
-DILIGENT_TYPED_ENUM(SHADING_RATE_COMBINER, Uint8)
+DILIGENT_TYPED_ENUM(SHADING_RATE_COMBINER, UInt8)
 {
     /// Returns the original shading rate value:
     ///  - for PrimitiveCombiner, returns BaseRate.
@@ -2752,7 +2752,7 @@ DEFINE_FLAG_ENUM_OPERATORS(SHADING_RATE_COMBINER);
 
 
 /// Shading rate texture format supported by the device
-DILIGENT_TYPED_ENUM(SHADING_RATE_FORMAT, Uint8)
+DILIGENT_TYPED_ENUM(SHADING_RATE_FORMAT, UInt8)
 {
     /// Variable rate shading is not supported.
     SHADING_RATE_FORMAT_UNKNOWN = 0,
@@ -2777,7 +2777,7 @@ DILIGENT_TYPED_ENUM(SHADING_RATE_FORMAT, Uint8)
 };
 
 /// Specifies the base shading rate along a horizontal or vertical axis
-DILIGENT_TYPED_ENUM(AXIS_SHADING_RATE, Uint8)
+DILIGENT_TYPED_ENUM(AXIS_SHADING_RATE, UInt8)
 {
     /// Default shading rate
     AXIS_SHADING_RATE_1X  = 0x0,
@@ -2793,7 +2793,7 @@ DILIGENT_TYPED_ENUM(AXIS_SHADING_RATE, Uint8)
 };
 
 /// Defines the shading rate for both axes
-DILIGENT_TYPED_ENUM(SHADING_RATE, Uint8)
+DILIGENT_TYPED_ENUM(SHADING_RATE, UInt8)
 {
     /// Specifies no change to the shading rate.
     SHADING_RATE_1X1 = ((AXIS_SHADING_RATE_1X << DILIGENT_SHADING_RATE_X_SHIFT) | AXIS_SHADING_RATE_1X),
@@ -2827,7 +2827,7 @@ DILIGENT_TYPED_ENUM(SHADING_RATE, Uint8)
 };
 
 /// Defines the sample count
-DILIGENT_TYPED_ENUM(SAMPLE_COUNT, Uint8)
+DILIGENT_TYPED_ENUM(SAMPLE_COUNT, UInt8)
 {
     SAMPLE_COUNT_NONE = 0,
     SAMPLE_COUNT_1    = 1,
@@ -2852,7 +2852,7 @@ struct ShadingRateMode
     SAMPLE_COUNT SampleBits  DEFAULT_INITIALIZER(SAMPLE_COUNT_NONE);
 
 #if DILIGENT_CPP_INTERFACE
-    bool HasSampleCount(Uint32 SampleCount) const
+    bool HasSampleCount(UInt32 SampleCount) const
     {
         return (SampleBits & SampleCount) != 0;
     }
@@ -2872,7 +2872,7 @@ struct ShadingRateMode
 typedef struct ShadingRateMode ShadingRateMode;
 
 /// Defines the shading rate capability flags.
-DILIGENT_TYPED_ENUM(SHADING_RATE_CAP_FLAGS, Uint16)
+DILIGENT_TYPED_ENUM(SHADING_RATE_CAP_FLAGS, UInt16)
 {
     /// No shading rate capabilities.
     SHADING_RATE_CAP_FLAG_NONE                                  = 0,
@@ -2937,7 +2937,7 @@ DILIGENT_TYPED_ENUM(SHADING_RATE_CAP_FLAGS, Uint16)
 DEFINE_FLAG_ENUM_OPERATORS(SHADING_RATE_CAP_FLAGS);
 
 /// Defines how the shading rate texture is accessed
-DILIGENT_TYPED_ENUM(SHADING_RATE_TEXTURE_ACCESS, Uint8)
+DILIGENT_TYPED_ENUM(SHADING_RATE_TEXTURE_ACCESS, UInt8)
 {
     /// Shading rate texture access type is unknown
     SHADING_RATE_TEXTURE_ACCESS_UNKNOWN = 0,
@@ -2966,7 +2966,7 @@ struct ShadingRateProperties
     ShadingRateMode        ShadingRates [DILIGENT_MAX_SHADING_RATES]  DEFAULT_INITIALIZER({});
 
     /// The number of valid elements in ShadingRates array.
-    Uint8                  NumShadingRates DEFAULT_INITIALIZER(0);
+    UInt8                  NumShadingRates DEFAULT_INITIALIZER(0);
 
     /// Shading rate capability flags, see Diligent::SHADING_RATE_CAP_FLAGS.
     SHADING_RATE_CAP_FLAGS CapFlags       DEFAULT_INITIALIZER(SHADING_RATE_CAP_FLAG_NONE);
@@ -2986,15 +2986,15 @@ struct ShadingRateProperties
     /// Minimal supported tile size.
 
     /// Shading rate texture size must be less than or equal to (framebuffer_size / MinTileSize).
-    Uint32                 MinTileSize[2] DEFAULT_INITIALIZER({});
+    UInt32                 MinTileSize[2] DEFAULT_INITIALIZER({});
 
     /// Maximum supported tile size.
 
     /// Shading rate texture size must be greater than or equal to (framebuffer_size / MaxTileSize).
-    Uint32                 MaxTileSize[2] DEFAULT_INITIALIZER({});
+    UInt32                 MaxTileSize[2] DEFAULT_INITIALIZER({});
 
     /// Maximum size of the texture array created with MISC_TEXTURE_FLAG_SUBSAMPLED flag.
-    Uint32                 MaxSabsampledArraySlices DEFAULT_INITIALIZER(0);
+    UInt32                 MaxSabsampledArraySlices DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     /// Comparison operator tests if two structures are equivalent
@@ -3022,7 +3022,7 @@ typedef struct ShadingRateProperties ShadingRateProperties;
 
 
 /// Defines the draw command capability flags.
-DILIGENT_TYPED_ENUM(DRAW_COMMAND_CAP_FLAGS, Uint16)
+DILIGENT_TYPED_ENUM(DRAW_COMMAND_CAP_FLAGS, UInt16)
 {
     /// No draw command capabilities.
     DRAW_COMMAND_CAP_FLAG_NONE                         = 0,
@@ -3055,11 +3055,11 @@ struct DrawCommandProperties
     DRAW_COMMAND_CAP_FLAGS CapFlags             DEFAULT_INITIALIZER(DRAW_COMMAND_CAP_FLAG_NONE);
 
     /// Maximum supported index value for index buffer.
-    Uint32                 MaxIndexValue        DEFAULT_INITIALIZER(0);
+    UInt32                 MaxIndexValue        DEFAULT_INITIALIZER(0);
 
     /// Maximum supported draw commands counter for IDeviceContext::DrawIndirect() and
     /// IDeviceContext::DrawIndexedIndirect().
-    Uint32                 MaxDrawIndirectCount DEFAULT_INITIALIZER(0);
+    UInt32                 MaxDrawIndirectCount DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     /// Comparison operator tests if two structures are equivalent
@@ -3081,7 +3081,7 @@ typedef struct DrawCommandProperties DrawCommandProperties;
 
 
 /// Sparse memory capability flags
-DILIGENT_TYPED_ENUM(SPARSE_RESOURCE_CAP_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(SPARSE_RESOURCE_CAP_FLAGS, UInt32)
 {
     /// No sparse resource capabilities.
     SPARSE_RESOURCE_CAP_FLAG_NONE = 0,
@@ -3205,10 +3205,10 @@ DEFINE_FLAG_ENUM_OPERATORS(SPARSE_RESOURCE_CAP_FLAGS)
 struct SparseResourceProperties
 {
     /// The total amount of address space, in bytes, available for sparse resources.
-    Uint64 AddressSpaceSize DEFAULT_INITIALIZER(0);
+    UInt64 AddressSpaceSize DEFAULT_INITIALIZER(0);
 
     /// The total amount of address space, in bytes, available for a single resource.
-    Uint64 ResourceSpaceSize DEFAULT_INITIALIZER(0);
+    UInt64 ResourceSpaceSize DEFAULT_INITIALIZER(0);
 
     /// Sparse resource capability flags, see Diligent::SPARSE_RESOURCE_CAP_FLAGS.
     SPARSE_RESOURCE_CAP_FLAGS CapFlags DEFAULT_INITIALIZER(SPARSE_RESOURCE_CAP_FLAG_NONE);
@@ -3223,12 +3223,12 @@ struct SparseResourceProperties
     ///
     /// \sa SPARSE_RESOURCE_CAP_FLAG_STANDARD_2D_TILE_SHAPE, SPARSE_RESOURCE_CAP_FLAG_STANDARD_2DMS_TILE_SHAPE,
     ///     SPARSE_RESOURCE_CAP_FLAG_STANDARD_3D_TILE_SHAPE, SPARSE_RESOURCE_CAP_FLAG_BUFFER_STANDARD_BLOCK.
-    Uint32 StandardBlockSize DEFAULT_INITIALIZER(0);
+    UInt32 StandardBlockSize DEFAULT_INITIALIZER(0);
 
     /// Allowed bind flags for sparse buffer.
     BIND_FLAGS BufferBindFlags  DEFAULT_INITIALIZER(BIND_NONE);
 
-    Uint32 _Padding DEFAULT_INITIALIZER(0);
+    UInt32 _Padding DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     /// Comparison operator tests if two structures are equivalent
@@ -3258,7 +3258,7 @@ struct CommandQueueInfo
     COMMAND_QUEUE_TYPE QueueType           DEFAULT_INITIALIZER(COMMAND_QUEUE_TYPE_UNKNOWN);
 
     /// The maximum number of immediate contexts that may be created for this queue.
-    Uint32             MaxDeviceContexts   DEFAULT_INITIALIZER(0);
+    UInt32             MaxDeviceContexts   DEFAULT_INITIALIZER(0);
 
     /// Defines required texture offset and size alignment for copy operations in transfer queues.
 
@@ -3267,7 +3267,7 @@ struct CommandQueueInfo
     ///
     /// Graphics and compute queues don't have alignment requirements (e.g
     /// `TextureCopyGranularity` is always `{1, 1, 1}`).
-    Uint32  TextureCopyGranularity[3] DEFAULT_INITIALIZER({});
+    UInt32  TextureCopyGranularity[3] DEFAULT_INITIALIZER({});
 
 #if DILIGENT_CPP_INTERFACE
     /// Comparison operator tests if two structures are equivalent
@@ -3301,13 +3301,13 @@ struct GraphicsAdapterInfo
     ADAPTER_VENDOR Vendor   DEFAULT_INITIALIZER(ADAPTER_VENDOR_UNKNOWN);
 
     /// The PCI ID of the hardware vendor (if available).
-    Uint32 VendorId         DEFAULT_INITIALIZER(0);
+    UInt32 VendorId         DEFAULT_INITIALIZER(0);
 
     /// The PCI ID of the hardware device (if available).
-    Uint32 DeviceId         DEFAULT_INITIALIZER(0);
+    UInt32 DeviceId         DEFAULT_INITIALIZER(0);
 
     /// Number of video outputs this adapter has (if available).
-    Uint32 NumOutputs       DEFAULT_INITIALIZER(0);
+    UInt32 NumOutputs       DEFAULT_INITIALIZER(0);
 
     /// Device memory information, see Diligent::AdapterMemoryInfo.
     AdapterMemoryInfo Memory;
@@ -3354,7 +3354,7 @@ struct GraphicsAdapterInfo
     CommandQueueInfo  Queues[DILIGENT_MAX_ADAPTER_QUEUES]  DEFAULT_INITIALIZER({});
 
     /// The number of queues in Queues array.
-    Uint32     NumQueues DEFAULT_INITIALIZER(0);
+    UInt32     NumQueues DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     /// Comparison operator tests if two structures are equivalent
@@ -3368,7 +3368,7 @@ struct GraphicsAdapterInfo
         if (NumQueues != RHS.NumQueues)
             return false;
 
-        for (Uint32 i = 0; i < NumQueues; i++)
+        for (UInt32 i = 0; i < NumQueues; i++)
             if (!(Queues[i] == RHS.Queues[i]))
                 return false;
 
@@ -3409,7 +3409,7 @@ struct ImmediateContextCreateInfo
     /// hardware queue with id QueueId. The total number of contexts created for
     /// this queue must not exceed the value of MaxDeviceContexts member of CommandQueueInfo
     /// for this queue.
-    Uint8          QueueId      DEFAULT_INITIALIZER(DEFAULT_QUEUE_ID);
+    UInt8          QueueId      DEFAULT_INITIALIZER(DEFAULT_QUEUE_ID);
 
     /// Priority of the software queue created by the context, see Diligent::QUEUE_PRIORITY.
 
@@ -3422,7 +3422,7 @@ struct ImmediateContextCreateInfo
     constexpr ImmediateContextCreateInfo() noexcept {}
 
     constexpr ImmediateContextCreateInfo(const Char*    _Name,
-                                         Uint8          _QueueId,
+                                         UInt8          _QueueId,
                                          QUEUE_PRIORITY _Priority = ImmediateContextCreateInfo{}.Priority) noexcept :
         Name    {_Name},
         QueueId {_QueueId},
@@ -3440,10 +3440,10 @@ struct OpenXRAttribs
     void* GetInstanceProcAddr DEFAULT_INITIALIZER(nullptr);
 
     /// OpenXR instance handle (XrInstance).
-	Uint64 Instance DEFAULT_INITIALIZER(0);
+	UInt64 Instance DEFAULT_INITIALIZER(0);
 
     /// OpenXR system id (XrSystemId).
-    Uint64 SystemId DEFAULT_INITIALIZER(0);
+    UInt64 SystemId DEFAULT_INITIALIZER(0);
 };
 typedef struct OpenXRAttribs OpenXRAttribs;
 
@@ -3456,7 +3456,7 @@ struct EngineCreateInfo
 
     /// Id of the hardware adapter the engine should use.
     /// Call IEngineFactory::EnumerateAdapters() to get the list of available adapters.
-    Uint32                   AdapterId              DEFAULT_INITIALIZER(DEFAULT_ADAPTER_ID);
+    UInt32                   AdapterId              DEFAULT_INITIALIZER(DEFAULT_ADAPTER_ID);
 
     /// Minimum required graphics API version (feature level for Direct3D).
     Version                  GraphicsAPIVersion     DEFAULT_INITIALIZER({});
@@ -3479,7 +3479,7 @@ struct EngineCreateInfo
     /// \warning  If an application uses more than one immediate context,
     ///           it must manually call IDeviceContext::FinishFrame for
     ///           additional contexts to let the engine release stale resources.
-    Uint32                   NumImmediateContexts   DEFAULT_INITIALIZER(0);
+    UInt32                   NumImmediateContexts   DEFAULT_INITIALIZER(0);
 
     /// The number of deferred contexts to create when initializing the engine.
 
@@ -3492,7 +3492,7 @@ struct EngineCreateInfo
     /// 
     /// \warning  An application must manually call IDeviceContext::FinishFrame for
     ///           deferred contexts to let the engine release stale resources.
-    Uint32                   NumDeferredContexts    DEFAULT_INITIALIZER(0);
+    UInt32                   NumDeferredContexts    DEFAULT_INITIALIZER(0);
 
     /// Requested device features.
 
@@ -3538,10 +3538,10 @@ struct EngineCreateInfo
     /// 
     /// In OpenGL backend, the thread pool is not used and the value is passed to glMaxShaderCompilerThreadsKHR()
     /// function.
-    Uint32 NumAsyncShaderCompilationThreads DEFAULT_INITIALIZER(0xFFFFFFFFu);
+    UInt32 NumAsyncShaderCompilationThreads DEFAULT_INITIALIZER(0xFFFFFFFFu);
 
     // The structure must be 8-byte aligned
-    Uint32 Padding DEFAULT_INITIALIZER(0);
+    UInt32 Padding DEFAULT_INITIALIZER(0);
 
     /// An optional pointer to the OpenXR attributes, must be set if OpenXR is used.
     /// See Diligent::OpenXRAttribs.
@@ -3572,7 +3572,7 @@ typedef struct EngineCreateInfo EngineCreateInfo;
 
 #if PLATFORM_WEB
 /// WebGL power preference.
-DILIGENT_TYPED_ENUM(WEBGL_POWER_PREFERENCE, Uint8)
+DILIGENT_TYPED_ENUM(WEBGL_POWER_PREFERENCE, UInt8)
 {
     /// Default power preference.
 	WEBGL_POWER_PREFERENCE_DEFAULT = 0,
@@ -3668,7 +3668,7 @@ typedef struct EngineGLCreateInfo EngineGLCreateInfo;
 
 
 /// Direct3D11-specific validation options.
-DILIGENT_TYPED_ENUM(D3D11_VALIDATION_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(D3D11_VALIDATION_FLAGS, UInt32)
 {
     /// Direct3D11-specific validation is disabled.
     D3D11_VALIDATION_FLAG_NONE                                = 0x00,
@@ -3722,7 +3722,7 @@ typedef struct EngineD3D11CreateInfo EngineD3D11CreateInfo;
 
 
 /// Direct3D12-specific validation flags.
-DILIGENT_TYPED_ENUM(D3D12_VALIDATION_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(D3D12_VALIDATION_FLAGS, UInt32)
 {
     /// Direct3D12-specific validation is disabled.
     D3D12_VALIDATION_FLAG_NONE                              = 0x00,
@@ -3756,7 +3756,7 @@ struct EngineD3D12CreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     D3D12_VALIDATION_FLAGS D3D12ValidationFlags DEFAULT_INITIALIZER(D3D12_VALIDATION_FLAG_BREAK_ON_CORRUPTION);
 
     /// Size of the CPU descriptor heap allocations for different heap types.
-    Uint32 CPUDescriptorHeapAllocationSize[4]
+    UInt32 CPUDescriptorHeapAllocationSize[4]
 #if DILIGENT_CPP_INTERFACE
         {
             8192,  // D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV
@@ -3786,7 +3786,7 @@ struct EngineD3D12CreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     ///
     /// An application should monitor the GPU descriptor heap statistics and
     /// set GPUDescriptorHeapSize and GPUDescriptorHeapDynamicSize accordingly.
-    Uint32 GPUDescriptorHeapSize[2]
+    UInt32 GPUDescriptorHeapSize[2]
 #if DILIGENT_CPP_INTERFACE
         {
             16384, // D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV
@@ -3809,7 +3809,7 @@ struct EngineD3D12CreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     /// by 2048. Since Diligent Engine allocates single heap for all variable types,
     /// `GPUDescriptorHeapSize[1] + GPUDescriptorHeapDynamicSize[1]` must not
     /// exceed 2048.
-    Uint32 GPUDescriptorHeapDynamicSize[2]
+    UInt32 GPUDescriptorHeapDynamicSize[2]
 #if DILIGENT_CPP_INTERFACE
         {
             8192,  // D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV
@@ -3827,7 +3827,7 @@ struct EngineD3D12CreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     /// this chunk is defined by `DynamicDescriptorAllocationChunkSize`, thus there will be total
     /// `GPUDescriptorHeapDynamicSize/DynamicDescriptorAllocationChunkSize` chunks in
     /// the heap of each type.
-    Uint32 DynamicDescriptorAllocationChunkSize[2]
+    UInt32 DynamicDescriptorAllocationChunkSize[2]
 #if DILIGENT_CPP_INTERFACE
         {
             256,  // D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV
@@ -3842,11 +3842,11 @@ struct EngineD3D12CreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     /// Device contexts first request a chunk of memory from global dynamic
     /// resource manager and then suballocate from this chunk in a lock-free
     /// fashion. `DynamicHeapPageSize` defines the size of this chunk.
-    Uint32 DynamicHeapPageSize       DEFAULT_INITIALIZER(1 << 20);
+    UInt32 DynamicHeapPageSize       DEFAULT_INITIALIZER(1 << 20);
 
     /// Number of dynamic heap pages that will be reserved by the
     /// global dynamic heap manager to avoid page creation at run time.
-    Uint32 NumDynamicHeapPagesToReserve DEFAULT_INITIALIZER(1);
+    UInt32 NumDynamicHeapPagesToReserve DEFAULT_INITIALIZER(1);
 
     /// Query pool size for each query type.
 
@@ -3856,7 +3856,7 @@ struct EngineD3D12CreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     /// of each type that will be allocated from a single pool.
     /// The engine will create as many pools as necessary to
     /// satisfy the requested number of queries.
-    Uint32 QueryPoolSizes[QUERY_TYPE_NUM_TYPES]
+    UInt32 QueryPoolSizes[QUERY_TYPE_NUM_TYPES]
 #if DILIGENT_CPP_INTERFACE
         {
             0,   // Ignored
@@ -3910,32 +3910,32 @@ typedef struct EngineD3D12CreateInfo EngineD3D12CreateInfo;
 /// Descriptor pool size
 struct VulkanDescriptorPoolSize
 {
-    Uint32 MaxDescriptorSets                DEFAULT_INITIALIZER(0);
-    Uint32 NumSeparateSamplerDescriptors    DEFAULT_INITIALIZER(0);
-    Uint32 NumCombinedSamplerDescriptors    DEFAULT_INITIALIZER(0);
-    Uint32 NumSampledImageDescriptors       DEFAULT_INITIALIZER(0);
-    Uint32 NumStorageImageDescriptors       DEFAULT_INITIALIZER(0);
-    Uint32 NumUniformBufferDescriptors      DEFAULT_INITIALIZER(0);
-    Uint32 NumStorageBufferDescriptors      DEFAULT_INITIALIZER(0);
-    Uint32 NumUniformTexelBufferDescriptors DEFAULT_INITIALIZER(0);
-    Uint32 NumStorageTexelBufferDescriptors DEFAULT_INITIALIZER(0);
-    Uint32 NumInputAttachmentDescriptors    DEFAULT_INITIALIZER(0);
-    Uint32 NumAccelStructDescriptors        DEFAULT_INITIALIZER(0);
+    UInt32 MaxDescriptorSets                DEFAULT_INITIALIZER(0);
+    UInt32 NumSeparateSamplerDescriptors    DEFAULT_INITIALIZER(0);
+    UInt32 NumCombinedSamplerDescriptors    DEFAULT_INITIALIZER(0);
+    UInt32 NumSampledImageDescriptors       DEFAULT_INITIALIZER(0);
+    UInt32 NumStorageImageDescriptors       DEFAULT_INITIALIZER(0);
+    UInt32 NumUniformBufferDescriptors      DEFAULT_INITIALIZER(0);
+    UInt32 NumStorageBufferDescriptors      DEFAULT_INITIALIZER(0);
+    UInt32 NumUniformTexelBufferDescriptors DEFAULT_INITIALIZER(0);
+    UInt32 NumStorageTexelBufferDescriptors DEFAULT_INITIALIZER(0);
+    UInt32 NumInputAttachmentDescriptors    DEFAULT_INITIALIZER(0);
+    UInt32 NumAccelStructDescriptors        DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr VulkanDescriptorPoolSize() noexcept {}
 
-    constexpr VulkanDescriptorPoolSize(Uint32 _MaxDescriptorSets,
-                                       Uint32 _NumSeparateSamplerDescriptors,
-                                       Uint32 _NumCombinedSamplerDescriptors,
-                                       Uint32 _NumSampledImageDescriptors,
-                                       Uint32 _NumStorageImageDescriptors,
-                                       Uint32 _NumUniformBufferDescriptors,
-                                       Uint32 _NumStorageBufferDescriptors,
-                                       Uint32 _NumUniformTexelBufferDescriptors,
-                                       Uint32 _NumStorageTexelBufferDescriptors,
-                                       Uint32 _NumInputAttachmentDescriptors,
-                                       Uint32 _NumAccelStructDescriptors)noexcept :
+    constexpr VulkanDescriptorPoolSize(UInt32 _MaxDescriptorSets,
+                                       UInt32 _NumSeparateSamplerDescriptors,
+                                       UInt32 _NumCombinedSamplerDescriptors,
+                                       UInt32 _NumSampledImageDescriptors,
+                                       UInt32 _NumStorageImageDescriptors,
+                                       UInt32 _NumUniformBufferDescriptors,
+                                       UInt32 _NumStorageBufferDescriptors,
+                                       UInt32 _NumUniformTexelBufferDescriptors,
+                                       UInt32 _NumStorageTexelBufferDescriptors,
+                                       UInt32 _NumInputAttachmentDescriptors,
+                                       UInt32 _NumAccelStructDescriptors)noexcept :
         MaxDescriptorSets               {_MaxDescriptorSets               },
         NumSeparateSamplerDescriptors   {_NumSeparateSamplerDescriptors   },
         NumCombinedSamplerDescriptors   {_NumCombinedSamplerDescriptors   },
@@ -4015,19 +4015,19 @@ struct EngineVkCreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     DeviceFeaturesVk   FeaturesVk;
 
     /// The number of Vulkan instance layers in ppInstanceLayerNames array.
-    Uint32             InstanceLayerCount       DEFAULT_INITIALIZER(0);
+    UInt32             InstanceLayerCount       DEFAULT_INITIALIZER(0);
 
     /// A list of additional Vulkan instance layers to enable.
     const Char* const* ppInstanceLayerNames     DEFAULT_INITIALIZER(nullptr);
 
     /// The number of Vulkan instance extensions in ppInstanceExtensionNames array.
-    Uint32             InstanceExtensionCount   DEFAULT_INITIALIZER(0);
+    UInt32             InstanceExtensionCount   DEFAULT_INITIALIZER(0);
 
     /// A list of additional Vulkan instance extensions to enable.
     const Char* const* ppInstanceExtensionNames DEFAULT_INITIALIZER(nullptr);
 
     /// Number of Vulkan device extensions in ppDeviceExtensionNames array.
-    Uint32             DeviceExtensionCount     DEFAULT_INITIALIZER(0);
+    UInt32             DeviceExtensionCount     DEFAULT_INITIALIZER(0);
 
     /// A list of additional Vulkan device extensions to enable.
     const Char* const* ppDeviceExtensionNames   DEFAULT_INITIALIZER(nullptr);
@@ -4041,7 +4041,7 @@ struct EngineVkCreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     void*              pVkAllocator             DEFAULT_INITIALIZER(nullptr);
 
     /// The number of Vulkan validation messages to ignore in ppIgnoreMessageNames array.
-    Uint32             IgnoreDebugMessageCount  DEFAULT_INITIALIZER(0);
+    UInt32             IgnoreDebugMessageCount  DEFAULT_INITIALIZER(0);
 
     /// An optional list of IgnoreDebugMessageCount Vulkan validation message names to ignore.
     const Char* const* ppIgnoreDebugMessageNames DEFAULT_INITIALIZER(nullptr);
@@ -4073,24 +4073,24 @@ struct EngineVkCreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     /// GPU resources, such as buffers and textures.
     ///
     /// If there is no available GPU memory, the resource will fail to be created.
-    Uint32 DeviceLocalMemoryPageSize        DEFAULT_INITIALIZER(16 << 20);
+    UInt32 DeviceLocalMemoryPageSize        DEFAULT_INITIALIZER(16 << 20);
 
     /// Allocation granularity for host-visible memory.
 
     /// Host-visible memory is primarily used to upload data to GPU resources.
-    Uint32 HostVisibleMemoryPageSize        DEFAULT_INITIALIZER(16 << 20);
+    UInt32 HostVisibleMemoryPageSize        DEFAULT_INITIALIZER(16 << 20);
 
     /// Amount of device-local memory reserved by the engine.
 
     /// The engine does not pre-allocate the memory, but rather keeps free
     /// pages when resources are released.
-    Uint32 DeviceLocalMemoryReserveSize     DEFAULT_INITIALIZER(256 << 20);
+    UInt32 DeviceLocalMemoryReserveSize     DEFAULT_INITIALIZER(256 << 20);
 
     /// Amount of host-visible memory reserved by the engine.
 
     /// The engine does not pre-allocate the memory, but rather keeps free
     /// pages when resources are released.
-    Uint32 HostVisibleMemoryReserveSize     DEFAULT_INITIALIZER(256 << 20);
+    UInt32 HostVisibleMemoryReserveSize     DEFAULT_INITIALIZER(256 << 20);
 
     /// Page size of the upload heap that is allocated by immediate/deferred
     /// contexts from the global memory manager to perform lock-free dynamic
@@ -4109,7 +4109,7 @@ struct EngineVkCreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     ///
     ///     Diligent Engine: Info: Upload heap of immediate context peak used/allocated frame size: 80.00 MB / 80.00 MB (80 pages)
     ///
-    Uint32 UploadHeapPageSize               DEFAULT_INITIALIZER(1 << 20);
+    UInt32 UploadHeapPageSize               DEFAULT_INITIALIZER(1 << 20);
 
     /// Size of the dynamic heap (the buffer that is used to suballocate
     /// memory for dynamic resources) shared by all contexts.
@@ -4136,7 +4136,7 @@ struct EngineVkCreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     /// The peak allocated size (0.50 MB in the example above) is the value that
     /// should be used to guide setting this variable. An application should always
     /// allow some extra space in the dynamic heap to avoid running out of dynamic memory.
-    Uint32 DynamicHeapSize                  DEFAULT_INITIALIZER(8 << 20);
+    UInt32 DynamicHeapSize                  DEFAULT_INITIALIZER(8 << 20);
 
     /// Size of the memory chunk suballocated by immediate/deferred context from
     /// the global dynamic heap to perform lock-free dynamic suballocations.
@@ -4162,7 +4162,7 @@ struct EngineVkCreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     /// * Peak allocated size is the total amount of memory allocated from the dynamic
     ///   heap by the context during the frame. This value is always a multiple of
     ///   DynamicHeapPageSize.
-    Uint32 DynamicHeapPageSize              DEFAULT_INITIALIZER(256 << 10);
+    UInt32 DynamicHeapPageSize              DEFAULT_INITIALIZER(256 << 10);
 
     /// Query pool size for each query type.
     ///
@@ -4172,7 +4172,7 @@ struct EngineVkCreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     /// of each type that will be allocated from a single pool.
     /// The engine will create as many pools as necessary to
     /// satisfy the requested number of queries.
-    Uint32 QueryPoolSizes[QUERY_TYPE_NUM_TYPES]
+    UInt32 QueryPoolSizes[QUERY_TYPE_NUM_TYPES]
 #if DILIGENT_CPP_INTERFACE
     {
         0,   // Ignored
@@ -4211,7 +4211,7 @@ struct EngineMtlCreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     /// Device contexts first request a chunk of memory from global dynamic
     /// resource manager and then suballocate from this chunk in a lock-free
     /// fashion. DynamicHeapPageSize defines the size of this chunk.
-    Uint32 DynamicHeapPageSize       DEFAULT_INITIALIZER(4 << 20);
+    UInt32 DynamicHeapPageSize       DEFAULT_INITIALIZER(4 << 20);
 
     /// Query pool size for each query type.
 
@@ -4221,7 +4221,7 @@ struct EngineMtlCreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     /// of each type that will be allocated from a single pool.
     /// The engine will create as many pools as necessary to
     /// satisfy the requested number of queries.
-    Uint32 QueryPoolSizes[QUERY_TYPE_NUM_TYPES]
+    UInt32 QueryPoolSizes[QUERY_TYPE_NUM_TYPES]
     #if DILIGENT_CPP_INTERFACE
     {
         0,   // Ignored
@@ -4253,7 +4253,7 @@ struct EngineWebGPUCreateInfo DILIGENT_DERIVE(EngineCreateInfo)
 
     /// Upload heap is used to update resources with IDeviceContext::UpdateBuffer(),
     /// IDeviceContext::UpdateTexture(), or to map dynamic textures.
-    Uint32 UploadHeapPageSize  DEFAULT_INITIALIZER(8 << 20);
+    UInt32 UploadHeapPageSize  DEFAULT_INITIALIZER(8 << 20);
 
     /// The size of the dynamic heap (the buffer that is used to suballocate memory for dynamic resources).
 
@@ -4263,14 +4263,14 @@ struct EngineWebGPUCreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     /// At the end of the frame, all dynamic memory allocated for the frame
     /// is recycled. Note that unlike Vulkan, the dynamic memory becomes available
     /// immediately for use in the next frame.
-    Uint32 DynamicHeapSize     DEFAULT_INITIALIZER(8 << 20);
+    UInt32 DynamicHeapSize     DEFAULT_INITIALIZER(8 << 20);
 
     /// Size of the memory chunk suballocated by immediate/deferred context from
     /// the global dynamic heap to perform lock-free dynamic suballocations.
-    Uint32 DynamicHeapPageSize DEFAULT_INITIALIZER(256 << 10);
+    UInt32 DynamicHeapPageSize DEFAULT_INITIALIZER(256 << 10);
 
     /// Query pool size for each query type.
-    Uint32 QueryPoolSizes[QUERY_TYPE_NUM_TYPES]
+    UInt32 QueryPoolSizes[QUERY_TYPE_NUM_TYPES]
 #if DILIGENT_CPP_INTERFACE
     {
         0,   // Ignored
@@ -4298,17 +4298,17 @@ typedef struct EngineWebGPUCreateInfo EngineWebGPUCreateInfo;
 /// Box
 struct Box
 {
-    Uint32 MinX DEFAULT_INITIALIZER(0); ///< Minimal X coordinate. Default value is 0
-    Uint32 MaxX DEFAULT_INITIALIZER(0); ///< Maximal X coordinate. Default value is 0
-    Uint32 MinY DEFAULT_INITIALIZER(0); ///< Minimal Y coordinate. Default value is 0
-    Uint32 MaxY DEFAULT_INITIALIZER(0); ///< Maximal Y coordinate. Default value is 0
-    Uint32 MinZ DEFAULT_INITIALIZER(0); ///< Minimal Z coordinate. Default value is 0
-    Uint32 MaxZ DEFAULT_INITIALIZER(1); ///< Maximal Z coordinate. Default value is 1
+    UInt32 MinX DEFAULT_INITIALIZER(0); ///< Minimal X coordinate. Default value is 0
+    UInt32 MaxX DEFAULT_INITIALIZER(0); ///< Maximal X coordinate. Default value is 0
+    UInt32 MinY DEFAULT_INITIALIZER(0); ///< Minimal Y coordinate. Default value is 0
+    UInt32 MaxY DEFAULT_INITIALIZER(0); ///< Maximal Y coordinate. Default value is 0
+    UInt32 MinZ DEFAULT_INITIALIZER(0); ///< Minimal Z coordinate. Default value is 0
+    UInt32 MaxZ DEFAULT_INITIALIZER(1); ///< Maximal Z coordinate. Default value is 1
 
 #if DILIGENT_CPP_INTERFACE
-    constexpr Box(Uint32 _MinX, Uint32 _MaxX,
-                  Uint32 _MinY, Uint32 _MaxY,
-                  Uint32 _MinZ, Uint32 _MaxZ) noexcept:
+    constexpr Box(UInt32 _MinX, UInt32 _MaxX,
+                  UInt32 _MinY, UInt32 _MaxY,
+                  UInt32 _MinZ, UInt32 _MaxZ) noexcept:
         MinX {_MinX},
         MaxX {_MaxX},
         MinY {_MinY},
@@ -4317,20 +4317,20 @@ struct Box
         MaxZ {_MaxZ}
     {}
 
-    constexpr Box(Uint32 _MinX, Uint32 _MaxX,
-                  Uint32 _MinY, Uint32 _MaxY) noexcept:
+    constexpr Box(UInt32 _MinX, UInt32 _MaxX,
+                  UInt32 _MinY, UInt32 _MaxY) noexcept:
         Box{_MinX, _MaxX, _MinY, _MaxY, 0, 1}
     {}
 
-    constexpr Box(Uint32 _MinX, Uint32 _MaxX) noexcept:
+    constexpr Box(UInt32 _MinX, UInt32 _MaxX) noexcept:
         Box{_MinX, _MaxX, 0, 0, 0, 1}
     {}
 
     Box() noexcept {}
 
-    constexpr Uint32 Width()   const { return MaxX - MinX; }
-    constexpr Uint32 Height()  const { return MaxY - MinY; }
-    constexpr Uint32 Depth()   const { return MaxZ - MinZ; }
+    constexpr UInt32 Width()   const { return MaxX - MinX; }
+    constexpr UInt32 Height()  const { return MaxY - MinY; }
+    constexpr UInt32 Depth()   const { return MaxZ - MinZ; }
 
     constexpr bool   IsValid() const { return MaxX > MinX && MaxY > MinY && MaxZ > MinZ; }
 
@@ -4346,7 +4346,7 @@ typedef struct Box Box;
 
 
 /// Describes texture format component type
-DILIGENT_TYPED_ENUM(COMPONENT_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(COMPONENT_TYPE, UInt8)
 {
     /// Undefined component type
     COMPONENT_TYPE_UNDEFINED,
@@ -4397,10 +4397,10 @@ struct TextureFormatAttribs
 
     /// Size of one component in bytes (for instance, for TEX_FORMAT_RGBA8_UNORM format, this will be 1)
     /// For compressed formats, this is the block size in bytes (for TEX_FORMAT_BC1_UNORM format, this will be 8)
-    Uint8 ComponentSize          DEFAULT_INITIALIZER(0);
+    UInt8 ComponentSize          DEFAULT_INITIALIZER(0);
 
     /// Number of components
-    Uint8 NumComponents          DEFAULT_INITIALIZER(0);
+    UInt8 NumComponents          DEFAULT_INITIALIZER(0);
 
     /// Component type, see Diligent::COMPONENT_TYPE for details.
     COMPONENT_TYPE ComponentType DEFAULT_INITIALIZER(COMPONENT_TYPE_UNDEFINED);
@@ -4409,28 +4409,28 @@ struct TextureFormatAttribs
     Bool IsTypeless              DEFAULT_INITIALIZER(false);
 
     /// For block-compressed formats, compression block width
-    Uint8 BlockWidth             DEFAULT_INITIALIZER(0);
+    UInt8 BlockWidth             DEFAULT_INITIALIZER(0);
 
     /// For block-compressed formats, compression block height
-    Uint8 BlockHeight            DEFAULT_INITIALIZER(0);
+    UInt8 BlockHeight            DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     /// For non-compressed formats, returns the texel size.
     /// For block-compressed formats, returns the block size.
-    Uint32 GetElementSize() const
+    UInt32 GetElementSize() const
     {
-        return Uint32{ComponentSize} * (ComponentType != COMPONENT_TYPE_COMPRESSED ? Uint32{NumComponents} : Uint32{1});
+        return UInt32{ComponentSize} * (ComponentType != COMPONENT_TYPE_COMPRESSED ? UInt32{NumComponents} : UInt32{1});
     }
 
     /// Initializes the structure
     constexpr TextureFormatAttribs(const Char*    _Name,
                                    TEXTURE_FORMAT _Format,
-                                   Uint8          _ComponentSize,
-                                   Uint8          _NumComponents,
+                                   UInt8          _ComponentSize,
+                                   UInt8          _NumComponents,
                                    COMPONENT_TYPE _ComponentType,
                                    bool           _IsTypeless,
-                                   Uint8          _BlockWidth,
-                                   Uint8          _BlockHeight) noexcept :
+                                   UInt8          _BlockWidth,
+                                   UInt8          _BlockHeight) noexcept :
         Name         {_Name         },
         Format       {_Format       },
         ComponentSize{_ComponentSize},
@@ -4475,7 +4475,7 @@ typedef struct TextureFormatInfo TextureFormatInfo;
 
 
 /// Describes device support of a particular resource dimension for a given texture format.
-DILIGENT_TYPED_ENUM(RESOURCE_DIMENSION_SUPPORT, Uint32)
+DILIGENT_TYPED_ENUM(RESOURCE_DIMENSION_SUPPORT, UInt32)
 {
     /// The device does not support any resources for this format.
     RESOURCE_DIMENSION_SUPPORT_NONE           = 0,
@@ -4538,7 +4538,7 @@ typedef struct TextureFormatInfoExt TextureFormatInfoExt;
 
 
 /// Describes the sparse texture packing mode
-DILIGENT_TYPED_ENUM(SPARSE_TEXTURE_FLAGS, Uint8)
+DILIGENT_TYPED_ENUM(SPARSE_TEXTURE_FLAGS, UInt8)
 {
     /// No special packing mode is used.
     SPARSE_TEXTURE_FLAG_NONE                   = 0,
@@ -4572,7 +4572,7 @@ struct SparseTextureFormatInfo
     /// SPARSE_RESOURCE_CAP_FLAG_STANDARD_2D_TILE_SHAPE,
     /// SPARSE_RESOURCE_CAP_FLAG_STANDARD_2DMS_TILE_SHAPE,
     /// SPARSE_RESOURCE_CAP_FLAG_STANDARD_3D_TILE_SHAPE.
-    Uint32     TileSize[3] DEFAULT_INITIALIZER({});
+    UInt32     TileSize[3] DEFAULT_INITIALIZER({});
 
     /// Sparse texture flags, see Diligent::SPARSE_TEXTURE_FLAGS.
     SPARSE_TEXTURE_FLAGS Flags DEFAULT_INITIALIZER(SPARSE_TEXTURE_FLAG_NONE);
@@ -4583,7 +4583,7 @@ typedef struct SparseTextureFormatInfo SparseTextureFormatInfo;
 
 /// These flags mirror [VkPipelineStageFlagBits](https://www.khronos.org/registry/vulkan/specs/1.1-extensions/html/vkspec.html#VkPipelineStageFlagBits)
 /// enum and only have effect in Vulkan backend.
-DILIGENT_TYPED_ENUM(PIPELINE_STAGE_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(PIPELINE_STAGE_FLAGS, UInt32)
 {
     /// Undefined stage
     PIPELINE_STAGE_FLAG_UNDEFINED                    = 0x00000000,
@@ -4679,7 +4679,7 @@ DEFINE_FLAG_ENUM_OPERATORS(PIPELINE_STAGE_FLAGS)
 
 /// The flags mirror [VkAccessFlags](https://www.khronos.org/registry/vulkan/specs/1.1-extensions/html/vkspec.html#VkAccessFlags) enum
 /// and only have effect in Vulkan backend.
-DILIGENT_TYPED_ENUM(ACCESS_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(ACCESS_FLAGS, UInt32)
 {
     /// No access
     ACCESS_FLAG_NONE                         = 0x00000000,
@@ -4772,7 +4772,7 @@ DEFINE_FLAG_ENUM_OPERATORS(ACCESS_FLAGS)
 
 
 /// Resource usage state
-DILIGENT_TYPED_ENUM(RESOURCE_STATE, Uint32)
+DILIGENT_TYPED_ENUM(RESOURCE_STATE, UInt32)
 {
     /// The resource state is not known to the engine and is managed by the application
     RESOURCE_STATE_UNKNOWN              = 0,
@@ -4879,7 +4879,7 @@ DILIGENT_TYPED_ENUM(RESOURCE_STATE, Uint32)
 DEFINE_FLAG_ENUM_OPERATORS(RESOURCE_STATE);
 
 /// State transition barrier type
-DILIGENT_TYPED_ENUM(STATE_TRANSITION_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(STATE_TRANSITION_TYPE, UInt8)
 {
     /// Perform state transition immediately.
     STATE_TRANSITION_TYPE_IMMEDIATE = 0,

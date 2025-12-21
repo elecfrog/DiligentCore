@@ -45,7 +45,7 @@ TEXTURE_FORMAT WGPUFormatToTextureFormat(WGPUTextureFormat TexFmt);
 
 WGPUTextureFormat BufferFormatToWGPUTextureFormat(const struct BufferFormat& BuffFmt);
 
-WGPUVertexFormat VertexFormatAttribsToWGPUVertexFormat(VALUE_TYPE ValueType, Uint32 NumComponents, bool IsNormalized);
+WGPUVertexFormat VertexFormatAttribsToWGPUVertexFormat(VALUE_TYPE ValueType, UInt32 NumComponents, bool IsNormalized);
 
 WGPUIndexFormat IndexTypeToWGPUIndexFormat(VALUE_TYPE ValueType);
 

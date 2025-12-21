@@ -47,7 +47,7 @@ CommandListManager::~CommandListManager()
     LOG_INFO_MESSAGE("Command list manager: created ", m_FreeAllocators.size(), " allocators");
 }
 
-void CommandListManager::CreateNewCommandList(ID3D12GraphicsCommandList** List, ID3D12CommandAllocator** Allocator, Uint32& IfaceVersion)
+void CommandListManager::CreateNewCommandList(ID3D12GraphicsCommandList** List, ID3D12CommandAllocator** Allocator, UInt32& IfaceVersion)
 {
     RequestAllocator(Allocator);
     ID3D12Device* pd3d12Device = m_DeviceD3D12Impl.GetD3D12Device();
@@ -66,7 +66,7 @@ void CommandListManager::CreateNewCommandList(ID3D12GraphicsCommandList** List, 
         };
 
     HRESULT hr = E_FAIL;
-    for (Uint32 i = 0; i < _countof(CmdListIIDs); ++i)
+    for (UInt32 i = 0; i < _countof(CmdListIIDs); ++i)
     {
         hr = pd3d12Device->CreateCommandList(1, m_CmdListType, *Allocator, nullptr, CmdListIIDs[i], reinterpret_cast<void**>(List));
         if (SUCCEEDED(hr))
@@ -111,7 +111,7 @@ void CommandListManager::RequestAllocator(ID3D12CommandAllocator** ppAllocator)
 #endif
 }
 
-void CommandListManager::ReleaseAllocator(CComPtr<ID3D12CommandAllocator>&& Allocator, SoftwareQueueIndex CmdQueue, Uint64 FenceValue)
+void CommandListManager::ReleaseAllocator(CComPtr<ID3D12CommandAllocator>&& Allocator, SoftwareQueueIndex CmdQueue, UInt64 FenceValue)
 {
     struct StaleAllocator
     {

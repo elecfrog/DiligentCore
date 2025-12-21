@@ -42,12 +42,12 @@ namespace Diligent
 namespace Testing
 {
 
-void CompareTestImages(const Uint8*                          pReferencePixels,
-                       Uint64                                RefPixelsStride,
-                       const Uint8*                          pPixels,
-                       Uint64                                PixelsStride,
-                       Uint32                                Width,
-                       Uint32                                Height,
+void CompareTestImages(const UInt8*                          pReferencePixels,
+                       UInt64                                RefPixelsStride,
+                       const UInt8*                          pPixels,
+                       UInt64                                PixelsStride,
+                       UInt32                                Width,
+                       UInt32                                Height,
                        TEXTURE_FORMAT                        Format,
                        std::unordered_map<std::string, int>& FailureCounters)
 {
@@ -61,7 +61,7 @@ void CompareTestImages(const Uint8*                          pReferencePixels,
 
     bool bIsIdentical = true;
 
-    for (Uint32 row = 0; row < Height; ++row)
+    for (UInt32 row = 0; row < Height; ++row)
     {
         if (memcmp(pReferencePixels + row * RefPixelsStride,
                    pPixels + row * PixelsStride,
@@ -78,22 +78,22 @@ void CompareTestImages(const Uint8*                          pReferencePixels,
     {
         auto ReportImageStride = (Width * 2) * 3;
 
-        std::vector<Uint8> ReportImage(ReportImageStride * (Height * 2));
-        for (Uint32 row = 0; row < Height; ++row)
+        std::vector<UInt8> ReportImage(ReportImageStride * (Height * 2));
+        for (UInt32 row = 0; row < Height; ++row)
         {
-            for (Uint32 col = 0; col < Width; ++col)
+            for (UInt32 col = 0; col < Width; ++col)
             {
-                for (Uint32 c = 0; c < 3; ++c)
+                for (UInt32 c = 0; c < 3; ++c)
                 {
                     auto RefVal = pReferencePixels[row * RefPixelsStride + col * 4 + c];
                     auto Val    = pPixels[row * PixelsStride + col * 4 + c];
-                    auto diff   = static_cast<Uint8>(std::min(std::abs(int{RefVal} - int{Val}), 255));
+                    auto diff   = static_cast<UInt8>(std::min(std::abs(int{RefVal} - int{Val}), 255));
 
                     // clang-format off
                     ReportImage[row            * ReportImageStride +  col * 3          + c] = RefVal;
                     ReportImage[row            * ReportImageStride + (Width + col) * 3 + c] = Val;
                     ReportImage[(row + Height) * ReportImageStride +  col * 3          + c] = diff;
-                    ReportImage[(row + Height) * ReportImageStride + (Width + col) * 3 + c] = static_cast<Uint8>(std::min(diff*16, 255));
+                    ReportImage[(row + Height) * ReportImageStride + (Width + col) * 3 + c] = static_cast<UInt8>(std::min(diff*16, 255));
                     // clang-format on
                 }
             }
@@ -127,10 +127,10 @@ void CompareTestImages(const Uint8*                          pReferencePixels,
     }
 }
 
-void DumpTestImage(const Uint8*   pPixels,
-                   Uint64         PixelsStride,
-                   Uint32         Width,
-                   Uint32         Height,
+void DumpTestImage(const UInt8*   pPixels,
+                   UInt64         PixelsStride,
+                   UInt32         Width,
+                   UInt32         Height,
                    TEXTURE_FORMAT Format,
                    const char*    DumpName,
                    bool           bIsOpenGL)
@@ -143,14 +143,14 @@ void DumpTestImage(const Uint8*   pPixels,
     VERIFY(Format == TEX_FORMAT_RGBA8_UNORM, GetTextureFormatAttribs(Format).Name, " is not supported");
 
     const auto         DumpImageStride = Width * 3;
-    std::vector<Uint8> DumpImage(DumpImageStride * Height);
-    for (Uint32 y = 0; y < Height; ++y)
+    std::vector<UInt8> DumpImage(DumpImageStride * Height);
+    for (UInt32 y = 0; y < Height; ++y)
     {
-        for (Uint32 x = 0; x < Width; ++x)
+        for (UInt32 x = 0; x < Width; ++x)
         {
-            for (Uint32 c = 0; c < 3; ++c)
+            for (UInt32 c = 0; c < 3; ++c)
             {
-                const Uint32 FlipCoord                     = bIsOpenGL ? (Height - 1 - y) : y;
+                const UInt32 FlipCoord                     = bIsOpenGL ? (Height - 1 - y) : y;
                 DumpImage[y * DumpImageStride + x * 3 + c] = pPixels[FlipCoord * PixelsStride + x * 4 + c];
             }
         }

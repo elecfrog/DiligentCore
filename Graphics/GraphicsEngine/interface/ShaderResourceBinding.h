@@ -132,7 +132,7 @@ DILIGENT_BEGIN_INTERFACE(IShaderResourceBinding, IObject)
     /// The method only counts mutable and dynamic variables that can be accessed through
     /// the Shader Resource Binding object. Static variables are accessed through the Shader
     /// object.
-    VIRTUAL Uint32 METHOD(GetVariableCount)(THIS_
+    VIRTUAL UInt32 METHOD(GetVariableCount)(THIS_
                                             SHADER_TYPE ShaderType) CONST PURE;
 
     /// Returns the variable by its index.
@@ -150,7 +150,7 @@ DILIGENT_BEGIN_INTERFACE(IShaderResourceBinding, IObject)
     ///         recommended to store and reuse the pointer as it never changes.
     VIRTUAL IShaderResourceVariable* METHOD(GetVariableByIndex)(THIS_
                                                                 SHADER_TYPE ShaderType,
-                                                                Uint32      Index) PURE;
+                                                                UInt32      Index) PURE;
 
     /// Returns true if static resources have been initialized in this SRB.
     VIRTUAL Bool METHOD(StaticResourcesInitialized)(THIS) CONST PURE;

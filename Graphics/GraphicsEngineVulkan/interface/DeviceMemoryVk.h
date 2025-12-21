@@ -70,8 +70,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceMemoryVk, IDeviceMemory)
     /// Returns a DeviceMemoryRangeVk object with the information about
     /// the Vulkan device memory associated with the specified memory range.
     VIRTUAL DeviceMemoryRangeVk METHOD(GetRange)(THIS_
-                                                 Uint64 Offset,
-                                                 Uint64 Size) CONST PURE;
+                                                 UInt64 Offset,
+                                                 UInt64 Size) CONST PURE;
 };
 DILIGENT_END_INTERFACE
 

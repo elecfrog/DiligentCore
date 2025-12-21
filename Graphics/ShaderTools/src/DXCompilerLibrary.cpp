@@ -99,7 +99,7 @@ float4 main() : SV_Target0
         if (m_Target == DXCompilerTarget::Vulkan)
             DxilArgs.push_back(L"-spirv");
 
-        for (Uint32 MinorVer = 1;; ++MinorVer)
+        for (UInt32 MinorVer = 1;; ++MinorVer)
         {
             std::wstring Profile = L"ps_6_";
             Profile += std::to_wstring(MinorVer);

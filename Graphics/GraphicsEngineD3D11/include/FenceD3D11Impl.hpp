@@ -55,15 +55,15 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_FenceD3D11, TFenceBase)
 
     /// Implementation of IFence::GetCompletedValue() in Direct3D11 backend.
-    virtual Uint64 DILIGENT_CALL_TYPE GetCompletedValue() override final;
+    virtual UInt64 DILIGENT_CALL_TYPE GetCompletedValue() override final;
 
     /// Implementation of IFence::Signal() in Direct3D11 backend.
-    virtual void DILIGENT_CALL_TYPE Signal(Uint64 Value) override final;
+    virtual void DILIGENT_CALL_TYPE Signal(UInt64 Value) override final;
 
     /// Implementation of IFence::Wait() in Direct3D11 backend.
-    virtual void DILIGENT_CALL_TYPE Wait(Uint64 Value) override final;
+    virtual void DILIGENT_CALL_TYPE Wait(UInt64 Value) override final;
 
-    void AddPendingQuery(CComPtr<ID3D11DeviceContext1> pCtx, CComPtr<ID3D11Query> pQuery, Uint64 Value)
+    void AddPendingQuery(CComPtr<ID3D11DeviceContext1> pCtx, CComPtr<ID3D11Query> pQuery, UInt64 Value)
     {
         m_PendingQueries.emplace_back(std::move(pCtx), std::move(pQuery), Value);
         DvpSignal(Value);
@@ -71,16 +71,16 @@ public:
         m_MaxPendingQueries = std::max(m_MaxPendingQueries, m_PendingQueries.size());
     }
 
-    void Wait(Uint64 Value, bool FlushCommands);
+    void Wait(UInt64 Value, bool FlushCommands);
 
 private:
     struct PendingFenceData
     {
         CComPtr<ID3D11DeviceContext1> pd3d11Ctx;
         CComPtr<ID3D11Query>          pd3d11Query;
-        const Uint64                  Value;
+        const UInt64                  Value;
 
-        PendingFenceData(CComPtr<ID3D11DeviceContext1> pCtx, CComPtr<ID3D11Query> pQuery, Uint64 _Value) :
+        PendingFenceData(CComPtr<ID3D11DeviceContext1> pCtx, CComPtr<ID3D11Query> pQuery, UInt64 _Value) :
             // clang-format off
             pd3d11Ctx  {std::move(pCtx)},
             pd3d11Query{std::move(pQuery)},

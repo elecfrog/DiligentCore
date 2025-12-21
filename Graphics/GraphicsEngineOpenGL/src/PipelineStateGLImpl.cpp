@@ -99,7 +99,7 @@ PipelineResourceSignatureDescWrapper PipelineStateGLImpl::GetDefaultResourceSign
     const TShaderStages&              ShaderStages,
     const char*                       PSOName,
     const PipelineResourceLayoutDesc& ResourceLayout,
-    Uint32                            SRBAllocationGranularity) noexcept(false)
+    UInt32                            SRBAllocationGranularity) noexcept(false)
 {
     return PipelineResourceSignatureDescWrapper{PSOName, {}, 1};
 }
@@ -225,14 +225,14 @@ void PipelineStateGLImpl::InitResourceLayout(PSO_CREATE_INTERNAL_FLAGS InternalF
 
     // Apply resource bindings to programs.
     PipelineResourceSignatureGLImpl::TBindings Bindings = {};
-    for (Uint32 s = 0; s < m_SignatureCount; ++s)
+    for (UInt32 s = 0; s < m_SignatureCount; ++s)
     {
         const SignatureAutoPtrType& pSignature = m_Signatures[s];
         if (pSignature == nullptr)
             continue;
 
         m_BaseBindings[s] = Bindings;
-        for (Uint32 p = 0; p < m_NumPrograms; ++p)
+        for (UInt32 p = 0; p < m_NumPrograms; ++p)
         {
             // GL programs are keyed by shader IDs and resource signature IDs or resource layout.
             // Consequently, any pipeline that uses a cached program will assign the same bindings.
@@ -244,13 +244,13 @@ void PipelineStateGLImpl::InitResourceLayout(PSO_CREATE_INTERNAL_FLAGS InternalF
 
     const RenderDeviceGLImpl::GLDeviceLimits& Limits = GetDevice()->GetDeviceLimits();
 
-    if (Bindings[BINDING_RANGE_UNIFORM_BUFFER] > static_cast<Uint32>(Limits.MaxUniformBlocks))
+    if (Bindings[BINDING_RANGE_UNIFORM_BUFFER] > static_cast<UInt32>(Limits.MaxUniformBlocks))
         LOG_ERROR_AND_THROW("The number of bindings in range '", GetBindingRangeName(BINDING_RANGE_UNIFORM_BUFFER), "' is greater than the maximum allowed (", Limits.MaxUniformBlocks, ").");
-    if (Bindings[BINDING_RANGE_TEXTURE] > static_cast<Uint32>(Limits.MaxTextureUnits))
+    if (Bindings[BINDING_RANGE_TEXTURE] > static_cast<UInt32>(Limits.MaxTextureUnits))
         LOG_ERROR_AND_THROW("The number of bindings in range '", GetBindingRangeName(BINDING_RANGE_TEXTURE), "' is greater than the maximum allowed (", Limits.MaxTextureUnits, ").");
-    if (Bindings[BINDING_RANGE_STORAGE_BUFFER] > static_cast<Uint32>(Limits.MaxStorageBlock))
+    if (Bindings[BINDING_RANGE_STORAGE_BUFFER] > static_cast<UInt32>(Limits.MaxStorageBlock))
         LOG_ERROR_AND_THROW("The number of bindings in range '", GetBindingRangeName(BINDING_RANGE_STORAGE_BUFFER), "' is greater than the maximum allowed (", Limits.MaxStorageBlock, ").");
-    if (Bindings[BINDING_RANGE_IMAGE] > static_cast<Uint32>(Limits.MaxImagesUnits))
+    if (Bindings[BINDING_RANGE_IMAGE] > static_cast<UInt32>(Limits.MaxImagesUnits))
         LOG_ERROR_AND_THROW("The number of bindings in range '", GetBindingRangeName(BINDING_RANGE_IMAGE), "' is greater than the maximum allowed (", Limits.MaxImagesUnits, ").");
 }
 
@@ -321,7 +321,7 @@ public:
         }
         else if (m_State == State::Failed)
         {
-            for (Uint32 i = 0; i < m_Pipeline.m_NumPrograms; ++i)
+            for (UInt32 i = 0; i < m_Pipeline.m_NumPrograms; ++i)
             {
                 m_Pipeline.m_GLPrograms[i].reset();
             }
@@ -411,7 +411,7 @@ private:
             {
                 GLProgramCache::GetProgramAttribs ProgAttribs{
                     m_Shaders.data(),
-                    static_cast<Uint32>(m_Shaders.size()),
+                    static_cast<UInt32>(m_Shaders.size()),
                     false, // IsSeparableProgram
                     m_CreateInfo.ResourceSignaturesCount == 0 ? &m_CreateInfo.PSODesc.ResourceLayout : nullptr,
                     m_CreateInfo.ppResourceSignatures,
@@ -423,7 +423,7 @@ private:
         }
 
         // Check program linking status
-        for (Uint32 i = 0; i < m_Pipeline.m_NumPrograms; ++i)
+        for (UInt32 i = 0; i < m_Pipeline.m_NumPrograms; ++i)
         {
             GLProgram::LinkStatus LinkStatus = m_Pipeline.m_GLPrograms[i]->GetLinkStatus(WaitForCompletion);
             if (LinkStatus == GLProgram::LinkStatus::InProgress)
@@ -463,7 +463,7 @@ void PipelineStateGLImpl::InitInternalObjects(const PSOCreateInfoType& CreateInf
     VERIFY(DeviceInfo.Type != RENDER_DEVICE_TYPE_UNDEFINED, "Device info is not initialized");
 
     m_IsProgramPipelineSupported = DeviceInfo.Features.SeparablePrograms != DEVICE_FEATURE_STATE_DISABLED;
-    m_NumPrograms                = m_IsProgramPipelineSupported ? static_cast<Uint8>(ShaderStages.size()) : 1;
+    m_NumPrograms                = m_IsProgramPipelineSupported ? static_cast<UInt8>(ShaderStages.size()) : 1;
 
     FixedLinearAllocator MemPool{GetRawAllocator()};
 
@@ -571,7 +571,7 @@ void PipelineStateGLImpl::Destruct()
 
     if (m_GLPrograms)
     {
-        for (Uint32 i = 0; i < m_NumPrograms; ++i)
+        for (UInt32 i = 0; i < m_NumPrograms; ++i)
         {
             m_GLPrograms[i].~SharedGLProgramPtr();
         }
@@ -596,7 +596,7 @@ PIPELINE_STATE_STATUS PipelineStateGLImpl::GetStatus(bool WaitForCompletion)
     return m_Status.load();
 }
 
-SHADER_TYPE PipelineStateGLImpl::GetShaderStageType(Uint32 Index) const
+SHADER_TYPE PipelineStateGLImpl::GetShaderStageType(UInt32 Index) const
 {
     VERIFY(Index < m_NumPrograms, "Index is out of range");
     return m_ShaderTypes[Index];
@@ -635,7 +635,7 @@ GLObjectWrappers::GLPipelineObj& PipelineStateGLImpl::GetGLProgramPipeline(GLCon
     m_GLProgPipelines.emplace_back(Context, true);
     auto&  ctx_pipeline = m_GLProgPipelines.back();
     GLuint Pipeline     = ctx_pipeline.second;
-    for (Uint32 i = 0; i < GetNumShaderStages(); ++i)
+    for (UInt32 i = 0; i < GetNumShaderStages(); ++i)
     {
         GLenum GLShaderBit = ShaderTypeToGLShaderBit(GetShaderStageType(i));
         // If the program has an active code for each stage mentioned in set flags,
@@ -732,8 +732,8 @@ void PipelineStateGLImpl::DvpVerifySRBResources(const ShaderResourceCacheArrayTy
                                                 const BaseBindingsArrayType&        BaseBindings) const
 {
     // Verify base bindings
-    const Uint32 SignCount = GetResourceSignatureCount();
-    for (Uint32 sign = 0; sign < SignCount; ++sign)
+    const UInt32 SignCount = GetResourceSignatureCount();
+    for (UInt32 sign = 0; sign < SignCount; ++sign)
     {
         const PipelineResourceSignatureGLImpl* pSignature = GetResourceSignature(sign);
         if (pSignature == nullptr || pSignature->GetTotalResourceCount() == 0)
@@ -749,12 +749,12 @@ void PipelineStateGLImpl::DvpVerifySRBResources(const ShaderResourceCacheArrayTy
         PipelineStateGLImpl const&          PSO;
         const ShaderResourceCacheArrayType& ResourceCaches;
         AttribIter                          attrib_it;
-        Uint32&                             shader_ind;
+        UInt32&                             shader_ind;
 
         HandleResourceHelper(const PipelineStateGLImpl&          _PSO,
                              const ShaderResourceCacheArrayType& _ResourceCaches,
                              AttribIter                          _iter,
-                             Uint32&                             _ind) :
+                             UInt32&                             _ind) :
             PSO{_PSO},
             ResourceCaches{_ResourceCaches},
             attrib_it{_iter},
@@ -779,7 +779,7 @@ void PipelineStateGLImpl::DvpVerifySRBResources(const ShaderResourceCacheArrayTy
         void operator()(const ShaderResourcesGL::ImageInfo& Attribs) { Validate(Attribs, Attribs.ResourceDim, Attribs.IsMultisample); }
     };
 
-    Uint32               ShaderInd = 0;
+    UInt32               ShaderInd = 0;
     HandleResourceHelper HandleResource{*this, ResourceCaches, m_ResourceAttibutions.begin(), ShaderInd};
 
     VERIFY_EXPR(m_ShaderResources.size() == m_ShaderNames.size());

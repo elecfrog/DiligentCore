@@ -70,15 +70,15 @@ public:
     RootSignatureD3D12(IReferenceCounters*                                     pRefCounters,
                        RenderDeviceD3D12Impl*                                  pDeviceD3D12Impl,
                        const RefCntAutoPtr<PipelineResourceSignatureD3D12Impl> ppSignatures[],
-                       Uint32                                                  SignatureCount,
+                       UInt32                                                  SignatureCount,
                        size_t                                                  Hash);
     ~RootSignatureD3D12();
 
     size_t GetHash() const { return m_Hash; }
 
-    Uint32 GetSignatureCount() const { return m_SignatureCount; }
+    UInt32 GetSignatureCount() const { return m_SignatureCount; }
 
-    PipelineResourceSignatureD3D12Impl* GetResourceSignature(Uint32 index) const
+    PipelineResourceSignatureD3D12Impl* GetResourceSignature(UInt32 index) const
     {
         VERIFY_EXPR(index < m_SignatureCount);
         return m_ResourceSignatures[index].pSignature;
@@ -90,32 +90,32 @@ public:
         return m_pd3d12RootSignature;
     }
 
-    Uint32 GetBaseRootIndex(Uint32 BindingIndex) const
+    UInt32 GetBaseRootIndex(UInt32 BindingIndex) const
     {
         VERIFY_EXPR(BindingIndex < m_SignatureCount);
         return m_ResourceSignatures[BindingIndex].BaseRootIndex;
     }
 
-    Uint32 GetBaseRegisterSpace(Uint32 BindingIndex) const
+    UInt32 GetBaseRegisterSpace(UInt32 BindingIndex) const
     {
         VERIFY_EXPR(BindingIndex <= m_SignatureCount);
         return m_ResourceSignatures[BindingIndex].BaseRegisterSpace;
     }
 
     /// Returns the total number of register spaces used by all resource signatures
-    Uint32 GetTotalSpaces() const
+    UInt32 GetTotalSpaces() const
     {
         return m_TotalSpacesUsed;
     }
 
-    bool IsCompatibleWith(const RefCntAutoPtr<PipelineResourceSignatureD3D12Impl> ppSignatures[], Uint32 SignatureCount) const noexcept;
+    bool IsCompatibleWith(const RefCntAutoPtr<PipelineResourceSignatureD3D12Impl> ppSignatures[], UInt32 SignatureCount) const noexcept;
 
 private:
     // The number of pipeline resource signatures used to initialize this root signature.
-    const Uint32 m_SignatureCount;
+    const UInt32 m_SignatureCount;
 
     // The total number of register spaces used by this root signature.
-    Uint32 m_TotalSpacesUsed = 0;
+    UInt32 m_TotalSpacesUsed = 0;
 
     // Root signature hash.
     const size_t m_Hash;
@@ -126,8 +126,8 @@ private:
     {
         RefCntAutoPtr<PipelineResourceSignatureD3D12Impl> pSignature;
 
-        Uint32 BaseRootIndex     = 0;
-        Uint32 BaseRegisterSpace = 0;
+        UInt32 BaseRootIndex     = 0;
+        UInt32 BaseRegisterSpace = 0;
     };
     std::unique_ptr<ResourceSignatureInfo[]> m_ResourceSignatures;
 
@@ -139,18 +139,18 @@ private:
 class LocalRootSignatureD3D12
 {
 public:
-    LocalRootSignatureD3D12(const char* pCBName, Uint32 ShaderRecordSize);
+    LocalRootSignatureD3D12(const char* pCBName, UInt32 ShaderRecordSize);
 
     bool IsShaderRecord(const D3DShaderResourceAttribs& CB) const;
 
-    bool Create(ID3D12Device* pDevice, Uint32 RegisterSpace);
+    bool Create(ID3D12Device* pDevice, UInt32 RegisterSpace);
 
     ID3D12RootSignature* GetD3D12RootSignature() const { return m_pd3d12RootSignature; }
     bool                 IsDefined() const { return m_ShaderRecordSize > 0 && !m_Name.empty(); }
     const char*          GetName() const { return m_Name.c_str(); }
-    Uint32               GetShaderRegister() const { return 0; }
+    UInt32               GetShaderRegister() const { return 0; }
 
-    Uint32 GetRegisterSpace() const
+    UInt32 GetRegisterSpace() const
     {
         VERIFY_EXPR(m_RegisterSpace != ~0U);
         return m_RegisterSpace;
@@ -158,8 +158,8 @@ public:
 
 private:
     const std::string            m_Name;
-    const Uint32                 m_ShaderRecordSize = 0;
-    Uint32                       m_RegisterSpace    = ~0u;
+    const UInt32                 m_ShaderRecordSize = 0;
+    UInt32                       m_RegisterSpace    = ~0u;
     CComPtr<ID3D12RootSignature> m_pd3d12RootSignature;
 };
 
@@ -179,7 +179,7 @@ public:
 
     ~RootSignatureCacheD3D12();
 
-    RefCntAutoPtr<RootSignatureD3D12> GetRootSig(const RefCntAutoPtr<PipelineResourceSignatureD3D12Impl>* ppSignatures, Uint32 SignatureCount);
+    RefCntAutoPtr<RootSignatureD3D12> GetRootSig(const RefCntAutoPtr<PipelineResourceSignatureD3D12Impl>* ppSignatures, UInt32 SignatureCount);
 
     void OnDestroyRootSig(RootSignatureD3D12* pRootSig);
 

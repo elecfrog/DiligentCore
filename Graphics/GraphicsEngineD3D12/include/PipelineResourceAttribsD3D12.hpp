@@ -30,7 +30,7 @@
 /// \file
 /// Declaration of Diligent::PipelineResourceAttribsD3D12 struct
 
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "PrivateConstants.h"
 #include "ShaderResourceCacheCommon.hpp"
 #include "DebugUtilities.hpp"
@@ -43,13 +43,13 @@ namespace Diligent
 struct PipelineResourceAttribsD3D12
 {
 private:
-    static constexpr Uint32 _RegisterBits        = 16;
-    static constexpr Uint32 _SRBRootIndexBits    = 16;
-    static constexpr Uint32 _SamplerIndBits      = 16;
-    static constexpr Uint32 _SpaceBits           = 8;
-    static constexpr Uint32 _SigRootIndexBits    = 3;
-    static constexpr Uint32 _SamplerAssignedBits = 1;
-    static constexpr Uint32 _RootParamTypeBits   = 4;
+    static constexpr UInt32 _RegisterBits        = 16;
+    static constexpr UInt32 _SRBRootIndexBits    = 16;
+    static constexpr UInt32 _SamplerIndBits      = 16;
+    static constexpr UInt32 _SpaceBits           = 8;
+    static constexpr UInt32 _SigRootIndexBits    = 3;
+    static constexpr UInt32 _SamplerAssignedBits = 1;
+    static constexpr UInt32 _RootParamTypeBits   = 4;
 
     // clang-format off
     static_assert((1u << _RegisterBits)      >= MAX_RESOURCES_IN_SIGNATURE,        "Not enough bits to store shader register");
@@ -58,32 +58,32 @@ private:
     // clang-format on
 
 public:
-    static constexpr Uint32 InvalidSamplerInd   = (1u << _SamplerIndBits) - 1;
-    static constexpr Uint32 InvalidSRBRootIndex = (1u << _SRBRootIndexBits) - 1;
-    static constexpr Uint32 InvalidSigRootIndex = (1u << _SigRootIndexBits) - 1;
-    static constexpr Uint32 InvalidRegister     = (1u << _RegisterBits) - 1;
-    static constexpr Uint32 InvalidOffset       = ~0u;
+    static constexpr UInt32 InvalidSamplerInd   = (1u << _SamplerIndBits) - 1;
+    static constexpr UInt32 InvalidSRBRootIndex = (1u << _SRBRootIndexBits) - 1;
+    static constexpr UInt32 InvalidSigRootIndex = (1u << _SigRootIndexBits) - 1;
+    static constexpr UInt32 InvalidRegister     = (1u << _RegisterBits) - 1;
+    static constexpr UInt32 InvalidOffset       = ~0u;
 
     // clang-format off
-/* 0  */const Uint32  Register             : _RegisterBits;        // Shader register
-/* 2  */const Uint32  SRBRootIndex         : _SRBRootIndexBits;    // Root view/table index in the SRB
-/* 4  */const Uint32  SamplerInd           : _SamplerIndBits;      // Assigned sampler index in m_Desc.Resources and m_pResourceAttribs
-/* 6  */const Uint32  Space                : _SpaceBits;           // Shader register space
-/* 7.0*/const Uint32  SigRootIndex         : _SigRootIndexBits;    // Root table index for signature (static resources only)
-/* 7.3*/const Uint32  ImtblSamplerAssigned : _SamplerAssignedBits; // Immutable sampler flag for Texture SRVs and Samplers
-/* 7.4*/const Uint32  RootParamType        : _RootParamTypeBits;   // Root parameter type (D3D12_ROOT_PARAMETER_TYPE)
-/* 8  */const Uint32  SigOffsetFromTableStart;                     // Offset in the root table for signature (static only)
-/* 12 */const Uint32  SRBOffsetFromTableStart;                     // Offset in the root table for SRB
+/* 0  */const UInt32  Register             : _RegisterBits;        // Shader register
+/* 2  */const UInt32  SRBRootIndex         : _SRBRootIndexBits;    // Root view/table index in the SRB
+/* 4  */const UInt32  SamplerInd           : _SamplerIndBits;      // Assigned sampler index in m_Desc.Resources and m_pResourceAttribs
+/* 6  */const UInt32  Space                : _SpaceBits;           // Shader register space
+/* 7.0*/const UInt32  SigRootIndex         : _SigRootIndexBits;    // Root table index for signature (static resources only)
+/* 7.3*/const UInt32  ImtblSamplerAssigned : _SamplerAssignedBits; // Immutable sampler flag for Texture SRVs and Samplers
+/* 7.4*/const UInt32  RootParamType        : _RootParamTypeBits;   // Root parameter type (D3D12_ROOT_PARAMETER_TYPE)
+/* 8  */const UInt32  SigOffsetFromTableStart;                     // Offset in the root table for signature (static only)
+/* 12 */const UInt32  SRBOffsetFromTableStart;                     // Offset in the root table for SRB
 /* 16 */
     // clang-format on
 
-    PipelineResourceAttribsD3D12(Uint32                    _Register,
-                                 Uint32                    _Space,
-                                 Uint32                    _SamplerInd,
-                                 Uint32                    _SRBRootIndex,
-                                 Uint32                    _SRBOffsetFromTableStart,
-                                 Uint32                    _SigRootIndex,
-                                 Uint32                    _SigOffsetFromTableStart,
+    PipelineResourceAttribsD3D12(UInt32                    _Register,
+                                 UInt32                    _Space,
+                                 UInt32                    _SamplerInd,
+                                 UInt32                    _SRBRootIndex,
+                                 UInt32                    _SRBOffsetFromTableStart,
+                                 UInt32                    _SigRootIndex,
+                                 UInt32                    _SigOffsetFromTableStart,
                                  bool                      _ImtblSamplerAssigned,
                                  D3D12_ROOT_PARAMETER_TYPE _RootParamType) noexcept :
         // clang-format off
@@ -93,7 +93,7 @@ public:
         Space                  {_Space                             },
         SigRootIndex           {_SigRootIndex                      },
         ImtblSamplerAssigned   {_ImtblSamplerAssigned ? 1u : 0u    },
-        RootParamType          {static_cast<Uint32>(_RootParamType)},
+        RootParamType          {static_cast<UInt32>(_RootParamType)},
         SigOffsetFromTableStart{_SigOffsetFromTableStart           },
         SRBOffsetFromTableStart{_SRBOffsetFromTableStart           }
     // clang-format on
@@ -120,11 +120,11 @@ public:
         return SamplerInd != InvalidSamplerInd;
     }
 
-    Uint32 RootIndex(ResourceCacheContentType Type) const
+    UInt32 RootIndex(ResourceCacheContentType Type) const
     {
         return Type == ResourceCacheContentType::SRB ? SRBRootIndex : SigRootIndex;
     }
-    Uint32 OffsetFromTableStart(ResourceCacheContentType Type) const
+    UInt32 OffsetFromTableStart(ResourceCacheContentType Type) const
     {
         return Type == ResourceCacheContentType::SRB ? SRBOffsetFromTableStart : SigOffsetFromTableStart;
     }

@@ -366,7 +366,7 @@ void RenderDeviceGLImpl::CreateBuffer(const BufferDesc& BuffDesc, const BufferDa
     CreateBuffer(BuffDesc, BuffData, ppBuffer, false);
 }
 
-void RenderDeviceGLImpl::CreateBufferFromGLHandle(Uint32 GLHandle, const BufferDesc& BuffDesc, RESOURCE_STATE InitialState, IBuffer** ppBuffer)
+void RenderDeviceGLImpl::CreateBufferFromGLHandle(UInt32 GLHandle, const BufferDesc& BuffDesc, RESOURCE_STATE InitialState, IBuffer** ppBuffer)
 {
     DEV_CHECK_ERR(GLHandle != 0, "GL buffer handle must not be null");
 
@@ -456,8 +456,8 @@ void RenderDeviceGLImpl::CreateTexture(const TextureDesc& TexDesc, const Texture
     CreateTexture(TexDesc, Data, ppTexture, false);
 }
 
-void RenderDeviceGLImpl::CreateTextureFromGLHandle(Uint32             GLHandle,
-                                                   Uint32             GLBindTarget,
+void RenderDeviceGLImpl::CreateTextureFromGLHandle(UInt32             GLHandle,
+                                                   UInt32             GLBindTarget,
                                                    const TextureDesc& TexDesc,
                                                    RESOURCE_STATE     InitialState,
                                                    ITexture**         ppTexture)
@@ -655,7 +655,7 @@ void RenderDeviceGLImpl::CreateDeferredContext(IDeviceContext** ppContext)
 
 SparseTextureFormatInfo RenderDeviceGLImpl::GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                        RESOURCE_DIMENSION Dimension,
-                                                                       Uint32             SampleCount) const
+                                                                       UInt32             SampleCount) const
 {
     UNSUPPORTED("GetSparseTextureFormatInfo is not supported in OpenGL");
     return {};
@@ -725,7 +725,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
                 glGetIntegerv(GL_GPU_MEM_INFO_TOTAL_AVAILABLE_MEM_NVX, &AvailableMemoryKb);
                 if (glGetError() == GL_NO_ERROR)
                 {
-                    Mem.LocalMemory = static_cast<Uint64>(AvailableMemoryKb) * Uint64{1024};
+                    Mem.LocalMemory = static_cast<UInt64>(AvailableMemoryKb) * UInt64{1024};
                 }
                 else
                 {
@@ -749,7 +749,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
                 glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, MemoryParamsKb);
                 if (glGetError() == GL_NO_ERROR)
                 {
-                    Mem.LocalMemory = static_cast<Uint64>(MemoryParamsKb[0]) * Uint64{1024};
+                    Mem.LocalMemory = static_cast<UInt64>(MemoryParamsKb[0]) * UInt64{1024};
                 }
                 else
                 {
@@ -894,7 +894,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
                 GLint MaxAnisotropy = 0;
                 glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &MaxAnisotropy);
                 CHECK_GL_ERROR("glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY)");
-                SamProps.MaxAnisotropy = static_cast<Uint8>(MaxAnisotropy);
+                SamProps.MaxAnisotropy = static_cast<UInt8>(MaxAnisotropy);
             }
 
             SamProps.LODBiasSupported = True;
@@ -975,7 +975,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
                 GLint MaxAnisotropy = 0;
                 glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &MaxAnisotropy);
                 CHECK_GL_ERROR("glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY)");
-                SamProps.MaxAnisotropy = static_cast<Uint8>(MaxAnisotropy);
+                SamProps.MaxAnisotropy = static_cast<UInt8>(MaxAnisotropy);
             }
             SamProps.LODBiasSupported = GL_TEXTURE_LOD_BIAS && IsGLES31OrAbove;
             ASSERT_SIZEOF(SamProps, 3, "Did you add a new member to SamplerProperites? Please initialize it here.");
@@ -1001,8 +1001,8 @@ void RenderDeviceGLImpl::InitAdapterInfo()
 
             {
                 WaveOpProperties& WaveOpProps{m_AdapterInfo.WaveOp};
-                WaveOpProps.MinSize         = static_cast<Uint32>(SubgroupSize);
-                WaveOpProps.MaxSize         = static_cast<Uint32>(SubgroupSize);
+                WaveOpProps.MinSize         = static_cast<UInt32>(SubgroupSize);
+                WaveOpProps.MaxSize         = static_cast<UInt32>(SubgroupSize);
                 WaveOpProps.SupportedStages = GLShaderBitsToShaderTypes(SubgroupStages);
                 WaveOpProps.Features        = GLSubgroupFeatureBitsToWaveFeatures(SubgroupFeatures);
                 ASSERT_SIZEOF(WaveOpProps, 16, "Did you add a new member to WaveOpProperties? Please initialize it here.");
@@ -1088,7 +1088,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
                 DrawCommandProps.CapFlags |= DRAW_COMMAND_CAP_FLAG_DRAW_INDIRECT_COUNTER_BUFFER;
 
             // Always 2^32-1 on desktop
-            DrawCommandProps.MaxIndexValue = ~Uint32{0};
+            DrawCommandProps.MaxIndexValue = ~UInt32{0};
         }
         else if (m_DeviceInfo.Type == RENDER_DEVICE_TYPE_GLES)
         {
@@ -1350,7 +1350,7 @@ void RenderDeviceGLImpl::FlagSupportedTexFormats()
 
     constexpr int      TestTextureDim = 8;
     constexpr int      MaxTexelSize   = 16;
-    std::vector<Uint8> ZeroData(TestTextureDim * TestTextureDim * MaxTexelSize);
+    std::vector<UInt8> ZeroData(TestTextureDim * TestTextureDim * MaxTexelSize);
 
     // Go through all formats and try to create small 2D texture to check if the format is supported
     for (TextureFormatInfoExt& FmtInfo : m_TextureFormatsInfo)

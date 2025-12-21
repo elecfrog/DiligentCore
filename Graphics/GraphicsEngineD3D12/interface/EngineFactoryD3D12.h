@@ -114,7 +114,7 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryD3D12, IEngineFactory)
     ///                           pointers to the deferred contexts are written afterwards.
     VIRTUAL void METHOD(AttachToD3D12Device)(THIS_
                                              void*                           pd3d12NativeDevice,
-                                             Uint32                          CommandQueueCount,
+                                             UInt32                          CommandQueueCount,
                                              struct ICommandQueueD3D12**     ppCommandQueues,
                                              const EngineD3D12CreateInfo REF EngineCI,
                                              IRenderDevice**                 ppDevice,
@@ -161,10 +161,10 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryD3D12, IEngineFactory)
     /// \note           D3D12 must be loaded before this method can be called, see IEngineFactoryD3D12::LoadD3D12.
     VIRTUAL void METHOD(EnumerateDisplayModes)(THIS_
                                                Version                MinFeatureLevel,
-                                               Uint32                 AdapterId,
-                                               Uint32                 OutputId,
+                                               UInt32                 AdapterId,
+                                               UInt32                 OutputId,
                                                TEXTURE_FORMAT         Format,
-                                               Uint32 REF             NumDisplayModes,
+                                               UInt32 REF             NumDisplayModes,
                                                DisplayModeAttribs*    DisplayModes) PURE;
 };
 DILIGENT_END_INTERFACE

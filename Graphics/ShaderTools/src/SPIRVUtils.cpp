@@ -25,7 +25,7 @@
  */
 
 #include "SPIRVUtils.hpp"
-#include "SPIRVShaderResources.hpp" // required for diligent_spirv_cross
+#include "SPIRVShaderResources.hpp" // required for spirv_cross
 
 #include "spirv_cross.hpp"
 
@@ -98,9 +98,9 @@ static spv::ImageFormat TextureFormatToSpvImageFormat(TEXTURE_FORMAT Format)
 std::vector<uint32_t> PatchImageFormats(const std::vector<uint32_t>&                                SPIRV,
                                         const std::unordered_map<HashMapStringKey, TEXTURE_FORMAT>& ImageFormats)
 {
-    diligent_spirv_cross::Compiler Compiler{SPIRV};
+    spirv_cross::Compiler Compiler{SPIRV};
 
-    diligent_spirv_cross::ShaderResources resources = Compiler.get_shader_resources();
+    spirv_cross::ShaderResources resources = Compiler.get_shader_resources();
 
     std::unordered_map<uint32_t, uint32_t> ImageTypeIdToFormat;
     for (uint32_t i = 0; i < SPIRV.size(); ++i)
@@ -119,9 +119,9 @@ std::vector<uint32_t> PatchImageFormats(const std::vector<uint32_t>&            
     }
 
     std::vector<uint32_t> PatchedSPIRV = SPIRV;
-    for (const diligent_spirv_cross::Resource& Img : resources.storage_images)
+    for (const spirv_cross::Resource& Img : resources.storage_images)
     {
-        const diligent_spirv_cross::SPIRType& type = Compiler.get_type(Img.type_id);
+        const spirv_cross::SPIRType& type = Compiler.get_type(Img.type_id);
         if (type.image.dim == spv::Dim1D ||
             type.image.dim == spv::Dim2D ||
             type.image.dim == spv::Dim3D)

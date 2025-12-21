@@ -247,7 +247,7 @@ TEST(ComputeShaderTest, GenerateMips_CSInterference)
 
     RefCntAutoPtr<ITextureView> pWhiteTexSRV;
     {
-        std::vector<Uint8>      WhiteRGBA(SCDesc.Width * SCDesc.Width * 4, 255);
+        std::vector<UInt8>      WhiteRGBA(SCDesc.Width * SCDesc.Width * 4, 255);
         RefCntAutoPtr<ITexture> pWhiteTex = pEnv->CreateTexture("White Texture", TEX_FORMAT_RGBA8_UNORM, BIND_SHADER_RESOURCE, SCDesc.Width, SCDesc.Width, WhiteRGBA.data());
         ASSERT_NE(pWhiteTex, nullptr);
         pWhiteTexSRV = pWhiteTex->GetDefaultView(TEXTURE_VIEW_SHADER_RESOURCE);
@@ -265,9 +265,9 @@ TEST(ComputeShaderTest, GenerateMips_CSInterference)
         TextureDesc TexDesc{"Black texture", RESOURCE_DIM_TEX_2D, SCDesc.Width, SCDesc.Height, 1, TEX_FORMAT_RGBA8_UNORM, 4, 1, USAGE_DEFAULT, BIND_SHADER_RESOURCE};
         TexDesc.MiscFlags = MISC_TEXTURE_FLAG_GENERATE_MIPS;
 
-        std::vector<Uint8>             BlackRGBA(SCDesc.Width * SCDesc.Width * 4);
+        std::vector<UInt8>             BlackRGBA(SCDesc.Width * SCDesc.Width * 4);
         std::vector<TextureSubResData> MipData(TexDesc.MipLevels);
-        for (Uint32 i = 0; i < TexDesc.MipLevels; ++i)
+        for (UInt32 i = 0; i < TexDesc.MipLevels; ++i)
         {
             MipData[i] = TextureSubResData{BlackRGBA.data(), SCDesc.Width * 4};
         }

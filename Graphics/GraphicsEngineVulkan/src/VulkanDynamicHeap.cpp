@@ -46,8 +46,8 @@ static VkDeviceSize GetDefaultAlignment(const VulkanUtilities::PhysicalDevice& P
 
 VulkanDynamicMemoryManager::VulkanDynamicMemoryManager(IMemoryAllocator&   Allocator,
                                                        RenderDeviceVkImpl& DeviceVk,
-                                                       Uint32              Size,
-                                                       Uint64              CommandQueueMask) :
+                                                       UInt32              Size,
+                                                       UInt64              CommandQueueMask) :
     // clang-format off
     TBase             {Allocator, Size},
     m_DeviceVk        {DeviceVk},
@@ -55,7 +55,7 @@ VulkanDynamicMemoryManager::VulkanDynamicMemoryManager(IMemoryAllocator&   Alloc
     m_CommandQueueMask{CommandQueueMask}
 // clang-format on
 {
-    VERIFY((Size & (MasterBlockAlignment - 1)) == 0, "Heap size (", Size, " is not aligned by the master block alignment (", Uint32{MasterBlockAlignment}, ")");
+    VERIFY((Size & (MasterBlockAlignment - 1)) == 0, "Heap size (", Size, " is not aligned by the master block alignment (", UInt32{MasterBlockAlignment}, ")");
 
     VkBufferCreateInfo VkBuffCI{};
     VkBuffCI.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -105,7 +105,7 @@ VulkanDynamicMemoryManager::VulkanDynamicMemoryManager(IMemoryAllocator&   Alloc
         MemAlloc.allocationSize,
         0, // flags, reserved for future use
         &Data);
-    m_CPUAddress = reinterpret_cast<Uint8*>(Data);
+    m_CPUAddress = reinterpret_cast<UInt8*>(Data);
     CHECK_VK_ERROR_AND_THROW(err, "Failed to map  memory");
 
     err = LogicalDevice.BindBufferMemory(m_VkBuffer, m_BufferMemory, 0 /*offset*/);
@@ -159,7 +159,7 @@ VulkanDynamicMemoryManager::MasterBlock VulkanDynamicMemoryManager::AllocateMast
         static constexpr const auto   SleepPeriod     = std::chrono::milliseconds(1);
         static constexpr const auto   MaxIdleDuration = std::chrono::duration<double>{60.0 / 1000.0}; // 60 ms
         std::chrono::duration<double> IdleDuration;
-        Uint32                        SleepIterations = 0;
+        UInt32                        SleepIterations = 0;
         while (!Block.IsValid() && IdleDuration < MaxIdleDuration)
         {
             m_DeviceVk.PurgeReleaseQueues();
@@ -220,7 +220,7 @@ VulkanDynamicMemoryManager::MasterBlock VulkanDynamicMemoryManager::AllocateMast
 }
 
 
-VulkanDynamicAllocation VulkanDynamicHeap::Allocate(Uint32 SizeInBytes, Uint32 Alignment)
+VulkanDynamicAllocation VulkanDynamicHeap::Allocate(UInt32 SizeInBytes, UInt32 Alignment)
 {
     VERIFY_EXPR(Alignment > 0);
     VERIFY(IsPowerOfTwo(Alignment), "Alignment (", Alignment, ") must be power of 2");
@@ -236,7 +236,7 @@ VulkanDynamicAllocation VulkanDynamicHeap::Allocate(Uint32 SizeInBytes, Uint32 A
             AlignedOffset = AlignUp(Block.UnalignedOffset, size_t{Alignment});
             AlignedSize   = Block.Size;
             VERIFY_EXPR(Block.Size >= SizeInBytes + (AlignedOffset - Block.UnalignedOffset));
-            m_CurrAllocatedSize += static_cast<Uint32>(Block.Size);
+            m_CurrAllocatedSize += static_cast<UInt32>(Block.Size);
             m_MasterBlocks.emplace_back(Block);
         }
     }
@@ -248,8 +248,8 @@ VulkanDynamicAllocation VulkanDynamicHeap::Allocate(Uint32 SizeInBytes, Uint32 A
             if (Block.IsValid())
             {
                 m_CurrOffset = Block.UnalignedOffset;
-                m_CurrAllocatedSize += static_cast<Uint32>(Block.Size);
-                m_AvailableSize = static_cast<Uint32>(Block.Size);
+                m_CurrAllocatedSize += static_cast<UInt32>(Block.Size);
+                m_AvailableSize = static_cast<UInt32>(Block.Size);
                 m_MasterBlocks.emplace_back(Block);
             }
         }
@@ -260,8 +260,8 @@ VulkanDynamicAllocation VulkanDynamicHeap::Allocate(Uint32 SizeInBytes, Uint32 A
             AlignedSize   = SizeInBytes + (AlignedOffset - m_CurrOffset);
             if (AlignedSize <= m_AvailableSize)
             {
-                m_AvailableSize -= static_cast<Uint32>(AlignedSize);
-                m_CurrOffset += static_cast<Uint32>(AlignedSize);
+                m_AvailableSize -= static_cast<UInt32>(AlignedSize);
+                m_CurrOffset += static_cast<UInt32>(AlignedSize);
             }
             else
                 AlignedOffset = InvalidOffset;
@@ -271,7 +271,7 @@ VulkanDynamicAllocation VulkanDynamicHeap::Allocate(Uint32 SizeInBytes, Uint32 A
     // Every device context uses its own dynamic heap, so there is no need to lock
     if (AlignedOffset != InvalidOffset)
     {
-        m_CurrAlignedSize += static_cast<Uint32>(AlignedSize);
+        m_CurrAlignedSize += static_cast<UInt32>(AlignedSize);
         m_CurrUsedSize += SizeInBytes;
         m_PeakAlignedSize   = std::max(m_PeakAlignedSize, m_CurrAlignedSize);
         m_PeakUsedSize      = std::max(m_PeakUsedSize, m_CurrUsedSize);
@@ -284,7 +284,7 @@ VulkanDynamicAllocation VulkanDynamicHeap::Allocate(Uint32 SizeInBytes, Uint32 A
         return VulkanDynamicAllocation{};
 }
 
-void VulkanDynamicHeap::ReleaseMasterBlocks(RenderDeviceVkImpl& DeviceVkImpl, Uint64 CmdQueueMask)
+void VulkanDynamicHeap::ReleaseMasterBlocks(RenderDeviceVkImpl& DeviceVkImpl, UInt64 CmdQueueMask)
 {
     m_GlobalDynamicMemMgr.ReleaseMasterBlocks(m_MasterBlocks, DeviceVkImpl, CmdQueueMask);
     m_MasterBlocks.clear();
@@ -301,7 +301,7 @@ VulkanDynamicHeap::~VulkanDynamicHeap()
 {
     DEV_CHECK_ERR(m_MasterBlocks.empty(), m_MasterBlocks.size(), " master block(s) have not been returned to dynamic memory manager");
 
-    Uint32 PeakAllocatedPages = m_PeakAllocatedSize / m_MasterBlockSize;
+    UInt32 PeakAllocatedPages = m_PeakAllocatedSize / m_MasterBlockSize;
     LOG_INFO_MESSAGE(m_HeapName,
                      " usage stats:\n"
                      "                       Peak used/aligned/allocated size: ",

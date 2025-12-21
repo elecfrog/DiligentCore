@@ -46,7 +46,7 @@
 namespace Diligent
 {
 
-enum BINDING_RANGE : Uint32
+enum BINDING_RANGE : UInt32
 {
     BINDING_RANGE_UNIFORM_BUFFER = 0,
     BINDING_RANGE_TEXTURE,
@@ -60,7 +60,7 @@ const char*   GetBindingRangeName(BINDING_RANGE Range);
 
 struct ImmutableSamplerAttribsGL
 {
-    Uint32 Dummy = 0;
+    UInt32 Dummy = 0;
 };
 
 struct PipelineResourceSignatureInternalDataGL : PipelineResourceSignatureInternalData<PipelineResourceAttribsGL, ImmutableSamplerAttribsGL>
@@ -92,7 +92,7 @@ public:
 
     using ResourceAttribs = TPipelineResourceSignatureBase::PipelineResourceAttribsType;
 
-    using TBindings = std::array<Uint16, BINDING_RANGE_COUNT>;
+    using TBindings = std::array<UInt16, BINDING_RANGE_COUNT>;
 
     // Applies bindings for resources in this signature to GLProgram.
     // The bindings are biased by BaseBindings.
@@ -103,7 +103,7 @@ public:
 
     __forceinline void ShiftBindings(TBindings& Bindings) const
     {
-        for (Uint32 i = 0; i < Bindings.size(); ++i)
+        for (UInt32 i = 0; i < Bindings.size(); ++i)
         {
             Bindings[i] += m_BindingCount[i];
         }
@@ -116,7 +116,7 @@ public:
     bool DvpValidateCommittedResource(const ShaderResourcesGL::GLResourceAttribs& GLAttribs,
                                       RESOURCE_DIMENSION                          ResourceDim,
                                       bool                                        IsMultisample,
-                                      Uint32                                      ResIndex,
+                                      UInt32                                      ResIndex,
                                       const ShaderResourceCacheGL&                ResourceCache,
                                       const char*                                 ShaderName,
                                       const char*                                 PSOName) const;
@@ -127,9 +127,9 @@ public:
     // Make the base class method visible
     using TPipelineResourceSignatureBase::CopyStaticResources;
 
-    Uint32 GetImmutableSamplerIdx(const ResourceAttribs& Res) const
+    UInt32 GetImmutableSamplerIdx(const ResourceAttribs& Res) const
     {
-        Uint32 ImtblSamIdx = InvalidImmutableSamplerIndex;
+        UInt32 ImtblSamIdx = InvalidImmutableSamplerIndex;
         if (Res.IsImmutableSamplerAssigned())
             ImtblSamIdx = Res.SamplerInd;
         else if (Res.IsSamplerAssigned())
@@ -150,9 +150,9 @@ private:
     TBindings m_BindingCount = {};
 
     // Indicates which UBO slots allow binding buffers with dynamic offsets
-    Uint64 m_DynamicUBOMask = 0;
+    UInt64 m_DynamicUBOMask = 0;
     // Indicates which SSBO slots allow binding buffers with dynamic offsets
-    Uint64 m_DynamicSSBOMask = 0;
+    UInt64 m_DynamicSSBOMask = 0;
 };
 
 } // namespace Diligent

@@ -59,7 +59,7 @@ PipelineResourceSignatureDescWrapper PipelineStateD3D11Impl::GetDefaultResourceS
     const TShaderStages&              Shaders,
     const char*                       PSOName,
     const PipelineResourceLayoutDesc& ResourceLayout,
-    Uint32                            SRBAllocationGranularity) noexcept(false)
+    UInt32                            SRBAllocationGranularity) noexcept(false)
 {
     PipelineResourceSignatureDescWrapper SignDesc{PSOName, ResourceLayout, SRBAllocationGranularity};
 
@@ -71,7 +71,7 @@ PipelineResourceSignatureDescWrapper PipelineStateD3D11Impl::GetDefaultResourceS
         VERIFY_EXPR(ShaderType == pShader->GetDesc().ShaderType);
 
         ShaderResources.ProcessResources(
-            [&](const D3DShaderResourceAttribs& Attribs, Uint32) //
+            [&](const D3DShaderResourceAttribs& Attribs, UInt32) //
             {
                 const char* const SamplerSuffix =
                     (ShaderResources.IsUsingCombinedTextureSamplers() && Attribs.GetInputType() == D3D_SIT_SAMPLER) ?
@@ -112,7 +112,7 @@ PipelineResourceSignatureDescWrapper PipelineStateD3D11Impl::GetDefaultResourceS
 
 void PipelineStateD3D11Impl::RemapOrVerifyShaderResources(const TShaderStages&                                     Shaders,
                                                           const RefCntAutoPtr<PipelineResourceSignatureD3D11Impl>* pSignatures,
-                                                          Uint32                                                   SignatureCount,
+                                                          UInt32                                                   SignatureCount,
                                                           D3D11ShaderResourceCounters*                             pBaseBindings, // [SignatureCount]
                                                           const THandleRemappedBytecodeFn&                         HandleRemappedBytecodeFn,
                                                           const TValidateShaderResourcesFn&                        ValidateShaderResourcesFn,
@@ -126,7 +126,7 @@ void PipelineStateD3D11Impl::RemapOrVerifyShaderResources(const TShaderStages&  
         const IDataBlob*       pBytecode  = Shaders[s]->GetD3DBytecode();
 
         ResourceBinding::TMap ResourceMap;
-        for (Uint32 sign = 0; sign < SignatureCount; ++sign)
+        for (UInt32 sign = 0; sign < SignatureCount; ++sign)
         {
             const PipelineResourceSignatureD3D11Impl* const pSignature = pSignatures[sign];
             if (pSignature == nullptr)
@@ -176,7 +176,7 @@ void PipelineStateD3D11Impl::InitResourceLayouts(const PipelineStateCreateInfo& 
         ResCounters[D3D11_RESOURCE_RANGE_UAV][PSInd] = m_pGraphicsPipelineData->Desc.NumRenderTargets;
     }
 
-    for (Uint32 sign = 0; sign < m_SignatureCount; ++sign)
+    for (UInt32 sign = 0; sign < m_SignatureCount; ++sign)
     {
         const PipelineResourceSignatureD3D11Impl* const pSignature = m_Signatures[sign];
         if (pSignature == nullptr)
@@ -190,23 +190,23 @@ void PipelineStateD3D11Impl::InitResourceLayouts(const PipelineStateCreateInfo& 
     m_NumPixelUAVs = ResCounters[D3D11_RESOURCE_RANGE_UAV][PSInd];
 
 #ifdef DILIGENT_DEVELOPMENT
-    for (Uint32 s = 0; s < D3D11ResourceBindPoints::NumShaderTypes; ++s)
+    for (UInt32 s = 0; s < D3D11ResourceBindPoints::NumShaderTypes; ++s)
     {
         const SHADER_TYPE ShaderType = GetShaderTypeFromIndex(s);
         DEV_CHECK_ERR(ResCounters[D3D11_RESOURCE_RANGE_CBV][s] <= D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT,
-                      "Constant buffer count ", Uint32{ResCounters[D3D11_RESOURCE_RANGE_CBV][s]},
+                      "Constant buffer count ", UInt32{ResCounters[D3D11_RESOURCE_RANGE_CBV][s]},
                       " in ", GetShaderTypeLiteralName(ShaderType), " stage exceeds D3D11 limit ",
                       D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT);
         DEV_CHECK_ERR(ResCounters[D3D11_RESOURCE_RANGE_SRV][s] <= D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT,
-                      "SRV count ", Uint32{ResCounters[D3D11_RESOURCE_RANGE_SRV][s]},
+                      "SRV count ", UInt32{ResCounters[D3D11_RESOURCE_RANGE_SRV][s]},
                       " in ", GetShaderTypeLiteralName(ShaderType), " stage exceeds D3D11 limit ",
                       D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT);
         DEV_CHECK_ERR(ResCounters[D3D11_RESOURCE_RANGE_SAMPLER][s] <= D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT,
-                      "Sampler count ", Uint32{ResCounters[D3D11_RESOURCE_RANGE_SAMPLER][s]},
+                      "Sampler count ", UInt32{ResCounters[D3D11_RESOURCE_RANGE_SAMPLER][s]},
                       " in ", GetShaderTypeLiteralName(ShaderType), " stage exceeds D3D11 limit ",
                       D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT);
         DEV_CHECK_ERR(ResCounters[D3D11_RESOURCE_RANGE_UAV][s] <= D3D11_PS_CS_UAV_REGISTER_COUNT,
-                      "UAV count ", Uint32{ResCounters[D3D11_RESOURCE_RANGE_UAV][s]},
+                      "UAV count ", UInt32{ResCounters[D3D11_RESOURCE_RANGE_UAV][s]},
                       " in ", GetShaderTypeLiteralName(ShaderType), " stage exceeds D3D11 limit ",
                       D3D11_PS_CS_UAV_REGISTER_COUNT);
     }
@@ -270,8 +270,8 @@ void PipelineStateD3D11Impl::InitInternalObjects(const PSOCreateInfoType&  Creat
     std::vector<ShaderD3D11Impl*> Shaders;
     ExtractShaders<ShaderD3D11Impl>(CreateInfo, Shaders, /*WaitUntilShadersReady = */ true);
 
-    m_NumShaders = static_cast<Uint8>(Shaders.size());
-    for (Uint32 s = 0; s < m_NumShaders; ++s)
+    m_NumShaders = static_cast<UInt8>(Shaders.size());
+    for (UInt32 s = 0; s < m_NumShaders; ++s)
     {
         const SHADER_TYPE ShaderType    = Shaders[s]->GetDesc().ShaderType;
         const Int32       ShaderTypeIdx = GetShaderTypeIndex(ShaderType);
@@ -378,7 +378,7 @@ void PipelineStateD3D11Impl::Destruct()
     m_pd3d11RasterizerState.Release();
     m_pd3d11DepthStencilState.Release();
     m_pd3d11InputLayout.Release();
-    for (Uint32 s = 0; s < m_NumShaders; ++s)
+    for (UInt32 s = 0; s < m_NumShaders; ++s)
         m_ppd3d11Shaders[s].~D3D11ShaderAutoPtrType();
     m_ppd3d11Shaders = nullptr;
     m_ShaderIndices.fill(-1);
@@ -412,7 +412,7 @@ void PipelineStateD3D11Impl::ValidateShaderResources(const ShaderD3D11Impl* pSha
 
     // Check compatibility between shader resources and resource signature.
     pShaderResources->ProcessResources(
-        [&](const D3DShaderResourceAttribs& Attribs, Uint32) //
+        [&](const D3DShaderResourceAttribs& Attribs, UInt32) //
         {
 #ifdef DILIGENT_DEVELOPMENT
             m_ResourceAttibutions.emplace_back();
@@ -477,8 +477,8 @@ void PipelineStateD3D11Impl::DvpVerifySRBResources(const ShaderResourceCacheArra
                                                    const BaseBindingsArrayType&        BaseBindings) const
 {
     // Verify base bindings
-    const Uint32 SignCount = GetResourceSignatureCount();
-    for (Uint32 sign = 0; sign < SignCount; ++sign)
+    const UInt32 SignCount = GetResourceSignatureCount();
+    for (UInt32 sign = 0; sign < SignCount; ++sign)
     {
         const PipelineResourceSignatureD3D11Impl* pSignature = GetResourceSignature(sign);
         if (pSignature == nullptr || pSignature->GetTotalResourceCount() == 0)
@@ -492,7 +492,7 @@ void PipelineStateD3D11Impl::DvpVerifySRBResources(const ShaderResourceCacheArra
     for (const auto& pResources : m_ShaderResources)
     {
         pResources->ProcessResources(
-            [&](const D3DShaderResourceAttribs& Attribs, Uint32) //
+            [&](const D3DShaderResourceAttribs& Attribs, UInt32) //
             {
                 if (*attrib_it && !attrib_it->IsImmutableSampler())
                 {

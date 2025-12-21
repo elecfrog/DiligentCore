@@ -103,7 +103,7 @@ struct MemoryShaderSourceFactoryCreateInfoX
         return Desc;
     }
 
-    Uint32 GetNumSources() const noexcept
+    UInt32 GetNumSources() const noexcept
     {
         return Desc.NumSources;
     }
@@ -126,7 +126,7 @@ struct MemoryShaderSourceFactoryCreateInfoX
 private:
     void SyncDesc(bool CopyStrings = false)
     {
-        Desc.NumSources = static_cast<Uint32>(Sources.size());
+        Desc.NumSources = static_cast<UInt32>(Sources.size());
         Desc.pSources   = Desc.NumSources > 0 ? Sources.data() : nullptr;
 
         if (CopyStrings)
@@ -237,10 +237,10 @@ struct CompoundShaderSourceFactoryCreateInfoX : CompoundShaderSourceFactoryCreat
 private:
     CompoundShaderSourceFactoryCreateInfoX& SyncDesc(bool UpdateStrings = false)
     {
-        NumFactories = static_cast<Uint32>(Factories.size());
+        NumFactories = static_cast<UInt32>(Factories.size());
         ppFactories  = NumFactories > 0 ? Factories.data() : nullptr;
 
-        NumFileSubstitutes = static_cast<Uint32>(FileSubstitutes.size());
+        NumFileSubstitutes = static_cast<UInt32>(FileSubstitutes.size());
         pFileSubstitutes   = NumFileSubstitutes > 0 ? FileSubstitutes.data() : nullptr;
 
         if (UpdateStrings)

@@ -55,7 +55,7 @@ void PrintShaderResources(IShader* pShader)
 
     std::stringstream ss;
     ss << "Resources of shader '" << pShader->GetDesc().Name << "':" << std::endl;
-    for (Uint32 res = 0; res < pShader->GetResourceCount(); ++res)
+    for (UInt32 res = 0; res < pShader->GetResourceCount(); ++res)
     {
         ShaderResourceDesc ResDec;
         pShader->GetResourceDesc(res, ResDec);
@@ -358,7 +358,7 @@ TEST(ShaderResourceLayout, VariableAccess)
     auto& GraphicsPipeline = PSOCreateInfo.GraphicsPipeline;
 
     ResourceLayout.Variables            = VarDesc.data();
-    ResourceLayout.NumVariables         = static_cast<Uint32>(VarDesc.size());
+    ResourceLayout.NumVariables         = static_cast<UInt32>(VarDesc.size());
     ResourceLayout.NumImmutableSamplers = _countof(ImtblSamplers);
     ResourceLayout.ImmutableSamplers    = ImtblSamplers;
 
@@ -533,7 +533,7 @@ TEST(ShaderResourceLayout, VariableAccess)
 
 
         auto NumVSVars = pTestPSO->GetStaticVariableCount(SHADER_TYPE_VERTEX);
-        for (Uint32 v = 0; v < NumVSVars; ++v)
+        for (UInt32 v = 0; v < NumVSVars; ++v)
         {
             auto pVar = pTestPSO->GetStaticVariableByIndex(SHADER_TYPE_VERTEX, v);
             EXPECT_EQ(pVar->GetIndex(), v);
@@ -717,7 +717,7 @@ TEST(ShaderResourceLayout, VariableAccess)
 
 
         auto NumPSVars = pTestPSO->GetStaticVariableCount(SHADER_TYPE_PIXEL);
-        for (Uint32 v = 0; v < NumPSVars; ++v)
+        for (UInt32 v = 0; v < NumPSVars; ++v)
         {
             auto pVar = pTestPSO->GetStaticVariableByIndex(SHADER_TYPE_PIXEL, v);
             EXPECT_EQ(pVar->GetIndex(), v);
@@ -1208,7 +1208,7 @@ TEST(ShaderResourceLayout, VariableAccess)
 
     {
         auto NumVSVars = pSRB->GetVariableCount(SHADER_TYPE_VERTEX);
-        for (Uint32 v = 0; v < NumVSVars; ++v)
+        for (UInt32 v = 0; v < NumVSVars; ++v)
         {
             auto pVar = pSRB->GetVariableByIndex(SHADER_TYPE_VERTEX, v);
             EXPECT_EQ(pVar->GetIndex(), v);
@@ -1222,7 +1222,7 @@ TEST(ShaderResourceLayout, VariableAccess)
 
     {
         auto NumPSVars = pSRB->GetVariableCount(SHADER_TYPE_PIXEL);
-        for (Uint32 v = 0; v < NumPSVars; ++v)
+        for (UInt32 v = 0; v < NumPSVars; ++v)
         {
             auto pVar = pSRB->GetVariableByIndex(SHADER_TYPE_PIXEL, v);
             EXPECT_EQ(pVar->GetIndex(), v);

@@ -32,7 +32,7 @@
 namespace Diligent
 {
 
-D3D12DynamicPage::D3D12DynamicPage(ID3D12Device* pd3d12Device, Uint64 Size)
+D3D12DynamicPage::D3D12DynamicPage(ID3D12Device* pd3d12Device, UInt64 Size)
 {
     D3D12_HEAP_PROPERTIES HeapProps;
     HeapProps.CPUPageProperty      = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
@@ -77,20 +77,20 @@ D3D12DynamicPage::D3D12DynamicPage(ID3D12Device* pd3d12Device, Uint64 Size)
 
 D3D12DynamicMemoryManager::D3D12DynamicMemoryManager(IMemoryAllocator&      Allocator,
                                                      RenderDeviceD3D12Impl& DeviceD3D12Impl,
-                                                     Uint32                 NumPagesToReserve,
-                                                     Uint64                 PageSize) :
+                                                     UInt32                 NumPagesToReserve,
+                                                     UInt64                 PageSize) :
     m_DeviceD3D12Impl{DeviceD3D12Impl},
     m_AvailablePages(STD_ALLOCATOR_RAW_MEM(AvailablePagesMapElemType, Allocator, "Allocator for multimap<AvailablePagesMapElemType>"))
 {
-    for (Uint32 i = 0; i < NumPagesToReserve; ++i)
+    for (UInt32 i = 0; i < NumPagesToReserve; ++i)
     {
         D3D12DynamicPage Page(m_DeviceD3D12Impl.GetD3D12Device(), PageSize);
-        Uint64           Size = Page.GetSize();
+        UInt64           Size = Page.GetSize();
         m_AvailablePages.emplace(Size, std::move(Page));
     }
 }
 
-D3D12DynamicPage D3D12DynamicMemoryManager::AllocatePage(Uint64 SizeInBytes)
+D3D12DynamicPage D3D12DynamicMemoryManager::AllocatePage(UInt64 SizeInBytes)
 {
     std::lock_guard<std::mutex> AvailablePagesLock{m_AvailablePagesMtx};
 #ifdef DILIGENT_DEVELOPMENT
@@ -110,7 +110,7 @@ D3D12DynamicPage D3D12DynamicMemoryManager::AllocatePage(Uint64 SizeInBytes)
     }
 }
 
-void D3D12DynamicMemoryManager::ReleasePages(std::vector<D3D12DynamicPage>& Pages, Uint64 QueueMask)
+void D3D12DynamicMemoryManager::ReleasePages(std::vector<D3D12DynamicPage>& Pages, UInt64 QueueMask)
 {
     struct StalePage
     {
@@ -144,7 +144,7 @@ void D3D12DynamicMemoryManager::ReleasePages(std::vector<D3D12DynamicPage>& Page
 #ifdef DILIGENT_DEVELOPMENT
                 --Mgr->m_AllocatedPageCounter;
 #endif
-                Uint64 PageSize = Page.GetSize();
+                UInt64 PageSize = Page.GetSize();
                 Mgr->m_AvailablePages.emplace(PageSize, std::move(Page));
             }
         }
@@ -158,7 +158,7 @@ void D3D12DynamicMemoryManager::ReleasePages(std::vector<D3D12DynamicPage>& Page
 void D3D12DynamicMemoryManager::Destroy()
 {
     DEV_CHECK_ERR(m_AllocatedPageCounter == 0, m_AllocatedPageCounter, " page(s) have not been returned to the manager.");
-    Uint64 TotalAllocatedSize = 0;
+    UInt64 TotalAllocatedSize = 0;
     for (const auto& Page : m_AvailablePages)
         TotalAllocatedSize += Page.second.GetSize();
 
@@ -180,7 +180,7 @@ D3D12DynamicHeap::~D3D12DynamicHeap()
 {
     VERIFY(m_AllocatedPages.empty(), "Allocated pages have not been released which indicates FinishFrame() has not been called");
 
-    Uint64 PeakAllocatedPages = m_PeakAllocatedSize / m_PageSize;
+    UInt64 PeakAllocatedPages = m_PeakAllocatedSize / m_PageSize;
     LOG_INFO_MESSAGE(m_HeapName,
                      " usage stats:\n"
                      "                       Peak used/aligned/allocated size: ",
@@ -188,18 +188,18 @@ D3D12DynamicHeap::~D3D12DynamicHeap()
                      FormatMemorySize(m_PeakAlignedSize, 2, m_PeakAlignedSize), " / ",
                      FormatMemorySize(m_PeakAllocatedSize, 2, m_PeakAllocatedSize),
                      " (", PeakAllocatedPages, (PeakAllocatedPages == 1 ? " page)" : " pages)"),
-                     ". Peak efficiency (used/aligned): ", std::fixed, std::setprecision(1), static_cast<double>(m_PeakUsedSize) / static_cast<double>(std::max(m_PeakAlignedSize, Uint64{1})) * 100.0, '%',
-                     ". Peak utilization (used/allocated): ", std::fixed, std::setprecision(1), static_cast<double>(m_PeakUsedSize) / static_cast<double>(std::max(m_PeakAllocatedSize, Uint64{1})) * 100.0, '%');
+                     ". Peak efficiency (used/aligned): ", std::fixed, std::setprecision(1), static_cast<double>(m_PeakUsedSize) / static_cast<double>(std::max(m_PeakAlignedSize, UInt64{1})) * 100.0, '%',
+                     ". Peak utilization (used/allocated): ", std::fixed, std::setprecision(1), static_cast<double>(m_PeakUsedSize) / static_cast<double>(std::max(m_PeakAllocatedSize, UInt64{1})) * 100.0, '%');
 }
 
-D3D12DynamicAllocation D3D12DynamicHeap::Allocate(Uint64 SizeInBytes, Uint64 Alignment, Uint64 DvpCtxFrameNumber)
+D3D12DynamicAllocation D3D12DynamicHeap::Allocate(UInt64 SizeInBytes, UInt64 Alignment, UInt64 DvpCtxFrameNumber)
 {
     VERIFY_EXPR(Alignment > 0);
     VERIFY(IsPowerOfTwo(Alignment), "Alignment (", Alignment, ") must be power of 2");
 
     if (m_CurrOffset == InvalidOffset || SizeInBytes + (AlignUp(m_CurrOffset, Alignment) - m_CurrOffset) > m_AvailableSize)
     {
-        Uint64 NewPageSize = m_PageSize;
+        UInt64 NewPageSize = m_PageSize;
         while (NewPageSize < SizeInBytes)
             NewPageSize *= 2;
 
@@ -218,8 +218,8 @@ D3D12DynamicAllocation D3D12DynamicHeap::Allocate(Uint64 SizeInBytes, Uint64 Ali
 
     if (m_CurrOffset != InvalidOffset && SizeInBytes + (AlignUp(m_CurrOffset, Alignment) - m_CurrOffset) <= m_AvailableSize)
     {
-        Uint64 AlignedOffset = AlignUp(m_CurrOffset, Alignment);
-        Uint64 AdjustedSize  = SizeInBytes + (AlignedOffset - m_CurrOffset);
+        UInt64 AlignedOffset = AlignUp(m_CurrOffset, Alignment);
+        UInt64 AdjustedSize  = SizeInBytes + (AlignedOffset - m_CurrOffset);
         VERIFY_EXPR(AdjustedSize <= m_AvailableSize);
         m_AvailableSize -= AdjustedSize;
         m_CurrOffset += AdjustedSize;
@@ -249,7 +249,7 @@ D3D12DynamicAllocation D3D12DynamicHeap::Allocate(Uint64 SizeInBytes, Uint64 Ali
         return D3D12DynamicAllocation{};
 }
 
-void D3D12DynamicHeap::ReleaseAllocatedPages(Uint64 QueueMask)
+void D3D12DynamicHeap::ReleaseAllocatedPages(UInt64 QueueMask)
 {
     m_GlobalDynamicMemMgr.ReleasePages(m_AllocatedPages, QueueMask);
     m_AllocatedPages.clear();

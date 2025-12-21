@@ -35,7 +35,7 @@ using namespace Diligent::Testing;
 namespace
 {
 
-static constexpr Uint32 ContentVersion = 1234;
+static constexpr UInt32 ContentVersion = 1234;
 
 constexpr ARCHIVE_DEVICE_DATA_FLAGS GetDeviceBits()
 {

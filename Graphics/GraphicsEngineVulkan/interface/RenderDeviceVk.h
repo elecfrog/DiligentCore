@@ -62,7 +62,7 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceVk, IRenderDevice)
     /// Returns Vulkan API version
 
     /// \note This version is the minimum of the instance version and what the physical device supports.
-    VIRTUAL Uint32 METHOD(GetVkVersion)(THIS) PURE;
+    VIRTUAL UInt32 METHOD(GetVkVersion)(THIS) PURE;
 
     /// Creates a texture object from native Vulkan image
 

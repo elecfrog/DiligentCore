@@ -8,7 +8,6 @@ set(SOURCE
 )
 
 set(INTERFACE
-    interface/BasicTypes.h
     interface/CheckBaseStructAlignment.hpp
     interface/CommonDefinitions.h
     interface/DataBlob.h

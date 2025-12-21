@@ -723,7 +723,7 @@ std::string VkAccessFlagsToString(VkAccessFlags Flags)
     std::string FlagsString;
     while (Flags != 0)
     {
-        Uint32 Bit = Flags & ~(Flags - 1);
+        UInt32 Bit = Flags & ~(Flags - 1);
         if (!FlagsString.empty())
             FlagsString += ", ";
         FlagsString += VkAccessFlagBitToString(static_cast<VkAccessFlagBits>(Bit));

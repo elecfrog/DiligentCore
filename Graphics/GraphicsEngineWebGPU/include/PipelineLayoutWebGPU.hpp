@@ -49,18 +49,18 @@ public:
     PipelineLayoutWebGPU();
     ~PipelineLayoutWebGPU();
 
-    void Create(RenderDeviceWebGPUImpl* pDeviceWebGPU, RefCntAutoPtr<PipelineResourceSignatureWebGPUImpl> ppSignatures[], Uint32 SignatureCount) noexcept(false);
+    void Create(RenderDeviceWebGPUImpl* pDeviceWebGPU, RefCntAutoPtr<PipelineResourceSignatureWebGPUImpl> ppSignatures[], UInt32 SignatureCount) noexcept(false);
 
     WGPUPipelineLayout GetWebGPUPipelineLayout();
 
     // Returns the index of the first bind group used by the resource signature at the given bind index
-    Uint32 GetFirstBindGroupIndex(Uint32 Index) const
+    UInt32 GetFirstBindGroupIndex(UInt32 Index) const
     {
         VERIFY_EXPR(Index <= m_DbgMaxBindIndex);
         return m_FirstBindGroupIndex[Index];
     }
 
-    Uint32 GetBindGroupCount() const { return m_BindGroupCount; }
+    UInt32 GetBindGroupCount() const { return m_BindGroupCount; }
 
 private:
     struct WGPUPipelineLayoutCreateInfo;
@@ -68,16 +68,16 @@ private:
 
     WebGPUPipelineLayoutWrapper m_wgpuPipelineLayout;
 
-    using FirstBindGroupIndexArrayType = std::array<Uint8, MAX_RESOURCE_SIGNATURES>;
+    using FirstBindGroupIndexArrayType = std::array<UInt8, MAX_RESOURCE_SIGNATURES>;
     // Index of the first bind group, for every resource signature.
     FirstBindGroupIndexArrayType m_FirstBindGroupIndex = {};
 
     // The total number of bind groups used by this pipeline layout
     // (Maximum is MAX_RESOURCE_SIGNATURES * 2)
-    Uint8 m_BindGroupCount = 0;
+    UInt8 m_BindGroupCount = 0;
 
 #ifdef DILIGENT_DEBUG
-    Uint32 m_DbgMaxBindIndex = 0;
+    UInt32 m_DbgMaxBindIndex = 0;
 #endif
 };
 

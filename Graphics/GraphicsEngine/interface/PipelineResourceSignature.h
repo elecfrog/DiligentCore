@@ -87,7 +87,7 @@ typedef struct ImmutableSamplerDesc ImmutableSamplerDesc;
 
 
 /// Pipeline resource property flags.
-DILIGENT_TYPED_ENUM(PIPELINE_RESOURCE_FLAGS, Uint8)
+DILIGENT_TYPED_ENUM(PIPELINE_RESOURCE_FLAGS, UInt8)
 {
     /// Resource has no special properties
     PIPELINE_RESOURCE_FLAG_NONE            = 0,
@@ -135,7 +135,7 @@ DEFINE_FLAG_ENUM_OPERATORS(PIPELINE_RESOURCE_FLAGS);
 
 
 /// WebGPU-specific resource binding types.
-DILIGENT_TYPED_ENUM(WEB_GPU_BINDING_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(WEB_GPU_BINDING_TYPE, UInt8)
 {
     /// Default resource binding.
     WEB_GPU_BINDING_TYPE_DEFAULT = 0,
@@ -269,7 +269,7 @@ struct PipelineResourceDesc
     SHADER_TYPE                    ShaderStages  DEFAULT_INITIALIZER(SHADER_TYPE_UNKNOWN);
 
     /// Resource array size (must be 1 for non-array resources).
-    Uint32                         ArraySize     DEFAULT_INITIALIZER(1);
+    UInt32                         ArraySize     DEFAULT_INITIALIZER(1);
 
     /// Resource type, see Diligent::SHADER_RESOURCE_TYPE.
     SHADER_RESOURCE_TYPE           ResourceType  DEFAULT_INITIALIZER(SHADER_RESOURCE_TYPE_UNKNOWN);
@@ -292,7 +292,7 @@ struct PipelineResourceDesc
 
     constexpr PipelineResourceDesc(SHADER_TYPE                   _ShaderStages,
                                    const Char*                   _Name,
-                                   Uint32                        _ArraySize,
+                                   UInt32                        _ArraySize,
                                    SHADER_RESOURCE_TYPE          _ResourceType,
                                    SHADER_RESOURCE_VARIABLE_TYPE _VarType       = PipelineResourceDesc{}.VarType,
                                    PIPELINE_RESOURCE_FLAGS       _Flags         = PipelineResourceDesc{}.Flags,
@@ -346,13 +346,13 @@ struct PipelineResourceSignatureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     const PipelineResourceDesc*  Resources  DEFAULT_INITIALIZER(nullptr);
 
     /// The number of resources in Resources array.
-    Uint32  NumResources  DEFAULT_INITIALIZER(0);
+    UInt32  NumResources  DEFAULT_INITIALIZER(0);
 
     /// A pointer to an array of immutable samplers. See Diligent::ImmutableSamplerDesc.
     const ImmutableSamplerDesc*  ImmutableSamplers  DEFAULT_INITIALIZER(nullptr);
 
     /// The number of immutable samplers in ImmutableSamplers array.
-    Uint32  NumImmutableSamplers  DEFAULT_INITIALIZER(0);
+    UInt32  NumImmutableSamplers  DEFAULT_INITIALIZER(0);
 
     /// Binding index that this resource signature uses.
 
@@ -360,7 +360,7 @@ struct PipelineResourceSignatureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     /// The total number of slots is given by MAX_RESOURCE_SIGNATURES constant.
     /// All resource signatures used by a pipeline state must be assigned
     /// to different slots.
-    Uint8  BindingIndex DEFAULT_INITIALIZER(0);
+    UInt8  BindingIndex DEFAULT_INITIALIZER(0);
 
     /// Whether to use combined texture samplers.
 
@@ -385,7 +385,7 @@ struct PipelineResourceSignatureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
 
     /// This member defines the allocation granularity for internal resources required by
     /// the shader resource binding object instances.
-    Uint32 SRBAllocationGranularity DEFAULT_INITIALIZER(1);
+    UInt32 SRBAllocationGranularity DEFAULT_INITIALIZER(1);
 
 #if DILIGENT_CPP_INTERFACE
 
@@ -412,12 +412,12 @@ struct PipelineResourceSignatureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
 
         // ignore SRBAllocationGranularity
 
-        for (Uint32 r = 0; r < NumResources; ++r)
+        for (UInt32 r = 0; r < NumResources; ++r)
         {
             if (!(Resources[r] == Rhs.Resources[r]))
                 return false;
         }
-        for (Uint32 s = 0; s < NumImmutableSamplers; ++s)
+        for (UInt32 s = 0; s < NumImmutableSamplers; ++s)
         {
             if (!(ImmutableSamplers[s] == Rhs.ImmutableSamplers[s]))
                 return false;
@@ -529,7 +529,7 @@ DILIGENT_BEGIN_INTERFACE(IPipelineResourceSignature, IDeviceObject)
     /// unless it explicitly called AddRef().
     VIRTUAL IShaderResourceVariable* METHOD(GetStaticVariableByIndex)(THIS_
                                                                       SHADER_TYPE ShaderType,
-                                                                      Uint32      Index) PURE;
+                                                                      UInt32      Index) PURE;
 
 
     /// Returns the number of static shader resource variables.
@@ -538,7 +538,7 @@ DILIGENT_BEGIN_INTERFACE(IPipelineResourceSignature, IDeviceObject)
     ///
     /// \remarks   Only static variables (that can be accessed directly through the PSO) are counted.
     ///            Mutable and dynamic variables are accessed through Shader Resource Binding object.
-    VIRTUAL Uint32 METHOD(GetStaticVariableCount)(THIS_
+    VIRTUAL UInt32 METHOD(GetStaticVariableCount)(THIS_
                                                   SHADER_TYPE ShaderType) CONST PURE;
 
     /// Initializes static resources in the shader binding object.

@@ -63,26 +63,26 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_TextureWebGPU, TTextureBase)
 
     /// Implementation of ITexture::GetNativeHandle() in WebGPU backend.
-    Uint64 DILIGENT_CALL_TYPE GetNativeHandle() override final;
+    UInt64 DILIGENT_CALL_TYPE GetNativeHandle() override final;
 
     /// Implementation of ITextureWebGPU::GetWebGPUTexture() in WebGPU backend.
     WGPUTexture DILIGENT_CALL_TYPE GetWebGPUTexture() const override final;
 
     StagingBufferInfo* GetStagingBuffer();
 
-    void* Map(MAP_TYPE MapType, Uint64 Offset, Uint64 Size);
+    void* Map(MAP_TYPE MapType, UInt64 Offset, UInt64 Size);
 
     void Unmap();
 
     // The requirement is hard-coded in the spec: https://www.w3.org/TR/webgpu/#gpuimagecopybuffer
-    static constexpr Uint64 ImageCopyBufferRowAlignment = 256;
+    static constexpr UInt64 ImageCopyBufferRowAlignment = 256;
 
-    static Uint64 GetStagingLocationOffset(const TextureDesc& TexDesc,
-                                           Uint32             ArraySlice,
-                                           Uint32             MipLevel,
-                                           Uint32             LocationX = 0,
-                                           Uint32             LocationY = 0,
-                                           Uint32             LocationZ = 0);
+    static UInt64 GetStagingLocationOffset(const TextureDesc& TexDesc,
+                                           UInt32             ArraySlice,
+                                           UInt32             MipLevel,
+                                           UInt32             LocationX = 0,
+                                           UInt32             LocationY = 0,
+                                           UInt32             LocationZ = 0);
 
 private:
     void CreateViewInternal(const TextureViewDesc& ViewDesc,
@@ -90,7 +90,7 @@ private:
                             bool                   bIsDefaultView) override;
 
 private:
-    static constexpr Uint32 MaxStagingReadBuffers = 16;
+    static constexpr UInt32 MaxStagingReadBuffers = 16;
 
     WebGPUTextureWrapper m_wgpuTexture;
 };

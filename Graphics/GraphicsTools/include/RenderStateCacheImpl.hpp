@@ -55,7 +55,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_RenderStateCache, TBase);
 
     virtual bool DILIGENT_CALL_TYPE Load(const IDataBlob* pArchive,
-                                         Uint32           ContentVersion,
+                                         UInt32           ContentVersion,
                                          bool             MakeCopy) override final
     {
         return m_pDearchiver->LoadArchive(pArchive, ContentVersion, MakeCopy);
@@ -92,20 +92,20 @@ public:
         return CreatePipelineState(PSOCreateInfo, ppPipelineState);
     }
 
-    virtual Bool DILIGENT_CALL_TYPE WriteToBlob(Uint32 ContentVersion, IDataBlob** ppBlob) override final;
+    virtual Bool DILIGENT_CALL_TYPE WriteToBlob(UInt32 ContentVersion, IDataBlob** ppBlob) override final;
 
-    virtual Bool DILIGENT_CALL_TYPE WriteToStream(Uint32 ContentVersion, IFileStream* pStream) override final;
+    virtual Bool DILIGENT_CALL_TYPE WriteToStream(UInt32 ContentVersion, IFileStream* pStream) override final;
 
     virtual void DILIGENT_CALL_TYPE Reset() override final;
 
-    virtual Uint32 DILIGENT_CALL_TYPE Reload(ReloadGraphicsPipelineCallbackType ReloadGraphicsPipeline, void* pUserData) override final;
+    virtual UInt32 DILIGENT_CALL_TYPE Reload(ReloadGraphicsPipelineCallbackType ReloadGraphicsPipeline, void* pUserData) override final;
 
-    virtual Uint32 DILIGENT_CALL_TYPE GetContentVersion() const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetContentVersion() const override final
     {
         return m_pDearchiver ? m_pDearchiver->GetContentVersion() : ~0u;
     }
 
-    virtual Uint32 DILIGENT_CALL_TYPE GetReloadVersion() const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetReloadVersion() const override final
     {
         return m_ReloadVersion;
     }
@@ -120,7 +120,7 @@ public:
     RefCntAutoPtr<IShader> FindReloadableShader(IShader* pShader);
 
 private:
-    static std::string HashToStr(Uint64 Low, Uint64 High);
+    static std::string HashToStr(UInt64 Low, UInt64 High);
 
     static std::string MakeHashStr(const char* Name, const XXH128Hash& Hash);
 
@@ -155,7 +155,7 @@ private:
     std::mutex                                                          m_ReloadablePipelinesMtx;
     std::unordered_map<UniqueIdentifier, RefCntWeakPtr<IPipelineState>> m_ReloadablePipelines;
 
-    Uint32 m_ReloadVersion = 0;
+    UInt32 m_ReloadVersion = 0;
 };
 
 } // namespace Diligent

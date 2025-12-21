@@ -30,7 +30,7 @@
 namespace Diligent
 {
 
-std::unique_ptr<IDXCompiler> CreateDXCompiler(DXCompilerTarget Target, Uint32 APIVersion, const char* pLibraryName)
+std::unique_ptr<IDXCompiler> CreateDXCompiler(DXCompilerTarget Target, UInt32 APIVersion, const char* pLibraryName)
 {
     return {};
 }

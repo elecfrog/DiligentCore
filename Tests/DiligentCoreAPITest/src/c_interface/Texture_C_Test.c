@@ -43,7 +43,7 @@ int TestTextureCInterface(struct ITexture* pTexture)
     TextureDesc     TexDesc;
     ITextureView *  pView0 = NULL, *pView1 = NULL;
     TextureViewDesc ViewDesc;
-    Uint64          NativeHandle;
+    UInt64          NativeHandle;
     RESOURCE_STATE  State = RESOURCE_STATE_SHADER_RESOURCE;
 
     int num_errors =

@@ -32,7 +32,7 @@ namespace Diligent
 struct PosAndRate
 {
     float2 Pos;
-    Uint32 Rate;
+    UInt32 Rate;
 };
 
 namespace VRSTestingConstants
@@ -58,13 +58,13 @@ static const PosAndRate Vertices[] =
 namespace TextureBased
 {
 
-inline SHADING_RATE GenTexture(Uint32 X, Uint32 Y, Uint32 W, Uint32 H)
+inline SHADING_RATE GenTexture(UInt32 X, UInt32 Y, UInt32 W, UInt32 H)
 {
     auto XDist = std::abs(0.5f - static_cast<float>(X) / W) * 2.0f;
     auto YDist = std::abs(0.5f - static_cast<float>(Y) / H) * 2.0f;
 
-    auto XRate = AXIS_SHADING_RATE_MAX - clamp(static_cast<Uint32>(XDist * AXIS_SHADING_RATE_MAX + 0.5f), 0u, Uint32{AXIS_SHADING_RATE_MAX});
-    auto YRate = AXIS_SHADING_RATE_MAX - clamp(static_cast<Uint32>(YDist * AXIS_SHADING_RATE_MAX + 0.5f), 0u, Uint32{AXIS_SHADING_RATE_MAX});
+    auto XRate = AXIS_SHADING_RATE_MAX - clamp(static_cast<UInt32>(XDist * AXIS_SHADING_RATE_MAX + 0.5f), 0u, UInt32{AXIS_SHADING_RATE_MAX});
+    auto YRate = AXIS_SHADING_RATE_MAX - clamp(static_cast<UInt32>(YDist * AXIS_SHADING_RATE_MAX + 0.5f), 0u, UInt32{AXIS_SHADING_RATE_MAX});
 
     return static_cast<SHADING_RATE>((XRate << SHADING_RATE_X_SHIFT) | YRate);
 }

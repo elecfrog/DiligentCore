@@ -391,7 +391,7 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     VIRTUAL SparseTextureFormatInfo METHOD(GetSparseTextureFormatInfo)(THIS_
                                                                        TEXTURE_FORMAT     TexFormat,
                                                                        RESOURCE_DIMENSION Dimension,
-                                                                       Uint32             SampleCount) CONST PURE;
+                                                                       UInt32             SampleCount) CONST PURE;
 
     /// Purges device release queues and releases all stale resources.
     /// This method is automatically called by ISwapChain::Present() of the primary swap chain.

@@ -51,7 +51,7 @@ using namespace Diligent::Testing;
 namespace
 {
 
-static constexpr Uint32 ContentVersion = 987;
+static constexpr UInt32 ContentVersion = 987;
 
 PipelineResourceLayoutDesc GetGraphicsPSOLayout()
 {
@@ -184,9 +184,9 @@ RefCntAutoPtr<ITextureView> CreateWhiteTexture()
 {
     auto* pEnv = GPUTestingEnvironment::GetInstance();
 
-    constexpr Uint32    Width  = 128;
-    constexpr Uint32    Height = 128;
-    std::vector<Uint32> Data(size_t{Width} * size_t{Height}, 0xFFFFFFFFu);
+    constexpr UInt32    Width  = 128;
+    constexpr UInt32    Height = 128;
+    std::vector<UInt32> Data(size_t{Width} * size_t{Height}, 0xFFFFFFFFu);
 
     auto pTex = pEnv->CreateTexture("White Texture", TEX_FORMAT_RGBA8_UNORM, BIND_SHADER_RESOURCE, 128, 128, Data.data());
     return RefCntAutoPtr<ITextureView>{pTex->GetDefaultView(TEXTURE_VIEW_SHADER_RESOURCE)};
@@ -370,12 +370,12 @@ void TestArchivingShaders(bool CompileAsync)
     auto pTexSRV = CreateWhiteTexture();
 
     const SHADER_COMPILE_FLAGS CompileFlags = CompileAsync ? SHADER_COMPILE_FLAG_ASYNCHRONOUS : SHADER_COMPILE_FLAG_NONE;
-    for (Uint32 OptimizeGLShaders = pDevice->GetDeviceInfo().IsGLDevice() ? 0 : 1; OptimizeGLShaders < 2; ++OptimizeGLShaders)
+    for (UInt32 OptimizeGLShaders = pDevice->GetDeviceInfo().IsGLDevice() ? 0 : 1; OptimizeGLShaders < 2; ++OptimizeGLShaders)
     {
-        for (Uint32 HotReload = 0; HotReload < 2; ++HotReload)
+        for (UInt32 HotReload = 0; HotReload < 2; ++HotReload)
         {
             RefCntAutoPtr<IDataBlob> pData;
-            for (Uint32 pass = 0; pass < 3; ++pass)
+            for (UInt32 pass = 0; pass < 3; ++pass)
             {
                 // 0: empty cache
                 // 1: loaded cache
@@ -440,7 +440,7 @@ void TestBrokenShader(bool CompileAsync)
 
     constexpr char NotASource[] = "Not a shader source";
 
-    for (Uint32 HotReload = 0; HotReload < 2; ++HotReload)
+    for (UInt32 HotReload = 0; HotReload < 2; ++HotReload)
     {
         auto pCache = CreateCache(pDevice, HotReload);
         ASSERT_TRUE(pCache);
@@ -604,10 +604,10 @@ void TestGraphicsPSO(bool UseRenderPass, bool CompileAsync = false)
     pRefSRB->GetVariableByName(SHADER_TYPE_PIXEL, "g_Tex2D")->SetArray(ppSRVs, 0, 2);
     pCtx->TransitionShaderResources(pRefSRB);
 
-    for (Uint32 HotReload = 0; HotReload < 2; ++HotReload)
+    for (UInt32 HotReload = 0; HotReload < 2; ++HotReload)
     {
         RefCntAutoPtr<IDataBlob> pData;
-        for (Uint32 pass = 0; pass < 3; ++pass)
+        for (UInt32 pass = 0; pass < 3; ++pass)
         {
             // 0: empty cache
             // 1: loaded cache
@@ -783,10 +783,10 @@ void TestComputePSO(bool UseSignature, bool CompileAsync = false)
         ASSERT_NE(pRefPSO, nullptr);
     }
 
-    for (Uint32 HotReload = 0; HotReload < 2; ++HotReload)
+    for (UInt32 HotReload = 0; HotReload < 2; ++HotReload)
     {
         RefCntAutoPtr<IDataBlob> pData;
-        for (Uint32 pass = 0; pass < 3; ++pass)
+        for (UInt32 pass = 0; pass < 3; ++pass)
         {
             // 0: empty cache
             // 1: loaded cache
@@ -867,7 +867,7 @@ TEST(RenderStateCacheTest, CacheByFileName)
     };
 
     RefCntAutoPtr<IDataBlob> pData;
-    for (Uint32 pass = 0; pass < 2; ++pass)
+    for (UInt32 pass = 0; pass < 2; ++pass)
     {
         RefCntAutoPtr<IRenderStateCache> pCache;
         CreateRenderStateCache(CacheCI, &pCache);
@@ -1003,10 +1003,10 @@ void TestRayTracingPSO(bool CompileAsync)
     pDevice->GetEngineFactory()->CreateDefaultShaderSourceStreamFactory("shaders/RenderStateCache", &pShaderSourceFactory);
     ASSERT_TRUE(pShaderSourceFactory);
 
-    for (Uint32 HotReload = 0; HotReload < 2; ++HotReload)
+    for (UInt32 HotReload = 0; HotReload < 2; ++HotReload)
     {
         RefCntAutoPtr<IDataBlob> pData;
-        for (Uint32 pass = 0; pass < 3; ++pass)
+        for (UInt32 pass = 0; pass < 3; ++pass)
         {
             // 0: empty cache
             // 1: loaded cache
@@ -1074,7 +1074,7 @@ TEST(RenderStateCacheTest, BrokenPSO)
 
     GPUTestingEnvironment::ScopedReset AutoReset;
 
-    for (Uint32 HotReload = 0; HotReload < 2; ++HotReload)
+    for (UInt32 HotReload = 0; HotReload < 2; ++HotReload)
     {
         auto pCache = CreateCache(pDevice, HotReload);
         ASSERT_TRUE(pCache);
@@ -1115,7 +1115,7 @@ TEST(RenderStateCacheTest, AppendData)
     constexpr bool             CompileAsync  = false;
     const SHADER_COMPILE_FLAGS CompileFlags  = CompileAsync ? SHADER_COMPILE_FLAG_ASYNCHRONOUS : SHADER_COMPILE_FLAG_NONE;
 
-    for (Uint32 HotReload = 0; HotReload < 2; ++HotReload)
+    for (UInt32 HotReload = 0; HotReload < 2; ++HotReload)
     {
         RefCntAutoPtr<IDataBlob> pData;
         {
@@ -1133,7 +1133,7 @@ TEST(RenderStateCacheTest, AppendData)
             ASSERT_NE(pData, nullptr);
         }
 
-        for (Uint32 pass = 0; pass < 3; ++pass)
+        for (UInt32 pass = 0; pass < 3; ++pass)
         {
             auto pCache = CreateCache(pDevice, HotReload, pData);
 
@@ -1208,7 +1208,7 @@ constexpr float4 TriangleVerts[] =
 };
 // clang-format on
 
-enum TEST_PIPELINE_RELOAD_FLAGS : Uint32
+enum TEST_PIPELINE_RELOAD_FLAGS : UInt32
 {
     TEST_PIPELINE_RELOAD_FLAG_NONE                     = 0u,
     TEST_PIPELINE_RELOAD_FLAG_USE_RENDER_PASS          = 1u << 0u,
@@ -1292,7 +1292,7 @@ void TestPipelineReload(TEST_PIPELINE_RELOAD_FLAGS Flags)
     SHADER_COMPILE_FLAGS CompileFlags = AsyncCompile ? SHADER_COMPILE_FLAG_ASYNCHRONOUS : SHADER_COMPILE_FLAG_NONE;
 
     RefCntAutoPtr<IDataBlob> pData;
-    for (Uint32 pass = 0; pass < 3; ++pass)
+    for (UInt32 pass = 0; pass < 3; ++pass)
     {
         // 0: empty cache
         // 1: loaded cache
@@ -1459,7 +1459,7 @@ void TestPipelineReload(TEST_PIPELINE_RELOAD_FLAGS Flags)
                 GraphicsPipeline.PrimitiveTopology = PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
             });
 
-        Uint32 NumStatesReloaded = pCache->Reload(ModifyPSO, ModifyPSO);
+        UInt32 NumStatesReloaded = pCache->Reload(ModifyPSO, ModifyPSO);
         if (!AsyncCompile)
             EXPECT_EQ(NumStatesReloaded, pass == 0 ? 3u : 0u);
         ASSERT_EQ(pPSO->GetStatus(AsyncCompile), PIPELINE_STATE_STATUS_READY);
@@ -1547,7 +1547,7 @@ TEST(RenderStateCacheTest, Reload_Signatures2)
 
     GPUTestingEnvironment::ScopedReset AutoReset;
 
-    std::vector<Uint32> Data(128 * 128, 0xFF00FF00);
+    std::vector<UInt32> Data(128 * 128, 0xFF00FF00);
     auto                pTex = pEnv->CreateTexture("RenderStateCacheTest.Reload_Signatures2", TEX_FORMAT_RGBA8_UNORM, BIND_SHADER_RESOURCE, 128, 128, Data.data());
     ASSERT_TRUE(pTex);
 
@@ -1584,10 +1584,10 @@ TEST(RenderStateCacheTest, Reload_Signatures2)
     constexpr bool       HotReload    = true;
     SHADER_COMPILE_FLAGS CompileFlags = SHADER_COMPILE_FLAG_NONE;
 
-    for (Uint32 use_different_signatures = 0; use_different_signatures < 2; ++use_different_signatures)
+    for (UInt32 use_different_signatures = 0; use_different_signatures < 2; ++use_different_signatures)
     {
         RefCntAutoPtr<IDataBlob> pData;
-        for (Uint32 pass = 0; pass < 3; ++pass)
+        for (UInt32 pass = 0; pass < 3; ++pass)
         {
             // 0: store cache
             // 1: load cache, reload shaders, store
@@ -1719,12 +1719,12 @@ TEST(RenderStateCacheTest, GLExtensions)
     };
 
     static FastRandFloat rnd{1, 0, 1};
-    for (Uint32 OptimizeGLShaders = DeviceInfo.IsGLDevice() ? 0 : 1; OptimizeGLShaders < 2; ++OptimizeGLShaders)
+    for (UInt32 OptimizeGLShaders = DeviceInfo.IsGLDevice() ? 0 : 1; OptimizeGLShaders < 2; ++OptimizeGLShaders)
     {
-        for (Uint32 HotReload = 0; HotReload < 2; ++HotReload)
+        for (UInt32 HotReload = 0; HotReload < 2; ++HotReload)
         {
             RefCntAutoPtr<IDataBlob> pData;
-            for (Uint32 pass = 0; pass < 3; ++pass)
+            for (UInt32 pass = 0; pass < 3; ++pass)
             {
                 // 0: empty cache
                 // 1: loaded cache

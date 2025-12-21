@@ -152,7 +152,7 @@ void GenerateMipsHelper::GenerateMips(ID3D12Device* pd3d12Device, TextureViewD3D
     // Otherwise we will transition affected subresources back to original layout.
     const RESOURCE_STATE FinalState = (IsAllSlices && IsAllMips) ? RESOURCE_STATE_SHADER_RESOURCE : OriginalState;
 
-    Uint32 BottomMip = ViewDesc.NumMipLevels - 1;
+    UInt32 BottomMip = ViewDesc.NumMipLevels - 1;
     for (uint32_t TopMip = 0; TopMip < BottomMip;)
     {
         uint32_t SrcWidth  = std::max(TexDesc.Width >> (TopMip + ViewDesc.MostDetailedMip), 1u);
@@ -196,10 +196,10 @@ void GenerateMipsHelper::GenerateMips(ID3D12Device* pd3d12Device, TextureViewD3D
         Ctx.GetCommandList()->SetComputeRootDescriptorTable(2, DescriptorAlloc.GetGpuHandle(1));
         struct RootCBData
         {
-            Uint32 SrcMipLevel;  // Texture level of source mip
-            Uint32 NumMipLevels; // Number of OutMips to write: [1, 4]
-            Uint32 FirstArraySlice;
-            Uint32 Dummy;
+            UInt32 SrcMipLevel;  // Texture level of source mip
+            UInt32 NumMipLevels; // Number of OutMips to write: [1, 4]
+            UInt32 FirstArraySlice;
+            UInt32 Dummy;
             float  TexelSize[2]; // 1.0 / OutMip1.Dimensions
         };
         RootCBData CBData{
@@ -212,7 +212,7 @@ void GenerateMipsHelper::GenerateMips(ID3D12Device* pd3d12Device, TextureViewD3D
         Ctx.GetCommandList()->SetComputeRoot32BitConstants(0, 6, &CBData, 0);
 
         D3D12_CPU_DESCRIPTOR_HANDLE DstDescriptorRange     = DescriptorAlloc.GetCpuHandle();
-        const Uint32                MaxMipsHandledByCS     = 4; // Max number of mip levels processed by one CS shader invocation
+        const UInt32                MaxMipsHandledByCS     = 4; // Max number of mip levels processed by one CS shader invocation
         UINT                        DstRangeSize           = 1 + MaxMipsHandledByCS;
         D3D12_CPU_DESCRIPTOR_HANDLE SrcDescriptorRanges[5] = {};
 
@@ -222,7 +222,7 @@ void GenerateMipsHelper::GenerateMips(ID3D12Device* pd3d12Device, TextureViewD3D
         // Root Signature must be populated and initialized, even if the shaders do not need the descriptor.
         // So we must populate all 4 slots even though we may actually process less than 4 mip levels
         // Copy top mip level UAV descriptor handle to all unused slots
-        for (Uint32 u = 0; u < MaxMipsHandledByCS; ++u)
+        for (UInt32 u = 0; u < MaxMipsHandledByCS; ++u)
             SrcDescriptorRanges[1 + u] = pTexView->GetMipLevelUAV(TopMip + std::min(u + 1, NumMips));
 
         pd3d12Device->CopyDescriptors(1, &DstDescriptorRange, &DstRangeSize, 1 + MaxMipsHandledByCS, SrcDescriptorRanges, SrcRangeSizes, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);

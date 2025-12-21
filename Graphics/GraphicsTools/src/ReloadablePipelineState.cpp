@@ -192,11 +192,11 @@ bool ReloadablePipelineState::Reload(ReloadGraphicsPipelineCallbackType ReloadGr
 
 void ReloadablePipelineState::CopyStaticResources()
 {
-    const Uint32 SrcSignCount = m_pOldPipeline->GetResourceSignatureCount();
-    const Uint32 DstSignCount = m_pPipeline->GetResourceSignatureCount();
+    const UInt32 SrcSignCount = m_pOldPipeline->GetResourceSignatureCount();
+    const UInt32 DstSignCount = m_pPipeline->GetResourceSignatureCount();
     if (SrcSignCount == DstSignCount)
     {
-        for (Uint32 s = 0; s < SrcSignCount; ++s)
+        for (UInt32 s = 0; s < SrcSignCount; ++s)
         {
             IPipelineResourceSignature* pSrcSign = m_pOldPipeline->GetResourceSignature(s);
             IPipelineResourceSignature* pDstSign = m_pPipeline->GetResourceSignature(s);

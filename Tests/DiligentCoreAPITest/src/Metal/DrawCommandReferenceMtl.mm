@@ -46,7 +46,7 @@ class TriangleRenderer
 {
 
 public:
-    TriangleRenderer(NSString* fragEntry, MTLPixelFormat mtlRTFormat, Uint32 NumRTs = 1, Uint32 SampleCount = 1)
+    TriangleRenderer(NSString* fragEntry, MTLPixelFormat mtlRTFormat, UInt32 NumRTs = 1, UInt32 SampleCount = 1)
     {
         auto* const pEnv      = TestingEnvironmentMtl::GetInstance();
         auto* const mtlDevice = pEnv->GetMtlDevice();
@@ -169,7 +169,7 @@ void RenderPassMSResolveReferenceMtl(ISwapChain* pSwapChain, const float* pClear
     auto* pRTV = pTestingSwapChainMtl->GetCurrentBackBufferRTV();
     auto* mtlBackBuffer = ClassPtrCast<ITextureViewMtl>(pRTV)->GetMtlTexture();
 
-    constexpr Uint32 SampleCount = 4;
+    constexpr UInt32 SampleCount = 4;
 
     MTLTextureDescriptor* msTextureDescriptor = [[MTLTextureDescriptor alloc] init];
     msTextureDescriptor.textureType = MTLTextureType2DMultisample;
@@ -261,7 +261,7 @@ void RenderPassInputAttachmentReferenceMtl(ISwapChain* pSwapChain, const float* 
         subpass0Desc.colorAttachments[0].clearColor  = MTLClearColorMake(0, 0, 0, 0);
         subpass0Desc.colorAttachments[0].storeAction = MTLStoreActionStore;
 
-        auto SetFramebufferAttachment = [mtlBackBuffer, pClearColor](MTLRenderPassDescriptor* subpassDesc, Uint32 Idx){
+        auto SetFramebufferAttachment = [mtlBackBuffer, pClearColor](MTLRenderPassDescriptor* subpassDesc, UInt32 Idx){
             subpassDesc.colorAttachments[Idx].texture     = mtlBackBuffer;
             subpassDesc.colorAttachments[Idx].loadAction  = MTLLoadActionClear;
             subpassDesc.colorAttachments[Idx].clearColor  = MTLClearColorMake(pClearColor[0], pClearColor[1], pClearColor[2], pClearColor[3]);

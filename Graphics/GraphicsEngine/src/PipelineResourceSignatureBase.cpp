@@ -48,16 +48,16 @@ void ValidatePipelineResourceSignatureDesc(const PipelineResourceSignatureDesc& 
     const DeviceFeatures& Features = DeviceInfo.Features;
 
     if (Desc.BindingIndex >= MAX_RESOURCE_SIGNATURES)
-        LOG_PRS_ERROR_AND_THROW("Desc.BindingIndex (", Uint32{Desc.BindingIndex}, ") exceeds the maximum allowed value (", MAX_RESOURCE_SIGNATURES - 1, ").");
+        LOG_PRS_ERROR_AND_THROW("Desc.BindingIndex (", UInt32{Desc.BindingIndex}, ") exceeds the maximum allowed value (", MAX_RESOURCE_SIGNATURES - 1, ").");
 
     if (Desc.NumResources > MAX_RESOURCES_IN_SIGNATURE)
-        LOG_PRS_ERROR_AND_THROW("Desc.NumResources (", Uint32{Desc.NumResources}, ") exceeds the maximum allowed value (", MAX_RESOURCES_IN_SIGNATURE, ").");
+        LOG_PRS_ERROR_AND_THROW("Desc.NumResources (", UInt32{Desc.NumResources}, ") exceeds the maximum allowed value (", MAX_RESOURCES_IN_SIGNATURE, ").");
 
     if (Desc.NumResources != 0 && Desc.Resources == nullptr)
-        LOG_PRS_ERROR_AND_THROW("Desc.NumResources (", Uint32{Desc.NumResources}, ") is not zero, but Desc.Resources is null.");
+        LOG_PRS_ERROR_AND_THROW("Desc.NumResources (", UInt32{Desc.NumResources}, ") is not zero, but Desc.Resources is null.");
 
     if (Desc.NumImmutableSamplers != 0 && Desc.ImmutableSamplers == nullptr)
-        LOG_PRS_ERROR_AND_THROW("Desc.NumImmutableSamplers (", Uint32{Desc.NumImmutableSamplers}, ") is not zero, but Desc.ImmutableSamplers is null.");
+        LOG_PRS_ERROR_AND_THROW("Desc.NumImmutableSamplers (", UInt32{Desc.NumImmutableSamplers}, ") is not zero, but Desc.ImmutableSamplers is null.");
 
     if (Desc.UseCombinedTextureSamplers && (Desc.CombinedSamplerSuffix == nullptr || Desc.CombinedSamplerSuffix[0] == '\0'))
         LOG_PRS_ERROR_AND_THROW("Desc.UseCombinedTextureSamplers is true, but Desc.CombinedSamplerSuffix is null or empty");
@@ -65,7 +65,7 @@ void ValidatePipelineResourceSignatureDesc(const PipelineResourceSignatureDesc& 
 
     // Hash map of all resources by name
     std::unordered_multimap<HashMapStringKey, const PipelineResourceDesc&> Resources;
-    for (Uint32 i = 0; i < Desc.NumResources; ++i)
+    for (UInt32 i = 0; i < Desc.NumResources; ++i)
     {
         const PipelineResourceDesc& Res = Desc.Resources[i];
 
@@ -164,7 +164,7 @@ void ValidatePipelineResourceSignatureDesc(const PipelineResourceSignatureDesc& 
 
     // Hash map of all immutable samplers by name
     std::unordered_multimap<HashMapStringKey, const ImmutableSamplerDesc&> ImtblSamplers;
-    for (Uint32 i = 0; i < Desc.NumImmutableSamplers; ++i)
+    for (UInt32 i = 0; i < Desc.NumImmutableSamplers; ++i)
     {
         const ImmutableSamplerDesc& SamDesc = Desc.ImmutableSamplers[i];
         if (SamDesc.SamplerOrTextureName == nullptr)
@@ -208,7 +208,7 @@ void ValidatePipelineResourceSignatureDesc(const PipelineResourceSignatureDesc& 
         std::unordered_multimap<HashMapStringKey, SHADER_TYPE> AssignedSamplers;
         // List of immutable samplers assigned to some texture
         std::unordered_multimap<HashMapStringKey, SHADER_TYPE> AssignedImtblSamplers;
-        for (Uint32 i = 0; i < Desc.NumResources; ++i)
+        for (UInt32 i = 0; i < Desc.NumResources; ++i)
         {
             const PipelineResourceDesc& Res = Desc.Resources[i];
             if (Res.ResourceType != SHADER_RESOURCE_TYPE_TEXTURE_SRV)
@@ -280,7 +280,7 @@ void ValidatePipelineResourceSignatureDesc(const PipelineResourceSignatureDesc& 
             }
         }
 
-        for (Uint32 i = 0; i < Desc.NumResources; ++i)
+        for (UInt32 i = 0; i < Desc.NumResources; ++i)
         {
             const PipelineResourceDesc& Res = Desc.Resources[i];
             if (Res.ResourceType != SHADER_RESOURCE_TYPE_SAMPLER)
@@ -301,7 +301,7 @@ void ValidatePipelineResourceSignatureDesc(const PipelineResourceSignatureDesc& 
             }
         }
 
-        for (Uint32 i = 0; i < Desc.NumImmutableSamplers; ++i)
+        for (UInt32 i = 0; i < Desc.NumImmutableSamplers; ++i)
         {
             const ImmutableSamplerDesc& SamDesc = Desc.ImmutableSamplers[i];
 
@@ -325,14 +325,14 @@ void ValidatePipelineResourceSignatureDesc(const PipelineResourceSignatureDesc& 
 #undef LOG_PRS_ERROR_AND_THROW
 
 
-Uint32 FindImmutableSampler(const ImmutableSamplerDesc ImtblSamplers[],
-                            Uint32                     NumImtblSamplers,
+UInt32 FindImmutableSampler(const ImmutableSamplerDesc ImtblSamplers[],
+                            UInt32                     NumImtblSamplers,
                             SHADER_TYPE                ShaderStages,
                             const char*                ResourceName,
                             const char*                SamplerSuffix)
 {
     VERIFY_EXPR(ResourceName != nullptr && ResourceName[0] != '\0');
-    for (Uint32 s = 0; s < NumImtblSamplers; ++s)
+    for (UInt32 s = 0; s < NumImtblSamplers; ++s)
     {
         const ImmutableSamplerDesc& Sam = ImtblSamplers[s];
         if (((Sam.ShaderStages & ShaderStages) != 0) && StreqSuff(ResourceName, Sam.SamplerOrTextureName, SamplerSuffix))
@@ -347,13 +347,13 @@ Uint32 FindImmutableSampler(const ImmutableSamplerDesc ImtblSamplers[],
     return InvalidImmutableSamplerIndex;
 }
 
-Uint32 FindResource(const PipelineResourceDesc Resources[],
-                    Uint32                     NumResources,
+UInt32 FindResource(const PipelineResourceDesc Resources[],
+                    UInt32                     NumResources,
                     SHADER_TYPE                ShaderStage,
                     const char*                ResourceName)
 {
     VERIFY_EXPR(ResourceName != nullptr && ResourceName[0] != '\0');
-    for (Uint32 r = 0; r < NumResources; ++r)
+    for (UInt32 r = 0; r < NumResources; ++r)
     {
         const PipelineResourceDesc& ResDesc{Resources[r]};
         if ((ResDesc.ShaderStages & ShaderStage) != 0 && strcmp(ResDesc.Name, ResourceName) == 0)
@@ -386,7 +386,7 @@ bool PipelineResourceSignaturesCompatible(const PipelineResourceSignatureDesc& D
     if (Desc0.NumResources != Desc1.NumResources)
         return false;
 
-    for (Uint32 r = 0; r < Desc0.NumResources; ++r)
+    for (UInt32 r = 0; r < Desc0.NumResources; ++r)
     {
         if (!PipelineResourcesCompatible(Desc0.Resources[r], Desc1.Resources[r]))
             return false;
@@ -395,7 +395,7 @@ bool PipelineResourceSignaturesCompatible(const PipelineResourceSignatureDesc& D
     if (Desc0.NumImmutableSamplers != Desc1.NumImmutableSamplers)
         return false;
 
-    for (Uint32 s = 0; s < Desc0.NumImmutableSamplers; ++s)
+    for (UInt32 s = 0; s < Desc0.NumImmutableSamplers; ++s)
     {
         const ImmutableSamplerDesc& Samp0 = Desc0.ImmutableSamplers[s];
         const ImmutableSamplerDesc& Samp1 = Desc1.ImmutableSamplers[s];
@@ -414,15 +414,15 @@ size_t CalculatePipelineResourceSignatureDescHash(const PipelineResourceSignatur
 {
     size_t Hash = ComputeHash(Desc.NumResources, Desc.NumImmutableSamplers, Desc.BindingIndex);
 
-    for (Uint32 i = 0; i < Desc.NumResources; ++i)
+    for (UInt32 i = 0; i < Desc.NumResources; ++i)
     {
         const PipelineResourceDesc& Res = Desc.Resources[i];
-        HashCombine(Hash, Uint32{Res.ShaderStages}, Res.ArraySize, Uint32{Res.ResourceType}, Uint32{Res.VarType}, Uint32{Res.Flags});
+        HashCombine(Hash, UInt32{Res.ShaderStages}, Res.ArraySize, UInt32{Res.ResourceType}, UInt32{Res.VarType}, UInt32{Res.Flags});
     }
 
-    for (Uint32 i = 0; i < Desc.NumImmutableSamplers; ++i)
+    for (UInt32 i = 0; i < Desc.NumImmutableSamplers; ++i)
     {
-        HashCombine(Hash, Uint32{Desc.ImmutableSamplers[i].ShaderStages}, Desc.ImmutableSamplers[i].Desc);
+        HashCombine(Hash, UInt32{Desc.ImmutableSamplers[i].ShaderStages}, Desc.ImmutableSamplers[i].Desc);
     }
 
     return Hash;
@@ -433,7 +433,7 @@ void ReserveSpaceForPipelineResourceSignatureDesc(FixedLinearAllocator& Allocato
     Allocator.AddSpace<PipelineResourceDesc>(Desc.NumResources);
     Allocator.AddSpace<ImmutableSamplerDesc>(Desc.NumImmutableSamplers);
 
-    for (Uint32 i = 0; i < Desc.NumResources; ++i)
+    for (UInt32 i = 0; i < Desc.NumResources; ++i)
     {
         const PipelineResourceDesc& Res = Desc.Resources[i];
 
@@ -445,7 +445,7 @@ void ReserveSpaceForPipelineResourceSignatureDesc(FixedLinearAllocator& Allocato
         Allocator.AddSpaceForString(Res.Name);
     }
 
-    for (Uint32 i = 0; i < Desc.NumImmutableSamplers; ++i)
+    for (UInt32 i = 0; i < Desc.NumImmutableSamplers; ++i)
     {
         const char* SamOrTexName = Desc.ImmutableSamplers[i].SamplerOrTextureName;
         VERIFY(SamOrTexName != nullptr, "SamplerOrTextureName can't be null. This error should've been caught by ValidatePipelineResourceSignatureDesc().");
@@ -461,12 +461,12 @@ void ReserveSpaceForPipelineResourceSignatureDesc(FixedLinearAllocator& Allocato
 void CopyPipelineResourceSignatureDesc(FixedLinearAllocator&                                            Allocator,
                                        const PipelineResourceSignatureDesc&                             SrcDesc,
                                        PipelineResourceSignatureDesc&                                   DstDesc,
-                                       std::array<Uint16, SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES + 1>& ResourceOffsets)
+                                       std::array<UInt16, SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES + 1>& ResourceOffsets)
 {
     PipelineResourceDesc* pResources = Allocator.ConstructArray<PipelineResourceDesc>(SrcDesc.NumResources);
     ImmutableSamplerDesc* pSamplers  = Allocator.ConstructArray<ImmutableSamplerDesc>(SrcDesc.NumImmutableSamplers);
 
-    for (Uint32 i = 0; i < SrcDesc.NumResources; ++i)
+    for (UInt32 i = 0; i < SrcDesc.NumResources; ++i)
     {
         const PipelineResourceDesc& SrcRes = SrcDesc.Resources[i];
         PipelineResourceDesc&       DstRes = pResources[i];
@@ -493,7 +493,7 @@ void CopyPipelineResourceSignatureDesc(FixedLinearAllocator&                    
     for (size_t i = 1; i < ResourceOffsets.size(); ++i)
         ResourceOffsets[i] += ResourceOffsets[i - 1];
 
-    for (Uint32 i = 0; i < SrcDesc.NumImmutableSamplers; ++i)
+    for (UInt32 i = 0; i < SrcDesc.NumImmutableSamplers; ++i)
     {
         const ImmutableSamplerDesc& SrcSam = SrcDesc.ImmutableSamplers[i];
         ImmutableSamplerDesc&       DstSam = pSamplers[i];

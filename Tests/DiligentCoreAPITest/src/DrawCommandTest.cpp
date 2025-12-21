@@ -759,7 +759,7 @@ protected:
         pContext->InvalidateState();
     }
 
-    RefCntAutoPtr<IBuffer> CreateVertexBuffer(const void* VertexData, Uint32 DataSize)
+    RefCntAutoPtr<IBuffer> CreateVertexBuffer(const void* VertexData, UInt32 DataSize)
     {
         BufferDesc BuffDesc;
         BuffDesc.Name      = "Test vertex buffer";
@@ -778,12 +778,12 @@ protected:
         return pBuffer;
     }
 
-    RefCntAutoPtr<IBuffer> CreateIndexBuffer(const Uint32* Indices, Uint32 NumIndices)
+    RefCntAutoPtr<IBuffer> CreateIndexBuffer(const UInt32* Indices, UInt32 NumIndices)
     {
         BufferDesc BuffDesc;
         BuffDesc.Name      = "Test index buffer";
         BuffDesc.BindFlags = BIND_INDEX_BUFFER;
-        BuffDesc.Size      = sizeof(Uint32) * NumIndices;
+        BuffDesc.Size      = sizeof(UInt32) * NumIndices;
 
         BufferData InitialData;
         InitialData.pData    = Indices;
@@ -797,7 +797,7 @@ protected:
         return pBuffer;
     }
 
-    RefCntAutoPtr<IBuffer> CreateIndirectDrawArgsBuffer(const Uint32* Data, Uint32 DataSize)
+    RefCntAutoPtr<IBuffer> CreateIndirectDrawArgsBuffer(const UInt32* Data, UInt32 DataSize)
     {
         BufferDesc BuffDesc;
         BuffDesc.Name      = "Test index buffer";
@@ -931,7 +931,7 @@ TEST_F(DrawCommandTest, Draw_StartVertex)
 
     RefCntAutoPtr<IBuffer> pVB       = CreateVertexBuffer(Triangles, sizeof(Triangles));
     IBuffer*               pVBs[]    = {pVB};
-    const Uint64           Offsets[] = {0};
+    const UInt64           Offsets[] = {0};
     pContext->SetVertexBuffers(0, 1, pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
     DrawAttribs drawAttrs{6, DRAW_FLAG_VERIFY_ALL};
@@ -959,7 +959,7 @@ TEST_F(DrawCommandTest, Draw_VBOffset)
 
     RefCntAutoPtr<IBuffer> pVB       = CreateVertexBuffer(Triangles, sizeof(Triangles));
     IBuffer*               pVBs[]    = {pVB};
-    const Uint64           Offsets[] = {3 * sizeof(Vertex)};
+    const UInt64           Offsets[] = {3 * sizeof(Vertex)};
     pContext->SetVertexBuffers(0, 1, pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
     DrawAttribs drawAttrs{6, DRAW_FLAG_VERIFY_ALL};
@@ -987,7 +987,7 @@ TEST_F(DrawCommandTest, Draw_StartVertex_VBOffset)
 
     RefCntAutoPtr<IBuffer> pVB       = CreateVertexBuffer(Triangles, sizeof(Triangles));
     IBuffer*               pVBs[]    = {pVB};
-    const Uint64           Offsets[] = {3 * sizeof(Vertex)};
+    const UInt64           Offsets[] = {3 * sizeof(Vertex)};
     pContext->SetVertexBuffers(0, 1, pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
     DrawAttribs drawAttrs{6, DRAW_FLAG_VERIFY_ALL};
@@ -1016,7 +1016,7 @@ TEST_F(DrawCommandTest, Draw_StartVertex_VBOffset_2xStride)
 
     RefCntAutoPtr<IBuffer> pVB       = CreateVertexBuffer(Triangles, sizeof(Triangles));
     IBuffer*               pVBs[]    = {pVB};
-    const Uint64           Offsets[] = {3 * sizeof(Vertex)};
+    const UInt64           Offsets[] = {3 * sizeof(Vertex)};
     pContext->SetVertexBuffers(0, 1, pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
     DrawAttribs drawAttrs{6, DRAW_FLAG_VERIFY_ALL};
@@ -1081,14 +1081,14 @@ TEST_F(DrawCommandTest, DrawIndexed)
         Vert[0], {}, Vert[1], {}, {}, Vert[2],
         Vert[3], {}, {}, Vert[5], Vert[4]
     };
-    const Uint32 Indices[] = {2,4,7, 8,12,11};
+    const UInt32 Indices[] = {2,4,7, 8,12,11};
     // clang-format on
 
     RefCntAutoPtr<IBuffer> pVB = CreateVertexBuffer(Triangles, sizeof(Triangles));
     RefCntAutoPtr<IBuffer> pIB = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB};
-    const Uint64 Offsets[] = {0};
+    const UInt64 Offsets[] = {0};
     pContext->SetVertexBuffers(0, 1, pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
     pContext->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
@@ -1113,14 +1113,14 @@ TEST_F(DrawCommandTest, DrawIndexed_StripCut)
         Vert[2], {}, Vert[0], {}, Vert[1],
         Vert[3], {}, {}, Vert[4], {}, {}, Vert[5]
     };
-    const Uint32 Indices[] = {2,4,6, 0xFFFFFFFFu, 7,10,13};
+    const UInt32 Indices[] = {2,4,6, 0xFFFFFFFFu, 7,10,13};
     // clang-format on
 
     RefCntAutoPtr<IBuffer> pVB = CreateVertexBuffer(Triangles, sizeof(Triangles));
     RefCntAutoPtr<IBuffer> pIB = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB};
-    const Uint64 Offsets[] = {0};
+    const UInt64 Offsets[] = {0};
     pContext->SetVertexBuffers(0, 1, pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
     pContext->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
@@ -1145,16 +1145,16 @@ TEST_F(DrawCommandTest, DrawIndexed_IBOffset)
         Vert[0], {}, Vert[1], {}, {}, Vert[2],
         Vert[3], {}, {}, Vert[5], Vert[4]
     };
-    const Uint32 Indices[] = {0,0,0,0, 2,4,7, 8,12,11}; // Skip 4 indices using index buffer offset
+    const UInt32 Indices[] = {0,0,0,0, 2,4,7, 8,12,11}; // Skip 4 indices using index buffer offset
     // clang-format on
 
     RefCntAutoPtr<IBuffer> pVB = CreateVertexBuffer(Triangles, sizeof(Triangles));
     RefCntAutoPtr<IBuffer> pIB = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB};
-    const Uint64 Offsets[] = {0};
+    const UInt64 Offsets[] = {0};
     pContext->SetVertexBuffers(0, 1, pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
-    pContext->SetIndexBuffer(pIB, sizeof(Uint32) * 4, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    pContext->SetIndexBuffer(pIB, sizeof(UInt32) * 4, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
     DrawIndexedAttribs drawAttrs{6, VT_UINT32, DRAW_FLAG_VERIFY_ALL};
     pContext->DrawIndexed(drawAttrs);
@@ -1169,7 +1169,7 @@ TEST_F(DrawCommandTest, DrawIndexed_IBOffset_BaseVertex)
 
     SetRenderTargets(sm_pDrawPSO);
 
-    Uint32 bv = 2; // Base vertex
+    UInt32 bv = 2; // Base vertex
     // clang-format off
     const Vertex Triangles[] =
     {
@@ -1177,16 +1177,16 @@ TEST_F(DrawCommandTest, DrawIndexed_IBOffset_BaseVertex)
         Vert[0], {}, Vert[1], {}, {}, Vert[2],
         Vert[3], {}, {}, Vert[5], Vert[4]
     };
-    const Uint32 Indices[] = {0,0,0,0, 2-bv,4-bv,7-bv, 8-bv,12-bv,11-bv};
+    const UInt32 Indices[] = {0,0,0,0, 2-bv,4-bv,7-bv, 8-bv,12-bv,11-bv};
     // clang-format on
 
     RefCntAutoPtr<IBuffer> pVB = CreateVertexBuffer(Triangles, sizeof(Triangles));
     RefCntAutoPtr<IBuffer> pIB = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB};
-    const Uint64 Offsets[] = {0};
+    const UInt64 Offsets[] = {0};
     pContext->SetVertexBuffers(0, 1, pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
-    pContext->SetIndexBuffer(pIB, sizeof(Uint32) * 4, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    pContext->SetIndexBuffer(pIB, sizeof(UInt32) * 4, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
     DrawIndexedAttribs drawAttrs{6, VT_UINT32, DRAW_FLAG_VERIFY_ALL};
     drawAttrs.BaseVertex = bv;
@@ -1213,7 +1213,7 @@ TEST_F(DrawCommandTest, Draw_2VBs_Indexed)
         {}, Color[0], {}, Color[1], {}, Color[2],
         {}, {}, Color[0], Color[1], {}, {}, Color[2],
     };
-    const Uint32 Indices[] = {1,3,5, 8,9,12};
+    const UInt32 Indices[] = {1,3,5, 8,9,12};
     // clang-format on
 
     RefCntAutoPtr<IBuffer> pPosVB = CreateVertexBuffer(Positions, sizeof(Positions));
@@ -1297,7 +1297,7 @@ TEST_F(DrawCommandTest, DrawInstanced_VBOffset)
     RefCntAutoPtr<IBuffer> pInstVB = CreateVertexBuffer(InstancedData, sizeof(InstancedData));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {2 * sizeof(Vertex), 3 * sizeof(float4)};
+    const UInt64 Offsets[] = {2 * sizeof(Vertex), 3 * sizeof(float4)};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
     DrawAttribs drawAttrs{3, DRAW_FLAG_VERIFY_ALL};
@@ -1331,7 +1331,7 @@ TEST_F(DrawCommandTest, DrawInstanced_StartVertex)
     RefCntAutoPtr<IBuffer> pInstVB = CreateVertexBuffer(InstancedData, sizeof(InstancedData));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {0, 0};
+    const UInt64 Offsets[] = {0, 0};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
     DrawAttribs drawAttrs{3, DRAW_FLAG_VERIFY_ALL};
@@ -1369,7 +1369,7 @@ TEST_F(DrawCommandTest, DrawInstanced_FirstInstance)
     RefCntAutoPtr<IBuffer> pInstVB = CreateVertexBuffer(InstancedData, sizeof(InstancedData));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {0, 0};
+    const UInt64 Offsets[] = {0, 0};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
     DrawAttribs drawAttrs{3, DRAW_FLAG_VERIFY_ALL};
@@ -1406,7 +1406,7 @@ TEST_F(DrawCommandTest, DrawInstanced_FirstInstance_VBOffset)
     RefCntAutoPtr<IBuffer> pInstVB = CreateVertexBuffer(InstancedData, sizeof(InstancedData));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {3 * sizeof(Vertex), 2 * sizeof(float4)};
+    const UInt64 Offsets[] = {3 * sizeof(Vertex), 2 * sizeof(float4)};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
     DrawAttribs drawAttrs{3, DRAW_FLAG_VERIFY_ALL};
@@ -1445,7 +1445,7 @@ TEST_F(DrawCommandTest, DrawInstanced_FirstInstance_BaseVertex_FirstIndex_VBOffs
     RefCntAutoPtr<IBuffer> pInstVB = CreateVertexBuffer(InstancedData, sizeof(InstancedData));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
+    const UInt64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
     DrawAttribs drawAttrs{3, DRAW_FLAG_VERIFY_ALL};
@@ -1472,7 +1472,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced)
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {4, 2, 7};
+    const UInt32 Indices[] = {4, 2, 7};
     const float4 InstancedData[] =
     {
         float4{0.5f,  0.5f,  -0.5f, -0.5f},
@@ -1485,7 +1485,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced)
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {0, 0};
+    const UInt64 Offsets[] = {0, 0};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
     pContext->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
@@ -1510,7 +1510,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_IBOffset)
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {0,0,0,0,0, 4, 2, 7};
+    const UInt32 Indices[] = {0,0,0,0,0, 4, 2, 7};
     const float4 InstancedData[] =
     {
         float4{0.5f,  0.5f,  -0.5f, -0.5f},
@@ -1523,9 +1523,9 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_IBOffset)
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {0, 0};
+    const UInt64 Offsets[] = {0, 0};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
-    pContext->SetIndexBuffer(pIB, 5 * sizeof(Uint32), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    pContext->SetIndexBuffer(pIB, 5 * sizeof(UInt32), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
     DrawIndexedAttribs drawAttrs{3, VT_UINT32, DRAW_FLAG_VERIFY_ALL};
     drawAttrs.NumInstances = 2;
@@ -1549,7 +1549,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_VBOffset)
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {4, 2, 7};
+    const UInt32 Indices[] = {4, 2, 7};
     const float4 InstancedData[] =
     {
         {}, {}, {}, {}, // Skip 4 instances with VB offset
@@ -1563,7 +1563,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_VBOffset)
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {2 * sizeof(Vertex), 4 * sizeof(float4)};
+    const UInt64 Offsets[] = {2 * sizeof(Vertex), 4 * sizeof(float4)};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
     pContext->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
@@ -1588,7 +1588,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstIndex)
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {0,0,0,0,0, 4, 2, 7};
+    const UInt32 Indices[] = {0,0,0,0,0, 4, 2, 7};
     const float4 InstancedData[] =
     {
         float4{0.5f,  0.5f,  -0.5f, -0.5f},
@@ -1601,7 +1601,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstIndex)
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {0, 0};
+    const UInt64 Offsets[] = {0, 0};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
     pContext->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
@@ -1630,7 +1630,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstInstance)
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {4, 2, 7};
+    const UInt32 Indices[] = {4, 2, 7};
     const float4 InstancedData[] =
     {
         {}, {}, {}, {}, // Skip 4 instances with FirstInstance
@@ -1644,7 +1644,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstInstance)
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {0, 0};
+    const UInt64 Offsets[] = {0, 0};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
     pContext->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
@@ -1669,7 +1669,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstInstance_IBOffset)
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {0,0,0,0, 4, 2, 7};
+    const UInt32 Indices[] = {0,0,0,0, 4, 2, 7};
     const float4 InstancedData[] =
     {
         {}, {}, {}, {}, // Skip 4 instances with FirstInstance
@@ -1683,9 +1683,9 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstInstance_IBOffset)
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {0, 0};
+    const UInt64 Offsets[] = {0, 0};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
-    pContext->SetIndexBuffer(pIB, 4 * sizeof(Uint32), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    pContext->SetIndexBuffer(pIB, 4 * sizeof(UInt32), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
     DrawIndexedAttribs drawAttrs{3, VT_UINT32, DRAW_FLAG_VERIFY_ALL};
     drawAttrs.NumInstances          = 2;
@@ -1709,7 +1709,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstInstance_VBOffset)
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {4, 2, 7};
+    const UInt32 Indices[] = {4, 2, 7};
     const float4 InstancedData[] =
     {
         {}, {}, {}, {}, {}, // Skip 5 instances with VB offset
@@ -1724,7 +1724,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstInstance_VBOffset)
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
+    const UInt64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
     pContext->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
@@ -1750,7 +1750,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstInstance_IBOffset_FirstIndex)
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {0,0,0,0, 0,0,0, 4, 2, 7};
+    const UInt32 Indices[] = {0,0,0,0, 0,0,0, 4, 2, 7};
     const float4 InstancedData[] =
     {
         {}, {}, {}, {}, // Skip 4 instances with FirstInstance
@@ -1764,9 +1764,9 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstInstance_IBOffset_FirstIndex)
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {0, 0};
+    const UInt64 Offsets[] = {0, 0};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
-    pContext->SetIndexBuffer(pIB, 4 * sizeof(Uint32), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    pContext->SetIndexBuffer(pIB, 4 * sizeof(UInt32), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
     DrawIndexedAttribs drawAttrs{3, VT_UINT32, DRAW_FLAG_VERIFY_ALL};
     drawAttrs.NumInstances          = 2;
@@ -1795,7 +1795,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_BaseVertex)
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {4, 2, 7};
+    const UInt32 Indices[] = {4, 2, 7};
     const float4 InstancedData[] =
     {
         float4{0.5f,  0.5f,  -0.5f, -0.5f},
@@ -1808,7 +1808,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_BaseVertex)
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {0, 0};
+    const UInt64 Offsets[] = {0, 0};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
     pContext->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
@@ -1835,7 +1835,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstInstance_BaseVertex_VBOffset)
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {4, 2, 7};
+    const UInt32 Indices[] = {4, 2, 7};
     const float4 InstancedData[] =
     {
         {}, {}, {}, {}, {}, // Skip 5 instances with VB offset
@@ -1850,7 +1850,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstInstance_BaseVertex_VBOffset)
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
+    const UInt64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
     pContext->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
@@ -1879,7 +1879,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstInstance_BaseVertex_FirstIndex
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {0,0,0,0, 0,0,0, 4, 2, 7};
+    const UInt32 Indices[] = {0,0,0,0, 0,0,0, 4, 2, 7};
     const float4 InstancedData[] =
     {
         {}, {}, {}, {}, {}, // Skip 5 instances with VB offset
@@ -1894,9 +1894,9 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstInstance_BaseVertex_FirstIndex
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
+    const UInt64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
-    pContext->SetIndexBuffer(pIB, 4 * sizeof(Uint32), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    pContext->SetIndexBuffer(pIB, 4 * sizeof(UInt32), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
     DrawIndexedAttribs drawAttrs{3, VT_UINT32, DRAW_FLAG_VERIFY_ALL};
     drawAttrs.NumInstances          = 2;
@@ -1913,10 +1913,10 @@ TEST_F(DrawCommandTest, DrawIndexedInstanced_FirstInstance_BaseVertex_FirstIndex
 
 struct IndirectDrawArgs
 {
-    Uint32 NumVertices           = 0;
-    Uint32 NumInstances          = 0;
-    Uint32 StartVertexLocation   = 0;
-    Uint32 FirstInstanceLocation = 0;
+    UInt32 NumVertices           = 0;
+    UInt32 NumInstances          = 0;
+    UInt32 StartVertexLocation   = 0;
+    UInt32 FirstInstanceLocation = 0;
 };
 
 void DrawCommandTest::TestDrawInstancedIndirect(bool UseCS)
@@ -1928,7 +1928,7 @@ void DrawCommandTest::TestDrawInstancedIndirect(bool UseCS)
 
     IDeviceContext* pContext = pEnv->GetDeviceContext();
 
-    constexpr Uint32 IndirectDrawData[] =
+    constexpr UInt32 IndirectDrawData[] =
         {
             0, 0, 0, 0, // Offset
 
@@ -1948,7 +1948,7 @@ void DrawCommandTest::TestDrawInstancedIndirect(bool UseCS)
         if (pDevice->GetDeviceInfo().Type == RENDER_DEVICE_TYPE_D3D11)
         {
             ArgsBuffDesc.Mode              = BUFFER_MODE_FORMATTED;
-            ArgsBuffDesc.ElementByteStride = sizeof(Uint32);
+            ArgsBuffDesc.ElementByteStride = sizeof(UInt32);
         }
         else
         {
@@ -1972,7 +1972,7 @@ void DrawCommandTest::TestDrawInstancedIndirect(bool UseCS)
         }
 
         // Write start vertex location and first instance location
-        pContext->UpdateBuffer(pIndirectArgsBuff, sizeof(Uint32) * 6, sizeof(Uint32) * 2, IndirectDrawData + 6, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+        pContext->UpdateBuffer(pIndirectArgsBuff, sizeof(UInt32) * 6, sizeof(UInt32) * 2, IndirectDrawData + 6, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
         ShaderCreateInfo ShaderCI;
         ShaderCI.SourceLanguage = SHADER_SOURCE_LANGUAGE_HLSL;
@@ -2033,12 +2033,12 @@ void DrawCommandTest::TestDrawInstancedIndirect(bool UseCS)
     RefCntAutoPtr<IBuffer> pInstVB = CreateVertexBuffer(InstancedData, sizeof(InstancedData));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
+    const UInt64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
     DrawIndirectAttribs drawAttrs{pIndirectArgsBuff, DRAW_FLAG_VERIFY_ALL};
     drawAttrs.AttribsBufferStateTransitionMode = RESOURCE_STATE_TRANSITION_MODE_TRANSITION;
-    drawAttrs.DrawArgsOffset                   = 4 * sizeof(Uint32);
+    drawAttrs.DrawArgsOffset                   = 4 * sizeof(UInt32);
     pContext->DrawIndirect(drawAttrs);
 
     Present();
@@ -2075,7 +2075,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstancedIndirect_FirstInstance_BaseVertex_Fi
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {0,0,0, 0,0,0,0, 4, 2, 7};
+    const UInt32 Indices[] = {0,0,0, 0,0,0,0, 4, 2, 7};
     const float4 InstancedData[] =
     {
         {}, {}, {}, {},     // Skip 4 instances with VB offset
@@ -2090,11 +2090,11 @@ TEST_F(DrawCommandTest, DrawIndexedInstancedIndirect_FirstInstance_BaseVertex_Fi
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {4 * sizeof(Vertex), 4 * sizeof(float4)};
+    const UInt64 Offsets[] = {4 * sizeof(Vertex), 4 * sizeof(float4)};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
-    pContext->SetIndexBuffer(pIB, IsGL ? 0 : 3 * sizeof(Uint32), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    pContext->SetIndexBuffer(pIB, IsGL ? 0 : 3 * sizeof(UInt32), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
-    const Uint32 IndirectDrawData[] =
+    const UInt32 IndirectDrawData[] =
         {
             0, 0, 0, 0, 0, // Offset
 
@@ -2108,7 +2108,7 @@ TEST_F(DrawCommandTest, DrawIndexedInstancedIndirect_FirstInstance_BaseVertex_Fi
 
     DrawIndexedIndirectAttribs drawAttrs{VT_UINT32, pIndirectArgsBuff, DRAW_FLAG_VERIFY_ALL};
     drawAttrs.AttribsBufferStateTransitionMode = RESOURCE_STATE_TRANSITION_MODE_TRANSITION;
-    drawAttrs.DrawArgsOffset                   = 5 * sizeof(Uint32);
+    drawAttrs.DrawArgsOffset                   = 5 * sizeof(UInt32);
     pContext->DrawIndexedIndirect(drawAttrs);
 
     Present();
@@ -2145,10 +2145,10 @@ TEST_F(DrawCommandTest, MultiDrawIndirect)
     RefCntAutoPtr<IBuffer> pInstVB = CreateVertexBuffer(InstancedData, sizeof(InstancedData));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
+    const UInt64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
-    const Uint32 IndirectDrawData[] =
+    const UInt32 IndirectDrawData[] =
         {
             0, 0, 0, 0, 0, // Offset
 
@@ -2173,8 +2173,8 @@ TEST_F(DrawCommandTest, MultiDrawIndirect)
     drawAttrs.DrawCount                        = 2;
     drawAttrs.Flags                            = DRAW_FLAG_VERIFY_ALL;
     drawAttrs.AttribsBufferStateTransitionMode = RESOURCE_STATE_TRANSITION_MODE_TRANSITION;
-    drawAttrs.DrawArgsOffset                   = 5 * sizeof(Uint32);
-    drawAttrs.DrawArgsStride                   = 6 * sizeof(Uint32);
+    drawAttrs.DrawArgsOffset                   = 5 * sizeof(UInt32);
+    drawAttrs.DrawArgsStride                   = 6 * sizeof(UInt32);
     pContext->DrawIndirect(drawAttrs);
 
     Present();
@@ -2198,7 +2198,7 @@ TEST_F(DrawCommandTest, MultiDrawIndexedIndirect)
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {0,0,0,0, 4, 2, 7};
+    const UInt32 Indices[] = {0,0,0,0, 4, 2, 7};
     const float4 InstancedData[] =
     {
         {}, {}, {}, {},     // Skip 4 instances with VB offset
@@ -2213,11 +2213,11 @@ TEST_F(DrawCommandTest, MultiDrawIndexedIndirect)
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {4 * sizeof(Vertex), 4 * sizeof(float4)};
+    const UInt64 Offsets[] = {4 * sizeof(Vertex), 4 * sizeof(float4)};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
     pContext->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
-    const Uint32 IndirectDrawData[] =
+    const UInt32 IndirectDrawData[] =
         {
             0, 0, 0, 0, 0, // Offset
 
@@ -2245,8 +2245,8 @@ TEST_F(DrawCommandTest, MultiDrawIndexedIndirect)
     drawAttrs.DrawCount                        = 2;
     drawAttrs.Flags                            = DRAW_FLAG_VERIFY_ALL;
     drawAttrs.AttribsBufferStateTransitionMode = RESOURCE_STATE_TRANSITION_MODE_TRANSITION;
-    drawAttrs.DrawArgsOffset                   = 5 * sizeof(Uint32);
-    drawAttrs.DrawArgsStride                   = 7 * sizeof(Uint32);
+    drawAttrs.DrawArgsOffset                   = 5 * sizeof(UInt32);
+    drawAttrs.DrawArgsStride                   = 7 * sizeof(UInt32);
     pContext->DrawIndexedIndirect(drawAttrs);
 
     Present();
@@ -2284,10 +2284,10 @@ TEST_F(DrawCommandTest, MultiDrawIndirectCount)
     RefCntAutoPtr<IBuffer> pInstVB = CreateVertexBuffer(InstancedData, sizeof(InstancedData));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
+    const UInt64 Offsets[] = {4 * sizeof(Vertex), 5 * sizeof(float4)};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
-    const Uint32 IndirectDrawData[] =
+    const UInt32 IndirectDrawData[] =
         {
             0, 0, 0, 0, 0, // Offset
 
@@ -2307,7 +2307,7 @@ TEST_F(DrawCommandTest, MultiDrawIndirectCount)
         };
     RefCntAutoPtr<IBuffer> pIndirectArgsBuff = CreateIndirectDrawArgsBuffer(IndirectDrawData, sizeof(IndirectDrawData));
 
-    const Uint32 DrawCount[] =
+    const UInt32 DrawCount[] =
         {
             0, 0, // Offset
             2     //
@@ -2319,11 +2319,11 @@ TEST_F(DrawCommandTest, MultiDrawIndirectCount)
     drawAttrs.DrawCount                        = 2;
     drawAttrs.Flags                            = DRAW_FLAG_VERIFY_ALL;
     drawAttrs.AttribsBufferStateTransitionMode = RESOURCE_STATE_TRANSITION_MODE_TRANSITION;
-    drawAttrs.DrawArgsOffset                   = 5 * sizeof(Uint32);
-    drawAttrs.DrawArgsStride                   = 6 * sizeof(Uint32);
+    drawAttrs.DrawArgsOffset                   = 5 * sizeof(UInt32);
+    drawAttrs.DrawArgsStride                   = 6 * sizeof(UInt32);
     drawAttrs.pCounterBuffer                   = pCountBuff;
     drawAttrs.CounterBufferStateTransitionMode = RESOURCE_STATE_TRANSITION_MODE_TRANSITION;
-    drawAttrs.CounterOffset                    = 2 * sizeof(Uint32);
+    drawAttrs.CounterOffset                    = 2 * sizeof(UInt32);
     pContext->DrawIndirect(drawAttrs);
 
     Present();
@@ -2349,7 +2349,7 @@ TEST_F(DrawCommandTest, MultiDrawIndexedIndirectCount)
         {}, {},
         VertInst[1], {}, VertInst[0], {}, {}, VertInst[2]
     };
-    const Uint32 Indices[] = {0,0,0,0, 4, 2, 7};
+    const UInt32 Indices[] = {0,0,0,0, 4, 2, 7};
     const float4 InstancedData[] =
     {
         {}, {}, {}, {},     // Skip 4 instances with VB offset
@@ -2364,11 +2364,11 @@ TEST_F(DrawCommandTest, MultiDrawIndexedIndirectCount)
     RefCntAutoPtr<IBuffer> pIB     = CreateIndexBuffer(Indices, _countof(Indices));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {4 * sizeof(Vertex), 4 * sizeof(float4)};
+    const UInt64 Offsets[] = {4 * sizeof(Vertex), 4 * sizeof(float4)};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
     pContext->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
-    const Uint32 IndirectDrawData[] =
+    const UInt32 IndirectDrawData[] =
         {
             0, 0, 0, 0, 0, // Offset
 
@@ -2390,7 +2390,7 @@ TEST_F(DrawCommandTest, MultiDrawIndexedIndirectCount)
         };
     RefCntAutoPtr<IBuffer> pIndirectArgsBuff = CreateIndirectDrawArgsBuffer(IndirectDrawData, sizeof(IndirectDrawData));
 
-    const Uint32 DrawCount[] =
+    const UInt32 DrawCount[] =
         {
             0, 0, // Offset
             2     //
@@ -2403,11 +2403,11 @@ TEST_F(DrawCommandTest, MultiDrawIndexedIndirectCount)
     drawAttrs.DrawCount                        = 2;
     drawAttrs.Flags                            = DRAW_FLAG_VERIFY_ALL;
     drawAttrs.AttribsBufferStateTransitionMode = RESOURCE_STATE_TRANSITION_MODE_TRANSITION;
-    drawAttrs.DrawArgsOffset                   = 5 * sizeof(Uint32);
-    drawAttrs.DrawArgsStride                   = 7 * sizeof(Uint32);
+    drawAttrs.DrawArgsOffset                   = 5 * sizeof(UInt32);
+    drawAttrs.DrawArgsStride                   = 7 * sizeof(UInt32);
     drawAttrs.pCounterBuffer                   = pCountBuff;
     drawAttrs.CounterBufferStateTransitionMode = RESOURCE_STATE_TRANSITION_MODE_TRANSITION;
-    drawAttrs.CounterOffset                    = 2 * sizeof(Uint32);
+    drawAttrs.CounterOffset                    = 2 * sizeof(UInt32);
     pContext->DrawIndexedIndirect(drawAttrs);
 
     Present();
@@ -2497,7 +2497,7 @@ TEST_F(DrawCommandTest, Draw_InstanceDataStepRate)
     RefCntAutoPtr<IBuffer> pInstVB = CreateVertexBuffer(InstancedData, sizeof(InstancedData));
 
     IBuffer*     pVBs[]    = {pVB, pInstVB};
-    const Uint64 Offsets[] = {0, 0};
+    const UInt64 Offsets[] = {0, 0};
     pContext->SetVertexBuffers(0, _countof(pVBs), pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
     DrawAttribs drawAttrs{3, DRAW_FLAG_VERIFY_ALL};
@@ -2522,7 +2522,7 @@ TEST_F(DrawCommandTest, DeferredContexts)
     const float ClearColor[] = {sm_Rnd(), sm_Rnd(), sm_Rnd(), sm_Rnd()};
     RenderDrawCommandReference(pSwapChain, ClearColor);
 
-    const Uint32           Indices[] = {0, 1, 2, 3, 4, 5};
+    const UInt32           Indices[] = {0, 1, 2, 3, 4, 5};
     RefCntAutoPtr<IBuffer> pVB       = CreateVertexBuffer(Vert, sizeof(Vert));
     RefCntAutoPtr<IBuffer> pIB       = CreateIndexBuffer(Indices, _countof(Indices));
 
@@ -2537,18 +2537,18 @@ TEST_F(DrawCommandTest, DeferredContexts)
     pImmediateCtx->SetRenderTargets(1, pRTVs, nullptr, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
     pImmediateCtx->ClearRenderTarget(pRTVs[0], ClearColor, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
-    constexpr Uint32                                    NumThreads = 2;
+    constexpr UInt32                                    NumThreads = 2;
     std::array<std::thread, NumThreads>                 WorkerThreads;
     std::array<RefCntAutoPtr<ICommandList>, NumThreads> CmdLists;
     std::array<ICommandList*, NumThreads>               CmdListPtrs;
 
-    std::atomic<Uint32> NumCmdListsReady{0};
+    std::atomic<UInt32> NumCmdListsReady{0};
     Threading::Signal   FinishFrameSignal;
     Threading::Signal   ExecuteCommandListsSignal;
-    for (Uint32 i = 0; i < NumThreads; ++i)
+    for (UInt32 i = 0; i < NumThreads; ++i)
     {
         WorkerThreads[i] = std::thread(
-            [&](Uint32 thread_id) //
+            [&](UInt32 thread_id) //
             {
                 IDeviceContext* pCtx = pEnv->GetDeferredContext(thread_id);
 
@@ -2556,7 +2556,7 @@ TEST_F(DrawCommandTest, DeferredContexts)
                 pCtx->SetRenderTargets(1, pRTVs, nullptr, RESOURCE_STATE_TRANSITION_MODE_VERIFY);
 
                 IBuffer*     pVBs[]    = {pVB};
-                const Uint64 Offsets[] = {0};
+                const UInt64 Offsets[] = {0};
                 pCtx->SetVertexBuffers(0, 1, pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_VERIFY, SET_VERTEX_BUFFERS_FLAG_RESET);
                 pCtx->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_VERIFY);
 
@@ -2570,7 +2570,7 @@ TEST_F(DrawCommandTest, DeferredContexts)
                 CmdListPtrs[thread_id] = CmdLists[thread_id];
 
                 // Atomically increment the number of completed threads
-                const Uint32 NumReadyLists = NumCmdListsReady.fetch_add(1) + 1;
+                const UInt32 NumReadyLists = NumCmdListsReady.fetch_add(1) + 1;
                 if (NumReadyLists == NumThreads)
                     ExecuteCommandListsSignal.Trigger();
 
@@ -2664,7 +2664,7 @@ void DrawCommandTest::TestDynamicBufferUpdates(IShader*                      pVS
 
     {
         MapHelper<float4> PosData{pContext, pDynamicCB0, MAP_WRITE, MAP_FLAG_DISCARD};
-        for (Uint32 i = 0; i < 3; ++i)
+        for (UInt32 i = 0; i < 3; ++i)
         {
             PosData[i] = Pos[i];
         }
@@ -2672,7 +2672,7 @@ void DrawCommandTest::TestDynamicBufferUpdates(IShader*                      pVS
 
     {
         MapHelper<float4> ColorData{pContext, pDynamicCB1, MAP_WRITE, MAP_FLAG_DISCARD};
-        for (Uint32 i = 0; i < 3; ++i)
+        for (UInt32 i = 0; i < 3; ++i)
             ColorData[i] = Color[i];
     }
 
@@ -2681,7 +2681,7 @@ void DrawCommandTest::TestDynamicBufferUpdates(IShader*                      pVS
 
     {
         MapHelper<float4> PosData{pContext, pDynamicCB0, MAP_WRITE, MAP_FLAG_DISCARD};
-        for (Uint32 i = 0; i < 3; ++i)
+        for (UInt32 i = 0; i < 3; ++i)
             PosData[i] = Pos[3 + i];
     }
 
@@ -2750,11 +2750,11 @@ TEST_F(DrawCommandTest, DynamicUniformBufferUpdates)
         }
     }
 
-    for (Uint32 cb0_type = 0; cb0_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++cb0_type)
+    for (UInt32 cb0_type = 0; cb0_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++cb0_type)
     {
-        for (Uint32 cb1_type = 0; cb1_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++cb1_type)
+        for (UInt32 cb1_type = 0; cb1_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++cb1_type)
         {
-            for (Uint32 cb2_type = 0; cb2_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++cb2_type)
+            for (UInt32 cb2_type = 0; cb2_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++cb2_type)
             {
                 const SHADER_RESOURCE_VARIABLE_TYPE CB0Type = static_cast<SHADER_RESOURCE_VARIABLE_TYPE>(cb0_type);
                 const SHADER_RESOURCE_VARIABLE_TYPE CB1Type = static_cast<SHADER_RESOURCE_VARIABLE_TYPE>(cb1_type);
@@ -2792,12 +2792,12 @@ TEST_F(DrawCommandTest, DynamicVertexBufferUpdate)
     }
 
     IBuffer*     pVBs[]    = {pVB};
-    const Uint64 Offsets[] = {0};
+    const UInt64 Offsets[] = {0};
     pContext->SetVertexBuffers(0, 1, pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
     {
         MapHelper<Vertex> VertData{pContext, pVB, MAP_WRITE, MAP_FLAG_DISCARD};
-        for (Uint32 i = 0; i < 3; ++i)
+        for (UInt32 i = 0; i < 3; ++i)
             VertData[i] = Vert[i];
     }
 
@@ -2806,7 +2806,7 @@ TEST_F(DrawCommandTest, DynamicVertexBufferUpdate)
 
     {
         MapHelper<Vertex> VertData{pContext, pVB, MAP_WRITE, MAP_FLAG_DISCARD};
-        for (Uint32 i = 0; i < 3; ++i)
+        for (UInt32 i = 0; i < 3; ++i)
             VertData[i] = Vert[3 + i];
     }
     pContext->Draw(drawAttrs);
@@ -2839,7 +2839,7 @@ TEST_F(DrawCommandTest, DynamicIndexBufferUpdate)
         BuffDesc.BindFlags      = BIND_INDEX_BUFFER;
         BuffDesc.Usage          = USAGE_DYNAMIC;
         BuffDesc.CPUAccessFlags = CPU_ACCESS_WRITE;
-        BuffDesc.Size           = sizeof(Uint32) * 3;
+        BuffDesc.Size           = sizeof(UInt32) * 3;
 
         pDevice->CreateBuffer(BuffDesc, nullptr, &pIB);
         ASSERT_NE(pIB, nullptr);
@@ -2847,13 +2847,13 @@ TEST_F(DrawCommandTest, DynamicIndexBufferUpdate)
 
 
     IBuffer*     pVBs[]    = {pVB};
-    const Uint64 Offsets[] = {0};
+    const UInt64 Offsets[] = {0};
     pContext->SetVertexBuffers(0, 1, pVBs, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
     pContext->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
     {
-        MapHelper<Uint32> IndData{pContext, pIB, MAP_WRITE, MAP_FLAG_DISCARD};
-        for (Uint32 i = 0; i < 3; ++i)
+        MapHelper<UInt32> IndData{pContext, pIB, MAP_WRITE, MAP_FLAG_DISCARD};
+        for (UInt32 i = 0; i < 3; ++i)
             IndData[i] = i;
     }
 
@@ -2861,8 +2861,8 @@ TEST_F(DrawCommandTest, DynamicIndexBufferUpdate)
     pContext->DrawIndexed(drawAttrs);
 
     {
-        MapHelper<Uint32> IndData{pContext, pIB, MAP_WRITE, MAP_FLAG_DISCARD};
-        for (Uint32 i = 0; i < 3; ++i)
+        MapHelper<UInt32> IndData{pContext, pIB, MAP_WRITE, MAP_FLAG_DISCARD};
+        for (UInt32 i = 0; i < 3; ++i)
             IndData[i] = 3 + i;
     }
 
@@ -2913,7 +2913,7 @@ void DrawCommandTest::DrawWithStructuredOrFormattedBuffers(bool                 
         Variables.emplace_back(SHADER_TYPE_VERTEX, "g_Positions", PosBuffType);
         Variables.emplace_back(SHADER_TYPE_VERTEX, "g_Colors", ColBuffType);
     };
-    PSODesc.ResourceLayout.NumVariables = static_cast<Uint32>(Variables.size());
+    PSODesc.ResourceLayout.NumVariables = static_cast<UInt32>(Variables.size());
     PSODesc.ResourceLayout.Variables    = Variables.data();
 
     PSOCreateInfo.pVS = pVS;
@@ -2975,7 +2975,7 @@ void DrawCommandTest::DrawWithStructuredOrFormattedBuffers(bool                 
         }
         else
         {
-            pContext->UpdateBuffer(pBuffer, static_cast<Uint32>(sizeof(float4) * OffsetInFloat4), static_cast<Uint32>(DataSize), pData, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+            pContext->UpdateBuffer(pBuffer, static_cast<UInt32>(sizeof(float4) * OffsetInFloat4), static_cast<UInt32>(DataSize), pData, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
         }
     };
 
@@ -3078,9 +3078,9 @@ void DrawCommandTest::TestStructuredOrFormattedBuffers(BUFFER_MODE BuffMode,
         ASSERT_NE(pPS, nullptr);
     }
 
-    const Uint32 StructuredBufferOffsetAlignment = pDevice->GetAdapterInfo().Buffer.StructuredBufferOffsetAlignment;
-    const Uint32 ColorDataStartOffset            = AlignUp(Uint32{sizeof(float4)} * 4, StructuredBufferOffsetAlignment);
-    for (Uint32 UseDynamicBuffers = 0; UseDynamicBuffers < 2; ++UseDynamicBuffers)
+    const UInt32 StructuredBufferOffsetAlignment = pDevice->GetAdapterInfo().Buffer.StructuredBufferOffsetAlignment;
+    const UInt32 ColorDataStartOffset            = AlignUp(UInt32{sizeof(float4)} * 4, StructuredBufferOffsetAlignment);
+    for (UInt32 UseDynamicBuffers = 0; UseDynamicBuffers < 2; ++UseDynamicBuffers)
     {
         if (BuffMode == BUFFER_MODE_STRUCTURED && UseArray && UseDynamicBuffers && DeviceInfo.Type == RENDER_DEVICE_TYPE_D3D12)
         {
@@ -3128,9 +3128,9 @@ void DrawCommandTest::TestStructuredOrFormattedBuffers(BUFFER_MODE BuffMode,
             pColorsBuffer->CreateView(BuffSRVDesc, &pColorBufferView);
         }
 
-        for (Uint32 pos_buff_type = 0; pos_buff_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++pos_buff_type)
+        for (UInt32 pos_buff_type = 0; pos_buff_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++pos_buff_type)
         {
-            for (Uint32 col_buff_type = 0; col_buff_type < (UseArray ? 1u : SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES); ++col_buff_type)
+            for (UInt32 col_buff_type = 0; col_buff_type < (UseArray ? 1u : SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES); ++col_buff_type)
             {
                 const SHADER_RESOURCE_VARIABLE_TYPE PosBuffType = static_cast<SHADER_RESOURCE_VARIABLE_TYPE>(pos_buff_type);
                 const SHADER_RESOURCE_VARIABLE_TYPE ColBuffType = static_cast<SHADER_RESOURCE_VARIABLE_TYPE>(col_buff_type);
@@ -3246,20 +3246,20 @@ void DrawCommandTest::DrawWithUniOrStructBufferOffsets(IShader*                 
 
     const BufferProperties& BufferProps     = pDevice->GetAdapterInfo().Buffer;
     const bool              IsStructured    = BuffMode == BUFFER_MODE_STRUCTURED;
-    const Uint32            OffsetAlignment = IsStructured ? BufferProps.StructuredBufferOffsetAlignment : BufferProps.ConstantBufferOffsetAlignment;
+    const UInt32            OffsetAlignment = IsStructured ? BufferProps.StructuredBufferOffsetAlignment : BufferProps.ConstantBufferOffsetAlignment;
 
-    Uint32 BaseOffset = sizeof(float4) * 4;
+    UInt32 BaseOffset = sizeof(float4) * 4;
     while (BaseOffset < OffsetAlignment)
         BaseOffset *= 2;
 
-    const Uint32 PosOffsets[] = {BaseOffset * 1, BaseOffset * 3};
-    const Uint32 ColOffsets[] = {BaseOffset * 2, BaseOffset * 4};
+    const UInt32 PosOffsets[] = {BaseOffset * 1, BaseOffset * 3};
+    const UInt32 ColOffsets[] = {BaseOffset * 2, BaseOffset * 4};
 
     std::vector<float4> PosData(PosOffsets[1] / sizeof(float4) + 3);
     std::vector<float4> ColData(ColOffsets[1] / sizeof(float4) + 3);
-    for (Uint32 tri = 0; tri < 2; ++tri)
+    for (UInt32 tri = 0; tri < 2; ++tri)
     {
-        for (Uint32 i = 0; i < 3; ++i)
+        for (UInt32 i = 0; i < 3; ++i)
         {
             PosData[PosOffsets[tri] / sizeof(float4) + i] = Pos[tri * 3 + i];
             ColData[ColOffsets[tri] / sizeof(float4) + i] = Color[i];
@@ -3273,7 +3273,7 @@ void DrawCommandTest::DrawWithUniOrStructBufferOffsets(IShader*                 
     PosBuffDesc.Mode              = BuffMode;
     PosBuffDesc.ElementByteStride = BuffMode == BUFFER_MODE_STRUCTURED ? sizeof(float4) : 0;
     PosBuffDesc.CPUAccessFlags    = BufferUsage == USAGE_DYNAMIC ? CPU_ACCESS_WRITE : CPU_ACCESS_NONE;
-    PosBuffDesc.Size              = static_cast<Uint32>(PosData.size() * sizeof(float4));
+    PosBuffDesc.Size              = static_cast<UInt32>(PosData.size() * sizeof(float4));
 
     RefCntAutoPtr<IBuffer> pPosDataBuffer;
     pDevice->CreateBuffer(PosBuffDesc, nullptr, &pPosDataBuffer);
@@ -3281,7 +3281,7 @@ void DrawCommandTest::DrawWithUniOrStructBufferOffsets(IShader*                 
 
     BufferDesc ColBuffDesc = PosBuffDesc;
     ColBuffDesc.Name       = "Buffer offset test color data";
-    ColBuffDesc.Size       = static_cast<Uint32>(ColData.size() * sizeof(float4));
+    ColBuffDesc.Size       = static_cast<UInt32>(ColData.size() * sizeof(float4));
     RefCntAutoPtr<IBuffer> pColDataBuffer;
     pDevice->CreateBuffer(ColBuffDesc, nullptr, &pColDataBuffer);
     ASSERT_TRUE(pColDataBuffer);
@@ -3308,7 +3308,7 @@ void DrawCommandTest::DrawWithUniOrStructBufferOffsets(IShader*                 
         Pos,
         Col
     };
-    auto SetBuffer = [CBType, BuffMode](IPipelineState* pPSO, IShaderResourceBinding* pSRB, const char* Name, IBuffer* pBuffer, Uint32 Offset) //
+    auto SetBuffer = [CBType, BuffMode](IPipelineState* pPSO, IShaderResourceBinding* pSRB, const char* Name, IBuffer* pBuffer, UInt32 Offset) //
     {
         RefCntAutoPtr<IBufferView> pBuffView;
         if (BuffMode == BUFFER_MODE_STRUCTURED)
@@ -3415,14 +3415,14 @@ void DrawCommandTest::TestUniOrStructBufferOffsets(BUFFER_MODE BuffMode)
         ASSERT_NE(pPS, nullptr);
     }
 
-    for (Uint32 cb_type = 0; cb_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++cb_type)
+    for (UInt32 cb_type = 0; cb_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++cb_type)
     {
         const SHADER_RESOURCE_VARIABLE_TYPE CBType = static_cast<SHADER_RESOURCE_VARIABLE_TYPE>(cb_type);
 
-        for (Uint32 is_dynamic = 0; is_dynamic < 2; ++is_dynamic)
+        for (UInt32 is_dynamic = 0; is_dynamic < 2; ++is_dynamic)
         {
             const USAGE Usage = is_dynamic != 0 ? USAGE_DYNAMIC : USAGE_DEFAULT;
-            for (Uint32 no_dyn_buffers = 0; no_dyn_buffers < 2; ++no_dyn_buffers)
+            for (UInt32 no_dyn_buffers = 0; no_dyn_buffers < 2; ++no_dyn_buffers)
             {
                 const SHADER_VARIABLE_FLAGS ShaderVarFlag = no_dyn_buffers != 0 ? SHADER_VARIABLE_FLAG_NO_DYNAMIC_BUFFERS : SHADER_VARIABLE_FLAG_NONE;
                 if ((ShaderVarFlag & SHADER_VARIABLE_FLAG_NO_DYNAMIC_BUFFERS) && (Usage == USAGE_DYNAMIC))
@@ -3624,7 +3624,7 @@ TEST_F(DrawCommandTest, MultiDrawIndexed)
         Vert[0], {}, Vert[1], {}, {}, Vert[2],
         Vert[3], {}, {}, Vert[5], Vert[4]
     };
-    const Uint32 Indices[] = {2,4,7, 8,12,11};
+    const UInt32 Indices[] = {2,4,7, 8,12,11};
     // clang-format on
 
     RefCntAutoPtr<IBuffer> pVB = CreateVertexBuffer(Triangles, sizeof(Triangles));
@@ -3741,7 +3741,7 @@ TEST_F(DrawCommandTest, NativeMultiDrawIndexed)
 
     SetRenderTargets(pPSO);
 
-    const Uint32 Indices[] = {0, 1, 2};
+    const UInt32 Indices[] = {0, 1, 2};
 
     RefCntAutoPtr<IBuffer> pIB = CreateIndexBuffer(Indices, _countof(Indices));
     pContext->SetIndexBuffer(pIB, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);

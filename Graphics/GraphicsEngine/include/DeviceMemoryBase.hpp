@@ -69,7 +69,7 @@ public:
 
         ValidateDeviceMemoryDesc(this->m_Desc, this->GetDevice());
 
-        Uint64 DeviceQueuesMask = this->GetDevice()->GetCommandQueueMask();
+        UInt64 DeviceQueuesMask = this->GetDevice()->GetCommandQueueMask();
         DEV_CHECK_ERR((this->m_Desc.ImmediateContextMask & DeviceQueuesMask) != 0,
                       "No bits in the immediate context mask (0x", std::hex, this->m_Desc.ImmediateContextMask,
                       ") correspond to one of ", this->GetDevice()->GetCommandQueueCount(), " available software command queues");
@@ -78,7 +78,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DeviceMemory, TDeviceObjectBase)
 
-    void DvpVerifyResize(Uint64 NewSize) const
+    void DvpVerifyResize(UInt64 NewSize) const
     {
         DEV_CHECK_ERR((NewSize % this->m_Desc.PageSize) == 0,
                       "NewSize (", NewSize, ") must be  a multiple of the page size (", this->m_Desc.PageSize, ")");

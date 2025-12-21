@@ -331,7 +331,7 @@ bool TextureVkImpl::InitializeContentOnHost(const TextureData&          InitData
     const VulkanUtilities::LogicalDevice& LogicalDevice = GetDevice()->GetLogicalDevice();
     VERIFY_EXPR(LogicalDevice.GetEnabledExtFeatures().HostImageCopy.hostImageCopy);
 
-    Uint32 ExpectedNumSubresources = ImageCI.mipLevels * ImageCI.arrayLayers;
+    UInt32 ExpectedNumSubresources = ImageCI.mipLevels * ImageCI.arrayLayers;
     if (InitData.NumSubresources != ExpectedNumSubresources)
         LOG_ERROR_AND_THROW("Incorrect number of subresources in init data. ", ExpectedNumSubresources, " expected, while ", InitData.NumSubresources, " provided");
 
@@ -340,10 +340,10 @@ bool TextureVkImpl::InitializeContentOnHost(const TextureData&          InitData
 
     std::vector<VkMemoryToImageCopyEXT> vkCopyRegions(InitData.NumSubresources);
 
-    Uint32 subres = 0;
-    for (Uint32 layer = 0; layer < ImageCI.arrayLayers; ++layer)
+    UInt32 subres = 0;
+    for (UInt32 layer = 0; layer < ImageCI.arrayLayers; ++layer)
     {
-        for (Uint32 mip = 0; mip < ImageCI.mipLevels; ++mip)
+        for (UInt32 mip = 0; mip < ImageCI.mipLevels; ++mip)
         {
             const TextureSubResData& SubResData = InitData.pSubResources[subres];
             VkMemoryToImageCopyEXT&  vkCopyInfo = vkCopyRegions[subres];
@@ -353,9 +353,9 @@ bool TextureVkImpl::InitializeContentOnHost(const TextureData&          InitData
             vkCopyInfo.pNext        = nullptr;
             vkCopyInfo.pHostPointer = SubResData.pData;
 
-            const Uint32 PixelSize = FmtAttribs.ComponentType == COMPONENT_TYPE_COMPRESSED ?
-                Uint32{FmtAttribs.ComponentSize} :
-                Uint32{FmtAttribs.ComponentSize} * Uint32{FmtAttribs.NumComponents};
+            const UInt32 PixelSize = FmtAttribs.ComponentType == COMPONENT_TYPE_COMPRESSED ?
+                UInt32{FmtAttribs.ComponentSize} :
+                UInt32{FmtAttribs.ComponentSize} * UInt32{FmtAttribs.NumComponents};
             if ((SubResData.Stride % PixelSize) != 0)
             {
                 LOG_DVP_WARNING_MESSAGE("Unable to initialize texture '", m_Desc.Name, "' on host: subresource ", subres, " has stride ", SubResData.Stride,
@@ -447,17 +447,17 @@ void TextureVkImpl::InitializeContentOnDevice(const TextureData&          InitDa
     const VkImageLayout CurrentLayout = GetLayout();
     VERIFY_EXPR(CurrentLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
 
-    Uint32 ExpectedNumSubresources = ImageCI.mipLevels * ImageCI.arrayLayers;
+    UInt32 ExpectedNumSubresources = ImageCI.mipLevels * ImageCI.arrayLayers;
     if (InitData.NumSubresources != ExpectedNumSubresources)
         LOG_ERROR_AND_THROW("Incorrect number of subresources in init data. ", ExpectedNumSubresources, " expected, while ", InitData.NumSubresources, " provided");
 
     std::vector<VkBufferImageCopy> Regions(InitData.NumSubresources);
 
-    Uint64 uploadBufferSize = 0;
-    Uint32 subres           = 0;
-    for (Uint32 layer = 0; layer < ImageCI.arrayLayers; ++layer)
+    UInt64 uploadBufferSize = 0;
+    UInt32 subres           = 0;
+    for (UInt32 layer = 0; layer < ImageCI.arrayLayers; ++layer)
     {
-        for (Uint32 mip = 0; mip < ImageCI.mipLevels; ++mip)
+        for (UInt32 mip = 0; mip < ImageCI.mipLevels; ++mip)
         {
             const TextureSubResData& SubResData = InitData.pSubResources[subres];
             (void)SubResData;
@@ -528,9 +528,9 @@ void TextureVkImpl::InitializeContentOnDevice(const TextureData&          InitDa
     StagingData += AlignedStagingMemOffset;
 
     subres = 0;
-    for (Uint32 layer = 0; layer < ImageCI.arrayLayers; ++layer)
+    for (UInt32 layer = 0; layer < ImageCI.arrayLayers; ++layer)
     {
-        for (Uint32 mip = 0; mip < ImageCI.mipLevels; ++mip)
+        for (UInt32 mip = 0; mip < ImageCI.mipLevels; ++mip)
         {
             const TextureSubResData& SubResData = InitData.pSubResources[subres];
             const VkBufferImageCopy& CopyRegion = Regions[subres];
@@ -545,9 +545,9 @@ void TextureVkImpl::InitializeContentOnDevice(const TextureData&          InitDa
             // For compressed-block formats, MipInfo.RowSize is the size of one row of blocks
             VERIFY(SubResData.DepthStride == 0 || SubResData.DepthStride >= (MipInfo.StorageHeight / FmtAttribs.BlockHeight) * MipInfo.RowSize, "Depth stride is too small");
 
-            for (Uint32 z = 0; z < MipInfo.Depth; ++z)
+            for (UInt32 z = 0; z < MipInfo.Depth; ++z)
             {
-                for (Uint32 y = 0; y < MipInfo.StorageHeight; y += FmtAttribs.BlockHeight)
+                for (UInt32 y = 0; y < MipInfo.StorageHeight; y += FmtAttribs.BlockHeight)
                 {
                     memcpy(StagingData + CopyRegion.bufferOffset + ((y + z * MipInfo.StorageHeight) / FmtAttribs.BlockHeight) * MipInfo.RowSize,
                            // SubResData.Stride must be the stride of one row of compressed blocks
@@ -577,8 +577,8 @@ void TextureVkImpl::InitializeContentOnDevice(const TextureData&          InitDa
     // After command buffer is submitted, safe-release resources. This strategy
     // is little overconservative as the resources will be released after the first
     // command buffer submitted through the immediate context will be completed
-    GetDevice()->SafeReleaseDeviceObject(std::move(StagingBuffer), Uint64{1} << Uint64{CmdQueueInd});
-    GetDevice()->SafeReleaseDeviceObject(std::move(StagingMemoryAllocation), Uint64{1} << Uint64{CmdQueueInd});
+    GetDevice()->SafeReleaseDeviceObject(std::move(StagingBuffer), UInt64{1} << UInt64{CmdQueueInd});
+    GetDevice()->SafeReleaseDeviceObject(std::move(StagingMemoryAllocation), UInt64{1} << UInt64{CmdQueueInd});
 }
 
 void TextureVkImpl::CreateStagingTexture(const TextureData* pInitData, const TextureFormatAttribs& FmtAttribs)
@@ -654,15 +654,15 @@ void TextureVkImpl::CreateStagingTexture(const TextureData* pInitData, const Tex
     {
         uint8_t* const pStagingData = GetStagingDataCPUAddress();
 
-        Uint32 subres = 0;
-        for (Uint32 layer = 0; layer < m_Desc.GetArraySize(); ++layer)
+        UInt32 subres = 0;
+        for (UInt32 layer = 0; layer < m_Desc.GetArraySize(); ++layer)
         {
-            for (Uint32 mip = 0; mip < m_Desc.MipLevels; ++mip)
+            for (UInt32 mip = 0; mip < m_Desc.MipLevels; ++mip)
             {
                 const TextureSubResData& SubResData = pInitData->pSubResources[subres++];
                 const MipLevelProperties MipProps   = GetMipLevelProperties(m_Desc, mip);
 
-                const Uint64 DstSubresOffset =
+                const UInt64 DstSubresOffset =
                     GetStagingTextureSubresourceOffset(m_Desc, layer, mip, StagingBufferOffsetAlignment);
 
                 CopyTextureSubresource(SubResData,
@@ -791,11 +791,11 @@ VulkanUtilities::ImageViewWrapper TextureVkImpl::CreateImageView(TextureViewDesc
             else
             {
                 ImageViewCI.viewType = VK_IMAGE_VIEW_TYPE_3D;
-                Uint32 MipDepth      = std::max(m_Desc.Depth >> ViewDesc.MostDetailedMip, 1U);
+                UInt32 MipDepth      = std::max(m_Desc.Depth >> ViewDesc.MostDetailedMip, 1U);
                 if (ViewDesc.FirstDepthSlice != 0 || ViewDesc.NumDepthSlices != MipDepth)
                 {
-                    DG_LOG_ERROR("3D texture view '", (ViewDesc.Name ? ViewDesc.Name : ""), "' (most detailed mip: ", Uint32{ViewDesc.MostDetailedMip},
-                              "; mip levels: ", Uint32{ViewDesc.NumMipLevels}, "; first slice: ", ViewDesc.FirstDepthSlice,
+                    DG_LOG_ERROR("3D texture view '", (ViewDesc.Name ? ViewDesc.Name : ""), "' (most detailed mip: ", UInt32{ViewDesc.MostDetailedMip},
+                              "; mip levels: ", UInt32{ViewDesc.NumMipLevels}, "; first slice: ", ViewDesc.FirstDepthSlice,
                               "; num depth slices: ", ViewDesc.NumDepthSlices, ") of texture '", m_Desc.Name,
                               "' does not references all depth slices (", MipDepth,
                               ") in the mip level. 3D texture views in Vulkan must address all depth slices.");
@@ -1018,12 +1018,12 @@ void TextureVkImpl::InitSparseProperties() noexcept(false)
     }
 
     Props.AddressSpaceSize = MemReq.size;
-    Props.BlockSize        = StaticCast<Uint32>(MemReq.alignment);
+    Props.BlockSize        = StaticCast<UInt32>(MemReq.alignment);
 
 #ifdef DILIGENT_DEBUG
     const TextureFormatAttribs& FmtAttribs    = GetTextureFormatAttribs(m_Desc.Format);
-    const Uint32                BytesPerBlock = FmtAttribs.GetElementSize();
-    const Uint32                BytesPerTile =
+    const UInt32                BytesPerBlock = FmtAttribs.GetElementSize();
+    const UInt32                BytesPerTile =
         (Props.TileSize[0] / FmtAttribs.BlockWidth) *
         (Props.TileSize[1] / FmtAttribs.BlockHeight) *
         Props.TileSize[2] * m_Desc.SampleCount * BytesPerBlock;

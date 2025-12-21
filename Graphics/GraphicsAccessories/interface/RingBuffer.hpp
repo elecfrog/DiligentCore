@@ -47,7 +47,7 @@ public:
     struct FrameHeadAttribs
     {
         // clang-format off
-        FrameHeadAttribs(Uint64 fv, OffsetType off, OffsetType sz) noexcept :
+        FrameHeadAttribs(UInt64 fv, OffsetType off, OffsetType sz) noexcept :
             FenceValue{fv },
             Offset    {off},
             Size      {sz }
@@ -56,7 +56,7 @@ public:
 
         // Fence value associated with the command list in which
         // the allocation could have been referenced last time
-        Uint64     FenceValue;
+        UInt64     FenceValue;
         OffsetType Offset;
         OffsetType Size;
     };
@@ -178,7 +178,7 @@ public:
     // FenceValue is the fence value associated with the command list in which the head
     // could have been referenced last time
     // See http://diligentgraphics.com/diligent-engine/architecture/d3d12/managing-resource-lifetimes/
-    void FinishCurrentFrame(Uint64 FenceValue)
+    void FinishCurrentFrame(UInt64 FenceValue)
     {
 #ifdef DILIGENT_DEBUG
         if (!m_CompletedFrameHeads.empty())
@@ -194,7 +194,7 @@ public:
 
     // CompletedFenceValue indicates GPU progress
     // See http://diligentgraphics.com/diligent-engine/architecture/d3d12/managing-resource-lifetimes/
-    void ReleaseCompletedFrames(Uint64 CompletedFenceValue)
+    void ReleaseCompletedFrames(UInt64 CompletedFenceValue)
     {
         // We can release all heads whose associated fence value is less than or equal to CompletedFenceValue
         while (!m_CompletedFrameHeads.empty() && m_CompletedFrameHeads.front().FenceValue <= CompletedFenceValue)

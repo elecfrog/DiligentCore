@@ -410,7 +410,7 @@ void LayoutElements_To_D3D_INPUT_ELEMENT_DESCs(const InputLayoutDesc&           
 {
     // D3D12_INPUT_ELEMENT_DESC and D3D11_INPUT_ELEMENT_DESC are identical
     D3DInputElements.resize(InputLayout.NumElements);
-    for (Uint32 iElem = 0; iElem < InputLayout.NumElements; ++iElem)
+    for (UInt32 iElem = 0; iElem < InputLayout.NumElements; ++iElem)
     {
         const LayoutElement&    CurrElem = InputLayout.LayoutElements[iElem];
         D3D_INPUT_ELEMENT_DESC& D3DElem  = D3DInputElements[iElem];

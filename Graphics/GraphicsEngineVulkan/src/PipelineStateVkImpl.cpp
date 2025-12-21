@@ -173,7 +173,7 @@ void CreateGraphicsPipeline(RenderDeviceVkImpl*                           pDevic
         }
     }
 
-    PipelineCI.stageCount = static_cast<Uint32>(Stages.size());
+    PipelineCI.stageCount = static_cast<UInt32>(Stages.size());
     PipelineCI.pStages    = Stages.data();
     PipelineCI.layout     = Layout.GetVkPipelineLayout();
 
@@ -283,7 +283,7 @@ void CreateGraphicsPipeline(RenderDeviceVkImpl*                           pDevic
         DepthStencilStateDesc_To_VkDepthStencilStateCI(GraphicsPipeline.DepthStencilDesc);
     PipelineCI.pDepthStencilState = &DepthStencilStateCI;
 
-    Uint32 NumRTAttachments = 0;
+    UInt32 NumRTAttachments = 0;
     if (pRenderPass != nullptr)
     {
         const RenderPassDesc& RPDesc = pRenderPass->GetDesc();
@@ -379,9 +379,9 @@ void CreateRayTracingPipeline(RenderDeviceVkImpl*                               
     PipelineCI.flags = VK_PIPELINE_CREATE_DISABLE_OPTIMIZATION_BIT;
 #endif
 
-    PipelineCI.stageCount                   = static_cast<Uint32>(vkStages.size());
+    PipelineCI.stageCount                   = static_cast<UInt32>(vkStages.size());
     PipelineCI.pStages                      = vkStages.data();
-    PipelineCI.groupCount                   = static_cast<Uint32>(vkShaderGroups.size());
+    PipelineCI.groupCount                   = static_cast<UInt32>(vkShaderGroups.size());
     PipelineCI.pGroups                      = vkShaderGroups.data();
     PipelineCI.maxPipelineRayRecursionDepth = RayTracingPipeline.MaxRecursionDepth;
     PipelineCI.pLibraryInfo                 = nullptr;
@@ -397,7 +397,7 @@ void CreateRayTracingPipeline(RenderDeviceVkImpl*                               
 
 std::vector<VkRayTracingShaderGroupCreateInfoKHR> BuildRTShaderGroupDescription(
     const RayTracingPipelineStateCreateInfo&            CreateInfo,
-    const std::unordered_map<HashMapStringKey, Uint32>& NameToGroupIndex,
+    const std::unordered_map<HashMapStringKey, UInt32>& NameToGroupIndex,
     const PipelineStateVkImpl::TShaderStages&           ShaderStages)
 {
     // Returns the shader module index in the PSO create info
@@ -415,7 +415,7 @@ std::vector<VkRayTracingShaderGroupCreateInfoKHR> BuildRTShaderGroupDescription(
         {
             if (ShaderType == Stage.Type)
             {
-                for (Uint32 i = 0; i < Stage.Shaders.size(); ++i, ++idx)
+                for (UInt32 i = 0; i < Stage.Shaders.size(); ++i, ++idx)
                 {
                     if (Stage.Shaders[i] == pShaderVk)
                         return idx;
@@ -425,7 +425,7 @@ std::vector<VkRayTracingShaderGroupCreateInfoKHR> BuildRTShaderGroupDescription(
             }
             else
             {
-                idx += static_cast<Uint32>(Stage.Count());
+                idx += static_cast<UInt32>(Stage.Count());
             }
         }
         UNEXPECTED("Unable to find corresponding shader stage for shader '", pShaderVk->GetDesc().Name, "'. This should never happen and is a bug.");
@@ -435,7 +435,7 @@ std::vector<VkRayTracingShaderGroupCreateInfoKHR> BuildRTShaderGroupDescription(
     std::vector<VkRayTracingShaderGroupCreateInfoKHR> ShaderGroups;
     ShaderGroups.reserve(size_t{CreateInfo.GeneralShaderCount} + size_t{CreateInfo.TriangleHitShaderCount} + size_t{CreateInfo.ProceduralHitShaderCount});
 
-    for (Uint32 i = 0; i < CreateInfo.GeneralShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.GeneralShaderCount; ++i)
     {
         const RayTracingGeneralShaderGroup& GeneralShader = CreateInfo.pGeneralShaders[i];
 
@@ -465,7 +465,7 @@ std::vector<VkRayTracingShaderGroupCreateInfoKHR> BuildRTShaderGroupDescription(
         ShaderGroups.push_back(Group);
     }
 
-    for (Uint32 i = 0; i < CreateInfo.TriangleHitShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.TriangleHitShaderCount; ++i)
     {
         const RayTracingTriangleHitShaderGroup& TriHitShader = CreateInfo.pTriangleHitShaders[i];
 
@@ -494,7 +494,7 @@ std::vector<VkRayTracingShaderGroupCreateInfoKHR> BuildRTShaderGroupDescription(
         ShaderGroups.push_back(Group);
     }
 
-    for (Uint32 i = 0; i < CreateInfo.ProceduralHitShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.ProceduralHitShaderCount; ++i)
     {
         const RayTracingProceduralHitShaderGroup& ProcHitShader = CreateInfo.pProceduralHitShaders[i];
 
@@ -592,7 +592,7 @@ PipelineResourceSignatureDescWrapper PipelineStateVkImpl::GetDefaultResourceSign
     const TShaderStages&              ShaderStages,
     const char*                       PSOName,
     const PipelineResourceLayoutDesc& ResourceLayout,
-    Uint32                            SRBAllocationGranularity) noexcept(false)
+    UInt32                            SRBAllocationGranularity) noexcept(false)
 {
     PipelineResourceSignatureDescWrapper SignDesc{PSOName, ResourceLayout, SRBAllocationGranularity};
 
@@ -603,7 +603,7 @@ PipelineResourceSignatureDescWrapper PipelineStateVkImpl::GetDefaultResourceSign
         {
             const SPIRVShaderResources& ShaderResources = *pShader->GetShaderResources();
             ShaderResources.ProcessResources(
-                [&](const SPIRVShaderResourceAttribs& Attribs, Uint32) //
+                [&](const SPIRVShaderResourceAttribs& Attribs, UInt32) //
                 {
                     // We can't skip immutable samplers because immutable sampler arrays have to be defined
                     // as both resource and sampler.
@@ -655,7 +655,7 @@ PipelineResourceSignatureDescWrapper PipelineStateVkImpl::GetDefaultResourceSign
 void PipelineStateVkImpl::RemapOrVerifyShaderResources(
     TShaderStages&                                       ShaderStages,
     const RefCntAutoPtr<PipelineResourceSignatureVkImpl> pSignatures[],
-    const Uint32                                         SignatureCount,
+    const UInt32                                         SignatureCount,
     const TBindIndexToDescSetIndex&                      BindIndexToDescSetIndex,
     bool                                                 bVerifyOnly,
     bool                                                 bStripReflection,
@@ -688,7 +688,7 @@ void PipelineStateVkImpl::RemapOrVerifyShaderResources(
                 pDvpShaderResources->emplace_back(pShaderResources);
 
             pShaderResources->ProcessResources(
-                [&](const SPIRVShaderResourceAttribs& SPIRVAttribs, Uint32) //
+                [&](const SPIRVShaderResourceAttribs& SPIRVAttribs, UInt32) //
                 {
                     const ResourceAttribution ResAttribution = GetResourceAttribution(SPIRVAttribs.Name, ShaderType, pSignatures, SignatureCount);
                     if (!ResAttribution)
@@ -702,8 +702,8 @@ void PipelineStateVkImpl::RemapOrVerifyShaderResources(
                     const SHADER_RESOURCE_TYPE           ResType  = SPIRVShaderResourceAttribs::GetShaderResourceType(SPIRVAttribs.Type);
                     const PIPELINE_RESOURCE_FLAGS        Flags    = SPIRVShaderResourceAttribs::GetPipelineResourceFlags(SPIRVAttribs.Type);
 
-                    Uint32 ResourceBinding = ~0u;
-                    Uint32 DescriptorSet   = ~0u;
+                    UInt32 ResourceBinding = ~0u;
+                    UInt32 DescriptorSet   = ~0u;
                     if (ResAttribution.ResourceIndex != ResourceAttribution::InvalidResourceIndex)
                     {
                         const PipelineResourceDesc& ResDesc = ResAttribution.pSignature->GetResourceDesc(ResAttribution.ResourceIndex);
@@ -736,8 +736,8 @@ void PipelineStateVkImpl::RemapOrVerifyShaderResources(
                     DescriptorSet += BindIndexToDescSetIndex[SignDesc.BindingIndex];
                     if (bVerifyOnly)
                     {
-                        const Uint32 SpvBinding  = SPIRV[SPIRVAttribs.BindingDecorationOffset];
-                        const Uint32 SpvDescrSet = SPIRV[SPIRVAttribs.DescriptorSetDecorationOffset];
+                        const UInt32 SpvBinding  = SPIRV[SPIRVAttribs.BindingDecorationOffset];
+                        const UInt32 SpvDescrSet = SPIRV[SPIRVAttribs.DescriptorSetDecorationOffset];
                         if (SpvBinding != ResourceBinding)
                         {
                             LOG_ERROR_AND_THROW("Shader '", pShader->GetDesc().Name, "' maps resource '", SPIRVAttribs.Name,
@@ -806,7 +806,7 @@ void PipelineStateVkImpl::InitPipelineLayout(const PipelineStateCreateInfo& Crea
     {
         VERIFY_EXPR(RemapResources ^ VerifyBindings);
         TBindIndexToDescSetIndex BindIndexToDescSetIndex = {};
-        for (Uint32 i = 0; i < m_SignatureCount; ++i)
+        for (UInt32 i = 0; i < m_SignatureCount; ++i)
             BindIndexToDescSetIndex[i] = m_PipelineLayout.GetFirstDescrSetIndex(i);
 
         // Note that we always need to strip reflection information when it is present
@@ -944,7 +944,7 @@ void PipelineStateVkImpl::DvpVerifySRBResources(const DeviceContextVkImpl* pCtx,
     for (const auto& pResources : m_ShaderResources)
     {
         pResources->ProcessResources(
-            [&](const SPIRVShaderResourceAttribs& ResAttribs, Uint32) //
+            [&](const SPIRVShaderResourceAttribs& ResAttribs, UInt32) //
             {
                 if (!res_info->IsImmutableSampler()) // There are also immutable samplers in the list
                 {
@@ -968,23 +968,23 @@ void PipelineStateVkImpl::DvpValidateResourceLimits() const
     const VkPhysicalDeviceAccelerationStructurePropertiesKHR& ASLimits     = GetDevice()->GetPhysicalDevice().GetExtProperties().AccelStruct;
     const VkPhysicalDeviceDescriptorIndexingFeaturesEXT&      DescIndFeats = GetDevice()->GetPhysicalDevice().GetExtFeatures().DescriptorIndexing;
     const VkPhysicalDeviceDescriptorIndexingPropertiesEXT&    DescIndProps = GetDevice()->GetPhysicalDevice().GetExtProperties().DescriptorIndexing;
-    const Uint32                                              DescCount    = static_cast<Uint32>(DescriptorType::Count);
+    const UInt32                                              DescCount    = static_cast<UInt32>(DescriptorType::Count);
 
-    std::array<Uint32, DescCount>                                      DescriptorCount         = {};
-    std::array<std::array<Uint32, DescCount>, MAX_SHADERS_IN_PIPELINE> PerStageDescriptorCount = {};
+    std::array<UInt32, DescCount>                                      DescriptorCount         = {};
+    std::array<std::array<UInt32, DescCount>, MAX_SHADERS_IN_PIPELINE> PerStageDescriptorCount = {};
     std::array<bool, MAX_SHADERS_IN_PIPELINE>                          ShaderStagePresented    = {};
 
-    for (Uint32 s = 0; s < m_SignatureCount; ++s)
+    for (UInt32 s = 0; s < m_SignatureCount; ++s)
     {
         const PipelineResourceSignatureVkImpl* pSignature = m_Signatures[s];
         if (pSignature == nullptr)
             continue;
 
-        for (Uint32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
+        for (UInt32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
         {
             const PipelineResourceDesc&                             ResDesc   = pSignature->GetResourceDesc(r);
             const PipelineResourceSignatureVkImpl::ResourceAttribs& ResAttr   = pSignature->GetResourceAttribs(r);
-            const Uint32                                            DescIndex = static_cast<Uint32>(ResAttr.DescrType);
+            const UInt32                                            DescIndex = static_cast<UInt32>(ResAttr.DescrType);
 
             DescriptorCount[DescIndex] += ResAttr.ArraySize;
 
@@ -1071,25 +1071,25 @@ void PipelineStateVkImpl::DvpValidateResourceLimits() const
 
     // Check total descriptor count
     {
-        const Uint32 NumSampledImages =
-            DescriptorCount[static_cast<Uint32>(DescriptorType::CombinedImageSampler)] +
-            DescriptorCount[static_cast<Uint32>(DescriptorType::SeparateImage)] +
-            DescriptorCount[static_cast<Uint32>(DescriptorType::UniformTexelBuffer)];
-        const Uint32 NumStorageImages =
-            DescriptorCount[static_cast<Uint32>(DescriptorType::StorageImage)] +
-            DescriptorCount[static_cast<Uint32>(DescriptorType::StorageTexelBuffer)] +
-            DescriptorCount[static_cast<Uint32>(DescriptorType::StorageTexelBuffer_ReadOnly)];
-        const Uint32 NumStorageBuffers =
-            DescriptorCount[static_cast<Uint32>(DescriptorType::StorageBuffer)] +
-            DescriptorCount[static_cast<Uint32>(DescriptorType::StorageBuffer_ReadOnly)];
-        const Uint32 NumDynamicStorageBuffers =
-            DescriptorCount[static_cast<Uint32>(DescriptorType::StorageBufferDynamic)] +
-            DescriptorCount[static_cast<Uint32>(DescriptorType::StorageBufferDynamic_ReadOnly)];
-        const Uint32 NumSamplers               = DescriptorCount[static_cast<Uint32>(DescriptorType::Sampler)];
-        const Uint32 NumUniformBuffers         = DescriptorCount[static_cast<Uint32>(DescriptorType::UniformBuffer)];
-        const Uint32 NumDynamicUniformBuffers  = DescriptorCount[static_cast<Uint32>(DescriptorType::UniformBufferDynamic)];
-        const Uint32 NumInputAttachments       = DescriptorCount[static_cast<Uint32>(DescriptorType::InputAttachment)];
-        const Uint32 NumAccelerationStructures = DescriptorCount[static_cast<Uint32>(DescriptorType::AccelerationStructure)];
+        const UInt32 NumSampledImages =
+            DescriptorCount[static_cast<UInt32>(DescriptorType::CombinedImageSampler)] +
+            DescriptorCount[static_cast<UInt32>(DescriptorType::SeparateImage)] +
+            DescriptorCount[static_cast<UInt32>(DescriptorType::UniformTexelBuffer)];
+        const UInt32 NumStorageImages =
+            DescriptorCount[static_cast<UInt32>(DescriptorType::StorageImage)] +
+            DescriptorCount[static_cast<UInt32>(DescriptorType::StorageTexelBuffer)] +
+            DescriptorCount[static_cast<UInt32>(DescriptorType::StorageTexelBuffer_ReadOnly)];
+        const UInt32 NumStorageBuffers =
+            DescriptorCount[static_cast<UInt32>(DescriptorType::StorageBuffer)] +
+            DescriptorCount[static_cast<UInt32>(DescriptorType::StorageBuffer_ReadOnly)];
+        const UInt32 NumDynamicStorageBuffers =
+            DescriptorCount[static_cast<UInt32>(DescriptorType::StorageBufferDynamic)] +
+            DescriptorCount[static_cast<UInt32>(DescriptorType::StorageBufferDynamic_ReadOnly)];
+        const UInt32 NumSamplers               = DescriptorCount[static_cast<UInt32>(DescriptorType::Sampler)];
+        const UInt32 NumUniformBuffers         = DescriptorCount[static_cast<UInt32>(DescriptorType::UniformBuffer)];
+        const UInt32 NumDynamicUniformBuffers  = DescriptorCount[static_cast<UInt32>(DescriptorType::UniformBufferDynamic)];
+        const UInt32 NumInputAttachments       = DescriptorCount[static_cast<UInt32>(DescriptorType::InputAttachment)];
+        const UInt32 NumAccelerationStructures = DescriptorCount[static_cast<UInt32>(DescriptorType::AccelerationStructure)];
 
         DEV_CHECK_ERR(NumSamplers <= Limits.maxDescriptorSetSamplers,
                       "In PSO '", m_Desc.Name, "', the number of samplers (", NumSamplers, ") exceeds the limit (", Limits.maxDescriptorSetSamplers, ").");
@@ -1112,35 +1112,35 @@ void PipelineStateVkImpl::DvpValidateResourceLimits() const
     }
 
     // Check per stage descriptor count
-    for (Uint32 ShaderInd = 0; ShaderInd < PerStageDescriptorCount.size(); ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < PerStageDescriptorCount.size(); ++ShaderInd)
     {
         if (!ShaderStagePresented[ShaderInd])
             continue;
 
-        const std::array<Uint32, DescCount>& NumDesc    = PerStageDescriptorCount[ShaderInd];
+        const std::array<UInt32, DescCount>& NumDesc    = PerStageDescriptorCount[ShaderInd];
         const SHADER_TYPE                    ShaderType = GetShaderTypeFromPipelineIndex(ShaderInd, m_Desc.PipelineType);
         const char*                          StageName  = GetShaderTypeLiteralName(ShaderType);
 
-        const Uint32 NumSampledImages =
-            NumDesc[static_cast<Uint32>(DescriptorType::CombinedImageSampler)] +
-            NumDesc[static_cast<Uint32>(DescriptorType::SeparateImage)] +
-            NumDesc[static_cast<Uint32>(DescriptorType::UniformTexelBuffer)];
-        const Uint32 NumStorageImages =
-            NumDesc[static_cast<Uint32>(DescriptorType::StorageImage)] +
-            NumDesc[static_cast<Uint32>(DescriptorType::StorageTexelBuffer)] +
-            NumDesc[static_cast<Uint32>(DescriptorType::StorageTexelBuffer_ReadOnly)];
-        const Uint32 NumStorageBuffers =
-            NumDesc[static_cast<Uint32>(DescriptorType::StorageBuffer)] +
-            NumDesc[static_cast<Uint32>(DescriptorType::StorageBuffer_ReadOnly)] +
-            NumDesc[static_cast<Uint32>(DescriptorType::StorageBufferDynamic)] +
-            NumDesc[static_cast<Uint32>(DescriptorType::StorageBufferDynamic_ReadOnly)];
-        const Uint32 NumUniformBuffers =
-            NumDesc[static_cast<Uint32>(DescriptorType::UniformBuffer)] +
-            NumDesc[static_cast<Uint32>(DescriptorType::UniformBufferDynamic)];
-        const Uint32 NumSamplers               = NumDesc[static_cast<Uint32>(DescriptorType::Sampler)];
-        const Uint32 NumInputAttachments       = NumDesc[static_cast<Uint32>(DescriptorType::InputAttachment)];
-        const Uint32 NumAccelerationStructures = NumDesc[static_cast<Uint32>(DescriptorType::AccelerationStructure)];
-        const Uint32 NumResources              = NumSampledImages + NumStorageImages + NumStorageBuffers + NumUniformBuffers + NumSamplers + NumInputAttachments + NumAccelerationStructures;
+        const UInt32 NumSampledImages =
+            NumDesc[static_cast<UInt32>(DescriptorType::CombinedImageSampler)] +
+            NumDesc[static_cast<UInt32>(DescriptorType::SeparateImage)] +
+            NumDesc[static_cast<UInt32>(DescriptorType::UniformTexelBuffer)];
+        const UInt32 NumStorageImages =
+            NumDesc[static_cast<UInt32>(DescriptorType::StorageImage)] +
+            NumDesc[static_cast<UInt32>(DescriptorType::StorageTexelBuffer)] +
+            NumDesc[static_cast<UInt32>(DescriptorType::StorageTexelBuffer_ReadOnly)];
+        const UInt32 NumStorageBuffers =
+            NumDesc[static_cast<UInt32>(DescriptorType::StorageBuffer)] +
+            NumDesc[static_cast<UInt32>(DescriptorType::StorageBuffer_ReadOnly)] +
+            NumDesc[static_cast<UInt32>(DescriptorType::StorageBufferDynamic)] +
+            NumDesc[static_cast<UInt32>(DescriptorType::StorageBufferDynamic_ReadOnly)];
+        const UInt32 NumUniformBuffers =
+            NumDesc[static_cast<UInt32>(DescriptorType::UniformBuffer)] +
+            NumDesc[static_cast<UInt32>(DescriptorType::UniformBufferDynamic)];
+        const UInt32 NumSamplers               = NumDesc[static_cast<UInt32>(DescriptorType::Sampler)];
+        const UInt32 NumInputAttachments       = NumDesc[static_cast<UInt32>(DescriptorType::InputAttachment)];
+        const UInt32 NumAccelerationStructures = NumDesc[static_cast<UInt32>(DescriptorType::AccelerationStructure)];
+        const UInt32 NumResources              = NumSampledImages + NumStorageImages + NumStorageBuffers + NumUniformBuffers + NumSamplers + NumInputAttachments + NumAccelerationStructures;
 
         DEV_CHECK_ERR(NumResources <= Limits.maxPerStageResources,
                       "In PSO '", m_Desc.Name, "' shader stage '", StageName, "', the total number of resources (", NumResources, ") exceeds the per-stage limit (", Limits.maxPerStageResources, ").");

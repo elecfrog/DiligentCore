@@ -165,10 +165,10 @@ public:
     /// Implementation of IRenderDevice::GetSparseTextureFormatInfo() in Direct3D11 backend.
     virtual SparseTextureFormatInfo DILIGENT_CALL_TYPE GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                                   RESOURCE_DIMENSION Dimension,
-                                                                                  Uint32             SampleCount) const override final;
+                                                                                  UInt32             SampleCount) const override final;
 
     size_t GetCommandQueueCount() const { return 1; }
-    Uint64 GetCommandQueueMask() const { return Uint64{1}; }
+    UInt64 GetCommandQueueMask() const { return UInt64{1}; }
 
 
 #define GET_D3D11_DEVICE(Version)                                                  \
@@ -210,7 +210,7 @@ private:
     CComPtr<ID3D11Device> m_pd3d11Device;
 
 #ifdef DILIGENT_DEVELOPMENT
-    Uint32 m_MaxD3D11DeviceVersion = 0;
+    UInt32 m_MaxD3D11DeviceVersion = 0;
 #endif
 };
 

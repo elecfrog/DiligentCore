@@ -57,7 +57,7 @@ DILIGENT_BEGIN_INTERFACE(IQueryD3D11, IQuery)
     ///                       beginning timestamp query, and 1 for the ending query.
     /// \return               A pointer to the `ID3D11Query` object.
     VIRTUAL ID3D11Query* METHOD(GetD3D11Query)(THIS_
-                                               Uint32 QueryId) PURE;
+                                               UInt32 QueryId) PURE;
 };
 DILIGENT_END_INTERFACE
 

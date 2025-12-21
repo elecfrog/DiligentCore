@@ -47,7 +47,7 @@ RenderPassVkImpl::RenderPassVkImpl(IReferenceCounters*   pRefCounters,
     size_t RenderPassVersion = 1;
     if (ExtFeats.ShadingRate.attachmentFragmentShadingRate)
     {
-        for (Uint32 i = 0; i < m_Desc.SubpassCount && RenderPassVersion < 2; ++i)
+        for (UInt32 i = 0; i < m_Desc.SubpassCount && RenderPassVersion < 2; ++i)
         {
             const SubpassDesc& Subpass{m_Desc.pSubpasses[i]};
             if (Subpass.pShadingRateAttachment != nullptr)
@@ -128,7 +128,7 @@ void RenderPassVkImpl::CreateRenderPass() noexcept(false)
     RenderPassCI.flags = 0;
 
     std::vector<AttachmentDescriptionType> vkAttachments(m_Desc.AttachmentCount);
-    for (Uint32 i = 0; i < m_Desc.AttachmentCount; ++i)
+    for (UInt32 i = 0; i < m_Desc.AttachmentCount; ++i)
     {
         const RenderPassAttachmentDesc& Attachment   = m_Desc.pAttachments[i];
         AttachmentDescriptionType&      vkAttachment = vkAttachments[i];
@@ -147,10 +147,10 @@ void RenderPassVkImpl::CreateRenderPass() noexcept(false)
     RenderPassCI.attachmentCount = m_Desc.AttachmentCount;
     RenderPassCI.pAttachments    = vkAttachments.data();
 
-    Uint32 TotalAttachmentReferencesCount   = 0;
-    Uint32 TotalPreserveAttachmentsCount    = 0;
-    Uint32 TotalShadingRateAttachmentsCount = 0;
-    for (Uint32 i = 0; i < m_Desc.SubpassCount; ++i)
+    UInt32 TotalAttachmentReferencesCount   = 0;
+    UInt32 TotalPreserveAttachmentsCount    = 0;
+    UInt32 TotalShadingRateAttachmentsCount = 0;
+    for (UInt32 i = 0; i < m_Desc.SubpassCount; ++i)
     {
         const SubpassDesc& Subpass = m_Desc.pSubpasses[i];
         TotalAttachmentReferencesCount += Subpass.InputAttachmentCount;
@@ -165,12 +165,12 @@ void RenderPassVkImpl::CreateRenderPass() noexcept(false)
     }
 
     std::vector<AttachmentReferenceType>                vkAttachmentReferences(size_t{TotalAttachmentReferencesCount} + size_t{TotalShadingRateAttachmentsCount});
-    std::vector<Uint32>                                 vkPreserveAttachments(TotalPreserveAttachmentsCount);
+    std::vector<UInt32>                                 vkPreserveAttachments(TotalPreserveAttachmentsCount);
     std::vector<VkFragmentShadingRateAttachmentInfoKHR> vkShadingRate{TotalShadingRateAttachmentsCount};
     const ShadingRateAttachment*                        pMainSRA = nullptr;
 
-    Uint32 CurrAttachmentReferenceInd = 0;
-    Uint32 CurrPreserveAttachmentInd  = 0;
+    UInt32 CurrAttachmentReferenceInd = 0;
+    UInt32 CurrPreserveAttachmentInd  = 0;
 
     // State flags for every attachment in each subpass.
     // This array is used to detect attachments that are used as render target or depth-stencil,
@@ -178,7 +178,7 @@ void RenderPassVkImpl::CreateRenderPass() noexcept(false)
     std::vector<RESOURCE_STATE> AttachmentStates(m_Desc.AttachmentCount);
 
     std::vector<SubpassDescriptionType> vkSubpasses(m_Desc.SubpassCount);
-    for (Uint32 i = 0, SRInd = 0; i < m_Desc.SubpassCount; ++i)
+    for (UInt32 i = 0, SRInd = 0; i < m_Desc.SubpassCount; ++i)
     {
         const SubpassDesc&      SubpassDesc = m_Desc.pSubpasses[i];
         SubpassDescriptionType& vkSubpass   = vkSubpasses[i];
@@ -188,11 +188,11 @@ void RenderPassVkImpl::CreateRenderPass() noexcept(false)
         vkSubpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
 
         std::fill(AttachmentStates.begin(), AttachmentStates.end(), RESOURCE_STATE_UNKNOWN);
-        auto UpdateAttachmentsStates = [&AttachmentStates](Uint32 NumAttachments, const AttachmentReference* pSrcAttachments) //
+        auto UpdateAttachmentsStates = [&AttachmentStates](UInt32 NumAttachments, const AttachmentReference* pSrcAttachments) //
         {
             if (pSrcAttachments == nullptr)
                 return;
-            for (Uint32 attachment = 0; attachment < NumAttachments; ++attachment)
+            for (UInt32 attachment = 0; attachment < NumAttachments; ++attachment)
             {
                 const AttachmentReference& SrcAttachmentRef = pSrcAttachments[attachment];
                 if (SrcAttachmentRef.AttachmentIndex != ATTACHMENT_UNUSED)
@@ -203,10 +203,10 @@ void RenderPassVkImpl::CreateRenderPass() noexcept(false)
         UpdateAttachmentsStates(SubpassDesc.RenderTargetAttachmentCount, SubpassDesc.pRenderTargetAttachments);
         UpdateAttachmentsStates(1, SubpassDesc.pDepthStencilAttachment);
 
-        auto ConvertAttachmentReferences = [&](Uint32 NumAttachments, const AttachmentReference* pSrcAttachments, VkImageAspectFlags AspectMask) //
+        auto ConvertAttachmentReferences = [&](UInt32 NumAttachments, const AttachmentReference* pSrcAttachments, VkImageAspectFlags AspectMask) //
         {
             AttachmentReferenceType* pCurrVkAttachmentReference = &vkAttachmentReferences[CurrAttachmentReferenceInd];
-            for (Uint32 attachment = 0; attachment < NumAttachments; ++attachment, ++CurrAttachmentReferenceInd)
+            for (UInt32 attachment = 0; attachment < NumAttachments; ++attachment, ++CurrAttachmentReferenceInd)
             {
                 const AttachmentReference& SrcAttachmentRef = pSrcAttachments[attachment];
                 AttachmentReferenceType&   DstAttachmentRef = vkAttachmentReferences[CurrAttachmentReferenceInd];
@@ -259,7 +259,7 @@ void RenderPassVkImpl::CreateRenderPass() noexcept(false)
         if (SubpassDesc.PreserveAttachmentCount != 0)
         {
             vkSubpass.pPreserveAttachments = &vkPreserveAttachments[CurrPreserveAttachmentInd];
-            for (Uint32 prsv_attachment = 0; prsv_attachment < SubpassDesc.PreserveAttachmentCount; ++prsv_attachment, ++CurrPreserveAttachmentInd)
+            for (UInt32 prsv_attachment = 0; prsv_attachment < SubpassDesc.PreserveAttachmentCount; ++prsv_attachment, ++CurrPreserveAttachmentInd)
             {
                 vkPreserveAttachments[CurrPreserveAttachmentInd] = SubpassDesc.pPreserveAttachments[prsv_attachment];
             }
@@ -288,7 +288,7 @@ void RenderPassVkImpl::CreateRenderPass() noexcept(false)
 
     if (FragDensityMapEnabled && pMainSRA != nullptr)
     {
-        for (Uint32 i = 0; i < m_Desc.SubpassCount; ++i)
+        for (UInt32 i = 0; i < m_Desc.SubpassCount; ++i)
         {
             const SubpassDesc& SubpassDesc = m_Desc.pSubpasses[i];
 
@@ -306,7 +306,7 @@ void RenderPassVkImpl::CreateRenderPass() noexcept(false)
     RenderPassCI.pSubpasses   = vkSubpasses.data();
 
     std::vector<SubpassDependencyType> vkDependencies(m_Desc.DependencyCount);
-    for (Uint32 i = 0; i < m_Desc.DependencyCount; ++i)
+    for (UInt32 i = 0; i < m_Desc.DependencyCount; ++i)
     {
         const SubpassDependencyDesc& DependencyDesc = m_Desc.pDependencies[i];
         SubpassDependencyType&       vkDependency   = vkDependencies[i];
@@ -351,7 +351,7 @@ void RenderPassVkImpl::CreateRenderPass() noexcept(false)
 
 RenderPassVkImpl::~RenderPassVkImpl()
 {
-    m_pDevice->SafeReleaseDeviceObject(std::move(m_VkRenderPass), ~Uint64{0});
+    m_pDevice->SafeReleaseDeviceObject(std::move(m_VkRenderPass), ~UInt64{0});
 }
 
 } // namespace Diligent

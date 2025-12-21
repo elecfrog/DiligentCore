@@ -75,7 +75,7 @@ public:
 
     void Destruct();
 
-    static constexpr Uint32 MaxBindGroupsInPipeline = MAX_RESOURCE_SIGNATURES * PipelineResourceSignatureWebGPUImpl::MAX_BIND_GROUPS;
+    static constexpr UInt32 MaxBindGroupsInPipeline = MAX_RESOURCE_SIGNATURES * PipelineResourceSignatureWebGPUImpl::MAX_BIND_GROUPS;
 
     const PipelineLayoutWebGPU& GetPipelineLayout() const { return m_PipelineLayout; }
 
@@ -102,13 +102,13 @@ public:
     using TShaderStages = std::vector<ShaderStageInfo>;
 
 
-    using TBindIndexToBindGroupIndex = std::array<Uint32, MAX_RESOURCE_SIGNATURES>;
+    using TBindIndexToBindGroupIndex = std::array<UInt32, MAX_RESOURCE_SIGNATURES>;
     using TShaderResources           = std::vector<std::shared_ptr<const WGSLShaderResources>>;
     using TResourceAttibutions       = std::vector<ResourceAttribution>;
     static void RemapOrVerifyShaderResources(
         TShaderStages&                                           ShaderStages,
         const RefCntAutoPtr<PipelineResourceSignatureWebGPUImpl> pSignatures[],
-        const Uint32                                             SignatureCount,
+        const UInt32                                             SignatureCount,
         const TBindIndexToBindGroupIndex&                        BindIndexToBindGroupIndex,
         bool                                                     bVerifyOnly,
         const char*                                              PipelineName,
@@ -119,7 +119,7 @@ public:
         const TShaderStages&              ShaderStages,
         const char*                       PSOName,
         const PipelineResourceLayoutDesc& ResourceLayout,
-        Uint32                            SRBAllocationGranularity);
+        UInt32                            SRBAllocationGranularity);
 
 #ifdef DILIGENT_DEVELOPMENT
     // Performs validation of SRB resource parameters that are not possible to validate

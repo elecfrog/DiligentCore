@@ -55,7 +55,7 @@ DILIGENT_BEGIN_INTERFACE(ICommandQueueMtl, ICommandQueue)
     /// Submits a given command buffer to the command queue
 
     /// \return Fence value associated with the submitted command buffer
-    VIRTUAL Uint64 METHOD(Submit)(THIS_
+    VIRTUAL UInt64 METHOD(Submit)(THIS_
                                   id<MTLCommandBuffer> mtlCommandBuffer) PURE;
 };
 DILIGENT_END_INTERFACE

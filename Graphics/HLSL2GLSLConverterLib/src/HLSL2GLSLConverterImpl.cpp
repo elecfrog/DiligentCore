@@ -978,7 +978,7 @@ void HLSL2GLSLConverterImpl::ConversionStream::ProcessConstantBuffer(TokenListTy
     }
 }
 
-void HLSL2GLSLConverterImpl::ConversionStream::ProcessStructuredBuffer(TokenListType::iterator& Token, Uint32& ShaderStorageBlockBinding)
+void HLSL2GLSLConverterImpl::ConversionStream::ProcessStructuredBuffer(TokenListType::iterator& Token, UInt32& ShaderStorageBlockBinding)
 {
     // StructuredBuffer<DataType> g_Data;
     // ^
@@ -1200,7 +1200,7 @@ void HLSL2GLSLConverterImpl::ConversionStream::RegisterStruct(TokenListType::ite
 void HLSL2GLSLConverterImpl::ConversionStream::ParseSamplers(TokenListType::iterator& Token, SamplerHashType& SamplersHash)
 {
     VERIFY_EXPR(Token->Type == TokenType::OpenParen || Token->Type == TokenType::OpenBrace || Token == m_Tokens.begin());
-    Uint32 ScopeDepth             = 1;
+    UInt32 ScopeDepth             = 1;
     bool   IsFunctionArgumentList = Token->Type == TokenType::OpenParen;
 
     // Skip scope start symbol, which is either open bracket or m_Tokens.begin()
@@ -1325,7 +1325,7 @@ void HLSL2GLSLConverterImpl::ConversionStream::ProcessTextureDeclaration(TokenLi
                                                                          const std::vector<SamplerHashType>& Samplers,
                                                                          ObjectsTypeHashType&                Objects,
                                                                          const char*                         SamplerSuffix,
-                                                                         Uint32&                             ImageBinding)
+                                                                         UInt32&                             ImageBinding)
 {
     auto TexDeclToken = Token;
     auto TextureDim   = TexDeclToken->Type;
@@ -1349,7 +1349,7 @@ void HLSL2GLSLConverterImpl::ConversionStream::ProcessTextureDeclaration(TokenLi
     auto   TypeDefinitionStart = Token;
     String GLSLSampler;
     String LayoutQualifier;
-    Uint32 NumComponents = 0;
+    UInt32 NumComponents = 0;
     if (Token->Literal == "<")
     {
         // Fix token type
@@ -1523,7 +1523,7 @@ void HLSL2GLSLConverterImpl::ConversionStream::ProcessTextureDeclaration(TokenLi
         const auto& TextureName = Token->Literal;
 
         // Determine resource array dimensionality
-        Uint32 ArrayDim = 0;
+        UInt32 ArrayDim = 0;
         {
             auto TmpToken = Token;
             ++TmpToken;
@@ -1667,12 +1667,12 @@ const HLSL2GLSLConverterImpl::HLSLObjectInfo* HLSL2GLSLConverterImpl::Conversion
     return nullptr;
 }
 
-Uint32 HLSL2GLSLConverterImpl::ConversionStream::CountFunctionArguments(TokenListType::iterator& Token, const TokenListType::iterator& ScopeEnd)
+UInt32 HLSL2GLSLConverterImpl::ConversionStream::CountFunctionArguments(TokenListType::iterator& Token, const TokenListType::iterator& ScopeEnd)
 {
     // TestText.Sample( TestText_sampler, float2(0.0, 1.0)  );
     //                ^
     VERIFY_EXPR(Token->Type == TokenType::OpenParen);
-    Uint32 NumArguments = 0;
+    UInt32 NumArguments = 0;
     ProcessScope(
         Token, ScopeEnd, TokenType::OpenParen, TokenType::ClosingParen,
         [&](TokenListType::iterator& tkn, int ScopeDepth) {
@@ -1764,7 +1764,7 @@ bool HLSL2GLSLConverterImpl::ConversionStream::ProcessObjectMethod(TokenListType
     if (ArgsListStartToken == ScopeEnd || ArgsListStartToken->Type != TokenType::OpenParen)
         return false;
     auto   ArgsListEndToken = ArgsListStartToken;
-    Uint32 NumArguments     = CountFunctionArguments(ArgsListEndToken, ScopeEnd);
+    UInt32 NumArguments     = CountFunctionArguments(ArgsListEndToken, ScopeEnd);
 
     if (ArgsListEndToken == ScopeEnd)
         return false;
@@ -1962,7 +1962,7 @@ void HLSL2GLSLConverterImpl::ConversionStream::ProcessObjectMethods(const TokenL
 // _ExpandVector() function expands any input vector to 4-component vector
 bool HLSL2GLSLConverterImpl::ConversionStream::ProcessRWTextureStore(TokenListType::iterator&       Token,
                                                                      const TokenListType::iterator& ScopeEnd,
-                                                                     Uint32                         ArrayDim)
+                                                                     UInt32                         ArrayDim)
 {
     // RWTex[Location.xy] = float4(0.0, 0.0, 0.0, 1.0);
     // ^
@@ -1970,7 +1970,7 @@ bool HLSL2GLSLConverterImpl::ConversionStream::ProcessRWTextureStore(TokenListTy
     // Find the last pair of square brackets, skipping texture array indexing
     auto OpenStapleToken    = Token;
     auto ClosingStapleToken = ScopeEnd;
-    for (Uint32 ArrayIdx = 0; ArrayIdx < ArrayDim + 1; ++ArrayIdx)
+    for (UInt32 ArrayIdx = 0; ArrayIdx < ArrayDim + 1; ++ArrayIdx)
     {
         ++OpenStapleToken;
         if (OpenStapleToken == ScopeEnd || OpenStapleToken->Type != TokenType::OpenSquareBracket)
@@ -2093,7 +2093,7 @@ bool HLSL2GLSLConverterImpl::ConversionStream::ProcessRWTextureStore(TokenListTy
 // RWTex[Location] -> imageLoad( RWTex,_ToIvec(Location))
 bool HLSL2GLSLConverterImpl::ConversionStream::ProcessRWTextureLoad(TokenListType::iterator&       Token,
                                                                     const TokenListType::iterator& ScopeEnd,
-                                                                    Uint32                         ArrayDim)
+                                                                    UInt32                         ArrayDim)
 {
     // RWTex[Location.xy]
     // ^
@@ -2101,7 +2101,7 @@ bool HLSL2GLSLConverterImpl::ConversionStream::ProcessRWTextureLoad(TokenListTyp
     // Find the last pair of square brackets, skipping texture array indexing
     auto OpenStapleToken    = Token;
     auto ClosingStapleToken = ScopeEnd;
-    for (Uint32 ArrayIdx = 0; ArrayIdx < ArrayDim + 1; ++ArrayIdx)
+    for (UInt32 ArrayIdx = 0; ArrayIdx < ArrayDim + 1; ++ArrayIdx)
     {
         ++OpenStapleToken;
         if (OpenStapleToken == ScopeEnd || OpenStapleToken->Type != TokenType::OpenSquareBracket)
@@ -2964,7 +2964,7 @@ void HLSL2GLSLConverterImpl::ConversionStream::ProcessFragmentShaderArguments(To
                     {
                         const auto& Semantic   = Param.Semantic;
                         auto        RTIndexPos = Semantic.begin();
-                        Uint32      RTIndex    = ~0u;
+                        UInt32      RTIndex    = ~0u;
                         if (Parsing::SkipString(RTIndexPos, Semantic.end(), "sv_target", RTIndexPos))
                         {
                             if (RTIndexPos != Semantic.end())
@@ -4552,8 +4552,8 @@ StringAlloc HLSL2GLSLConverterImpl::ConversionStream::Convert(const Char* EntryP
     m_bUseRowMajorMatrices        = UseRowMajorMatrices;
     TokenListType TokensCopy(m_bPreserveTokens ? m_Tokens : TokenListType());
 
-    Uint32 ShaderStorageBlockBinding = 0;
-    Uint32 ImageBinding              = 0;
+    UInt32 ShaderStorageBlockBinding = 0;
+    UInt32 ImageBinding              = 0;
 
     std::unordered_map<String, bool> SamplersHash;
 

@@ -92,11 +92,11 @@ public:
         return m_SwapChainDesc;
     }
 
-    virtual void DILIGENT_CALL_TYPE SetMaximumFrameLatency(Uint32 MaxLatency) override
+    virtual void DILIGENT_CALL_TYPE SetMaximumFrameLatency(UInt32 MaxLatency) override
     {}
 
 protected:
-    bool Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewPreTransform, Int32 Dummy = 0 /*To be different from virtual function*/)
+    bool Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform, Int32 Dummy = 0 /*To be different from virtual function*/)
     {
         if (NewWidth != 0 && NewHeight != 0 &&
             (m_SwapChainDesc.Width != NewWidth ||

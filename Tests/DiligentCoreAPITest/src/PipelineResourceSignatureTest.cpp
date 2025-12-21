@@ -78,7 +78,7 @@ protected:
             Signatures.push_back(pPRS);
 
         PSOCreateInfo.ppResourceSignatures    = Signatures.data();
-        PSOCreateInfo.ResourceSignaturesCount = static_cast<Uint32>(Signatures.size());
+        PSOCreateInfo.ResourceSignaturesCount = static_cast<UInt32>(Signatures.size());
 
         auto* pEnv    = GPUTestingEnvironment::GetInstance();
         auto* pDevice = pEnv->GetDevice();
@@ -151,7 +151,7 @@ protected:
 
     static void TestFormattedOrStructuredBuffer(BUFFER_MODE BufferMode);
     static void TestCombinedImageSamplers(SHADER_SOURCE_LANGUAGE ShaderLang, bool UseEmulatedSamplers = false);
-    static void TestMultiSignatures(const std::vector<std::array<Uint8, 3>>& SignatureBindings);
+    static void TestMultiSignatures(const std::vector<std::array<UInt8, 3>>& SignatureBindings);
 
     enum SRB_COMPAT_MODE
     {
@@ -198,9 +198,9 @@ TEST_F(PipelineResourceSignatureTest, VariableTypes)
     float ClearColor[] = {0.125, 0.25, 0.375, 0.5};
     RenderDrawCommandReference(pSwapChain, ClearColor);
 
-    static constexpr Uint32 StaticTexArraySize  = 2;
-    static constexpr Uint32 MutableTexArraySize = 4;
-    static constexpr Uint32 DynamicTexArraySize = 3;
+    static constexpr UInt32 StaticTexArraySize  = 2;
+    static constexpr UInt32 MutableTexArraySize = 4;
+    static constexpr UInt32 DynamicTexArraySize = 3;
 
     ReferenceTextures RefTextures{
         3 + StaticTexArraySize + MutableTexArraySize + DynamicTexArraySize,
@@ -232,13 +232,13 @@ TEST_F(PipelineResourceSignatureTest, VariableTypes)
     Macros.AddShaderMacro("Tex2D_Mut_Ref", RefTextures.GetColor(Tex2D_MutIdx));
     Macros.AddShaderMacro("Tex2D_Dyn_Ref", RefTextures.GetColor(Tex2D_DynIdx));
 
-    for (Uint32 i = 0; i < StaticTexArraySize; ++i)
+    for (UInt32 i = 0; i < StaticTexArraySize; ++i)
         Macros.AddShaderMacro((std::string{"Tex2DArr_Static_Ref"} + std::to_string(i)).c_str(), RefTextures.GetColor(Tex2DArr_StaticIdx + i));
 
-    for (Uint32 i = 0; i < MutableTexArraySize; ++i)
+    for (UInt32 i = 0; i < MutableTexArraySize; ++i)
         Macros.AddShaderMacro((std::string{"Tex2DArr_Mut_Ref"} + std::to_string(i)).c_str(), RefTextures.GetColor(Tex2DArr_MutIdx + i));
 
-    for (Uint32 i = 0; i < DynamicTexArraySize; ++i)
+    for (UInt32 i = 0; i < DynamicTexArraySize; ++i)
         Macros.AddShaderMacro((std::string{"Tex2DArr_Dyn_Ref"} + std::to_string(i)).c_str(), RefTextures.GetColor(Tex2DArr_DynIdx + i));
 
     auto ModifyShaderCI = [pEnv](ShaderCreateInfo& ShaderCI) {
@@ -319,7 +319,7 @@ TEST_F(PipelineResourceSignatureTest, VariableTypes)
 }
 
 
-void PipelineResourceSignatureTest::TestMultiSignatures(const std::vector<std::array<Uint8, 3>>& SignatureBindings)
+void PipelineResourceSignatureTest::TestMultiSignatures(const std::vector<std::array<UInt8, 3>>& SignatureBindings)
 {
     auto* const pEnv       = GPUTestingEnvironment::GetInstance();
     auto* const pDevice    = pEnv->GetDevice();
@@ -363,7 +363,7 @@ void PipelineResourceSignatureTest::TestMultiSignatures(const std::vector<std::a
     ITextureView* ppRTVs[] = {pSwapChain->GetCurrentBackBufferRTV()};
     pContext->SetRenderTargets(1, ppRTVs, nullptr, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
-    const Uint32 NumSignatures = DeviceInfo.IsWebGPUDevice() ? 2 : 3;
+    const UInt32 NumSignatures = DeviceInfo.IsWebGPUDevice() ? 2 : 3;
     for (const auto& BindIndices : SignatureBindings)
     {
         PipelineResourceSignatureDesc PRSDesc;
@@ -385,14 +385,14 @@ void PipelineResourceSignatureTest::TestMultiSignatures(const std::vector<std::a
         Resources[NumSignatures == 3 ? 2 : 0].emplace_back(SHADER_TYPE_PIXEL | SHADER_TYPE_VERTEX, "g_Sampler", 1, SHADER_RESOURCE_TYPE_SAMPLER, SHADER_RESOURCE_VARIABLE_TYPE_STATIC);
         // clang-format on
 
-        for (Uint32 i = 0; i < NumSignatures; ++i)
+        for (UInt32 i = 0; i < NumSignatures; ++i)
         {
             std::string PRSName  = "Multi signatures " + std::to_string(i);
             PRSDesc.Name         = PRSName.c_str();
             PRSDesc.BindingIndex = BindIndices[i];
 
             PRSDesc.Resources    = Resources[i].data();
-            PRSDesc.NumResources = static_cast<Uint32>(Resources[i].size());
+            PRSDesc.NumResources = static_cast<UInt32>(Resources[i].size());
 
             pDevice->CreatePipelineResourceSignature(PRSDesc, &pPRS[i]);
             ASSERT_TRUE(pPRS[i]);
@@ -411,7 +411,7 @@ void PipelineResourceSignatureTest::TestMultiSignatures(const std::vector<std::a
             SET_STATIC_VAR(pPRS[NumSignatures == 3 ? 2 : 0], SHADER_TYPE_PIXEL, "g_Sampler", Set, pSampler);
         }
 
-        for (Uint32 i = 0; i < NumSignatures; ++i)
+        for (UInt32 i = 0; i < NumSignatures; ++i)
         {
             pPRS[i]->CreateShaderResourceBinding(&pSRB[i], true);
             ASSERT_NE(pSRB[i], nullptr);
@@ -425,7 +425,7 @@ void PipelineResourceSignatureTest::TestMultiSignatures(const std::vector<std::a
         SET_SRB_VAR(pSRB[1], SHADER_TYPE_VERTEX, "g_Tex2D_2", Set, RefTextures.GetView(1));
         SET_SRB_VAR(pSRB[NumSignatures == 3 ? 2 : 1], SHADER_TYPE_VERTEX, "g_Tex2D_4", Set, RefTextures.GetView(3));
 
-        for (Uint32 i = 0; i < NumSignatures; ++i)
+        for (UInt32 i = 0; i < NumSignatures; ++i)
         {
             pContext->CommitShaderResources(pSRB[i], RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
         }
@@ -518,7 +518,7 @@ TEST_F(PipelineResourceSignatureTest, SingleVarType)
     auto pPS = CreateShaderFromFile(SHADER_TYPE_PIXEL, "SingleVarType.hlsl", "PSMain", "PRS single var type test: PS", Macros);
     ASSERT_TRUE(pVS && pPS);
 
-    for (Uint32 var_type = 0; var_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++var_type)
+    for (UInt32 var_type = 0; var_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++var_type)
     {
         const auto VarType = static_cast<SHADER_RESOURCE_VARIABLE_TYPE>(var_type);
 
@@ -1432,7 +1432,7 @@ void PipelineResourceSignatureTest::TestCombinedImageSamplers(SHADER_SOURCE_LANG
     }
     // clang-format on
     PRSDesc.Resources    = Resources.data();
-    PRSDesc.NumResources = static_cast<Uint32>(Resources.size());
+    PRSDesc.NumResources = static_cast<UInt32>(Resources.size());
 
     ImmutableSamplerDesc ImmutableSamplers[] = //
         {
@@ -1516,9 +1516,9 @@ void PipelineResourceSignatureTest::TestFormattedOrStructuredBuffer(BUFFER_MODE 
     float ClearColor[] = {0.875, 0.125, 0.75, 0.75};
     RenderDrawCommandReference(pSwapChain, ClearColor);
 
-    const Uint32 StaticBuffArraySize  = !DeviceInfo.IsWebGPUDevice() ? 4 : 2;
-    const Uint32 MutableBuffArraySize = !DeviceInfo.IsWebGPUDevice() ? 3 : 2;
-    const Uint32 DynamicBuffArraySize = !DeviceInfo.IsWebGPUDevice() ? 2 : 1;
+    const UInt32 StaticBuffArraySize  = !DeviceInfo.IsWebGPUDevice() ? 4 : 2;
+    const UInt32 MutableBuffArraySize = !DeviceInfo.IsWebGPUDevice() ? 3 : 2;
+    const UInt32 DynamicBuffArraySize = !DeviceInfo.IsWebGPUDevice() ? 2 : 1;
 
     ReferenceBuffers RefBuffers{
         3 + StaticBuffArraySize + MutableBuffArraySize + DynamicBuffArraySize,
@@ -1563,13 +1563,13 @@ void PipelineResourceSignatureTest::TestFormattedOrStructuredBuffer(BUFFER_MODE 
     Macros.AddShaderMacro("Buff_Mut_Ref", RefBuffers.GetValue(Buff_MutIdx));
     Macros.AddShaderMacro("Buff_Dyn_Ref", RefBuffers.GetValue(Buff_DynIdx));
 
-    for (Uint32 i = 0; i < StaticBuffArraySize; ++i)
+    for (UInt32 i = 0; i < StaticBuffArraySize; ++i)
         Macros.AddShaderMacro((std::string{"BuffArr_Static_Ref"} + std::to_string(i)).c_str(), RefBuffers.GetValue(BuffArr_StaticIdx + i));
 
-    for (Uint32 i = 0; i < MutableBuffArraySize; ++i)
+    for (UInt32 i = 0; i < MutableBuffArraySize; ++i)
         Macros.AddShaderMacro((std::string{"BuffArr_Mut_Ref"} + std::to_string(i)).c_str(), RefBuffers.GetValue(BuffArr_MutIdx + i));
 
-    for (Uint32 i = 0; i < DynamicBuffArraySize; ++i)
+    for (UInt32 i = 0; i < DynamicBuffArraySize; ++i)
         Macros.AddShaderMacro((std::string{"BuffArr_Dyn_Ref"} + std::to_string(i)).c_str(), RefBuffers.GetValue(BuffArr_DynIdx + i));
 
     auto ModifyShaderCI = [&](ShaderCreateInfo& ShaderCI) {
@@ -1700,7 +1700,7 @@ static void TestRunTimeResourceArray(bool IsGLSL, IShaderSourceInputStreamFactor
 
     ComputeShaderReference(pSwapChain);
 
-    constexpr Uint32  TexArraySize = 8;
+    constexpr UInt32  TexArraySize = 8;
     ReferenceTextures RefTextures{
         TexArraySize,
         128, 128,
@@ -1709,7 +1709,7 @@ static void TestRunTimeResourceArray(bool IsGLSL, IShaderSourceInputStreamFactor
         TEXTURE_VIEW_SHADER_RESOURCE //
     };
 
-    constexpr Uint32  RWTexArraySize = 3;
+    constexpr UInt32  RWTexArraySize = 3;
     ReferenceTextures RefRWTextures{
         RWTexArraySize,
         128, 128,
@@ -1718,16 +1718,16 @@ static void TestRunTimeResourceArray(bool IsGLSL, IShaderSourceInputStreamFactor
         TEXTURE_VIEW_UNORDERED_ACCESS //
     };
 
-    constexpr Uint32 SamArraySize = 3;
+    constexpr UInt32 SamArraySize = 3;
 
-    constexpr Uint32 ConstBuffArraySize = 7;
+    constexpr UInt32 ConstBuffArraySize = 7;
     ReferenceBuffers RefConstBuffers{
         ConstBuffArraySize,
         USAGE_DEFAULT,
         BIND_UNIFORM_BUFFER //
     };
 
-    constexpr Uint32 FmtBuffArraySize = 5;
+    constexpr UInt32 FmtBuffArraySize = 5;
     ReferenceBuffers RefFmtBuffers{
         FmtBuffArraySize,
         USAGE_DEFAULT,
@@ -1736,7 +1736,7 @@ static void TestRunTimeResourceArray(bool IsGLSL, IShaderSourceInputStreamFactor
         BUFFER_MODE_FORMATTED //
     };
 
-    constexpr Uint32 StructBuffArraySize = 3;
+    constexpr UInt32 StructBuffArraySize = 3;
     ReferenceBuffers RefStructBuffers{
         StructBuffArraySize,
         USAGE_DEFAULT,
@@ -1745,7 +1745,7 @@ static void TestRunTimeResourceArray(bool IsGLSL, IShaderSourceInputStreamFactor
         BUFFER_MODE_STRUCTURED //
     };
 
-    constexpr Uint32 RWStructBuffArraySize = 4;
+    constexpr UInt32 RWStructBuffArraySize = 4;
     ReferenceBuffers RefRWStructBuffers{
         RWStructBuffArraySize,
         USAGE_DEFAULT,
@@ -1754,7 +1754,7 @@ static void TestRunTimeResourceArray(bool IsGLSL, IShaderSourceInputStreamFactor
         BUFFER_MODE_STRUCTURED //
     };
 
-    constexpr Uint32 RWFormattedBuffArraySize = 2;
+    constexpr UInt32 RWFormattedBuffArraySize = 2;
     ReferenceBuffers RefRWFormattedBuffers{
         RWFormattedBuffArraySize,
         USAGE_DEFAULT,
@@ -1832,19 +1832,19 @@ static void TestRunTimeResourceArray(bool IsGLSL, IShaderSourceInputStreamFactor
 
     if (IsGLSL)
         Macros.AddShaderMacro("float4", "vec4");
-    for (Uint32 i = 0; i < TexArraySize; ++i)
+    for (UInt32 i = 0; i < TexArraySize; ++i)
         Macros.AddShaderMacro((String{"Tex2D_Ref"} + std::to_string(i)).c_str(), RefTextures.GetColor(i));
-    for (Uint32 i = 0; i < ConstBuffArraySize; ++i)
+    for (UInt32 i = 0; i < ConstBuffArraySize; ++i)
         Macros.AddShaderMacro((String{"ConstBuff_Ref"} + std::to_string(i)).c_str(), RefConstBuffers.GetValue(i));
-    for (Uint32 i = 0; i < FmtBuffArraySize; ++i)
+    for (UInt32 i = 0; i < FmtBuffArraySize; ++i)
         Macros.AddShaderMacro((String{"FmtBuff_Ref"} + std::to_string(i)).c_str(), RefFmtBuffers.GetValue(i));
-    for (Uint32 i = 0; i < StructBuffArraySize; ++i)
+    for (UInt32 i = 0; i < StructBuffArraySize; ++i)
         Macros.AddShaderMacro((String{"StructBuff_Ref"} + std::to_string(i)).c_str(), RefStructBuffers.GetValue(i));
-    for (Uint32 i = 0; i < RWTexArraySize; ++i)
+    for (UInt32 i = 0; i < RWTexArraySize; ++i)
         Macros.AddShaderMacro((String{"RWTex2D_Ref"} + std::to_string(i)).c_str(), RefRWTextures.GetColor(i));
-    for (Uint32 i = 0; i < RWStructBuffArraySize; ++i)
+    for (UInt32 i = 0; i < RWStructBuffArraySize; ++i)
         Macros.AddShaderMacro((String{"RWStructBuff_Ref"} + std::to_string(i)).c_str(), RefRWStructBuffers.GetValue(i));
-    for (Uint32 i = 0; i < RWFormattedBuffArraySize; ++i)
+    for (UInt32 i = 0; i < RWFormattedBuffArraySize; ++i)
         Macros.AddShaderMacro((String{"RWFmtBuff_Ref"} + std::to_string(i)).c_str(), RefRWFormattedBuffers.GetValue(i));
 
     RefCntAutoPtr<IShader> pCS;
@@ -1985,7 +1985,7 @@ TEST_F(PipelineResourceSignatureTest, UnusedNullResources)
     }
 
     PRSDesc.Resources    = Resources.data();
-    PRSDesc.NumResources = static_cast<Uint32>(Resources.size());
+    PRSDesc.NumResources = static_cast<UInt32>(Resources.size());
 
     RefCntAutoPtr<IPipelineResourceSignature> pPRS;
     pDevice->CreatePipelineResourceSignature(PRSDesc, &pPRS);

@@ -42,7 +42,7 @@ TEST(GPUCompletionAwaitQueueTest, ReadBack)
     auto* pDevice  = pEnv->GetDevice();
     auto* pContext = pEnv->GetDeviceContext();
 
-    constexpr Uint32 NumTestBuffs = 3;
+    constexpr UInt32 NumTestBuffs = 3;
     constexpr float  TestData[NumTestBuffs][16] =
         {
             {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15},
@@ -59,7 +59,7 @@ TEST(GPUCompletionAwaitQueueTest, ReadBack)
         BuffDesc.BindFlags = BIND_UNIFORM_BUFFER;
         BuffDesc.Usage     = USAGE_DEFAULT;
 
-        for (Uint32 buff = 0; buff < NumTestBuffs; ++buff)
+        for (UInt32 buff = 0; buff < NumTestBuffs; ++buff)
         {
             BufferData InitData{TestData[buff], BuffSize};
             pDevice->CreateBuffer(BuffDesc, &InitData, &pBuffer[buff]);
@@ -69,9 +69,9 @@ TEST(GPUCompletionAwaitQueueTest, ReadBack)
 
     GPUCompletionAwaitQueue<RefCntAutoPtr<IBuffer>> ReadBackQueue{pDevice};
 
-    for (Uint32 pass = 0; pass < 3; ++pass)
+    for (UInt32 pass = 0; pass < 3; ++pass)
     {
-        for (Uint32 buff = 0; buff < NumTestBuffs; ++buff)
+        for (UInt32 buff = 0; buff < NumTestBuffs; ++buff)
         {
             auto pStagingBuffer = ReadBackQueue.GetRecycled();
             EXPECT_TRUE(pStagingBuffer || pass == 0);
@@ -101,7 +101,7 @@ TEST(GPUCompletionAwaitQueueTest, ReadBack)
 
         pContext->WaitForIdle();
 
-        for (Uint32 buff = 0; buff < NumTestBuffs; ++buff)
+        for (UInt32 buff = 0; buff < NumTestBuffs; ++buff)
         {
             auto pStagingBuffer = ReadBackQueue.GetFirstCompleted();
             ASSERT_NE(pStagingBuffer, nullptr);

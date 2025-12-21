@@ -117,7 +117,7 @@ struct DearchiverBase::PSOData
 
     static const ResourceType ArchiveResType;
 
-    explicit PSOData(IMemoryAllocator& Allocator, Uint32 BlockSize = 2 << 10) :
+    explicit PSOData(IMemoryAllocator& Allocator, UInt32 BlockSize = 2 << 10) :
         Allocator{Allocator, BlockSize}
     {}
 
@@ -137,7 +137,7 @@ struct DearchiverBase::RPData
 
     static constexpr ResourceType ArchiveResType = ResourceType::RenderPass;
 
-    explicit RPData(IMemoryAllocator& Allocator, Uint32 BlockSize = 1 << 10) :
+    explicit RPData(IMemoryAllocator& Allocator, UInt32 BlockSize = 1 << 10) :
         Allocator{Allocator, BlockSize}
     {}
 
@@ -207,7 +207,7 @@ bool DearchiverBase::PSOData<GraphicsPipelineStateCreateInfo>::DeserializeIntern
 template <>
 bool DearchiverBase::PSOData<RayTracingPipelineStateCreateInfo>::DeserializeInternal(Serializer<SerializerMode::Read>& Ser)
 {
-    auto RemapShaders = [](Uint32& InIndex, IShader*& outShader) {
+    auto RemapShaders = [](UInt32& InIndex, IShader*& outShader) {
         outShader = BitCast<IShader*>(size_t{InIndex});
     };
     return PSOSerializer<SerializerMode::Read>::SerializeCreateInfo(Ser, CreateInfo, PRSNames, &Allocator, RemapShaders);
@@ -269,7 +269,7 @@ bool DearchiverBase::UnpackPSORenderPass<GraphicsPipelineStateCreateInfo>(PSODat
 template <typename CreateInfoType>
 bool DearchiverBase::UnpackPSOSignatures(PSOData<CreateInfoType>& PSO, IRenderDevice* pRenderDevice)
 {
-    const Uint32 ResourceSignaturesCount = PSO.CreateInfo.ResourceSignaturesCount;
+    const UInt32 ResourceSignaturesCount = PSO.CreateInfo.ResourceSignaturesCount;
     if (ResourceSignaturesCount == 0)
     {
         UNEXPECTED("PSO must have at least one resource signature (including PSOs that use implicit signature)");
@@ -278,7 +278,7 @@ bool DearchiverBase::UnpackPSOSignatures(PSOData<CreateInfoType>& PSO, IRenderDe
     IPipelineResourceSignature** const ppResourceSignatures = PSO.Allocator.template Allocate<IPipelineResourceSignature*>(ResourceSignaturesCount);
 
     PSO.CreateInfo.ppResourceSignatures = ppResourceSignatures;
-    for (Uint32 i = 0; i < ResourceSignaturesCount; ++i)
+    for (UInt32 i = 0; i < ResourceSignaturesCount; ++i)
     {
         ResourceSignatureUnpackInfo UnpackInfo{pRenderDevice, PSO.PRSNames[i]};
         UnpackInfo.SRBAllocationGranularity = PSO.CreateInfo.PSODesc.SRBAllocationGranularity;
@@ -363,16 +363,16 @@ void DearchiverBase::PSOData<RayTracingPipelineStateCreateInfo>::AssignShaders()
         }
     };
 
-    for (Uint32 i = 0; i < CreateInfo.GeneralShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.GeneralShaderCount; ++i)
     {
         RemapShader(CreateInfo.pGeneralShaders[i].pShader);
     }
-    for (Uint32 i = 0; i < CreateInfo.TriangleHitShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.TriangleHitShaderCount; ++i)
     {
         RemapShader(CreateInfo.pTriangleHitShaders[i].pClosestHitShader);
         RemapShader(CreateInfo.pTriangleHitShaders[i].pAnyHitShader);
     }
-    for (Uint32 i = 0; i < CreateInfo.ProceduralHitShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.ProceduralHitShaderCount; ++i)
     {
         RemapShader(CreateInfo.pProceduralHitShaders[i].pIntersectionShader);
         RemapShader(CreateInfo.pProceduralHitShaders[i].pClosestHitShader);
@@ -432,11 +432,11 @@ bool DearchiverBase::UnpackPSOShaders(ArchiveData&             Archive,
     ShaderCacheData& ShaderCache = Archive.CachedShaders[static_cast<size_t>(DevType)];
 
     PSO.Shaders.resize(ShaderIndices.Count);
-    for (Uint32 i = 0; i < ShaderIndices.Count; ++i)
+    for (UInt32 i = 0; i < ShaderIndices.Count; ++i)
     {
         RefCntAutoPtr<IShader>& pShader{PSO.Shaders[i]};
 
-        const Uint32 Idx = ShaderIndices.pIndices[i];
+        const UInt32 Idx = ShaderIndices.pIndices[i];
 
         {
             std::unique_lock<std::mutex> ReadLock{ShaderCache.Mtx};
@@ -648,7 +648,7 @@ void DearchiverBase::UnpackPipelineStateImpl(const PipelineStateUnpackInfo& Unpa
         m_Cache.PSO.Set(ResType, UnpackInfo.Name, *ppPSO);
 }
 
-bool DearchiverBase::LoadArchive(const IDataBlob* pArchiveData, Uint32 ContentVersion, bool MakeCopy)
+bool DearchiverBase::LoadArchive(const IDataBlob* pArchiveData, UInt32 ContentVersion, bool MakeCopy)
 {
     if (pArchiveData == nullptr)
         return false;
@@ -771,7 +771,7 @@ void DearchiverBase::UnpackShader(const ShaderUnpackInfo& UnpackInfo,
     if (!ShaderIdxData)
         return;
 
-    Uint32 Idx = 0;
+    UInt32 Idx = 0;
     {
         Serializer<SerializerMode::Read> Ser{ShaderIdxData};
         if (!Ser(Idx))
@@ -891,7 +891,7 @@ void DearchiverBase::Reset()
     m_Archives.clear();
 }
 
-Uint32 DearchiverBase::GetContentVersion() const
+UInt32 DearchiverBase::GetContentVersion() const
 {
     return !m_Archives.empty() ? m_Archives.front().pObjArchive->GetContentVersion() : ~0u;
 }

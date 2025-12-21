@@ -102,11 +102,11 @@ public:
 
     using TShaderResources         = std::vector<std::shared_ptr<const SPIRVShaderResources>>;
     using TResourceAttibutions     = std::vector<ResourceAttribution>;
-    using TBindIndexToDescSetIndex = std::array<Uint32, MAX_RESOURCE_SIGNATURES>;
+    using TBindIndexToDescSetIndex = std::array<UInt32, MAX_RESOURCE_SIGNATURES>;
     static void RemapOrVerifyShaderResources(
         TShaderStages&                                       ShaderStages,
         const RefCntAutoPtr<PipelineResourceSignatureVkImpl> pSignatures[],
-        Uint32                                               SignatureCount,
+        UInt32                                               SignatureCount,
         const TBindIndexToDescSetIndex&                      BindIndexToDescSetIndex,
         bool                                                 bVerifyOnly,
         bool                                                 bStripReflection,
@@ -118,7 +118,7 @@ public:
         const TShaderStages&              ShaderStages,
         const char*                       PSOName,
         const PipelineResourceLayoutDesc& ResourceLayout,
-        Uint32                            SRBAllocationGranularity) noexcept(false);
+        UInt32                            SRBAllocationGranularity) noexcept(false);
 
 private:
     template <typename PSOCreateInfoType>

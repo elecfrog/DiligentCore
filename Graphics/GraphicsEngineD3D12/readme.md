@@ -65,7 +65,7 @@ To attach diligent engine to existing D3D12 device, use the following factory fu
 
 ```cpp
 void IEngineFactoryD3D12::AttachToD3D12Device(void*                           pd3d12NativeDevice,
-                                              Uint32                          CommandQueueCount,
+                                              UInt32                          CommandQueueCount,
                                               struct ICommandQueueD3D12**     ppCommandQueues,
                                               const EngineD3D12CreateInfo REF EngineCI,
                                               IRenderDevice**                 ppDevice,

@@ -53,7 +53,7 @@ struct CompiledShaderVk : SerializedShaderImpl::CompiledShader
 
     virtual SerializedData Serialize(ShaderCreateInfo ShaderCI) const override final
     {
-        const std::vector<Uint32>& SPIRV = ShaderVk.GetSPIRV();
+        const std::vector<UInt32>& SPIRV = ShaderVk.GetSPIRV();
 
         ShaderCI.Source       = nullptr;
         ShaderCI.FilePath     = nullptr;
@@ -134,7 +134,7 @@ void SerializedPipelineStateImpl::PatchShadersVk(const CreateInfoType& CreateInf
     }
 
     IPipelineResourceSignature** ppSignatures    = CreateInfo.ppResourceSignatures;
-    Uint32                       SignaturesCount = CreateInfo.ResourceSignaturesCount;
+    UInt32                       SignaturesCount = CreateInfo.ResourceSignaturesCount;
 
     IPipelineResourceSignature* DefaultSignatures[1] = {};
     if (CreateInfo.ResourceSignaturesCount == 0)
@@ -154,8 +154,8 @@ void SerializedPipelineStateImpl::PatchShadersVk(const CreateInfoType& CreateInf
 
         // Same as PipelineLayoutVk::Create()
         PipelineStateVkImpl::TBindIndexToDescSetIndex BindIndexToDescSetIndex = {};
-        Uint32                                        DescSetLayoutCount      = 0;
-        for (Uint32 i = 0; i < SignaturesCount; ++i)
+        UInt32                                        DescSetLayoutCount      = 0;
+        for (UInt32 i = 0; i < SignaturesCount; ++i)
         {
             const RefCntAutoPtr<PipelineResourceSignatureVkImpl>& pSignature = Signatures[i];
             if (pSignature == nullptr)
@@ -189,7 +189,7 @@ void SerializedPipelineStateImpl::PatchShadersVk(const CreateInfoType& CreateInf
         const PipelineStateVkImpl::ShaderStageInfo& Stage = ShaderStagesVk[j];
         for (size_t i = 0; i < Stage.Count(); ++i)
         {
-            const std::vector<Uint32>& SPIRV    = Stage.SPIRVs[i];
+            const std::vector<UInt32>& SPIRV    = Stage.SPIRVs[i];
             ShaderCreateInfo           ShaderCI = ShaderStages[j].Serialized[i]->GetCreateInfo();
 
             ShaderCI.Source       = nullptr;
@@ -234,17 +234,17 @@ void SerializationDeviceImpl::GetPipelineResourceBindingsVk(const PipelineResour
     const SHADER_TYPE ShaderStages = (Info.ShaderStages == SHADER_TYPE_UNKNOWN ? static_cast<SHADER_TYPE>(~0u) : Info.ShaderStages);
 
     SignatureArray<PipelineResourceSignatureVkImpl> Signatures      = {};
-    Uint32                                          SignaturesCount = 0;
+    UInt32                                          SignaturesCount = 0;
     SortResourceSignatures(Info.ppResourceSignatures, Info.ResourceSignaturesCount, Signatures, SignaturesCount);
 
-    Uint32 DescSetLayoutCount = 0;
-    for (Uint32 sign = 0; sign < SignaturesCount; ++sign)
+    UInt32 DescSetLayoutCount = 0;
+    for (UInt32 sign = 0; sign < SignaturesCount; ++sign)
     {
         const RefCntAutoPtr<PipelineResourceSignatureVkImpl>& pSignature = Signatures[sign];
         if (pSignature == nullptr)
             continue;
 
-        for (Uint32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
+        for (UInt32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
         {
             const PipelineResourceDesc&                             ResDesc = pSignature->GetResourceDesc(r);
             const PipelineResourceSignatureVkImpl::ResourceAttribs& ResAttr = pSignature->GetResourceAttribs(r);

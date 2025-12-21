@@ -126,10 +126,10 @@ void VAOCache::ClearStaleKeys(const std::vector<VAOHashKey>& StaleKeys)
         if (StaleKey.IndexBufferUId != 0)
             CandidateBuffers.emplace(StaleKey.IndexBufferUId);
 
-        for (Uint32 SlotMask = StaleKey.UsedSlotsMask; SlotMask != 0;)
+        for (UInt32 SlotMask = StaleKey.UsedSlotsMask; SlotMask != 0;)
         {
-            const Uint32 SlotBit = ExtractLSB(SlotMask);
-            const Uint32 Slot    = PlatformMisc::GetLSB(SlotBit);
+            const UInt32 SlotBit = ExtractLSB(SlotMask);
+            const UInt32 Slot    = PlatformMisc::GetLSB(SlotBit);
             VERIFY_EXPR(StaleKey.Streams[Slot].BufferUId >= 0);
             CandidateBuffers.emplace(StaleKey.Streams[Slot].BufferUId);
         }
@@ -174,7 +174,7 @@ VAOCache::VAOHashKey::VAOHashKey(const VAOAttribs& Attribs) :
 // clang-format on
 {
 #ifdef DILIGENT_DEBUG
-    for (Uint32 i = 0; i < _countof(Streams); ++i)
+    for (UInt32 i = 0; i < _countof(Streams); ++i)
         Streams[i].BufferUId = -1;
 #endif
 
@@ -182,10 +182,10 @@ VAOCache::VAOHashKey::VAOHashKey(const VAOAttribs& Attribs) :
     const LayoutElement*   LayoutElements = InputLayout.LayoutElements;
 
     Hash = ComputeHash(PsoUId, IndexBufferUId);
-    for (Uint32 i = 0; i < InputLayout.NumElements; ++i)
+    for (UInt32 i = 0; i < InputLayout.NumElements; ++i)
     {
         const LayoutElement& LayoutElem = LayoutElements[i];
-        const Uint32         BufferSlot = LayoutElem.BufferSlot;
+        const UInt32         BufferSlot = LayoutElem.BufferSlot;
         VERIFY_EXPR(BufferSlot < MAX_BUFFER_SLOTS);
         DEV_CHECK_ERR(BufferSlot < Attribs.NumVertexStreams, "Input layout requires at least ", BufferSlot + 1,
                       " buffer", (BufferSlot > 0 ? "s" : ""), ", but only ", Attribs.NumVertexStreams, ' ',
@@ -195,7 +195,7 @@ VAOCache::VAOHashKey::VAOHashKey(const VAOAttribs& Attribs) :
         DEV_CHECK_ERR(SrcStream.pBuffer, "VAO requires buffer at slot ", BufferSlot, ", but none is bound in the context.");
 
         const Int32  BuffId  = SrcStream.pBuffer ? SrcStream.pBuffer->GetUniqueID() : 0;
-        const Uint32 SlotBit = 1u << BufferSlot;
+        const UInt32 SlotBit = 1u << BufferSlot;
         if ((UsedSlotsMask & SlotBit) == 0)
         {
             VAOHashKey::StreamAttribs& DstStream{Streams[BufferSlot]};
@@ -227,10 +227,10 @@ bool VAOCache::VAOHashKey::operator==(const VAOHashKey& Key) const noexcept
         return false;
     // clang-format on
 
-    for (Uint32 SlotMask = Key.UsedSlotsMask; SlotMask != 0;)
+    for (UInt32 SlotMask = Key.UsedSlotsMask; SlotMask != 0;)
     {
-        const Uint32 SlotBit = ExtractLSB(SlotMask);
-        const Uint32 Slot    = PlatformMisc::GetLSB(SlotBit);
+        const UInt32 SlotBit = ExtractLSB(SlotMask);
+        const UInt32 Slot    = PlatformMisc::GetLSB(SlotBit);
         VERIFY_EXPR(Streams[Slot].BufferUId >= 0 && Key.Streams[Slot].BufferUId >= 0);
         if (Streams[Slot] != Key.Streams[Slot])
             return false;
@@ -248,10 +248,10 @@ const GLObjectWrappers::GLVertexArrayObj& VAOCache::GetVAO(const VAOAttribs& Att
     // Construct the key
     VAOHashKey Key{Attribs};
 
-    for (Uint32 SlotMask = Key.UsedSlotsMask; SlotMask != 0;)
+    for (UInt32 SlotMask = Key.UsedSlotsMask; SlotMask != 0;)
     {
-        const Uint32 SlotBit = ExtractLSB(SlotMask);
-        const Uint32 Slot    = PlatformMisc::GetLSB(SlotBit);
+        const UInt32 SlotBit = ExtractLSB(SlotMask);
+        const UInt32 Slot    = PlatformMisc::GetLSB(SlotBit);
 
         RefCntAutoPtr<BufferGLImpl>& pBuffer = Attribs.VertexStreams[Slot].pBuffer;
         VERIFY_EXPR(pBuffer);
@@ -291,16 +291,16 @@ const GLObjectWrappers::GLVertexArrayObj& VAOCache::GetVAO(const VAOAttribs& Att
 
         const InputLayoutDesc& InputLayout = Attribs.PSO.GetGraphicsPipelineDesc().InputLayout;
         const LayoutElement*   LayoutElems = InputLayout.LayoutElements;
-        for (Uint32 i = 0; i < InputLayout.NumElements; ++i)
+        for (UInt32 i = 0; i < InputLayout.NumElements; ++i)
         {
             const LayoutElement& LayoutElem = LayoutElems[i];
-            const Uint32         BuffSlot   = LayoutElem.BufferSlot;
+            const UInt32         BuffSlot   = LayoutElem.BufferSlot;
             VERIFY_EXPR(BuffSlot < Attribs.NumVertexStreams);
 
             // Get buffer through the strong reference. Note that we are not
             // using pointers stored in the key for safety
             const auto&   CurrStream = Attribs.VertexStreams[BuffSlot];
-            const Uint32  Stride     = Attribs.PSO.GetBufferStride(BuffSlot);
+            const UInt32  Stride     = Attribs.PSO.GetBufferStride(BuffSlot);
             BufferGLImpl* pBuffer    = Attribs.VertexStreams[BuffSlot].pBuffer;
 
             constexpr bool ResetVAO = false;
@@ -346,10 +346,10 @@ const GLObjectWrappers::GLVertexArrayObj& VAOCache::GetVAO(const VAOAttribs& Att
             m_BuffToKey[Key.IndexBufferUId].push_back(Key);
         }
 
-        for (Uint32 SlotMask = Key.UsedSlotsMask; SlotMask != 0;)
+        for (UInt32 SlotMask = Key.UsedSlotsMask; SlotMask != 0;)
         {
-            const Uint32 SlotBit = ExtractLSB(SlotMask);
-            const Uint32 Slot    = PlatformMisc::GetLSB(SlotBit);
+            const UInt32 SlotBit = ExtractLSB(SlotMask);
+            const UInt32 Slot    = PlatformMisc::GetLSB(SlotBit);
 
 #ifdef DILIGENT_DEBUG
             {

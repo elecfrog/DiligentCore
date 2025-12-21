@@ -57,9 +57,9 @@ public:
     {
         if (m_pStagingTexture)
         {
-            for (Uint32 Slice = 0; Slice < m_Desc.ArraySize; ++Slice)
+            for (UInt32 Slice = 0; Slice < m_Desc.ArraySize; ++Slice)
             {
-                for (Uint32 Mip = 0; Mip < m_Desc.MipLevels; ++Mip)
+                for (UInt32 Mip = 0; Mip < m_Desc.MipLevels; ++Mip)
                 {
                     DEV_CHECK_ERR(!IsMapped(Mip, Slice), "Releasing mapped staging texture");
                 }
@@ -80,20 +80,20 @@ public:
         m_TextureMappedSignal.Trigger();
     }
 
-    void SignalCopyScheduled(Uint64 FenceValue)
+    void SignalCopyScheduled(UInt64 FenceValue)
     {
         m_CopyScheduledFenceValue = FenceValue;
         m_CopyScheduledSignal.Trigger();
     }
 
-    void Unmap(IDeviceContext* pDeviceContext, Uint32 Mip, Uint32 Slice)
+    void Unmap(IDeviceContext* pDeviceContext, UInt32 Mip, UInt32 Slice)
     {
         VERIFY(IsMapped(Mip, Slice), "This subresource is not mapped");
         pDeviceContext->UnmapTextureSubresource(m_pStagingTexture, Mip, Slice);
         SetMappedData(Mip, Slice, MappedTextureSubresource{});
     }
 
-    void Map(IDeviceContext* pDeviceContext, Uint32 Mip, Uint32 Slice)
+    void Map(IDeviceContext* pDeviceContext, UInt32 Mip, UInt32 Slice)
     {
         VERIFY(!IsMapped(Mip, Slice), "This subresource is already mapped");
         MappedTextureSubresource MappedData;
@@ -126,7 +126,7 @@ public:
         return m_TextureMappedSignal.IsTriggered();
     }
 
-    Uint64 GetCopyScheduledFenceValue() const
+    UInt64 GetCopyScheduledFenceValue() const
     {
         VERIFY(m_CopyScheduledFenceValue != 0, "Fence value has not been initialized");
         return m_CopyScheduledFenceValue;
@@ -137,7 +137,7 @@ private:
     Threading::Signal m_TextureMappedSignal;
 
     RefCntAutoPtr<ITexture> m_pStagingTexture;
-    Uint64                  m_CopyScheduledFenceValue = 0;
+    UInt64                  m_CopyScheduledFenceValue = 0;
 };
 
 } // namespace
@@ -176,7 +176,7 @@ struct TextureUploaderD3D12_Vk::InternalData
         return m_InWorkOperations;
     }
 
-    void EnqueueCopy(UploadTexture* pUploadBuffer, ITexture* pDstTex, Uint32 dstSlice, Uint32 dstMip, bool AutoRecycle)
+    void EnqueueCopy(UploadTexture* pUploadBuffer, ITexture* pDstTex, UInt32 dstSlice, UInt32 dstMip, bool AutoRecycle)
     {
         std::lock_guard<std::mutex> QueueLock(m_PendingOperationsMtx);
         m_PendingOperations.emplace_back(PendingBufferOperation::Type::Copy, pUploadBuffer, pDstTex, dstSlice, dstMip, AutoRecycle);
@@ -188,11 +188,11 @@ struct TextureUploaderD3D12_Vk::InternalData
         m_PendingOperations.emplace_back(PendingBufferOperation::Type::Map, pUploadBuffer);
     }
 
-    Uint64 SignalFence(IDeviceContext* pContext)
+    UInt64 SignalFence(IDeviceContext* pContext)
     {
         // Fences can't be accessed from multiple threads simultaneously even
         // when protected by mutex
-        Uint64 FenceValue = m_NextFenceValue++;
+        UInt64 FenceValue = m_NextFenceValue++;
         pContext->EnqueueSignal(m_pFence, FenceValue);
         return FenceValue;
     }
@@ -240,10 +240,10 @@ struct TextureUploaderD3D12_Vk::InternalData
         Deque.emplace_back(pUploadTexture);
     }
 
-    Uint32 GetNumPendingOperations()
+    UInt32 GetNumPendingOperations()
     {
         std::lock_guard<std::mutex> QueueLock(m_PendingOperationsMtx);
-        return static_cast<Uint32>(m_PendingOperations.size());
+        return static_cast<UInt32>(m_PendingOperations.size());
     }
 
     void Execute(IDeviceContext* pContext, PendingBufferOperation& Operation);
@@ -257,8 +257,8 @@ private:
     std::unordered_map<UploadBufferDesc, std::deque<RefCntAutoPtr<UploadTexture>>> m_UploadTexturesCache;
 
     RefCntAutoPtr<IFence> m_pFence;
-    Uint64                m_NextFenceValue      = 1;
-    Uint64                m_CompletedFenceValue = 0;
+    UInt64                m_NextFenceValue      = 1;
+    UInt64                m_CompletedFenceValue = 0;
 };
 
 TextureUploaderD3D12_Vk::TextureUploaderD3D12_Vk(IReferenceCounters* pRefCounters, IRenderDevice* pDevice, const TextureUploaderDesc Desc) :
@@ -269,7 +269,7 @@ TextureUploaderD3D12_Vk::TextureUploaderD3D12_Vk(IReferenceCounters* pRefCounter
 
 TextureUploaderD3D12_Vk::~TextureUploaderD3D12_Vk()
 {
-    Uint32 NumPendingOperations = m_pInternalData->GetNumPendingOperations();
+    UInt32 NumPendingOperations = m_pInternalData->GetNumPendingOperations();
     if (NumPendingOperations != 0)
     {
         LOG_WARNING_MESSAGE("TextureUploaderD3D12_Vk::~TextureUploaderD3D12_Vk(): there ", (NumPendingOperations > 1 ? "are " : "is "),
@@ -284,7 +284,7 @@ void TextureUploaderD3D12_Vk::RenderThreadUpdate(IDeviceContext* pContext)
     auto& InWorkOperations = m_pInternalData->SwapMapQueues();
     if (!InWorkOperations.empty())
     {
-        Uint32 NumCopyOperations = 0;
+        UInt32 NumCopyOperations = 0;
         for (InternalData::PendingBufferOperation& Operation : InWorkOperations)
         {
             m_pInternalData->Execute(pContext, Operation);
@@ -296,7 +296,7 @@ void TextureUploaderD3D12_Vk::RenderThreadUpdate(IDeviceContext* pContext)
         {
             // The buffer may be recycled immediately after the copy scheduled is signaled,
             // so we must signal the fence first.
-            Uint64 SignaledFenceValue = m_pInternalData->SignalFence(pContext);
+            UInt64 SignaledFenceValue = m_pInternalData->SignalFence(pContext);
 
             for (InternalData::PendingBufferOperation& Operation : InWorkOperations)
             {
@@ -329,9 +329,9 @@ void TextureUploaderD3D12_Vk::InternalData::Execute(IDeviceContext*         pCon
     {
         case InternalData::PendingBufferOperation::Type::Map:
         {
-            for (Uint32 Slice = 0; Slice < StagingTexDesc.ArraySize; ++Slice)
+            for (UInt32 Slice = 0; Slice < StagingTexDesc.ArraySize; ++Slice)
             {
-                for (Uint32 Mip = 0; Mip < StagingTexDesc.MipLevels; ++Mip)
+                for (UInt32 Mip = 0; Mip < StagingTexDesc.MipLevels; ++Mip)
                 {
                     pUploadTex->Map(pContext, Mip, Slice);
                 }
@@ -346,9 +346,9 @@ void TextureUploaderD3D12_Vk::InternalData::Execute(IDeviceContext*         pCon
             const TextureDesc& TexDesc     = Operation.pDstTexture->GetDesc();
 
             VERIFY(pUploadTex->DbgIsMapped(), "Upload texture must be copied only after it has been mapped");
-            for (Uint32 Slice = 0; Slice < StagingTexDesc.ArraySize; ++Slice)
+            for (UInt32 Slice = 0; Slice < StagingTexDesc.ArraySize; ++Slice)
             {
-                for (Uint32 Mip = 0; Mip < StagingTexDesc.MipLevels; ++Mip)
+                for (UInt32 Mip = 0; Mip < StagingTexDesc.MipLevels; ++Mip)
                 {
                     if (pStagingTex != nullptr)
                     {
@@ -444,8 +444,8 @@ void TextureUploaderD3D12_Vk::AllocateUploadBuffer(IDeviceContext*         pCont
 
 void TextureUploaderD3D12_Vk::ScheduleGPUCopy(IDeviceContext* pContext,
                                               ITexture*       pDstTexture,
-                                              Uint32          ArraySlice,
-                                              Uint32          MipLevel,
+                                              UInt32          ArraySlice,
+                                              UInt32          MipLevel,
                                               IUploadBuffer*  pUploadBuffer,
                                               bool            AutoRecycle)
 {
@@ -465,7 +465,7 @@ void TextureUploaderD3D12_Vk::ScheduleGPUCopy(IDeviceContext* pContext,
 
         // The buffer may be recycled immediately after the copy scheduled is signaled,
         // so we must signal the fence first.
-        Uint64 SignaledFenceValue = m_pInternalData->SignalFence(pContext);
+        UInt64 SignaledFenceValue = m_pInternalData->SignalFence(pContext);
         pUploadTexture->SignalCopyScheduled(SignaledFenceValue);
         // This must be called by the same thread that signals the fence
         m_pInternalData->UpdatedCompletedFenceValue();
@@ -491,7 +491,7 @@ void TextureUploaderD3D12_Vk::RecycleBuffer(IUploadBuffer* pUploadBuffer)
 TextureUploaderStats TextureUploaderD3D12_Vk::GetStats()
 {
     TextureUploaderStats Stats;
-    Stats.NumPendingOperations = static_cast<Uint32>(m_pInternalData->GetNumPendingOperations());
+    Stats.NumPendingOperations = static_cast<UInt32>(m_pInternalData->GetNumPendingOperations());
     return Stats;
 }
 

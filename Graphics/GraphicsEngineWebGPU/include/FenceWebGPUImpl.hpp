@@ -52,21 +52,21 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_FenceWebGPU, TFenceBase)
 
     /// Implementation of IFence::GetCompletedValue() in WebGPU backend.
-    Uint64 DILIGENT_CALL_TYPE GetCompletedValue() override final;
+    UInt64 DILIGENT_CALL_TYPE GetCompletedValue() override final;
 
     /// Implementation of IFence::Signal() in WebGPU backend.
-    void DILIGENT_CALL_TYPE Signal(Uint64 Value) override final;
+    void DILIGENT_CALL_TYPE Signal(UInt64 Value) override final;
 
     /// Implementation of IFence::Wait() in WebGPU backend.
-    void DILIGENT_CALL_TYPE Wait(Uint64 Value) override final;
+    void DILIGENT_CALL_TYPE Wait(UInt64 Value) override final;
 
-    void AppendSyncPoints(const std::vector<RefCntAutoPtr<SyncPointWebGPUImpl>>& SyncPoints, Uint64 Value);
+    void AppendSyncPoints(const std::vector<RefCntAutoPtr<SyncPointWebGPUImpl>>& SyncPoints, UInt64 Value);
 
 private:
     void ProcessSyncPoints();
 
 private:
-    using SyncPointGroup = std::pair<Uint64, std::vector<RefCntAutoPtr<SyncPointWebGPUImpl>>>;
+    using SyncPointGroup = std::pair<UInt64, std::vector<RefCntAutoPtr<SyncPointWebGPUImpl>>>;
     std::deque<SyncPointGroup> m_SyncGroups;
 };
 

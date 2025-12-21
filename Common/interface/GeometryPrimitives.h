@@ -38,7 +38,7 @@ DILIGENT_BEGIN_NAMESPACE(Diligent)
 
 /// Geometry primitive vertex flags.
 // clang-format off
-DILIGENT_TYPED_ENUM(GEOMETRY_PRIMITIVE_VERTEX_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(GEOMETRY_PRIMITIVE_VERTEX_FLAGS, UInt32)
 {
     /// No flags.
     GEOMETRY_PRIMITIVE_VERTEX_FLAG_NONE = 0u,
@@ -73,7 +73,7 @@ DEFINE_FLAG_ENUM_OPERATORS(GEOMETRY_PRIMITIVE_VERTEX_FLAGS)
 
 /// Geometry primitive types.
 // clang-format off
-DILIGENT_TYPED_ENUM(GEOMETRY_PRIMITIVE_TYPE, Uint32)
+DILIGENT_TYPED_ENUM(GEOMETRY_PRIMITIVE_TYPE, UInt32)
 {
     /// Geometry primitive type is undefined.
     GEOMETRY_PRIMITIVE_TYPE_UNDEFINED = 0u,
@@ -105,14 +105,14 @@ struct GeometryPrimitiveAttributes
     /// For example, for a cube geometry primitive, the cube faces are subdivided
     /// into `Subdivision x Subdivision` quads, producing `(Subdivision + 1)^2` vertices
     /// per face.
-    Uint32 NumSubdivisions DEFAULT_INITIALIZER(0);
+    UInt32 NumSubdivisions DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     GeometryPrimitiveAttributes() noexcept = default;
 
     explicit GeometryPrimitiveAttributes(GEOMETRY_PRIMITIVE_TYPE         _Type,
                                          GEOMETRY_PRIMITIVE_VERTEX_FLAGS _VertexFlags    = GEOMETRY_PRIMITIVE_VERTEX_FLAG_ALL,
-                                         Uint32                          _NumSubdivision = 1) noexcept :
+                                         UInt32                          _NumSubdivision = 1) noexcept :
         Type{_Type},
         VertexFlags{_VertexFlags},
         NumSubdivisions{_NumSubdivision}
@@ -134,7 +134,7 @@ struct CubeGeometryPrimitiveAttributes DILIGENT_DERIVE(GeometryPrimitiveAttribut
 #if DILIGENT_CPP_INTERFACE
 	explicit CubeGeometryPrimitiveAttributes(float                           _Size           = 1,
                                              GEOMETRY_PRIMITIVE_VERTEX_FLAGS _VertexFlags    = GEOMETRY_PRIMITIVE_VERTEX_FLAG_ALL,
-                                             Uint32                          _NumSubdivision = 1) noexcept :
+                                             UInt32                          _NumSubdivision = 1) noexcept :
         GeometryPrimitiveAttributes{GEOMETRY_PRIMITIVE_TYPE_CUBE, _VertexFlags, _NumSubdivision},
         Size{_Size}
     {}
@@ -153,7 +153,7 @@ struct SphereGeometryPrimitiveAttributes DILIGENT_DERIVE(GeometryPrimitiveAttrib
 #if DILIGENT_CPP_INTERFACE
 	explicit SphereGeometryPrimitiveAttributes(float                           _Radius         = 1,
                                                GEOMETRY_PRIMITIVE_VERTEX_FLAGS _VertexFlags    = GEOMETRY_PRIMITIVE_VERTEX_FLAG_ALL,
-                                               Uint32                          _NumSubdivision = 1) noexcept :
+                                               UInt32                          _NumSubdivision = 1) noexcept :
         GeometryPrimitiveAttributes{GEOMETRY_PRIMITIVE_TYPE_SPHERE, _VertexFlags, _NumSubdivision},
         Radius{_Radius}
     {}
@@ -165,18 +165,18 @@ struct SphereGeometryPrimitiveAttributes DILIGENT_DERIVE(GeometryPrimitiveAttrib
 struct GeometryPrimitiveInfo
 {
     /// The number of vertices.
-    Uint32 NumVertices DEFAULT_INITIALIZER(0);
+    UInt32 NumVertices DEFAULT_INITIALIZER(0);
 
     /// The number of indices.
-    Uint32 NumIndices DEFAULT_INITIALIZER(0);
+    UInt32 NumIndices DEFAULT_INITIALIZER(0);
 
     /// The size of the vertex in bytes.
-    Uint32 VertexSize DEFAULT_INITIALIZER(0);
+    UInt32 VertexSize DEFAULT_INITIALIZER(0);
 };
 typedef struct GeometryPrimitiveInfo GeometryPrimitiveInfo;
 
 /// Returns the size of the geometry primitive vertex in bytes.
-Uint32 GetGeometryPrimitiveVertexSize(GEOMETRY_PRIMITIVE_VERTEX_FLAGS VertexFlags);
+UInt32 GetGeometryPrimitiveVertexSize(GEOMETRY_PRIMITIVE_VERTEX_FLAGS VertexFlags);
 
 /// Creates a geometry primitive
 ///

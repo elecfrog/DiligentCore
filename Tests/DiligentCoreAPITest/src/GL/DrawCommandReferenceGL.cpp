@@ -74,7 +74,7 @@ public:
             glDeleteProgram(m_glProg);
     }
 
-    void Draw(Uint32 Width, Uint32 Height, const float* pClearColor)
+    void Draw(UInt32 Width, UInt32 Height, const float* pClearColor)
     {
         auto* pEnv = TestingEnvironmentGL::GetInstance();
 

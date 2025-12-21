@@ -46,7 +46,7 @@ class QueryManagerVk
 {
 public:
     QueryManagerVk(RenderDeviceVkImpl* RenderDeviceVk,
-                   const Uint32        QueryHeapSizes[],
+                   const UInt32        QueryHeapSizes[],
                    SoftwareQueueIndex  CmdQueueInd);
     ~QueryManagerVk();
 
@@ -57,22 +57,22 @@ public:
     QueryManagerVk& operator=(      QueryManagerVk&&) = delete;
     // clang-format on
 
-    static constexpr Uint32 InvalidIndex = static_cast<Uint32>(-1);
+    static constexpr UInt32 InvalidIndex = static_cast<UInt32>(-1);
 
-    Uint32 AllocateQuery(QUERY_TYPE Type);
-    void   DiscardQuery(QUERY_TYPE Type, Uint32 Index);
+    UInt32 AllocateQuery(QUERY_TYPE Type);
+    void   DiscardQuery(QUERY_TYPE Type, UInt32 Index);
 
     VkQueryPool GetQueryPool(QUERY_TYPE Type) const
     {
         return m_Pools[Type].GetVkQueryPool();
     }
 
-    Uint64 GetCounterFrequency() const
+    UInt64 GetCounterFrequency() const
     {
         return m_CounterFrequency;
     }
 
-    Uint32 ResetStaleQueries(const VulkanUtilities::LogicalDevice& LogicalDevice,
+    UInt32 ResetStaleQueries(const VulkanUtilities::LogicalDevice& LogicalDevice,
                              VulkanUtilities::CommandBuffer&       CmdBuff);
 
     SoftwareQueueIndex GetCommandQueueId() const
@@ -98,15 +98,15 @@ private:
         QueryPoolInfo& operator=(      QueryPoolInfo&&) = delete;
         // clang-format on
 
-        Uint32 Allocate();
-        void   Discard(Uint32 Index);
-        Uint32 ResetStaleQueries(const VulkanUtilities::LogicalDevice& LogicalDevice, VulkanUtilities::CommandBuffer& CmdBuff);
+        UInt32 Allocate();
+        void   Discard(UInt32 Index);
+        UInt32 ResetStaleQueries(const VulkanUtilities::LogicalDevice& LogicalDevice, VulkanUtilities::CommandBuffer& CmdBuff);
 
         QUERY_TYPE GetType() const
         {
             return m_Type;
         }
-        Uint32 GetQueryCount() const
+        UInt32 GetQueryCount() const
         {
             return m_QueryCount;
         }
@@ -114,7 +114,7 @@ private:
         {
             return m_vkQueryPool;
         }
-        Uint32 GetMaxAllocatedQueries() const
+        UInt32 GetMaxAllocatedQueries() const
         {
             return m_MaxAllocatedQueries;
         }
@@ -127,19 +127,19 @@ private:
         VulkanUtilities::QueryPoolWrapper m_vkQueryPool;
 
         QUERY_TYPE m_Type                = QUERY_TYPE_UNDEFINED;
-        Uint32     m_QueryCount          = 0;
-        Uint32     m_MaxAllocatedQueries = 0;
+        UInt32     m_QueryCount          = 0;
+        UInt32     m_MaxAllocatedQueries = 0;
 
         std::mutex          m_QueriesMtx;
-        std::vector<Uint32> m_AvailableQueries;
-        std::vector<Uint32> m_StaleQueries;
+        std::vector<UInt32> m_AvailableQueries;
+        std::vector<UInt32> m_StaleQueries;
     };
 
     const SoftwareQueueIndex m_CommandQueueId;
 
     std::array<QueryPoolInfo, QUERY_TYPE_NUM_TYPES> m_Pools;
 
-    Uint64 m_CounterFrequency = 0;
+    UInt64 m_CounterFrequency = 0;
 };
 
 } // namespace Diligent

@@ -63,10 +63,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_Archiver, TBase)
 
     /// Implementation of IArchiver::SerializeToBlob().
-    virtual Bool DILIGENT_CALL_TYPE SerializeToBlob(Uint32 ContentVersion, IDataBlob** ppBlob) override final;
+    virtual Bool DILIGENT_CALL_TYPE SerializeToBlob(UInt32 ContentVersion, IDataBlob** ppBlob) override final;
 
     /// Implementation of IArchiver::SerializeToStream().
-    virtual Bool DILIGENT_CALL_TYPE SerializeToStream(Uint32 ContentVersion, IFileStream* pStream) override final;
+    virtual Bool DILIGENT_CALL_TYPE SerializeToStream(UInt32 ContentVersion, IFileStream* pStream) override final;
 
     /// Implementation of IArchiver::AddShader().
     virtual Bool DILIGENT_CALL_TYPE AddShader(IShader* pShader) override final;

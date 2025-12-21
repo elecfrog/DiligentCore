@@ -67,7 +67,7 @@ DeviceContextWebGPUImpl::DeviceContextWebGPUImpl(IReferenceCounters*      pRefCo
     m_MappedBuffers.reserve(16);
 }
 
-void DeviceContextWebGPUImpl::Begin(Uint32 ImmediateContextId)
+void DeviceContextWebGPUImpl::Begin(UInt32 ImmediateContextId)
 {
     DEV_CHECK_ERR(ImmediateContextId == 0, "WebGPU supports only one immediate context");
     TDeviceContextBase::Begin(DeviceContextIndex{ImmediateContextId}, COMMAND_QUEUE_TYPE_GRAPHICS);
@@ -80,15 +80,15 @@ void DeviceContextWebGPUImpl::SetPipelineState(IPipelineState* pPipelineState)
 
     m_EncoderState.Invalidate(WebGPUEncoderState::CMD_ENCODER_STATE_PIPELINE_STATE);
 
-    Uint32 DvpCompatibleSRBCount = 0;
+    UInt32 DvpCompatibleSRBCount = 0;
     PrepareCommittedResources(m_BindInfo, DvpCompatibleSRBCount);
     // Commit all SRBs when PSO changes
     m_BindInfo.StaleSRBMask |= m_BindInfo.ActiveSRBMask;
 
-    const Uint32 SignatureCount = m_pPipelineState->GetResourceSignatureCount();
+    const UInt32 SignatureCount = m_pPipelineState->GetResourceSignatureCount();
 
-    Uint32 ActiveBindGroupIndex = 0;
-    for (Uint32 i = 0; i < SignatureCount; ++i)
+    UInt32 ActiveBindGroupIndex = 0;
+    for (UInt32 i = 0; i < SignatureCount; ++i)
     {
         PipelineResourceSignatureWebGPUImpl* pSign = m_pPipelineState->GetResourceSignature(i);
         if (pSign == nullptr || pSign->GetNumBindGroups() == 0)
@@ -111,9 +111,9 @@ void DeviceContextWebGPUImpl::SetPipelineState(IPipelineState* pPipelineState)
             WebGPUResourceBindInfo::BindGroupInfo& BindGroup = m_BindInfo.BindGroups[i][BindGroupId];
             if (pSign->HasBindGroup(BindGroupId))
             {
-                const Uint32 DynamicOffsetCount = pSign->GetDynamicOffsetCount(BindGroupId);
+                const UInt32 DynamicOffsetCount = pSign->GetDynamicOffsetCount(BindGroupId);
                 BindGroup.DynamicBufferOffsets.resize(DynamicOffsetCount);
-                for (Uint32& Offset : BindGroup.DynamicBufferOffsets)
+                for (UInt32& Offset : BindGroup.DynamicBufferOffsets)
                     Offset = ~0u;
 
                 BindGroup.BindIndex = ActiveBindGroupIndex++;
@@ -142,8 +142,8 @@ void DeviceContextWebGPUImpl::DvpValidateCommittedShaderResources()
 
     DvpVerifySRBCompatibility(m_BindInfo);
 
-    const Uint32 SignCount = m_pPipelineState->GetResourceSignatureCount();
-    for (Uint32 i = 0; i < SignCount; ++i)
+    const UInt32 SignCount = m_pPipelineState->GetResourceSignatureCount();
+    for (UInt32 i = 0; i < SignCount; ++i)
     {
         const PipelineResourceSignatureWebGPUImpl* pSign = m_pPipelineState->GetResourceSignature(i);
         if (pSign == nullptr || pSign->GetNumBindGroups() == 0)
@@ -186,11 +186,11 @@ void DeviceContextWebGPUImpl::CommitShaderResources(IShaderResourceBinding*     
 
     const WGPUDevice wgpuDevice = m_pDevice->GetWebGPUDevice();
 
-    const Uint32                         SRBIndex   = pResBindingWebGPU->GetBindingIndex();
+    const UInt32                         SRBIndex   = pResBindingWebGPU->GetBindingIndex();
     PipelineResourceSignatureWebGPUImpl* pSignature = pResBindingWebGPU->GetSignature();
     m_BindInfo.Set(SRBIndex, pResBindingWebGPU);
 
-    Uint32 BGIndex = 0;
+    UInt32 BGIndex = 0;
     for (PipelineResourceSignatureWebGPUImpl::BIND_GROUP_ID BindGroupId : {PipelineResourceSignatureWebGPUImpl::BIND_GROUP_ID_STATIC_MUTABLE,
                                                                            PipelineResourceSignatureWebGPUImpl::BIND_GROUP_ID_DYNAMIC})
     {
@@ -208,31 +208,31 @@ void DeviceContextWebGPUImpl::CommitShaderResources(IShaderResourceBinding*     
     VERIFY_EXPR(BGIndex == ResourceCache.GetNumBindGroups());
 }
 
-void SetBindGroup(WGPURenderPassEncoder Encoder, uint32_t GroupIndex, WGPUBindGroup Group, const std::vector<Uint32>& DynamicOffsets)
+void SetBindGroup(WGPURenderPassEncoder Encoder, uint32_t GroupIndex, WGPUBindGroup Group, const std::vector<UInt32>& DynamicOffsets)
 {
     wgpuRenderPassEncoderSetBindGroup(Encoder, GroupIndex, Group, DynamicOffsets.size(), !DynamicOffsets.empty() ? DynamicOffsets.data() : nullptr);
 }
-void SetBindGroup(WGPUComputePassEncoder Encoder, uint32_t GroupIndex, WGPUBindGroup Group, const std::vector<Uint32>& DynamicOffsets)
+void SetBindGroup(WGPUComputePassEncoder Encoder, uint32_t GroupIndex, WGPUBindGroup Group, const std::vector<UInt32>& DynamicOffsets)
 {
     wgpuComputePassEncoderSetBindGroup(Encoder, GroupIndex, Group, DynamicOffsets.size(), !DynamicOffsets.empty() ? DynamicOffsets.data() : nullptr);
 }
 
 template <typename CmdEncoderType>
-void DeviceContextWebGPUImpl::CommitBindGroups(CmdEncoderType CmdEncoder, Uint32 CommitSRBMask)
+void DeviceContextWebGPUImpl::CommitBindGroups(CmdEncoderType CmdEncoder, UInt32 CommitSRBMask)
 {
     VERIFY(CommitSRBMask != 0, "This method should not be called when there is nothing to commit");
 
-    const Uint32 FirstSign = PlatformMisc::GetLSB(CommitSRBMask);
-    const Uint32 LastSign  = PlatformMisc::GetMSB(CommitSRBMask);
+    const UInt32 FirstSign = PlatformMisc::GetLSB(CommitSRBMask);
+    const UInt32 LastSign  = PlatformMisc::GetMSB(CommitSRBMask);
     VERIFY_EXPR(LastSign < m_pPipelineState->GetResourceSignatureCount());
 
-    for (Uint32 sign = FirstSign; sign <= LastSign; ++sign)
+    for (UInt32 sign = FirstSign; sign <= LastSign; ++sign)
     {
-        const Uint32 SRBBit = 1u << sign;
+        const UInt32 SRBBit = 1u << sign;
         if ((CommitSRBMask & SRBBit) == 0)
             continue;
 
-        Uint32 BindGroupCacheIndex = 0;
+        UInt32 BindGroupCacheIndex = 0;
         for (PipelineResourceSignatureWebGPUImpl::BIND_GROUP_ID BindGroupId : {PipelineResourceSignatureWebGPUImpl::BIND_GROUP_ID_STATIC_MUTABLE,
                                                                                PipelineResourceSignatureWebGPUImpl::BIND_GROUP_ID_DYNAMIC})
         {
@@ -279,7 +279,7 @@ void DeviceContextWebGPUImpl::InvalidateState()
     m_BindInfo.Reset();
 }
 
-void DeviceContextWebGPUImpl::SetStencilRef(Uint32 StencilRef)
+void DeviceContextWebGPUImpl::SetStencilRef(UInt32 StencilRef)
 {
     if (TDeviceContextBase::SetStencilRef(StencilRef, 0))
         m_EncoderState.Invalidate(WebGPUEncoderState::CMD_ENCODER_STATE_STENCIL_REF);
@@ -291,10 +291,10 @@ void DeviceContextWebGPUImpl::SetBlendFactors(const float* pBlendFactors)
         m_EncoderState.Invalidate(WebGPUEncoderState::CMD_ENCODER_STATE_BLEND_FACTORS);
 }
 
-void DeviceContextWebGPUImpl::SetVertexBuffers(Uint32                         StartSlot,
-                                               Uint32                         NumBuffersSet,
+void DeviceContextWebGPUImpl::SetVertexBuffers(UInt32                         StartSlot,
+                                               UInt32                         NumBuffersSet,
                                                IBuffer* const*                ppBuffers,
-                                               const Uint64*                  pOffsets,
+                                               const UInt64*                  pOffsets,
                                                RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
                                                SET_VERTEX_BUFFERS_FLAGS       Flags)
 {
@@ -304,23 +304,23 @@ void DeviceContextWebGPUImpl::SetVertexBuffers(Uint32                         St
 
 
 void DeviceContextWebGPUImpl::SetIndexBuffer(IBuffer*                       pIndexBuffer,
-                                             Uint64                         ByteOffset,
+                                             UInt64                         ByteOffset,
                                              RESOURCE_STATE_TRANSITION_MODE StateTransitionMode)
 {
     TDeviceContextBase::SetIndexBuffer(pIndexBuffer, ByteOffset, StateTransitionMode);
     m_EncoderState.Invalidate(WebGPUEncoderState::CMD_ENCODER_STATE_INDEX_BUFFER);
 }
 
-void DeviceContextWebGPUImpl::SetViewports(Uint32          NumViewports,
+void DeviceContextWebGPUImpl::SetViewports(UInt32          NumViewports,
                                            const Viewport* pViewports,
-                                           Uint32          RTWidth,
-                                           Uint32          RTHeight)
+                                           UInt32          RTWidth,
+                                           UInt32          RTHeight)
 {
     TDeviceContextBase::SetViewports(NumViewports, pViewports, RTWidth, RTHeight);
     m_EncoderState.Invalidate(WebGPUEncoderState::CMD_ENCODER_STATE_VIEWPORTS);
 }
 
-void DeviceContextWebGPUImpl::SetScissorRects(Uint32 NumRects, const Rect* pRects, Uint32 RTWidth, Uint32 RTHeight)
+void DeviceContextWebGPUImpl::SetScissorRects(UInt32 NumRects, const Rect* pRects, UInt32 RTWidth, UInt32 RTHeight)
 {
     TDeviceContextBase::SetScissorRects(NumRects, pRects, RTWidth, RTHeight);
     m_EncoderState.Invalidate(WebGPUEncoderState::CMD_ENCODER_STATE_SCISSOR_RECTS);
@@ -334,7 +334,7 @@ void DeviceContextWebGPUImpl::SetRenderTargetsExt(const SetRenderTargetsAttribs&
             Attribs.NumRenderTargets != m_NumBoundRenderTargets ||
             Attribs.pDepthStencil != m_pBoundDepthStencil ||
             Attribs.pShadingRateMap != m_pBoundShadingRateMap;
-        for (Uint32 RTIndex = 0; RTIndex < m_NumBoundRenderTargets && !RTChanged; ++RTIndex)
+        for (UInt32 RTIndex = 0; RTIndex < m_NumBoundRenderTargets && !RTChanged; ++RTIndex)
             RTChanged = m_pBoundRenderTargets[RTIndex] != Attribs.ppRenderTargets[RTIndex];
 
         if (RTChanged)
@@ -356,7 +356,7 @@ void DeviceContextWebGPUImpl::BeginRenderPass(const BeginRenderPassAttribs& Attr
 {
     TDeviceContextBase::BeginRenderPass(Attribs);
     m_AttachmentClearValues.resize(Attribs.ClearValueCount);
-    for (Uint32 RTIndex = 0; RTIndex < Attribs.ClearValueCount; ++RTIndex)
+    for (UInt32 RTIndex = 0; RTIndex < Attribs.ClearValueCount; ++RTIndex)
         m_AttachmentClearValues[RTIndex] = Attribs.pClearValues[RTIndex];
     CommitSubpassRenderTargets();
 }
@@ -402,7 +402,7 @@ void DeviceContextWebGPUImpl::MultiDraw(const MultiDrawAttribs& Attribs)
         return;
 
     WGPURenderPassEncoder wgpuRenderCmdEncoder = PrepareForDraw(Attribs.Flags);
-    for (Uint32 DrawIdx = 0; DrawIdx < Attribs.DrawCount; ++DrawIdx)
+    for (UInt32 DrawIdx = 0; DrawIdx < Attribs.DrawCount; ++DrawIdx)
     {
         const MultiDrawItem& Item = Attribs.pDrawItems[DrawIdx];
         if (Item.NumVertices > 0)
@@ -437,7 +437,7 @@ void DeviceContextWebGPUImpl::MultiDrawIndexed(const MultiDrawIndexedAttribs& At
         return;
 
     WGPURenderPassEncoder wgpuRenderCmdEncoder = PrepareForIndexedDraw(Attribs.Flags, Attribs.IndexType);
-    for (Uint32 DrawIdx = 0; DrawIdx < Attribs.DrawCount; ++DrawIdx)
+    for (UInt32 DrawIdx = 0; DrawIdx < Attribs.DrawCount; ++DrawIdx)
     {
         const MultiDrawIndexedItem& Item = Attribs.pDrawItems[DrawIdx];
         if (Item.NumIndices > 0)
@@ -456,10 +456,10 @@ void DeviceContextWebGPUImpl::DrawIndirect(const DrawIndirectAttribs& Attribs)
 #endif
 
     WGPURenderPassEncoder wgpuRenderCmdEncoder = PrepareForDraw(Attribs.Flags);
-    Uint64                IndirectBufferOffset = Attribs.DrawArgsOffset;
+    UInt64                IndirectBufferOffset = Attribs.DrawArgsOffset;
     WGPUBuffer            wgpuIndirectBuffer   = PrepareForIndirectCommand(Attribs.pAttribsBuffer, IndirectBufferOffset);
 
-    for (Uint32 DrawIdx = 0; DrawIdx < Attribs.DrawCount; ++DrawIdx)
+    for (UInt32 DrawIdx = 0; DrawIdx < Attribs.DrawCount; ++DrawIdx)
     {
         wgpuRenderPassEncoderDrawIndirect(wgpuRenderCmdEncoder, wgpuIndirectBuffer, IndirectBufferOffset);
         IndirectBufferOffset += Attribs.DrawArgsStride;
@@ -477,10 +477,10 @@ void DeviceContextWebGPUImpl::DrawIndexedIndirect(const DrawIndexedIndirectAttri
 #endif
 
     WGPURenderPassEncoder wgpuRenderCmdEncoder = PrepareForIndexedDraw(Attribs.Flags, Attribs.IndexType);
-    Uint64                IndirectBufferOffset = Attribs.DrawArgsOffset;
+    UInt64                IndirectBufferOffset = Attribs.DrawArgsOffset;
     WGPUBuffer            wgpuIndirectBuffer   = PrepareForIndirectCommand(Attribs.pAttribsBuffer, IndirectBufferOffset);
 
-    for (Uint32 DrawIdx = 0; DrawIdx < Attribs.DrawCount; ++DrawIdx)
+    for (UInt32 DrawIdx = 0; DrawIdx < Attribs.DrawCount; ++DrawIdx)
     {
         wgpuRenderPassEncoderDrawIndexedIndirect(wgpuRenderCmdEncoder, wgpuIndirectBuffer, IndirectBufferOffset);
         IndirectBufferOffset += Attribs.DrawArgsStride;
@@ -523,7 +523,7 @@ void DeviceContextWebGPUImpl::DispatchComputeIndirect(const DispatchComputeIndir
 #endif
 
     WGPUComputePassEncoder wgpuComputeCmdEncoder = PrepareForDispatchCompute();
-    Uint64                 IndirectBufferOffset  = Attribs.DispatchArgsByteOffset;
+    UInt64                 IndirectBufferOffset  = Attribs.DispatchArgsByteOffset;
     WGPUBuffer             wgpuIndirectBuffer    = PrepareForIndirectCommand(Attribs.pAttribsBuffer, IndirectBufferOffset);
 
     wgpuComputePassEncoderDispatchWorkgroupsIndirect(wgpuComputeCmdEncoder, wgpuIndirectBuffer, IndirectBufferOffset);
@@ -532,7 +532,7 @@ void DeviceContextWebGPUImpl::DispatchComputeIndirect(const DispatchComputeIndir
 void DeviceContextWebGPUImpl::ClearDepthStencil(ITextureView*                  pView,
                                                 CLEAR_DEPTH_STENCIL_FLAGS      ClearFlags,
                                                 float                          Depth,
-                                                Uint8                          Stencil,
+                                                UInt8                          Stencil,
                                                 RESOURCE_STATE_TRANSITION_MODE StateTransitionMode)
 {
     TDeviceContextBase::ClearDepthStencil(pView);
@@ -566,7 +566,7 @@ void DeviceContextWebGPUImpl::ClearRenderTarget(ITextureView*                  p
         RGBA = Zero;
 
     Int32 RTIndex = -1;
-    for (Uint32 Index = 0; Index < m_NumBoundRenderTargets; ++Index)
+    for (UInt32 Index = 0; Index < m_NumBoundRenderTargets; ++Index)
     {
         if (m_pBoundRenderTargets[Index] == pView)
         {
@@ -588,8 +588,8 @@ void DeviceContextWebGPUImpl::ClearRenderTarget(ITextureView*                  p
 }
 
 void DeviceContextWebGPUImpl::UpdateBuffer(IBuffer*                       pBuffer,
-                                           Uint64                         Offset,
-                                           Uint64                         Size,
+                                           UInt64                         Offset,
+                                           UInt64                         Size,
                                            const void*                    pData,
                                            RESOURCE_STATE_TRANSITION_MODE StateTransitionMode)
 {
@@ -620,11 +620,11 @@ void DeviceContextWebGPUImpl::UpdateBuffer(IBuffer*                       pBuffe
 }
 
 void DeviceContextWebGPUImpl::CopyBuffer(IBuffer*                       pSrcBuffer,
-                                         Uint64                         SrcOffset,
+                                         UInt64                         SrcOffset,
                                          RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
                                          IBuffer*                       pDstBuffer,
-                                         Uint64                         DstOffset,
-                                         Uint64                         Size,
+                                         UInt64                         DstOffset,
+                                         UInt64                         Size,
                                          RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode)
 {
     TDeviceContextBase::CopyBuffer(pSrcBuffer, SrcOffset, SrcBufferTransitionMode, pDstBuffer, DstOffset, Size, DstBufferTransitionMode);
@@ -725,7 +725,7 @@ void DeviceContextWebGPUImpl::MapBuffer(IBuffer*  pBuffer,
         }
         else if (BuffDesc.Usage == USAGE_DYNAMIC)
         {
-            const Uint32 DynamicBufferId = pBufferWebGPU->GetDynamicBufferId();
+            const UInt32 DynamicBufferId = pBufferWebGPU->GetDynamicBufferId();
             VERIFY(DynamicBufferId != ~0u, "Dynamic buffer '", BuffDesc.Name, "' does not have dynamic buffer ID");
             if (m_MappedBuffers.size() <= DynamicBufferId)
                 m_MappedBuffers.resize(DynamicBufferId + 1);
@@ -823,7 +823,7 @@ void DeviceContextWebGPUImpl::DvpVerifyDynamicAllocation(const BufferWebGPUImpl*
     const BufferDesc& BuffDesc = pBuffer->GetDesc();
     VERIFY_EXPR(BuffDesc.Usage == USAGE_DYNAMIC);
 
-    const Uint32 DynamicBufferId = pBuffer->GetDynamicBufferId();
+    const UInt32 DynamicBufferId = pBuffer->GetDynamicBufferId();
     VERIFY(DynamicBufferId != ~0u, "Dynamic buffer '", pBuffer->GetDesc().Name, "' does not have dynamic buffer ID");
 
     if (DynamicBufferId >= m_MappedBuffers.size())
@@ -848,7 +848,7 @@ const DynamicMemoryManagerWebGPU::Allocation& DeviceContextWebGPUImpl::GetDynami
 {
     VERIFY_EXPR(pBuffer->GetDesc().Usage == USAGE_DYNAMIC);
 
-    const Uint32 DynamicBufferId = pBuffer->GetDynamicBufferId();
+    const UInt32 DynamicBufferId = pBuffer->GetDynamicBufferId();
     VERIFY(DynamicBufferId != ~0u, "Dynamic buffer '", pBuffer->GetDesc().Name, "' does not have dynamic buffer ID");
     DEV_CHECK_ERR(DynamicBufferId < m_MappedBuffers.size(), "Buffer '", pBuffer->GetDesc().Name, "' has not been mapped in this context");
 
@@ -856,7 +856,7 @@ const DynamicMemoryManagerWebGPU::Allocation& DeviceContextWebGPUImpl::GetDynami
     return DynamicBufferId < m_MappedBuffers.size() ? m_MappedBuffers[DynamicBufferId].Allocation : NullAllocation;
 }
 
-Uint64 DeviceContextWebGPUImpl::GetDynamicBufferOffset(const BufferWebGPUImpl* pBuffer, bool VerifyAllocation) const
+UInt64 DeviceContextWebGPUImpl::GetDynamicBufferOffset(const BufferWebGPUImpl* pBuffer, bool VerifyAllocation) const
 {
     VERIFY_EXPR(pBuffer != nullptr);
 
@@ -870,7 +870,7 @@ Uint64 DeviceContextWebGPUImpl::GetDynamicBufferOffset(const BufferWebGPUImpl* p
     }
 #endif
 
-    const Uint32 DynamicBufferId = pBuffer->GetDynamicBufferId();
+    const UInt32 DynamicBufferId = pBuffer->GetDynamicBufferId();
     VERIFY(DynamicBufferId != ~0u, "Dynamic buffer '", pBuffer->GetDesc().Name, "' does not have dynamic buffer ID");
     return DynamicBufferId < m_MappedBuffers.size() ?
         m_MappedBuffers[DynamicBufferId].Allocation.Offset :
@@ -879,8 +879,8 @@ Uint64 DeviceContextWebGPUImpl::GetDynamicBufferOffset(const BufferWebGPUImpl* p
 
 
 void DeviceContextWebGPUImpl::UpdateTexture(ITexture*                      pTexture,
-                                            Uint32                         MipLevel,
-                                            Uint32                         Slice,
+                                            UInt32                         MipLevel,
+                                            UInt32                         Slice,
                                             const Box&                     DstBox,
                                             const TextureSubResData&       SubresData,
                                             RESOURCE_STATE_TRANSITION_MODE SrcBufferStateTransitionMode,
@@ -931,7 +931,7 @@ void DeviceContextWebGPUImpl::UpdateTexture(ITexture*                      pText
         WGPUImageCopyBuffer wgpuImageCopySrc{};
         wgpuImageCopySrc.buffer              = pSrcStagingBuffer != nullptr ? pSrcStagingBuffer->wgpuBuffer : pSrcBufferWebGPU->GetWebGPUBuffer();
         wgpuImageCopySrc.layout.offset       = SubresData.SrcOffset;
-        wgpuImageCopySrc.layout.bytesPerRow  = static_cast<Uint32>(SubresData.Stride);
+        wgpuImageCopySrc.layout.bytesPerRow  = static_cast<UInt32>(SubresData.Stride);
         wgpuImageCopySrc.layout.rowsPerImage = wgpuCopySize.height;
 
         wgpuCommandEncoderCopyBufferToTexture(GetCommandEncoder(), &wgpuImageCopySrc, &wgpuImageCopyDst, &wgpuCopySize);
@@ -955,12 +955,12 @@ void DeviceContextWebGPUImpl::UpdateTexture(ITexture*                      pText
             return;
         }
 
-        for (Uint32 LayerIdx = 0; LayerIdx < CopyInfo.Region.Depth(); ++LayerIdx)
+        for (UInt32 LayerIdx = 0; LayerIdx < CopyInfo.Region.Depth(); ++LayerIdx)
         {
-            for (Uint32 RawIdx = 0; RawIdx < CopyInfo.RowCount; ++RawIdx)
+            for (UInt32 RawIdx = 0; RawIdx < CopyInfo.RowCount; ++RawIdx)
             {
-                const Uint64 SrcOffset = RawIdx * SubresData.Stride + LayerIdx * SubresData.DepthStride;
-                const Uint64 DstOffset = RawIdx * CopyInfo.RowStride + LayerIdx * CopyInfo.DepthStride;
+                const UInt64 SrcOffset = RawIdx * SubresData.Stride + LayerIdx * SubresData.DepthStride;
+                const UInt64 DstOffset = RawIdx * CopyInfo.RowStride + LayerIdx * CopyInfo.DepthStride;
                 memcpy(UploadAlloc.pData + DstOffset, static_cast<const uint8_t*>(SubresData.pData) + SrcOffset, StaticCast<size_t>(CopyInfo.RowSize));
             }
         }
@@ -968,8 +968,8 @@ void DeviceContextWebGPUImpl::UpdateTexture(ITexture*                      pText
         WGPUImageCopyBuffer wgpuImageCopySrc{};
         wgpuImageCopySrc.buffer              = UploadAlloc.wgpuBuffer;
         wgpuImageCopySrc.layout.offset       = UploadAlloc.Offset;
-        wgpuImageCopySrc.layout.bytesPerRow  = static_cast<Uint32>(CopyInfo.RowStride);
-        wgpuImageCopySrc.layout.rowsPerImage = static_cast<Uint32>(CopyInfo.DepthStride / CopyInfo.RowStride);
+        wgpuImageCopySrc.layout.bytesPerRow  = static_cast<UInt32>(CopyInfo.RowStride);
+        wgpuImageCopySrc.layout.rowsPerImage = static_cast<UInt32>(CopyInfo.DepthStride / CopyInfo.RowStride);
 
         WGPUImageCopyTexture wgpuImageCopyDst{};
         wgpuImageCopyDst.texture  = pTextureWebGPU->GetWebGPUTexture();
@@ -1064,7 +1064,7 @@ void DeviceContextWebGPUImpl::CopyTexture(const CopyTextureAttribs& CopyAttribs)
     }
     else if (SrcTexDesc.Usage == USAGE_STAGING && DstTexDesc.Usage != USAGE_STAGING)
     {
-        const Uint64 SrcBufferOffset = TextureWebGPUImpl::GetStagingLocationOffset(
+        const UInt64 SrcBufferOffset = TextureWebGPUImpl::GetStagingLocationOffset(
             SrcTexDesc, CopyAttribs.SrcSlice, CopyAttribs.SrcMipLevel,
             pSrcBox->MinX, pSrcBox->MinY, pSrcBox->MinZ);
         const MipLevelProperties    SrcMipLevelAttribs = GetMipLevelProperties(SrcTexDesc, CopyAttribs.SrcMipLevel);
@@ -1086,7 +1086,7 @@ void DeviceContextWebGPUImpl::CopyTexture(const CopyTextureAttribs& CopyAttribs)
         WGPUImageCopyBuffer wgpuImageCopySrc{};
         wgpuImageCopySrc.buffer              = pSrcStagingBuffer->wgpuBuffer;
         wgpuImageCopySrc.layout.offset       = SrcBufferOffset;
-        wgpuImageCopySrc.layout.bytesPerRow  = static_cast<Uint32>(AlignUp(SrcMipLevelAttribs.RowSize, TextureWebGPUImpl::ImageCopyBufferRowAlignment));
+        wgpuImageCopySrc.layout.bytesPerRow  = static_cast<UInt32>(AlignUp(SrcMipLevelAttribs.RowSize, TextureWebGPUImpl::ImageCopyBufferRowAlignment));
         wgpuImageCopySrc.layout.rowsPerImage = SrcMipLevelAttribs.StorageHeight / DstFmtAttribs.BlockHeight;
 
         WGPUImageCopyTexture wgpuImageCopyDst{};
@@ -1114,7 +1114,7 @@ void DeviceContextWebGPUImpl::CopyTexture(const CopyTextureAttribs& CopyAttribs)
     }
     else if (SrcTexDesc.Usage != USAGE_STAGING && DstTexDesc.Usage == USAGE_STAGING)
     {
-        const Uint64 DstBufferOffset = TextureWebGPUImpl::GetStagingLocationOffset(
+        const UInt64 DstBufferOffset = TextureWebGPUImpl::GetStagingLocationOffset(
             DstTexDesc, CopyAttribs.DstSlice, CopyAttribs.DstMipLevel,
             CopyAttribs.DstX, CopyAttribs.DstY, CopyAttribs.DstZ);
         const MipLevelProperties    DstMipLevelAttribs = GetMipLevelProperties(DstTexDesc, CopyAttribs.DstMipLevel);
@@ -1144,7 +1144,7 @@ void DeviceContextWebGPUImpl::CopyTexture(const CopyTextureAttribs& CopyAttribs)
         WGPUImageCopyBuffer wgpuImageCopyDst{};
         wgpuImageCopyDst.buffer              = pDstStagingBuffer->wgpuBuffer;
         wgpuImageCopyDst.layout.offset       = DstBufferOffset;
-        wgpuImageCopyDst.layout.bytesPerRow  = static_cast<Uint32>(AlignUp(DstMipLevelAttribs.RowSize, TextureWebGPUImpl::ImageCopyBufferRowAlignment));
+        wgpuImageCopyDst.layout.bytesPerRow  = static_cast<UInt32>(AlignUp(DstMipLevelAttribs.RowSize, TextureWebGPUImpl::ImageCopyBufferRowAlignment));
         wgpuImageCopyDst.layout.rowsPerImage = DstMipLevelAttribs.StorageHeight / SrcFmtAttribs.BlockHeight;
 
         WGPUExtent3D wgpuCopySize{};
@@ -1169,8 +1169,8 @@ void DeviceContextWebGPUImpl::CopyTexture(const CopyTextureAttribs& CopyAttribs)
 }
 
 void DeviceContextWebGPUImpl::MapTextureSubresource(ITexture*                 pTexture,
-                                                    Uint32                    MipLevel,
-                                                    Uint32                    ArraySlice,
+                                                    UInt32                    MipLevel,
+                                                    UInt32                    ArraySlice,
                                                     MAP_TYPE                  MapType,
                                                     MAP_FLAGS                 MapFlags,
                                                     const Box*                pMapRegion,
@@ -1227,11 +1227,11 @@ void DeviceContextWebGPUImpl::MapTextureSubresource(ITexture*                 pT
     {
         const MipLevelProperties    MipInfo        = GetMipLevelProperties(TexDesc, MipLevel);
         const TextureFormatAttribs& FmtAttribs     = GetTextureFormatAttribs(TexDesc.Format);
-        const Uint64                LocationOffset = TextureWebGPUImpl::GetStagingLocationOffset(
+        const UInt64                LocationOffset = TextureWebGPUImpl::GetStagingLocationOffset(
             TexDesc, ArraySlice, MipLevel,
             pMapRegion->MinX, pMapRegion->MinY, pMapRegion->MinZ);
 
-        const Uint64 DataSize = AlignUp(MipInfo.RowSize, TextureWebGPUImpl::ImageCopyBufferRowAlignment) * (MipInfo.StorageHeight / FmtAttribs.BlockHeight);
+        const UInt64 DataSize = AlignUp(MipInfo.RowSize, TextureWebGPUImpl::ImageCopyBufferRowAlignment) * (MipInfo.StorageHeight / FmtAttribs.BlockHeight);
 
         MappedData.pData       = pTextureWebGPU->Map(MapType, LocationOffset, DataSize);
         MappedData.Stride      = AlignUp(MipInfo.RowSize, TextureWebGPUImpl::ImageCopyBufferRowAlignment);
@@ -1258,7 +1258,7 @@ void DeviceContextWebGPUImpl::MapTextureSubresource(ITexture*                 pT
     }
 }
 
-void DeviceContextWebGPUImpl::UnmapTextureSubresource(ITexture* pTexture, Uint32 MipLevel, Uint32 ArraySlice)
+void DeviceContextWebGPUImpl::UnmapTextureSubresource(ITexture* pTexture, UInt32 MipLevel, UInt32 ArraySlice)
 {
     TDeviceContextBase::UnmapTextureSubresource(pTexture, MipLevel, ArraySlice);
 
@@ -1280,8 +1280,8 @@ void DeviceContextWebGPUImpl::UnmapTextureSubresource(ITexture* pTexture, Uint32
             WGPUImageCopyBuffer wgpuImageCopySrc{};
             wgpuImageCopySrc.buffer              = Allocation.wgpuBuffer;
             wgpuImageCopySrc.layout.offset       = Allocation.Offset;
-            wgpuImageCopySrc.layout.bytesPerRow  = static_cast<Uint32>(CopyInfo.RowStride);
-            wgpuImageCopySrc.layout.rowsPerImage = static_cast<Uint32>(CopyInfo.DepthStride / CopyInfo.RowStride);
+            wgpuImageCopySrc.layout.bytesPerRow  = static_cast<UInt32>(CopyInfo.RowStride);
+            wgpuImageCopySrc.layout.rowsPerImage = static_cast<UInt32>(CopyInfo.DepthStride / CopyInfo.RowStride);
 
             WGPUImageCopyTexture wgpuImageCopyDst{};
             wgpuImageCopyDst.texture  = pTextureWebGPU->GetWebGPUTexture();
@@ -1325,18 +1325,18 @@ void DeviceContextWebGPUImpl::FinishCommandList(ICommandList** ppCommandList)
     DG_LOG_ERROR("Deferred contexts are not supported in WebGPU");
 }
 
-void DeviceContextWebGPUImpl::ExecuteCommandLists(Uint32 NumCommandLists, ICommandList* const* ppCommandLists)
+void DeviceContextWebGPUImpl::ExecuteCommandLists(UInt32 NumCommandLists, ICommandList* const* ppCommandLists)
 {
     DG_LOG_ERROR("Deferred contexts are not supported in WebGPU");
 }
 
-void DeviceContextWebGPUImpl::EnqueueSignal(IFence* pFence, Uint64 Value)
+void DeviceContextWebGPUImpl::EnqueueSignal(IFence* pFence, UInt64 Value)
 {
     TDeviceContextBase::EnqueueSignal(pFence, Value, 0);
     m_SignaledFences.emplace_back(std::make_pair(Value, ClassPtrCast<FenceWebGPUImpl>(pFence)));
 }
 
-void DeviceContextWebGPUImpl::DeviceWaitForFence(IFence* pFence, Uint64 Value)
+void DeviceContextWebGPUImpl::DeviceWaitForFence(IFence* pFence, UInt64 Value)
 {
     DEV_ERROR("DeviceWaitForFence() is not supported in WebGPU");
 }
@@ -1359,7 +1359,7 @@ void DeviceContextWebGPUImpl::BeginQuery(IQuery* pQuery)
     QueryWebGPUImpl* pQueryWebGPUImpl = ClassPtrCast<QueryWebGPUImpl>(pQuery);
     QUERY_TYPE       QueryType        = pQueryWebGPUImpl->GetDesc().Type;
     WGPUQuerySet     wgpuQuerySet     = GetQueryManager().GetQuerySet(QueryType);
-    Uint32           QuerySetIdx      = pQueryWebGPUImpl->GetIndexInsideQuerySet(0);
+    UInt32           QuerySetIdx      = pQueryWebGPUImpl->GetIndexInsideQuerySet(0);
 
     VERIFY(wgpuQuerySet != nullptr, "Query set is not initialized for query type");
 
@@ -1408,7 +1408,7 @@ void DeviceContextWebGPUImpl::EndQuery(IQuery* pQuery)
     QueryWebGPUImpl* pQueryWebGPUImpl = ClassPtrCast<QueryWebGPUImpl>(pQuery);
     QUERY_TYPE       QueryType        = pQueryWebGPUImpl->GetDesc().Type;
     WGPUQuerySet     wgpuQuerySet     = GetQueryManager().GetQuerySet(QueryType);
-    Uint32           QuerySetIdx      = pQueryWebGPUImpl->GetIndexInsideQuerySet(QueryType == QUERY_TYPE_DURATION ? 1 : 0);
+    UInt32           QuerySetIdx      = pQueryWebGPUImpl->GetIndexInsideQuerySet(QueryType == QUERY_TYPE_DURATION ? 1 : 0);
 
     VERIFY(wgpuQuerySet != nullptr, "Query set is not initialized for query type");
 
@@ -1681,7 +1681,7 @@ void DeviceContextWebGPUImpl::FinishFrame()
     TDeviceContextBase::EndFrame();
 }
 
-void DeviceContextWebGPUImpl::TransitionResourceStates(Uint32 BarrierCount, const StateTransitionDesc* pResourceBarriers) {}
+void DeviceContextWebGPUImpl::TransitionResourceStates(UInt32 BarrierCount, const StateTransitionDesc* pResourceBarriers) {}
 
 ICommandQueue* DeviceContextWebGPUImpl::LockCommandQueue() { return nullptr; }
 
@@ -1770,7 +1770,7 @@ WGPUComputePassEncoder DeviceContextWebGPUImpl::GetComputePassCommandEncoder()
     return m_wgpuComputePassEncoder;
 }
 
-void DeviceContextWebGPUImpl::EndCommandEncoders(Uint32 EncoderFlags)
+void DeviceContextWebGPUImpl::EndCommandEncoders(UInt32 EncoderFlags)
 {
     if ((EncoderFlags & COMMAND_ENCODER_FLAG_RENDER) != 0)
     {
@@ -1826,7 +1826,7 @@ void DeviceContextWebGPUImpl::CommitRenderTargets()
     WGPURenderPassDescriptor             wgpuRenderPassDesc{};
     WGPURenderPassColorAttachment        wgpuRenderPassColorAttachments[MAX_RENDER_TARGETS]{};
     WGPURenderPassDepthStencilAttachment wgpuRenderPassDepthStencilAttachment{};
-    for (Uint32 RTIndex = 0; RTIndex < m_NumBoundRenderTargets; ++RTIndex)
+    for (UInt32 RTIndex = 0; RTIndex < m_NumBoundRenderTargets; ++RTIndex)
     {
         if (TextureViewWebGPUImpl* pRTV = m_pBoundRenderTargets[RTIndex])
         {
@@ -1898,7 +1898,7 @@ void DeviceContextWebGPUImpl::CommitSubpassRenderTargets()
            ") in current subpass");
 
     WGPURenderPassColorAttachment RenderPassColorAttachments[MAX_RENDER_TARGETS]{};
-    for (Uint32 RTIndex = 0; RTIndex < m_NumBoundRenderTargets; ++RTIndex)
+    for (UInt32 RTIndex = 0; RTIndex < m_NumBoundRenderTargets; ++RTIndex)
     {
         const AttachmentReference& RTAttachmentRef = Subpass.pRenderTargetAttachments[RTIndex];
         if (RTAttachmentRef.AttachmentIndex != ATTACHMENT_UNUSED)
@@ -2014,7 +2014,7 @@ void DeviceContextWebGPUImpl::ClearAttachment(Int32                     RTIndex,
                                               COLOR_MASK                ColorMask,
                                               CLEAR_DEPTH_STENCIL_FLAGS DSFlags,
                                               const float               ClearData[],
-                                              Uint8                     Stencil)
+                                              UInt8                     Stencil)
 {
     // How to clear sRGB texture view?
     // How to clear integer texture view?
@@ -2024,8 +2024,8 @@ void DeviceContextWebGPUImpl::ClearAttachment(Int32                     RTIndex,
 
     AttachmentCleanerWebGPU::RenderPassInfo RPInfo{};
     RPInfo.NumRenderTargets = m_NumBoundRenderTargets;
-    RPInfo.SampleCount      = static_cast<Uint8>(m_FramebufferSamples);
-    for (Uint32 RTIdx = 0; RTIdx < RPInfo.NumRenderTargets; ++RTIdx)
+    RPInfo.SampleCount      = static_cast<UInt8>(m_FramebufferSamples);
+    for (UInt32 RTIdx = 0; RTIdx < RPInfo.NumRenderTargets; ++RTIdx)
         RPInfo.RTVFormats[RTIdx] = m_pBoundRenderTargets[RTIdx] ? m_pBoundRenderTargets[RTIdx]->GetDesc().Format : TEX_FORMAT_UNKNOWN;
     RPInfo.DSVFormat = m_pBoundDepthStencil ? m_pBoundDepthStencil->GetDesc().Format : TEX_FORMAT_UNKNOWN;
 
@@ -2130,7 +2130,7 @@ WGPUComputePassEncoder DeviceContextWebGPUImpl::PrepareForDispatchCompute()
     return wgpuComputeCmdEncoder;
 }
 
-WGPUBuffer DeviceContextWebGPUImpl::PrepareForIndirectCommand(IBuffer* pAttribsBuffer, Uint64& IdirectBufferOffset)
+WGPUBuffer DeviceContextWebGPUImpl::PrepareForIndirectCommand(IBuffer* pAttribsBuffer, UInt64& IdirectBufferOffset)
 {
     VERIFY_EXPR(pAttribsBuffer != nullptr);
 
@@ -2200,12 +2200,12 @@ void DeviceContextWebGPUImpl::CommitVertexBuffers(WGPURenderPassEncoder CmdEncod
 #endif
 
     m_EncoderState.HasDynamicVertexBuffers = false;
-    for (Uint32 SlotIdx = 0; SlotIdx < m_NumVertexStreams; ++SlotIdx)
+    for (UInt32 SlotIdx = 0; SlotIdx < m_NumVertexStreams; ++SlotIdx)
     {
         auto&      CurrStream = m_VertexStreams[SlotIdx];
         WGPUBuffer wgpuBuffer = nullptr;
-        Uint64     Offset     = CurrStream.Offset;
-        Uint64     Size       = 0;
+        UInt64     Offset     = CurrStream.Offset;
+        UInt64     Size       = 0;
         if (BufferWebGPUImpl* pBufferWebGPU = CurrStream.pBuffer.RawPtr())
         {
             const BufferDesc& Desc = pBufferWebGPU->GetDesc();
@@ -2237,10 +2237,10 @@ void DeviceContextWebGPUImpl::CommitIndexBuffer(WGPURenderPassEncoder CmdEncoder
     DEV_CHECK_ERR(IndexType == VT_UINT16 || IndexType == VT_UINT32, "Unsupported index format. Only R16_UINT and R32_UINT are allowed.");
 
     const BufferDesc& IndexBuffDesc = m_pIndexBuffer->GetDesc();
-    const Uint64      Offset        = m_IndexDataStartOffset + GetDynamicBufferOffset(m_pIndexBuffer);
+    const UInt64      Offset        = m_IndexDataStartOffset + GetDynamicBufferOffset(m_pIndexBuffer);
     // Do NOT use WGPU_WHOLE_SIZE due to https://github.com/emscripten-core/emscripten/issues/20538
     VERIFY_EXPR(IndexBuffDesc.Size >= m_IndexDataStartOffset);
-    const Uint64 Size = IndexBuffDesc.Size - m_IndexDataStartOffset;
+    const UInt64 Size = IndexBuffDesc.Size - m_IndexDataStartOffset;
     wgpuRenderPassEncoderSetIndexBuffer(CmdEncoder, m_pIndexBuffer->GetWebGPUBuffer(), IndexTypeToWGPUIndexFormat(IndexType), Offset, Size);
     if (IndexBuffDesc.Usage != USAGE_DYNAMIC)
         m_EncoderState.SetUpToDate(WebGPUEncoderState::CMD_ENCODER_STATE_INDEX_BUFFER);
@@ -2252,7 +2252,7 @@ void DeviceContextWebGPUImpl::CommitViewports(WGPURenderPassEncoder CmdEncoder)
 
     bool UpdateViewports = false;
 
-    for (Uint32 ViewportIdx = 0; ViewportIdx < m_NumViewports; ++ViewportIdx)
+    for (UInt32 ViewportIdx = 0; ViewportIdx < m_NumViewports; ++ViewportIdx)
     {
         const Viewport& RHS = m_Viewports[ViewportIdx];
         const Viewport& LHS = m_EncoderState.Viewports[ViewportIdx];
@@ -2264,7 +2264,7 @@ void DeviceContextWebGPUImpl::CommitViewports(WGPURenderPassEncoder CmdEncoder)
         }
     }
 
-    for (Uint32 ViewportIdx = m_NumViewports; ViewportIdx < m_EncoderState.Viewports.size(); ++ViewportIdx)
+    for (UInt32 ViewportIdx = m_NumViewports; ViewportIdx < m_EncoderState.Viewports.size(); ++ViewportIdx)
         m_EncoderState.Viewports[ViewportIdx] = Viewport{};
 
     if (UpdateViewports)
@@ -2307,22 +2307,22 @@ void DeviceContextWebGPUImpl::CommitScissorRects(WGPURenderPassEncoder CmdEncode
         }
     };
 
-    Uint32 NumScissors = 0;
+    UInt32 NumScissors = 0;
     if (ScissorEnabled)
     {
         NumScissors = m_NumScissorRects;
-        for (Uint32 i = 0; i < NumScissors; ++i)
+        for (UInt32 i = 0; i < NumScissors; ++i)
             UpdateWebGPUScissorRect(m_ScissorRects[i], m_EncoderState.ScissorRects[i]);
     }
     else
     {
         NumScissors = m_NumViewports;
         Rect ScreenSizeRect(0, 0, m_FramebufferWidth, m_FramebufferHeight);
-        for (Uint32 i = 0; i < NumScissors; ++i)
+        for (UInt32 i = 0; i < NumScissors; ++i)
             UpdateWebGPUScissorRect(ScreenSizeRect, m_EncoderState.ScissorRects[i]);
     }
 
-    for (Uint32 i = NumScissors; i < m_EncoderState.ScissorRects.size(); ++i)
+    for (UInt32 i = NumScissors; i < m_EncoderState.ScissorRects.size(); ++i)
         m_EncoderState.ScissorRects[i] = Rect{};
 
     if (UpdateScissorRects)
@@ -2378,12 +2378,12 @@ QueryManagerWebGPU& DeviceContextWebGPUImpl::GetQueryManager()
     return m_pDevice->GetQueryManager();
 }
 
-Uint64 DeviceContextWebGPUImpl::GetNextFenceValue()
+UInt64 DeviceContextWebGPUImpl::GetNextFenceValue()
 {
     return m_FenceValue + 1;
 }
 
-Uint64 DeviceContextWebGPUImpl::GetCompletedFenceValue()
+UInt64 DeviceContextWebGPUImpl::GetCompletedFenceValue()
 {
     return m_pFence->GetCompletedValue();
 }

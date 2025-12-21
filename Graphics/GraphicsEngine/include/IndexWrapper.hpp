@@ -26,7 +26,7 @@
 
 #pragma once
 
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "DebugUtilities.hpp"
 #include "Cast.hpp"
 
@@ -47,7 +47,7 @@ public:
 
     template <typename OtherType, typename OtherTag>
     explicit IndexWrapper(const IndexWrapper<OtherType, OtherTag>& OtherIdx) noexcept :
-        IndexWrapper{static_cast<Uint32>(OtherIdx)}
+        IndexWrapper{static_cast<UInt32>(OtherIdx)}
     {
     }
 
@@ -58,7 +58,7 @@ public:
     constexpr IndexWrapper(const IndexWrapper&) = default;
     constexpr IndexWrapper(IndexWrapper&&)      = default;
 
-    constexpr operator Uint32() const
+    constexpr operator UInt32() const
     {
         return m_Value;
     }
@@ -88,8 +88,8 @@ private:
     IndexType m_Value = 0;
 };
 
-using HardwareQueueIndex = IndexWrapper<Uint8, struct _HardwareQueueIndexTag>;
-using SoftwareQueueIndex = IndexWrapper<Uint8, struct _SoftwareQueueIndexTag>;
-using DeviceContextIndex = IndexWrapper<Uint8, struct _DeviceContextIndexTag>;
+using HardwareQueueIndex = IndexWrapper<UInt8, struct _HardwareQueueIndexTag>;
+using SoftwareQueueIndex = IndexWrapper<UInt8, struct _SoftwareQueueIndexTag>;
+using DeviceContextIndex = IndexWrapper<UInt8, struct _DeviceContextIndexTag>;
 
 } // namespace Diligent

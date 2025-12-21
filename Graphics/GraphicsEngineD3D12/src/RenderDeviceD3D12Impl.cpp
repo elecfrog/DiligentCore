@@ -239,7 +239,7 @@ RenderDeviceD3D12Impl::RenderDeviceD3D12Impl(IReferenceCounters*          pRefCo
             MaxHLSLVersion.Major    = (MaxShaderModel >> 4) & 0xFu;
             MaxHLSLVersion.Minor    = MaxShaderModel & 0xFu;
 
-            LOG_INFO_MESSAGE("Max device shader model: ", Uint32{MaxHLSLVersion.Major}, '_', Uint32{MaxHLSLVersion.Minor} & 0xF);
+            LOG_INFO_MESSAGE("Max device shader model: ", UInt32{MaxHLSLVersion.Major}, '_', UInt32{MaxHLSLVersion.Minor} & 0xF);
         }
 
 #ifdef DILIGENT_DEVELOPMENT
@@ -257,7 +257,7 @@ RenderDeviceD3D12Impl::RenderDeviceD3D12Impl(IReferenceCounters*          pRefCo
 #endif
 
         m_QueryMgrs.reserve(CommandQueueCount);
-        for (Uint32 q = 0; q < CommandQueueCount; ++q)
+        for (UInt32 q = 0; q < CommandQueueCount; ++q)
         {
             const D3D12_COMMAND_LIST_TYPE d3d12CmdListType = ppCmdQueues[q]->GetD3D12CommandQueueDesc().Type;
             const HardwareQueueIndex      HWQueueId        = D3D12CommandListTypeToQueueId(d3d12CmdListType);
@@ -354,7 +354,7 @@ void RenderDeviceD3D12Impl::CloseAndExecuteTransientCommandContext(SoftwareQueue
     CComPtr<ID3D12CommandAllocator> pAllocator;
     ID3D12CommandList* const        pCmdList = Ctx->Close(pAllocator);
     VERIFY(pCmdList != nullptr, "Command list must not be null");
-    Uint64 FenceValue = 0;
+    UInt64 FenceValue = 0;
     // Execute command list directly through the queue to avoid interference with command list numbers in the queue
     LockCmdQueueAndRun(CommandQueueId,
                        [&](ICommandQueueD3D12* pCmdQueue) //
@@ -365,12 +365,12 @@ void RenderDeviceD3D12Impl::CloseAndExecuteTransientCommandContext(SoftwareQueue
     FreeCommandContext(std::move(Ctx));
 }
 
-Uint64 RenderDeviceD3D12Impl::CloseAndExecuteCommandContexts(SoftwareQueueIndex                                     CommandQueueId,
-                                                             Uint32                                                 NumContexts,
+UInt64 RenderDeviceD3D12Impl::CloseAndExecuteCommandContexts(SoftwareQueueIndex                                     CommandQueueId,
+                                                             UInt32                                                 NumContexts,
                                                              PooledCommandContext                                   pContexts[],
                                                              bool                                                   DiscardStaleObjects,
-                                                             std::vector<std::pair<Uint64, RefCntAutoPtr<IFence>>>* pSignalFences,
-                                                             std::vector<std::pair<Uint64, RefCntAutoPtr<IFence>>>* pWaitFences)
+                                                             std::vector<std::pair<UInt64, RefCntAutoPtr<IFence>>>* pSignalFences,
+                                                             std::vector<std::pair<UInt64, RefCntAutoPtr<IFence>>>* pWaitFences)
 {
     VERIFY_EXPR(NumContexts > 0 && pContexts != 0);
 
@@ -381,7 +381,7 @@ Uint64 RenderDeviceD3D12Impl::CloseAndExecuteCommandContexts(SoftwareQueueIndex 
     CmdAllocators.reserve(NumContexts);
 
     CommandListManager& CmdListMngr = GetCmdListManager(CommandQueueId);
-    for (Uint32 i = 0; i < NumContexts; ++i)
+    for (UInt32 i = 0; i < NumContexts; ++i)
     {
         PooledCommandContext& pCtx = pContexts[i];
         VERIFY_EXPR(pCtx);
@@ -391,7 +391,7 @@ Uint64 RenderDeviceD3D12Impl::CloseAndExecuteCommandContexts(SoftwareQueueIndex 
         CmdAllocators.emplace_back(std::move(pAllocator));
     }
 
-    Uint64 FenceValue = 0;
+    UInt64 FenceValue = 0;
     {
         // Stale objects should only be discarded when submitting cmd list from
         // the immediate context, otherwise the basic requirement may be violated
@@ -419,7 +419,7 @@ Uint64 RenderDeviceD3D12Impl::CloseAndExecuteCommandContexts(SoftwareQueueIndex 
             SignalFences(CommandQueueId, *pSignalFences);
     }
 
-    for (Uint32 i = 0; i < NumContexts; ++i)
+    for (UInt32 i = 0; i < NumContexts; ++i)
     {
         CmdListMngr.ReleaseAllocator(std::move(CmdAllocators[i]), CommandQueueId, FenceValue);
         FreeCommandContext(std::move(pContexts[i]));
@@ -430,7 +430,7 @@ Uint64 RenderDeviceD3D12Impl::CloseAndExecuteCommandContexts(SoftwareQueueIndex 
     return FenceValue;
 }
 
-void RenderDeviceD3D12Impl::SignalFences(SoftwareQueueIndex CommandQueueId, std::vector<std::pair<Uint64, RefCntAutoPtr<IFence>>>& SignalFences)
+void RenderDeviceD3D12Impl::SignalFences(SoftwareQueueIndex CommandQueueId, std::vector<std::pair<UInt64, RefCntAutoPtr<IFence>>>& SignalFences)
 {
     RefCntAutoPtr<ICommandQueueD3D12>& CmdQueue = m_CommandQueues[CommandQueueId].CmdQueue;
     for (auto& val_fence : SignalFences)
@@ -442,7 +442,7 @@ void RenderDeviceD3D12Impl::SignalFences(SoftwareQueueIndex CommandQueueId, std:
     }
 }
 
-void RenderDeviceD3D12Impl::WaitFences(SoftwareQueueIndex CommandQueueId, std::vector<std::pair<Uint64, RefCntAutoPtr<IFence>>>& WaitFences)
+void RenderDeviceD3D12Impl::WaitFences(SoftwareQueueIndex CommandQueueId, std::vector<std::pair<UInt64, RefCntAutoPtr<IFence>>>& WaitFences)
 {
     RefCntAutoPtr<ICommandQueueD3D12>& CmdQueue = m_CommandQueues[CommandQueueId].CmdQueue;
     for (auto& val_fence : WaitFences)
@@ -542,7 +542,7 @@ void RenderDeviceD3D12Impl::TestTextureFormat(TEXTURE_FORMAT TexFormat)
         TexFormatInfo.Dimensions |= RESOURCE_DIMENSION_SUPPORT_TEX_CUBE | RESOURCE_DIMENSION_SUPPORT_TEX_CUBE_ARRAY;
 
     TexFormatInfo.SampleCounts = SAMPLE_COUNT_NONE;
-    for (Uint32 SampleCount = 1; SampleCount <= D3D12_MAX_MULTISAMPLE_SAMPLE_COUNT; SampleCount *= 2)
+    for (UInt32 SampleCount = 1; SampleCount <= D3D12_MAX_MULTISAMPLE_SAMPLE_COUNT; SampleCount *= 2)
     {
         D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS QualityLevels = {DXGIFormat, SampleCount, {}, {}};
 
@@ -709,7 +709,7 @@ DescriptorHeapAllocation RenderDeviceD3D12Impl::AllocateGPUDescriptors(D3D12_DES
     return m_GPUDescriptorHeaps[Type].Allocate(Count);
 }
 
-void RenderDeviceD3D12Impl::CreateRootSignature(const RefCntAutoPtr<PipelineResourceSignatureD3D12Impl>* ppSignatures, Uint32 SignatureCount, size_t Hash, RootSignatureD3D12** ppRootSig)
+void RenderDeviceD3D12Impl::CreateRootSignature(const RefCntAutoPtr<PipelineResourceSignatureD3D12Impl>* ppSignatures, UInt32 SignatureCount, size_t Hash, RootSignatureD3D12** ppRootSig)
 {
     RootSignatureD3D12* pRootSigD3D12{NEW_RC_OBJ(m_RootSignatureAllocator, "RootSignatureD3D12 instance", RootSignatureD3D12)(this, ppSignatures, SignatureCount, Hash)};
     pRootSigD3D12->AddRef();
@@ -740,7 +740,7 @@ void RenderDeviceD3D12Impl::CreateDeferredContext(IDeviceContext** ppDeferredCon
 
 SparseTextureFormatInfo RenderDeviceD3D12Impl::GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                           RESOURCE_DIMENSION Dimension,
-                                                                          Uint32             SampleCount) const
+                                                                          UInt32             SampleCount) const
 {
     D3D12_FEATURE_DATA_FORMAT_SUPPORT FormatSupport{
         TexFormatToDXGI_Format(TexFormat), // .Format

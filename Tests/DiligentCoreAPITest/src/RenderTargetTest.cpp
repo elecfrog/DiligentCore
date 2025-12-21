@@ -385,7 +385,7 @@ TEST_F(RenderTargetTest, MultipleRenderTargetWriteMasks)
         ASSERT_NE(pRT, nullptr);
     }
 
-    for (Uint32 rt = 0; rt < ColorMasks.size(); ++rt)
+    for (UInt32 rt = 0; rt < ColorMasks.size(); ++rt)
     {
         std::array<ITextureView*, ColorMasks.size()> ppRTVs;
         std::array<float4, ColorMasks.size()>        ClearColors;
@@ -401,7 +401,7 @@ TEST_F(RenderTargetTest, MultipleRenderTargetWriteMasks)
 
         RenderReference(ColorMasks[rt], ClearColors[rt]);
 
-        pContext->SetRenderTargets(static_cast<Uint32>(ppRTVs.size()), ppRTVs.data(), nullptr, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+        pContext->SetRenderTargets(static_cast<UInt32>(ppRTVs.size()), ppRTVs.data(), nullptr, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
         for (size_t i = 0; i < ColorMasks.size(); ++i)
         {
             pContext->ClearRenderTarget(ppRTVs[i], ClearColors[i].Data(), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
@@ -434,7 +434,7 @@ TEST_F(RenderTargetTest, InactiveRenderTargets)
     RefCntAutoPtr<IShader> pPS2 = CreateShader("RenderTargetTest.InactiveRenderTargets - PS2", HLSL::Target2PS.c_str(), SHADER_TYPE_PIXEL);
     ASSERT_NE(pPS1, nullptr);
 
-    static constexpr Uint32                               NumRenderTargets = 3;
+    static constexpr UInt32                               NumRenderTargets = 3;
     std::array<RefCntAutoPtr<ITexture>, NumRenderTargets> pRTs;
     for (RefCntAutoPtr<ITexture>& pRT : pRTs)
     {
@@ -442,7 +442,7 @@ TEST_F(RenderTargetTest, InactiveRenderTargets)
         ASSERT_NE(pRT, nullptr);
     }
 
-    for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
     {
         RefCntAutoPtr<IPipelineState> pPSO;
         {
@@ -495,7 +495,7 @@ TEST_F(RenderTargetTest, InactiveRenderTargets)
 
         RenderReference(COLOR_MASK_ALL, ClearColors[rt]);
 
-        pContext->SetRenderTargets(static_cast<Uint32>(ppRTVs.size()), ppRTVs.data(), nullptr, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+        pContext->SetRenderTargets(static_cast<UInt32>(ppRTVs.size()), ppRTVs.data(), nullptr, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
         for (size_t i = 0; i < NumRenderTargets; ++i)
         {
             pContext->ClearRenderTarget(ppRTVs[i], ClearColors[i].Data(), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);

@@ -114,7 +114,7 @@ void SwapChainD3D11Impl::CreateRTVandDSV()
     }
 }
 
-void SwapChainD3D11Impl::Present(Uint32 SyncInterval)
+void SwapChainD3D11Impl::Present(UInt32 SyncInterval)
 {
 #if PLATFORM_UNIVERSAL_WINDOWS
     SyncInterval = 1; // Interval 0 is not supported on Windows Phone
@@ -217,7 +217,7 @@ void SwapChainD3D11Impl::UpdateSwapChain(bool CreateNew)
     }
 }
 
-void SwapChainD3D11Impl::Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewPreTransform)
+void SwapChainD3D11Impl::Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform)
 {
     if (TSwapChainBase::Resize(NewWidth, NewHeight, NewPreTransform))
     {

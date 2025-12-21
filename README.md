@@ -610,7 +610,7 @@ m_pContext->ClearDepthStencil(pDSV, CLEAR_DEPTH_FLAG, 1.f, 0, RESOURCE_STATE_TRA
 
 // Set vertex and index buffers
 IBuffer* buffer[] = {m_pVertexBuffer};
-Uint32 offsets[] = {0};
+UInt32 offsets[] = {0};
 m_pContext->SetVertexBuffers(0, 1, buffer, offsets, SET_VERTEX_BUFFERS_FLAG_RESET,
                              RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 m_pContext->SetIndexBuffer(m_pIndexBuffer, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);

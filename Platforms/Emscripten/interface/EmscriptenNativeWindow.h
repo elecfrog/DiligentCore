@@ -27,7 +27,7 @@
 #pragma once
 
 #include "../../../Primitives/interface/CommonDefinitions.h"
-#include "../../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 
 DILIGENT_BEGIN_NAMESPACE(Diligent)
 

@@ -41,7 +41,7 @@ namespace
 
 TEST(Common_FixedBlockMemoryAllocator, AllocDealloc)
 {
-    constexpr Uint32 AllocSize             = 32;
+    constexpr UInt32 AllocSize             = 32;
     constexpr int    NumAllocationsPerPage = 16;
 
     FixedBlockMemoryAllocator TestAllocator{DefaultRawMemoryAllocator::GetAllocator(), AllocSize, NumAllocationsPerPage};
@@ -86,8 +86,8 @@ TEST(Common_FixedBlockMemoryAllocator, AllocDealloc)
 
 TEST(Common_FixedBlockMemoryAllocator, SmallObject)
 {
-    constexpr Uint32 AllocSize             = 4;
-    constexpr Uint32 NumAllocationsPerPage = 1;
+    constexpr UInt32 AllocSize             = 4;
+    constexpr UInt32 NumAllocationsPerPage = 1;
 
     FixedBlockMemoryAllocator TestAllocator{DefaultRawMemoryAllocator::GetAllocator(), AllocSize, NumAllocationsPerPage};
 
@@ -106,8 +106,8 @@ TEST(Common_FixedBlockMemoryAllocator, SmallObject)
 
 TEST(Common_FixedBlockMemoryAllocator, UnalignedSize)
 {
-    constexpr Uint32 AllocSize             = 10;
-    constexpr Uint32 NumAllocationsPerPage = 1;
+    constexpr UInt32 AllocSize             = 10;
+    constexpr UInt32 NumAllocationsPerPage = 1;
 
     FixedBlockMemoryAllocator TestAllocator{DefaultRawMemoryAllocator::GetAllocator(), AllocSize, NumAllocationsPerPage};
 

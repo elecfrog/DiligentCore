@@ -38,7 +38,7 @@ ScreenCapture::ScreenCapture(IRenderDevice* pDevice) :
     m_pDevice->CreateFence(fenceDesc, &m_pFence);
 }
 
-void ScreenCapture::Capture(ISwapChain* pSwapChain, IDeviceContext* pContext, Uint32 FrameId)
+void ScreenCapture::Capture(ISwapChain* pSwapChain, IDeviceContext* pContext, UInt32 FrameId)
 {
     ITextureView*        pCurrentRTV        = pSwapChain->GetCurrentBackBufferRTV();
     ITexture*            pCurrentBackBuffer = pCurrentRTV->GetTexture();
@@ -96,7 +96,7 @@ ScreenCapture::CaptureInfo ScreenCapture::GetCapture()
     if (!m_PendingTextures.empty())
     {
         PendingTextureInfo& OldestCapture       = m_PendingTextures.front();
-        Uint64              CompletedFenceValue = m_pFence->GetCompletedValue();
+        UInt64              CompletedFenceValue = m_pFence->GetCompletedValue();
         if (OldestCapture.Fence <= CompletedFenceValue)
         {
             Capture.pTexture = std::move(OldestCapture.pTex);
@@ -113,7 +113,7 @@ bool ScreenCapture::HasCapture()
     if (!m_PendingTextures.empty())
     {
         const PendingTextureInfo& OldestCapture       = m_PendingTextures.front();
-        Uint64                    CompletedFenceValue = m_pFence->GetCompletedValue();
+        UInt64                    CompletedFenceValue = m_pFence->GetCompletedValue();
         return OldestCapture.Fence <= CompletedFenceValue;
     }
     else

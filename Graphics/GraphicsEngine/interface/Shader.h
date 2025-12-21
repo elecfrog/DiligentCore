@@ -45,7 +45,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_Shader =
 typedef struct Version ShaderVersion;
 
 /// Describes the shader source code language
-DILIGENT_TYPED_ENUM(SHADER_SOURCE_LANGUAGE, Uint32)
+DILIGENT_TYPED_ENUM(SHADER_SOURCE_LANGUAGE, UInt32)
 {
     /// Default language (GLSL for OpenGL/OpenGLES/Vulkan devices, HLSL for Direct3D11/Direct3D12 devices)
     SHADER_SOURCE_LANGUAGE_DEFAULT = 0,
@@ -93,7 +93,7 @@ DILIGENT_TYPED_ENUM(SHADER_SOURCE_LANGUAGE, Uint32)
 
 
 /// Describes the shader compiler that will be used to compile the shader source code
-DILIGENT_TYPED_ENUM(SHADER_COMPILER, Uint32)
+DILIGENT_TYPED_ENUM(SHADER_COMPILER, UInt32)
 {
     /// Default compiler for specific language and API that is selected as follows:
     ///
@@ -122,7 +122,7 @@ DILIGENT_TYPED_ENUM(SHADER_COMPILER, Uint32)
 
 
 /// Describes the flags that can be passed over to IShaderSourceInputStreamFactory::CreateInputStream2() function.
-DILIGENT_TYPED_ENUM(CREATE_SHADER_SOURCE_INPUT_STREAM_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(CREATE_SHADER_SOURCE_INPUT_STREAM_FLAGS, UInt32)
 {
     /// No flag.
     CREATE_SHADER_SOURCE_INPUT_STREAM_FLAG_NONE = 0x00,
@@ -202,7 +202,7 @@ typedef struct ShaderDesc ShaderDesc;
 
 
 /// Shader status
-DILIGENT_TYPED_ENUM(SHADER_STATUS, Uint32)
+DILIGENT_TYPED_ENUM(SHADER_STATUS, UInt32)
 {
     /// Initial shader status.
     SHADER_STATUS_UNINITIALIZED = 0,
@@ -312,14 +312,14 @@ struct ShaderMacroArray
     const ShaderMacro* Elements DEFAULT_INITIALIZER(nullptr);
 
     /// The number of elements in the array
-    Uint32 Count DEFAULT_INITIALIZER(0);
+    UInt32 Count DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr ShaderMacroArray() noexcept
     {}
 
     constexpr ShaderMacroArray(const ShaderMacro* _Elements,
-                               Uint32             _Count) noexcept :
+                               UInt32             _Count) noexcept :
         Elements{_Elements},
         Count{_Count}
     {}
@@ -331,7 +331,7 @@ struct ShaderMacroArray
 
         if ((Count != 0 && Elements == nullptr) || (RHS.Count != 0 && RHS.Elements == nullptr))
             return false;
-        for (Uint32 i = 0; i < Count; ++i)
+        for (UInt32 i = 0; i < Count; ++i)
         {
             if (Elements[i] != RHS.Elements[i])
                 return false;
@@ -361,7 +361,7 @@ typedef struct ShaderMacroArray ShaderMacroArray;
 // clang-format off
 
 /// Shader compilation flags
-DILIGENT_TYPED_ENUM(SHADER_COMPILE_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(SHADER_COMPILE_FLAGS, UInt32)
 {
     /// No flags.
     SHADER_COMPILE_FLAG_NONE = 0,
@@ -697,7 +697,7 @@ typedef struct ShaderCreateInfo ShaderCreateInfo;
 
 // clang-format off
 /// Describes shader resource type
-DILIGENT_TYPED_ENUM(SHADER_RESOURCE_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(SHADER_RESOURCE_TYPE, UInt8)
 {
     /// Shader resource type is unknown
     SHADER_RESOURCE_TYPE_UNKNOWN = 0,
@@ -740,7 +740,7 @@ struct ShaderResourceDesc
     SHADER_RESOURCE_TYPE Type DEFAULT_INITIALIZER(SHADER_RESOURCE_TYPE_UNKNOWN);
 
     /// Array size. For non-array resource this value is 1.
-    Uint32 ArraySize DEFAULT_INITIALIZER(0);
+    UInt32 ArraySize DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr ShaderResourceDesc() noexcept
@@ -748,7 +748,7 @@ struct ShaderResourceDesc
 
     constexpr ShaderResourceDesc(const Char*          _Name,
                                  SHADER_RESOURCE_TYPE _Type,
-                                 Uint32               _ArraySize) noexcept :
+                                 UInt32               _ArraySize) noexcept :
         Name{_Name},
         Type{_Type},
         ArraySize{_ArraySize}
@@ -771,7 +771,7 @@ typedef struct ShaderResourceDesc ShaderResourceDesc;
 
 
 /// Describes the basic type of a shader code variable.
-DILIGENT_TYPED_ENUM(SHADER_CODE_BASIC_TYPE, Uint8) //
+DILIGENT_TYPED_ENUM(SHADER_CODE_BASIC_TYPE, UInt8) //
 {
     /// The type is unknown.
     SHADER_CODE_BASIC_TYPE_UNKNOWN,
@@ -841,7 +841,7 @@ DILIGENT_TYPED_ENUM(SHADER_CODE_BASIC_TYPE, Uint8) //
 
 
 /// Describes the class of a shader code variable.
-DILIGENT_TYPED_ENUM(SHADER_CODE_VARIABLE_CLASS, Uint8) //
+DILIGENT_TYPED_ENUM(SHADER_CODE_VARIABLE_CLASS, UInt8) //
 {
     /// The variable class is unknown.
     SHADER_CODE_VARIABLE_CLASS_UNKNOWN,
@@ -883,21 +883,21 @@ typedef struct ShaderCodeVariableDesc
     /// For a matrix type, the number of rows.
 
     /// \note   For shaders compiled from GLSL, NumRows and NumColumns are swapped.
-    Uint8 NumRows DEFAULT_INITIALIZER(0);
+    UInt8 NumRows DEFAULT_INITIALIZER(0);
 
     /// For a matrix type, the number of columns. For a vector, the number of components.
 
     /// \note   For shaders compiled from GLSL, NumRows and NumColumns are swapped.
-    Uint8 NumColumns DEFAULT_INITIALIZER(0);
+    UInt8 NumColumns DEFAULT_INITIALIZER(0);
 
     /// Offset, in bytes, between the start of the parent structure and this variable.
-    Uint32 Offset DEFAULT_INITIALIZER(0);
+    UInt32 Offset DEFAULT_INITIALIZER(0);
 
     /// Array size.
-    Uint32 ArraySize DEFAULT_INITIALIZER(0);
+    UInt32 ArraySize DEFAULT_INITIALIZER(0);
 
     /// For a structure, the number of structure members; otherwise 0.
-    Uint32 NumMembers DEFAULT_INITIALIZER(0);
+    UInt32 NumMembers DEFAULT_INITIALIZER(0);
 
     /// For a structure, an array of NumMembers structure members.
     const struct ShaderCodeVariableDesc* pMembers DEFAULT_INITIALIZER(nullptr);
@@ -910,10 +910,10 @@ typedef struct ShaderCodeVariableDesc
                                      const char*                _TypeName,
                                      SHADER_CODE_VARIABLE_CLASS _Class,
                                      SHADER_CODE_BASIC_TYPE     _BasicType,
-                                     Uint8                      _NumRows,
-                                     Uint8                      _NumColumns,
-                                     Uint32                     _Offset,
-                                     Uint32                     _ArraySize = 0) noexcept :
+                                     UInt8                      _NumRows,
+                                     UInt8                      _NumColumns,
+                                     UInt32                     _Offset,
+                                     UInt32                     _ArraySize = 0) noexcept :
         // clang-format off
         Name      {_Name},
         TypeName  {_TypeName},
@@ -929,8 +929,8 @@ typedef struct ShaderCodeVariableDesc
     constexpr ShaderCodeVariableDesc(const char*            _Name,
                                      const char*            _TypeName,
                                      SHADER_CODE_BASIC_TYPE _BasicType,
-                                     Uint32                 _Offset,
-                                     Uint32                 _ArraySize = 0) noexcept :
+                                     UInt32                 _Offset,
+                                     UInt32                 _ArraySize = 0) noexcept :
         // clang-format off
         Name      {_Name},
         TypeName  {_TypeName},
@@ -945,10 +945,10 @@ typedef struct ShaderCodeVariableDesc
 
     constexpr ShaderCodeVariableDesc(const char*                   _Name,
                                      const char*                   _TypeName,
-                                     Uint32                        _NumMembers,
+                                     UInt32                        _NumMembers,
                                      const ShaderCodeVariableDesc* _pMembers,
-                                     Uint32                        _Offset,
-                                     Uint32                        _ArraySize = 0) noexcept :
+                                     UInt32                        _Offset,
+                                     UInt32                        _ArraySize = 0) noexcept :
         // clang-format off
         Name      {_Name},
         TypeName  {_TypeName},
@@ -977,7 +977,7 @@ typedef struct ShaderCodeVariableDesc
             return false;
         // clang-format on
 
-        for (Uint32 i = 0; i < NumMembers; ++i)
+        for (UInt32 i = 0; i < NumMembers; ++i)
         {
             if (pMembers[i] != RHS.pMembers[i])
                 return false;
@@ -998,10 +998,10 @@ typedef struct ShaderCodeVariableDesc
 typedef struct ShaderCodeBufferDesc
 {
     /// Buffer size in bytes.
-    Uint32 Size DEFAULT_INITIALIZER(0);
+    UInt32 Size DEFAULT_INITIALIZER(0);
 
     /// The number of variables in the buffer.
-    Uint32 NumVariables DEFAULT_INITIALIZER(0);
+    UInt32 NumVariables DEFAULT_INITIALIZER(0);
 
     /// An array of NumVariables variables, see Diligent::ShaderCodeVariableDesc.
     const ShaderCodeVariableDesc* pVariables DEFAULT_INITIALIZER(nullptr);
@@ -1011,8 +1011,8 @@ typedef struct ShaderCodeBufferDesc
     {}
 
 
-    constexpr ShaderCodeBufferDesc(Uint32                        _Size,
-                                   Uint32                        _NumVariables,
+    constexpr ShaderCodeBufferDesc(UInt32                        _Size,
+                                   UInt32                        _NumVariables,
                                    const ShaderCodeVariableDesc* _pVariables) noexcept :
         // clang-format off
         Size        {_Size},
@@ -1030,7 +1030,7 @@ typedef struct ShaderCodeBufferDesc
             return false;
         // clang-format on
 
-        for (Uint32 i = 0; i < NumVariables; ++i)
+        for (UInt32 i = 0; i < NumVariables; ++i)
         {
             if (pVariables[i] != RHS.pVariables[i])
                 return false;
@@ -1064,11 +1064,11 @@ DILIGENT_BEGIN_INTERFACE(IShader, IDeviceObject)
 #endif
 
     /// Returns the total number of shader resources
-    VIRTUAL Uint32 METHOD(GetResourceCount)(THIS) CONST PURE;
+    VIRTUAL UInt32 METHOD(GetResourceCount)(THIS) CONST PURE;
 
     /// Returns the pointer to the array of shader resources
     VIRTUAL void METHOD(GetResourceDesc)(THIS_
-                                         Uint32 Index,
+                                         UInt32 Index,
                                          ShaderResourceDesc REF ResourceDesc) CONST PURE;
 
     /// For a constant buffer resource, returns the buffer description. See Diligent::ShaderCodeBufferDesc.
@@ -1080,7 +1080,7 @@ DILIGENT_BEGIN_INTERFACE(IShader, IDeviceObject)
     /// This method requires that the `LoadConstantBufferReflection` flag was set to `true`
     /// when the shader was created.
     VIRTUAL const ShaderCodeBufferDesc* METHOD(GetConstantBufferDesc)(THIS_
-                                               Uint32 Index) CONST PURE;
+                                               UInt32 Index) CONST PURE;
 
     /// Returns the shader bytecode.
 
@@ -1094,7 +1094,7 @@ DILIGENT_BEGIN_INTERFACE(IShader, IDeviceObject)
     /// shader object is alive. An application must NOT free the memory.
     VIRTUAL void METHOD(GetBytecode)(THIS_
                                      const void** ppBytecode,
-                                     Uint64 REF   Size) CONST PURE;
+                                     UInt64 REF   Size) CONST PURE;
 
     /// Returns the shader status, see Diligent::SHADER_STATUS.
 

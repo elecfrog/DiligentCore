@@ -98,7 +98,7 @@ struct ShaderStageInfoWebGPU
     // Needed only for ray tracing
     void Append(const SerializedShaderImpl*) {}
 
-    constexpr Uint32 Count() const { return 1; }
+    constexpr UInt32 Count() const { return 1; }
 
     SHADER_TYPE                 Type        = SHADER_TYPE_UNKNOWN;
     ShaderWebGPUImpl*           pShader     = nullptr;
@@ -146,7 +146,7 @@ void SerializedPipelineStateImpl::PatchShadersWebGPU(const CreateInfoType& Creat
     }
 
     IPipelineResourceSignature** ppSignatures    = CreateInfo.ppResourceSignatures;
-    Uint32                       SignaturesCount = CreateInfo.ResourceSignaturesCount;
+    UInt32                       SignaturesCount = CreateInfo.ResourceSignaturesCount;
 
     IPipelineResourceSignature* DefaultSignatures[1] = {};
     if (CreateInfo.ResourceSignaturesCount == 0)
@@ -167,8 +167,8 @@ void SerializedPipelineStateImpl::PatchShadersWebGPU(const CreateInfoType& Creat
         // Same as PipelineLayoutWebGPU::Create()
         PipelineStateWebGPUImpl::TBindIndexToBindGroupIndex BindIndexToBGIndex = {};
 
-        Uint32 BindGroupLayoutCount = 0;
-        for (Uint32 i = 0; i < SignaturesCount; ++i)
+        UInt32 BindGroupLayoutCount = 0;
+        for (UInt32 i = 0; i < SignaturesCount; ++i)
         {
             const RefCntAutoPtr<PipelineResourceSignatureWebGPUImpl>& pSignature = Signatures[i];
             if (pSignature == nullptr)
@@ -220,17 +220,17 @@ void SerializationDeviceImpl::GetPipelineResourceBindingsWebGPU(const PipelineRe
     const SHADER_TYPE ShaderStages = (Info.ShaderStages == SHADER_TYPE_UNKNOWN ? static_cast<SHADER_TYPE>(~0u) : Info.ShaderStages);
 
     SignatureArray<PipelineResourceSignatureWebGPUImpl> Signatures      = {};
-    Uint32                                              SignaturesCount = 0;
+    UInt32                                              SignaturesCount = 0;
     SortResourceSignatures(Info.ppResourceSignatures, Info.ResourceSignaturesCount, Signatures, SignaturesCount);
 
-    Uint32 BindGroupCount = 0;
-    for (Uint32 sign = 0; sign < SignaturesCount; ++sign)
+    UInt32 BindGroupCount = 0;
+    for (UInt32 sign = 0; sign < SignaturesCount; ++sign)
     {
         const PipelineResourceSignatureWebGPUImpl* pSignature = Signatures[sign];
         if (pSignature == nullptr)
             continue;
 
-        for (Uint32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
+        for (UInt32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
         {
             const PipelineResourceDesc&          ResDesc = pSignature->GetResourceDesc(r);
             const PipelineResourceAttribsWebGPU& ResAttr = pSignature->GetResourceAttribs(r);

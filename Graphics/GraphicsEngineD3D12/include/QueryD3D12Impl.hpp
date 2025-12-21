@@ -55,7 +55,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_QueryD3D12, TQueryBase)
 
     /// Implementation of IQuery::GetData().
-    virtual bool DILIGENT_CALL_TYPE GetData(void* pData, Uint32 DataSize, bool AutoInvalidate) override final;
+    virtual bool DILIGENT_CALL_TYPE GetData(void* pData, UInt32 DataSize, bool AutoInvalidate) override final;
 
     /// Implementation of IQuery::Invalidate().
     virtual void DILIGENT_CALL_TYPE Invalidate() override final;
@@ -64,7 +64,7 @@ public:
     virtual ID3D12QueryHeap* DILIGENT_CALL_TYPE GetD3D12QueryHeap() override final;
 
     /// Implementation of IQueryD3D12::GetQueryHeapIndex().
-    virtual Uint32 DILIGENT_CALL_TYPE GetQueryHeapIndex(Uint32 QueryId) const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetQueryHeapIndex(UInt32 QueryId) const override final
     {
         VERIFY_EXPR(QueryId == 0 || m_Desc.Type == QUERY_TYPE_DURATION && QueryId == 1);
         return m_QueryHeapIndex[QueryId];
@@ -78,9 +78,9 @@ private:
     void DiscardQueries();
 
     // Begin/end query indices
-    std::array<Uint32, 2> m_QueryHeapIndex = {QueryManagerD3D12::InvalidIndex, QueryManagerD3D12::InvalidIndex};
+    std::array<UInt32, 2> m_QueryHeapIndex = {QueryManagerD3D12::InvalidIndex, QueryManagerD3D12::InvalidIndex};
 
-    Uint64 m_QueryEndFenceValue = ~Uint64{0};
+    UInt64 m_QueryEndFenceValue = ~UInt64{0};
 
     QueryManagerD3D12* m_pQueryMgr = nullptr;
 };

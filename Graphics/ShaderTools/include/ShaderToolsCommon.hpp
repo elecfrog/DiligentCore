@@ -97,7 +97,7 @@ struct ShaderSourceFileData
 {
     RefCntAutoPtr<IDataBlob> pFileData;
     const char*              Source       = nullptr;
-    Uint32                   SourceLength = 0;
+    UInt32                   SourceLength = 0;
 };
 
 /// Reads shader source code from a file or uses the one from the shader create info
@@ -142,8 +142,8 @@ std::string UnrollShaderIncludes(const ShaderCreateInfo& ShaderCI) noexcept(fals
 
 std::string GetShaderCodeTypeName(SHADER_CODE_BASIC_TYPE     BasicType,
                                   SHADER_CODE_VARIABLE_CLASS Class,
-                                  Uint32                     NumRows,
-                                  Uint32                     NumCols,
+                                  UInt32                     NumRows,
+                                  UInt32                     NumCols,
                                   SHADER_SOURCE_LANGUAGE     Lang);
 
 struct ShaderCodeVariableDescX : ShaderCodeVariableDesc
@@ -161,7 +161,7 @@ struct ShaderCodeVariableDescX : ShaderCodeVariableDesc
         TypeName = TypeNameCopy.c_str();
 
         Members.reserve(Member.NumMembers);
-        for (Uint32 i = 0; i < Member.NumMembers; ++i)
+        for (UInt32 i = 0; i < Member.NumMembers; ++i)
             AddMember(Member.pMembers[i]);
     }
 
@@ -201,7 +201,7 @@ struct ShaderCodeVariableDescX : ShaderCodeVariableDesc
     {
         const size_t idx = Members.size();
         Members.emplace_back(Member);
-        NumMembers = static_cast<Uint32>(Members.size());
+        NumMembers = static_cast<UInt32>(Members.size());
         pMembers   = Members.data();
         return idx;
     }
@@ -210,7 +210,7 @@ struct ShaderCodeVariableDescX : ShaderCodeVariableDesc
     {
         const size_t idx = Members.size();
         Members.emplace_back(std::move(Member));
-        NumMembers = static_cast<Uint32>(Members.size());
+        NumMembers = static_cast<UInt32>(Members.size());
         pMembers   = Members.data();
         return idx;
     }
@@ -242,7 +242,7 @@ struct ShaderCodeVariableDescX : ShaderCodeVariableDesc
     {
         Handler(Members);
         pMembers   = Members.data();
-        NumMembers = StaticCast<Uint32>(Members.size());
+        NumMembers = StaticCast<UInt32>(Members.size());
     }
 
     ShaderCodeVariableDescX* FindMember(const char* MemberName)
@@ -315,7 +315,7 @@ struct ShaderCodeBufferDescX : ShaderCodeBufferDesc
     {
         const size_t idx = Variables.size();
         Variables.emplace_back(Var);
-        NumVariables = static_cast<Uint32>(Variables.size());
+        NumVariables = static_cast<UInt32>(Variables.size());
         pVariables   = Variables.data();
         return idx;
     }
@@ -324,7 +324,7 @@ struct ShaderCodeBufferDescX : ShaderCodeBufferDesc
     {
         const size_t idx = Variables.size();
         Variables.emplace_back(std::move(Var));
-        NumVariables = static_cast<Uint32>(Variables.size());
+        NumVariables = static_cast<UInt32>(Variables.size());
         pVariables   = Variables.data();
         return idx;
     }
@@ -338,7 +338,7 @@ struct ShaderCodeBufferDescX : ShaderCodeBufferDesc
     {
         Variables    = std::move(_Variables);
         pVariables   = Variables.data();
-        NumVariables = static_cast<Uint32>(Variables.size());
+        NumVariables = static_cast<UInt32>(Variables.size());
     }
 
     void ReserveSpace(FixedLinearAllocator& Allocator) const

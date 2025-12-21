@@ -62,7 +62,7 @@ DILIGENT_BEGIN_INTERFACE(IBufferD3D12, IBuffer)
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
     VIRTUAL ID3D12Resource* METHOD(GetD3D12Buffer)(THIS_
-                                                   Uint64 REF      DataStartByteOffset,
+                                                   UInt64 REF      DataStartByteOffset,
                                                    IDeviceContext* pContext) PURE;
 
     /// Sets the buffer usage state

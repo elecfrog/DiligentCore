@@ -77,7 +77,7 @@ PipelineStateCacheVkImpl::~PipelineStateCacheVkImpl()
 {
     // Vk object can only be destroyed when it is no longer used by the GPU
     if (m_PipelineStateCache != VK_NULL_HANDLE)
-        m_pDevice->SafeReleaseDeviceObject(std::move(m_PipelineStateCache), ~Uint64{0});
+        m_pDevice->SafeReleaseDeviceObject(std::move(m_PipelineStateCache), ~UInt64{0});
 }
 
 void PipelineStateCacheVkImpl::GetData(IDataBlob** ppBlob)

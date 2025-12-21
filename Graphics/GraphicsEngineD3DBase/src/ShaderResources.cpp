@@ -99,25 +99,25 @@ PIPELINE_RESOURCE_FLAGS D3DShaderResourceAttribs::GetPipelineResourceFlags() con
 
 ShaderResources::~ShaderResources()
 {
-    for (Uint32 n = 0; n < GetNumCBs(); ++n)
+    for (UInt32 n = 0; n < GetNumCBs(); ++n)
         GetCB(n).~D3DShaderResourceAttribs();
 
-    for (Uint32 n = 0; n < GetNumTexSRV(); ++n)
+    for (UInt32 n = 0; n < GetNumTexSRV(); ++n)
         GetTexSRV(n).~D3DShaderResourceAttribs();
 
-    for (Uint32 n = 0; n < GetNumTexUAV(); ++n)
+    for (UInt32 n = 0; n < GetNumTexUAV(); ++n)
         GetTexUAV(n).~D3DShaderResourceAttribs();
 
-    for (Uint32 n = 0; n < GetNumBufSRV(); ++n)
+    for (UInt32 n = 0; n < GetNumBufSRV(); ++n)
         GetBufSRV(n).~D3DShaderResourceAttribs();
 
-    for (Uint32 n = 0; n < GetNumBufUAV(); ++n)
+    for (UInt32 n = 0; n < GetNumBufUAV(); ++n)
         GetBufUAV(n).~D3DShaderResourceAttribs();
 
-    for (Uint32 n = 0; n < GetNumSamplers(); ++n)
+    for (UInt32 n = 0; n < GetNumSamplers(); ++n)
         GetSampler(n).~D3DShaderResourceAttribs();
 
-    for (Uint32 n = 0; n < GetNumAccelStructs(); ++n)
+    for (UInt32 n = 0; n < GetNumAccelStructs(); ++n)
         GetAccelStruct(n).~D3DShaderResourceAttribs();
 }
 
@@ -126,11 +126,11 @@ void ShaderResources::AllocateMemory(IMemoryAllocator&                Allocator,
                                      size_t                           ResourceNamesPoolSize,
                                      StringPool&                      ResourceNamesPool)
 {
-    Uint32 CurrentOffset = 0;
+    UInt32 CurrentOffset = 0;
 
-    auto AdvanceOffset = [&CurrentOffset](Uint32 NumResources) //
+    auto AdvanceOffset = [&CurrentOffset](UInt32 NumResources) //
     {
-        constexpr Uint32 MaxOffset = std::numeric_limits<OffsetType>::max();
+        constexpr UInt32 MaxOffset = std::numeric_limits<OffsetType>::max();
         VERIFY(CurrentOffset <= MaxOffset, "Current offset (", CurrentOffset, ") exceeds max allowed value (", MaxOffset, ")");
         OffsetType Offset = static_cast<OffsetType>(CurrentOffset);
         CurrentOffset += NumResources;
@@ -171,7 +171,7 @@ void ShaderResources::AllocateMemory(IMemoryAllocator&                Allocator,
 #ifdef DILIGENT_DEVELOPMENT
 void ShaderResources::DvpVerifyResourceLayout(const PipelineResourceLayoutDesc& ResourceLayout,
                                               const ShaderResources* const      pShaderResources[],
-                                              Uint32                            NumShaders,
+                                              UInt32                            NumShaders,
                                               bool                              VerifyVariables,
                                               bool                              VerifyImmutableSamplers) noexcept
 {
@@ -180,9 +180,9 @@ void ShaderResources::DvpVerifyResourceLayout(const PipelineResourceLayoutDesc& 
         std::string ShadersStr;
         while (ShaderStages != SHADER_TYPE_UNKNOWN)
         {
-            const SHADER_TYPE ShaderType = ShaderStages & static_cast<SHADER_TYPE>(~(static_cast<Uint32>(ShaderStages) - 1));
+            const SHADER_TYPE ShaderType = ShaderStages & static_cast<SHADER_TYPE>(~(static_cast<UInt32>(ShaderStages) - 1));
             String            ShaderName;
-            for (Uint32 s = 0; s < NumShaders; ++s)
+            for (UInt32 s = 0; s < NumShaders; ++s)
             {
                 const ShaderResources& Resources = *pShaderResources[s];
                 if ((ShaderStages & Resources.GetShaderType()) != 0)
@@ -216,7 +216,7 @@ void ShaderResources::DvpVerifyResourceLayout(const PipelineResourceLayoutDesc& 
 
     if (VerifyVariables)
     {
-        for (Uint32 v = 0; v < ResourceLayout.NumVariables; ++v)
+        for (UInt32 v = 0; v < ResourceLayout.NumVariables; ++v)
         {
             const ShaderResourceVariableDesc& VarDesc = ResourceLayout.Variables[v];
             if (VarDesc.ShaderStages == SHADER_TYPE_UNKNOWN)
@@ -226,14 +226,14 @@ void ShaderResources::DvpVerifyResourceLayout(const PipelineResourceLayoutDesc& 
             }
 
             bool VariableFound = false;
-            for (Uint32 s = 0; s < NumShaders && !VariableFound; ++s)
+            for (UInt32 s = 0; s < NumShaders && !VariableFound; ++s)
             {
                 const ShaderResources& Resources = *pShaderResources[s];
                 if ((VarDesc.ShaderStages & Resources.GetShaderType()) == 0)
                     continue;
 
                 const bool UseCombinedTextureSamplers = Resources.IsUsingCombinedTextureSamplers();
-                for (Uint32 n = 0; n < Resources.m_TotalResources && !VariableFound; ++n)
+                for (UInt32 n = 0; n < Resources.m_TotalResources && !VariableFound; ++n)
                 {
                     const D3DShaderResourceAttribs& Res = Resources.GetResAttribs(n, Resources.m_TotalResources, 0);
 
@@ -257,7 +257,7 @@ void ShaderResources::DvpVerifyResourceLayout(const PipelineResourceLayoutDesc& 
 
     if (VerifyImmutableSamplers)
     {
-        for (Uint32 sam = 0; sam < ResourceLayout.NumImmutableSamplers; ++sam)
+        for (UInt32 sam = 0; sam < ResourceLayout.NumImmutableSamplers; ++sam)
         {
             const ImmutableSamplerDesc& StSamDesc = ResourceLayout.ImmutableSamplers[sam];
             if (StSamDesc.ShaderStages == SHADER_TYPE_UNKNOWN)
@@ -269,7 +269,7 @@ void ShaderResources::DvpVerifyResourceLayout(const PipelineResourceLayoutDesc& 
             const char* TexOrSamName = StSamDesc.SamplerOrTextureName;
 
             bool ImtblSamplerFound = false;
-            for (Uint32 s = 0; s < NumShaders && !ImtblSamplerFound; ++s)
+            for (UInt32 s = 0; s < NumShaders && !ImtblSamplerFound; ++s)
             {
                 const ShaderResources& Resources = *pShaderResources[s];
                 if ((StSamDesc.ShaderStages & Resources.GetShaderType()) == 0)
@@ -279,7 +279,7 @@ void ShaderResources::DvpVerifyResourceLayout(const PipelineResourceLayoutDesc& 
                 // In case HLSL-style combined image samplers are used, the condition is  Sampler.Name == "g_Texture" + "_sampler".
                 // Otherwise the condition is  Sampler.Name == "g_Texture_sampler" + "".
                 const char* CombinedSamplerSuffix = Resources.GetCombinedSamplerSuffix();
-                for (Uint32 n = 0; n < Resources.GetNumSamplers() && !ImtblSamplerFound; ++n)
+                for (UInt32 n = 0; n < Resources.GetNumSamplers() && !ImtblSamplerFound; ++n)
                 {
                     const D3DShaderResourceAttribs& Sampler = Resources.GetSampler(n);
                     ImtblSamplerFound                       = StreqSuff(Sampler.Name, TexOrSamName, CombinedSamplerSuffix);
@@ -297,12 +297,12 @@ void ShaderResources::DvpVerifyResourceLayout(const PipelineResourceLayoutDesc& 
 #endif
 
 
-Uint32 ShaderResources::FindAssignedSamplerId(const D3DShaderResourceAttribs& TexSRV, const char* SamplerSuffix) const
+UInt32 ShaderResources::FindAssignedSamplerId(const D3DShaderResourceAttribs& TexSRV, const char* SamplerSuffix) const
 {
     VERIFY_EXPR(SamplerSuffix != nullptr && *SamplerSuffix != 0);
     VERIFY_EXPR(TexSRV.GetInputType() == D3D_SIT_TEXTURE && TexSRV.GetSRVDimension() != D3D_SRV_DIMENSION_BUFFER);
-    Uint32 NumSamplers = GetNumSamplers();
-    for (Uint32 s = 0; s < NumSamplers; ++s)
+    UInt32 NumSamplers = GetNumSamplers();
+    for (UInt32 s = 0; s < NumSamplers; ++s)
     {
         const D3DShaderResourceAttribs& Sampler = GetSampler(s);
         if (StreqSuff(Sampler.Name, TexSRV.Name, SamplerSuffix))
@@ -326,37 +326,37 @@ bool ShaderResources::IsCompatibleWith(const ShaderResources& Res) const
 
     bool IsCompatible = true;
     ProcessResources(
-        [&](const D3DShaderResourceAttribs& CB, Uint32 n) //
+        [&](const D3DShaderResourceAttribs& CB, UInt32 n) //
         {
             if (!CB.IsCompatibleWith(Res.GetCB(n)))
                 IsCompatible = false;
         },
-        [&](const D3DShaderResourceAttribs& Sam, Uint32 n) //
+        [&](const D3DShaderResourceAttribs& Sam, UInt32 n) //
         {
             if (!Sam.IsCompatibleWith(Res.GetSampler(n)))
                 IsCompatible = false;
         },
-        [&](const D3DShaderResourceAttribs& TexSRV, Uint32 n) //
+        [&](const D3DShaderResourceAttribs& TexSRV, UInt32 n) //
         {
             if (!TexSRV.IsCompatibleWith(Res.GetTexSRV(n)))
                 IsCompatible = false;
         },
-        [&](const D3DShaderResourceAttribs& TexUAV, Uint32 n) //
+        [&](const D3DShaderResourceAttribs& TexUAV, UInt32 n) //
         {
             if (!TexUAV.IsCompatibleWith(Res.GetTexUAV(n)))
                 IsCompatible = false;
         },
-        [&](const D3DShaderResourceAttribs& BufSRV, Uint32 n) //
+        [&](const D3DShaderResourceAttribs& BufSRV, UInt32 n) //
         {
             if (!BufSRV.IsCompatibleWith(Res.GetBufSRV(n)))
                 IsCompatible = false;
         },
-        [&](const D3DShaderResourceAttribs& BufUAV, Uint32 n) //
+        [&](const D3DShaderResourceAttribs& BufUAV, UInt32 n) //
         {
             if (!BufUAV.IsCompatibleWith(Res.GetBufUAV(n)))
                 IsCompatible = false;
         },
-        [&](const D3DShaderResourceAttribs& AccelStruct, Uint32 n) //
+        [&](const D3DShaderResourceAttribs& AccelStruct, UInt32 n) //
         {
             if (!AccelStruct.IsCompatibleWith(Res.GetAccelStruct(n)))
                 IsCompatible = false;
@@ -377,7 +377,7 @@ bool D3DShaderResourceAttribs::IsMultisample() const
     }
 }
 
-HLSLShaderResourceDesc ShaderResources::GetHLSLShaderResourceDesc(Uint32 Index) const
+HLSLShaderResourceDesc ShaderResources::GetHLSLShaderResourceDesc(UInt32 Index) const
 {
     DEV_CHECK_ERR(Index < m_TotalResources, "Resource index (", Index, ") is out of range");
     HLSLShaderResourceDesc HLSLResourceDesc = {};
@@ -392,7 +392,7 @@ HLSLShaderResourceDesc ShaderResources::GetHLSLShaderResourceDesc(Uint32 Index) 
 size_t ShaderResources::GetHash() const
 {
     size_t hash = ComputeHash(GetNumCBs(), GetNumTexSRV(), GetNumTexUAV(), GetNumBufSRV(), GetNumBufUAV(), GetNumSamplers());
-    for (Uint32 n = 0; n < m_TotalResources; ++n)
+    for (UInt32 n = 0; n < m_TotalResources; ++n)
     {
         const D3DShaderResourceAttribs& Res = GetResAttribs(n, m_TotalResources, 0);
         HashCombine(hash, Res);

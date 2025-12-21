@@ -144,7 +144,7 @@ TEST_F(BufferCreationTest, CreateVertexBuffer)
 
     BufferData InitData;
     InitData.DataSize = BuffDesc.Size;
-    std::vector<Uint8> DummyData(static_cast<size_t>(InitData.DataSize));
+    std::vector<UInt8> DummyData(static_cast<size_t>(InitData.DataSize));
     InitData.pData = DummyData.data();
     RefCntAutoPtr<IBuffer> pBuffer;
     pDevice->CreateBuffer(BuffDesc, &InitData, &pBuffer);
@@ -407,7 +407,7 @@ TEST_F(BufferCreationTest, CreateUnifiedBuffer)
     {
         BufferData InitData;
         InitData.DataSize = BuffDesc.Size;
-        std::vector<Uint8> DummyData(static_cast<size_t>(InitData.DataSize));
+        std::vector<UInt8> DummyData(static_cast<size_t>(InitData.DataSize));
         InitData.pData = DummyData.data();
         RefCntAutoPtr<IBuffer> pBuffer;
         pDevice->CreateBuffer(BuffDesc, &InitData, &pBuffer);

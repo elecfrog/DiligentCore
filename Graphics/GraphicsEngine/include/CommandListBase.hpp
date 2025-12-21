@@ -77,7 +77,7 @@ public:
     {
     }
 
-    Uint32 GetQueueId() const
+    UInt32 GetQueueId() const
     {
         return m_QueueId;
     }
@@ -85,7 +85,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_CommandList, TDeviceObjectBase)
 
 private:
-    const Uint8 m_QueueId;
+    const UInt8 m_QueueId;
 };
 
 } // namespace Diligent

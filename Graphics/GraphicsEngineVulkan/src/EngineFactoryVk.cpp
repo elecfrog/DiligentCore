@@ -94,7 +94,7 @@ public:
     void AttachToVulkanDevice(std::shared_ptr<VulkanUtilities::Instance>       Instance,
                               std::unique_ptr<VulkanUtilities::PhysicalDevice> PhysicalDevice,
                               std::shared_ptr<VulkanUtilities::LogicalDevice>  LogicalDevice,
-                              Uint32                                           CommandQueueCount,
+                              UInt32                                           CommandQueueCount,
                               ICommandQueueVk**                                ppCommandQueues,
                               const EngineVkCreateInfo&                        EngineCI,
                               const GraphicsAdapterInfo&                       AdapterInfo,
@@ -108,7 +108,7 @@ public:
                                                       ISwapChain**         ppSwapChain) override final;
 
     virtual void DILIGENT_CALL_TYPE EnumerateAdapters(Version              MinVersion,
-                                                      Uint32&              NumAdapters,
+                                                      UInt32&              NumAdapters,
                                                       GraphicsAdapterInfo* Adapters) const override final;
 
     virtual void DILIGENT_CALL_TYPE EnableDeviceSimulation() override final
@@ -177,8 +177,8 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
     // Buffer properties
     {
         BufferProperties& BufferProps{AdapterInfo.Buffer};
-        BufferProps.ConstantBufferOffsetAlignment   = static_cast<Uint32>(vkDeviceLimits.minUniformBufferOffsetAlignment);
-        BufferProps.StructuredBufferOffsetAlignment = static_cast<Uint32>(vkDeviceLimits.minStorageBufferOffsetAlignment);
+        BufferProps.ConstantBufferOffsetAlignment   = static_cast<UInt32>(vkDeviceLimits.minUniformBufferOffsetAlignment);
+        BufferProps.StructuredBufferOffsetAlignment = static_cast<UInt32>(vkDeviceLimits.minStorageBufferOffsetAlignment);
         ASSERT_SIZEOF(BufferProps, 8, "Did you add a new member to BufferProperites? Please initialize it here.");
     }
 
@@ -203,7 +203,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
     {
         SamplerProperties& SamProps{AdapterInfo.Sampler};
         SamProps.BorderSamplingModeSupported = True;
-        SamProps.MaxAnisotropy               = static_cast<Uint8>(vkDeviceLimits.maxSamplerAnisotropy);
+        SamProps.MaxAnisotropy               = static_cast<UInt8>(vkDeviceLimits.maxSamplerAnisotropy);
         SamProps.LODBiasSupported            = True;
         ASSERT_SIZEOF(SamProps, 3, "Did you add a new member to SamplerProperites? Please initialize it here.");
     }
@@ -220,14 +220,14 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
         RayTracingProps.MaxShaderRecordStride    = vkRTPipelineProps.maxShaderGroupStride;
         RayTracingProps.ShaderGroupBaseAlignment = vkRTPipelineProps.shaderGroupBaseAlignment;
         RayTracingProps.MaxRayGenThreads         = vkRTPipelineProps.maxRayDispatchInvocationCount;
-        RayTracingProps.MaxInstancesPerTLAS      = static_cast<Uint32>(vkASLimits.maxInstanceCount);
-        RayTracingProps.MaxPrimitivesPerBLAS     = static_cast<Uint32>(vkASLimits.maxPrimitiveCount);
-        RayTracingProps.MaxGeometriesPerBLAS     = static_cast<Uint32>(vkASLimits.maxGeometryCount);
+        RayTracingProps.MaxInstancesPerTLAS      = static_cast<UInt32>(vkASLimits.maxInstanceCount);
+        RayTracingProps.MaxPrimitivesPerBLAS     = static_cast<UInt32>(vkASLimits.maxPrimitiveCount);
+        RayTracingProps.MaxGeometriesPerBLAS     = static_cast<UInt32>(vkASLimits.maxGeometryCount);
         RayTracingProps.VertexBufferAlignment    = 1;
         RayTracingProps.IndexBufferAlignment     = 1;
         RayTracingProps.TransformBufferAlignment = 16; // from specs
         RayTracingProps.BoxBufferAlignment       = 8;  // from specs
-        RayTracingProps.ScratchBufferAlignment   = static_cast<Uint32>(vkASLimits.minAccelerationStructureScratchOffsetAlignment);
+        RayTracingProps.ScratchBufferAlignment   = static_cast<UInt32>(vkASLimits.minAccelerationStructureScratchOffsetAlignment);
         RayTracingProps.InstanceBufferAlignment  = 16; // from specs
 
         if (vkExtFeatures.RayTracingPipeline.rayTracingPipeline)
@@ -350,7 +350,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
             std::vector<VkPhysicalDeviceFragmentShadingRateKHR> ShadingRates;
 #if DILIGENT_USE_VOLK
             {
-                Uint32 ShadingRateCount = 0;
+                UInt32 ShadingRateCount = 0;
                 vkGetPhysicalDeviceFragmentShadingRatesKHR(PhysicalDevice.GetVkDeviceHandle(), &ShadingRateCount, nullptr);
                 VERIFY_EXPR(ShadingRateCount >= 3); // Spec says that implementation must support at least 3 predefined modes.
 
@@ -364,8 +364,8 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
 #endif
             constexpr VkSampleCountFlags VK_SAMPLE_COUNT_ALL = (VK_SAMPLE_COUNT_64_BIT << 1) - 1;
 
-            ShadingRateProps.NumShadingRates = StaticCast<Uint8>(std::min(ShadingRates.size(), size_t{MAX_SHADING_RATES}));
-            for (Uint32 i = 0; i < ShadingRateProps.NumShadingRates; ++i)
+            ShadingRateProps.NumShadingRates = StaticCast<UInt8>(std::min(ShadingRates.size(), size_t{MAX_SHADING_RATES}));
+            for (UInt32 i = 0; i < ShadingRateProps.NumShadingRates; ++i)
             {
                 const VkPhysicalDeviceFragmentShadingRateKHR& Src = ShadingRates[i];
                 ShadingRateMode&                              Dst = ShadingRateProps.ShadingRates[i];
@@ -373,7 +373,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
                 // maxFragmentShadingRateRasterizationSamples - contains only maximum bit
                 // sampleCounts - contains all supported bits
                 VERIFY_EXPR((Src.fragmentSize.width == 1 && Src.fragmentSize.height == 1) ||
-                            (Uint32{Src.sampleCounts} <= ((static_cast<Uint32>(vkDeviceExtProps.ShadingRate.maxFragmentShadingRateRasterizationSamples) << 1) - 1)));
+                            (UInt32{Src.sampleCounts} <= ((static_cast<UInt32>(vkDeviceExtProps.ShadingRate.maxFragmentShadingRateRasterizationSamples) << 1) - 1)));
 
                 Dst.SampleBits = VkSampleCountFlagsToSampleCount(Src.sampleCounts & VK_SAMPLE_COUNT_ALL);
                 Dst.Rate       = VkFragmentSizeToShadingRate(Src.fragmentSize);
@@ -570,11 +570,11 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
             const VkMemoryHeap& HeapInfo = MemoryProps.memoryHeaps[heap];
 
             if (UnifiedHeap[heap])
-                Mem.UnifiedMemory += static_cast<Uint64>(HeapInfo.size);
+                Mem.UnifiedMemory += static_cast<UInt64>(HeapInfo.size);
             else if (DeviceLocalHeap[heap])
-                Mem.LocalMemory += static_cast<Uint64>(HeapInfo.size);
+                Mem.LocalMemory += static_cast<UInt64>(HeapInfo.size);
             else if (HostVisibleHeap[heap])
-                Mem.HostVisibleMemory += static_cast<Uint64>(HeapInfo.size);
+                Mem.HostVisibleMemory += static_cast<UInt64>(HeapInfo.size);
         }
 
         ASSERT_SIZEOF(Mem, 40, "Did you add a new member to AdapterMemoryInfo? Please initialize it here.");
@@ -583,9 +583,9 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
     // Set queue info
     {
         const auto& QueueProperties = PhysicalDevice.GetQueueProperties();
-        AdapterInfo.NumQueues       = std::min(MAX_ADAPTER_QUEUES, static_cast<Uint32>(QueueProperties.size()));
+        AdapterInfo.NumQueues       = std::min(MAX_ADAPTER_QUEUES, static_cast<UInt32>(QueueProperties.size()));
 
-        for (Uint32 q = 0; q < AdapterInfo.NumQueues; ++q)
+        for (UInt32 q = 0; q < AdapterInfo.NumQueues; ++q)
         {
             const VkQueueFamilyProperties& SrcQueue = QueueProperties[q];
             CommandQueueInfo&              DstQueue = AdapterInfo.Queues[q];
@@ -602,7 +602,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
 }
 
 void EngineFactoryVkImpl::EnumerateAdapters(Version              MinVersion,
-                                            Uint32&              NumAdapters,
+                                            UInt32&              NumAdapters,
                                             GraphicsAdapterInfo* Adapters) const
 {
     if (m_wpDevice.IsValid())
@@ -622,12 +622,12 @@ void EngineFactoryVkImpl::EnumerateAdapters(Version              MinVersion,
 
     if (Adapters == nullptr)
     {
-        NumAdapters = static_cast<Uint32>(Instance->GetVkPhysicalDevices().size());
+        NumAdapters = static_cast<UInt32>(Instance->GetVkPhysicalDevices().size());
         return;
     }
 
-    NumAdapters = std::min(NumAdapters, static_cast<Uint32>(Instance->GetVkPhysicalDevices().size()));
-    for (Uint32 i = 0; i < NumAdapters; ++i)
+    NumAdapters = std::min(NumAdapters, static_cast<UInt32>(Instance->GetVkPhysicalDevices().size()));
+    for (UInt32 i = 0; i < NumAdapters; ++i)
     {
         std::unique_ptr<VulkanUtilities::PhysicalDevice> PhysicalDevice =
             VulkanUtilities::PhysicalDevice::Create({*Instance, Instance->GetVkPhysicalDevices()[i]});
@@ -763,7 +763,7 @@ void EngineFactoryVkImpl::CreateDeviceAndContextsVk(const EngineVkCreateInfo& En
         std::vector<VkDeviceQueueGlobalPriorityCreateInfoEXT> QueueGlobalPriority;
         std::vector<VkDeviceQueueCreateInfo>                  QueueInfos;
         std::vector<float>                                    QueuePriorities;
-        std::array<Uint8, MAX_ADAPTER_QUEUES>                 QueueIDtoQueueInfo;
+        std::array<UInt8, MAX_ADAPTER_QUEUES>                 QueueIDtoQueueInfo;
         std::array<QUEUE_PRIORITY, MAX_ADAPTER_QUEUES>        QueueIDtoPriority;
         QueueIDtoQueueInfo.fill(DEFAULT_QUEUE_ID);
         QueueIDtoPriority.fill(QUEUE_PRIORITY_UNKNOWN);
@@ -776,16 +776,16 @@ void EngineFactoryVkImpl::CreateDeviceAndContextsVk(const EngineVkCreateInfo& En
             const auto& QueueProperties = PhysicalDevice->GetQueueProperties();
             QueuePriorities.resize(EngineCI.NumImmediateContexts, 1.0f);
 
-            for (Uint32 CtxInd = 0; CtxInd < EngineCI.NumImmediateContexts; ++CtxInd)
+            for (UInt32 CtxInd = 0; CtxInd < EngineCI.NumImmediateContexts; ++CtxInd)
             {
                 const ImmediateContextCreateInfo& ContextInfo = EngineCI.pImmediateContextInfo[CtxInd];
                 VERIFY(ContextInfo.QueueId < QueueProperties.size() && ContextInfo.QueueId < QueueIDtoQueueInfo.size(),
                        "Must have been verified in VerifyEngineCreateInfo()");
 
-                Uint8& QueueIndex = QueueIDtoQueueInfo[ContextInfo.QueueId];
+                UInt8& QueueIndex = QueueIDtoQueueInfo[ContextInfo.QueueId];
                 if (QueueIndex == DEFAULT_QUEUE_ID)
                 {
-                    QueueIndex = static_cast<Uint8>(QueueInfos.size());
+                    QueueIndex = static_cast<UInt8>(QueueInfos.size());
 
                     VkDeviceQueueCreateInfo QueueCI{};
                     QueueCI.sType            = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
@@ -808,7 +808,7 @@ void EngineFactoryVkImpl::CreateDeviceAndContextsVk(const EngineVkCreateInfo& En
             {
                 DeviceExtensions.push_back(VK_EXT_GLOBAL_PRIORITY_EXTENSION_NAME);
                 QueueGlobalPriority.resize(QueueInfos.size());
-                for (Uint32 QInd = 0; QInd < QueueInfos.size(); ++QInd)
+                for (UInt32 QInd = 0; QInd < QueueInfos.size(); ++QInd)
                 {
                     VkDeviceQueueGlobalPriorityCreateInfoEXT& QPriority{QueueGlobalPriority[QInd]};
                     QPriority.sType          = VK_STRUCTURE_TYPE_DEVICE_QUEUE_GLOBAL_PRIORITY_CREATE_INFO_EXT;
@@ -844,7 +844,7 @@ void EngineFactoryVkImpl::CreateDeviceAndContextsVk(const EngineVkCreateInfo& En
         // https://www.khronos.org/registry/vulkan/specs/1.0/html/vkspec.html#extended-functionality-device-layer-deprecation
         vkDeviceCreateInfo.enabledLayerCount    = 0;       // Deprecated and ignored.
         vkDeviceCreateInfo.ppEnabledLayerNames  = nullptr; // Deprecated and ignored
-        vkDeviceCreateInfo.queueCreateInfoCount = static_cast<Uint32>(QueueInfos.size());
+        vkDeviceCreateInfo.queueCreateInfoCount = static_cast<UInt32>(QueueInfos.size());
         vkDeviceCreateInfo.pQueueCreateInfos    = QueueInfos.data();
 
         const VkPhysicalDeviceFeatures& vkDeviceFeatures{PhysicalDevice->GetFeatures()};
@@ -1281,7 +1281,7 @@ void EngineFactoryVkImpl::CreateDeviceAndContextsVk(const EngineVkCreateInfo& En
 
         ASSERT_SIZEOF(DeviceFeatures, 47, "Did you add a new feature to DeviceFeatures? Please handle its status here.");
 
-        for (Uint32 i = 0; i < EngineCI.DeviceExtensionCount; ++i)
+        for (UInt32 i = 0; i < EngineCI.DeviceExtensionCount; ++i)
         {
             if (!PhysicalDevice->IsExtensionSupported(EngineCI.ppDeviceExtensionNames[i]))
             {
@@ -1337,13 +1337,13 @@ void EngineFactoryVkImpl::CreateDeviceAndContextsVk(const EngineVkCreateInfo& En
 
         if (EngineCI.NumImmediateContexts > 0)
         {
-            for (Uint32 QInd = 0; QInd < QueueInfos.size(); ++QInd)
+            for (UInt32 QInd = 0; QInd < QueueInfos.size(); ++QInd)
                 QueueInfos[QInd].queueCount = 0;
 
-            for (Uint32 CtxInd = 0; CtxInd < CommandQueuesVk.size(); ++CtxInd)
+            for (UInt32 CtxInd = 0; CtxInd < CommandQueuesVk.size(); ++CtxInd)
             {
                 const ImmediateContextCreateInfo& ContextInfo = EngineCI.pImmediateContextInfo[CtxInd];
-                const Uint8                       QueueIndex  = QueueIDtoQueueInfo[ContextInfo.QueueId];
+                const UInt8                       QueueIndex  = QueueIDtoQueueInfo[ContextInfo.QueueId];
                 VERIFY_EXPR(QueueIndex != DEFAULT_QUEUE_ID);
                 VkDeviceQueueCreateInfo& QueueCI = QueueInfos[QueueIndex];
 
@@ -1357,7 +1357,7 @@ void EngineFactoryVkImpl::CreateDeviceAndContextsVk(const EngineVkCreateInfo& En
             VERIFY_EXPR(CommandQueuesVk.size() == 1);
             ImmediateContextCreateInfo DefaultContextInfo{};
             DefaultContextInfo.Name    = "Graphics context";
-            DefaultContextInfo.QueueId = static_cast<Uint8>(QueueInfos[0].queueFamilyIndex);
+            DefaultContextInfo.QueueId = static_cast<UInt8>(QueueInfos[0].queueFamilyIndex);
 
             CommandQueuesVk[0] = NEW_RC_OBJ(RawMemAllocator, "CommandQueueVk instance", CommandQueueVkImpl)(LogicalDevice, SoftwareQueueIndex{0}, 1u, 1u, DefaultContextInfo);
             CommandQueues[0]   = CommandQueuesVk[0];
@@ -1370,14 +1370,14 @@ void EngineFactoryVkImpl::CreateDeviceAndContextsVk(const EngineVkCreateInfo& En
             // Render device owns command queue that in turn owns the fence, so it is an internal device object
             constexpr bool IsDeviceInternal = true;
 
-            for (Uint32 CtxInd = 0; CtxInd < CommandQueuesVk.size(); ++CtxInd)
+            for (UInt32 CtxInd = 0; CtxInd < CommandQueuesVk.size(); ++CtxInd)
             {
                 RefCntAutoPtr<FenceVkImpl> pFenceVk{NEW_RC_OBJ(RawMemAllocator, "FenceVkImpl instance", FenceVkImpl)(pRenderDeviceVk, Desc, IsDeviceInternal)};
                 CommandQueuesVk[CtxInd]->SetFence(std::move(pFenceVk));
             }
         };
 
-        AttachToVulkanDevice(Instance, std::move(PhysicalDevice), LogicalDevice, static_cast<Uint32>(CommandQueues.size()), CommandQueues.data(), EngineCI, AdapterInfo, ppDevice, ppContexts);
+        AttachToVulkanDevice(Instance, std::move(PhysicalDevice), LogicalDevice, static_cast<UInt32>(CommandQueues.size()), CommandQueues.data(), EngineCI, AdapterInfo, ppDevice, ppContexts);
 
         m_wpDevice = *ppDevice;
     }
@@ -1390,7 +1390,7 @@ void EngineFactoryVkImpl::CreateDeviceAndContextsVk(const EngineVkCreateInfo& En
 void EngineFactoryVkImpl::AttachToVulkanDevice(std::shared_ptr<VulkanUtilities::Instance>       Instance,
                                                std::unique_ptr<VulkanUtilities::PhysicalDevice> PhysicalDevice,
                                                std::shared_ptr<VulkanUtilities::LogicalDevice>  LogicalDevice,
-                                               Uint32                                           CommandQueueCount,
+                                               UInt32                                           CommandQueueCount,
                                                ICommandQueueVk**                                ppCommandQueues,
                                                const EngineVkCreateInfo&                        EngineCI,
                                                const GraphicsAdapterInfo&                       AdapterInfo,
@@ -1409,7 +1409,7 @@ void EngineFactoryVkImpl::AttachToVulkanDevice(std::shared_ptr<VulkanUtilities::
 
     ImmediateContextCreateInfo DefaultImmediateCtxCI;
 
-    const Uint32                            NumImmediateContexts  = EngineCI.NumImmediateContexts > 0 ? EngineCI.NumImmediateContexts : 1;
+    const UInt32                            NumImmediateContexts  = EngineCI.NumImmediateContexts > 0 ? EngineCI.NumImmediateContexts : 1;
     const ImmediateContextCreateInfo* const pImmediateContextInfo = EngineCI.NumImmediateContexts > 0 ? EngineCI.pImmediateContextInfo : &DefaultImmediateCtxCI;
 
     VERIFY_EXPR(NumImmediateContexts == CommandQueueCount);
@@ -1430,7 +1430,7 @@ void EngineFactoryVkImpl::AttachToVulkanDevice(std::shared_ptr<VulkanUtilities::
         if (m_OnRenderDeviceCreated != nullptr)
             m_OnRenderDeviceCreated(pRenderDeviceVk);
 
-        for (Uint32 CtxInd = 0; CtxInd < NumImmediateContexts; ++CtxInd)
+        for (UInt32 CtxInd = 0; CtxInd < NumImmediateContexts; ++CtxInd)
         {
             const uint32_t           QueueId    = ppCommandQueues[CtxInd]->GetQueueFamilyIndex();
             const auto&              QueueProps = pRenderDeviceVk->GetPhysicalDevice().GetQueueProperties();
@@ -1452,7 +1452,7 @@ void EngineFactoryVkImpl::AttachToVulkanDevice(std::shared_ptr<VulkanUtilities::
             pRenderDeviceVk->SetImmediateContext(CtxInd, pImmediateCtxVk);
         }
 
-        for (Uint32 DeferredCtx = 0; DeferredCtx < EngineCI.NumDeferredContexts; ++DeferredCtx)
+        for (UInt32 DeferredCtx = 0; DeferredCtx < EngineCI.NumDeferredContexts; ++DeferredCtx)
         {
             pRenderDeviceVk->CreateDeferredContext(ppContexts + NumImmediateContexts + DeferredCtx);
         }
@@ -1464,7 +1464,7 @@ void EngineFactoryVkImpl::AttachToVulkanDevice(std::shared_ptr<VulkanUtilities::
             (*ppDevice)->Release();
             *ppDevice = nullptr;
         }
-        for (Uint32 ctx = 0; ctx < NumImmediateContexts + EngineCI.NumDeferredContexts; ++ctx)
+        for (UInt32 ctx = 0; ctx < NumImmediateContexts + EngineCI.NumDeferredContexts; ++ctx)
         {
             if (ppContexts[ctx] != nullptr)
             {

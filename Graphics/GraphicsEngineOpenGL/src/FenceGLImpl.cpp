@@ -58,7 +58,7 @@ FenceGLImpl::~FenceGLImpl()
 #endif
 }
 
-Uint64 FenceGLImpl::GetCompletedValue()
+UInt64 FenceGLImpl::GetCompletedValue()
 {
     while (!m_PendingFences.empty())
     {
@@ -83,7 +83,7 @@ Uint64 FenceGLImpl::GetCompletedValue()
     return m_LastCompletedFenceValue.load();
 }
 
-void FenceGLImpl::HostWait(Uint64 Value, bool FlushCommands)
+void FenceGLImpl::HostWait(UInt64 Value, bool FlushCommands)
 {
     while (!m_PendingFences.empty())
     {
@@ -100,7 +100,7 @@ void FenceGLImpl::HostWait(Uint64 Value, bool FlushCommands)
     }
 }
 
-void FenceGLImpl::DeviceWait(Uint64 Value)
+void FenceGLImpl::DeviceWait(UInt64 Value)
 {
     auto Iter = m_PendingFences.begin();
     for (; Iter != m_PendingFences.end(); ++Iter)
@@ -113,13 +113,13 @@ void FenceGLImpl::DeviceWait(Uint64 Value)
     }
 }
 
-void FenceGLImpl::Signal(Uint64 NewValue)
+void FenceGLImpl::Signal(UInt64 NewValue)
 {
     DEV_CHECK_ERR(m_Desc.Type == FENCE_TYPE_GENERAL, "Fence must have been created with FENCE_TYPE_GENERAL");
     DEV_ERROR("Signal() is not supported in OpenGL backend");
 }
 
-void FenceGLImpl::Wait(Uint64 Value)
+void FenceGLImpl::Wait(UInt64 Value)
 {
     return HostWait(Value, false);
 }

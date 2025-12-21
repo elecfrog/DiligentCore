@@ -36,7 +36,7 @@ namespace Diligent
 
 struct AppleMisc : public LinuxMisc
 {
-    static Uint64 SetCurrentThreadAffinity(Uint64 Mask);
+    static UInt64 SetCurrentThreadAffinity(UInt64 Mask);
 };
 
 } // namespace Diligent

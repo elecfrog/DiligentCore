@@ -62,8 +62,8 @@ void TestResourceMappingC_API(struct IResourceMapping* pResourceMapping)
 {
     IDeviceObject* pObject = NULL;
 
-    Uint32 ArraySize  = 4;
-    Uint32 ArrayIndex = 6;
+    UInt32 ArraySize  = 4;
+    UInt32 ArrayIndex = 6;
     size_t Size       = 0;
 
     IResourceMapping_AddResource(pResourceMapping, "Resource Name", pObject, true);

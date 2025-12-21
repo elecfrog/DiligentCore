@@ -34,7 +34,7 @@ namespace Diligent
 {
 
 GLProgram::GLProgram(ShaderGLImpl* const* ppShaders,
-                     Uint32               NumShaders,
+                     UInt32               NumShaders,
                      bool                 IsSeparableProgram) noexcept :
     m_AttachedShaders{ppShaders, ppShaders + NumShaders}
 {
@@ -47,7 +47,7 @@ GLProgram::GLProgram(ShaderGLImpl* const* ppShaders,
         DEV_CHECK_GL_ERROR("glProgramParameteri(GL_PROGRAM_SEPARABLE) failed");
     }
 
-    for (Uint32 i = 0; i < NumShaders; ++i)
+    for (UInt32 i = 0; i < NumShaders; ++i)
     {
         ShaderGLImpl* pCurrShader = ppShaders[i];
         glAttachShader(m_GLProg, pCurrShader->GetGLShaderHandle());

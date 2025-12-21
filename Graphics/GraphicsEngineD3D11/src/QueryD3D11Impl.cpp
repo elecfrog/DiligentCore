@@ -67,7 +67,7 @@ QueryD3D11Impl::QueryD3D11Impl(IReferenceCounters*    pRefCounters,
     }
     ID3D11Device* pd3d11Device = pDevice->GetD3D11Device();
 
-    for (Uint32 i = 0; i < (Desc.Type == QUERY_TYPE_DURATION ? Uint32{2} : Uint32{1}); ++i)
+    for (UInt32 i = 0; i < (Desc.Type == QUERY_TYPE_DURATION ? UInt32{2} : UInt32{1}); ++i)
     {
         HRESULT hr = pd3d11Device->CreateQuery(&d3d11QueryDesc, &m_pd3d11Query[i]);
         CHECK_D3D_RESULT_THROW(hr, "Failed to create D3D11 query object");
@@ -79,7 +79,7 @@ QueryD3D11Impl::~QueryD3D11Impl()
 {
 }
 
-bool QueryD3D11Impl::GetData(void* pData, Uint32 DataSize, bool AutoInvalidate)
+bool QueryD3D11Impl::GetData(void* pData, UInt32 DataSize, bool AutoInvalidate)
 {
     TQueryBase::CheckQueryDataPtr(pData, DataSize);
 

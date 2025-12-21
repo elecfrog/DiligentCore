@@ -54,7 +54,7 @@ DILIGENT_BEGIN_INTERFACE(ISerializedPipelineState, IPipelineState)
 
     /// \param [in] DeviceType  - Device type for which to get the shader count.
     /// \return     The number of patched shaders for this device type.
-    VIRTUAL Uint32 METHOD(GetPatchedShaderCount)(
+    VIRTUAL UInt32 METHOD(GetPatchedShaderCount)(
         THIS_
         ARCHIVE_DEVICE_DATA_FLAGS DeviceType) CONST PURE;
 
@@ -69,7 +69,7 @@ DILIGENT_BEGIN_INTERFACE(ISerializedPipelineState, IPipelineState)
     VIRTUAL ShaderCreateInfo METHOD(GetPatchedShaderCreateInfo)(
         THIS_
         ARCHIVE_DEVICE_DATA_FLAGS DeviceType,
-        Uint32                    ShaderIndex) CONST PURE;
+        UInt32                    ShaderIndex) CONST PURE;
 };
 DILIGENT_END_INTERFACE
 

@@ -100,7 +100,7 @@ public:
     static void RemapOrVerifyShaderResources(
         TShaderStages&                                           ShaderStages,
         const RefCntAutoPtr<PipelineResourceSignatureD3D12Impl>* pSignatures,
-        Uint32                                                   SignatureCount,
+        UInt32                                                   SignatureCount,
         const RootSignatureD3D12&                                RootSig,
         struct IDXCompiler*                                      pDxCompiler,
         LocalRootSignatureD3D12*                                 pLocalRootSig             = nullptr,
@@ -111,7 +111,7 @@ public:
         const TShaderStages&              ShaderStages,
         const char*                       PSOName,
         const PipelineResourceLayoutDesc& ResourceLayout,
-        Uint32                            SRBAllocationGranularity,
+        UInt32                            SRBAllocationGranularity,
         const LocalRootSignatureD3D12*    pLocalRootSig) noexcept(false);
 
 private:

@@ -51,26 +51,26 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_CommandQueueD3D12, TBase)
 
     // Implementation of ICommandQueue::GetNextFenceValue().
-    virtual Uint64 DILIGENT_CALL_TYPE GetNextFenceValue() const override final { return m_NextFenceValue.load(); }
+    virtual UInt64 DILIGENT_CALL_TYPE GetNextFenceValue() const override final { return m_NextFenceValue.load(); }
 
     // Implementation of ICommandQueue::WaitForIdle().
-    virtual Uint64 DILIGENT_CALL_TYPE WaitForIdle() override final;
+    virtual UInt64 DILIGENT_CALL_TYPE WaitForIdle() override final;
 
     // Implementation of ICommandQueue::GetCompletedFenceValue().
-    virtual Uint64 DILIGENT_CALL_TYPE GetCompletedFenceValue() override final;
+    virtual UInt64 DILIGENT_CALL_TYPE GetCompletedFenceValue() override final;
 
     // Implementation of ICommandQueueD3D12::Submit().
-    virtual Uint64 DILIGENT_CALL_TYPE Submit(Uint32                    NumCommandLists,
+    virtual UInt64 DILIGENT_CALL_TYPE Submit(UInt32                    NumCommandLists,
                                              ID3D12CommandList* const* ppCommandLists) override final;
 
     // Implementation of ICommandQueueD3D12::GetD3D12CommandQueue().
     virtual ID3D12CommandQueue* DILIGENT_CALL_TYPE GetD3D12CommandQueue() override final { return m_pd3d12CmdQueue; }
 
     // Implementation of ICommandQueueD3D12::EnqueueSignal().
-    virtual void DILIGENT_CALL_TYPE EnqueueSignal(ID3D12Fence* pFence, Uint64 Value) override final;
+    virtual void DILIGENT_CALL_TYPE EnqueueSignal(ID3D12Fence* pFence, UInt64 Value) override final;
 
     // Implementation of ICommandQueueD3D12::WaitFence().
-    virtual void DILIGENT_CALL_TYPE WaitFence(ID3D12Fence* pFence, Uint64 Value) override final;
+    virtual void DILIGENT_CALL_TYPE WaitFence(ID3D12Fence* pFence, UInt64 Value) override final;
 
     // Implementation of ICommandQueueD3D12::GetD3D12CommandQueueDesc().
     virtual const D3D12_COMMAND_QUEUE_DESC& DILIGENT_CALL_TYPE GetD3D12CommandQueueDesc(THIS) const override final
@@ -80,14 +80,14 @@ public:
 
     // Implementation of ICommandQueueD3D12::UpdateTileMappings().
     virtual void DILIGENT_CALL_TYPE UpdateTileMappings(ResourceTileMappingsD3D12* pMappings,
-                                                       Uint32                     Count) override final;
+                                                       UInt32                     Count) override final;
 
 private:
     // A value that will be signaled by the command queue next
-    std::atomic<Uint64> m_NextFenceValue{1};
+    std::atomic<UInt64> m_NextFenceValue{1};
 
     // Last fence value completed by the GPU
-    std::atomic<Uint64> m_LastCompletedFenceValue{0};
+    std::atomic<UInt64> m_LastCompletedFenceValue{0};
 
     std::mutex                  m_QueueMtx;
     CComPtr<ID3D12CommandQueue> m_pd3d12CmdQueue;

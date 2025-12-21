@@ -53,8 +53,8 @@ namespace Diligent
         LOG_INFO_MESSAGE(Info.Window.pCALayer != nullptr ? "Initialized OpenGLES " : "Attached to OpenGLES ", MajorVersion, '.', MinorVersion, " context (", GLVersionString, ", ", GLRenderer, ')');
 
         DevType          = RENDER_DEVICE_TYPE_GLES;
-        APIVersion.Major = static_cast<Uint32>(MajorVersion);
-        APIVersion.Minor = static_cast<Uint32>(MinorVersion);
+        APIVersion.Major = static_cast<UInt32>(MajorVersion);
+        APIVersion.Minor = static_cast<UInt32>(MinorVersion);
     }
 
     GLContext::NativeGLContextType GLContext::GetCurrentNativeGLContext()

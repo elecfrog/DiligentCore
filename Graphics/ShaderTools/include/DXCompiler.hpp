@@ -71,13 +71,13 @@ struct IDXCompiler
     struct CompileAttribs
     {
         const char*                      Source                     = nullptr;
-        Uint32                           SourceLength               = 0;
+        UInt32                           SourceLength               = 0;
         const wchar_t*                   EntryPoint                 = nullptr;
         const wchar_t*                   Profile                    = nullptr;
         const DxcDefine*                 pDefines                   = nullptr;
-        Uint32                           DefinesCount               = 0;
+        UInt32                           DefinesCount               = 0;
         const wchar_t**                  pArgs                      = nullptr;
-        Uint32                           ArgsCount                  = 0;
+        UInt32                           ArgsCount                  = 0;
         IShaderSourceInputStreamFactory* pShaderSourceStreamFactory = nullptr;
         IDxcBlob**                       ppBlobOut                  = nullptr;
         IDxcBlob**                       ppCompilerOutput           = nullptr;
@@ -119,7 +119,7 @@ struct IDXCompiler
 // Use this function to load the DX Compiler library.
 // pLibraryName is an optional path to the library. If not provided, default
 // path is used.
-std::unique_ptr<IDXCompiler> CreateDXCompiler(DXCompilerTarget Target, Uint32 APIVersion, const char* pLibraryName);
+std::unique_ptr<IDXCompiler> CreateDXCompiler(DXCompilerTarget Target, UInt32 APIVersion, const char* pLibraryName);
 
 bool IsDXILBytecode(const void* pBytecode, size_t Size);
 

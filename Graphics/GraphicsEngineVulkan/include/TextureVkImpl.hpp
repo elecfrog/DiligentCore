@@ -68,7 +68,7 @@ public:
     virtual VkImage DILIGENT_CALL_TYPE GetVkImage() const override final { return m_VulkanImage; }
 
     /// Implementation of ITexture::GetNativeHandle() in Vulkan backend.
-    virtual Uint64 DILIGENT_CALL_TYPE GetNativeHandle() override final { return BitCast<Uint64>(GetVkImage()); }
+    virtual UInt64 DILIGENT_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetVkImage()); }
 
     /// Implementation of ITextureVk::SetLayout().
     virtual void DILIGENT_CALL_TYPE SetLayout(VkImageLayout Layout) override final;
@@ -96,7 +96,7 @@ public:
     // For depth-stencil format buffer, the offset must be a multiple of 4.
     // If command buffer does not support graphics or compute commands, then the buffer offset must be a multiple of 4.
     // ("Copying Data Between Buffers and Images")
-    static constexpr Uint32 StagingBufferOffsetAlignment = 16; // max texel size - 16 bytes (RGBA32F), max texel block size - 16 bytes.
+    static constexpr UInt32 StagingBufferOffsetAlignment = 16; // max texel size - 16 bytes (RGBA32F), max texel block size - 16 bytes.
 
 protected:
     void CreateViewInternal(const struct TextureViewDesc& ViewDesc, ITextureView** ppView, bool bIsDefaultView) override;

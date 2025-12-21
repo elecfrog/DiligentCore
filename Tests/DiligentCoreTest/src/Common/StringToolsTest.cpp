@@ -309,11 +309,11 @@ TEST(Common_StringTools, AppendInt)
     TestAppendInt<int>(INT_MAX, "2147483647");
     TestAppendInt<int>(INT_MIN, "-2147483648");
 
-    TestAppendInt<Uint8>(0, "0");
-    TestAppendInt<Uint8>(1, "1");
-    TestAppendInt<Uint8>(9, "9");
-    TestAppendInt<Uint8>(128, "128");
-    TestAppendInt<Uint8>(255, "255");
+    TestAppendInt<UInt8>(0, "0");
+    TestAppendInt<UInt8>(1, "1");
+    TestAppendInt<UInt8>(9, "9");
+    TestAppendInt<UInt8>(128, "128");
+    TestAppendInt<UInt8>(255, "255");
 
     TestAppendInt<Int8>(0, "0");
     TestAppendInt<Int8>(1, "1");
@@ -321,11 +321,11 @@ TEST(Common_StringTools, AppendInt)
     TestAppendInt<Int8>(127, "127");
     TestAppendInt<Int8>(-128, "-128");
 
-    TestAppendInt<Uint16>(0, "0");
-    TestAppendInt<Uint16>(1, "1");
-    TestAppendInt<Uint16>(9, "9");
-    TestAppendInt<Uint16>(32768, "32768");
-    TestAppendInt<Uint16>(65535, "65535");
+    TestAppendInt<UInt16>(0, "0");
+    TestAppendInt<UInt16>(1, "1");
+    TestAppendInt<UInt16>(9, "9");
+    TestAppendInt<UInt16>(32768, "32768");
+    TestAppendInt<UInt16>(65535, "65535");
 
     TestAppendInt<Int16>(0, "0");
     TestAppendInt<Int16>(1, "1");
@@ -343,7 +343,7 @@ TEST(Common_StringTools, AppendInt)
     TestAppendInt<Int64>(-10, "-10");
     TestAppendInt<Int64>(LLONG_MAX, "9223372036854775807");
     TestAppendInt<Int64>(LLONG_MIN, "-9223372036854775808");
-    TestAppendInt<Uint64>(18446744073709551615ull, "18446744073709551615");
+    TestAppendInt<UInt64>(18446744073709551615ull, "18446744073709551615");
 
     // Octal
     TestAppendInt<int>(0, 8, "0");
@@ -357,8 +357,8 @@ TEST(Common_StringTools, AppendInt)
     TestAppendInt<int>(-64, 8, "-100");
     TestAppendInt<int>(INT_MIN, 8, "-20000000000");
     TestAppendInt<int>(INT_MAX, 8, "17777777777");
-    TestAppendInt<Uint8>(255u, 8, "377");
-    TestAppendInt<Uint16>(65535u, 8, "177777");
+    TestAppendInt<UInt8>(255u, 8, "377");
+    TestAppendInt<UInt16>(65535u, 8, "177777");
 
     // Hexadecimal
     TestAppendInt<int>(0, 16, "0");
@@ -372,13 +372,13 @@ TEST(Common_StringTools, AppendInt)
     TestAppendInt<int>(-256, 16, "-100");
     TestAppendInt<int>(INT_MIN, 16, "-80000000");
     TestAppendInt<int>(INT_MAX, 16, "7FFFFFFF");
-    TestAppendInt<Uint8>(255u, 16, "FF");
-    TestAppendInt<Uint16>(65535u, 16, "FFFF");
-    TestAppendInt<Uint64>(18446744073709551615ull, 16, "FFFFFFFFFFFFFFFF");
+    TestAppendInt<UInt8>(255u, 16, "FF");
+    TestAppendInt<UInt16>(65535u, 16, "FFFF");
+    TestAppendInt<UInt64>(18446744073709551615ull, 16, "FFFFFFFFFFFFFFFF");
 
-    TestAppendInt<Uint32>(UINT_MAX, 10, "4294967295");
-    TestAppendInt<Uint32>(UINT_MAX, 8, "37777777777");
-    TestAppendInt<Uint32>(UINT_MAX, 16, "FFFFFFFF");
+    TestAppendInt<UInt32>(UINT_MAX, 10, "4294967295");
+    TestAppendInt<UInt32>(UINT_MAX, 8, "37777777777");
+    TestAppendInt<UInt32>(UINT_MAX, 16, "FFFFFFFF");
 
     // Base 2
     TestAppendInt<int>(0, 2, "0");

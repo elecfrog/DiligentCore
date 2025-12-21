@@ -34,7 +34,7 @@
 #include <atomic>
 
 #include "WebGPUObjectWrappers.hpp"
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 
 namespace Diligent
 {
@@ -59,7 +59,7 @@ public:
         WGPUBuffer wgpuBuffer = nullptr;
         size_t     Offset     = 0;
         size_t     Size       = 0;
-        Uint8*     pData      = nullptr;
+        UInt8*     pData      = nullptr;
     };
 
     class Page
@@ -89,7 +89,7 @@ public:
     private:
         UploadMemoryManagerWebGPU* m_pMgr = nullptr;
         WebGPUBufferWrapper        m_wgpuBuffer;
-        std::vector<Uint8>         m_Data;
+        std::vector<UInt8>         m_Data;
         size_t                     m_CurrOffset = 0;
     };
 

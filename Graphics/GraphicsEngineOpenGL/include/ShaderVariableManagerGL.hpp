@@ -86,31 +86,31 @@ public:
     void Initialize(const PipelineResourceSignatureGLImpl& Signature,
                     IMemoryAllocator&                      Allocator,
                     const SHADER_RESOURCE_VARIABLE_TYPE*   AllowedVarTypes,
-                    Uint32                                 NumAllowedTypes,
+                    UInt32                                 NumAllowedTypes,
                     SHADER_TYPE                            ShaderType);
 
     static size_t GetRequiredMemorySize(const PipelineResourceSignatureGLImpl& Signature,
                                         const SHADER_RESOURCE_VARIABLE_TYPE*   AllowedVarTypes,
-                                        Uint32                                 NumAllowedTypes,
+                                        UInt32                                 NumAllowedTypes,
                                         SHADER_TYPE                            ShaderType);
 
     using ResourceAttribs = PipelineResourceAttribsGL;
 
     // These two methods can't be implemented in the header because they depend on PipelineResourceSignatureGLImpl
-    const PipelineResourceDesc& GetResourceDesc(Uint32 Index) const;
-    const ResourceAttribs&      GetResourceAttribs(Uint32 Index) const;
+    const PipelineResourceDesc& GetResourceDesc(UInt32 Index) const;
+    const ResourceAttribs&      GetResourceAttribs(UInt32 Index) const;
 
     template <typename ThisImplType>
     struct GLVariableBase : public ShaderVariableBase<ThisImplType, ShaderVariableManagerGL>
     {
     public:
-        GLVariableBase(ShaderVariableManagerGL& ParentLayout, Uint32 ResIndex) :
+        GLVariableBase(ShaderVariableManagerGL& ParentLayout, UInt32 ResIndex) :
             ShaderVariableBase<ThisImplType, ShaderVariableManagerGL>{ParentLayout, ResIndex}
         {}
 
         const ResourceAttribs& GetAttribs() const { return this->m_ParentManager.GetResourceAttribs(this->m_ResIndex); }
 
-        void SetDynamicOffset(Uint32 ArrayIndex, Uint32 Offset)
+        void SetDynamicOffset(UInt32 ArrayIndex, UInt32 Offset)
         {
             UNSUPPORTED("Dynamic offset may only be set for uniform and storage buffers");
         }
@@ -119,32 +119,32 @@ public:
 
     struct UniformBuffBindInfo final : GLVariableBase<UniformBuffBindInfo>
     {
-        UniformBuffBindInfo(ShaderVariableManagerGL& ParentLayout, Uint32 ResIndex) :
+        UniformBuffBindInfo(ShaderVariableManagerGL& ParentLayout, UInt32 ResIndex) :
             GLVariableBase<UniformBuffBindInfo>{ParentLayout, ResIndex}
         {}
 
         void BindResource(const BindResourceInfo& BindInfo);
 
-        virtual IDeviceObject* DILIGENT_CALL_TYPE Get(Uint32 ArrayIndex) const override final
+        virtual IDeviceObject* DILIGENT_CALL_TYPE Get(UInt32 ArrayIndex) const override final
         {
             VERIFY_EXPR(ArrayIndex < GetDesc().ArraySize);
             const ShaderResourceCacheGL::CachedUB& UB = m_ParentManager.m_ResourceCache.GetConstUB(GetAttribs().CacheOffset + ArrayIndex);
             return UB.pBuffer;
         }
 
-        void SetDynamicOffset(Uint32 ArrayIndex, Uint32 Offset);
+        void SetDynamicOffset(UInt32 ArrayIndex, UInt32 Offset);
     };
 
 
     struct TextureBindInfo final : GLVariableBase<TextureBindInfo>
     {
-        TextureBindInfo(ShaderVariableManagerGL& ParentLayout, Uint32 ResIndex) :
+        TextureBindInfo(ShaderVariableManagerGL& ParentLayout, UInt32 ResIndex) :
             GLVariableBase<TextureBindInfo>{ParentLayout, ResIndex}
         {}
 
         void BindResource(const BindResourceInfo& BindInfo);
 
-        virtual IDeviceObject* DILIGENT_CALL_TYPE Get(Uint32 ArrayIndex) const override final
+        virtual IDeviceObject* DILIGENT_CALL_TYPE Get(UInt32 ArrayIndex) const override final
         {
             const PipelineResourceDesc& Desc = GetDesc();
             VERIFY_EXPR(ArrayIndex < Desc.ArraySize);
@@ -156,13 +156,13 @@ public:
 
     struct ImageBindInfo final : GLVariableBase<ImageBindInfo>
     {
-        ImageBindInfo(ShaderVariableManagerGL& ParentLayout, Uint32 ResIndex) :
+        ImageBindInfo(ShaderVariableManagerGL& ParentLayout, UInt32 ResIndex) :
             GLVariableBase<ImageBindInfo>{ParentLayout, ResIndex}
         {}
 
         void BindResource(const BindResourceInfo& BindInfo);
 
-        virtual IDeviceObject* DILIGENT_CALL_TYPE Get(Uint32 ArrayIndex) const override final
+        virtual IDeviceObject* DILIGENT_CALL_TYPE Get(UInt32 ArrayIndex) const override final
         {
             const PipelineResourceDesc& Desc = GetDesc();
             VERIFY_EXPR(ArrayIndex < Desc.ArraySize);
@@ -174,20 +174,20 @@ public:
 
     struct StorageBufferBindInfo final : GLVariableBase<StorageBufferBindInfo>
     {
-        StorageBufferBindInfo(ShaderVariableManagerGL& ParentLayout, Uint32 ResIndex) :
+        StorageBufferBindInfo(ShaderVariableManagerGL& ParentLayout, UInt32 ResIndex) :
             GLVariableBase<StorageBufferBindInfo>{ParentLayout, ResIndex}
         {}
 
         void BindResource(const BindResourceInfo& BindInfo);
 
-        virtual IDeviceObject* DILIGENT_CALL_TYPE Get(Uint32 ArrayIndex) const override final
+        virtual IDeviceObject* DILIGENT_CALL_TYPE Get(UInt32 ArrayIndex) const override final
         {
             VERIFY_EXPR(ArrayIndex < GetDesc().ArraySize);
             const ShaderResourceCacheGL::CachedSSBO& SSBO = m_ParentManager.m_ResourceCache.GetConstSSBO(GetAttribs().CacheOffset + ArrayIndex);
             return SSBO.pBufferView;
         }
 
-        void SetDynamicOffset(Uint32 ArrayIndex, Uint32 Offset);
+        void SetDynamicOffset(UInt32 ArrayIndex, UInt32 Offset);
     };
 
     void BindResources(IResourceMapping* pResourceMapping, BIND_SHADER_RESOURCES_FLAGS Flags);
@@ -197,58 +197,58 @@ public:
                         SHADER_RESOURCE_VARIABLE_TYPE_FLAGS& StaleVarTypes) const;
 
     IShaderResourceVariable* GetVariable(const Char* Name) const;
-    IShaderResourceVariable* GetVariable(Uint32 Index) const;
+    IShaderResourceVariable* GetVariable(UInt32 Index) const;
 
     IObject& GetOwner() { return m_Owner; }
 
-    Uint32 GetVariableCount() const
+    UInt32 GetVariableCount() const
     {
         return GetNumUBs() + GetNumTextures() + GetNumImages() + GetNumStorageBuffers();
     }
 
     // clang-format off
-    Uint32 GetNumUBs()            const { return (m_TextureOffset       - m_UBOffset)            / sizeof(UniformBuffBindInfo);    }
-    Uint32 GetNumTextures()       const { return (m_ImageOffset         - m_TextureOffset)       / sizeof(TextureBindInfo);        }
-    Uint32 GetNumImages()         const { return (m_StorageBufferOffset - m_ImageOffset)         / sizeof(ImageBindInfo) ;         }
-    Uint32 GetNumStorageBuffers() const { return (m_VariableEndOffset   - m_StorageBufferOffset) / sizeof(StorageBufferBindInfo);  }
+    UInt32 GetNumUBs()            const { return (m_TextureOffset       - m_UBOffset)            / sizeof(UniformBuffBindInfo);    }
+    UInt32 GetNumTextures()       const { return (m_ImageOffset         - m_TextureOffset)       / sizeof(TextureBindInfo);        }
+    UInt32 GetNumImages()         const { return (m_StorageBufferOffset - m_ImageOffset)         / sizeof(ImageBindInfo) ;         }
+    UInt32 GetNumStorageBuffers() const { return (m_VariableEndOffset   - m_StorageBufferOffset) / sizeof(StorageBufferBindInfo);  }
     // clang-format on
 
-    template <typename ResourceType> Uint32 GetNumResources() const;
+    template <typename ResourceType> UInt32 GetNumResources() const;
 
     template <typename ResourceType>
-    const ResourceType& GetConstResource(Uint32 ResIndex) const
+    const ResourceType& GetConstResource(UInt32 ResIndex) const
     {
         VERIFY(ResIndex < GetNumResources<ResourceType>(), "Resource index (", ResIndex, ") exceeds max allowed value (", GetNumResources<ResourceType>(), ")");
         OffsetType Offset = GetResourceOffset<ResourceType>();
-        return reinterpret_cast<const ResourceType*>(reinterpret_cast<const Uint8*>(m_pVariables) + Offset)[ResIndex];
+        return reinterpret_cast<const ResourceType*>(reinterpret_cast<const UInt8*>(m_pVariables) + Offset)[ResIndex];
     }
 
-    Uint32 GetVariableIndex(const IShaderResourceVariable& Var) const;
+    UInt32 GetVariableIndex(const IShaderResourceVariable& Var) const;
 
 private:
     struct ResourceCounters
     {
-        Uint32 NumUBs           = 0;
-        Uint32 NumTextures      = 0;
-        Uint32 NumImages        = 0;
-        Uint32 NumStorageBlocks = 0;
+        UInt32 NumUBs           = 0;
+        UInt32 NumTextures      = 0;
+        UInt32 NumImages        = 0;
+        UInt32 NumStorageBlocks = 0;
     };
     static ResourceCounters CountResources(const PipelineResourceSignatureGLImpl& Signature,
                                            const SHADER_RESOURCE_VARIABLE_TYPE*   AllowedVarTypes,
-                                           Uint32                                 NumAllowedTypes,
+                                           UInt32                                 NumAllowedTypes,
                                            SHADER_TYPE                            ShaderType);
 
     // Offsets in bytes
-    using OffsetType = Uint16;
+    using OffsetType = UInt16;
 
     template <typename ResourceType> OffsetType GetResourceOffset() const;
 
     template <typename ResourceType>
-    ResourceType& GetResource(Uint32 ResIndex) const
+    ResourceType& GetResource(UInt32 ResIndex) const
     {
         VERIFY(ResIndex < GetNumResources<ResourceType>(), "Resource index (", ResIndex, ") exceeds max allowed value (", GetNumResources<ResourceType>() - 1, ")");
         OffsetType Offset = GetResourceOffset<ResourceType>();
-        return reinterpret_cast<ResourceType*>(reinterpret_cast<Uint8*>(m_pVariables) + Offset)[ResIndex];
+        return reinterpret_cast<ResourceType*>(reinterpret_cast<UInt8*>(m_pVariables) + Offset)[ResIndex];
     }
 
     template <typename ResourceType>
@@ -263,16 +263,16 @@ private:
                          THandleImage         HandleImage,
                          THandleStorageBuffer HandleStorageBuffer)
     {
-        for (Uint32 ub = 0; ub < GetNumResources<UniformBuffBindInfo>(); ++ub)
+        for (UInt32 ub = 0; ub < GetNumResources<UniformBuffBindInfo>(); ++ub)
             HandleUB(GetResource<UniformBuffBindInfo>(ub));
 
-        for (Uint32 s = 0; s < GetNumResources<TextureBindInfo>(); ++s)
+        for (UInt32 s = 0; s < GetNumResources<TextureBindInfo>(); ++s)
             HandleTexture(GetResource<TextureBindInfo>(s));
 
-        for (Uint32 i = 0; i < GetNumResources<ImageBindInfo>(); ++i)
+        for (UInt32 i = 0; i < GetNumResources<ImageBindInfo>(); ++i)
             HandleImage(GetResource<ImageBindInfo>(i));
 
-        for (Uint32 s = 0; s < GetNumResources<StorageBufferBindInfo>(); ++s)
+        for (UInt32 s = 0; s < GetNumResources<StorageBufferBindInfo>(); ++s)
             HandleStorageBuffer(GetResource<StorageBufferBindInfo>(s));
     }
 
@@ -285,19 +285,19 @@ private:
                               THandleImage         HandleImage,
                               THandleStorageBuffer HandleStorageBuffer) const
     {
-        for (Uint32 ub = 0; ub < GetNumResources<UniformBuffBindInfo>(); ++ub)
+        for (UInt32 ub = 0; ub < GetNumResources<UniformBuffBindInfo>(); ++ub)
             if (!HandleUB(GetConstResource<UniformBuffBindInfo>(ub)))
                 return;
 
-        for (Uint32 s = 0; s < GetNumResources<TextureBindInfo>(); ++s)
+        for (UInt32 s = 0; s < GetNumResources<TextureBindInfo>(); ++s)
             if (!HandleTexture(GetConstResource<TextureBindInfo>(s)))
                 return;
 
-        for (Uint32 i = 0; i < GetNumResources<ImageBindInfo>(); ++i)
+        for (UInt32 i = 0; i < GetNumResources<ImageBindInfo>(); ++i)
             if (!HandleImage(GetConstResource<ImageBindInfo>(i)))
                 return;
 
-        for (Uint32 s = 0; s < GetNumResources<StorageBufferBindInfo>(); ++s)
+        for (UInt32 s = 0; s < GetNumResources<StorageBufferBindInfo>(); ++s)
             if (!HandleStorageBuffer(GetConstResource<StorageBufferBindInfo>(s)))
                 return;
     }
@@ -315,25 +315,25 @@ private:
 
 
 template <>
-inline Uint32 ShaderVariableManagerGL::GetNumResources<ShaderVariableManagerGL::UniformBuffBindInfo>() const
+inline UInt32 ShaderVariableManagerGL::GetNumResources<ShaderVariableManagerGL::UniformBuffBindInfo>() const
 {
     return GetNumUBs();
 }
 
 template <>
-inline Uint32 ShaderVariableManagerGL::GetNumResources<ShaderVariableManagerGL::TextureBindInfo>() const
+inline UInt32 ShaderVariableManagerGL::GetNumResources<ShaderVariableManagerGL::TextureBindInfo>() const
 {
     return GetNumTextures();
 }
 
 template <>
-inline Uint32 ShaderVariableManagerGL::GetNumResources<ShaderVariableManagerGL::ImageBindInfo>() const
+inline UInt32 ShaderVariableManagerGL::GetNumResources<ShaderVariableManagerGL::ImageBindInfo>() const
 {
     return GetNumImages();
 }
 
 template <>
-inline Uint32 ShaderVariableManagerGL::GetNumResources<ShaderVariableManagerGL::StorageBufferBindInfo>() const
+inline UInt32 ShaderVariableManagerGL::GetNumResources<ShaderVariableManagerGL::StorageBufferBindInfo>() const
 {
     return GetNumStorageBuffers();
 }

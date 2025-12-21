@@ -80,7 +80,7 @@ void ValidateTextureDesc(const TextureDesc& Desc, const IRenderDevice* pDevice) 
             {
                 LOG_TEXTURE_ERROR_AND_THROW("For block-compressed formats, the height (", Desc.Height,
                                             ") of a Texture 1D/Texture 1D Array must be equal to the compressed block height (",
-                                            Uint32{FmtAttribs.BlockHeight}, ").");
+                                            UInt32{FmtAttribs.BlockHeight}, ").");
             }
         }
     }
@@ -112,7 +112,7 @@ void ValidateTextureDesc(const TextureDesc& Desc, const IRenderDevice* pDevice) 
 
 #ifdef DILIGENT_DEVELOPMENT
     {
-        Uint32 MaxDim = 0;
+        UInt32 MaxDim = 0;
         if (Desc.Is1D())
             MaxDim = Desc.Width;
         else if (Desc.Is2D())
@@ -319,7 +319,7 @@ void ValidateTextureDesc(const TextureDesc& Desc, const IRenderDevice* pDevice) 
 }
 
 
-void ValidateTextureRegion(const TextureDesc& TexDesc, Uint32 MipLevel, Uint32 Slice, const Box& Box)
+void ValidateTextureRegion(const TextureDesc& TexDesc, UInt32 MipLevel, UInt32 Slice, const Box& Box)
 {
 #define VERIFY_TEX_PARAMS(Expr, ...)                                                          \
     do                                                                                        \
@@ -347,14 +347,14 @@ void ValidateTextureRegion(const TextureDesc& TexDesc, Uint32 MipLevel, Uint32 S
 
     const TextureFormatAttribs& FmtAttribs = GetTextureFormatAttribs(TexDesc.Format);
 
-    Uint32 MipWidth = std::max(TexDesc.Width >> MipLevel, 1U);
+    UInt32 MipWidth = std::max(TexDesc.Width >> MipLevel, 1U);
     if (FmtAttribs.ComponentType == COMPONENT_TYPE_COMPRESSED)
     {
         VERIFY_EXPR((FmtAttribs.BlockWidth & (FmtAttribs.BlockWidth - 1)) == 0);
-        Uint32 BlockAlignedMipWidth = (MipWidth + (FmtAttribs.BlockWidth - 1)) & ~(FmtAttribs.BlockWidth - 1);
+        UInt32 BlockAlignedMipWidth = (MipWidth + (FmtAttribs.BlockWidth - 1)) & ~(FmtAttribs.BlockWidth - 1);
         VERIFY_TEX_PARAMS(Box.MaxX <= BlockAlignedMipWidth, "Region max X coordinate (", Box.MaxX, ") is out of allowed range [0, ", BlockAlignedMipWidth, "].");
-        VERIFY_TEX_PARAMS((Box.MinX % FmtAttribs.BlockWidth) == 0, "For compressed formats, the region min X coordinate (", Box.MinX, ") must be a multiple of block width (", Uint32{FmtAttribs.BlockWidth}, ").");
-        VERIFY_TEX_PARAMS((Box.MaxX % FmtAttribs.BlockWidth) == 0 || Box.MaxX == MipWidth, "For compressed formats, the region max X coordinate (", Box.MaxX, ") must be a multiple of block width (", Uint32{FmtAttribs.BlockWidth}, ") or equal the mip level width (", MipWidth, ").");
+        VERIFY_TEX_PARAMS((Box.MinX % FmtAttribs.BlockWidth) == 0, "For compressed formats, the region min X coordinate (", Box.MinX, ") must be a multiple of block width (", UInt32{FmtAttribs.BlockWidth}, ").");
+        VERIFY_TEX_PARAMS((Box.MaxX % FmtAttribs.BlockWidth) == 0 || Box.MaxX == MipWidth, "For compressed formats, the region max X coordinate (", Box.MaxX, ") must be a multiple of block width (", UInt32{FmtAttribs.BlockWidth}, ") or equal the mip level width (", MipWidth, ").");
     }
     else
         VERIFY_TEX_PARAMS(Box.MaxX <= MipWidth, "Region max X coordinate (", Box.MaxX, ") is out of allowed range [0, ", MipWidth, "].");
@@ -362,14 +362,14 @@ void ValidateTextureRegion(const TextureDesc& TexDesc, Uint32 MipLevel, Uint32 S
     if (TexDesc.Type != RESOURCE_DIM_TEX_1D &&
         TexDesc.Type != RESOURCE_DIM_TEX_1D_ARRAY)
     {
-        Uint32 MipHeight = std::max(TexDesc.Height >> MipLevel, 1U);
+        UInt32 MipHeight = std::max(TexDesc.Height >> MipLevel, 1U);
         if (FmtAttribs.ComponentType == COMPONENT_TYPE_COMPRESSED)
         {
             VERIFY_EXPR((FmtAttribs.BlockHeight & (FmtAttribs.BlockHeight - 1)) == 0);
-            Uint32 BlockAlignedMipHeight = (MipHeight + (FmtAttribs.BlockHeight - 1)) & ~(FmtAttribs.BlockHeight - 1);
+            UInt32 BlockAlignedMipHeight = (MipHeight + (FmtAttribs.BlockHeight - 1)) & ~(FmtAttribs.BlockHeight - 1);
             VERIFY_TEX_PARAMS(Box.MaxY <= BlockAlignedMipHeight, "Region max Y coordinate (", Box.MaxY, ") is out of allowed range [0, ", BlockAlignedMipHeight, "].");
-            VERIFY_TEX_PARAMS((Box.MinY % FmtAttribs.BlockHeight) == 0, "For compressed formats, the region min Y coordinate (", Box.MinY, ") must be a multiple of block height (", Uint32{FmtAttribs.BlockHeight}, ").");
-            VERIFY_TEX_PARAMS((Box.MaxY % FmtAttribs.BlockHeight) == 0 || Box.MaxY == MipHeight, "For compressed formats, the region max Y coordinate (", Box.MaxY, ") must be a multiple of block height (", Uint32{FmtAttribs.BlockHeight}, ") or equal the mip level height (", MipHeight, ").");
+            VERIFY_TEX_PARAMS((Box.MinY % FmtAttribs.BlockHeight) == 0, "For compressed formats, the region min Y coordinate (", Box.MinY, ") must be a multiple of block height (", UInt32{FmtAttribs.BlockHeight}, ").");
+            VERIFY_TEX_PARAMS((Box.MaxY % FmtAttribs.BlockHeight) == 0 || Box.MaxY == MipHeight, "For compressed formats, the region max Y coordinate (", Box.MaxY, ") must be a multiple of block height (", UInt32{FmtAttribs.BlockHeight}, ") or equal the mip level height (", MipHeight, ").");
         }
         else
             VERIFY_TEX_PARAMS(Box.MaxY <= MipHeight, "Region max Y coordinate (", Box.MaxY, ") is out of allowed range [0, ", MipHeight, "].");
@@ -377,7 +377,7 @@ void ValidateTextureRegion(const TextureDesc& TexDesc, Uint32 MipLevel, Uint32 S
 
     if (TexDesc.Type == RESOURCE_DIM_TEX_3D)
     {
-        Uint32 MipDepth = std::max(TexDesc.Depth >> MipLevel, 1U);
+        UInt32 MipDepth = std::max(TexDesc.Depth >> MipLevel, 1U);
         VERIFY_TEX_PARAMS(Box.MaxZ <= MipDepth, "Region max Z coordinate (", Box.MaxZ, ") is out of allowed range  [0, ", MipDepth, "].");
     }
     else
@@ -388,7 +388,7 @@ void ValidateTextureRegion(const TextureDesc& TexDesc, Uint32 MipLevel, Uint32 S
 #endif
 }
 
-void ValidateUpdateTextureParams(const TextureDesc& TexDesc, Uint32 MipLevel, Uint32 Slice, const Box& DstBox, const TextureSubResData& SubresData)
+void ValidateUpdateTextureParams(const TextureDesc& TexDesc, UInt32 MipLevel, UInt32 Slice, const Box& DstBox, const TextureSubResData& SubresData)
 {
     VERIFY((SubresData.pData != nullptr) ^ (SubresData.pSrcBuffer != nullptr), "Either CPU data pointer (pData) or GPU buffer (pSrcBuffer) must not be null, but not both.");
     ValidateTextureRegion(TexDesc, MipLevel, Slice, DstBox);
@@ -398,12 +398,12 @@ void ValidateUpdateTextureParams(const TextureDesc& TexDesc, Uint32 MipLevel, Ui
     VERIFY_TEX_PARAMS((SubresData.Stride & 0x03) == 0, "Texture data stride (", SubresData.Stride, ") must be at least 32-bit aligned.");
     VERIFY_TEX_PARAMS((SubresData.DepthStride & 0x03) == 0, "Texture data depth stride (", SubresData.DepthStride, ") must be at least 32-bit aligned.");
 
-    Uint32                      UpdateRegionWidth  = DstBox.Width();
-    Uint32                      UpdateRegionHeight = DstBox.Height();
-    Uint32                      UpdateRegionDepth  = DstBox.Depth();
+    UInt32                      UpdateRegionWidth  = DstBox.Width();
+    UInt32                      UpdateRegionHeight = DstBox.Height();
+    UInt32                      UpdateRegionDepth  = DstBox.Depth();
     const TextureFormatAttribs& FmtAttribs         = GetTextureFormatAttribs(TexDesc.Format);
-    Uint32                      RowSize            = 0;
-    Uint32                      RowCount           = 0;
+    UInt32                      RowSize            = 0;
+    UInt32                      RowCount           = 0;
     if (FmtAttribs.ComponentType == COMPONENT_TYPE_COMPRESSED)
     {
         // Align update region size by the block size. This is only necessary when updating
@@ -412,16 +412,16 @@ void ValidateUpdateTextureParams(const TextureDesc& TexDesc, Uint32 MipLevel, Ui
         VERIFY_EXPR((FmtAttribs.BlockHeight & (FmtAttribs.BlockHeight - 1)) == 0);
         UpdateRegionWidth  = (UpdateRegionWidth + (FmtAttribs.BlockWidth - 1)) & ~(FmtAttribs.BlockWidth - 1);
         UpdateRegionHeight = (UpdateRegionHeight + (FmtAttribs.BlockHeight - 1)) & ~(FmtAttribs.BlockHeight - 1);
-        RowSize            = UpdateRegionWidth / Uint32{FmtAttribs.BlockWidth} * Uint32{FmtAttribs.ComponentSize};
+        RowSize            = UpdateRegionWidth / UInt32{FmtAttribs.BlockWidth} * UInt32{FmtAttribs.ComponentSize};
         RowCount           = UpdateRegionHeight / FmtAttribs.BlockHeight;
     }
     else
     {
-        RowSize  = UpdateRegionWidth * Uint32{FmtAttribs.ComponentSize} * Uint32{FmtAttribs.NumComponents};
+        RowSize  = UpdateRegionWidth * UInt32{FmtAttribs.ComponentSize} * UInt32{FmtAttribs.NumComponents};
         RowCount = UpdateRegionHeight;
     }
     DEV_CHECK_ERR(SubresData.Stride >= RowSize, "Source data stride (", SubresData.Stride, ") is below the image row size (", RowSize, ").");
-    const Uint64 PlaneSize = SubresData.Stride * RowCount;
+    const UInt64 PlaneSize = SubresData.Stride * RowCount;
     DEV_CHECK_ERR(UpdateRegionDepth == 1 || SubresData.DepthStride >= PlaneSize, "Source data depth stride (", SubresData.DepthStride, ") is below the image plane size (", PlaneSize, ").");
 #endif
 }
@@ -455,10 +455,10 @@ void ValidateCopyTextureParams(const CopyTextureAttribs& CopyAttribs)
 }
 
 void ValidateMapTextureParams(const TextureDesc& TexDesc,
-                              Uint32             MipLevel,
-                              Uint32             ArraySlice,
+                              UInt32             MipLevel,
+                              UInt32             ArraySlice,
                               MAP_TYPE           MapType,
-                              Uint32             MapFlags,
+                              UInt32             MapFlags,
                               const Box*         pMapRegion)
 {
     VERIFY_TEX_PARAMS(MipLevel < TexDesc.MipLevels, "Mip level (", MipLevel, ") is out of allowed range [0, ", TexDesc.MipLevels - 1, "].");
@@ -648,7 +648,7 @@ void ValidatedAndCorrectTextureViewDesc(const TextureDesc& TexDesc, TextureViewD
 
         case RESOURCE_DIM_TEX_3D:
         {
-            Uint32 MipDepth = std::max(TexDesc.Depth >> ViewDesc.MostDetailedMip, 1u);
+            UInt32 MipDepth = std::max(TexDesc.Depth >> ViewDesc.MostDetailedMip, 1u);
             if (ViewDesc.FirstDepthSlice + ViewDesc.NumDepthSlices > MipDepth)
                 TEX_VIEW_VALIDATION_ERROR("First slice (", ViewDesc.FirstDepthSlice, ") and number of slices in the view (", ViewDesc.NumDepthSlices, ") specify more slices than target 3D texture mip level has (", MipDepth, ").");
             break;
@@ -697,7 +697,7 @@ void ValidatedAndCorrectTextureViewDesc(const TextureDesc& TexDesc, TextureViewD
             ViewDesc.NumArraySlices = TexDesc.ArraySize - ViewDesc.FirstArraySlice;
         else if (TexDesc.Is3D())
         {
-            Uint32 MipDepth         = std::max(TexDesc.Depth >> ViewDesc.MostDetailedMip, 1u);
+            UInt32 MipDepth         = std::max(TexDesc.Depth >> ViewDesc.MostDetailedMip, 1u);
             ViewDesc.NumDepthSlices = MipDepth - ViewDesc.FirstDepthSlice;
         }
         else

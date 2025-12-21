@@ -61,7 +61,7 @@ public:
         m_pContext    {nullptr},
         m_pMappedData {nullptr},
         m_MapType     {static_cast<MAP_TYPE>(-1)},
-        m_MapFlags    {static_cast<Uint32>(-1)  }
+        m_MapFlags    {static_cast<UInt32>(-1)  }
     // clang-format on
     {
     }
@@ -88,7 +88,7 @@ public:
         Helper.m_pContext    = nullptr;
         Helper.m_pMappedData = nullptr;
         Helper.m_MapType     = static_cast<MAP_TYPE>(-1);
-        Helper.m_MapFlags    = static_cast<Uint32>(-1);
+        Helper.m_MapFlags    = static_cast<UInt32>(-1);
     }
 
     /// Move-assignment operator: takes over resource ownership from Helper
@@ -104,7 +104,7 @@ public:
         Helper.m_pContext    = nullptr;
         Helper.m_pMappedData = nullptr;
         Helper.m_MapType     = static_cast<MAP_TYPE>(-1);
-        Helper.m_MapFlags    = static_cast<Uint32>(-1);
+        Helper.m_MapFlags    = static_cast<UInt32>(-1);
 
         return *this;
     }
@@ -143,7 +143,7 @@ public:
             m_pContext->UnmapBuffer(m_pBuffer, m_MapType);
             m_pBuffer  = nullptr;
             m_MapType  = static_cast<MAP_TYPE>(-1);
-            m_MapFlags = static_cast<Uint32>(-1);
+            m_MapFlags = static_cast<UInt32>(-1);
         }
         m_pContext    = nullptr;
         m_pMappedData = nullptr;
@@ -198,7 +198,7 @@ private:
 
     MAP_TYPE m_MapType;
 
-    Uint32 m_MapFlags;
+    UInt32 m_MapFlags;
 };
 
 } // namespace Diligent

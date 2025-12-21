@@ -63,17 +63,17 @@ public:
             TexDesc.Depth  = Desc.Depth;
             TexDesc.Type   = Desc.ArraySize == 1 ? RESOURCE_DIM_TEX_2D : RESOURCE_DIM_TEX_2D_ARRAY;
 
-            Uint32 SubRes = 0;
-            for (Uint32 Slice = 0; Slice < Desc.ArraySize; ++Slice)
+            UInt32 SubRes = 0;
+            for (UInt32 Slice = 0; Slice < Desc.ArraySize; ++Slice)
             {
-                for (Uint32 Mip = 0; Mip < Desc.MipLevels; ++Mip)
+                for (UInt32 Mip = 0; Mip < Desc.MipLevels; ++Mip)
                 {
                     MipLevelProperties MipProps = GetMipLevelProperties(TexDesc, Mip);
                     // Stride must be 32-bit aligned in OpenGL
-                    Uint32 RowStride             = AlignUp(StaticCast<Uint32>(MipProps.RowSize), Uint32{4});
+                    UInt32 RowStride             = AlignUp(StaticCast<UInt32>(MipProps.RowSize), UInt32{4});
                     m_SubresourceStrides[SubRes] = RowStride;
 
-                    Uint32 MipSize                           = MipProps.StorageHeight * RowStride;
+                    UInt32 MipSize                           = MipProps.StorageHeight * RowStride;
                     m_SubresourceOffsets[size_t{SubRes} + 1] = m_SubresourceOffsets[SubRes] + MipSize;
                     ++SubRes;
                 }
@@ -107,18 +107,18 @@ public:
 
     bool DbgIsCopyScheduled() const { return m_CopyScheduledSignal.IsTriggered(); }
 
-    void SetDataPtr(Uint8* pBufferData)
+    void SetDataPtr(UInt8* pBufferData)
     {
-        for (Uint32 Slice = 0; Slice < m_Desc.ArraySize; ++Slice)
+        for (UInt32 Slice = 0; Slice < m_Desc.ArraySize; ++Slice)
         {
-            for (Uint32 Mip = 0; Mip < m_Desc.MipLevels; ++Mip)
+            for (UInt32 Mip = 0; Mip < m_Desc.MipLevels; ++Mip)
             {
                 SetMappedData(Mip, Slice, MappedTextureSubresource{pBufferData + GetOffset(Mip, Slice), GetStride(Mip, Slice), 0});
             }
         }
     }
 
-    Uint32 GetOffset(Uint32 Mip, Uint32 Slice)
+    UInt32 GetOffset(UInt32 Mip, UInt32 Slice)
     {
         VERIFY_EXPR(Mip < m_Desc.MipLevels && Slice < m_Desc.ArraySize);
         return m_SubresourceOffsets[size_t{m_Desc.MipLevels} * size_t{Slice} + size_t{Mip}];
@@ -131,13 +131,13 @@ public:
         UploadBufferBase::Reset();
     }
 
-    Uint32 GetTotalSize() const
+    UInt32 GetTotalSize() const
     {
         return m_SubresourceOffsets.back();
     }
 
 private:
-    Uint32 GetStride(Uint32 Mip, Uint32 Slice)
+    UInt32 GetStride(UInt32 Mip, UInt32 Slice)
     {
         VERIFY_EXPR(Mip < m_Desc.MipLevels && Slice < m_Desc.ArraySize);
         return m_SubresourceStrides[size_t{m_Desc.MipLevels} * size_t{Slice} + size_t{Mip}];
@@ -147,8 +147,8 @@ private:
     Threading::Signal      m_BufferMappedSignal;
     Threading::Signal      m_CopyScheduledSignal;
     RefCntAutoPtr<IBuffer> m_pStagingBuffer;
-    std::vector<Uint32>    m_SubresourceOffsets;
-    std::vector<Uint32>    m_SubresourceStrides;
+    std::vector<UInt32>    m_SubresourceOffsets;
+    std::vector<UInt32>    m_SubresourceStrides;
 };
 
 } // namespace
@@ -162,7 +162,7 @@ struct TextureUploaderGL::InternalData
         m_PendingOperations.swap(m_InWorkOperations);
     }
 
-    void EnqueueCopy(UploadBufferGL* pUploadBuffer, ITexture* pDstTexture, Uint32 dstSlice, Uint32 dstMip, bool AutoRecycle)
+    void EnqueueCopy(UploadBufferGL* pUploadBuffer, ITexture* pDstTexture, UInt32 dstSlice, UInt32 dstMip, bool AutoRecycle)
     {
         std::lock_guard<std::mutex> QueueLock(m_PendingOperationsMtx);
         m_PendingOperations.emplace_back(PendingBufferOperation::Type::Copy, pUploadBuffer, pDstTexture, dstSlice, dstMip, AutoRecycle);
@@ -269,7 +269,7 @@ void TextureUploaderGL::InternalData::Execute(IRenderDevice*          pDevice,
 
             PVoid CpuAddress = nullptr;
             pContext->MapBuffer(pBuffer->m_pStagingBuffer, MAP_WRITE, MAP_FLAG_DISCARD, CpuAddress);
-            pBuffer->SetDataPtr(reinterpret_cast<Uint8*>(CpuAddress));
+            pBuffer->SetDataPtr(reinterpret_cast<UInt8*>(CpuAddress));
 
             pBuffer->SignalMapped();
         }
@@ -282,15 +282,15 @@ void TextureUploaderGL::InternalData::Execute(IRenderDevice*          pDevice,
             {
                 pContext->UnmapBuffer(pBuffer->m_pStagingBuffer, MAP_WRITE);
             }
-            for (Uint32 Slice = 0; Slice < UploadBuffDesc.ArraySize; ++Slice)
+            for (UInt32 Slice = 0; Slice < UploadBuffDesc.ArraySize; ++Slice)
             {
-                for (Uint32 Mip = 0; Mip < UploadBuffDesc.MipLevels; ++Mip)
+                for (UInt32 Mip = 0; Mip < UploadBuffDesc.MipLevels; ++Mip)
                 {
                     TextureSubResData SubResData;
                     if (pBuffer->m_pStagingBuffer)
                     {
-                        Uint32 SrcOffset = pBuffer->GetOffset(Mip, Slice);
-                        Uint64 SrcStride = pBuffer->GetMappedData(Mip, Slice).Stride;
+                        UInt32 SrcOffset = pBuffer->GetOffset(Mip, Slice);
+                        UInt64 SrcStride = pBuffer->GetMappedData(Mip, Slice).Stride;
 
                         SubResData = {pBuffer->m_pStagingBuffer, SrcOffset, SrcStride};
                     }
@@ -378,8 +378,8 @@ void TextureUploaderGL::AllocateUploadBuffer(IDeviceContext*         pContext,
 
 void TextureUploaderGL::ScheduleGPUCopy(IDeviceContext* pContext,
                                         ITexture*       pDstTexture,
-                                        Uint32          ArraySlice,
-                                        Uint32          MipLevel,
+                                        UInt32          ArraySlice,
+                                        UInt32          MipLevel,
                                         IUploadBuffer*  pUploadBuffer,
                                         bool            AutoRecycle)
 {
@@ -414,7 +414,7 @@ TextureUploaderStats TextureUploaderGL::GetStats()
 {
     TextureUploaderStats        Stats;
     std::lock_guard<std::mutex> QueueLock(m_pInternalData->m_PendingOperationsMtx);
-    Stats.NumPendingOperations = static_cast<Uint32>(m_pInternalData->m_PendingOperations.size());
+    Stats.NumPendingOperations = static_cast<UInt32>(m_pInternalData->m_PendingOperations.size());
     return Stats;
 }
 

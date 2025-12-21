@@ -95,21 +95,21 @@ D3D11_PRIMITIVE_TOPOLOGY TopologyToD3D11Topology(PRIMITIVE_TOPOLOGY Topology)
 
 void TextureViewDesc_to_D3D11_SRV_DESC(const TextureViewDesc&           TexViewDesc,
                                        D3D11_SHADER_RESOURCE_VIEW_DESC& D3D11SRVDesc,
-                                       Uint32                           SampleCount)
+                                       UInt32                           SampleCount)
 {
     TextureViewDesc_to_D3D_SRV_DESC(TexViewDesc, D3D11SRVDesc, SampleCount);
 }
 
 void TextureViewDesc_to_D3D11_RTV_DESC(const TextureViewDesc&         TexViewDesc,
                                        D3D11_RENDER_TARGET_VIEW_DESC& D3D11RTVDesc,
-                                       Uint32                         SampleCount)
+                                       UInt32                         SampleCount)
 {
     TextureViewDesc_to_D3D_RTV_DESC(TexViewDesc, D3D11RTVDesc, SampleCount);
 }
 
 void TextureViewDesc_to_D3D11_DSV_DESC(const TextureViewDesc&         TexViewDesc,
                                        D3D11_DEPTH_STENCIL_VIEW_DESC& D3D11DSVDesc,
-                                       Uint32                         SampleCount)
+                                       UInt32                         SampleCount)
 {
     TextureViewDesc_to_D3D_DSV_DESC(TexViewDesc, D3D11DSVDesc, SampleCount);
 }

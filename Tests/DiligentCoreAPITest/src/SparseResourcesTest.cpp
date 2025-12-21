@@ -56,7 +56,7 @@ protected:
 
         // Find context.
         constexpr auto QueueTypeMask = COMMAND_QUEUE_TYPE_SPARSE_BINDING;
-        for (Uint32 CtxInd = 0; CtxInd < pEnv->GetNumImmediateContexts(); ++CtxInd)
+        for (UInt32 CtxInd = 0; CtxInd < pEnv->GetNumImmediateContexts(); ++CtxInd)
         {
             auto*       Ctx  = pEnv->GetDeviceContext(CtxInd);
             const auto& Desc = Ctx->GetDesc();
@@ -77,7 +77,7 @@ protected:
         {
             BufferDesc BuffDesc;
             BuffDesc.Name           = "Fill buffer parameters";
-            BuffDesc.Size           = sizeof(Uint32) * 4;
+            BuffDesc.Size           = sizeof(UInt32) * 4;
             BuffDesc.BindFlags      = BIND_UNIFORM_BUFFER;
             BuffDesc.Usage          = USAGE_DYNAMIC;
             BuffDesc.CPUAccessFlags = CPU_ACCESS_WRITE;
@@ -195,7 +195,7 @@ protected:
         {
             BufferDesc BuffDesc;
             BuffDesc.Name           = "Fill texture 3D parameters";
-            BuffDesc.Size           = sizeof(Uint32) * 4 * 3;
+            BuffDesc.Size           = sizeof(UInt32) * 4 * 3;
             BuffDesc.BindFlags      = BIND_UNIFORM_BUFFER;
             BuffDesc.Usage          = USAGE_DYNAMIC;
             BuffDesc.CPUAccessFlags = CPU_ACCESS_WRITE;
@@ -255,7 +255,7 @@ protected:
         sm_pTempSRB.Release();
     }
 
-    static RefCntAutoPtr<IBuffer> CreateSparseBuffer(Uint64 Size, BIND_FLAGS BindFlags, bool Aliasing = false, const Uint32 Stride = 4u)
+    static RefCntAutoPtr<IBuffer> CreateSparseBuffer(UInt64 Size, BIND_FLAGS BindFlags, bool Aliasing = false, const UInt32 Stride = 4u)
     {
         auto* pDevice = GPUTestingEnvironment::GetInstance()->GetDevice();
 
@@ -273,7 +273,7 @@ protected:
         return pBuffer;
     }
 
-    static RefCntAutoPtr<IBuffer> CreateBuffer(Uint64 Size, BIND_FLAGS BindFlags, const Uint32 Stride = 4u)
+    static RefCntAutoPtr<IBuffer> CreateBuffer(UInt64 Size, BIND_FLAGS BindFlags, const UInt32 Stride = 4u)
     {
         auto* pDevice = GPUTestingEnvironment::GetInstance()->GetDevice();
 
@@ -290,7 +290,7 @@ protected:
         return pBuffer;
     }
 
-    static RefCntAutoPtr<IDeviceMemory> CreateMemory(Uint32 PageSize, Uint32 NumPages, IDeviceObject* pCompatibleResource)
+    static RefCntAutoPtr<IDeviceMemory> CreateMemory(UInt32 PageSize, UInt32 NumPages, IDeviceObject* pCompatibleResource)
     {
         auto* pDevice = GPUTestingEnvironment::GetInstance()->GetDevice();
 
@@ -321,7 +321,7 @@ protected:
         RefCntAutoPtr<ITexture>      pTexture;
         RefCntAutoPtr<IDeviceMemory> pMemory;
     };
-    static TextureAndMemory CreateSparseTextureAndMemory(const uint4& Dim, BIND_FLAGS BindFlags, Uint32 NumMemoryPages, bool Aliasing = false)
+    static TextureAndMemory CreateSparseTextureAndMemory(const uint4& Dim, BIND_FLAGS BindFlags, UInt32 NumMemoryPages, bool Aliasing = false)
     {
         auto*      pDevice   = GPUTestingEnvironment::GetInstance()->GetDevice();
         const auto BlockSize = pDevice->GetAdapterInfo().SparseResources.StandardBlockSize;
@@ -332,17 +332,17 @@ protected:
         {
             VERIFY_EXPR(Dim.w <= 1);
             Desc.Type  = RESOURCE_DIM_TEX_3D;
-            Desc.Depth = static_cast<Uint32>(Dim.z);
+            Desc.Depth = static_cast<UInt32>(Dim.z);
         }
         else
         {
             VERIFY_EXPR(Dim.z <= 1);
             Desc.Type      = Dim.w > 1 ? RESOURCE_DIM_TEX_2D_ARRAY : RESOURCE_DIM_TEX_2D;
-            Desc.ArraySize = static_cast<Uint32>(Dim.w);
+            Desc.ArraySize = static_cast<UInt32>(Dim.w);
         }
 
-        Desc.Width       = static_cast<Uint32>(Dim.x);
-        Desc.Height      = static_cast<Uint32>(Dim.y);
+        Desc.Width       = static_cast<UInt32>(Dim.x);
+        Desc.Height      = static_cast<UInt32>(Dim.y);
         Desc.Format      = sm_TexFormat;
         Desc.MipLevels   = 0; // full mip chain
         Desc.SampleCount = 1;
@@ -379,17 +379,17 @@ protected:
         {
             VERIFY_EXPR(Dim.w <= 1);
             Desc.Type  = RESOURCE_DIM_TEX_3D;
-            Desc.Depth = static_cast<Uint32>(Dim.z);
+            Desc.Depth = static_cast<UInt32>(Dim.z);
         }
         else
         {
             VERIFY_EXPR(Dim.z <= 1);
             Desc.Type      = Dim.w > 1 ? RESOURCE_DIM_TEX_2D_ARRAY : RESOURCE_DIM_TEX_2D;
-            Desc.ArraySize = static_cast<Uint32>(Dim.w);
+            Desc.ArraySize = static_cast<UInt32>(Dim.w);
         }
 
-        Desc.Width       = static_cast<Uint32>(Dim.x);
-        Desc.Height      = static_cast<Uint32>(Dim.y);
+        Desc.Width       = static_cast<UInt32>(Dim.x);
+        Desc.Height      = static_cast<UInt32>(Dim.y);
         Desc.Format      = sm_TexFormat;
         Desc.MipLevels   = 0; // full mip chain
         Desc.SampleCount = 1;
@@ -417,7 +417,7 @@ protected:
         return pFence;
     }
 
-    static void FillBuffer(IDeviceContext* pContext, IBuffer* pBuffer, Uint64 Offset, Uint32 Size, Uint32 Pattern)
+    static void FillBuffer(IDeviceContext* pContext, IBuffer* pBuffer, UInt64 Offset, UInt32 Size, UInt32 Pattern)
     {
         auto* pView = pBuffer->GetDefaultView(BUFFER_VIEW_UNORDERED_ACCESS);
         VERIFY_EXPR(pView != nullptr);
@@ -428,14 +428,14 @@ protected:
 
         struct CB
         {
-            Uint32 Offset;
-            Uint32 Size;
-            Uint32 Pattern;
-            Uint32 padding;
+            UInt32 Offset;
+            UInt32 Size;
+            UInt32 Pattern;
+            UInt32 padding;
         };
         {
             MapHelper<CB> CBConstants(pContext, sm_pFillBufferParams, MAP_WRITE, MAP_FLAG_DISCARD);
-            CBConstants->Offset  = StaticCast<Uint32>(Offset / Stride);
+            CBConstants->Offset  = StaticCast<UInt32>(Offset / Stride);
             CBConstants->Size    = Size / Stride;
             CBConstants->Pattern = Pattern;
         }
@@ -450,7 +450,7 @@ protected:
         pContext->DispatchCompute(CompAttrs);
     }
 
-    static void FillTextureMip(IDeviceContext* pContext, ITexture* pTexture, Uint32 MipLevel, Uint32 Slice, const float4& Color)
+    static void FillTextureMip(IDeviceContext* pContext, ITexture* pTexture, UInt32 MipLevel, UInt32 Slice, const float4& Color)
     {
         const auto& Desc = pTexture->GetDesc();
         const Rect  Region{0, 0, static_cast<int>(std::max(1u, Desc.Width >> MipLevel)), static_cast<int>(std::max(1u, Desc.Height >> MipLevel))};
@@ -458,7 +458,7 @@ protected:
         FillTexture(pContext, pTexture, Region, MipLevel, Slice, Color);
     }
 
-    static void FillTexture(IDeviceContext* pContext, ITexture* pTexture, const Rect& Region, Uint32 MipLevel, Uint32 Slice, const float4& Color)
+    static void FillTexture(IDeviceContext* pContext, ITexture* pTexture, const Rect& Region, UInt32 MipLevel, UInt32 Slice, const float4& Color)
     {
         VERIFY_EXPR(pTexture->GetDesc().Is2D());
 
@@ -501,9 +501,9 @@ protected:
         VERIFY_EXPR(pTexture->GetDesc().Is2D());
 
         const auto& TexDesc = pTexture->GetDesc();
-        for (Uint32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
+        for (UInt32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
         {
-            for (Uint32 Mip = 0; Mip < TexDesc.MipLevels; ++Mip)
+            for (UInt32 Mip = 0; Mip < TexDesc.MipLevels; ++Mip)
             {
                 TextureViewDesc Desc;
                 Desc.ViewType        = TEXTURE_VIEW_RENDER_TARGET;
@@ -529,7 +529,7 @@ protected:
         }
     }
 
-    static void FillTexture3DMip(IDeviceContext* pContext, ITexture* pTexture, Uint32 MipLevel, const float4& Color)
+    static void FillTexture3DMip(IDeviceContext* pContext, ITexture* pTexture, UInt32 MipLevel, const float4& Color)
     {
         const auto& Desc = pTexture->GetDesc();
         const Box   Region{
@@ -540,7 +540,7 @@ protected:
         FillTexture3D(pContext, pTexture, Region, MipLevel, Color);
     }
 
-    static void FillTexture3D(IDeviceContext* pContext, ITexture* pTexture, const Box& Region, Uint32 MipLevel, const float4& Color)
+    static void FillTexture3D(IDeviceContext* pContext, ITexture* pTexture, const Box& Region, UInt32 MipLevel, const float4& Color)
     {
         VERIFY_EXPR(pTexture->GetDesc().Is3D());
 
@@ -633,7 +633,7 @@ protected:
         sm_pTempSRB = std::move(pSRB);
     }
 
-    static void CreateGraphicsPSOForBuffer(const char* Name, const String& PSSource, Uint32 BufferElementCount, RefCntAutoPtr<IPipelineState>& pPSO)
+    static void CreateGraphicsPSOForBuffer(const char* Name, const String& PSSource, UInt32 BufferElementCount, RefCntAutoPtr<IPipelineState>& pPSO)
     {
         const auto Stride = 4u;
         CreateGraphicsPSO(Name, PSSource, /*Is2DArray*/ false, /*IsMSL*/ false, BufferElementCount / Stride, pPSO);
@@ -649,7 +649,7 @@ protected:
         CreateGraphicsPSO(Name, PSSource, Is2DArray, /*IsMSL*/ true, 0, pPSO);
     }
 
-    static void CreateGraphicsPSO(const char* Name, const String& PSSource, bool Is2DArray, bool IsMSL, Uint32 BufferElementCount, RefCntAutoPtr<IPipelineState>& pPSO)
+    static void CreateGraphicsPSO(const char* Name, const String& PSSource, bool Is2DArray, bool IsMSL, UInt32 BufferElementCount, RefCntAutoPtr<IPipelineState>& pPSO)
     {
         auto*       pEnv       = GPUTestingEnvironment::GetInstance();
         auto*       pDevice    = pEnv->GetDevice();
@@ -735,7 +735,7 @@ protected:
         float3 col = float3{std::abs(h * 6.0f - 3.0f) - 1.0f, 2.0f - std::abs(h * 6.0f - 2.0f), 2.0f - std::abs(h * 6.0f - 4.0f)};
         return float4{clamp(col, float3{}, float3{1.0f}), 1.0f};
     }
-    static Uint32 RandomColorU()
+    static UInt32 RandomColorU()
     {
         return F4Color_To_RGBA8Unorm(RandomColor());
     }
@@ -789,7 +789,7 @@ enum TestMode
     EndRange
 };
 
-bool TestMode_IsTexArray(Uint32 Mode)
+bool TestMode_IsTexArray(UInt32 Mode)
 {
     return Mode == POT_2DArray || Mode == NonPOT_2DArray;
 }
@@ -812,7 +812,7 @@ String TestIdToString(const testing::TestParamInfo<int>& info)
     return name;
 }
 
-int4 TestIdToTextureDim(Uint32 TestId)
+int4 TestIdToTextureDim(UInt32 TestId)
 {
     switch (TestId)
     {
@@ -985,7 +985,7 @@ TEST_F(SparseResourceTest, SparseBuffer)
         BindSparseAttrs.pBufferBinds   = &SparseBuffBind;
 
         IFence*      SignalFence = pFence;
-        const Uint64 SignalValue = 1;
+        const UInt64 SignalValue = 1;
 
         if (SignalFence)
         {
@@ -1116,7 +1116,7 @@ TEST_F(SparseResourceTest, SparseResidentBuffer)
         BindSparseAttrs.pBufferBinds   = &SparseBuffBind;
 
         IFence*      SignalFence = pFence;
-        const Uint64 SignalValue = 1;
+        const UInt64 SignalValue = 1;
 
         if (SignalFence)
         {
@@ -1259,7 +1259,7 @@ TEST_F(SparseResourceTest, SparseResidentAliasedBuffer)
         BindSparseAttrs.pBufferBinds   = &SparseBuffBind;
 
         IFence*      SignalFence = pFence;
-        const Uint64 SignalValue = 1;
+        const UInt64 SignalValue = 1;
 
         if (SignalFence)
         {
@@ -1283,7 +1283,7 @@ TEST_F(SparseResourceTest, SparseResidentAliasedBuffer)
 
 TEST_P(SparseResourceTest, SparseTexture)
 {
-    Uint32      TestId    = GetParam();
+    UInt32      TestId    = GetParam();
     auto*       pEnv      = GPUTestingEnvironment::GetInstance();
     auto*       pDevice   = pEnv->GetDevice();
     const auto& SparseRes = pDevice->GetAdapterInfo().SparseResources;
@@ -1319,7 +1319,7 @@ TEST_P(SparseResourceTest, SparseTexture)
     {
         RestartColorRandomizer();
         const auto& TexDesc = pTexture->GetDesc();
-        for (Uint32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
+        for (UInt32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
         {
             // clang-format off
             FillTexture(pContext, pTexture, Rect{  0,   0,       128,       128}, 0, Slice, RandomColor());
@@ -1328,7 +1328,7 @@ TEST_P(SparseResourceTest, SparseTexture)
             FillTexture(pContext, pTexture, Rect{128, 128, TexSize.x, TexSize.y}, 0, Slice, RandomColor());
             // clang-format on
 
-            for (Uint32 Mip = 1; Mip < TexDesc.MipLevels; ++Mip)
+            for (UInt32 Mip = 1; Mip < TexDesc.MipLevels; ++Mip)
                 FillTextureMip(pContext, pTexture, Mip, Slice, RandomColor());
         }
     };
@@ -1337,7 +1337,7 @@ TEST_P(SparseResourceTest, SparseTexture)
     {
         RefCntAutoPtr<ITestingSwapChain> pTestingSwapChain(pSwapChain, IID_TestingSwapChain);
 
-        auto pRefTexture = CreateTexture(TexSize.Recast<Uint32>(), BIND_RENDER_TARGET);
+        auto pRefTexture = CreateTexture(TexSize.Recast<UInt32>(), BIND_RENDER_TARGET);
         ASSERT_NE(pRefTexture, nullptr);
 
         Fill(pRefTexture);
@@ -1357,7 +1357,7 @@ TEST_P(SparseResourceTest, SparseTexture)
 
     const auto BlockSize = SparseRes.StandardBlockSize;
 
-    auto TexAndMem = CreateSparseTextureAndMemory(TexSize.Recast<Uint32>(), BIND_RENDER_TARGET | BIND_SHADER_RESOURCE, 14 * TexSize.w);
+    auto TexAndMem = CreateSparseTextureAndMemory(TexSize.Recast<UInt32>(), BIND_RENDER_TARGET | BIND_SHADER_RESOURCE, 14 * TexSize.w);
     auto pTexture  = TexAndMem.pTexture;
     ASSERT_NE(pTexture, nullptr);
     ASSERT_NE(pTexture->GetNativeHandle(), 0);
@@ -1375,16 +1375,16 @@ TEST_P(SparseResourceTest, SparseTexture)
     {
         std::vector<SparseTextureMemoryBindRange> BindRanges;
 
-        Uint64 MemOffset = 0;
-        for (Uint32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
+        UInt64 MemOffset = 0;
+        for (UInt32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
         {
-            for (Uint32 Mip = 0; Mip < TexSparseProps.FirstMipInTail; ++Mip)
+            for (UInt32 Mip = 0; Mip < TexSparseProps.FirstMipInTail; ++Mip)
             {
                 const auto Width  = std::max(1u, TexDesc.Width >> Mip);
                 const auto Height = std::max(1u, TexDesc.Height >> Mip);
-                for (Uint32 y = 0; y < Height; y += TexSparseProps.TileSize[1])
+                for (UInt32 y = 0; y < Height; y += TexSparseProps.TileSize[1])
                 {
-                    for (Uint32 x = 0; x < Width; x += TexSparseProps.TileSize[0])
+                    for (UInt32 x = 0; x < Width; x += TexSparseProps.TileSize[0])
                     {
                         BindRanges.emplace_back();
                         auto& Range        = BindRanges.back();
@@ -1408,7 +1408,7 @@ TEST_P(SparseResourceTest, SparseTexture)
             if (Slice == 0 || (TexSparseProps.Flags & SPARSE_TEXTURE_FLAG_SINGLE_MIPTAIL) == 0)
             {
                 const bool IsMetal = pDevice->GetDeviceInfo().IsMetalDevice();
-                for (Uint64 OffsetInMipTail = 0; OffsetInMipTail < TexSparseProps.MipTailSize;)
+                for (UInt64 OffsetInMipTail = 0; OffsetInMipTail < TexSparseProps.MipTailSize;)
                 {
                     BindRanges.emplace_back();
                     auto& Range           = BindRanges.back();
@@ -1427,7 +1427,7 @@ TEST_P(SparseResourceTest, SparseTexture)
 
         SparseTextureMemoryBindInfo SparseTexBind;
         SparseTexBind.pTexture  = pTexture;
-        SparseTexBind.NumRanges = static_cast<Uint32>(BindRanges.size());
+        SparseTexBind.NumRanges = static_cast<UInt32>(BindRanges.size());
         SparseTexBind.pRanges   = BindRanges.data();
 
         BindSparseResourceMemoryAttribs BindSparseAttrs;
@@ -1435,7 +1435,7 @@ TEST_P(SparseResourceTest, SparseTexture)
         BindSparseAttrs.pTextureBinds   = &SparseTexBind;
 
         IFence*      SignalFence = pFence;
-        const Uint64 SignalValue = 1;
+        const UInt64 SignalValue = 1;
 
         if (SignalFence)
         {
@@ -1460,7 +1460,7 @@ TEST_P(SparseResourceTest, SparseTexture)
 
 TEST_P(SparseResourceTest, SparseResidencyTexture)
 {
-    Uint32      TestId    = GetParam();
+    UInt32      TestId    = GetParam();
     auto*       pEnv      = GPUTestingEnvironment::GetInstance();
     auto*       pDevice   = pEnv->GetDevice();
     const auto& SparseRes = pDevice->GetAdapterInfo().SparseResources;
@@ -1504,7 +1504,7 @@ TEST_P(SparseResourceTest, SparseResidencyTexture)
     {
         RestartColorRandomizer();
         const auto& TexDesc = pTexture->GetDesc();
-        for (Uint32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
+        for (UInt32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
         {
             // clang-format off
             FillTexture(pContext, pTexture, Rect{  0,   0,       128,       128}, 0, Slice, RandomColor());
@@ -1513,7 +1513,7 @@ TEST_P(SparseResourceTest, SparseResidencyTexture)
             FillTexture(pContext, pTexture, Rect{128, 128, TexSize.x, TexSize.y}, 0, Slice, RandomColor());
             // clang-format on
 
-            for (Uint32 Mip = 1; Mip < TexDesc.MipLevels; ++Mip)
+            for (UInt32 Mip = 1; Mip < TexDesc.MipLevels; ++Mip)
                 FillTextureMip(pContext, pTexture, Mip, Slice, RandomColor());
 
             if (TexDesc.Usage != USAGE_SPARSE)
@@ -1530,7 +1530,7 @@ TEST_P(SparseResourceTest, SparseResidencyTexture)
     {
         RefCntAutoPtr<ITestingSwapChain> pTestingSwapChain(pSwapChain, IID_TestingSwapChain);
 
-        auto pRefTexture = CreateTexture(TexSize.Recast<Uint32>(), BIND_RENDER_TARGET);
+        auto pRefTexture = CreateTexture(TexSize.Recast<UInt32>(), BIND_RENDER_TARGET);
         ASSERT_NE(pRefTexture, nullptr);
 
         Fill(pRefTexture);
@@ -1550,7 +1550,7 @@ TEST_P(SparseResourceTest, SparseResidencyTexture)
 
     const auto BlockSize = SparseRes.StandardBlockSize;
 
-    auto TexAndMem = CreateSparseTextureAndMemory(TexSize.Recast<Uint32>(), BIND_RENDER_TARGET | BIND_SHADER_RESOURCE, 12 * TexSize.w);
+    auto TexAndMem = CreateSparseTextureAndMemory(TexSize.Recast<UInt32>(), BIND_RENDER_TARGET | BIND_SHADER_RESOURCE, 12 * TexSize.w);
     auto pTexture  = TexAndMem.pTexture;
     ASSERT_NE(pTexture, nullptr);
     ASSERT_NE(pTexture->GetNativeHandle(), 0);
@@ -1573,16 +1573,16 @@ TEST_P(SparseResourceTest, SparseResidencyTexture)
     {
         std::vector<SparseTextureMemoryBindRange> BindRanges;
 
-        Uint64 MemOffset = 0;
-        for (Uint32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
+        UInt64 MemOffset = 0;
+        for (UInt32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
         {
-            for (Uint32 Mip = 0, Idx = 0; Mip < TexSparseProps.FirstMipInTail; ++Mip)
+            for (UInt32 Mip = 0, Idx = 0; Mip < TexSparseProps.FirstMipInTail; ++Mip)
             {
-                const Uint32 Width  = std::max(1u, TexDesc.Width >> Mip);
-                const Uint32 Height = std::max(1u, TexDesc.Height >> Mip);
-                for (Uint32 TileY = 0; TileY < Height; TileY += TileSize.y)
+                const UInt32 Width  = std::max(1u, TexDesc.Width >> Mip);
+                const UInt32 Height = std::max(1u, TexDesc.Height >> Mip);
+                for (UInt32 TileY = 0; TileY < Height; TileY += TileSize.y)
                 {
-                    for (Uint32 TileX = 0; TileX < Width; TileX += TileSize.x)
+                    for (UInt32 TileX = 0; TileX < Width; TileX += TileSize.x)
                     {
                         BindRanges.emplace_back();
                         auto& Range       = BindRanges.back();
@@ -1609,7 +1609,7 @@ TEST_P(SparseResourceTest, SparseResidencyTexture)
             // Mip tail
             if (Slice == 0 || (TexSparseProps.Flags & SPARSE_TEXTURE_FLAG_SINGLE_MIPTAIL) == 0)
             {
-                for (Uint64 OffsetInMipTail = 0; OffsetInMipTail < TexSparseProps.MipTailSize;)
+                for (UInt64 OffsetInMipTail = 0; OffsetInMipTail < TexSparseProps.MipTailSize;)
                 {
                     BindRanges.emplace_back();
                     auto& Range           = BindRanges.back();
@@ -1628,7 +1628,7 @@ TEST_P(SparseResourceTest, SparseResidencyTexture)
 
         SparseTextureMemoryBindInfo SparseTexBind;
         SparseTexBind.pTexture  = pTexture;
-        SparseTexBind.NumRanges = static_cast<Uint32>(BindRanges.size());
+        SparseTexBind.NumRanges = static_cast<UInt32>(BindRanges.size());
         SparseTexBind.pRanges   = BindRanges.data();
 
         BindSparseResourceMemoryAttribs BindSparseAttrs;
@@ -1636,7 +1636,7 @@ TEST_P(SparseResourceTest, SparseResidencyTexture)
         BindSparseAttrs.pTextureBinds   = &SparseTexBind;
 
         IFence*      SignalFence = pFence;
-        const Uint64 SignalValue = 1;
+        const UInt64 SignalValue = 1;
 
         if (SignalFence)
         {
@@ -1661,7 +1661,7 @@ TEST_P(SparseResourceTest, SparseResidencyTexture)
 
 TEST_P(SparseResourceTest, SparseResidencyAliasedTexture)
 {
-    Uint32      TestId    = GetParam();
+    UInt32      TestId    = GetParam();
     auto*       pEnv      = GPUTestingEnvironment::GetInstance();
     auto*       pDevice   = pEnv->GetDevice();
     const auto& SparseRes = pDevice->GetAdapterInfo().SparseResources;
@@ -1701,7 +1701,7 @@ TEST_P(SparseResourceTest, SparseResidencyAliasedTexture)
     {
         RestartColorRandomizer();
         const auto& TexDesc = pTexture->GetDesc();
-        for (Uint32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
+        for (UInt32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
         {
             const auto Col0 = RandomColor();
             const auto Col1 = RandomColor();
@@ -1733,7 +1733,7 @@ TEST_P(SparseResourceTest, SparseResidencyAliasedTexture)
                 // clang-format on
             }
 
-            for (Uint32 Mip = 1; Mip < TexDesc.MipLevels; ++Mip)
+            for (UInt32 Mip = 1; Mip < TexDesc.MipLevels; ++Mip)
                 FillTextureMip(pContext, pTexture, Mip, Slice, RandomColor());
         }
     };
@@ -1742,7 +1742,7 @@ TEST_P(SparseResourceTest, SparseResidencyAliasedTexture)
     {
         RefCntAutoPtr<ITestingSwapChain> pTestingSwapChain(pSwapChain, IID_TestingSwapChain);
 
-        auto pRefTexture = CreateTexture(TexSize.Recast<Uint32>(), BIND_RENDER_TARGET);
+        auto pRefTexture = CreateTexture(TexSize.Recast<UInt32>(), BIND_RENDER_TARGET);
         ASSERT_NE(pRefTexture, nullptr);
 
         Fill(pRefTexture);
@@ -1762,7 +1762,7 @@ TEST_P(SparseResourceTest, SparseResidencyAliasedTexture)
 
     const auto BlockSize = SparseRes.StandardBlockSize;
 
-    auto TexAndMem = CreateSparseTextureAndMemory(TexSize.Recast<Uint32>(), BIND_RENDER_TARGET | BIND_SHADER_RESOURCE, 12 * TexSize.w, /*Aliasing*/ true);
+    auto TexAndMem = CreateSparseTextureAndMemory(TexSize.Recast<UInt32>(), BIND_RENDER_TARGET | BIND_SHADER_RESOURCE, 12 * TexSize.w, /*Aliasing*/ true);
     auto pTexture  = TexAndMem.pTexture;
     ASSERT_NE(pTexture, nullptr);
     ASSERT_NE(pTexture->GetNativeHandle(), 0);
@@ -1781,12 +1781,12 @@ TEST_P(SparseResourceTest, SparseResidencyAliasedTexture)
         std::vector<SparseTextureMemoryBindRange> BindRanges;
 
         // Mip tail - must not alias with other tiles
-        Uint64       InitialOffset = 0;
-        const Uint32 MipTailSlices = (TexSparseProps.Flags & SPARSE_TEXTURE_FLAG_SINGLE_MIPTAIL) != 0 ? 1 : TexDesc.ArraySize;
+        UInt64       InitialOffset = 0;
+        const UInt32 MipTailSlices = (TexSparseProps.Flags & SPARSE_TEXTURE_FLAG_SINGLE_MIPTAIL) != 0 ? 1 : TexDesc.ArraySize;
         const bool   IsMetal       = pDevice->GetDeviceInfo().IsMetalDevice();
-        for (Uint32 Slice = 0; Slice < MipTailSlices; ++Slice)
+        for (UInt32 Slice = 0; Slice < MipTailSlices; ++Slice)
         {
-            for (Uint64 OffsetInMipTail = 0; OffsetInMipTail < TexSparseProps.MipTailSize;)
+            for (UInt64 OffsetInMipTail = 0; OffsetInMipTail < TexSparseProps.MipTailSize;)
             {
                 BindRanges.emplace_back();
                 auto& Range           = BindRanges.back();
@@ -1802,16 +1802,16 @@ TEST_P(SparseResourceTest, SparseResidencyAliasedTexture)
         }
 
         // tiles may alias
-        for (Uint32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
+        for (UInt32 Slice = 0; Slice < TexDesc.ArraySize; ++Slice)
         {
-            Uint64 MemOffset = InitialOffset;
-            for (Uint32 Mip = 0, Idx = 0; Mip < TexSparseProps.FirstMipInTail; ++Mip)
+            UInt64 MemOffset = InitialOffset;
+            for (UInt32 Mip = 0, Idx = 0; Mip < TexSparseProps.FirstMipInTail; ++Mip)
             {
-                const Uint32 Width  = std::max(1u, TexDesc.Width >> Mip);
-                const Uint32 Height = std::max(1u, TexDesc.Height >> Mip);
-                for (Uint32 y = 0; y < Height; y += TexSparseProps.TileSize[1])
+                const UInt32 Width  = std::max(1u, TexDesc.Width >> Mip);
+                const UInt32 Height = std::max(1u, TexDesc.Height >> Mip);
+                for (UInt32 y = 0; y < Height; y += TexSparseProps.TileSize[1])
                 {
-                    for (Uint32 x = 0; x < Width; x += TexSparseProps.TileSize[0])
+                    for (UInt32 x = 0; x < Width; x += TexSparseProps.TileSize[0])
                     {
                         if (++Idx > 2 && Mip == 0)
                         {
@@ -1843,7 +1843,7 @@ TEST_P(SparseResourceTest, SparseResidencyAliasedTexture)
 
         SparseTextureMemoryBindInfo SparseTexBind;
         SparseTexBind.pTexture  = pTexture;
-        SparseTexBind.NumRanges = static_cast<Uint32>(BindRanges.size());
+        SparseTexBind.NumRanges = static_cast<UInt32>(BindRanges.size());
         SparseTexBind.pRanges   = BindRanges.data();
 
         BindSparseResourceMemoryAttribs BindSparseAttrs;
@@ -1851,7 +1851,7 @@ TEST_P(SparseResourceTest, SparseResidencyAliasedTexture)
         BindSparseAttrs.pTextureBinds   = &SparseTexBind;
 
         IFence*      SignalFence = pFence;
-        const Uint64 SignalValue = 1;
+        const UInt64 SignalValue = 1;
 
         if (SignalFence)
         {
@@ -1916,7 +1916,7 @@ TEST_F(SparseResourceTest, SparseTexture3D)
         FillTexture3D(pContext, pTexture, Box{32u, TexSize.x,  32u, TexSize.y,  0u, TexSize.z}, 0, RandomColor());
         // clang-format on
 
-        for (Uint32 Mip = 1, MipLevels = pTexture->GetDesc().MipLevels; Mip < MipLevels; ++Mip)
+        for (UInt32 Mip = 1, MipLevels = pTexture->GetDesc().MipLevels; Mip < MipLevels; ++Mip)
             FillTexture3DMip(pContext, pTexture, Mip, RandomColor());
     };
 
@@ -1962,17 +1962,17 @@ TEST_F(SparseResourceTest, SparseTexture3D)
     {
         std::vector<SparseTextureMemoryBindRange> BindRanges;
 
-        Uint64 MemOffset = 0;
-        for (Uint32 Mip = 0; Mip < TexSparseProps.FirstMipInTail; ++Mip)
+        UInt64 MemOffset = 0;
+        for (UInt32 Mip = 0; Mip < TexSparseProps.FirstMipInTail; ++Mip)
         {
             const auto Width  = std::max(1u, TexDesc.Width >> Mip);
             const auto Height = std::max(1u, TexDesc.Height >> Mip);
             const auto Depth  = std::max(1u, TexDesc.Depth >> Mip);
-            for (Uint32 z = 0; z < Depth; z += TexSparseProps.TileSize[2])
+            for (UInt32 z = 0; z < Depth; z += TexSparseProps.TileSize[2])
             {
-                for (Uint32 y = 0; y < Height; y += TexSparseProps.TileSize[1])
+                for (UInt32 y = 0; y < Height; y += TexSparseProps.TileSize[1])
                 {
-                    for (Uint32 x = 0; x < Width; x += TexSparseProps.TileSize[0])
+                    for (UInt32 x = 0; x < Width; x += TexSparseProps.TileSize[0])
                     {
                         BindRanges.emplace_back();
                         auto& Range        = BindRanges.back();
@@ -1995,7 +1995,7 @@ TEST_F(SparseResourceTest, SparseTexture3D)
 
         // Mip tail
         const bool IsMetal = pDevice->GetDeviceInfo().IsMetalDevice();
-        for (Uint64 OffsetInMipTail = 0; OffsetInMipTail < TexSparseProps.MipTailSize;)
+        for (UInt64 OffsetInMipTail = 0; OffsetInMipTail < TexSparseProps.MipTailSize;)
         {
             BindRanges.emplace_back();
             auto& Range           = BindRanges.back();
@@ -2013,7 +2013,7 @@ TEST_F(SparseResourceTest, SparseTexture3D)
 
         SparseTextureMemoryBindInfo SparseTexBind;
         SparseTexBind.pTexture  = pTexture;
-        SparseTexBind.NumRanges = static_cast<Uint32>(BindRanges.size());
+        SparseTexBind.NumRanges = static_cast<UInt32>(BindRanges.size());
         SparseTexBind.pRanges   = BindRanges.data();
 
         BindSparseResourceMemoryAttribs BindSparseAttrs;
@@ -2021,7 +2021,7 @@ TEST_F(SparseResourceTest, SparseTexture3D)
         BindSparseAttrs.pTextureBinds   = &SparseTexBind;
 
         IFence*      SignalFence = pFence;
-        const Uint64 SignalValue = 1;
+        const UInt64 SignalValue = 1;
 
         if (SignalFence)
         {
@@ -2042,7 +2042,7 @@ TEST_F(SparseResourceTest, SparseTexture3D)
     pSwapChain->Present();
 }
 
-constexpr auto MaxResourceSpaceSize = Uint64{1} << 40;
+constexpr auto MaxResourceSpaceSize = UInt64{1} << 40;
 
 TEST_F(SparseResourceTest, LargeBuffer)
 {
@@ -2056,9 +2056,9 @@ TEST_F(SparseResourceTest, LargeBuffer)
     }
 
     // Limits which is queried from API is not valid, x/4 works on all tested devices.
-    Uint64 BuffSize = AlignUp(std::min(MaxResourceSpaceSize, SparseRes.ResourceSpaceSize) >> 2, 4u);
+    UInt64 BuffSize = AlignUp(std::min(MaxResourceSpaceSize, SparseRes.ResourceSpaceSize) >> 2, 4u);
     if (pDevice->GetDeviceInfo().IsD3DDevice())
-        BuffSize = std::min(BuffSize, Uint64{1} << 31);
+        BuffSize = std::min(BuffSize, UInt64{1} << 31);
 
     BufferDesc Desc;
     Desc.Name      = "Sparse buffer";
@@ -2093,8 +2093,8 @@ TEST_F(SparseResourceTest, LargeTexture2D)
     const auto BPP           = 4u;
     const auto MaxMemorySize = std::min(MaxResourceSpaceSize, SparseRes.ResourceSpaceSize) >> 1;
 
-    if ((Uint64{TexSize.x} * Uint64{TexSize.y} * BPP * 3) / 2 > MaxMemorySize)
-        TexSize.y = std::max(1u, static_cast<Uint32>(MaxMemorySize / (Uint64{TexSize.x} * BPP * 3)) * 2);
+    if ((UInt64{TexSize.x} * UInt64{TexSize.y} * BPP * 3) / 2 > MaxMemorySize)
+        TexSize.y = std::max(1u, static_cast<UInt32>(MaxMemorySize / (UInt64{TexSize.x} * BPP * 3)) * 2);
 
     auto TexAndMem = CreateSparseTextureAndMemory(TexSize, BIND_SHADER_RESOURCE, 8);
     auto pTexture  = TexAndMem.pTexture;
@@ -2127,8 +2127,8 @@ TEST_F(SparseResourceTest, LargeTexture2DArray)
     const auto BPP           = 4u;
     const auto MaxMemorySize = std::min(MaxResourceSpaceSize, SparseRes.ResourceSpaceSize) >> 1;
 
-    if ((Uint64{TexSize.x} * Uint64{TexSize.y} * TexSize.w * BPP * 3) / 2 > MaxMemorySize)
-        TexSize.y = std::max(1u, static_cast<Uint32>(MaxMemorySize / (Uint64{TexSize.x} * TexSize.w * BPP * 3)) * 2);
+    if ((UInt64{TexSize.x} * UInt64{TexSize.y} * TexSize.w * BPP * 3) / 2 > MaxMemorySize)
+        TexSize.y = std::max(1u, static_cast<UInt32>(MaxMemorySize / (UInt64{TexSize.x} * TexSize.w * BPP * 3)) * 2);
 
     auto TexAndMem = CreateSparseTextureAndMemory(TexSize, BIND_SHADER_RESOURCE, 8);
     auto pTexture  = TexAndMem.pTexture;
@@ -2161,8 +2161,8 @@ TEST_F(SparseResourceTest, LargeTexture3D)
     const auto BPP           = 4u;
     const auto MaxMemorySize = std::min(MaxResourceSpaceSize, SparseRes.ResourceSpaceSize) >> 4;
 
-    if ((Uint64{TexSize.x} * Uint64{TexSize.y} * Uint64{TexSize.z} * BPP * 3) / 2 > MaxMemorySize)
-        TexSize.z = std::max(1u, static_cast<Uint32>(MaxMemorySize / (Uint64{TexSize.x} * Uint64{TexSize.y} * BPP * 3)) * 2);
+    if ((UInt64{TexSize.x} * UInt64{TexSize.y} * UInt64{TexSize.z} * BPP * 3) / 2 > MaxMemorySize)
+        TexSize.z = std::max(1u, static_cast<UInt32>(MaxMemorySize / (UInt64{TexSize.x} * UInt64{TexSize.y} * BPP * 3)) * 2);
 
     const auto Bind = pDevice->GetDeviceInfo().IsMetalDevice() ? BIND_RENDER_TARGET : BIND_UNORDERED_ACCESS;
 
@@ -2196,7 +2196,7 @@ TEST_F(SparseResourceTest, GetSparseTextureFormatInfo)
     const bool IsMetal    = pDevice->GetDeviceInfo().IsMetalDevice();
     const bool IsVulkan   = pDevice->GetDeviceInfo().IsVulkanDevice();
 
-    const auto CheckInfo = [&](TEXTURE_FORMAT TexFormat, RESOURCE_DIMENSION Dimension, Uint32 SampleCount, const char* FmtName, BIND_FLAGS PossibleBindFlags) //
+    const auto CheckInfo = [&](TEXTURE_FORMAT TexFormat, RESOURCE_DIMENSION Dimension, UInt32 SampleCount, const char* FmtName, BIND_FLAGS PossibleBindFlags) //
     {
         SparseTextureFormatInfo Info = pDevice->GetSparseTextureFormatInfo(TexFormat, Dimension, SampleCount);
 

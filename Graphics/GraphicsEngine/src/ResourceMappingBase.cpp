@@ -35,13 +35,13 @@ ResourceMappingImpl::~ResourceMappingImpl()
 {
 }
 
-void ResourceMappingImpl::AddResourceArray(const Char* Name, Uint32 StartIndex, IDeviceObject* const* ppObjects, Uint32 NumElements, bool bIsUnique)
+void ResourceMappingImpl::AddResourceArray(const Char* Name, UInt32 StartIndex, IDeviceObject* const* ppObjects, UInt32 NumElements, bool bIsUnique)
 {
     if (Name == nullptr || *Name == 0)
         return;
 
     Threading::SpinLockGuard Guard{m_Lock};
-    for (Uint32 Elem = 0; Elem < NumElements; ++Elem)
+    for (UInt32 Elem = 0; Elem < NumElements; ++Elem)
     {
         IDeviceObject* pObject = ppObjects[Elem];
 
@@ -68,7 +68,7 @@ void ResourceMappingImpl::AddResource(const Char* Name, IDeviceObject* pObject, 
     AddResourceArray(Name, 0, &pObject, 1, bIsUnique);
 }
 
-void ResourceMappingImpl::RemoveResourceByName(const Char* Name, Uint32 ArrayIndex)
+void ResourceMappingImpl::RemoveResourceByName(const Char* Name, UInt32 ArrayIndex)
 {
     if (*Name == 0)
         return;
@@ -79,7 +79,7 @@ void ResourceMappingImpl::RemoveResourceByName(const Char* Name, Uint32 ArrayInd
     m_HashTable.erase(ResMappingHashKey{Name, false, ArrayIndex});
 }
 
-IDeviceObject* ResourceMappingImpl::GetResource(const Char* Name, Uint32 ArrayIndex)
+IDeviceObject* ResourceMappingImpl::GetResource(const Char* Name, UInt32 ArrayIndex)
 {
     if (Name == nullptr || *Name == '\0')
     {

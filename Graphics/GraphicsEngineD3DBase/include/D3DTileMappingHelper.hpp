@@ -51,7 +51,7 @@ struct D3DTileMappingHelper
     bool UseNVApi = false;
 
     void AddBufferBindRange(const SparseBufferMemoryBindRange& BindRange,
-                            Uint64                             MemOffsetInBytes)
+                            UInt64                             MemOffsetInBytes)
     {
         D3D_TILED_RESOURCE_COORDINATE_TYPE d3dCoord{};
         d3dCoord.X           = StaticCast<UINT>(BindRange.BufferOffset / D3D_TILED_RESOURCE_TILE_SIZE_IN_BYTES);
@@ -79,7 +79,7 @@ struct D3DTileMappingHelper
                              const SparseTextureProperties&      TexSparseProps,
                              const TextureDesc&                  TexDesc,
                              bool                                _UseNVApi,
-                             Uint64                              MemOffsetInBytes)
+                             UInt64                              MemOffsetInBytes)
     {
         VERIFY(Coordinates.empty() || UseNVApi == _UseNVApi, "Inconsistent use of NV API among different bind ranges");
         UseNVApi = _UseNVApi;
@@ -144,7 +144,7 @@ private:
     void AddBindRange(const D3D_TILED_RESOURCE_COORDINATE_TYPE& d3dCoords,
                       const D3D_TILE_REGION_SIZE_TYPE&          d3dRegionSize,
                       const IDeviceMemory*                      pMemory,
-                      Uint64                                    MemOffsetInBytes)
+                      UInt64                                    MemOffsetInBytes)
     {
         Coordinates.emplace_back(d3dCoords);
         RegionSizes.emplace_back(d3dRegionSize);

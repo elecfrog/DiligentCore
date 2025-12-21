@@ -25,7 +25,7 @@
  *  of the possibility of such damages.
  */
 
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "InterfaceID.h"
 #include "ReferenceCounters.h"
 #include "Object.h"

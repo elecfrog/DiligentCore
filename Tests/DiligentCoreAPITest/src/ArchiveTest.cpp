@@ -50,7 +50,7 @@ using namespace Diligent::Testing;
 namespace
 {
 
-static constexpr Uint32 ContentVersion = 1234;
+static constexpr UInt32 ContentVersion = 1234;
 
 constexpr ARCHIVE_DEVICE_DATA_FLAGS GetDeviceBits()
 {
@@ -134,7 +134,7 @@ void ArchivePRS(RefCntAutoPtr<IDataBlob>&                  pArchive,
         PRSDesc.NumImmutableSamplers = _countof(ImmutableSamplers);
 
         RefCntAutoPtr<IPipelineResourceSignature> pSerializedPRS[3];
-        for (Uint32 i = 0; i < _countof(pSerializedPRS); ++i)
+        for (UInt32 i = 0; i < _countof(pSerializedPRS); ++i)
         {
             ResourceSignatureArchiveInfo ArchiveInfo;
             ArchiveInfo.DeviceFlags = DeviceBits;
@@ -167,7 +167,7 @@ void ArchivePRS(RefCntAutoPtr<IDataBlob>&                  pArchive,
         PRSDesc.NumResources = _countof(Resources);
 
         RefCntAutoPtr<IPipelineResourceSignature> pSerializedPRS[3];
-        for (Uint32 i = 0; i < _countof(pSerializedPRS); ++i)
+        for (UInt32 i = 0; i < _countof(pSerializedPRS); ++i)
         {
             ResourceSignatureArchiveInfo ArchiveInfo;
             ArchiveInfo.DeviceFlags = DeviceBits;
@@ -513,7 +513,7 @@ void CreateTestRenderPass1(IRenderDevice*        pDevice,
 
     RenderPassAttachmentDesc Attachments[1];
     Attachments[0].Format       = RTVDesc.Format;
-    Attachments[0].SampleCount  = static_cast<Uint8>(RTVDesc.SampleCount);
+    Attachments[0].SampleCount  = static_cast<UInt8>(RTVDesc.SampleCount);
     Attachments[0].InitialState = RESOURCE_STATE_RENDER_TARGET;
     Attachments[0].FinalState   = RESOURCE_STATE_RENDER_TARGET;
     Attachments[0].LoadOp       = ATTACHMENT_LOAD_OP_CLEAR;
@@ -561,14 +561,14 @@ void CreateTestRenderPass2(IRenderDevice*        pDevice,
 
     RenderPassAttachmentDesc Attachments[2];
     Attachments[0].Format       = RTVDesc.Format;
-    Attachments[0].SampleCount  = static_cast<Uint8>(RTVDesc.SampleCount);
+    Attachments[0].SampleCount  = static_cast<UInt8>(RTVDesc.SampleCount);
     Attachments[0].InitialState = RESOURCE_STATE_RENDER_TARGET;
     Attachments[0].FinalState   = RESOURCE_STATE_RENDER_TARGET;
     Attachments[0].LoadOp       = ATTACHMENT_LOAD_OP_DISCARD;
     Attachments[0].StoreOp      = ATTACHMENT_STORE_OP_STORE;
 
     Attachments[1].Format       = DSVDesc.Format;
-    Attachments[1].SampleCount  = static_cast<Uint8>(DSVDesc.SampleCount);
+    Attachments[1].SampleCount  = static_cast<UInt8>(DSVDesc.SampleCount);
     Attachments[1].InitialState = RESOURCE_STATE_DEPTH_WRITE;
     Attachments[1].FinalState   = RESOURCE_STATE_DEPTH_WRITE;
     Attachments[1].LoadOp       = ATTACHMENT_LOAD_OP_CLEAR;
@@ -641,15 +641,15 @@ RefCntAutoPtr<IBuffer> CreateTestVertexBuffer(IRenderDevice* pDevice, IDeviceCon
 
 std::array<RefCntAutoPtr<ITexture>, 3> CreateTestGBuffer(GPUTestingEnvironment* pEnv, IDeviceContext* pContext)
 {
-    constexpr Uint32 Width  = 64;
-    constexpr Uint32 Height = 64;
+    constexpr UInt32 Width  = 64;
+    constexpr UInt32 Height = 64;
 
     std::array<RefCntAutoPtr<ITexture>, 3> GBuffer;
     {
-        Uint32 InitData[Width * Height] = {};
+        UInt32 InitData[Width * Height] = {};
 
-        for (Uint32 y = 0; y < Height; ++y)
-            for (Uint32 x = 0; x < Width; ++x)
+        for (UInt32 y = 0; y < Height; ++y)
+            for (UInt32 x = 0; x < Width; ++x)
                 InitData[x + y * Width] = (x & 1 ? 0xFF000000 : 0) | (y & 1 ? 0x00FF0000 : 0) | 0x000000FF;
 
         for (size_t i = 0; i < GBuffer.size(); ++i)
@@ -939,9 +939,9 @@ void TestGraphicsPipeline(PSO_ARCHIVE_FLAGS ArchiveFlags, bool CompileAsync = fa
                     for (ARCHIVE_DEVICE_DATA_FLAGS Flags = ArchiveInfo.DeviceFlags; Flags != ARCHIVE_DEVICE_DATA_FLAG_NONE;)
                     {
                         const ARCHIVE_DEVICE_DATA_FLAGS Flag        = ExtractLSB(Flags);
-                        const Uint32                    ShaderCount = pSerializedPSO.Cast<ISerializedPipelineState>(IID_SerializedPipelineState)->GetPatchedShaderCount(Flag);
+                        const UInt32                    ShaderCount = pSerializedPSO.Cast<ISerializedPipelineState>(IID_SerializedPipelineState)->GetPatchedShaderCount(Flag);
                         EXPECT_EQ(ShaderCount, 2u);
-                        for (Uint32 ShaderId = 0; ShaderId < ShaderCount; ++ShaderId)
+                        for (UInt32 ShaderId = 0; ShaderId < ShaderCount; ++ShaderId)
                         {
                             ShaderCreateInfo ShaderCI = pSerializedPSO.Cast<ISerializedPipelineState>(IID_SerializedPipelineState)->GetPatchedShaderCreateInfo(Flag, ShaderId);
 
@@ -1051,7 +1051,7 @@ void TestGraphicsPipeline(PSO_ARCHIVE_FLAGS ArchiveFlags, bool CompileAsync = fa
         // Metal PRS in the Archiver is generated from SPIRV, in the Engine - from the reflection, and they thus may have different resource order.
         if (!pDevice->GetDeviceInfo().IsGLDevice() && !pDevice->GetDeviceInfo().IsMetalDevice())
         {
-            for (Uint32 s = 0, SCnt = std::min(pUnpackedPSOWithLayout->GetResourceSignatureCount(), pRefPSOWithLayout->GetResourceSignatureCount()); s < SCnt; ++s)
+            for (UInt32 s = 0, SCnt = std::min(pUnpackedPSOWithLayout->GetResourceSignatureCount(), pRefPSOWithLayout->GetResourceSignatureCount()); s < SCnt; ++s)
             {
                 IPipelineResourceSignature* pLhsSign = pUnpackedPSOWithLayout->GetResourceSignature(s);
                 IPipelineResourceSignature* pRhsSign = pRefPSOWithLayout->GetResourceSignature(s);
@@ -1093,7 +1093,7 @@ void TestGraphicsPipeline(PSO_ARCHIVE_FLAGS ArchiveFlags, bool CompileAsync = fa
         EXPECT_EQ(pUnpackedPSOWithSign->GetGraphicsPipelineDesc().pRenderPass, pUnpackedRenderPass);
         EXPECT_EQ(pUnpackedPSOWithSign->GetResourceSignatureCount(), pRefPSOWithSign->GetResourceSignatureCount());
 
-        for (Uint32 s = 0, SCnt = std::min(pUnpackedPSOWithSign->GetResourceSignatureCount(), pRefPSOWithSign->GetResourceSignatureCount()); s < SCnt; ++s)
+        for (UInt32 s = 0, SCnt = std::min(pUnpackedPSOWithSign->GetResourceSignatureCount(), pRefPSOWithSign->GetResourceSignatureCount()); s < SCnt; ++s)
         {
             IPipelineResourceSignature* pLhsSign = pUnpackedPSOWithSign->GetResourceSignature(s);
             IPipelineResourceSignature* pRhsSign = pRefPSOWithSign->GetResourceSignature(s);
@@ -1720,7 +1720,7 @@ void TestRayTracingPipeline(bool CompileAsync = false)
     RefCntAutoPtr<IBottomLevelAS> pBLAS;
     RefCntAutoPtr<ITopLevelAS>    pTLAS;
     IDeviceContext*               pContext       = pEnv->GetDeviceContext();
-    const Uint32                  HitGroupStride = 1;
+    const UInt32                  HitGroupStride = 1;
     {
         const auto& Vertices = TestingConstants::TriangleClosestHit::Vertices;
 
@@ -1963,7 +1963,7 @@ TEST(ArchiveTest, ResourceSignatureBindings)
             PRSDesc.Name         = "PRS 1";
             PRSDesc.BindingIndex = 0;
             PRSDesc.Resources    = Resources.data();
-            PRSDesc.NumResources = static_cast<Uint32>(Resources.size());
+            PRSDesc.NumResources = static_cast<UInt32>(Resources.size());
 
             const ImmutableSamplerDesc ImmutableSamplers[] = //
                 {
@@ -2014,13 +2014,13 @@ TEST(ArchiveTest, ResourceSignatureBindings)
             Info.VertexBufferNames = VBNames;
         }
 
-        Uint32                         NumBindings = 0;
+        UInt32                         NumBindings = 0;
         const PipelineResourceBinding* Bindings    = nullptr;
         pSerializationDevice->GetPipelineResourceBindings(Info, NumBindings, Bindings);
         ASSERT_NE(NumBindings, 0u);
         ASSERT_NE(Bindings, nullptr);
 
-        const auto CompareBindings = [NumBindings, Bindings](const PipelineResourceBinding* RefBindings, Uint32 Count) //
+        const auto CompareBindings = [NumBindings, Bindings](const PipelineResourceBinding* RefBindings, UInt32 Count) //
         {
             EXPECT_EQ(NumBindings, Count);
             if (NumBindings != Count)
@@ -2051,10 +2051,10 @@ TEST(ArchiveTest, ResourceSignatureBindings)
             };
 
             std::unordered_map<Key, const PipelineResourceBinding*, Key::Hasher> BindingMap;
-            for (Uint32 i = 0; i < NumBindings; ++i)
+            for (UInt32 i = 0; i < NumBindings; ++i)
                 BindingMap.emplace(Key{Bindings[i].Name, Bindings[i].ShaderStages}, Bindings + i);
 
-            for (Uint32 i = 0; i < Count; ++i)
+            for (UInt32 i = 0; i < Count; ++i)
             {
                 auto Iter = BindingMap.find(Key{RefBindings[i].Name, RefBindings[i].ShaderStages});
                 EXPECT_TRUE(Iter != BindingMap.end());
@@ -2071,7 +2071,7 @@ TEST(ArchiveTest, ResourceSignatureBindings)
             }
         };
 
-        constexpr Uint32 RuntimeArray = 0;
+        constexpr UInt32 RuntimeArray = 0;
         switch (DeviceType)
         {
             case RENDER_DEVICE_TYPE_D3D11:
@@ -2225,16 +2225,16 @@ TEST_P(TestSamplers, GraphicsPipeline)
     static constexpr size_t Tex2DArr_MutIdx[]    = {3, 5};
     static constexpr size_t Tex2DArr_DynIdx[]    = {9, 2};
 
-    const Uint32 VSResArrId = 0;
-    const Uint32 PSResArrId = deviceCaps.Features.SeparablePrograms ? 1 : 0;
+    const UInt32 VSResArrId = 0;
+    const UInt32 PSResArrId = deviceCaps.Features.SeparablePrograms ? 1 : 0;
     VERIFY_EXPR(deviceCaps.IsGLDevice() || PSResArrId != VSResArrId);
 
 
     // Prepare reference textures filled with different colors
     // Texture array sizes in the shader
-    static constexpr Uint32 StaticTexArraySize  = 2;
-    static constexpr Uint32 MutableTexArraySize = 4;
-    static constexpr Uint32 DynamicTexArraySize = 3;
+    static constexpr UInt32 StaticTexArraySize  = 2;
+    static constexpr UInt32 MutableTexArraySize = 4;
+    static constexpr UInt32 DynamicTexArraySize = 3;
 
     ReferenceTextures RefTextures{
         3 + StaticTexArraySize + MutableTexArraySize + DynamicTexArraySize,
@@ -2259,7 +2259,7 @@ TEST_P(TestSamplers, GraphicsPipeline)
     {
         RefCntAutoPtr<ISampler> pSampler;
         pDevice->CreateSampler(SamplerDesc{}, &pSampler);
-        for (Uint32 i = 0; i < RefTextures.GetTextureCount(); ++i)
+        for (UInt32 i = 0; i < RefTextures.GetTextureCount(); ++i)
             RefTextures.GetView(i)->SetSampler(pSampler);
     }
 
@@ -2291,7 +2291,7 @@ TEST_P(TestSamplers, GraphicsPipeline)
 
         ShaderMacroHelper Macros;
 
-        auto PrepareMacros = [&](Uint32 s) {
+        auto PrepareMacros = [&](UInt32 s) {
             Macros.Clear();
 
             if (ShaderLang == SHADER_SOURCE_LANGUAGE_GLSL)
@@ -2313,13 +2313,13 @@ TEST_P(TestSamplers, GraphicsPipeline)
             Macros.AddShaderMacro("Buff_Mut_Ref", RefBuffers.GetValue(Buff_MutIdx[s]));
             Macros.AddShaderMacro("Buff_Dyn_Ref", RefBuffers.GetValue(Buff_DynIdx[s]));
 
-            for (Uint32 i = 0; i < StaticTexArraySize; ++i)
+            for (UInt32 i = 0; i < StaticTexArraySize; ++i)
                 Macros.AddShaderMacro((std::string{"Tex2DArr_Static_Ref"} + std::to_string(i)).c_str(), RefTextures.GetColor(Tex2DArr_StaticIdx[s] + i));
 
-            for (Uint32 i = 0; i < MutableTexArraySize; ++i)
+            for (UInt32 i = 0; i < MutableTexArraySize; ++i)
                 Macros.AddShaderMacro((std::string{"Tex2DArr_Mut_Ref"} + std::to_string(i)).c_str(), RefTextures.GetColor(Tex2DArr_MutIdx[s] + i));
 
-            for (Uint32 i = 0; i < DynamicTexArraySize; ++i)
+            for (UInt32 i = 0; i < DynamicTexArraySize; ++i)
                 Macros.AddShaderMacro((std::string{"Tex2DArr_Dyn_Ref"} + std::to_string(i)).c_str(), RefTextures.GetColor(Tex2DArr_DynIdx[s] + i));
 
             return static_cast<ShaderMacroArray>(Macros);
@@ -2381,7 +2381,7 @@ TEST_P(TestSamplers, GraphicsPipeline)
         std::vector<PipelineResourceDesc>       Samplers;
         std::unordered_set<std::string>         StringPool;
 
-        auto AddResourceOrVar = [&](const char* Name, Uint32 ArraySize, SHADER_RESOURCE_TYPE ResType, SHADER_RESOURCE_VARIABLE_TYPE VarType) //
+        auto AddResourceOrVar = [&](const char* Name, UInt32 ArraySize, SHADER_RESOURCE_TYPE ResType, SHADER_RESOURCE_VARIABLE_TYPE VarType) //
         {
             auto Add = [&](SHADER_TYPE Stage) {
                 if (UseSignature)
@@ -2451,7 +2451,7 @@ TEST_P(TestSamplers, GraphicsPipeline)
             PRSDesc.Name                       = PRSName;
             PRSDesc.BindingIndex               = 0;
             PRSDesc.Resources                  = Resources.data();
-            PRSDesc.NumResources               = StaticCast<Uint32>(Resources.size());
+            PRSDesc.NumResources               = StaticCast<UInt32>(Resources.size());
             PRSDesc.ImmutableSamplers          = UseImtblSamplers ? ImtblSamplers : nullptr;
             PRSDesc.NumImmutableSamplers       = UseImtblSamplers ? _countof(ImtblSamplers) : 0;
             PRSDesc.UseCombinedTextureSamplers = true;
@@ -2468,7 +2468,7 @@ TEST_P(TestSamplers, GraphicsPipeline)
             PipelineResourceLayoutDesc& ResourceLayout{PSODesc.ResourceLayout};
             ResourceLayout.DefaultVariableType  = SHADER_RESOURCE_VARIABLE_TYPE_MUTABLE;
             ResourceLayout.Variables            = Vars.data();
-            ResourceLayout.NumVariables         = static_cast<Uint32>(Vars.size());
+            ResourceLayout.NumVariables         = static_cast<UInt32>(Vars.size());
             ResourceLayout.ImmutableSamplers    = UseImtblSamplers ? ImtblSamplers : nullptr;
             ResourceLayout.NumImmutableSamplers = UseImtblSamplers ? _countof(ImtblSamplers) : 0;
         }
@@ -2530,7 +2530,7 @@ TEST_P(TestSamplers, GraphicsPipeline)
     ASSERT_NE(pSRB, nullptr);
 
     auto BindResources = [&](SHADER_TYPE ShaderType) {
-        const Uint32 id = ShaderType == SHADER_TYPE_VERTEX ? VSResArrId : PSResArrId;
+        const UInt32 id = ShaderType == SHADER_TYPE_VERTEX ? VSResArrId : PSResArrId;
 
         if (pSignature)
         {

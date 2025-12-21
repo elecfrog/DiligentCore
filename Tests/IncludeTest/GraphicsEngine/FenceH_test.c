@@ -29,11 +29,11 @@
 
 void TestFenceCInterface(struct IFence* pFence)
 {
-    Uint64 CompletedValue = 0;
+    UInt64 CompletedValue = 0;
 
     CompletedValue = IFence_GetCompletedValue(pFence);
     (void)(CompletedValue);
 
-    IFence_Signal(pFence, (Uint64)0);
-    IFence_Wait(pFence, (Uint64)0);
+    IFence_Signal(pFence, (UInt64)0);
+    IFence_Wait(pFence, (UInt64)0);
 }

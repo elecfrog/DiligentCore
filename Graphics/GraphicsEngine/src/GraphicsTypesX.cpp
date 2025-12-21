@@ -30,13 +30,13 @@
 namespace Diligent
 {
 
-std::unique_ptr<Uint8[]> CopyPSOCreateInternalInfo(void* pData)
+std::unique_ptr<UInt8[]> CopyPSOCreateInternalInfo(void* pData)
 {
-    std::unique_ptr<Uint8[]> pCopy;
+    std::unique_ptr<UInt8[]> pCopy;
     if (pData != nullptr)
     {
         static_assert(std::is_trivially_destructible<PSOCreateInternalInfo>::value, "PSOCreateInternalInfo must be trivially destructible");
-        pCopy = std::make_unique<Uint8[]>(sizeof(PSOCreateInternalInfo));
+        pCopy = std::make_unique<UInt8[]>(sizeof(PSOCreateInternalInfo));
         memcpy(pCopy.get(), pData, sizeof(PSOCreateInternalInfo));
     }
 

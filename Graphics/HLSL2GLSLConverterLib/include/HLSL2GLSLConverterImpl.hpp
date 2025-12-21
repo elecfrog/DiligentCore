@@ -47,14 +47,14 @@ namespace Diligent
 struct FunctionStubHashKey
 {
     // clang-format off
-    FunctionStubHashKey(const String& _Obj,  const String& _Func, Uint32 _NumArgs) :
+    FunctionStubHashKey(const String& _Obj,  const String& _Func, UInt32 _NumArgs) :
         Object      {_Obj    },
         Function    {_Func   },
         NumArguments{_NumArgs}
     {
     }
 
-    FunctionStubHashKey(const Char* _Obj, const Char* _Func, Uint32 _NumArgs) :
+    FunctionStubHashKey(const Char* _Obj, const Char* _Func, UInt32 _NumArgs) :
         Object      {_Obj    },
         Function    {_Func   },
         NumArguments{_NumArgs}
@@ -78,7 +78,7 @@ struct FunctionStubHashKey
 
     HashMapStringKey Object;
     HashMapStringKey Function;
-    Uint32           NumArguments;
+    UInt32           NumArguments;
 
     struct Hasher
     {
@@ -173,16 +173,16 @@ private:
     {
         const String GLSLType; // sampler2D, sampler2DShadow, image2D, etc.
 
-        const Uint32 NumComponents; // 0, 1, 2, 3 or 4
+        const UInt32 NumComponents; // 0, 1, 2, 3 or 4
                                     // Texture2D<float4>  -> 4
                                     // Texture2D<uint>    -> 1
                                     // Texture2D          -> 0
 
-        const Uint32 ArrayDim; // Array dimensionality
+        const UInt32 ArrayDim; // Array dimensionality
                                // Texture2D g_Tex        -> 0
                                // Texture2D g_Tex[8]     -> 1
                                // Texture2D g_Tex[8][2]  -> 2
-        HLSLObjectInfo(const String& Type, Uint32 NComp, Uint32 ArrDim) :
+        HLSLObjectInfo(const String& Type, UInt32 NComp, UInt32 ArrDim) :
             GLSLType{Type},
             NumComponents{NComp},
             ArrayDim{ArrDim}
@@ -291,7 +291,7 @@ private:
         void RegisterStruct(TokenListType::iterator& Token);
 
         void ProcessConstantBuffer(TokenListType::iterator& Token);
-        void ProcessStructuredBuffer(TokenListType::iterator& Token, Uint32& ShaderStorageBlockBinding);
+        void ProcessStructuredBuffer(TokenListType::iterator& Token, UInt32& ShaderStorageBlockBinding);
         void ProcessPreprocessorDirective(TokenListType::iterator& Token);
         void ParseSamplers(TokenListType::iterator& ScopeStart, SamplerHashType& SamplersHash);
 
@@ -299,15 +299,15 @@ private:
                                        const std::vector<SamplerHashType>& SamplersHash,
                                        ObjectsTypeHashType&                Objects,
                                        const char*                         SamplerSuffix,
-                                       Uint32&                             ImageBinding);
+                                       UInt32&                             ImageBinding);
 
         bool ProcessObjectMethod(TokenListType::iterator&       Token,
                                  const TokenListType::iterator& ScopeStart,
                                  const TokenListType::iterator& ScopeEnd);
 
-        Uint32 CountFunctionArguments(TokenListType::iterator& Token, const TokenListType::iterator& ScopeEnd);
-        bool   ProcessRWTextureStore(TokenListType::iterator& Token, const TokenListType::iterator& ScopeEnd, Uint32 ArrayDim);
-        bool   ProcessRWTextureLoad(TokenListType::iterator& Token, const TokenListType::iterator& ScopeEnd, Uint32 ArrayDim);
+        UInt32 CountFunctionArguments(TokenListType::iterator& Token, const TokenListType::iterator& ScopeEnd);
+        bool   ProcessRWTextureStore(TokenListType::iterator& Token, const TokenListType::iterator& ScopeEnd, UInt32 ArrayDim);
+        bool   ProcessRWTextureLoad(TokenListType::iterator& Token, const TokenListType::iterator& ScopeEnd, UInt32 ArrayDim);
         void   RemoveFlowControlAttribute(TokenListType::iterator& Token);
         void   RemoveSemantics();
         void   RemoveSpecialShaderAttributes();

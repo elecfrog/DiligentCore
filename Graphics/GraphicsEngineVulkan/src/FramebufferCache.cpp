@@ -51,7 +51,7 @@ bool FramebufferCache::FramebufferCacheKey::operator==(const FramebufferCacheKey
     }
     // clang-format on
 
-    for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
         if (RTVs[rt] != rhs.RTVs[rt])
             return false;
 
@@ -63,7 +63,7 @@ size_t FramebufferCache::FramebufferCacheKey::GetHash() const
     if (Hash == 0)
     {
         Hash = ComputeHash(Pass, NumRenderTargets, DSV, ShadingRate, CommandQueueMask);
-        for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+        for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
             HashCombine(Hash, RTVs[rt]);
     }
     return Hash;
@@ -71,7 +71,7 @@ size_t FramebufferCache::FramebufferCacheKey::GetHash() const
 
 bool FramebufferCache::FramebufferCacheKey::UsesImageView(VkImageView View) const
 {
-    for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
     {
         if (RTVs[rt] == View)
             return true;
@@ -102,7 +102,7 @@ VkFramebuffer FramebufferCache::GetFramebuffer(const FramebufferCacheKey& Key, u
         if (Key.DSV != VK_NULL_HANDLE)
             Attachments[attachment++] = Key.DSV;
 
-        for (Uint32 rt = 0; rt < Key.NumRenderTargets; ++rt)
+        for (UInt32 rt = 0; rt < Key.NumRenderTargets; ++rt)
         {
             if (Key.RTVs[rt] != VK_NULL_HANDLE)
                 Attachments[attachment++] = Key.RTVs[rt];
@@ -129,7 +129,7 @@ VkFramebuffer FramebufferCache::GetFramebuffer(const FramebufferCacheKey& Key, u
             m_ViewToKeyMap.emplace(Key.DSV, Key);
         if (Key.ShadingRate != VK_NULL_HANDLE)
             m_ViewToKeyMap.emplace(Key.ShadingRate, Key);
-        for (Uint32 rt = 0; rt < Key.NumRenderTargets; ++rt)
+        for (UInt32 rt = 0; rt < Key.NumRenderTargets; ++rt)
             if (Key.RTVs[rt] != VK_NULL_HANDLE)
                 m_ViewToKeyMap.emplace(Key.RTVs[rt], Key);
 
@@ -158,7 +158,7 @@ std::unique_ptr<VulkanUtilities::RenderingInfoWrapper> FramebufferCache::CreateD
         Attachment.clearValue         = VkClearValue{};
     };
 
-    for (Uint32 rt = 0; rt < Key.NumRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < Key.NumRenderTargets; ++rt)
     {
         VkRenderingAttachmentInfoKHR& RTAttachment = RI->GetColorAttachment(rt);
         InitAttachment(RTAttachment, Key.RTVs[rt], VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
@@ -259,7 +259,7 @@ void FramebufferCache::OnDestroyRenderPass(VkRenderPass Pass)
                     ++view_it;
             }
         };
-        for (Uint32 rt = 0; rt < Key.NumRenderTargets; ++rt)
+        for (UInt32 rt = 0; rt < Key.NumRenderTargets; ++rt)
         {
             PurgeViewToKeyMap(Key.RTVs[rt]);
         }

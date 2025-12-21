@@ -137,12 +137,12 @@ public:
             TexDesc.Name = "Texture2D_D3D11 from native d3d11 texture";
 
         TexDesc.Type           = D3D11TexDesc.ArraySize > 1 ? RESOURCE_DIM_TEX_2D_ARRAY : RESOURCE_DIM_TEX_2D;
-        TexDesc.Width          = Uint32{D3D11TexDesc.Width};
-        TexDesc.Height         = Uint32{D3D11TexDesc.Height};
-        TexDesc.ArraySize      = Uint32{D3D11TexDesc.ArraySize};
+        TexDesc.Width          = UInt32{D3D11TexDesc.Width};
+        TexDesc.Height         = UInt32{D3D11TexDesc.Height};
+        TexDesc.ArraySize      = UInt32{D3D11TexDesc.ArraySize};
         TexDesc.Format         = DXGI_FormatToTexFormat(D3D11TexDesc.Format);
-        TexDesc.MipLevels      = Uint32{D3D11TexDesc.MipLevels};
-        TexDesc.SampleCount    = Uint32{D3D11TexDesc.SampleDesc.Count};
+        TexDesc.MipLevels      = UInt32{D3D11TexDesc.MipLevels};
+        TexDesc.SampleCount    = UInt32{D3D11TexDesc.SampleDesc.Count};
         TexDesc.Usage          = D3D11UsageToUsage(D3D11TexDesc.Usage);
         TexDesc.BindFlags      = D3D11BindFlagsToBindFlags(D3D11TexDesc.BindFlags);
         TexDesc.CPUAccessFlags = D3D11CPUAccessFlagsToCPUAccessFlags(D3D11TexDesc.CPUAccessFlags);

@@ -41,13 +41,13 @@ struct D3D12DynamicAllocation
 {
     D3D12DynamicAllocation() noexcept {}
     D3D12DynamicAllocation(ID3D12Resource*           pBuff,
-                           Uint64                    _Offset,
-                           Uint64                    _Size,
+                           UInt64                    _Offset,
+                           UInt64                    _Size,
                            void*                     _CPUAddress,
                            D3D12_GPU_VIRTUAL_ADDRESS _GPUAddress
 #ifdef DILIGENT_DEVELOPMENT
                            ,
-                           Uint64 _DvpCtxFrameNumber
+                           UInt64 _DvpCtxFrameNumber
 #endif
                            ) noexcept :
         // clang-format off
@@ -63,12 +63,12 @@ struct D3D12DynamicAllocation
     {}
 
     ID3D12Resource*           pBuffer    = nullptr; // The D3D buffer associated with this memory.
-    Uint64                    Offset     = 0;       // Offset from start of buffer resource
-    Uint64                    Size       = 0;       // Reserved size of this allocation
+    UInt64                    Offset     = 0;       // Offset from start of buffer resource
+    UInt64                    Size       = 0;       // Reserved size of this allocation
     void*                     CPUAddress = nullptr; // The CPU-writeable address
     D3D12_GPU_VIRTUAL_ADDRESS GPUAddress = 0;       // The GPU-visible address
 #ifdef DILIGENT_DEVELOPMENT
-    Uint64 DvpCtxFrameNumber = static_cast<Uint64>(-1);
+    UInt64 DvpCtxFrameNumber = static_cast<UInt64>(-1);
 #endif
 };
 
@@ -76,7 +76,7 @@ struct D3D12DynamicAllocation
 class D3D12DynamicPage
 {
 public:
-    D3D12DynamicPage(ID3D12Device* pd3d12Device, Uint64 Size);
+    D3D12DynamicPage(ID3D12Device* pd3d12Device, UInt64 Size);
 
     // clang-format off
     D3D12DynamicPage            (const D3D12DynamicPage&)  = delete;
@@ -85,14 +85,14 @@ public:
     D3D12DynamicPage& operator= (      D3D12DynamicPage&&) = delete;
     // clang-format on
 
-    void* GetCPUAddress(Uint64 Offset)
+    void* GetCPUAddress(UInt64 Offset)
     {
         VERIFY_EXPR(m_pd3d12Buffer);
         VERIFY(Offset < GetSize(), "Offset (", Offset, ") exceeds buffer size (", GetSize(), ")");
-        return reinterpret_cast<Uint8*>(m_CPUVirtualAddress) + Offset;
+        return reinterpret_cast<UInt8*>(m_CPUVirtualAddress) + Offset;
     }
 
-    D3D12_GPU_VIRTUAL_ADDRESS GetGPUAddress(Uint64 Offset)
+    D3D12_GPU_VIRTUAL_ADDRESS GetGPUAddress(UInt64 Offset)
     {
         VERIFY_EXPR(m_pd3d12Buffer);
         VERIFY(Offset < GetSize(), "Offset (", Offset, ") exceeds buffer size (", GetSize(), ")");
@@ -104,7 +104,7 @@ public:
         return m_pd3d12Buffer;
     }
 
-    Uint64 GetSize() const
+    UInt64 GetSize() const
     {
         VERIFY_EXPR(m_pd3d12Buffer);
         return m_pd3d12Buffer->GetDesc().Width;
@@ -124,8 +124,8 @@ class D3D12DynamicMemoryManager
 public:
     D3D12DynamicMemoryManager(IMemoryAllocator&      Allocator,
                               RenderDeviceD3D12Impl& DeviceD3D12Impl,
-                              Uint32                 NumPagesToReserve,
-                              Uint64                 PageSize);
+                              UInt32                 NumPagesToReserve,
+                              UInt64                 PageSize);
     ~D3D12DynamicMemoryManager();
 
     // clang-format off
@@ -135,11 +135,11 @@ public:
     D3D12DynamicMemoryManager& operator= (      D3D12DynamicMemoryManager&&) = delete;
     // clang-format on
 
-    void ReleasePages(std::vector<D3D12DynamicPage>& Pages, Uint64 QueueMask);
+    void ReleasePages(std::vector<D3D12DynamicPage>& Pages, UInt64 QueueMask);
 
     void Destroy();
 
-    D3D12DynamicPage AllocatePage(Uint64 SizeInBytes);
+    D3D12DynamicPage AllocatePage(UInt64 SizeInBytes);
 
 #ifdef DILIGENT_DEVELOPMENT
     Int32 GetAllocatedPageCounter() const
@@ -152,8 +152,8 @@ private:
     RenderDeviceD3D12Impl& m_DeviceD3D12Impl;
 
     std::mutex m_AvailablePagesMtx;
-    using AvailablePagesMapElemType = std::pair<const Uint64, D3D12DynamicPage>;
-    std::multimap<Uint64, D3D12DynamicPage, std::less<Uint64>, STDAllocatorRawMem<AvailablePagesMapElemType>> m_AvailablePages;
+    using AvailablePagesMapElemType = std::pair<const UInt64, D3D12DynamicPage>;
+    std::multimap<UInt64, D3D12DynamicPage, std::less<UInt64>, STDAllocatorRawMem<AvailablePagesMapElemType>> m_AvailablePages;
 
 #ifdef DILIGENT_DEVELOPMENT
     std::atomic<Int32> m_AllocatedPageCounter{0};
@@ -164,7 +164,7 @@ private:
 class D3D12DynamicHeap
 {
 public:
-    D3D12DynamicHeap(D3D12DynamicMemoryManager& DynamicMemMgr, std::string HeapName, Uint64 PageSize) :
+    D3D12DynamicHeap(D3D12DynamicMemoryManager& DynamicMemMgr, std::string HeapName, UInt64 PageSize) :
         m_GlobalDynamicMemMgr{DynamicMemMgr},
         m_HeapName{std::move(HeapName)},
         m_PageSize{PageSize}
@@ -179,10 +179,10 @@ public:
 
     ~D3D12DynamicHeap();
 
-    D3D12DynamicAllocation Allocate(Uint64 SizeInBytes, Uint64 Alignment, Uint64 DvpCtxFrameNumber);
-    void                   ReleaseAllocatedPages(Uint64 QueueMask);
+    D3D12DynamicAllocation Allocate(UInt64 SizeInBytes, UInt64 Alignment, UInt64 DvpCtxFrameNumber);
+    void                   ReleaseAllocatedPages(UInt64 QueueMask);
 
-    static constexpr Uint64 InvalidOffset = static_cast<Uint64>(-1);
+    static constexpr UInt64 InvalidOffset = static_cast<UInt64>(-1);
 
     size_t GetAllocatedPagesCount() const { return m_AllocatedPages.size(); }
 
@@ -192,17 +192,17 @@ private:
 
     std::vector<D3D12DynamicPage> m_AllocatedPages;
 
-    const Uint64 m_PageSize;
+    const UInt64 m_PageSize;
 
-    Uint64 m_CurrOffset    = InvalidOffset;
-    Uint64 m_AvailableSize = 0;
+    UInt64 m_CurrOffset    = InvalidOffset;
+    UInt64 m_AvailableSize = 0;
 
-    Uint64 m_CurrAllocatedSize = 0;
-    Uint64 m_CurrUsedSize      = 0;
-    Uint64 m_CurrAlignedSize   = 0;
-    Uint64 m_PeakAllocatedSize = 0;
-    Uint64 m_PeakUsedSize      = 0;
-    Uint64 m_PeakAlignedSize   = 0;
+    UInt64 m_CurrAllocatedSize = 0;
+    UInt64 m_CurrUsedSize      = 0;
+    UInt64 m_CurrAlignedSize   = 0;
+    UInt64 m_PeakAllocatedSize = 0;
+    UInt64 m_PeakUsedSize      = 0;
+    UInt64 m_PeakAlignedSize   = 0;
 };
 
 } // namespace Diligent

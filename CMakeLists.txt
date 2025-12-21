@@ -375,7 +375,7 @@ if (PLATFORM_WEB)
     )
 endif()
 
-target_link_libraries(Diligent-BuildSettings INTERFACE Diligent-PublicBuildSettings)
+target_link_libraries(Diligent-BuildSettings INTERFACE Diligent-PublicBuildSettings sparrow_common)
 
 foreach(DBG_CONFIG ${DEBUG_CONFIGURATIONS})
     target_compile_definitions(Diligent-BuildSettings INTERFACE "$<$<CONFIG:${DBG_CONFIG}>:_DEBUG;DEBUG>")

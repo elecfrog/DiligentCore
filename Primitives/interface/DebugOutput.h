@@ -27,10 +27,10 @@
 
 #pragma once
 
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
-
+namespace Diligent
+{
 /// Describes debug message severity
 enum DEBUG_MESSAGE_SEVERITY
 {
@@ -69,4 +69,4 @@ extern DebugMessageCallbackType DebugMessageCallback;
 ///       wants to use the callback.
 void SetDebugMessageCallback(DebugMessageCallbackType DbgMessageCallback);
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+} // namespace Diligent

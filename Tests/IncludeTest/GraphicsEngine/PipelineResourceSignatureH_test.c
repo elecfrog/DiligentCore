@@ -37,7 +37,7 @@ void TestPipelineResourceSignature(struct IPipelineResourceSignature* pSign)
     struct IShaderResourceVariable* pVar2 = IPipelineResourceSignature_GetStaticVariableByIndex(pSign, SHADER_TYPE_UNKNOWN, 0);
     (void)pVar2;
 
-    Uint32 Count = IPipelineResourceSignature_GetStaticVariableCount(pSign, SHADER_TYPE_UNKNOWN);
+    UInt32 Count = IPipelineResourceSignature_GetStaticVariableCount(pSign, SHADER_TYPE_UNKNOWN);
     (void)Count;
 
     IPipelineResourceSignature_BindStaticResources(pSign, SHADER_TYPE_VERTEX | SHADER_TYPE_PIXEL, (struct IResourceMapping*)NULL, BIND_SHADER_RESOURCES_UPDATE_STATIC);

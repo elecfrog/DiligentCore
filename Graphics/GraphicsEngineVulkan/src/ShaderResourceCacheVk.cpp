@@ -41,16 +41,16 @@
 namespace Diligent
 {
 
-size_t ShaderResourceCacheVk::GetRequiredMemorySize(Uint32 NumSets, const Uint32* SetSizes)
+size_t ShaderResourceCacheVk::GetRequiredMemorySize(UInt32 NumSets, const UInt32* SetSizes)
 {
-    Uint32 TotalResources = 0;
-    for (Uint32 t = 0; t < NumSets; ++t)
+    UInt32 TotalResources = 0;
+    for (UInt32 t = 0; t < NumSets; ++t)
         TotalResources += SetSizes[t];
     size_t MemorySize = NumSets * sizeof(DescriptorSet) + TotalResources * sizeof(Resource);
     return MemorySize;
 }
 
-void ShaderResourceCacheVk::InitializeSets(IMemoryAllocator& MemAllocator, Uint32 NumSets, const Uint32* SetSizes)
+void ShaderResourceCacheVk::InitializeSets(IMemoryAllocator& MemAllocator, UInt32 NumSets, const UInt32* SetSizes)
 {
     VERIFY(!m_pMemory, "Memory has already been allocated");
 
@@ -64,11 +64,11 @@ void ShaderResourceCacheVk::InitializeSets(IMemoryAllocator& MemAllocator, Uint3
     //
     //  Ns = m_NumSets
 
-    m_NumSets = static_cast<Uint16>(NumSets);
+    m_NumSets = static_cast<UInt16>(NumSets);
     VERIFY(m_NumSets == NumSets, "NumSets (", NumSets, ") exceed maximum representable value");
 
     m_TotalResources = 0;
-    for (Uint32 t = 0; t < NumSets; ++t)
+    for (UInt32 t = 0; t < NumSets; ++t)
     {
         VERIFY_EXPR(SetSizes[t] > 0);
         m_TotalResources += SetSizes[t];
@@ -88,7 +88,7 @@ void ShaderResourceCacheVk::InitializeSets(IMemoryAllocator& MemAllocator, Uint3
 
         DescriptorSet* pSets       = reinterpret_cast<DescriptorSet*>(m_pMemory.get());
         Resource*      pCurrResPtr = reinterpret_cast<Resource*>(pSets + m_NumSets);
-        for (Uint32 t = 0; t < NumSets; ++t)
+        for (UInt32 t = 0; t < NumSets; ++t)
         {
             new (&GetDescriptorSet(t)) DescriptorSet{SetSizes[t], SetSizes[t] > 0 ? pCurrResPtr : nullptr};
             pCurrResPtr += SetSizes[t];
@@ -100,10 +100,10 @@ void ShaderResourceCacheVk::InitializeSets(IMemoryAllocator& MemAllocator, Uint3
     }
 }
 
-void ShaderResourceCacheVk::InitializeResources(Uint32 Set, Uint32 Offset, Uint32 ArraySize, DescriptorType Type, bool HasImmutableSampler)
+void ShaderResourceCacheVk::InitializeResources(UInt32 Set, UInt32 Offset, UInt32 ArraySize, DescriptorType Type, bool HasImmutableSampler)
 {
     DescriptorSet& DescrSet = GetDescriptorSet(Set);
-    for (Uint32 res = 0; res < ArraySize; ++res)
+    for (UInt32 res = 0; res < ArraySize; ++res)
     {
         new (&DescrSet.GetResource(Offset + res)) Resource{Type, HasImmutableSampler};
 #ifdef DILIGENT_DEBUG
@@ -177,8 +177,8 @@ void ShaderResourceCacheVk::DbgVerifyResourceInitialization() const
 void ShaderResourceCacheVk::DbgVerifyDynamicBuffersCounter() const
 {
     const Resource* pResources        = GetFirstResourcePtr();
-    Uint32          NumDynamicBuffers = 0;
-    for (Uint32 res = 0; res < m_TotalResources; ++res)
+    UInt32          NumDynamicBuffers = 0;
+    for (UInt32 res = 0; res < m_TotalResources; ++res)
     {
         if (IsDynamicBuffer(pResources[res]))
             ++NumDynamicBuffers;
@@ -192,14 +192,14 @@ ShaderResourceCacheVk::~ShaderResourceCacheVk()
     if (m_pMemory)
     {
         Resource* pResources = GetFirstResourcePtr();
-        for (Uint32 res = 0; res < m_TotalResources; ++res)
+        for (UInt32 res = 0; res < m_TotalResources; ++res)
             pResources[res].~Resource();
-        for (Uint32 t = 0; t < m_NumSets; ++t)
+        for (UInt32 t = 0; t < m_NumSets; ++t)
             GetDescriptorSet(t).~DescriptorSet();
     }
 }
 
-void ShaderResourceCacheVk::Resource::SetUniformBuffer(RefCntAutoPtr<IDeviceObject>&& _pBuffer, Uint64 _BaseOffset, Uint64 _RangeSize)
+void ShaderResourceCacheVk::Resource::SetUniformBuffer(RefCntAutoPtr<IDeviceObject>&& _pBuffer, UInt64 _BaseOffset, UInt64 _RangeSize)
 {
     VERIFY_EXPR(Type == DescriptorType::UniformBuffer ||
                 Type == DescriptorType::UniformBufferDynamic);
@@ -290,8 +290,8 @@ void ShaderResourceCacheVk::Resource::SetStorageBuffer(RefCntAutoPtr<IDeviceObje
 
 const ShaderResourceCacheVk::Resource& ShaderResourceCacheVk::SetResource(
     const VulkanUtilities::LogicalDevice* pLogicalDevice,
-    Uint32                                DescrSetIndex,
-    Uint32                                CacheOffset,
+    UInt32                                DescrSetIndex,
+    UInt32                                CacheOffset,
     SetResourceInfo&&                     SrcRes)
 {
     DescriptorSet& DescrSet = GetDescriptorSet(DescrSetIndex);
@@ -303,7 +303,7 @@ const ShaderResourceCacheVk::Resource& ShaderResourceCacheVk::SetResource(
         --m_NumDynamicBuffers;
     }
 
-    static_assert(static_cast<Uint32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
+    static_assert(static_cast<UInt32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
     switch (DstRes.Type)
     {
         case DescriptorType::UniformBuffer:
@@ -356,7 +356,7 @@ const ShaderResourceCacheVk::Resource& ShaderResourceCacheVk::SetResource(
             VkWriteDescriptorSetAccelerationStructureKHR vkDescrAccelStructInfo;
         };
 
-        static_assert(static_cast<Uint32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
+        static_assert(static_cast<UInt32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
         switch (DstRes.Type)
         {
             case DescriptorType::Sampler:
@@ -415,9 +415,9 @@ const ShaderResourceCacheVk::Resource& ShaderResourceCacheVk::SetResource(
     return DstRes;
 }
 
-void ShaderResourceCacheVk::SetDynamicBufferOffset(Uint32 DescrSetIndex,
-                                                   Uint32 CacheOffset,
-                                                   Uint32 DynamicBufferOffset)
+void ShaderResourceCacheVk::SetDynamicBufferOffset(UInt32 DescrSetIndex,
+                                                   UInt32 CacheOffset,
+                                                   UInt32 DynamicBufferOffset)
 {
     DescriptorSet& DescrSet = GetDescriptorSet(DescrSetIndex);
     Resource&      DstRes   = DescrSet.GetResource(CacheOffset);
@@ -439,7 +439,7 @@ namespace
 
 RESOURCE_STATE DescriptorTypeToResourceState(DescriptorType Type)
 {
-    static_assert(static_cast<Uint32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
+    static_assert(static_cast<UInt32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
     switch (Type)
     {
             // clang-format off
@@ -652,11 +652,11 @@ template <bool VerifyOnly>
 void ShaderResourceCacheVk::TransitionResources(DeviceContextVkImpl* pCtxVkImpl)
 {
     Resource* pResources = GetFirstResourcePtr();
-    for (Uint32 res = 0; res < m_TotalResources; ++res)
+    for (UInt32 res = 0; res < m_TotalResources; ++res)
     {
         Resource& Res = pResources[res];
 
-        static_assert(static_cast<Uint32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
+        static_assert(static_cast<UInt32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
         switch (Res.Type)
         {
             case DescriptorType::UniformBuffer:
@@ -872,9 +872,9 @@ VkWriteDescriptorSetAccelerationStructureKHR ShaderResourceCacheVk::Resource::Ge
 
 
 
-Uint32 ShaderResourceCacheVk::GetDynamicBufferOffsets(DeviceContextVkImpl*   pCtx,
+UInt32 ShaderResourceCacheVk::GetDynamicBufferOffsets(DeviceContextVkImpl*   pCtx,
                                                       std::vector<uint32_t>& Offsets,
-                                                      Uint32                 StartInd) const
+                                                      UInt32                 StartInd) const
 {
     // If any of the sets being bound include dynamic uniform or storage buffers, then
     // pDynamicOffsets includes one element for each array element in each dynamic descriptor
@@ -887,13 +887,13 @@ Uint32 ShaderResourceCacheVk::GetDynamicBufferOffsets(DeviceContextVkImpl*   pCt
     // for every shader stage come first, followed by all storage buffers with dynamic offsets
     // (DescriptorType::StorageBufferDynamic and DescriptorType::StorageBufferDynamic_ReadOnly) for every shader stage,
     // followed by all other resources.
-    Uint32 OffsetInd = StartInd;
-    for (Uint32 set = 0; set < m_NumSets; ++set)
+    UInt32 OffsetInd = StartInd;
+    for (UInt32 set = 0; set < m_NumSets; ++set)
     {
         const DescriptorSet& DescrSet = GetDescriptorSet(set);
-        const Uint32         SetSize  = DescrSet.GetSize();
+        const UInt32         SetSize  = DescrSet.GetSize();
 
-        Uint32 res = 0;
+        UInt32 res = 0;
         while (res < SetSize)
         {
             const Resource& Res = DescrSet.GetResource(res);
@@ -907,7 +907,7 @@ Uint32 ShaderResourceCacheVk::GetDynamicBufferOffsets(DeviceContextVkImpl*   pCt
                 // The effective offset used for dynamic uniform and storage buffer bindings is the sum of the relative
                 // offset taken from pDynamicOffsets, and the base address of the buffer plus base offset in the descriptor set.
                 // The range of the dynamic uniform and storage buffer bindings is the buffer range as specified in the descriptor set.
-                Offsets[OffsetInd++] = StaticCast<Uint32>(Res.BufferDynamicOffset + Offset);
+                Offsets[OffsetInd++] = StaticCast<UInt32>(Res.BufferDynamicOffset + Offset);
                 ++res;
             }
             else
@@ -929,7 +929,7 @@ Uint32 ShaderResourceCacheVk::GetDynamicBufferOffsets(DeviceContextVkImpl*   pCt
                 // The effective offset used for dynamic uniform and storage buffer bindings is the sum of the relative
                 // offset taken from pDynamicOffsets, and the base address of the buffer plus base offset in the descriptor set.
                 // The range of the dynamic uniform and storage buffer bindings is the buffer range as specified in the descriptor set.
-                Offsets[OffsetInd++] = StaticCast<Uint32>(Res.BufferDynamicOffset + Offset);
+                Offsets[OffsetInd++] = StaticCast<UInt32>(Res.BufferDynamicOffset + Offset);
                 ++res;
             }
             else

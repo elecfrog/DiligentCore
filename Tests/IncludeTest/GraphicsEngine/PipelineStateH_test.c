@@ -34,11 +34,11 @@ void TestPipelineState_CInterface(IPipelineState* pPSO)
     (void)pGDesc;
     (void)pRTDesc;
 
-    IPipelineState_BindStaticResources(pPSO, (Uint32)0, (IResourceMapping*)NULL, (Uint32)1);
+    IPipelineState_BindStaticResources(pPSO, (UInt32)0, (IResourceMapping*)NULL, (UInt32)1);
 
-    Uint32                   VarCount = IPipelineState_GetStaticVariableCount(pPSO, SHADER_TYPE_UNKNOWN);
+    UInt32                   VarCount = IPipelineState_GetStaticVariableCount(pPSO, SHADER_TYPE_UNKNOWN);
     IShaderResourceVariable* pSRV1    = IPipelineState_GetStaticVariableByName(pPSO, SHADER_TYPE_UNKNOWN, "Resource name");
-    IShaderResourceVariable* pSRV2    = IPipelineState_GetStaticVariableByIndex(pPSO, SHADER_TYPE_UNKNOWN, (Uint32)1);
+    IShaderResourceVariable* pSRV2    = IPipelineState_GetStaticVariableByIndex(pPSO, SHADER_TYPE_UNKNOWN, (UInt32)1);
     (void)VarCount;
     (void)pSRV1;
     (void)pSRV2;

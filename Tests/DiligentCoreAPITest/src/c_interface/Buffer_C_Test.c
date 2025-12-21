@@ -41,7 +41,7 @@ int TestBufferCInterface(struct IBuffer* pBuffer)
     BufferDesc     BuffDesc;
     IBufferView *  pView0 = NULL, *pView1 = NULL;
     BufferViewDesc ViewDesc;
-    Uint64         NativeHandle;
+    UInt64         NativeHandle;
     RESOURCE_STATE State = RESOURCE_STATE_CONSTANT_BUFFER;
 
     int num_errors =

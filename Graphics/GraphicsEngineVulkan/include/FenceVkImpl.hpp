@@ -62,39 +62,39 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_FenceVk, TFenceBase)
 
     /// Implementation of IFence::GetCompletedValue() in Vulkan backend.
-    virtual Uint64 DILIGENT_CALL_TYPE GetCompletedValue() override final;
+    virtual UInt64 DILIGENT_CALL_TYPE GetCompletedValue() override final;
 
     /// Implementation of IFence::Signal() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE Signal(Uint64 Value) override final;
+    virtual void DILIGENT_CALL_TYPE Signal(UInt64 Value) override final;
 
     /// Implementation of IFence::Wait() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE Wait(Uint64 Value) override final;
+    virtual void DILIGENT_CALL_TYPE Wait(UInt64 Value) override final;
 
     /// Implementation of IFenceVk::GetVkSemaphore().
     virtual VkSemaphore DILIGENT_CALL_TYPE GetVkSemaphore() override final { return m_TimelineSemaphore; }
 
-    VulkanUtilities::RecycledSemaphore ExtractSignalSemaphore(SoftwareQueueIndex CommandQueueId, Uint64 Value);
+    VulkanUtilities::RecycledSemaphore ExtractSignalSemaphore(SoftwareQueueIndex CommandQueueId, UInt64 Value);
 
-    void Reset(Uint64 Value);
+    void Reset(UInt64 Value);
 
-    void AddPendingSyncPoint(SoftwareQueueIndex CommandQueueId, Uint64 Value, SyncPointVkPtr SyncPoint);
+    void AddPendingSyncPoint(SoftwareQueueIndex CommandQueueId, UInt64 Value, SyncPointVkPtr SyncPoint);
 
     bool IsTimelineSemaphore() const { return m_TimelineSemaphore; }
 
     void ImmediatelyReleaseResources();
 
 private:
-    Uint64 InternalGetCompletedValue();
+    UInt64 InternalGetCompletedValue();
 
     VulkanUtilities::SemaphoreWrapper m_TimelineSemaphore;
 
     struct SyncPointData
     {
-        const Uint64   Value;
+        const UInt64   Value;
         SyncPointVkPtr SyncPoint;
     };
 
-    static constexpr Uint32   RequiredArraySize = 8;
+    static constexpr UInt32   RequiredArraySize = 8;
     std::mutex                m_SyncPointsGuard; // Protects access to the m_SyncPoints
     std::deque<SyncPointData> m_SyncPoints;
 

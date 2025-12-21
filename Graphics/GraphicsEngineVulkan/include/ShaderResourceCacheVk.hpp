@@ -74,7 +74,7 @@ class ShaderResourceCacheVk : public ShaderResourceCacheBase
 public:
     explicit ShaderResourceCacheVk(ResourceCacheContentType ContentType) noexcept :
         m_TotalResources{0},
-        m_ContentType{static_cast<Uint32>(ContentType)}
+        m_ContentType{static_cast<UInt32>(ContentType)}
     {
         VERIFY_EXPR(GetContentType() == ContentType);
     }
@@ -88,10 +88,10 @@ public:
 
     ~ShaderResourceCacheVk();
 
-    static size_t GetRequiredMemorySize(Uint32 NumSets, const Uint32* SetSizes);
+    static size_t GetRequiredMemorySize(UInt32 NumSets, const UInt32* SetSizes);
 
-    void InitializeSets(IMemoryAllocator& MemAllocator, Uint32 NumSets, const Uint32* SetSizes);
-    void InitializeResources(Uint32 Set, Uint32 Offset, Uint32 ArraySize, DescriptorType Type, bool HasImmutableSampler);
+    void InitializeSets(IMemoryAllocator& MemAllocator, UInt32 NumSets, const UInt32* SetSizes);
+    void InitializeResources(UInt32 Set, UInt32 Offset, UInt32 ArraySize, DescriptorType Type, bool HasImmutableSampler);
 
     // sizeof(Resource) == 32 (x64, msvc, Release)
     struct Resource
@@ -113,12 +113,12 @@ public:
 /* 0 */ const DescriptorType         Type;
 /* 1 */ const bool                   HasImmutableSampler;
 /*2-3*/ // Unused
-/* 4 */ Uint32                       BufferDynamicOffset = 0;
+/* 4 */ UInt32                       BufferDynamicOffset = 0;
 /* 8 */ RefCntAutoPtr<IDeviceObject> pObject;
 
         // For uniform and storage buffers only
-/*16 */ Uint64                       BufferBaseOffset = 0;
-/*24 */ Uint64                       BufferRangeSize  = 0;
+/*16 */ UInt64                       BufferBaseOffset = 0;
+/*24 */ UInt64                       BufferRangeSize  = 0;
 
         VkDescriptorBufferInfo GetUniformBufferDescriptorWriteInfo()                     const;
         VkDescriptorBufferInfo GetStorageBufferDescriptorWriteInfo()                     const;
@@ -132,7 +132,7 @@ public:
         template <DescriptorType DescrType>
         auto GetDescriptorWriteInfo() const;
 
-        void SetUniformBuffer(RefCntAutoPtr<IDeviceObject>&& _pBuffer, Uint64 _RangeOffset, Uint64 _RangeSize);
+        void SetUniformBuffer(RefCntAutoPtr<IDeviceObject>&& _pBuffer, UInt64 _RangeOffset, UInt64 _RangeSize);
         void SetStorageBuffer(RefCntAutoPtr<IDeviceObject>&& _pBufferView);
 
         bool IsNull() const { return pObject == nullptr; }
@@ -145,7 +145,7 @@ public:
     {
     public:
         // clang-format off
-        DescriptorSet(Uint32 NumResources, Resource *pResources) :
+        DescriptorSet(UInt32 NumResources, Resource *pResources) :
             m_NumResources  {NumResources},
             m_pResources    {pResources  }
         {}
@@ -156,13 +156,13 @@ public:
         DescriptorSet& operator = (DescriptorSet&&)      = delete;
         // clang-format on
 
-        const Resource& GetResource(Uint32 CacheOffset) const
+        const Resource& GetResource(UInt32 CacheOffset) const
         {
             VERIFY(CacheOffset < m_NumResources, "Offset ", CacheOffset, " is out of range");
             return m_pResources[CacheOffset];
         }
 
-        Uint32 GetSize() const { return m_NumResources; }
+        UInt32 GetSize() const { return m_NumResources; }
 
         VkDescriptorSet GetVkDescriptorSet() const
         {
@@ -171,7 +171,7 @@ public:
 
     private:
         // clang-format off
-/* 0 */ const Uint32            m_NumResources = 0;
+/* 0 */ const UInt32            m_NumResources = 0;
 /* 8 */ Resource* const         m_pResources   = nullptr;
 /*16 */ DescriptorSetAllocation m_DescriptorSetAllocation;
 /*48 */ // End of structure
@@ -179,20 +179,20 @@ public:
 
     private:
         friend ShaderResourceCacheVk;
-        Resource& GetResource(Uint32 CacheOffset)
+        Resource& GetResource(UInt32 CacheOffset)
         {
             VERIFY(CacheOffset < m_NumResources, "Offset ", CacheOffset, " is out of range");
             return m_pResources[CacheOffset];
         }
     };
 
-    const DescriptorSet& GetDescriptorSet(Uint32 Index) const
+    const DescriptorSet& GetDescriptorSet(UInt32 Index) const
     {
         VERIFY_EXPR(Index < m_NumSets);
         return reinterpret_cast<const DescriptorSet*>(m_pMemory.get())[Index];
     }
 
-    void AssignDescriptorSetAllocation(Uint32 SetIndex, DescriptorSetAllocation&& Allocation)
+    void AssignDescriptorSetAllocation(UInt32 SetIndex, DescriptorSetAllocation&& Allocation)
     {
         DescriptorSet& DescrSet = GetDescriptorSet(SetIndex);
         VERIFY(DescrSet.GetSize() > 0, "Descriptor set is empty");
@@ -202,23 +202,23 @@ public:
 
     struct SetResourceInfo
     {
-        const Uint32 BindingIndex = 0;
-        const Uint32 ArrayIndex   = 0;
+        const UInt32 BindingIndex = 0;
+        const UInt32 ArrayIndex   = 0;
 
         RefCntAutoPtr<IDeviceObject> pObject;
 
-        const Uint64 BufferBaseOffset = 0;
-        const Uint64 BufferRangeSize  = 0;
+        const UInt64 BufferBaseOffset = 0;
+        const UInt64 BufferRangeSize  = 0;
 
         SetResourceInfo() noexcept
         {
         }
 
-        SetResourceInfo(Uint32                         _BindingIndex,
-                        Uint32                         _ArrayIndex,
+        SetResourceInfo(UInt32                         _BindingIndex,
+                        UInt32                         _ArrayIndex,
                         RefCntAutoPtr<IDeviceObject>&& _pObject,
-                        Uint64                         _BufferBaseOffset = 0,
-                        Uint64                         _BufferRangeSize  = 0) noexcept :
+                        UInt64                         _BufferBaseOffset = 0,
+                        UInt64                         _BufferRangeSize  = 0) noexcept :
             // clang-format off
             BindingIndex    {_BindingIndex      },
             ArrayIndex      {_ArrayIndex        },
@@ -231,22 +231,22 @@ public:
     };
     // Sets the resource at the given descriptor set index and offset
     const Resource& SetResource(const VulkanUtilities::LogicalDevice* pLogicalDevice,
-                                Uint32                                DescrSetIndex,
-                                Uint32                                CacheOffset,
+                                UInt32                                DescrSetIndex,
+                                UInt32                                CacheOffset,
                                 SetResourceInfo&&                     SrcRes);
 
-    const Resource& ResetResource(Uint32 SetIndex,
-                                  Uint32 Offset)
+    const Resource& ResetResource(UInt32 SetIndex,
+                                  UInt32 Offset)
     {
         return SetResource(nullptr, SetIndex, Offset, {});
     }
 
-    void SetDynamicBufferOffset(Uint32 DescrSetIndex,
-                                Uint32 CacheOffset,
-                                Uint32 DynamicBufferOffset);
+    void SetDynamicBufferOffset(UInt32 DescrSetIndex,
+                                UInt32 CacheOffset,
+                                UInt32 DynamicBufferOffset);
 
 
-    Uint32 GetNumDescriptorSets() const { return m_NumSets; }
+    UInt32 GetNumDescriptorSets() const { return m_NumSets; }
     bool   HasDynamicResources() const { return m_NumDynamicBuffers > 0; }
 
     ResourceCacheContentType GetContentType() const { return static_cast<ResourceCacheContentType>(m_ContentType); }
@@ -260,9 +260,9 @@ public:
     template <bool VerifyOnly>
     void TransitionResources(DeviceContextVkImpl* pCtxVkImpl);
 
-    Uint32 GetDynamicBufferOffsets(DeviceContextVkImpl*   pCtx,
+    UInt32 GetDynamicBufferOffsets(DeviceContextVkImpl*   pCtx,
                                    std::vector<uint32_t>& Offsets,
-                                   Uint32                 StartInd) const;
+                                   UInt32                 StartInd) const;
 
 private:
     Resource* GetFirstResourcePtr()
@@ -274,7 +274,7 @@ private:
         return reinterpret_cast<const Resource*>(reinterpret_cast<const DescriptorSet*>(m_pMemory.get()) + m_NumSets);
     }
 
-    DescriptorSet& GetDescriptorSet(Uint32 Index)
+    DescriptorSet& GetDescriptorSet(UInt32 Index)
     {
         VERIFY_EXPR(Index < m_NumSets);
         return reinterpret_cast<DescriptorSet*>(m_pMemory.get())[Index];
@@ -282,15 +282,15 @@ private:
 
     std::unique_ptr<void, STDDeleter<void, IMemoryAllocator>> m_pMemory;
 
-    Uint16 m_NumSets = 0;
+    UInt16 m_NumSets = 0;
 
     // Total actual number of dynamic buffers (that were created with USAGE_DYNAMIC) bound in the resource cache
     // regardless of the variable type. Note this variable is not equal to dynamic offsets count, which is constant.
-    Uint16 m_NumDynamicBuffers = 0;
-    Uint32 m_TotalResources : 31;
+    UInt16 m_NumDynamicBuffers = 0;
+    UInt32 m_TotalResources : 31;
 
     // Indicates what types of resources are stored in the cache
-    const Uint32 m_ContentType : 1;
+    const UInt32 m_ContentType : 1;
 
 #ifdef DILIGENT_DEBUG
     // Debug array that stores flags indicating if resources in the cache have been initialized

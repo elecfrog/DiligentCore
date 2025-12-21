@@ -73,18 +73,18 @@ void FenceWebGPUImpl::ProcessSyncPoints()
     }
 }
 
-Uint64 FenceWebGPUImpl::GetCompletedValue()
+UInt64 FenceWebGPUImpl::GetCompletedValue()
 {
     ProcessSyncPoints();
     return m_LastCompletedFenceValue.load();
 }
 
-void FenceWebGPUImpl::Signal(Uint64 Value)
+void FenceWebGPUImpl::Signal(UInt64 Value)
 {
     DEV_ERROR("Signal() is not supported in WebGPU backend");
 }
 
-void FenceWebGPUImpl::Wait(Uint64 Value)
+void FenceWebGPUImpl::Wait(UInt64 Value)
 {
 #if PLATFORM_WEB
     LOG_ERROR_MESSAGE("IFence::Wait() is not supported on the Web. Use non-blocking synchronization methods.");
@@ -94,7 +94,7 @@ void FenceWebGPUImpl::Wait(Uint64 Value)
 #endif
 }
 
-void FenceWebGPUImpl::AppendSyncPoints(const std::vector<RefCntAutoPtr<SyncPointWebGPUImpl>>& SyncPoints, Uint64 Value)
+void FenceWebGPUImpl::AppendSyncPoints(const std::vector<RefCntAutoPtr<SyncPointWebGPUImpl>>& SyncPoints, UInt64 Value)
 {
     DEV_CHECK_ERR(m_SyncGroups.empty() || m_SyncGroups.back().first < Value, "Sync points must be appended in strictly increasing order");
     m_SyncGroups.emplace_back(std::make_pair(Value, SyncPoints));

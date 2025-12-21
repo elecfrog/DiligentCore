@@ -176,7 +176,7 @@ void RenderDeviceD3D11Impl::TestTextureFormat(TEXTURE_FORMAT TexFormat)
         TexFormatInfo.Dimensions |= RESOURCE_DIMENSION_SUPPORT_TEX_CUBE | RESOURCE_DIMENSION_SUPPORT_TEX_CUBE_ARRAY;
 
     TexFormatInfo.SampleCounts = SAMPLE_COUNT_NONE;
-    for (Uint32 SampleCount = 1; SampleCount <= D3D11_MAX_MULTISAMPLE_SAMPLE_COUNT; SampleCount *= 2)
+    for (UInt32 SampleCount = 1; SampleCount <= D3D11_MAX_MULTISAMPLE_SAMPLE_COUNT; SampleCount *= 2)
     {
         UINT QualityLevels = 0;
 
@@ -420,7 +420,7 @@ void RenderDeviceD3D11Impl::IdleGPU()
 
 SparseTextureFormatInfo RenderDeviceD3D11Impl::GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                           RESOURCE_DIMENSION Dimension,
-                                                                          Uint32             SampleCount) const
+                                                                          UInt32             SampleCount) const
 {
     D3D11_FEATURE_DATA_FORMAT_SUPPORT2 FormatSupport2{
         TexFormatToDXGI_Format(TexFormat), // .InFormat

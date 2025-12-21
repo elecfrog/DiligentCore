@@ -42,7 +42,7 @@ namespace TestingConstants
             float4{0.75f, 0.25f, 0.0f, 0.0f},
             float4{0.50f, 0.75f, 0.0f, 0.0f}
         };
-        static const Uint32 Indices[] =
+        static const UInt32 Indices[] =
         {
             0, 1, 2
         };
@@ -148,8 +148,8 @@ namespace TestingConstants
             ShaderRecord{{0.4f, 0.4f, 1.0f, 1.0f}, 1},
             ShaderRecord{{1.0f, 0.4f, 0.4f, 1.0f}, 2},
         };
-        static constexpr Uint32 ShaderRecordSize = sizeof(Weights[0]);
-        static constexpr Uint32 InstanceCount    = 2;
+        static constexpr UInt32 ShaderRecordSize = sizeof(Weights[0]);
+        static constexpr UInt32 InstanceCount    = 2;
 
         static_assert(_countof(Vertices) == 16, "Update array size in shaders");
         static_assert(_countof(PrimitiveOffsets) == 3, "Update array size in shaders");

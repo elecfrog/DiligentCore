@@ -278,7 +278,7 @@ void RenderDeviceWebGPUImpl::CreateDeferredContext(IDeviceContext** ppContext)
 
 SparseTextureFormatInfo RenderDeviceWebGPUImpl::GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                            RESOURCE_DIMENSION Dimension,
-                                                                           Uint32             SampleCount) const
+                                                                           UInt32             SampleCount) const
 {
     UNSUPPORTED("GetSparseTextureFormatInfo is not supported in WebGPU");
     return {};
@@ -378,9 +378,9 @@ void RenderDeviceWebGPUImpl::FindSupportedTextureFormats()
 {
     const TextureProperties& TexCaps = GetAdapterInfo().Texture;
 
-    constexpr Uint32 FMT_FLAG_NONE   = 0x00;
-    constexpr Uint32 FMT_FLAG_MSAA   = 0x01;
-    constexpr Uint32 FMT_FLAG_FILTER = 0x02;
+    constexpr UInt32 FMT_FLAG_NONE   = 0x00;
+    constexpr UInt32 FMT_FLAG_MSAA   = 0x01;
+    constexpr UInt32 FMT_FLAG_FILTER = 0x02;
 
     constexpr BIND_FLAGS BIND_SRU = BIND_SHADER_RESOURCE | BIND_RENDER_TARGET | BIND_UNORDERED_ACCESS;
     constexpr BIND_FLAGS BIND_SR  = BIND_SHADER_RESOURCE | BIND_RENDER_TARGET;
@@ -390,7 +390,7 @@ void RenderDeviceWebGPUImpl::FindSupportedTextureFormats()
 
     SAMPLE_COUNT SupportedSampleCounts = SAMPLE_COUNT_1 | SAMPLE_COUNT_4; // We can't query supported sample counts in WebGPU
 
-    auto SetTexFormatInfo = [&](std::initializer_list<TEXTURE_FORMAT> Formats, BIND_FLAGS BindFlags, Uint32 FmtFlags) {
+    auto SetTexFormatInfo = [&](std::initializer_list<TEXTURE_FORMAT> Formats, BIND_FLAGS BindFlags, UInt32 FmtFlags) {
         for (TEXTURE_FORMAT Fmt : Formats)
         {
             TextureFormatInfoExt& FmtInfo = m_TextureFormatsInfo[Fmt];

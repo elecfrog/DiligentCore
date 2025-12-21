@@ -56,10 +56,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_SwapChainVk, TSwapChainBase)
 
     /// Implementation of ISwapChain::Present() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE Present(Uint32 SyncInterval) override final;
+    virtual void DILIGENT_CALL_TYPE Present(UInt32 SyncInterval) override final;
 
     /// Implementation of ISwapChain::Resize() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
+    virtual void DILIGENT_CALL_TYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
 
     /// Implementation of ISwapChain::SetFullscreenMode() in Vulkan backend.
     virtual void DILIGENT_CALL_TYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final;
@@ -96,7 +96,7 @@ private:
 
     std::shared_ptr<const VulkanUtilities::Instance> m_Instance;
 
-    Uint32 m_DesiredBufferCount = 0;
+    UInt32 m_DesiredBufferCount = 0;
 
     VkSurfaceKHR   m_VkSurface     = VK_NULL_HANDLE;
     VkSwapchainKHR m_VkSwapChain   = VK_NULL_HANDLE;
@@ -122,12 +122,12 @@ private:
     RefCntAutoPtr<ITextureViewVk> m_pDepthBufferDSV;
     RefCntAutoPtr<IFence>         m_FrameCompleteFence;
 
-    Uint32   m_SemaphoreIndex  = 0;
+    UInt32   m_SemaphoreIndex  = 0;
     uint32_t m_BackBufferIndex = 0;
     bool     m_IsMinimized     = false;
     bool     m_VSyncEnabled    = true;
     bool     m_ImageAcquired   = false;
-    Uint32   m_FrameIndex      = 1;
+    UInt32   m_FrameIndex      = 1;
 };
 
 } // namespace Diligent

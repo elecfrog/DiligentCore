@@ -35,7 +35,7 @@
 namespace Diligent
 {
 
-enum class BindGroupEntryType : Uint8
+enum class BindGroupEntryType : UInt8
 {
     UniformBuffer,
     UniformBufferDynamic,
@@ -55,50 +55,50 @@ enum class BindGroupEntryType : Uint8
 struct PipelineResourceAttribsWebGPU
 {
 private:
-    static constexpr Uint32 _BindingIndexBits    = 16;
-    static constexpr Uint32 _SamplerIndBits      = 16;
-    static constexpr Uint32 _ArraySizeBits       = 25;
-    static constexpr Uint32 _EntryTypeBits       = 5;
-    static constexpr Uint32 _BindGroupBits       = 1;
-    static constexpr Uint32 _SamplerAssignedBits = 1;
+    static constexpr UInt32 _BindingIndexBits    = 16;
+    static constexpr UInt32 _SamplerIndBits      = 16;
+    static constexpr UInt32 _ArraySizeBits       = 25;
+    static constexpr UInt32 _EntryTypeBits       = 5;
+    static constexpr UInt32 _BindGroupBits       = 1;
+    static constexpr UInt32 _SamplerAssignedBits = 1;
 
     static_assert((_BindingIndexBits + _ArraySizeBits + _SamplerIndBits + _EntryTypeBits + _BindGroupBits + _SamplerAssignedBits) % 32 == 0, "Bits are not optimally packed");
 
     // clang-format off
-    static_assert((1u << _EntryTypeBits)    >  static_cast<Uint32>(BindGroupEntryType::Count), "Not enough bits to store EntryType values");
+    static_assert((1u << _EntryTypeBits)    >  static_cast<UInt32>(BindGroupEntryType::Count), "Not enough bits to store EntryType values");
     static_assert((1u << _BindingIndexBits) >= MAX_RESOURCES_IN_SIGNATURE,                     "Not enough bits to store resource binding index");
     static_assert((1u << _SamplerIndBits)   >= MAX_RESOURCES_IN_SIGNATURE,                     "Not enough bits to store sampler resource index");
     // clang-format on
 
 public:
-    static constexpr Uint32 MaxBindGroups     = (1u << _BindGroupBits);
-    static constexpr Uint32 InvalidSamplerInd = (1u << _SamplerIndBits) - 1;
+    static constexpr UInt32 MaxBindGroups     = (1u << _BindGroupBits);
+    static constexpr UInt32 InvalidSamplerInd = (1u << _SamplerIndBits) - 1;
 
     // clang-format off
-    const Uint32  BindingIndex         : _BindingIndexBits;    // Binding in the descriptor set
-    const Uint32  SamplerInd           : _SamplerIndBits;      // Index of the assigned sampler in m_Desc.Resources and m_pPipelineResourceAttribsVk
-    const Uint32  ArraySize            : _ArraySizeBits;       // Array size
-    const Uint32  EntryType            : _EntryTypeBits;       // Bind group entry type (BindGroupEntryType)
-    const Uint32  BindGroup            : _BindGroupBits;       // Bind group (0 or 1)
-    const Uint32  ImtblSamplerAssigned : _SamplerAssignedBits; // Immutable sampler flag
+    const UInt32  BindingIndex         : _BindingIndexBits;    // Binding in the descriptor set
+    const UInt32  SamplerInd           : _SamplerIndBits;      // Index of the assigned sampler in m_Desc.Resources and m_pPipelineResourceAttribsVk
+    const UInt32  ArraySize            : _ArraySizeBits;       // Array size
+    const UInt32  EntryType            : _EntryTypeBits;       // Bind group entry type (BindGroupEntryType)
+    const UInt32  BindGroup            : _BindGroupBits;       // Bind group (0 or 1)
+    const UInt32  ImtblSamplerAssigned : _SamplerAssignedBits; // Immutable sampler flag
 
-    const Uint32  SRBCacheOffset;                              // Offset in the SRB resource cache
-    const Uint32  StaticCacheOffset;                           // Offset in the static resource cache
+    const UInt32  SRBCacheOffset;                              // Offset in the SRB resource cache
+    const UInt32  StaticCacheOffset;                           // Offset in the static resource cache
     // clang-format on
 
-    PipelineResourceAttribsWebGPU(Uint32             _BindingIndex,
-                                  Uint32             _SamplerInd,
-                                  Uint32             _ArraySize,
+    PipelineResourceAttribsWebGPU(UInt32             _BindingIndex,
+                                  UInt32             _SamplerInd,
+                                  UInt32             _ArraySize,
                                   BindGroupEntryType _EntryType,
-                                  Uint32             _BindGroup,
+                                  UInt32             _BindGroup,
                                   bool               _ImtblSamplerAssigned,
-                                  Uint32             _SRBCacheOffset,
-                                  Uint32             _StaticCacheOffset) noexcept :
+                                  UInt32             _SRBCacheOffset,
+                                  UInt32             _StaticCacheOffset) noexcept :
         // clang-format off
         BindingIndex         {_BindingIndex                  },
         SamplerInd           {_SamplerInd                    },
         ArraySize            {_ArraySize                     },
-        EntryType            {static_cast<Uint32>(_EntryType)},
+        EntryType            {static_cast<UInt32>(_EntryType)},
         BindGroup            {_BindGroup                      },
         ImtblSamplerAssigned {_ImtblSamplerAssigned ? 1u : 0u},
         SRBCacheOffset       {_SRBCacheOffset                },
@@ -109,7 +109,7 @@ public:
         VERIFY(BindingIndex            == _BindingIndex, "Binding index (", _BindingIndex, ") exceeds maximum representable value");
         VERIFY(ArraySize               == _ArraySize,    "Array size (", _ArraySize, ") exceeds maximum representable value");
         VERIFY(SamplerInd              == _SamplerInd,   "Sampler index (", _SamplerInd, ") exceeds maximum representable value");
-        VERIFY(GetBindGroupEntryType() == _EntryType,    "Bind group entry type (", static_cast<Uint32>(_EntryType), ") exceeds maximum representable value");
+        VERIFY(GetBindGroupEntryType() == _EntryType,    "Bind group entry type (", static_cast<UInt32>(_EntryType), ") exceeds maximum representable value");
         VERIFY(BindGroup               == _BindGroup,    "Bind group (", _BindGroup, ") exceeds maximum representable value");
         // clang-format on
     }
@@ -120,7 +120,7 @@ public:
     {}
 
 
-    Uint32 CacheOffset(ResourceCacheContentType CacheType) const
+    UInt32 CacheOffset(ResourceCacheContentType CacheType) const
     {
         return CacheType == ResourceCacheContentType::SRB ? SRBCacheOffset : StaticCacheOffset;
     }

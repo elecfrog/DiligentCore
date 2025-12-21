@@ -36,7 +36,7 @@ DILIGENT_BEGIN_NAMESPACE(Diligent)
 // clang-format off
 
 /// Render state cache logging level.
-DILIGENT_TYPED_ENUM(RENDER_STATE_CACHE_LOG_LEVEL, Uint8)
+DILIGENT_TYPED_ENUM(RENDER_STATE_CACHE_LOG_LEVEL, UInt8)
 {
     /// Logging is disabled.
     RENDER_STATE_CACHE_LOG_LEVEL_DISABLED,
@@ -49,7 +49,7 @@ DILIGENT_TYPED_ENUM(RENDER_STATE_CACHE_LOG_LEVEL, Uint8)
 };
 
 /// Hash mode used by the render state cache to identify unique files.
-DILIGENT_TYPED_ENUM(RENDER_STATE_CACHE_FILE_HASH_MODE, Uint8)
+DILIGENT_TYPED_ENUM(RENDER_STATE_CACHE_FILE_HASH_MODE, UInt8)
 {
     /// Hash files by their content.
 
@@ -186,7 +186,7 @@ DILIGENT_BEGIN_INTERFACE(IRenderStateCache, IObject)
     ///             with other methods.
     VIRTUAL bool METHOD(Load)(THIS_
                               const IDataBlob* pCacheData,
-                              Uint32           ContentVersion DEFAULT_VALUE(~0u), 
+                              UInt32           ContentVersion DEFAULT_VALUE(~0u),
                               bool             MakeCopy       DEFAULT_VALUE(false)) PURE;
 
     /// Creates a shader object from cached data.
@@ -255,7 +255,7 @@ DILIGENT_BEGIN_INTERFACE(IRenderStateCache, IObject)
     /// \remarks    If ContentVersion is `~0u` (aka `0xFFFFFFFF`), the version of the
     ///             previously loaded content will be used, or 0 if none was loaded.
     VIRTUAL Bool METHOD(WriteToBlob)(THIS_
-                                     Uint32      ContentVersion, 
+                                     UInt32      ContentVersion,
                                      IDataBlob** ppBlob) PURE;
 
     /// Writes cache contents to a file stream.
@@ -268,7 +268,7 @@ DILIGENT_BEGIN_INTERFACE(IRenderStateCache, IObject)
     /// \remarks    If ContentVersion is `~0u` (aka `0xFFFFFFFF`), the version of the
     ///             previously loaded content will be used, or 0 if none was loaded.
     VIRTUAL Bool METHOD(WriteToStream)(THIS_
-                                       Uint32       ContentVersion, 
+                                       UInt32       ContentVersion,
                                        IFileStream* pStream) PURE;
 
 
@@ -286,20 +286,20 @@ DILIGENT_BEGIN_INTERFACE(IRenderStateCache, IObject)
     ///
     /// Reloading is only enabled if the cache was created with the `EnableHotReload` member of
     /// `Diligent::RenderStateCacheCreateInfo` struct set to true.
-    VIRTUAL Uint32 METHOD(Reload)(THIS_
+    VIRTUAL UInt32 METHOD(Reload)(THIS_
                                   ReloadGraphicsPipelineCallbackType ReloadGraphicsPipeline DEFAULT_VALUE(nullptr), 
                                   void*                              pUserData              DEFAULT_VALUE(nullptr)) PURE;
 
     /// Returns the content version of the cache data.
 
     /// If no data has been loaded, returns `~0u` (aka `0xFFFFFFFF`).
-    VIRTUAL Uint32 METHOD(GetContentVersion)(THIS) CONST PURE;
+    VIRTUAL UInt32 METHOD(GetContentVersion)(THIS) CONST PURE;
 
 
     /// Returns the reload version of the cache data.
 
     /// The reload version is incremented every time the cache is reloaded.
-    VIRTUAL Uint32 METHOD(GetReloadVersion)(THIS) CONST PURE;
+    VIRTUAL UInt32 METHOD(GetReloadVersion)(THIS) CONST PURE;
 };
 DILIGENT_END_INTERFACE
 

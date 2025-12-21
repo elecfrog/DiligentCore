@@ -121,7 +121,7 @@ VulkanUtilities::DescriptorPoolWrapper DescriptorPoolManager::GetPool(const char
     }
 }
 
-void DescriptorPoolManager::DisposePool(VulkanUtilities::DescriptorPoolWrapper&& Pool, Uint64 QueueMask)
+void DescriptorPoolManager::DisposePool(VulkanUtilities::DescriptorPoolWrapper&& Pool, UInt64 QueueMask)
 {
     class DescriptorPoolDeleter
     {
@@ -195,7 +195,7 @@ DescriptorSetAllocator::~DescriptorSetAllocator()
     DEV_CHECK_ERR(m_AllocatedSetCounter == 0, m_AllocatedSetCounter, " descriptor set(s) have not been returned to the allocator. If there are outstanding references to the sets in release queues, the app will crash when DescriptorSetAllocator::FreeDescriptorSet() is called");
 }
 
-DescriptorSetAllocation DescriptorSetAllocator::Allocate(Uint64 CommandQueueMask, VkDescriptorSetLayout SetLayout, const char* DebugName)
+DescriptorSetAllocation DescriptorSetAllocator::Allocate(UInt64 CommandQueueMask, VkDescriptorSetLayout SetLayout, const char* DebugName)
 {
     // Descriptor pools are externally synchronized, meaning that the application must not allocate
     // and/or free descriptor sets from the same pool in multiple threads simultaneously (13.2.3)
@@ -237,7 +237,7 @@ DescriptorSetAllocation DescriptorSetAllocator::Allocate(Uint64 CommandQueueMask
     return {vkSet, NewPool, CommandQueueMask, *this};
 }
 
-void DescriptorSetAllocator::FreeDescriptorSet(VkDescriptorSet Set, VkDescriptorPool Pool, Uint64 QueueMask)
+void DescriptorSetAllocator::FreeDescriptorSet(VkDescriptorSet Set, VkDescriptorPool Pool, UInt64 QueueMask)
 {
     class DescriptorSetDeleter
     {
@@ -305,7 +305,7 @@ VkDescriptorSet DynamicDescriptorSetAllocator::Allocate(VkDescriptorSetLayout Se
     return set;
 }
 
-void DynamicDescriptorSetAllocator::ReleasePools(Uint64 QueueMask)
+void DynamicDescriptorSetAllocator::ReleasePools(UInt64 QueueMask)
 {
     for (VulkanUtilities::DescriptorPoolWrapper& Pool : m_AllocatedPools)
     {

@@ -68,7 +68,7 @@ TEST(GenerateImagesDotNetTest, GenerateCubeTexture)
         {{+1, +1, +1}, {1, 0, 1, 1}},
         {{+1, -1, +1}, {0.2f, 0.2f, 0.2f, 1}}};
 
-    Uint32 Indices[] = {
+    UInt32 Indices[] = {
         2, 0, 1, 2, 3, 0,
         4, 6, 5, 4, 7, 6,
         0, 7, 4, 0, 3, 7,

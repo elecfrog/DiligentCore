@@ -37,12 +37,12 @@ void GetOpenXRGraphicsBindingD3D11(IRenderDevice*  pDevice,
                                    IDeviceContext* pContext,
                                    IDataBlob**     ppGraphicsBinding);
 
-void AllocateOpenXRSwapchainImageDataD3D11(Uint32      ImageCount,
+void AllocateOpenXRSwapchainImageDataD3D11(UInt32      ImageCount,
                                            IDataBlob** ppSwapchainImageData);
 
 void GetOpenXRSwapchainImageD3D11(IRenderDevice*                    pDevice,
                                   const XrSwapchainImageBaseHeader* ImageData,
-                                  Uint32                            ImageIndex,
+                                  UInt32                            ImageIndex,
                                   ITexture**                        ppImage);
 #endif
 
@@ -51,12 +51,12 @@ void GetOpenXRGraphicsBindingD3D12(IRenderDevice*  pDevice,
                                    IDeviceContext* pContext,
                                    IDataBlob**     ppGraphicsBinding);
 
-void AllocateOpenXRSwapchainImageDataD3D12(Uint32      ImageCount,
+void AllocateOpenXRSwapchainImageDataD3D12(UInt32      ImageCount,
                                            IDataBlob** ppSwapchainImageData);
 
 void GetOpenXRSwapchainImageD3D12(IRenderDevice*                    pDevice,
                                   const XrSwapchainImageBaseHeader* ImageData,
-                                  Uint32                            ImageIndex,
+                                  UInt32                            ImageIndex,
                                   ITexture**                        ppImage);
 #endif
 
@@ -65,12 +65,12 @@ void GetOpenXRGraphicsBindingGL(IRenderDevice*  pDevice,
                                 IDeviceContext* pContext,
                                 IDataBlob**     ppGraphicsBinding);
 
-void AllocateOpenXRSwapchainImageDataGL(Uint32      ImageCount,
+void AllocateOpenXRSwapchainImageDataGL(UInt32      ImageCount,
                                         IDataBlob** ppSwapchainImageData);
 
 void GetOpenXRSwapchainImageGL(IRenderDevice*                    pDevice,
                                const XrSwapchainImageBaseHeader* ImageData,
-                               Uint32                            ImageIndex,
+                               UInt32                            ImageIndex,
                                const TextureDesc&                TexDesc,
                                ITexture**                        ppImage);
 #endif
@@ -80,12 +80,12 @@ void GetOpenXRGraphicsBindingVk(IRenderDevice*  pDevice,
                                 IDeviceContext* pContext,
                                 IDataBlob**     ppGraphicsBinding);
 
-void AllocateOpenXRSwapchainImageDataVk(Uint32      ImageCount,
+void AllocateOpenXRSwapchainImageDataVk(UInt32      ImageCount,
                                         IDataBlob** ppSwapchainImageData);
 
 void GetOpenXRSwapchainImageVk(IRenderDevice*                    pDevice,
                                const XrSwapchainImageBaseHeader* ImageData,
-                               Uint32                            ImageIndex,
+                               UInt32                            ImageIndex,
                                const TextureDesc&                TexDesc,
                                ITexture**                        ppImage);
 #endif
@@ -147,7 +147,7 @@ void GetOpenXRGraphicsBinding(IRenderDevice*  pDevice,
 }
 
 void AllocateOpenXRSwapchainImageData(RENDER_DEVICE_TYPE DeviceType,
-                                      Uint32             ImageCount,
+                                      UInt32             ImageCount,
                                       IDataBlob**        ppSwapchainImageData)
 {
     if (ppSwapchainImageData == nullptr)
@@ -190,7 +190,7 @@ void AllocateOpenXRSwapchainImageData(RENDER_DEVICE_TYPE DeviceType,
 
 void GetOpenXRSwapchainImage(IRenderDevice*                    pDevice,
                              const XrSwapchainImageBaseHeader* ImageData,
-                             Uint32                            ImageIndex,
+                             UInt32                            ImageIndex,
                              const TextureDesc&                TexDesc,
                              ITexture**                        ppImage)
 {
@@ -376,7 +376,7 @@ extern "C"
     }
 
     void Diligent_AllocateOpenXRSwapchainImageData(Diligent::RENDER_DEVICE_TYPE DeviceType,
-                                                   Diligent::Uint32             ImageCount,
+                                                   UInt32             ImageCount,
                                                    Diligent::IDataBlob**        ppSwapchainImageData)
     {
         Diligent::AllocateOpenXRSwapchainImageData(DeviceType, ImageCount, ppSwapchainImageData);
@@ -384,7 +384,7 @@ extern "C"
 
     void Diligent_GetOpenXRSwapchainImage(Diligent::IRenderDevice*          pDevice,
                                           const XrSwapchainImageBaseHeader* ImageData,
-                                          Diligent::Uint32                  ImageIndex,
+                                          UInt32                  ImageIndex,
                                           const Diligent::TextureDesc&      TexDesc,
                                           Diligent::ITexture**              ppImage)
     {

@@ -84,7 +84,7 @@ VulkanUploadHeap::UploadPageInfo VulkanUploadHeap::CreateNewPage(VkDeviceSize Si
     VkResult     err           = LogicalDevice.BindBufferMemory(NewBuffer, MemAllocation.Page->GetVkMemory(), AlignedOffset);
     DEV_CHECK_ERR(err == VK_SUCCESS, "Failed to bind buffer memory");
     (void)err;
-    Uint8* CPUAddress = reinterpret_cast<Uint8*>(MemAllocation.Page->GetCPUMemory()) + AlignedOffset;
+    UInt8* CPUAddress = reinterpret_cast<UInt8*>(MemAllocation.Page->GetCPUMemory()) + AlignedOffset;
 
     return UploadPageInfo{std::move(MemAllocation), std::move(NewBuffer), CPUAddress};
 }
@@ -136,7 +136,7 @@ VulkanUploadAllocation VulkanUploadHeap::Allocate(VkDeviceSize SizeInBytes, VkDe
     return Allocation;
 }
 
-void VulkanUploadHeap::ReleaseAllocatedPages(Uint64 CmdQueueMask)
+void VulkanUploadHeap::ReleaseAllocatedPages(UInt64 CmdQueueMask)
 {
     // The pages will go into the stale resources queue first, however they will move into the release
     // queue immediately when RenderDeviceVkImpl::FlushStaleResources() is called by the DeviceContextVkImpl::FinishFrame()

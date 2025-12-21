@@ -147,7 +147,7 @@ bool AttachmentCleanerWebGPU::RenderPassInfo::operator==(const RenderPassInfo& r
         return false;
     // clang-format on
 
-    for (Uint32 RTIndex = 0; RTIndex < NumRenderTargets; ++RTIndex)
+    for (UInt32 RTIndex = 0; RTIndex < NumRenderTargets; ++RTIndex)
         if (RTVFormats[RTIndex] != rhs.RTVFormats[RTIndex])
             return false;
 
@@ -156,9 +156,9 @@ bool AttachmentCleanerWebGPU::RenderPassInfo::operator==(const RenderPassInfo& r
 
 size_t AttachmentCleanerWebGPU::RenderPassInfo::GetHash() const
 {
-    size_t Hash = ComputeHash(NumRenderTargets, Uint32{DSVFormat}, Uint32{SampleCount});
-    for (Uint32 RTIndex = 0; RTIndex < NumRenderTargets; ++RTIndex)
-        HashCombine(Hash, Uint32{RTVFormats[RTIndex]});
+    size_t Hash = ComputeHash(NumRenderTargets, UInt32{DSVFormat}, UInt32{SampleCount});
+    for (UInt32 RTIndex = 0; RTIndex < NumRenderTargets; ++RTIndex)
+        HashCombine(Hash, UInt32{RTVFormats[RTIndex]});
     return Hash;
 }
 
@@ -194,7 +194,7 @@ void AttachmentCleanerWebGPU::ClearColor(WGPURenderPassEncoder    wgpuCmdEncoder
                                          DeviceContextWebGPUImpl* pDeviceContext,
                                          const RenderPassInfo&    RPInfo,
                                          COLOR_MASK               ColorMask,
-                                         Uint32                   RTIndex,
+                                         UInt32                   RTIndex,
                                          const float              Color[])
 {
     VERIFY_EXPR(m_DeviceWebGPU.GetNumImmediateContexts() == 1);
@@ -214,7 +214,7 @@ void AttachmentCleanerWebGPU::ClearDepthStencil(WGPURenderPassEncoder     wgpuCm
                                                 const RenderPassInfo&     RPInfo,
                                                 CLEAR_DEPTH_STENCIL_FLAGS Flags,
                                                 float                     Depth,
-                                                Uint8                     Stencil)
+                                                UInt8                     Stencil)
 {
     VERIFY_EXPR(m_DeviceWebGPU.GetNumImmediateContexts() == 1);
 
@@ -295,7 +295,7 @@ WebGPURenderPipelineWrapper AttachmentCleanerWebGPU::CreatePSO(const ClearPSOHas
         const RenderPassInfo& RPInfo = Key.RPInfo;
 
         WGPUColorTargetState wgpuColorTargetState[MAX_RENDER_TARGETS]{};
-        for (Uint32 RTIndex = 0; RTIndex < RPInfo.NumRenderTargets; ++RTIndex)
+        for (UInt32 RTIndex = 0; RTIndex < RPInfo.NumRenderTargets; ++RTIndex)
         {
             wgpuColorTargetState[RTIndex].format    = TextureFormatToWGPUFormat(RPInfo.RTVFormats[RTIndex]);
             wgpuColorTargetState[RTIndex].writeMask = ColorMaskToWGPUColorWriteMask(Key.ColorMask);
@@ -354,7 +354,7 @@ void AttachmentCleanerWebGPU::ClearAttachment(WGPURenderPassEncoder wgpuCmdEncod
     pDeviceContext->UnmapBuffer(m_pBuffer, MAP_WRITE);
 
     const BufferWebGPUImpl* pBufferImpl      = m_pBuffer.RawPtr<BufferWebGPUImpl>();
-    const Uint32            DynamicOffsets[] = {static_cast<Uint32>(pDeviceContext->GetDynamicBufferOffset(pBufferImpl))};
+    const UInt32            DynamicOffsets[] = {static_cast<UInt32>(pDeviceContext->GetDynamicBufferOffset(pBufferImpl))};
 
     wgpuRenderPassEncoderSetPipeline(wgpuCmdEncoder, wgpuPipelineState);
     wgpuRenderPassEncoderSetBindGroup(wgpuCmdEncoder, 0, m_PipelineResourceLayout.wgpuBindGroup, _countof(DynamicOffsets), DynamicOffsets);

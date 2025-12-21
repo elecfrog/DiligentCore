@@ -110,7 +110,7 @@ void TestBrokenShader(const char*            Source,
     if (CompileFlags & SHADER_COMPILE_FLAG_ASYNCHRONOUS)
     {
         ASSERT_NE(pBrokenShader, nullptr);
-        Uint32 Iter = 0;
+        UInt32 Iter = 0;
         while (pBrokenShader->GetStatus() == SHADER_STATUS_COMPILING)
         {
             std::this_thread::yield();

@@ -190,7 +190,7 @@ TEST(TileShaderTest, DrawQuad)
     {
         pContext->SetPipelineState(pTilePSO);
 
-        Uint32 TileSizeX = 0, TileSizeY = 0;
+        UInt32 TileSizeX = 0, TileSizeY = 0;
         pContext->GetTileSize(TileSizeX, TileSizeY);
         ASSERT_NE(TileSizeX, 0u);
         ASSERT_NE(TileSizeY, 0u);

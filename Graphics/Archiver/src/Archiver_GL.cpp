@@ -231,7 +231,7 @@ public:
         {
             this->m_AsyncInitializer = AsyncInitializer::Start(
                 pCompilationThreadPool,
-                [this](Uint32 ThreadId) //
+                [this](UInt32 ThreadId) //
                 {
                     try
                     {
@@ -511,7 +511,7 @@ struct ShaderStageInfoGL
     // Needed only for ray tracing
     void Append(const SerializedShaderImpl*) {}
 
-    Uint32 Count() const { return 1; }
+    UInt32 Count() const { return 1; }
 
     SHADER_TYPE                 Type    = SHADER_TYPE_UNKNOWN;
     const SerializedShaderImpl* pShader = nullptr;
@@ -572,17 +572,17 @@ void SerializationDeviceImpl::GetPipelineResourceBindingsGL(const PipelineResour
     constexpr SHADER_TYPE SupportedStagesMask = (SHADER_TYPE_ALL_GRAPHICS | SHADER_TYPE_COMPUTE);
 
     SignatureArray<PipelineResourceSignatureGLImpl> Signatures      = {};
-    Uint32                                          SignaturesCount = 0;
+    UInt32                                          SignaturesCount = 0;
     SortResourceSignatures(Info.ppResourceSignatures, Info.ResourceSignaturesCount, Signatures, SignaturesCount);
 
     PipelineResourceSignatureGLImpl::TBindings BaseBindings = {};
-    for (Uint32 s = 0; s < SignaturesCount; ++s)
+    for (UInt32 s = 0; s < SignaturesCount; ++s)
     {
         const RefCntAutoPtr<PipelineResourceSignatureGLImpl>& pSignature = Signatures[s];
         if (pSignature == nullptr)
             continue;
 
-        for (Uint32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
+        for (UInt32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
         {
             using ResourceAttribsGL             = PipelineResourceSignatureGLImpl::ResourceAttribs;
             const PipelineResourceDesc& ResDesc = pSignature->GetResourceDesc(r);

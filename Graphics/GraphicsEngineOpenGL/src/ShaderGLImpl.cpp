@@ -388,7 +388,7 @@ SHADER_STATUS ShaderGLImpl::GetStatus(bool WaitForCompletion)
     return m_Builder ? SHADER_STATUS_COMPILING : (m_GLShaderObj ? SHADER_STATUS_READY : SHADER_STATUS_FAILED);
 }
 
-Uint32 ShaderGLImpl::GetResourceCount() const
+UInt32 ShaderGLImpl::GetResourceCount() const
 {
     DEV_CHECK_ERR(!m_Builder, "Shader resources are not available until the shader is compiled. Use GetStatus() to check the shader status.");
 
@@ -403,7 +403,7 @@ Uint32 ShaderGLImpl::GetResourceCount() const
     }
 }
 
-void ShaderGLImpl::GetResourceDesc(Uint32 Index, ShaderResourceDesc& ResourceDesc) const
+void ShaderGLImpl::GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const
 {
     DEV_CHECK_ERR(!m_Builder, "Shader resources are not available until the shader is compiled. Use GetStatus() to check the shader status.");
 
@@ -419,7 +419,7 @@ void ShaderGLImpl::GetResourceDesc(Uint32 Index, ShaderResourceDesc& ResourceDes
     }
 }
 
-const ShaderCodeBufferDesc* ShaderGLImpl::GetConstantBufferDesc(Uint32 Index) const
+const ShaderCodeBufferDesc* ShaderGLImpl::GetConstantBufferDesc(UInt32 Index) const
 {
     DEV_CHECK_ERR(!m_Builder, "Shader resources are not available until the shader is compiled. Use GetStatus() to check the shader status.");
 

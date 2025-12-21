@@ -56,7 +56,7 @@ typedef struct ShaderBindingTableDesc ShaderBindingTableDesc;
 
 
 /// Defines shader binding table validation flags, see IShaderBindingTable::Verify().
-DILIGENT_TYPED_ENUM(VERIFY_SBT_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(VERIFY_SBT_FLAGS, UInt32)
 {
     /// Check that all shaders are bound or inactive.
     VERIFY_SBT_FLAG_SHADER_ONLY   = 0x1,
@@ -144,7 +144,7 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     VIRTUAL void METHOD(BindRayGenShader)(THIS_
                                           const Char* pShaderGroupName,
                                           const void* pData            DEFAULT_INITIALIZER(nullptr),
-                                          Uint32      DataSize         DEFAULT_INITIALIZER(0)) PURE;
+                                          UInt32      DataSize         DEFAULT_INITIALIZER(0)) PURE;
 
 
     /// Binds a ray-miss shader.
@@ -163,9 +163,9 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     /// \note Access to the SBT must be externally synchronized.
     VIRTUAL void METHOD(BindMissShader)(THIS_
                                         const Char* pShaderGroupName,
-                                        Uint32      MissIndex,
+                                        UInt32      MissIndex,
                                         const void* pData            DEFAULT_INITIALIZER(nullptr),
-                                        Uint32      DataSize         DEFAULT_INITIALIZER(0)) PURE;
+                                        UInt32      DataSize         DEFAULT_INITIALIZER(0)) PURE;
 
 
     /// Binds a hit group for the the specified geometry in the instance.
@@ -197,10 +197,10 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
                                                  ITopLevelAS* pTLAS,
                                                  const Char*  pInstanceName,
                                                  const Char*  pGeometryName,
-                                                 Uint32       RayOffsetInHitGroupIndex,
+                                                 UInt32       RayOffsetInHitGroupIndex,
                                                  const Char*  pShaderGroupName,
                                                  const void*  pData            DEFAULT_INITIALIZER(nullptr),
-                                                 Uint32       DataSize         DEFAULT_INITIALIZER(0)) PURE;
+                                                 UInt32       DataSize         DEFAULT_INITIALIZER(0)) PURE;
 
 
     /// Binds a hit group to the specified location in the table.
@@ -220,10 +220,10 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     ///
     /// \note Access to the SBT must be externally synchronized.
     VIRTUAL void METHOD(BindHitGroupByIndex)(THIS_
-                                             Uint32      BindingIndex,
+                                             UInt32      BindingIndex,
                                              const Char* pShaderGroupName,
                                              const void* pData            DEFAULT_INITIALIZER(nullptr),
-                                             Uint32      DataSize         DEFAULT_INITIALIZER(0)) PURE;
+                                             UInt32      DataSize         DEFAULT_INITIALIZER(0)) PURE;
 
 
     /// Binds a hit group for all geometries in the specified instance.
@@ -248,10 +248,10 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     VIRTUAL void METHOD(BindHitGroupForInstance)(THIS_
                                                  ITopLevelAS* pTLAS,
                                                  const Char*  pInstanceName,
-                                                 Uint32       RayOffsetInHitGroupIndex,
+                                                 UInt32       RayOffsetInHitGroupIndex,
                                                  const Char*  pShaderGroupName,
                                                  const void*  pData            DEFAULT_INITIALIZER(nullptr),
-                                                 Uint32       DataSize         DEFAULT_INITIALIZER(0)) PURE;
+                                                 UInt32       DataSize         DEFAULT_INITIALIZER(0)) PURE;
 
 
     /// Binds a hit group for all instances in the given top-level AS.
@@ -273,10 +273,10 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     /// \note Access to the SBT and TLAS must be externally synchronized. 
     VIRTUAL void METHOD(BindHitGroupForTLAS)(THIS_
                                              ITopLevelAS* pTLAS,
-                                             Uint32       RayOffsetInHitGroupIndex,
+                                             UInt32       RayOffsetInHitGroupIndex,
                                              const Char*  pShaderGroupName,
                                              const void*  pData            DEFAULT_INITIALIZER(nullptr),
-                                             Uint32       DataSize         DEFAULT_INITIALIZER(0)) PURE;
+                                             UInt32       DataSize         DEFAULT_INITIALIZER(0)) PURE;
 
 
     /// Binds a callable shader.
@@ -295,9 +295,9 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     /// \note Access to the SBT must be externally synchronized.
     VIRTUAL void METHOD(BindCallableShader)(THIS_
                                             const Char* pShaderGroupName,
-                                            Uint32      CallableIndex,
+                                            UInt32      CallableIndex,
                                             const void* pData           DEFAULT_INITIALIZER(nullptr),
-                                            Uint32      DataSize        DEFAULT_INITIALIZER(0)) PURE;
+                                            UInt32      DataSize        DEFAULT_INITIALIZER(0)) PURE;
 };
 DILIGENT_END_INTERFACE
 

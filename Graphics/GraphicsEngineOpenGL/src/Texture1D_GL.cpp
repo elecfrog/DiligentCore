@@ -79,7 +79,7 @@ Texture1D_GL::Texture1D_GL(IReferenceCounters*        pRefCounters,
     {
         if (m_Desc.MipLevels == pInitData->NumSubresources)
         {
-            for (Uint32 Mip = 0; Mip < m_Desc.MipLevels; ++Mip)
+            for (UInt32 Mip = 0; Mip < m_Desc.MipLevels; ++Mip)
             {
                 Box DstBox{0, std::max(m_Desc.Width >> Mip, 1U),
                            0, 1};
@@ -130,8 +130,8 @@ Texture1D_GL::~Texture1D_GL()
 }
 
 void Texture1D_GL::UpdateData(GLContextState&          ContextState,
-                              Uint32                   MipLevel,
-                              Uint32                   Slice,
+                              UInt32                   MipLevel,
+                              UInt32                   Slice,
                               const Box&               DstBox,
                               const TextureSubResData& SubresData)
 {

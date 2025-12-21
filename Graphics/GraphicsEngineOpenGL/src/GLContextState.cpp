@@ -113,7 +113,7 @@ void GLContextState::Invalidate()
     m_DSState = DepthStencilGLState{};
     m_RSState = RasterizerGLState{};
 
-    for (Uint32 rt = 0; rt < _countof(m_ColorWriteMasks); ++rt)
+    for (UInt32 rt = 0; rt < _countof(m_ColorWriteMasks); ++rt)
         m_ColorWriteMasks[rt] = 0xFF;
 
     m_bIndexedWriteMasks = EnableStateHelper{};
@@ -251,7 +251,7 @@ void GLContextState::BindTexture(Int32 Index, GLenum BindTarget, const GLObjectW
     }
 }
 
-void GLContextState::BindSampler(Uint32 Index, const GLObjectWrappers::GLSamplerObj& GLSampler)
+void GLContextState::BindSampler(UInt32 Index, const GLObjectWrappers::GLSamplerObj& GLSampler)
 {
     if (static_cast<size_t>(Index) >= m_BoundSamplers.size())
         m_BoundSamplers.resize(size_t{Index} + 1, -1);
@@ -264,7 +264,7 @@ void GLContextState::BindSampler(Uint32 Index, const GLObjectWrappers::GLSampler
     }
 }
 
-void GLContextState::BindImage(Uint32             Index,
+void GLContextState::BindImage(UInt32             Index,
                                TextureViewGLImpl* pTexView,
                                GLint              MipLevel,
                                GLboolean          IsLayered,
@@ -296,7 +296,7 @@ void GLContextState::BindImage(Uint32             Index,
 #endif
 }
 
-void GLContextState::BindImage(Uint32 Index, BufferViewGLImpl* pBuffView, GLenum Access, GLenum Format)
+void GLContextState::BindImage(UInt32 Index, BufferViewGLImpl* pBuffView, GLenum Access, GLenum Format)
 {
 #if GL_ARB_shader_image_load_store
     BoundImageInfo NewImageInfo //
@@ -322,7 +322,7 @@ void GLContextState::BindImage(Uint32 Index, BufferViewGLImpl* pBuffView, GLenum
 #endif
 }
 
-void GLContextState::GetBoundImage(Uint32     Index,
+void GLContextState::GetBoundImage(UInt32     Index,
                                    GLuint&    ImgHandle,
                                    GLint&     MipLevel,
                                    GLboolean& IsLayered,
@@ -526,7 +526,7 @@ void GLContextState::EnableStencilTest(bool bEnable)
     }
 }
 
-void GLContextState::SetStencilWriteMask(Uint8 StencilWriteMask)
+void GLContextState::SetStencilWriteMask(UInt8 StencilWriteMask)
 {
     if (m_DSState.m_StencilWriteMask != StencilWriteMask)
     {
@@ -543,7 +543,7 @@ void GLContextState::SetStencilRef(GLenum Face, Int32 Ref)
     DEV_CHECK_GL_ERROR("Failed to set stencil function");
 }
 
-void GLContextState::SetStencilFunc(GLenum Face, COMPARISON_FUNCTION Func, Int32 Ref, Uint32 Mask)
+void GLContextState::SetStencilFunc(GLenum Face, COMPARISON_FUNCTION Func, Int32 Ref, UInt32 Mask)
 {
     DepthStencilGLState::StencilOpState& FaceStencilOp = m_DSState.m_StencilOpState[Face == GL_FRONT ? 0 : 1];
     if (FaceStencilOp.Func != Func ||
@@ -721,7 +721,7 @@ void GLContextState::SetBlendFactors(const float* BlendFactors)
     DEV_CHECK_GL_ERROR("Failed to set blend color");
 }
 
-void GLContextState::SetBlendState(const BlendStateDesc& BSDsc, Uint32 RenderTargetMask, Uint32 SampleMask)
+void GLContextState::SetBlendState(const BlendStateDesc& BSDsc, UInt32 RenderTargetMask, UInt32 SampleMask)
 {
     if (SampleMask != 0xFFFFFFFF)
         LOG_ERROR_MESSAGE("Sample mask is not currently implemented in GL backend");
@@ -742,9 +742,9 @@ void GLContextState::SetBlendState(const BlendStateDesc& BSDsc, Uint32 RenderTar
         RenderTargetMask &= (1u << m_Caps.MaxDrawBuffers) - 1u;
     }
 
-    for (Uint32 Mask = RenderTargetMask; Mask != 0;)
+    for (UInt32 Mask = RenderTargetMask; Mask != 0;)
     {
-        Uint32 rt = PlatformMisc::GetLSB(Mask);
+        UInt32 rt = PlatformMisc::GetLSB(Mask);
         Mask &= ~(1u << rt);
         VERIFY_EXPR(rt < MAX_RENDER_TARGETS && static_cast<int>(rt) < m_Caps.MaxDrawBuffers);
 
@@ -765,9 +765,9 @@ void GLContextState::SetBlendState(const BlendStateDesc& BSDsc, Uint32 RenderTar
 
     if (bUseIndexedColorWriteMasks)
     {
-        for (Uint32 Mask = RenderTargetMask; Mask != 0;)
+        for (UInt32 Mask = RenderTargetMask; Mask != 0;)
         {
-            Uint32 rt = PlatformMisc::GetLSB(Mask);
+            UInt32 rt = PlatformMisc::GetLSB(Mask);
             Mask &= ~(1u << rt);
             VERIFY_EXPR(rt < MAX_RENDER_TARGETS && static_cast<int>(rt) < m_Caps.MaxDrawBuffers);
             SetColorWriteMaskIndexed(rt, BSDsc.RenderTargets[rt].RenderTargetWriteMask);
@@ -857,7 +857,7 @@ void GLContextState::SetBlendState(const BlendStateDesc& BSDsc, Uint32 RenderTar
     }
 }
 
-void GLContextState::SetColorWriteMask(Uint32 WriteMask)
+void GLContextState::SetColorWriteMask(UInt32 WriteMask)
 {
     // Even though the write mask only applies to writes to a framebuffer, the mask state is NOT
     // Framebuffer state. So it is NOT part of a Framebuffer Object or the Default Framebuffer.
@@ -879,7 +879,7 @@ void GLContextState::SetColorWriteMask(Uint32 WriteMask)
     m_bIndexedWriteMasks = false;
 }
 
-void GLContextState::SetColorWriteMaskIndexed(Uint32 RTIndex, Uint32 WriteMask)
+void GLContextState::SetColorWriteMaskIndexed(UInt32 RTIndex, UInt32 WriteMask)
 {
     // Even though the write mask only applies to writes to a framebuffer, the mask state is NOT
     // Framebuffer state. So it is NOT part of a Framebuffer Object or the Default Framebuffer.
@@ -902,7 +902,7 @@ void GLContextState::SetColorWriteMaskIndexed(Uint32 RTIndex, Uint32 WriteMask)
     m_bIndexedWriteMasks = true;
 }
 
-void GLContextState::GetColorWriteMask(Uint32 RTIndex, Uint32& WriteMask, Bool& bIsIndexed)
+void GLContextState::GetColorWriteMask(UInt32 RTIndex, UInt32& WriteMask, Bool& bIsIndexed)
 {
     WriteMask = m_ColorWriteMasks[RTIndex];
     if (WriteMask == 0xFF)

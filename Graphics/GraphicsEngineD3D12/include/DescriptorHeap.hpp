@@ -51,8 +51,8 @@ class IDescriptorAllocator
 public:
     // Allocate Count descriptors
     virtual DescriptorHeapAllocation Allocate(uint32_t Count)                                         = 0;
-    virtual void                     Free(DescriptorHeapAllocation&& Allocation, Uint64 CmdQueueMask) = 0;
-    virtual Uint32                   GetDescriptorSize() const                                        = 0;
+    virtual void                     Free(DescriptorHeapAllocation&& Allocation, UInt64 CmdQueueMask) = 0;
+    virtual UInt32                   GetDescriptorSize() const                                        = 0;
 };
 
 
@@ -84,8 +84,8 @@ public:
                              ID3D12DescriptorHeap*       pHeap,
                              D3D12_CPU_DESCRIPTOR_HANDLE CpuHandle,
                              D3D12_GPU_DESCRIPTOR_HANDLE GpuHandle,
-                             Uint32                      NHandles,
-                             Uint16                      AllocationManagerId) noexcept :
+                             UInt32                      NHandles,
+                             UInt16                      AllocationManagerId) noexcept :
         // clang-format off
         m_FirstCpuHandle      {CpuHandle          },
         m_FirstGpuHandle      {GpuHandle          },
@@ -96,9 +96,9 @@ public:
     // clang-format on
     {
         VERIFY_EXPR(m_pAllocator != nullptr && m_pDescriptorHeap != nullptr);
-        Uint32 DescriptorSize = m_pAllocator->GetDescriptorSize();
-        VERIFY(DescriptorSize < std::numeric_limits<Uint16>::max(), "DescriptorSize exceeds allowed limit");
-        m_DescriptorSize = static_cast<Uint16>(DescriptorSize);
+        UInt32 DescriptorSize = m_pAllocator->GetDescriptorSize();
+        VERIFY(DescriptorSize < std::numeric_limits<UInt16>::max(), "DescriptorSize exceeds allowed limit");
+        m_DescriptorSize = static_cast<UInt16>(DescriptorSize);
     }
 
     // Move constructor (copy is not allowed)
@@ -153,13 +153,13 @@ public:
     ~DescriptorHeapAllocation()
     {
         if (!IsNull() && m_pAllocator)
-            m_pAllocator->Free(std::move(*this), ~Uint64{0});
+            m_pAllocator->Free(std::move(*this), ~UInt64{0});
         // Allocation must have been disposed by the allocator
         VERIFY(IsNull(), "Non-null descriptor is being destroyed");
     }
 
     // Returns CPU descriptor handle at the specified offset
-    D3D12_CPU_DESCRIPTOR_HANDLE GetCpuHandle(Uint32 Offset = 0) const
+    D3D12_CPU_DESCRIPTOR_HANDLE GetCpuHandle(UInt32 Offset = 0) const
     {
         VERIFY_EXPR(Offset >= 0 && Offset < m_NumHandles);
 
@@ -170,7 +170,7 @@ public:
     }
 
     // Returns GPU descriptor handle at the specified offset
-    D3D12_GPU_DESCRIPTOR_HANDLE GetGpuHandle(Uint32 Offset = 0) const
+    D3D12_GPU_DESCRIPTOR_HANDLE GetGpuHandle(UInt32 Offset = 0) const
     {
         VERIFY_EXPR(Offset >= 0 && Offset < m_NumHandles);
         D3D12_GPU_DESCRIPTOR_HANDLE GPUHandle = m_FirstGpuHandle;
@@ -180,16 +180,16 @@ public:
     }
 
     template <typename HandleType>
-    HandleType GetHandle(Uint32 Offset = 0) const;
+    HandleType GetHandle(UInt32 Offset = 0) const;
 
     template <>
-    D3D12_CPU_DESCRIPTOR_HANDLE GetHandle<D3D12_CPU_DESCRIPTOR_HANDLE>(Uint32 Offset) const
+    D3D12_CPU_DESCRIPTOR_HANDLE GetHandle<D3D12_CPU_DESCRIPTOR_HANDLE>(UInt32 Offset) const
     {
         return GetCpuHandle(Offset);
     }
 
     template <>
-    D3D12_GPU_DESCRIPTOR_HANDLE GetHandle<D3D12_GPU_DESCRIPTOR_HANDLE>(Uint32 Offset) const
+    D3D12_GPU_DESCRIPTOR_HANDLE GetHandle<D3D12_GPU_DESCRIPTOR_HANDLE>(UInt32 Offset) const
     {
         return GetGpuHandle(Offset);
     }
@@ -224,18 +224,18 @@ private:
     ID3D12DescriptorHeap* m_pDescriptorHeap = nullptr;
 
     // Number of descriptors in the allocation
-    Uint32 m_NumHandles = 0;
+    UInt32 m_NumHandles = 0;
 
-    static constexpr Uint16 InvalidAllocationMgrId = 0xFFFF;
+    static constexpr UInt16 InvalidAllocationMgrId = 0xFFFF;
 
     // Allocation manager ID. One allocator may support several
     // allocation managers. This field is required to identify
     // the manager within the allocator that was used to create
     // this allocation
-    Uint16 m_AllocationManagerId = InvalidAllocationMgrId;
+    UInt16 m_AllocationManagerId = InvalidAllocationMgrId;
 
     // Descriptor size
-    Uint16 m_DescriptorSize = 0;
+    UInt16 m_DescriptorSize = 0;
 };
 
 
@@ -264,8 +264,8 @@ public:
                                     IDescriptorAllocator&  ParentAllocator,
                                     size_t                 ThisManagerId,
                                     ID3D12DescriptorHeap*  pd3d12DescriptorHeap,
-                                    Uint32                 FirstDescriptor,
-                                    Uint32                 NumDescriptors);
+                                    UInt32                 FirstDescriptor,
+                                    UInt32                 NumDescriptors);
 
 
     // = default causes compiler error when instantiating std::vector::emplace_back() in Visual Studio 2015 (Version 14.0.23107.0 D14REL)
@@ -313,7 +313,7 @@ public:
 
     // clang-format off
     size_t GetNumAvailableDescriptors()const { return m_FreeBlockManager.GetFreeSize(); }
-    Uint32 GetMaxDescriptors()         const { return m_NumDescriptorsInAllocation;     }
+    UInt32 GetMaxDescriptors()         const { return m_NumDescriptorsInAllocation;     }
     size_t GetMaxAllocatedSize()       const { return m_MaxAllocatedSize;               }
     // clang-format on
 
@@ -339,7 +339,7 @@ private:
     // Number of descriptors in the allocation.
     // If this manager was initialized as a subrange in the existing heap,
     // this value may be different from m_HeapDesc.NumDescriptors
-    Uint32 m_NumDescriptorsInAllocation = 0;
+    UInt32 m_NumDescriptorsInAllocation = 0;
 
     // Allocations manager used to handle descriptor allocations within the heap
     std::mutex                     m_FreeBlockManagerMutex;
@@ -362,7 +362,7 @@ private:
     // a new allocated region. Using these descriptors will result in device
     // removal. Note that using null descriptors is perfectly valid in D3D12
     // and does not produce any errors.
-    static constexpr Uint32       InvalidDescriptorsCount = 128;
+    static constexpr UInt32       InvalidDescriptorsCount = 128;
     CComPtr<ID3D12DescriptorHeap> m_pd3d12InvalidDescriptorHeap;
 #endif
 
@@ -392,7 +392,7 @@ public:
     // Initializes the heap
     CPUDescriptorHeap(IMemoryAllocator&           Allocator,
                       RenderDeviceD3D12Impl&      DeviceD3D12Impl,
-                      Uint32                      NumDescriptorsInHeap,
+                      UInt32                      NumDescriptorsInHeap,
                       D3D12_DESCRIPTOR_HEAP_TYPE  Type,
                       D3D12_DESCRIPTOR_HEAP_FLAGS Flags);
 
@@ -406,8 +406,8 @@ public:
     ~CPUDescriptorHeap();
 
     virtual DescriptorHeapAllocation Allocate(uint32_t Count) override final;
-    virtual void                     Free(DescriptorHeapAllocation&& Allocation, Uint64 CmdQueueMask) override final;
-    virtual Uint32                   GetDescriptorSize() const override final { return m_DescriptorSize; }
+    virtual void                     Free(DescriptorHeapAllocation&& Allocation, UInt64 CmdQueueMask) override final;
+    virtual UInt32                   GetDescriptorSize() const override final { return m_DescriptorSize; }
 
 #ifdef DILIGENT_DEVELOPMENT
     int32_t DvpGetTotalAllocationCount();
@@ -429,8 +429,8 @@ private:
     const UINT                 m_DescriptorSize = 0;
 
     // Maximum heap size during the application lifetime - for statistic purposes
-    Uint32 m_MaxSize     = 0;
-    Uint32 m_CurrentSize = 0;
+    UInt32 m_MaxSize     = 0;
+    UInt32 m_CurrentSize = 0;
 };
 
 // GPU descriptor heap provides storage for shader-visible descriptors
@@ -477,8 +477,8 @@ class GPUDescriptorHeap final : public IDescriptorAllocator
 public:
     GPUDescriptorHeap(IMemoryAllocator&           Allocator,
                       RenderDeviceD3D12Impl&      Device,
-                      Uint32                      NumDescriptorsInHeap,
-                      Uint32                      NumDynamicDescriptors,
+                      UInt32                      NumDescriptorsInHeap,
+                      UInt32                      NumDynamicDescriptors,
                       D3D12_DESCRIPTOR_HEAP_TYPE  Type,
                       D3D12_DESCRIPTOR_HEAP_FLAGS Flags);
 
@@ -496,8 +496,8 @@ public:
         return m_HeapAllocationManager.Allocate(Count);
     }
 
-    virtual void   Free(DescriptorHeapAllocation&& Allocation, Uint64 CmdQueueMask) override final;
-    virtual Uint32 GetDescriptorSize() const override final { return m_DescriptorSize; }
+    virtual void   Free(DescriptorHeapAllocation&& Allocation, UInt64 CmdQueueMask) override final;
+    virtual UInt32 GetDescriptorSize() const override final { return m_DescriptorSize; }
 
     DescriptorHeapAllocation AllocateDynamic(uint32_t Count)
     {
@@ -505,8 +505,8 @@ public:
     }
 
     const D3D12_DESCRIPTOR_HEAP_DESC& GetHeapDesc() const { return m_HeapDesc; }
-    Uint32                            GetMaxStaticDescriptors() const { return m_HeapAllocationManager.GetMaxDescriptors(); }
-    Uint32                            GetMaxDynamicDescriptors() const { return m_DynamicAllocationsManager.GetMaxDescriptors(); }
+    UInt32                            GetMaxStaticDescriptors() const { return m_HeapAllocationManager.GetMaxDescriptors(); }
+    UInt32                            GetMaxDynamicDescriptors() const { return m_DynamicAllocationsManager.GetMaxDescriptors(); }
 
 #ifdef DILIGENT_DEVELOPMENT
     int32_t DvpGetTotalAllocationCount() const
@@ -547,7 +547,7 @@ class DynamicSuballocationsManager final : public IDescriptorAllocator
 public:
     DynamicSuballocationsManager(IMemoryAllocator&  Allocator,
                                  GPUDescriptorHeap& ParentGPUHeap,
-                                 Uint32             DynamicChunkSize,
+                                 UInt32             DynamicChunkSize,
                                  String             ManagerName);
 
     // clang-format off
@@ -559,17 +559,17 @@ public:
 
     ~DynamicSuballocationsManager();
 
-    void ReleaseAllocations(Uint64 CmdQueueMask);
+    void ReleaseAllocations(UInt64 CmdQueueMask);
 
-    virtual DescriptorHeapAllocation Allocate(Uint32 Count) override final;
-    virtual void                     Free(DescriptorHeapAllocation&& Allocation, Uint64 CmdQueueMask) override final
+    virtual DescriptorHeapAllocation Allocate(UInt32 Count) override final;
+    virtual void                     Free(DescriptorHeapAllocation&& Allocation, UInt64 CmdQueueMask) override final
     {
         // Do nothing. Dynamic allocations are not disposed individually, but as whole chunks
         // at the end of the frame by ReleaseAllocations()
         Allocation.Reset();
     }
 
-    virtual Uint32 GetDescriptorSize() const override final { return m_ParentGPUHeap.GetDescriptorSize(); }
+    virtual UInt32 GetDescriptorSize() const override final { return m_ParentGPUHeap.GetDescriptorSize(); }
 
     size_t GetSuballocationCount() const { return m_Suballocations.size(); }
 
@@ -582,13 +582,13 @@ private:
     // of the frame
     std::vector<DescriptorHeapAllocation, STDAllocatorRawMem<DescriptorHeapAllocation>> m_Suballocations;
 
-    Uint32 m_CurrentSuballocationOffset = 0;
-    Uint32 m_DynamicChunkSize           = 0;
+    UInt32 m_CurrentSuballocationOffset = 0;
+    UInt32 m_DynamicChunkSize           = 0;
 
-    Uint32 m_CurrDescriptorCount         = 0;
-    Uint32 m_PeakDescriptorCount         = 0;
-    Uint32 m_CurrSuballocationsTotalSize = 0;
-    Uint32 m_PeakSuballocationsTotalSize = 0;
+    UInt32 m_CurrDescriptorCount         = 0;
+    UInt32 m_PeakDescriptorCount         = 0;
+    UInt32 m_CurrSuballocationsTotalSize = 0;
+    UInt32 m_PeakSuballocationsTotalSize = 0;
 };
 
 } // namespace Diligent

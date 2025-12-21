@@ -53,7 +53,7 @@ namespace Diligent
 {
 
 /// Internal PSO create flags.
-enum PSO_CREATE_INTERNAL_FLAGS : Uint32
+enum PSO_CREATE_INTERNAL_FLAGS : UInt32
 {
     PSO_CREATE_INTERNAL_FLAG_NONE = 0u,
 
@@ -106,13 +106,13 @@ void ValidatePSOCreateInfo<TilePipelineStateCreateInfo>(const IRenderDevice*    
 void ValidatePipelineResourceCompatibility(const PipelineResourceDesc& ResDesc,
                                            SHADER_RESOURCE_TYPE        Type,
                                            PIPELINE_RESOURCE_FLAGS     ResourceFlags,
-                                           Uint32                      ArraySize,
+                                           UInt32                      ArraySize,
                                            const char*                 ShaderName,
                                            const char*                 SignatureName) noexcept(false);
 
 
 /// Copies ray tracing shader group names and also initializes the mapping from the group name to its index.
-void CopyRTShaderGroupNames(std::unordered_map<HashMapStringKey, Uint32>& NameToGroupIndex,
+void CopyRTShaderGroupNames(std::unordered_map<HashMapStringKey, UInt32>& NameToGroupIndex,
                             const RayTracingPipelineStateCreateInfo&      CreateInfo,
                             FixedLinearAllocator&                         MemPool) noexcept;
 
@@ -143,7 +143,7 @@ struct ShaderResourceHashKey : public HashMapStringKey
         ShaderStages    {_ShaderStages}
     // clang-format on
     {
-        Ownership_Hash = ComputeHash(GetHash(), Uint32{ShaderStages}) & HashMask;
+        Ownership_Hash = ComputeHash(GetHash(), UInt32{ShaderStages}) & HashMask;
     }
 
     ShaderResourceHashKey(ShaderResourceHashKey&& Key) noexcept :
@@ -302,16 +302,16 @@ void ExtractShaders(const RayTracingPipelineStateCreateInfo& CreateInfo,
     ShaderStages.resize(MAX_SHADERS_IN_PIPELINE);
     ActiveShaderStages = SHADER_TYPE_UNKNOWN;
 
-    for (Uint32 i = 0; i < CreateInfo.GeneralShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.GeneralShaderCount; ++i)
     {
         AddShader(CreateInfo.pGeneralShaders[i].pShader);
     }
-    for (Uint32 i = 0; i < CreateInfo.TriangleHitShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.TriangleHitShaderCount; ++i)
     {
         AddShader(CreateInfo.pTriangleHitShaders[i].pClosestHitShader);
         AddShader(CreateInfo.pTriangleHitShaders[i].pAnyHitShader);
     }
-    for (Uint32 i = 0; i < CreateInfo.ProceduralHitShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.ProceduralHitShaderCount; ++i)
     {
         AddShader(CreateInfo.pProceduralHitShaders[i].pIntersectionShader);
         AddShader(CreateInfo.pProceduralHitShaders[i].pClosestHitShader);
@@ -360,7 +360,7 @@ void ExtractShaders(const TilePipelineStateCreateInfo& CreateInfo,
     VERIFY_EXPR(!ShaderStages.empty());
 }
 
-Uint32 GetRenderTargetMask(const GraphicsPipelineDesc& GraphicsPipeline) noexcept;
+UInt32 GetRenderTargetMask(const GraphicsPipelineDesc& GraphicsPipeline) noexcept;
 
 } // namespace PipelineStateUtils
 
@@ -412,7 +412,7 @@ public:
         {
             ValidatePSOCreateInfo(this->GetDevice(), CreateInfo);
 
-            Uint64 DeviceQueuesMask = this->GetDevice()->GetCommandQueueMask();
+            UInt64 DeviceQueuesMask = this->GetDevice()->GetCommandQueueMask();
             DEV_CHECK_ERR((this->m_Desc.ImmediateContextMask & DeviceQueuesMask) != 0,
                           "No bits in the immediate mask (0x", std::hex, this->m_Desc.ImmediateContextMask,
                           ") correspond to one of ", this->GetDevice()->GetCommandQueueCount(), " available software command queues.");
@@ -469,7 +469,7 @@ public:
 
         if (m_Signatures != nullptr)
         {
-            for (Uint32 i = 0; i < m_SignatureCount; ++i)
+            for (UInt32 i = 0; i < m_SignatureCount; ++i)
                 m_Signatures[i].~SignatureAutoPtrType();
             m_Signatures = nullptr;
         }
@@ -492,14 +492,14 @@ public:
         return this->m_Desc;
     }
 
-    Uint32 GetBufferStride(Uint32 BufferSlot) const
+    UInt32 GetBufferStride(UInt32 BufferSlot) const
     {
         CheckPipelineReady();
         VERIFY_EXPR(this->m_Desc.IsAnyGraphicsPipeline());
         return BufferSlot < m_pGraphicsPipelineData->BufferSlotsUsed ? m_pGraphicsPipelineData->pStrides[BufferSlot] : 0;
     }
 
-    Uint32 GetNumBufferSlotsUsed() const
+    UInt32 GetNumBufferSlotsUsed() const
     {
         CheckPipelineReady();
         VERIFY_EXPR(this->m_Desc.IsAnyGraphicsPipeline());
@@ -547,7 +547,7 @@ public:
         VERIFY_EXPR(this->m_Desc.IsRayTracingPipeline());
         VERIFY_EXPR(m_pRayTracingPipelineData != nullptr);
 
-        const Uint32 ShaderHandleSize = m_pRayTracingPipelineData->ShaderHandleSize;
+        const UInt32 ShaderHandleSize = m_pRayTracingPipelineData->ShaderHandleSize;
         VERIFY(ShaderHandleSize <= DataSize, "DataSize (", DataSize, ") must be at least as large as the shader handle size (", ShaderHandleSize, ").");
 
         if (Name == nullptr || Name[0] == '\0')
@@ -614,7 +614,7 @@ public:
     }
 
     virtual IShaderResourceVariable* DILIGENT_CALL_TYPE GetStaticVariableByIndex(SHADER_TYPE ShaderType,
-                                                                                 Uint32      Index) override final
+                                                                                 UInt32      Index) override final
     {
         CheckPipelineReady();
 
@@ -635,7 +635,7 @@ public:
         return this->GetResourceSignature(0)->GetStaticVariableByIndex(ShaderType, Index);
     }
 
-    virtual Uint32 DILIGENT_CALL_TYPE GetStaticVariableCount(SHADER_TYPE ShaderType) const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetStaticVariableCount(SHADER_TYPE ShaderType) const override final
     {
         CheckPipelineReady();
 
@@ -714,14 +714,14 @@ public:
     }
 
     /// Implementation of IPipelineState::GetResourceSignatureCount().
-    virtual Uint32 DILIGENT_CALL_TYPE GetResourceSignatureCount() const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetResourceSignatureCount() const override final
     {
         CheckPipelineReady();
         return m_SignatureCount;
     }
 
     /// Implementation of IPipelineState::GetResourceSignature().
-    virtual PipelineResourceSignatureImplType* DILIGENT_CALL_TYPE GetResourceSignature(Uint32 Index) const override final
+    virtual PipelineResourceSignatureImplType* DILIGENT_CALL_TYPE GetResourceSignature(UInt32 Index) const override final
     {
         CheckPipelineReady();
         VERIFY_EXPR(Index < m_SignatureCount);
@@ -743,11 +743,11 @@ public:
         const PipelineStateImplType& lhs = *static_cast<const PipelineStateImplType*>(this);
         const PipelineStateImplType& rhs = *pPSOImpl;
 
-        const Uint32 SignCount = lhs.GetResourceSignatureCount();
+        const UInt32 SignCount = lhs.GetResourceSignatureCount();
         if (SignCount != rhs.GetResourceSignatureCount())
             return false;
 
-        for (Uint32 s = 0; s < SignCount; ++s)
+        for (UInt32 s = 0; s < SignCount; ++s)
         {
             const PipelineResourceSignatureImplType* pLhsSign = GetResourceSignature(s);
             const PipelineResourceSignatureImplType* pRhsSign = rhs.GetResourceSignature(s);
@@ -781,13 +781,13 @@ public:
     }
 #endif
 
-    Uint32 GetRenderTargetMask() const
+    UInt32 GetRenderTargetMask() const
     {
         return m_pGraphicsPipelineData ? PipelineStateUtils::GetRenderTargetMask(m_pGraphicsPipelineData->Desc) : 0;
     }
 
 protected:
-    using TNameToGroupIndexMap = std::unordered_map<HashMapStringKey, Uint32>;
+    using TNameToGroupIndexMap = std::unordered_map<HashMapStringKey, UInt32>;
 
     void ReserveSpaceForPipelineDesc(const GraphicsPipelineStateCreateInfo& CreateInfo,
                                      FixedLinearAllocator&                  MemPool) noexcept
@@ -799,16 +799,16 @@ protected:
         const InputLayoutDesc& InputLayout = CreateInfo.GraphicsPipeline.InputLayout;
         if (InputLayout.NumElements > 0)
         {
-            Uint32 BufferSlotsUsed = 0;
+            UInt32 BufferSlotsUsed = 0;
             MemPool.AddSpace<LayoutElement>(InputLayout.NumElements);
-            for (Uint32 i = 0; i < InputLayout.NumElements; ++i)
+            for (UInt32 i = 0; i < InputLayout.NumElements; ++i)
             {
                 const LayoutElement& LayoutElem = InputLayout.LayoutElements[i];
                 MemPool.AddSpaceForString(LayoutElem.HLSLSemantic);
                 BufferSlotsUsed = std::max(BufferSlotsUsed, LayoutElem.BufferSlot + 1);
             }
 
-            MemPool.AddSpace<Uint32>(BufferSlotsUsed);
+            MemPool.AddSpace<UInt32>(BufferSlotsUsed);
         }
 
         static_assert(std::is_trivially_destructible<decltype(*InputLayout.LayoutElements)>::value, "Add destructor for this object to Destruct()");
@@ -826,7 +826,7 @@ protected:
     {
         size_t RTDataSize = sizeof(RayTracingPipelineData);
         // Reserve space for shader handles
-        const Uint32 ShaderHandleSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
+        const UInt32 ShaderHandleSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
         RTDataSize += size_t{ShaderHandleSize} *
             (size_t{CreateInfo.GeneralShaderCount} +
              size_t{CreateInfo.TriangleHitShaderCount} +
@@ -835,15 +835,15 @@ protected:
         RTDataSize -= sizeof(RayTracingPipelineData::ShaderHandles);
         MemPool.AddSpace(RTDataSize, alignof(RayTracingPipelineData));
 
-        for (Uint32 i = 0; i < CreateInfo.GeneralShaderCount; ++i)
+        for (UInt32 i = 0; i < CreateInfo.GeneralShaderCount; ++i)
         {
             MemPool.AddSpaceForString(CreateInfo.pGeneralShaders[i].Name);
         }
-        for (Uint32 i = 0; i < CreateInfo.TriangleHitShaderCount; ++i)
+        for (UInt32 i = 0; i < CreateInfo.TriangleHitShaderCount; ++i)
         {
             MemPool.AddSpaceForString(CreateInfo.pTriangleHitShaders[i].Name);
         }
-        for (Uint32 i = 0; i < CreateInfo.ProceduralHitShaderCount; ++i)
+        for (UInt32 i = 0; i < CreateInfo.ProceduralHitShaderCount; ++i)
         {
             MemPool.AddSpaceForString(CreateInfo.pProceduralHitShaders[i].Name);
         }
@@ -896,7 +896,7 @@ protected:
 #ifdef DILIGENT_DEBUG
                  Shaders,
 #endif
-                 CreateInfo = typename PipelineStateCreateInfoXTraits<PSOCreateInfoType>::CreateInfoXType{CreateInfo}](Uint32 ThreadId) mutable //
+                 CreateInfo = typename PipelineStateCreateInfoXTraits<PSOCreateInfoType>::CreateInfoXType{CreateInfo}](UInt32 ThreadId) mutable //
                 {
 #ifdef DILIGENT_DEBUG
                     for (const ShaderImplType* pShader : Shaders)
@@ -952,8 +952,8 @@ protected:
 
         GraphicsPipelineDesc&       GraphicsPipeline = this->m_pGraphicsPipelineData->Desc;
         RefCntAutoPtr<IRenderPass>& pRenderPass      = this->m_pGraphicsPipelineData->pRenderPass;
-        Uint8&                      BufferSlotsUsed  = this->m_pGraphicsPipelineData->BufferSlotsUsed;
-        Uint32*&                    pStrides         = this->m_pGraphicsPipelineData->pStrides;
+        UInt8&                      BufferSlotsUsed  = this->m_pGraphicsPipelineData->BufferSlotsUsed;
+        UInt32*&                    pStrides         = this->m_pGraphicsPipelineData->pStrides;
 
         GraphicsPipeline = CreateInfo.GraphicsPipeline;
         CorrectGraphicsPipelineDesc(GraphicsPipeline, this->GetDevice()->GetDeviceInfo().Features);
@@ -968,8 +968,8 @@ protected:
             VERIFY_EXPR(GraphicsPipeline.SubpassIndex < RPDesc.SubpassCount);
             const SubpassDesc& Subpass = pRenderPass.template RawPtr<RenderPassImplType>()->GetSubpass(GraphicsPipeline.SubpassIndex);
 
-            GraphicsPipeline.NumRenderTargets = static_cast<Uint8>(Subpass.RenderTargetAttachmentCount);
-            for (Uint32 rt = 0; rt < Subpass.RenderTargetAttachmentCount; ++rt)
+            GraphicsPipeline.NumRenderTargets = static_cast<UInt8>(Subpass.RenderTargetAttachmentCount);
+            for (UInt32 rt = 0; rt < Subpass.RenderTargetAttachmentCount; ++rt)
             {
                 const AttachmentReference& RTAttachmentRef = Subpass.pRenderTargetAttachments[rt];
                 if (RTAttachmentRef.AttachmentIndex != ATTACHMENT_UNUSED)
@@ -1004,10 +1004,10 @@ protected:
             }
 
             // Correct description and compute offsets and tight strides
-            const std::vector<Uint32> Strides = ResolveInputLayoutAutoOffsetsAndStrides(pLayoutElements, InputLayout.NumElements);
-            BufferSlotsUsed                   = static_cast<Uint8>(Strides.size());
+            const std::vector<UInt32> Strides = ResolveInputLayoutAutoOffsetsAndStrides(pLayoutElements, InputLayout.NumElements);
+            BufferSlotsUsed                   = static_cast<UInt8>(Strides.size());
 
-            pStrides = MemPool.CopyConstructArray<Uint32>(Strides.data(), BufferSlotsUsed);
+            pStrides = MemPool.CopyConstructArray<UInt32>(Strides.data(), BufferSlotsUsed);
         }
         GraphicsPipeline.InputLayout.LayoutElements = pLayoutElements;
 
@@ -1031,8 +1031,8 @@ protected:
     {
         size_t RTDataSize = sizeof(RayTracingPipelineData);
         // Allocate space for shader handles
-        const Uint32 ShaderHandleSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
-        const Uint32 ShaderDataSize   = ShaderHandleSize * (CreateInfo.GeneralShaderCount + CreateInfo.TriangleHitShaderCount + CreateInfo.ProceduralHitShaderCount);
+        const UInt32 ShaderHandleSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
+        const UInt32 ShaderDataSize   = ShaderHandleSize * (CreateInfo.GeneralShaderCount + CreateInfo.TriangleHitShaderCount + CreateInfo.ProceduralHitShaderCount);
         RTDataSize += ShaderDataSize;
         // Extra bytes were reserved to avoid compiler errors on zero-sized arrays
         RTDataSize -= sizeof(RayTracingPipelineData::ShaderHandles);
@@ -1069,21 +1069,21 @@ protected:
     // Resource attribution properties
     struct ResourceAttribution
     {
-        static constexpr Uint32 InvalidSignatureIndex = ~0u;
-        static constexpr Uint32 InvalidResourceIndex  = InvalidPipelineResourceIndex;
-        static constexpr Uint32 InvalidSamplerIndex   = InvalidImmutableSamplerIndex;
+        static constexpr UInt32 InvalidSignatureIndex = ~0u;
+        static constexpr UInt32 InvalidResourceIndex  = InvalidPipelineResourceIndex;
+        static constexpr UInt32 InvalidSamplerIndex   = InvalidImmutableSamplerIndex;
 
         const PipelineResourceSignatureImplType* pSignature = nullptr;
 
-        Uint32 SignatureIndex        = InvalidSignatureIndex;
-        Uint32 ResourceIndex         = InvalidResourceIndex;
-        Uint32 ImmutableSamplerIndex = InvalidSamplerIndex;
+        UInt32 SignatureIndex        = InvalidSignatureIndex;
+        UInt32 ResourceIndex         = InvalidResourceIndex;
+        UInt32 ImmutableSamplerIndex = InvalidSamplerIndex;
 
         ResourceAttribution() noexcept {}
         ResourceAttribution(const PipelineResourceSignatureImplType* _pSignature,
-                            Uint32                                   _SignatureIndex,
-                            Uint32                                   _ResourceIndex,
-                            Uint32                                   _ImmutableSamplerIndex = InvalidResourceIndex) noexcept :
+                            UInt32                                   _SignatureIndex,
+                            UInt32                                   _ResourceIndex,
+                            UInt32                                   _ImmutableSamplerIndex = InvalidResourceIndex) noexcept :
             pSignature{_pSignature},
             SignatureIndex{_SignatureIndex},
             ResourceIndex{_ResourceIndex},
@@ -1109,21 +1109,21 @@ protected:
     static ResourceAttribution GetResourceAttribution(const char*                                Name,
                                                       SHADER_TYPE                                Stage,
                                                       const PipelineResourceSignatureImplPtrType pSignatures[],
-                                                      Uint32                                     SignCount)
+                                                      UInt32                                     SignCount)
     {
         VERIFY_EXPR(Name != nullptr && Name[0] != '\0');
-        for (Uint32 sign = 0; sign < SignCount; ++sign)
+        for (UInt32 sign = 0; sign < SignCount; ++sign)
         {
             const PipelineResourceSignatureImplType* const pSignature = pSignatures[sign];
             if (pSignature == nullptr)
                 continue;
 
-            const Uint32 ResIndex = pSignature->FindResource(Stage, Name);
+            const UInt32 ResIndex = pSignature->FindResource(Stage, Name);
             if (ResIndex != ResourceAttribution::InvalidResourceIndex)
                 return ResourceAttribution{pSignature, sign, ResIndex};
             else
             {
-                const Uint32 ImtblSamIndex = pSignature->FindImmutableSampler(Stage, Name);
+                const UInt32 ImtblSamIndex = pSignature->FindImmutableSampler(Stage, Name);
                 if (ImtblSamIndex != ResourceAttribution::InvalidSamplerIndex)
                     return ResourceAttribution{pSignature, sign, ResourceAttribution::InvalidResourceIndex, ImtblSamIndex};
             }
@@ -1174,7 +1174,7 @@ private:
         if (SrcLayout.Variables != nullptr)
         {
             MemPool.AddSpace<ShaderResourceVariableDesc>(SrcLayout.NumVariables);
-            for (Uint32 i = 0; i < SrcLayout.NumVariables; ++i)
+            for (UInt32 i = 0; i < SrcLayout.NumVariables; ++i)
             {
                 VERIFY(SrcLayout.Variables[i].Name != nullptr, "Variable name can't be null");
                 MemPool.AddSpaceForString(SrcLayout.Variables[i].Name);
@@ -1184,7 +1184,7 @@ private:
         if (SrcLayout.ImmutableSamplers != nullptr)
         {
             MemPool.AddSpace<ImmutableSamplerDesc>(SrcLayout.NumImmutableSamplers);
-            for (Uint32 i = 0; i < SrcLayout.NumImmutableSamplers; ++i)
+            for (UInt32 i = 0; i < SrcLayout.NumImmutableSamplers; ++i)
             {
                 VERIFY(SrcLayout.ImmutableSamplers[i].SamplerOrTextureName != nullptr, "Immutable sampler or texture name can't be null");
                 MemPool.AddSpaceForString(SrcLayout.ImmutableSamplers[i].SamplerOrTextureName);
@@ -1201,7 +1201,7 @@ private:
         {
             ShaderResourceVariableDesc* const Variables = MemPool.ConstructArray<ShaderResourceVariableDesc>(SrcLayout.NumVariables);
             DstLayout.Variables                         = Variables;
-            for (Uint32 i = 0; i < SrcLayout.NumVariables; ++i)
+            for (UInt32 i = 0; i < SrcLayout.NumVariables; ++i)
             {
                 const ShaderResourceVariableDesc& SrcVar{SrcLayout.Variables[i]};
                 Variables[i]      = SrcVar;
@@ -1213,7 +1213,7 @@ private:
         {
             ImmutableSamplerDesc* const ImmutableSamplers = MemPool.ConstructArray<ImmutableSamplerDesc>(SrcLayout.NumImmutableSamplers);
             DstLayout.ImmutableSamplers                   = ImmutableSamplers;
-            for (Uint32 i = 0; i < SrcLayout.NumImmutableSamplers; ++i)
+            for (UInt32 i = 0; i < SrcLayout.NumImmutableSamplers; ++i)
             {
                 const ImmutableSamplerDesc& SrcSmplr = SrcLayout.ImmutableSamplers[i];
 #ifdef DILIGENT_DEVELOPMENT
@@ -1246,18 +1246,18 @@ private:
         else
         {
             VERIFY_EXPR(CreateInfo.ResourceSignaturesCount > 0 && CreateInfo.ppResourceSignatures != nullptr);
-            Uint32 MaxSignatureBindingIndex = 0;
-            for (Uint32 i = 0; i < CreateInfo.ResourceSignaturesCount; ++i)
+            UInt32 MaxSignatureBindingIndex = 0;
+            for (UInt32 i = 0; i < CreateInfo.ResourceSignaturesCount; ++i)
             {
                 const PipelineResourceSignatureImplType* pSignature = ClassPtrCast<PipelineResourceSignatureImplType>(CreateInfo.ppResourceSignatures[i]);
                 VERIFY(pSignature != nullptr, "Pipeline resource signature at index ", i, " is null. This error should've been caught by ValidatePipelineResourceSignatures.");
 
-                Uint32 Index = pSignature->GetDesc().BindingIndex;
+                UInt32 Index = pSignature->GetDesc().BindingIndex;
                 VERIFY(Index < MAX_RESOURCE_SIGNATURES,
-                       "Pipeline resource signature specifies binding index ", Uint32{Index}, " that exceeds the limit (", MAX_RESOURCE_SIGNATURES - 1,
+                       "Pipeline resource signature specifies binding index ", UInt32{Index}, " that exceeds the limit (", MAX_RESOURCE_SIGNATURES - 1,
                        "). This error should've been caught by ValidatePipelineResourceSignatureDesc.");
 
-                MaxSignatureBindingIndex = std::max(MaxSignatureBindingIndex, Uint32{Index});
+                MaxSignatureBindingIndex = std::max(MaxSignatureBindingIndex, UInt32{Index});
             }
             VERIFY_EXPR(MaxSignatureBindingIndex < MAX_RESOURCE_SIGNATURES);
             m_SignatureCount = static_cast<decltype(m_SignatureCount)>(MaxSignatureBindingIndex + 1);
@@ -1273,26 +1273,26 @@ private:
         if (!m_UsingImplicitSignature || (GetInternalCreateFlags(CreateInfo) & PSO_CREATE_INTERNAL_FLAG_IMPLICIT_SIGNATURE0) != 0)
         {
             VERIFY_EXPR(CreateInfo.ResourceSignaturesCount != 0 && CreateInfo.ppResourceSignatures != nullptr);
-            for (Uint32 i = 0; i < CreateInfo.ResourceSignaturesCount; ++i)
+            for (UInt32 i = 0; i < CreateInfo.ResourceSignaturesCount; ++i)
             {
                 PipelineResourceSignatureImplType* pSignature = ClassPtrCast<PipelineResourceSignatureImplType>(CreateInfo.ppResourceSignatures[i]);
                 VERIFY_EXPR(pSignature != nullptr);
 
-                const Uint32 Index = pSignature->GetDesc().BindingIndex;
+                const UInt32 Index = pSignature->GetDesc().BindingIndex;
 
 #ifdef DILIGENT_DEBUG
                 VERIFY_EXPR(Index < m_SignatureCount);
 
                 VERIFY(m_Signatures[Index] == nullptr,
-                       "Pipeline resource signature '", pSignature->GetDesc().Name, "' at index ", Uint32{Index},
+                       "Pipeline resource signature '", pSignature->GetDesc().Name, "' at index ", UInt32{Index},
                        " conflicts with another resource signature '", m_Signatures[Index]->GetDesc().Name,
                        "' that uses the same index. This error should've been caught by ValidatePipelineResourceSignatures.");
 
-                for (Uint32 s = 0, StageCount = pSignature->GetNumActiveShaderStages(); s < StageCount; ++s)
+                for (UInt32 s = 0, StageCount = pSignature->GetNumActiveShaderStages(); s < StageCount; ++s)
                 {
                     const SHADER_TYPE ShaderType = pSignature->GetActiveShaderStageType(s);
                     VERIFY(IsConsistentShaderType(ShaderType, CreateInfo.PSODesc.PipelineType),
-                           "Pipeline resource signature '", pSignature->GetDesc().Name, "' at index ", Uint32{Index},
+                           "Pipeline resource signature '", pSignature->GetDesc().Name, "' at index ", UInt32{Index},
                            " has shader stage '", GetShaderTypeLiteralName(ShaderType), "' that is not compatible with pipeline type '",
                            GetPipelineTypeString(CreateInfo.PSODesc.PipelineType), "'.");
                 }
@@ -1318,7 +1318,7 @@ protected:
     /// Note that this is not necessarily the same as the number of signatures
     /// that were used to create the pipeline, because signatures are arranged
     /// by their binding index.
-    Uint8 m_SignatureCount = 0;
+    UInt8 m_SignatureCount = 0;
 
     /// Resource signatures arranged by their binding indices
     using SignatureAutoPtrType         = RefCntAutoPtr<PipelineResourceSignatureImplType>;
@@ -1330,8 +1330,8 @@ protected:
 
         RefCntAutoPtr<IRenderPass> pRenderPass; ///< Strong reference to the render pass object
 
-        Uint32* pStrides        = nullptr;
-        Uint8   BufferSlotsUsed = 0;
+        UInt32* pStrides        = nullptr;
+        UInt8   BufferSlotsUsed = 0;
 
 #ifdef DILIGENT_DEVELOPMENT
         size_t dvpRenderTargetFormatsHash = 0;
@@ -1346,15 +1346,15 @@ protected:
         // It is used to find the shader handle in ShaderHandles array.
         TNameToGroupIndexMap NameToGroupIndex;
 
-        Uint32 ShaderHandleSize = 0;
-        Uint32 ShaderDataSize   = 0;
+        UInt32 ShaderHandleSize = 0;
+        UInt32 ShaderDataSize   = 0;
 
         // Array of shader handles for every group in the pipeline.
         // The handles will be copied to the SBT using NameToGroupIndex to find
         // handles by group name.
         // The actual array size will be determined at run time and will be stored
         // in ShaderDataSize.
-        Uint8 ShaderHandles[sizeof(void*)] = {};
+        UInt8 ShaderHandles[sizeof(void*)] = {};
     };
     static_assert(offsetof(RayTracingPipelineData, ShaderHandles) % sizeof(void*) == 0, "ShaderHandles member is expected to be sizeof(void*)-aligned");
 

@@ -480,7 +480,7 @@ TEXTURE_FORMAT VkFormatToTexFormat(VkFormat VkFmt)
 
 
 
-VkFormat TypeToVkFormat(VALUE_TYPE ValType, Uint32 NumComponents, Bool bIsNormalized)
+VkFormat TypeToVkFormat(VALUE_TYPE ValType, UInt32 NumComponents, Bool bIsNormalized)
 {
     switch (ValType)
     {
@@ -781,7 +781,7 @@ VkStencilOp StencilOpToVkStencilOp(STENCIL_OP StencilOp)
     }
 }
 
-VkStencilOpState StencilOpDescToVkStencilOpState(const StencilOpDesc& desc, Uint8 StencilReadMask, Uint8 StencilWriteMask)
+VkStencilOpState StencilOpDescToVkStencilOpState(const StencilOpDesc& desc, UInt8 StencilReadMask, UInt8 StencilWriteMask)
 {
     // Stencil state (25.9)
     VkStencilOpState StencilState = {};
@@ -1020,7 +1020,7 @@ void InputLayoutDesc_To_VkVertexInputStateCI(const InputLayoutDesc&             
 
     std::array<Int32, MAX_LAYOUT_ELEMENTS> BufferSlot2BindingDescInd;
     BufferSlot2BindingDescInd.fill(-1);
-    for (Uint32 elem = 0; elem < LayoutDesc.NumElements; ++elem)
+    for (UInt32 elem = 0; elem < LayoutDesc.NumElements; ++elem)
     {
         const LayoutElement& LayoutElem     = LayoutDesc.LayoutElements[elem];
         Int32&               BindingDescInd = BufferSlot2BindingDescInd[LayoutElem.BufferSlot];
@@ -1249,7 +1249,7 @@ static VkPipelineStageFlags ResourceStateFlagToVkPipelineStage(RESOURCE_STATE St
 
 VkPipelineStageFlags ResourceStateFlagsToVkPipelineStageFlags(RESOURCE_STATE StateFlags)
 {
-    VERIFY(Uint32{StateFlags} < (RESOURCE_STATE_MAX_BIT << 1), "Resource state flags are out of range");
+    VERIFY(UInt32{StateFlags} < (RESOURCE_STATE_MAX_BIT << 1), "Resource state flags are out of range");
 
     VkPipelineStageFlags vkPipelineStages = 0;
     while (StateFlags != RESOURCE_STATE_UNKNOWN)
@@ -1313,7 +1313,7 @@ static VkAccessFlags ResourceStateFlagToVkAccessFlags(RESOURCE_STATE StateFlag)
 
 VkPipelineStageFlags ResourceStateFlagsToVkAccessFlags(RESOURCE_STATE StateFlags)
 {
-    VERIFY(Uint32{StateFlags} < (RESOURCE_STATE_MAX_BIT << 1), "Resource state flags are out of range");
+    VERIFY(UInt32{StateFlags} < (RESOURCE_STATE_MAX_BIT << 1), "Resource state flags are out of range");
 
     VkAccessFlags AccessFlags = 0;
     while (StateFlags != RESOURCE_STATE_UNKNOWN)
@@ -1327,14 +1327,14 @@ VkPipelineStageFlags ResourceStateFlagsToVkAccessFlags(RESOURCE_STATE StateFlags
 
 VkAccessFlags AccelStructStateFlagsToVkAccessFlags(RESOURCE_STATE StateFlags)
 {
-    VERIFY(Uint32{StateFlags} < (RESOURCE_STATE_MAX_BIT << 1), "Resource state flags are out of range");
+    VERIFY(UInt32{StateFlags} < (RESOURCE_STATE_MAX_BIT << 1), "Resource state flags are out of range");
     static_assert(RESOURCE_STATE_MAX_BIT == (1u << 21), "This function must be updated to handle new resource state flag");
 
     VkAccessFlags AccessFlags = 0;
-    Uint32        Bits        = StateFlags;
+    UInt32        Bits        = StateFlags;
     while (Bits != 0)
     {
-        Uint32 Bit = ExtractLSB(Bits);
+        UInt32 Bit = ExtractLSB(Bits);
         switch (Bit)
         {
             // clang-format off
@@ -1392,19 +1392,19 @@ static RESOURCE_STATE VkAccessFlagToResourceStates(VkAccessFlagBits AccessFlagBi
 class VkAccessFlagBitPosToResourceState
 {
 public:
-    RESOURCE_STATE operator()(Uint32 BitPos) const
+    RESOURCE_STATE operator()(UInt32 BitPos) const
     {
-        VERIFY(BitPos <= MaxFlagBitPos, "Resource state flag bit position (", BitPos, ") exceeds max bit position (", Uint32{MaxFlagBitPos}, ")");
+        VERIFY(BitPos <= MaxFlagBitPos, "Resource state flag bit position (", BitPos, ") exceeds max bit position (", UInt32{MaxFlagBitPos}, ")");
         return FlagBitPosToResourceState[BitPos];
     }
 
 private:
-    static constexpr const Uint32 MaxFlagBitPos = 20;
+    static constexpr const UInt32 MaxFlagBitPos = 20;
 
     const std::array<RESOURCE_STATE, MaxFlagBitPos + 1> FlagBitPosToResourceState{
         []() {
             std::array<RESOURCE_STATE, MaxFlagBitPos + 1> BitPosToState;
-            for (Uint32 bit = 0; bit < BitPosToState.size(); ++bit)
+            for (UInt32 bit = 0; bit < BitPosToState.size(); ++bit)
             {
                 BitPosToState[bit] = VkAccessFlagToResourceStates(static_cast<VkAccessFlagBits>(1 << bit));
             }
@@ -1417,10 +1417,10 @@ private:
 RESOURCE_STATE VkAccessFlagsToResourceStates(VkAccessFlags AccessFlags)
 {
     static const VkAccessFlagBitPosToResourceState BitPosToState;
-    Uint32                                         State = 0;
+    UInt32                                         State = 0;
     while (AccessFlags != 0)
     {
-        Uint32 lsb = PlatformMisc::GetLSB(AccessFlags);
+        UInt32 lsb = PlatformMisc::GetLSB(AccessFlags);
         State |= BitPosToState(lsb);
         AccessFlags &= ~(1 << lsb);
     }
@@ -1507,7 +1507,7 @@ RESOURCE_STATE VkImageLayoutToResourceState(VkImageLayout Layout)
 
 SURFACE_TRANSFORM VkSurfaceTransformFlagToSurfaceTransform(VkSurfaceTransformFlagBitsKHR vkTransformFlag)
 {
-    VERIFY(IsPowerOfTwo(static_cast<Uint32>(vkTransformFlag)), "Only single transform bit is expected");
+    VERIFY(IsPowerOfTwo(static_cast<UInt32>(vkTransformFlag)), "Only single transform bit is expected");
 
     // clang-format off
     switch (vkTransformFlag)
@@ -1652,7 +1652,7 @@ SAMPLE_COUNT VkSampleCountFlagsToSampleCount(VkSampleCountFlags Flags)
 VkShaderStageFlagBits ShaderTypeToVkShaderStageFlagBit(SHADER_TYPE ShaderType)
 {
     static_assert(SHADER_TYPE_LAST == 0x4000, "Please update the switch below to handle the new shader type");
-    VERIFY(IsPowerOfTwo(Uint32{ShaderType}), "More than one shader type is specified");
+    VERIFY(IsPowerOfTwo(UInt32{ShaderType}), "More than one shader type is specified");
     switch (ShaderType)
     {
         // clang-format off
@@ -1902,8 +1902,8 @@ VkQueueGlobalPriorityEXT QueuePriorityToVkQueueGlobalPriority(QUEUE_PRIORITY Pri
 VkExtent2D ShadingRateToVkFragmentSize(SHADING_RATE Rate)
 {
     VkExtent2D Result;
-    Result.width  = 1u << ((Uint32{Rate} >> SHADING_RATE_X_SHIFT) & 0x3);
-    Result.height = 1u << (Uint32{Rate} & 0x3);
+    Result.width  = 1u << ((UInt32{Rate} >> SHADING_RATE_X_SHIFT) & 0x3);
+    Result.height = 1u << (UInt32{Rate} & 0x3);
     VERIFY_EXPR(Result.width > 0 && Result.height > 0);
     VERIFY_EXPR(Result.width <= (1u << AXIS_SHADING_RATE_MAX) && Result.height <= (1u << AXIS_SHADING_RATE_MAX));
     VERIFY_EXPR(IsPowerOfTwo(Result.width) && IsPowerOfTwo(Result.height));
@@ -1923,7 +1923,7 @@ SHADING_RATE VkFragmentSizeToShadingRate(const VkExtent2D& Size)
 VkFragmentShadingRateCombinerOpKHR ShadingRateCombinerToVkFragmentShadingRateCombinerOp(SHADING_RATE_COMBINER Combiner)
 {
     static_assert(SHADING_RATE_COMBINER_LAST == (1u << 5), "Please update the switch below to handle the new shading rate combiner");
-    VERIFY(IsPowerOfTwo(Uint32{Combiner}), "Only single combiner should be provided");
+    VERIFY(IsPowerOfTwo(UInt32{Combiner}), "Only single combiner should be provided");
     switch (Combiner)
     {
         // clang-format off
@@ -2247,7 +2247,7 @@ VkPipelineRenderingCreateInfoKHR GraphicsPipelineDesc_To_VkPipelineRenderingCrea
 
     PipelineRenderingCI.colorAttachmentCount = PipelineDesc.NumRenderTargets;
     ColorAttachmentFormats.resize(PipelineDesc.NumRenderTargets);
-    for (Uint32 rt = 0; rt < PipelineDesc.NumRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < PipelineDesc.NumRenderTargets; ++rt)
     {
         TEXTURE_FORMAT RTVFormat   = PipelineDesc.RTVFormats[rt];
         ColorAttachmentFormats[rt] = TexFormatToVkFormat(RTVFormat);

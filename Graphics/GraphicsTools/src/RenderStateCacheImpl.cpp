@@ -53,7 +53,7 @@
 namespace Diligent
 {
 
-Bool RenderStateCacheImpl::WriteToBlob(Uint32 ContentVersion, IDataBlob** ppBlob)
+Bool RenderStateCacheImpl::WriteToBlob(UInt32 ContentVersion, IDataBlob** ppBlob)
 {
     if (ContentVersion == ~0u)
     {
@@ -83,7 +83,7 @@ Bool RenderStateCacheImpl::WriteToBlob(Uint32 ContentVersion, IDataBlob** ppBlob
     return m_pDearchiver->Store(ppBlob);
 }
 
-Bool RenderStateCacheImpl::WriteToStream(Uint32 ContentVersion, IFileStream* pStream)
+Bool RenderStateCacheImpl::WriteToStream(UInt32 ContentVersion, IFileStream* pStream)
 {
     DEV_CHECK_ERR(pStream != nullptr, "pStream must not be null");
     if (pStream == nullptr)
@@ -121,15 +121,15 @@ RefCntAutoPtr<IShader> RenderStateCacheImpl::FindReloadableShader(IShader* pShad
     return pReloadableShader;
 }
 
-std::string RenderStateCacheImpl::HashToStr(Uint64 Low, Uint64 High)
+std::string RenderStateCacheImpl::HashToStr(UInt64 Low, UInt64 High)
 {
     static constexpr std::array<char, 16> Symbols = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
     std::string Str;
-    for (Uint64 Part : {High, Low})
+    for (UInt64 Part : {High, Low})
     {
-        for (Uint64 i = 0; i < 16; ++i)
-            Str += Symbols[(Part >> (Uint64{60} - i * 4)) & 0xFu];
+        for (UInt64 i = 0; i < 16; ++i)
+            Str += Symbols[(Part >> (UInt64{60} - i * 4)) & 0xFu];
     }
 
     return Str;
@@ -590,7 +590,7 @@ protected:
             ShaderCreateInfo ShaderCI;
             ShaderCI.Desc = pShader->GetDesc();
 
-            Uint64 Size = 0;
+            UInt64 Size = 0;
             pShader->GetBytecode(&ShaderCI.ByteCode, Size);
             ShaderCI.ByteCodeSize = static_cast<size_t>(Size);
             if (DeviceType == RENDER_DEVICE_TYPE_GL || DeviceType == RENDER_DEVICE_TYPE_GLES)
@@ -932,7 +932,7 @@ bool RenderStateCacheImpl::CreatePipelineStateInternal(const CreateInfoType& PSO
     return false;
 }
 
-Uint32 RenderStateCacheImpl::Reload(ReloadGraphicsPipelineCallbackType ReloadGraphicsPipeline, void* pUserData)
+UInt32 RenderStateCacheImpl::Reload(ReloadGraphicsPipelineCallbackType ReloadGraphicsPipeline, void* pUserData)
 {
     if (!m_CI.EnableHotReload)
     {
@@ -940,7 +940,7 @@ Uint32 RenderStateCacheImpl::Reload(ReloadGraphicsPipelineCallbackType ReloadGra
         return 0;
     }
 
-    Uint32 NumStatesReloaded = 0;
+    UInt32 NumStatesReloaded = 0;
 
     // Reload all shaders first
     {

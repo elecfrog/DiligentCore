@@ -73,7 +73,7 @@ public:
     void CommitProgram(GLContextState& State);
 
     using TBindings = PipelineResourceSignatureGLImpl::TBindings;
-    const TBindings& GetBaseBindings(Uint32 Index) const
+    const TBindings& GetBaseBindings(UInt32 Index) const
     {
         VERIFY_EXPR(Index < GetResourceSignatureCount());
         return m_BaseBindings[Index];
@@ -85,7 +85,7 @@ public:
         const TShaderStages&              ShaderStages,
         const char*                       PSOName,
         const PipelineResourceLayoutDesc& ResourceLayout,
-        Uint32                            SRBAllocationGranularity) noexcept(false);
+        UInt32                            SRBAllocationGranularity) noexcept(false);
 
 #ifdef DILIGENT_DEVELOPMENT
     using ShaderResourceCacheArrayType = std::array<ShaderResourceCacheGL*, MAX_RESOURCE_SIGNATURES>;
@@ -110,8 +110,8 @@ private:
 
     void Destruct();
 
-    SHADER_TYPE GetShaderStageType(Uint32 Index) const;
-    Uint32      GetNumShaderStages() const { return m_NumPrograms; }
+    SHADER_TYPE GetShaderStageType(UInt32 Index) const;
+    UInt32      GetNumShaderStages() const { return m_NumPrograms; }
 
     void ValidateShaderResources(std::shared_ptr<const ShaderResourcesGL> pShaderResources, const char* ShaderName, SHADER_TYPE ShaderStages);
 
@@ -130,7 +130,7 @@ private:
 
     std::vector<std::pair<GLContext::NativeGLContextType, GLObjectWrappers::GLPipelineObj>> m_GLProgPipelines;
 
-    Uint8        m_NumPrograms                = 0;
+    UInt8        m_NumPrograms                = 0;
     bool         m_IsProgramPipelineSupported = false;
     SHADER_TYPE* m_ShaderTypes                = nullptr; // [m_NumPrograms]
 

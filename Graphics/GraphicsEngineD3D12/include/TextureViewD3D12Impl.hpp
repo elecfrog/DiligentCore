@@ -61,7 +61,7 @@ public:
         return m_Descriptor.GetCpuHandle();
     }
 
-    D3D12_CPU_DESCRIPTOR_HANDLE GetMipLevelUAV(Uint32 Mip)
+    D3D12_CPU_DESCRIPTOR_HANDLE GetMipLevelUAV(UInt32 Mip)
     {
         VERIFY_EXPR((m_Desc.Flags & TEXTURE_VIEW_FLAG_ALLOW_MIP_MAP_GENERATION) != 0 && m_MipGenerationDescriptors != nullptr && Mip < m_Desc.NumMipLevels);
         return m_MipGenerationDescriptors[1].GetCpuHandle(Mip);

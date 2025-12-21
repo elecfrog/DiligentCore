@@ -54,21 +54,21 @@ public:
     // clang-format on
 
     static GLObjectWrappers::GLFrameBufferObj CreateFBO(GLContextState&    ContextState,
-                                                        Uint32             NumRenderTargets,
+                                                        UInt32             NumRenderTargets,
                                                         TextureViewGLImpl* ppRTVs[],
                                                         TextureViewGLImpl* pDSV,
-                                                        Uint32             DefaultWidth  = 0,
-                                                        Uint32             DefaultHeight = 0);
+                                                        UInt32             DefaultWidth  = 0,
+                                                        UInt32             DefaultHeight = 0);
 
-    GLObjectWrappers::GLFrameBufferObj& GetFBO(Uint32             NumRenderTargets,
+    GLObjectWrappers::GLFrameBufferObj& GetFBO(UInt32             NumRenderTargets,
                                                TextureViewGLImpl* ppRTVs[],
                                                TextureViewGLImpl* pDSV,
                                                GLContextState&    ContextState);
 
-    const GLObjectWrappers::GLFrameBufferObj& GetFBO(Uint32 Width, Uint32 Height, GLContextState& ContextState);
+    const GLObjectWrappers::GLFrameBufferObj& GetFBO(UInt32 Width, UInt32 Height, GLContextState& ContextState);
 
     // NOTE: the function may bind a framebuffer, so the FBO in the GL context state must be invalidated.
-    const GLObjectWrappers::GLFrameBufferObj& GetFBO(TextureBaseGL* pTex, Uint32 ArraySlice, Uint32 MipLevel, TextureBaseGL::FRAMEBUFFER_TARGET_FLAGS Targets);
+    const GLObjectWrappers::GLFrameBufferObj& GetFBO(TextureBaseGL* pTex, UInt32 ArraySlice, UInt32 MipLevel, TextureBaseGL::FRAMEBUFFER_TARGET_FLAGS Targets);
 
     void OnReleaseTexture(ITexture* pTexture);
 
@@ -80,7 +80,7 @@ private:
     {
         // Using pointers is not reliable!
 
-        Uint32 NumRenderTargets = 0;
+        UInt32 NumRenderTargets = 0;
 
         // Unique IDs of textures bound as render targets
         UniqueIdentifier RTIds[MAX_RENDER_TARGETS] = {};
@@ -90,8 +90,8 @@ private:
         UniqueIdentifier DSId    = 0;
         TextureViewDesc  DSVDesc = {};
 
-        Uint32 Width  = 0;
-        Uint32 Height = 0;
+        UInt32 Width  = 0;
+        UInt32 Height = 0;
 
         mutable size_t Hash = 0;
 

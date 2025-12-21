@@ -55,24 +55,24 @@ class DeviceContextD3D12Impl;
 struct ImmutableSamplerAttribsD3D12
 {
 private:
-    static constexpr Uint32 _ShaderRegisterBits    = 24;
-    static constexpr Uint32 _RegisterSpaceBits     = 8;
-    static constexpr Uint32 _InvalidShaderRegister = (1u << _ShaderRegisterBits) - 1;
-    static constexpr Uint32 _InvalidRegisterSpace  = (1u << _RegisterSpaceBits) - 1;
+    static constexpr UInt32 _ShaderRegisterBits    = 24;
+    static constexpr UInt32 _RegisterSpaceBits     = 8;
+    static constexpr UInt32 _InvalidShaderRegister = (1u << _ShaderRegisterBits) - 1;
+    static constexpr UInt32 _InvalidRegisterSpace  = (1u << _RegisterSpaceBits) - 1;
 
 public:
-    Uint32 ArraySize = 1;
-    Uint32 ShaderRegister : _ShaderRegisterBits;
-    Uint32 RegisterSpace : _RegisterSpaceBits;
+    UInt32 ArraySize = 1;
+    UInt32 ShaderRegister : _ShaderRegisterBits;
+    UInt32 RegisterSpace : _RegisterSpaceBits;
 
     ImmutableSamplerAttribsD3D12() :
         ShaderRegister{_InvalidShaderRegister},
         RegisterSpace{_InvalidRegisterSpace}
     {}
 
-    ImmutableSamplerAttribsD3D12(Uint32 _ArraySize,
-                                 Uint32 _ShaderRegister,
-                                 Uint32 _RegisterSpace) noexcept :
+    ImmutableSamplerAttribsD3D12(UInt32 _ArraySize,
+                                 UInt32 _ShaderRegister,
+                                 UInt32 _RegisterSpace) noexcept :
         // clang-format off
         ArraySize     {_ArraySize     },
         ShaderRegister{_ShaderRegister},
@@ -123,17 +123,17 @@ public:
 
     ~PipelineResourceSignatureD3D12Impl();
 
-    Uint32 GetTotalRootParamsCount() const
+    UInt32 GetTotalRootParamsCount() const
     {
         return m_RootParams.GetNumRootTables() + m_RootParams.GetNumRootViews();
     }
 
-    Uint32 GetNumRootTables() const
+    UInt32 GetNumRootTables() const
     {
         return m_RootParams.GetNumRootTables();
     }
 
-    Uint32 GetNumRootViews() const
+    UInt32 GetNumRootViews() const
     {
         return m_RootParams.GetNumRootViews();
     }
@@ -151,18 +151,18 @@ public:
         const DeviceContextD3D12Impl*   pDeviceCtx;
         const bool                      IsCompute;
         const ShaderResourceCacheD3D12* pResourceCache = nullptr;
-        Uint32                          BaseRootIndex  = ~0u;
+        UInt32                          BaseRootIndex  = ~0u;
     };
     void CommitRootTables(const CommitCacheResourcesAttribs& CommitAttribs) const;
 
     void CommitRootViews(const CommitCacheResourcesAttribs& CommitAttribs,
-                         Uint64                             BuffersMask) const;
+                         UInt64                             BuffersMask) const;
 
     const RootParamsManager& GetRootParams() const { return m_RootParams; }
 
     // Adds resources and immutable samplers from this signature to the
     // resource binding map.
-    void UpdateShaderResourceBindingMap(ResourceBinding::TMap& ResourceMap, SHADER_TYPE ShaderStage, Uint32 BaseRegisterSpace) const;
+    void UpdateShaderResourceBindingMap(ResourceBinding::TMap& ResourceMap, SHADER_TYPE ShaderStage, UInt32 BaseRegisterSpace) const;
 
     // Returns true if there is an immutable sampler array in the given shader stage.
     bool HasImmutableSamplerArray(SHADER_TYPE ShaderStage) const;
@@ -171,7 +171,7 @@ public:
     /// Verifies committed resource using the resource attributes from the PSO.
     bool DvpValidateCommittedResource(const DeviceContextD3D12Impl*   pDeviceCtx,
                                       const D3DShaderResourceAttribs& D3DAttribs,
-                                      Uint32                          ResIndex,
+                                      UInt32                          ResIndex,
                                       const ShaderResourceCacheD3D12& ResourceCache,
                                       const char*                     ShaderName,
                                       const char*                     PSOName) const;

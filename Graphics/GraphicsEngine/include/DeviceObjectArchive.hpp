@@ -83,7 +83,7 @@ namespace Diligent
 class DeviceObjectArchive
 {
 public:
-    enum class DeviceType : Uint32
+    enum class DeviceType : UInt32
     {
         OpenGL, // Same as GLES
         Direct3D11,
@@ -102,8 +102,8 @@ public:
     // Note that indices may be different for different devices due to patching specifics.
     struct ShaderIndexArray
     {
-        const Uint32* pIndices = nullptr;
-        Uint32        Count    = 0;
+        const UInt32* pIndices = nullptr;
+        UInt32        Count    = 0;
     };
 
     // Serialized pipeline state auxiliary data.
@@ -114,7 +114,7 @@ public:
     };
 
     // Archived resource type.
-    enum class ResourceType : Uint32
+    enum class ResourceType : UInt32
     {
         Undefined = 0,
         StandaloneShader,
@@ -127,17 +127,17 @@ public:
         Count
     };
 
-    static constexpr Uint32 HeaderMagicNumber = 0xDE00000A;
-    static constexpr Uint32 ArchiveVersion    = 8;
+    static constexpr UInt32 HeaderMagicNumber = 0xDE00000A;
+    static constexpr UInt32 ArchiveVersion    = 8;
 
     struct ArchiveHeader
     {
         ArchiveHeader() noexcept;
 
-        Uint32      MagicNumber    = HeaderMagicNumber;
-        Uint32      Version        = ArchiveVersion;
-        Uint32      APIVersion     = DILIGENT_API_VERSION;
-        Uint32      ContentVersion = 0;
+        UInt32      MagicNumber    = HeaderMagicNumber;
+        UInt32      Version        = ArchiveVersion;
+        UInt32      APIVersion     = DILIGENT_API_VERSION;
+        UInt32      ContentVersion = 0;
         const char* GitHash        = nullptr;
     };
 
@@ -220,7 +220,7 @@ public:
         return m_pArchiveData;
     }
 
-    Uint32 GetContentVersion() const
+    UInt32 GetContentVersion() const
     {
         return m_ContentVersion;
     }
@@ -229,14 +229,14 @@ public:
     struct CreateInfo
     {
         const IDataBlob* pData          = nullptr;
-        Uint32           ContentVersion = ~0u;
+        UInt32           ContentVersion = ~0u;
         bool             MakeCopy       = false;
     };
     /// Initializes a new device object archive from pData.
     explicit DeviceObjectArchive(const CreateInfo& CI) noexcept(false);
 
     /// Initializes an empty archive.
-    explicit DeviceObjectArchive(Uint32 ContentVersion = 0) noexcept;
+    explicit DeviceObjectArchive(UInt32 ContentVersion = 0) noexcept;
 
     void RemoveDeviceData(DeviceType Dev) noexcept(false);
     void AppendDeviceData(const DeviceObjectArchive& Src, DeviceType Dev) noexcept(false);
@@ -313,7 +313,7 @@ private:
     // Resources will not make copies and reference this data.
     RefCntAutoPtr<IDataBlob> m_pArchiveData;
 
-    Uint32 m_ContentVersion = 0;
+    UInt32 m_ContentVersion = 0;
 };
 
 DeviceObjectArchive::DeviceType RenderDeviceTypeToArchiveDeviceType(RENDER_DEVICE_TYPE Type);

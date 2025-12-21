@@ -39,16 +39,16 @@
 namespace Diligent
 {
 
-static bool CreateDirectoryImpl(const Diligent::Char* strPath);
+static bool CreateDirectoryImpl(const Char* strPath);
 
-bool WindowsFileSystem::CreateDirectory(const Diligent::Char* strPath)
+bool WindowsFileSystem::CreateDirectory(const Char* strPath)
 {
     return CreateDirectoryImpl(strPath);
 }
 
-static void DeleteFileImpl(const Diligent::Char* strPath);
+static void DeleteFileImpl(const Char* strPath);
 
-void WindowsFileSystem::DeleteFile(const Diligent::Char* strPath)
+void WindowsFileSystem::DeleteFile(const Char* strPath)
 {
     DeleteFileImpl(strPath);
 }
@@ -465,7 +465,7 @@ static DWORD FileDialogFlagsToOFNFlags(FILE_DIALOG_FLAGS FileDialogFlags)
     DWORD OFNFlags = 0;
     while (FileDialogFlags != FILE_DIALOG_FLAG_NONE)
     {
-        auto Flag = FileDialogFlags & ~static_cast<FILE_DIALOG_FLAGS>(static_cast<Uint32>(FileDialogFlags) - 1);
+        auto Flag = FileDialogFlags & ~static_cast<FILE_DIALOG_FLAGS>(static_cast<UInt32>(FileDialogFlags) - 1);
         switch (Flag)
         {
             case FILE_DIALOG_FLAG_DONT_ADD_TO_RECENT:

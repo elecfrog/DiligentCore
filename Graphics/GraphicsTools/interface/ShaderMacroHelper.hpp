@@ -110,7 +110,7 @@ public:
     {
         return {
             !m_Macros.empty() ? m_Macros.data() : nullptr,
-            static_cast<Uint32>(m_Macros.size()),
+            static_cast<UInt32>(m_Macros.size()),
         };
     }
 
@@ -174,7 +174,7 @@ public:
 
     ShaderMacroHelper& operator+=(const ShaderMacroArray& Macros)
     {
-        for (Uint32 i = 0; i < Macros.Count; ++i)
+        for (UInt32 i = 0; i < Macros.Count; ++i)
             Add(Macros[i]);
 
         return *this;
@@ -234,7 +234,7 @@ inline ShaderMacroHelper& ShaderMacroHelper::AddShaderMacro(const Char* Name, fl
 }
 
 template <>
-inline ShaderMacroHelper& ShaderMacroHelper::AddShaderMacro(const Char* Name, Uint32 Definition)
+inline ShaderMacroHelper& ShaderMacroHelper::AddShaderMacro(const Char* Name, UInt32 Definition)
 {
     // Make sure that uint constants have the 'u' suffix to avoid problems in GLES.
     std::ostringstream ss;
@@ -243,15 +243,15 @@ inline ShaderMacroHelper& ShaderMacroHelper::AddShaderMacro(const Char* Name, Ui
 }
 
 template <>
-inline ShaderMacroHelper& ShaderMacroHelper::AddShaderMacro(const Char* Name, Uint16 Definition)
+inline ShaderMacroHelper& ShaderMacroHelper::AddShaderMacro(const Char* Name, UInt16 Definition)
 {
-    return AddShaderMacro(Name, Uint32{Definition});
+    return AddShaderMacro(Name, UInt32{Definition});
 }
 
 template <>
-inline ShaderMacroHelper& ShaderMacroHelper::AddShaderMacro(const Char* Name, Uint8 Definition)
+inline ShaderMacroHelper& ShaderMacroHelper::AddShaderMacro(const Char* Name, UInt8 Definition)
 {
-    return AddShaderMacro(Name, Uint32{Definition});
+    return AddShaderMacro(Name, UInt32{Definition});
 }
 
 template <>

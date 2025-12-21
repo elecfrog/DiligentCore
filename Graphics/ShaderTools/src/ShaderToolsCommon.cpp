@@ -144,7 +144,7 @@ void AppendShaderSourceLanguageDefinition(std::string& Source, SHADER_SOURCE_LAN
     Source += "/*";
     Source += ShaderSourceLanguageKey;
     Source += '=';
-    Source += std::to_string(static_cast<Uint32>(Language));
+    Source += std::to_string(static_cast<UInt32>(Language));
     Source += "*/";
 }
 
@@ -210,7 +210,7 @@ SHADER_SOURCE_LANGUAGE ParseShaderSourceLanguageDefinition(const std::string& So
     if (it == Source.end() || !IsNum(*it))
         return SHADER_SOURCE_LANGUAGE_DEFAULT;
 
-    Uint32 Lang = 0;
+    UInt32 Lang = 0;
     for (; it != Source.end() && IsNum(*it); ++it)
         Lang = Lang * 10 + (*it - '0');
 
@@ -229,7 +229,7 @@ ShaderSourceFileData ReadShaderSourceFile(const char*                      Sourc
     {
         VERIFY(FilePath == nullptr, "FilePath must be null when SourceCode is not null");
         SourceData.Source       = SourceCode;
-        SourceData.SourceLength = StaticCast<Uint32>(SourceLength != 0 ? SourceLength : strlen(SourceCode));
+        SourceData.SourceLength = StaticCast<UInt32>(SourceLength != 0 ? SourceLength : strlen(SourceCode));
     }
     else
     {
@@ -245,7 +245,7 @@ ShaderSourceFileData ReadShaderSourceFile(const char*                      Sourc
                 SourceData.pFileData = DataBlobImpl::Create();
                 pSourceStream->ReadBlob(SourceData.pFileData);
                 SourceData.Source       = SourceData.pFileData->GetConstDataPtr<char>();
-                SourceData.SourceLength = StaticCast<Uint32>(SourceData.pFileData->GetSize());
+                SourceData.SourceLength = StaticCast<UInt32>(SourceData.pFileData->GetSize());
             }
             else
             {
@@ -528,8 +528,8 @@ std::string UnrollShaderIncludes(const ShaderCreateInfo& ShaderCI) noexcept(fals
 
 std::string GetShaderCodeTypeName(SHADER_CODE_BASIC_TYPE     BasicType,
                                   SHADER_CODE_VARIABLE_CLASS Class,
-                                  Uint32                     NumRows,
-                                  Uint32                     NumCols,
+                                  UInt32                     NumRows,
+                                  UInt32                     NumCols,
                                   SHADER_SOURCE_LANGUAGE     Lang)
 {
     if (Class == SHADER_CODE_VARIABLE_CLASS_STRUCT)
@@ -540,7 +540,7 @@ std::string GetShaderCodeTypeName(SHADER_CODE_BASIC_TYPE     BasicType,
     std::string Suffix;
     if (Class == SHADER_CODE_VARIABLE_CLASS_VECTOR)
     {
-        Uint32 Dim = 0;
+        UInt32 Dim = 0;
         if (Lang == SHADER_SOURCE_LANGUAGE_GLSL ||
             Lang == SHADER_SOURCE_LANGUAGE_GLSL_VERBATIM)
         {

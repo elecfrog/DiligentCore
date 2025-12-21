@@ -39,7 +39,7 @@ int TestFenceCInterface(struct IFence* pFence)
     Int32               UniqueId = 0;
 
     FenceDesc FenceDesc;
-    Uint64    FenceValue = 0;
+    UInt64    FenceValue = 0;
 
     int num_errors =
         TestObjectCInterface((struct IObject*)pFence) +

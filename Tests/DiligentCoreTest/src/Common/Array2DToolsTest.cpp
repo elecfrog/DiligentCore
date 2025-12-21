@@ -39,7 +39,7 @@ namespace
 
 TEST(Common_Array2DTools, GetArray2DMinMaxValue)
 {
-    auto Test = [](const float* pData, size_t Stride, Uint32 Width, Uint32 Height) {
+    auto Test = [](const float* pData, size_t Stride, UInt32 Width, UInt32 Height) {
         auto RefMin = pData[0];
         auto RefMax = pData[0];
         for (size_t row = 0; row < Height; ++row)
@@ -61,11 +61,11 @@ TEST(Common_Array2DTools, GetArray2DMinMaxValue)
 
     // Test min/max at different positions
     FastRandFloat Rnd{0, -100, +100};
-    for (Uint32 Width = 1; Width <= 32; ++Width)
+    for (UInt32 Width = 1; Width <= 32; ++Width)
     {
-        constexpr Uint32   Height = 1;
+        constexpr UInt32   Height = 1;
         std::vector<float> Data(Width);
-        for (Uint32 test_max = 0; test_max < 2; ++test_max)
+        for (UInt32 test_max = 0; test_max < 2; ++test_max)
         {
             for (size_t test = 0; test < Data.size(); ++test)
             {
@@ -85,9 +85,9 @@ TEST(Common_Array2DTools, GetArray2DMinMaxValue)
     // Test misalignment
     for (size_t misalign_offset = 0; misalign_offset < 8; ++misalign_offset)
     {
-        for (Uint32 Width = 1; Width < 32; ++Width)
+        for (UInt32 Width = 1; Width < 32; ++Width)
         {
-            constexpr Uint32   Height = 1;
+            constexpr UInt32   Height = 1;
             std::vector<float> Data(size_t{Width} + 8);
             for (auto& Val : Data)
                 Val = Rnd();
@@ -97,10 +97,10 @@ TEST(Common_Array2DTools, GetArray2DMinMaxValue)
 
 
     {
-        for (Uint32 test = 0; test < 128; ++test)
+        for (UInt32 test = 0; test < 128; ++test)
         {
-            const Uint32 Width  = 32 + (test % 8);
-            const Uint32 Height = 24 + (test / 8);
+            const UInt32 Width  = 32 + (test % 8);
+            const UInt32 Height = 24 + (test / 8);
             const size_t Sride  = Width + test / 10;
 
             std::vector<float> Data(Sride * size_t{Height});

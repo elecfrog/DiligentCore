@@ -31,11 +31,11 @@
 
 void TestCommandQueueD3D12CInterface(ICommandQueueD3D12* pQueue)
 {
-    Uint64 FenceVal = ICommandQueueD3D12_Submit(pQueue, 1, (ID3D12CommandList* const*)NULL);
+    UInt64 FenceVal = ICommandQueueD3D12_Submit(pQueue, 1, (ID3D12CommandList* const*)NULL);
     (void)FenceVal;
 
     ID3D12CommandQueue* pd3d12Queue = ICommandQueueD3D12_GetD3D12CommandQueue(pQueue);
     (void)pd3d12Queue;
 
-    ICommandQueueD3D12_EnqueueSignal(pQueue, (ID3D12Fence*)NULL, (Uint64)0);
+    ICommandQueueD3D12_EnqueueSignal(pQueue, (ID3D12Fence*)NULL, (UInt64)0);
 }

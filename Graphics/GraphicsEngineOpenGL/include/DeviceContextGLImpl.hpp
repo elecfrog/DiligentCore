@@ -61,7 +61,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DeviceContextGL, TDeviceContextBase)
 
     /// Implementation of IDeviceContext::Begin() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE Begin(Uint32 ImmediateContextId) override final;
+    virtual void DILIGENT_CALL_TYPE Begin(UInt32 ImmediateContextId) override final;
 
     /// Implementation of IDeviceContext::SetPipelineState() in OpenGL backend.
     virtual void DILIGENT_CALL_TYPE SetPipelineState(IPipelineState* pPipelineState) override final;
@@ -74,16 +74,16 @@ public:
                                                           RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::SetStencilRef() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE SetStencilRef(Uint32 StencilRef) override final;
+    virtual void DILIGENT_CALL_TYPE SetStencilRef(UInt32 StencilRef) override final;
 
     /// Implementation of IDeviceContext::SetBlendFactors() in OpenGL backend.
     virtual void DILIGENT_CALL_TYPE SetBlendFactors(const float* pBlendFactors = nullptr) override final;
 
     /// Implementation of IDeviceContext::SetVertexBuffers() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE SetVertexBuffers(Uint32                         StartSlot,
-                                                     Uint32                         NumBuffersSet,
+    virtual void DILIGENT_CALL_TYPE SetVertexBuffers(UInt32                         StartSlot,
+                                                     UInt32                         NumBuffersSet,
                                                      IBuffer* const*                ppBuffers,
-                                                     const Uint64*                  pOffsets,
+                                                     const UInt64*                  pOffsets,
                                                      RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
                                                      SET_VERTEX_BUFFERS_FLAGS       Flags) override final;
 
@@ -92,20 +92,20 @@ public:
 
     /// Implementation of IDeviceContext::SetIndexBuffer() in OpenGL backend.
     virtual void DILIGENT_CALL_TYPE SetIndexBuffer(IBuffer*                       pIndexBuffer,
-                                                   Uint64                         ByteOffset,
+                                                   UInt64                         ByteOffset,
                                                    RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::SetViewports() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE SetViewports(Uint32          NumViewports,
+    virtual void DILIGENT_CALL_TYPE SetViewports(UInt32          NumViewports,
                                                  const Viewport* pViewports,
-                                                 Uint32          RTWidth,
-                                                 Uint32          RTHeight) override final;
+                                                 UInt32          RTWidth,
+                                                 UInt32          RTHeight) override final;
 
     /// Implementation of IDeviceContext::SetScissorRects() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE SetScissorRects(Uint32      NumRects,
+    virtual void DILIGENT_CALL_TYPE SetScissorRects(UInt32      NumRects,
                                                     const Rect* pRects,
-                                                    Uint32      RTWidth,
-                                                    Uint32      RTHeight) override final;
+                                                    UInt32      RTWidth,
+                                                    UInt32      RTHeight) override final;
 
     /// Implementation of IDeviceContext::SetRenderTargetsExt() in OpenGL backend.
     virtual void DILIGENT_CALL_TYPE SetRenderTargetsExt(const SetRenderTargetsAttribs& Attribs) override final;
@@ -149,7 +149,7 @@ public:
     virtual void DILIGENT_CALL_TYPE ClearDepthStencil(ITextureView*                  pView,
                                                       CLEAR_DEPTH_STENCIL_FLAGS      ClearFlags,
                                                       float                          fDepth,
-                                                      Uint8                          Stencil,
+                                                      UInt8                          Stencil,
                                                       RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::ClearRenderTarget() in OpenGL backend.
@@ -159,18 +159,18 @@ public:
 
     /// Implementation of IDeviceContext::UpdateBuffer() in OpenGL backend.
     virtual void DILIGENT_CALL_TYPE UpdateBuffer(IBuffer*                       pBuffer,
-                                                 Uint64                         Offset,
-                                                 Uint64                         Size,
+                                                 UInt64                         Offset,
+                                                 UInt64                         Size,
                                                  const void*                    pData,
                                                  RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::CopyBuffer() in OpenGL backend.
     virtual void DILIGENT_CALL_TYPE CopyBuffer(IBuffer*                       pSrcBuffer,
-                                               Uint64                         SrcOffset,
+                                               UInt64                         SrcOffset,
                                                RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
                                                IBuffer*                       pDstBuffer,
-                                               Uint64                         DstOffset,
-                                               Uint64                         Size,
+                                               UInt64                         DstOffset,
+                                               UInt64                         Size,
                                                RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) override final;
 
     /// Implementation of IDeviceContext::MapBuffer() in OpenGL backend.
@@ -181,8 +181,8 @@ public:
 
     /// Implementation of IDeviceContext::UpdateTexture() in OpenGL backend.
     virtual void DILIGENT_CALL_TYPE UpdateTexture(ITexture*                      pTexture,
-                                                  Uint32                         MipLevel,
-                                                  Uint32                         Slice,
+                                                  UInt32                         MipLevel,
+                                                  UInt32                         Slice,
                                                   const Box&                     DstBox,
                                                   const TextureSubResData&       SubresData,
                                                   RESOURCE_STATE_TRANSITION_MODE SrcBufferStateTransitionMode,
@@ -193,15 +193,15 @@ public:
 
     /// Implementation of IDeviceContext::MapTextureSubresource() in OpenGL backend.
     virtual void DILIGENT_CALL_TYPE MapTextureSubresource(ITexture*                 pTexture,
-                                                          Uint32                    MipLevel,
-                                                          Uint32                    ArraySlice,
+                                                          UInt32                    MipLevel,
+                                                          UInt32                    ArraySlice,
                                                           MAP_TYPE                  MapType,
                                                           MAP_FLAGS                 MapFlags,
                                                           const Box*                pMapRegion,
                                                           MappedTextureSubresource& MappedData) override final;
 
     /// Implementation of IDeviceContext::UnmapTextureSubresource() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE UnmapTextureSubresource(ITexture* pTexture, Uint32 MipLevel, Uint32 ArraySlice) override final;
+    virtual void DILIGENT_CALL_TYPE UnmapTextureSubresource(ITexture* pTexture, UInt32 MipLevel, UInt32 ArraySlice) override final;
 
     /// Implementation of IDeviceContext::GenerateMips() in OpenGL backend.
     virtual void DILIGENT_CALL_TYPE GenerateMips(ITextureView* pTexView) override;
@@ -210,7 +210,7 @@ public:
     virtual void DILIGENT_CALL_TYPE FinishFrame() override final;
 
     /// Implementation of IDeviceContext::TransitionResourceStates() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE TransitionResourceStates(Uint32 BarrierCount, const StateTransitionDesc* pResourceBarriers) override final;
+    virtual void DILIGENT_CALL_TYPE TransitionResourceStates(UInt32 BarrierCount, const StateTransitionDesc* pResourceBarriers) override final;
 
     /// Implementation of IDeviceContext::ResolveTextureSubresource() in OpenGL backend.
     virtual void DILIGENT_CALL_TYPE ResolveTextureSubresource(ITexture*                               pSrcTexture,
@@ -221,14 +221,14 @@ public:
     virtual void DILIGENT_CALL_TYPE FinishCommandList(ICommandList** ppCommandList) override final;
 
     /// Implementation of IDeviceContext::ExecuteCommandLists() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE ExecuteCommandLists(Uint32               NumCommandLists,
+    virtual void DILIGENT_CALL_TYPE ExecuteCommandLists(UInt32               NumCommandLists,
                                                         ICommandList* const* ppCommandLists) override final;
 
     /// Implementation of IDeviceContext::EnqueueSignal() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE EnqueueSignal(IFence* pFence, Uint64 Value) override final;
+    virtual void DILIGENT_CALL_TYPE EnqueueSignal(IFence* pFence, UInt64 Value) override final;
 
     /// Implementation of IDeviceContext::DeviceWaitForFence() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE DeviceWaitForFence(IFence* pFence, Uint64 Value) override final;
+    virtual void DILIGENT_CALL_TYPE DeviceWaitForFence(IFence* pFence, UInt64 Value) override final;
 
     /// Implementation of IDeviceContext::WaitForIdle() in OpenGL backend.
     virtual void DILIGENT_CALL_TYPE WaitForIdle() override final;
@@ -319,13 +319,13 @@ private:
     void CommitDefaultFramebuffer();
 
     __forceinline void PrepareForDraw(DRAW_FLAGS Flags, bool IsIndexed, GLenum& GlTopology);
-    __forceinline void PrepareForIndexedDraw(VALUE_TYPE IndexType, Uint32 FirstIndexLocation, GLenum& GLIndexType, size_t& FirstIndexByteOffset);
+    __forceinline void PrepareForIndexedDraw(VALUE_TYPE IndexType, UInt32 FirstIndexLocation, GLenum& GLIndexType, size_t& FirstIndexByteOffset);
     __forceinline void PrepareForIndirectDraw(IBuffer* pAttribsBuffer);
     __forceinline void PrepareForIndirectDrawCount(IBuffer* pCountBuffer);
     __forceinline void PostDraw();
 
     using TBindings = PipelineResourceSignatureGLImpl::TBindings;
-    void BindProgramResources(Uint32 BindSRBMask);
+    void BindProgramResources(UInt32 BindSRBMask);
 
 #ifdef DILIGENT_DEVELOPMENT
     void DvpValidateCommittedShaderResources();

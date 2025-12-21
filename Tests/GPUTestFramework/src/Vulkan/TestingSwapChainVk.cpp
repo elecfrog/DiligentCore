@@ -281,10 +281,10 @@ void TestingSwapChainVk::TakeSnapshot(ITexture* pCopyFrom)
 
     m_ReferenceDataPitch = m_SwapChainDesc.Width * 4;
     m_ReferenceData.resize(m_SwapChainDesc.Height * m_ReferenceDataPitch);
-    for (Uint32 row = 0; row < m_SwapChainDesc.Height; ++row)
+    for (UInt32 row = 0; row < m_SwapChainDesc.Height; ++row)
     {
         memcpy(&m_ReferenceData[row * m_ReferenceDataPitch],
-               reinterpret_cast<const Uint8*>(pStagingDataPtr) + m_SwapChainDesc.Width * 4 * row,
+               reinterpret_cast<const UInt8*>(pStagingDataPtr) + m_SwapChainDesc.Width * 4 * row,
                m_ReferenceDataPitch);
     }
 

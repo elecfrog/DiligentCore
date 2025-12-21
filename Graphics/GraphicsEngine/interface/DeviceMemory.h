@@ -42,7 +42,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_DeviceMemory =
 /// Describes the device memory type.
 
 /// This enumeration is used by DeviceMemoryDesc structure.
-DILIGENT_TYPED_ENUM(DEVICE_MEMORY_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(DEVICE_MEMORY_TYPE, UInt8)
 {
     /// Indicates that the memory type is not defined.
     DEVICE_MEMORY_TYPE_UNDEFINED = 0,
@@ -60,7 +60,7 @@ struct DeviceMemoryDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     /// Size of the memory page, in bytes.
 
     /// Depending on the implementation, the memory may be allocated as a single chunk or as an array of pages.
-    Uint64              PageSize              DEFAULT_INITIALIZER(0);
+    UInt64              PageSize              DEFAULT_INITIALIZER(0);
 
     /// Defines which immediate contexts are allowed to execute commands that use this device memory.
 
@@ -71,14 +71,14 @@ struct DeviceMemoryDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     ///
     /// \remarks    Only specify these bits that will indicate those immediate contexts where the device memory
     ///             will actually be used. Do not set unnecessary bits as this will result in extra overhead.
-    Uint64 ImmediateContextMask     DEFAULT_INITIALIZER(1);
+    UInt64 ImmediateContextMask     DEFAULT_INITIALIZER(1);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr DeviceMemoryDesc() noexcept {}
 
     constexpr DeviceMemoryDesc(DEVICE_MEMORY_TYPE _Type,
-                               Uint32             _PageSize,
-                               Uint64             _ImmediateContextMask  = DeviceMemoryDesc{}.ImmediateContextMask) noexcept :
+                               UInt32             _PageSize,
+                               UInt64             _ImmediateContextMask  = DeviceMemoryDesc{}.ImmediateContextMask) noexcept :
         Type                {_Type                 },
         PageSize            {_PageSize             },
         ImmediateContextMask{_ImmediateContextMask }
@@ -96,7 +96,7 @@ struct DeviceMemoryCreateInfo
     /// Initial size of the memory object.
 
     /// Some implementations do not support IDeviceMemory::Resize() and memory can only be allocated during the initialization.
-    Uint64            InitialSize           DEFAULT_INITIALIZER(0);
+    UInt64            InitialSize           DEFAULT_INITIALIZER(0);
 
     /// An array of `NumResources` resources that this memory must be compatible with.
 
@@ -112,7 +112,7 @@ struct DeviceMemoryCreateInfo
     IDeviceObject**   ppCompatibleResources DEFAULT_INITIALIZER(nullptr);
 
     /// The number of elements in the ppCompatibleResources array.
-    Uint32            NumResources          DEFAULT_INITIALIZER(0);
+    UInt32            NumResources          DEFAULT_INITIALIZER(0);
 };
 typedef struct DeviceMemoryCreateInfo DeviceMemoryCreateInfo;
 
@@ -147,13 +147,13 @@ DILIGENT_BEGIN_INTERFACE(IDeviceMemory, IDeviceObject)
     /// \remarks  This method must be externally synchronized with IDeviceMemory::GetCapacity()
     ///           and IDeviceContext::BindSparseResourceMemory().
     VIRTUAL Bool METHOD(Resize)(THIS_
-                                Uint64 NewSize) PURE;
+                                UInt64 NewSize) PURE;
 
     /// Returns the current size of the memory object.
 
     /// \remarks  This method must be externally synchronized with IDeviceMemory::Resize()
     ///           and IDeviceContext::BindSparseResourceMemory().
-    VIRTUAL Uint64 METHOD(GetCapacity)(THIS) CONST PURE;
+    VIRTUAL UInt64 METHOD(GetCapacity)(THIS) CONST PURE;
 
     /// Checks if the given resource is compatible with this memory object.
     VIRTUAL Bool METHOD(IsCompatible)(THIS_

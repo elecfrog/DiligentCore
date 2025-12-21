@@ -45,7 +45,7 @@ ShaderCreateInfoWrapper::ShaderCreateInfoWrapper(const ShaderCreateInfo& ShaderC
 
     if (ShaderCI.ByteCode && ShaderCI.ByteCodeSize > 0)
     {
-        Allocator.AddSpace(ShaderCI.ByteCodeSize, alignof(Uint32));
+        Allocator.AddSpace(ShaderCI.ByteCodeSize, alignof(UInt32));
     }
     else if (ShaderCI.Source != nullptr)
     {
@@ -86,7 +86,7 @@ ShaderCreateInfoWrapper::ShaderCreateInfoWrapper(const ShaderCreateInfo& ShaderC
 
     if (ShaderCI.ByteCode && ShaderCI.ByteCodeSize > 0)
     {
-        m_CreateInfo.ByteCode = Allocator.Copy(ShaderCI.ByteCode, ShaderCI.ByteCodeSize, alignof(Uint32));
+        m_CreateInfo.ByteCode = Allocator.Copy(ShaderCI.ByteCode, ShaderCI.ByteCodeSize, alignof(UInt32));
     }
     else if (ShaderCI.Source != nullptr)
     {

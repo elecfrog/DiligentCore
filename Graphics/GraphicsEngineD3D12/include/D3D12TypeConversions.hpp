@@ -63,9 +63,9 @@ void LayoutElements_To_D3D12_INPUT_ELEMENT_DESCs(const InputLayoutDesc&         
                                                  std::vector<D3D12_INPUT_ELEMENT_DESC, STDAllocatorRawMem<D3D12_INPUT_ELEMENT_DESC>>& d3d12InputElements);
 
 // clang-format off
-void TextureViewDesc_to_D3D12_SRV_DESC(const TextureViewDesc& SRVDesc, D3D12_SHADER_RESOURCE_VIEW_DESC  &D3D12SRVDesc, Uint32 SampleCount);
-void TextureViewDesc_to_D3D12_RTV_DESC(const TextureViewDesc& RTVDesc, D3D12_RENDER_TARGET_VIEW_DESC    &D3D12RTVDesc, Uint32 SampleCount);
-void TextureViewDesc_to_D3D12_DSV_DESC(const TextureViewDesc& DSVDesc, D3D12_DEPTH_STENCIL_VIEW_DESC    &D3D12DSVDesc, Uint32 SampleCount);
+void TextureViewDesc_to_D3D12_SRV_DESC(const TextureViewDesc& SRVDesc, D3D12_SHADER_RESOURCE_VIEW_DESC  &D3D12SRVDesc, UInt32 SampleCount);
+void TextureViewDesc_to_D3D12_RTV_DESC(const TextureViewDesc& RTVDesc, D3D12_RENDER_TARGET_VIEW_DESC    &D3D12RTVDesc, UInt32 SampleCount);
+void TextureViewDesc_to_D3D12_DSV_DESC(const TextureViewDesc& DSVDesc, D3D12_DEPTH_STENCIL_VIEW_DESC    &D3D12DSVDesc, UInt32 SampleCount);
 void TextureViewDesc_to_D3D12_UAV_DESC(const TextureViewDesc& UAVDesc, D3D12_UNORDERED_ACCESS_VIEW_DESC &D3D12UAVDesc);
 // clang-format on
 
@@ -98,7 +98,7 @@ D3D12_RAYTRACING_INSTANCE_FLAGS InstanceFlagsToD3D12RTInstanceFlags(RAYTRACING_I
 D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAGS BuildASFlagsToD3D12ASBuildFlags(RAYTRACING_BUILD_AS_FLAGS Flags);
 D3D12_RAYTRACING_ACCELERATION_STRUCTURE_COPY_MODE   CopyASModeToD3D12ASCopyMode(COPY_AS_MODE Mode);
 
-DXGI_FORMAT TypeToRayTracingVertexFormat(VALUE_TYPE ValueType, Uint32 ComponentCount);
+DXGI_FORMAT TypeToRayTracingVertexFormat(VALUE_TYPE ValueType, UInt32 ComponentCount);
 
 D3D12_DESCRIPTOR_RANGE_TYPE ResourceTypeToD3D12DescriptorRangeType(SHADER_RESOURCE_TYPE ResType);
 
@@ -114,8 +114,8 @@ D3D12_COMMAND_LIST_TYPE      QueueIdToD3D12CommandListType(HardwareQueueIndex Qu
 COMMAND_QUEUE_TYPE           D3D12CommandListTypeToCmdQueueType(D3D12_COMMAND_LIST_TYPE ListType);
 D3D12_COMMAND_QUEUE_PRIORITY QueuePriorityToD3D12QueuePriority(QUEUE_PRIORITY Priority);
 
-static constexpr HardwareQueueIndex D3D12HWQueueIndex_Graphics{Uint8{0}};
-static constexpr HardwareQueueIndex D3D12HWQueueIndex_Compute{Uint8{1}};
-static constexpr HardwareQueueIndex D3D12HWQueueIndex_Copy{Uint8{2}};
+static constexpr HardwareQueueIndex D3D12HWQueueIndex_Graphics{UInt8{0}};
+static constexpr HardwareQueueIndex D3D12HWQueueIndex_Compute{UInt8{1}};
+static constexpr HardwareQueueIndex D3D12HWQueueIndex_Copy{UInt8{2}};
 
 } // namespace Diligent

@@ -104,7 +104,7 @@ void FenceVkImpl::ImmediatelyReleaseResources()
     m_TimelineSemaphore.Release();
 }
 
-Uint64 FenceVkImpl::GetCompletedValue()
+UInt64 FenceVkImpl::GetCompletedValue()
 {
     if (IsTimelineSemaphore())
     {
@@ -112,7 +112,7 @@ Uint64 FenceVkImpl::GetCompletedValue()
 
         const VulkanUtilities::LogicalDevice& LogicalDevice = m_pDevice->GetLogicalDevice();
 
-        Uint64   SemaphoreCounter = ~Uint64{0};
+        UInt64   SemaphoreCounter = ~UInt64{0};
         VkResult err              = LogicalDevice.GetSemaphoreCounter(m_TimelineSemaphore, &SemaphoreCounter);
         DEV_CHECK_ERR(err == VK_SUCCESS, "Failed to get timeline semaphore counter");
         return SemaphoreCounter;
@@ -124,7 +124,7 @@ Uint64 FenceVkImpl::GetCompletedValue()
     }
 }
 
-Uint64 FenceVkImpl::InternalGetCompletedValue()
+UInt64 FenceVkImpl::InternalGetCompletedValue()
 {
     VERIFY_EXPR(!IsTimelineSemaphore());
 
@@ -148,7 +148,7 @@ Uint64 FenceVkImpl::InternalGetCompletedValue()
     return m_LastCompletedFenceValue.load();
 }
 
-void FenceVkImpl::Signal(Uint64 Value)
+void FenceVkImpl::Signal(UInt64 Value)
 {
     DEV_CHECK_ERR(m_Desc.Type == FENCE_TYPE_GENERAL, "Fence must have been created with FENCE_TYPE_GENERAL");
 
@@ -175,7 +175,7 @@ void FenceVkImpl::Signal(Uint64 Value)
     }
 }
 
-void FenceVkImpl::Reset(Uint64 Value)
+void FenceVkImpl::Reset(UInt64 Value)
 {
     if (IsTimelineSemaphore())
     {
@@ -190,7 +190,7 @@ void FenceVkImpl::Reset(Uint64 Value)
     }
 }
 
-void FenceVkImpl::Wait(Uint64 Value)
+void FenceVkImpl::Wait(UInt64 Value)
 {
     if (IsTimelineSemaphore())
     {
@@ -233,7 +233,7 @@ void FenceVkImpl::Wait(Uint64 Value)
     }
 }
 
-VulkanUtilities::RecycledSemaphore FenceVkImpl::ExtractSignalSemaphore(SoftwareQueueIndex CommandQueueId, Uint64 Value)
+VulkanUtilities::RecycledSemaphore FenceVkImpl::ExtractSignalSemaphore(SoftwareQueueIndex CommandQueueId, UInt64 Value)
 {
     DEV_CHECK_ERR(m_Desc.Type == FENCE_TYPE_GENERAL, "Fence must be created with FENCE_TYPE_GENERAL");
 
@@ -249,7 +249,7 @@ VulkanUtilities::RecycledSemaphore FenceVkImpl::ExtractSignalSemaphore(SoftwareQ
 
 #ifdef DILIGENT_DEVELOPMENT
     {
-        const Uint64 LastValue = m_SyncPoints.empty() ? m_LastCompletedFenceValue.load() : m_SyncPoints.back().Value;
+        const UInt64 LastValue = m_SyncPoints.empty() ? m_LastCompletedFenceValue.load() : m_SyncPoints.back().Value;
         DEV_CHECK_ERR(Value <= LastValue,
                       "Can not wait for value ", Value, " that is greater than the last known value (", LastValue,
                       "). Binary semaphore for these value is not enqueued for signal operation. ",
@@ -271,7 +271,7 @@ VulkanUtilities::RecycledSemaphore FenceVkImpl::ExtractSignalSemaphore(SoftwareQ
     return Result;
 }
 
-void FenceVkImpl::AddPendingSyncPoint(SoftwareQueueIndex CommandQueueId, Uint64 Value, SyncPointVkPtr SyncPoint)
+void FenceVkImpl::AddPendingSyncPoint(SoftwareQueueIndex CommandQueueId, UInt64 Value, SyncPointVkPtr SyncPoint)
 {
     if (IsTimelineSemaphore())
     {
@@ -290,7 +290,7 @@ void FenceVkImpl::AddPendingSyncPoint(SoftwareQueueIndex CommandQueueId, Uint64 
 
 #ifdef DILIGENT_DEVELOPMENT
     {
-        const Uint64 LastValue = m_SyncPoints.empty() ? m_LastCompletedFenceValue.load() : m_SyncPoints.back().Value;
+        const UInt64 LastValue = m_SyncPoints.empty() ? m_LastCompletedFenceValue.load() : m_SyncPoints.back().Value;
         DEV_CHECK_ERR(Value > LastValue,
                       "New value (", Value, ") must be greater than previous value (", LastValue, ")");
     }

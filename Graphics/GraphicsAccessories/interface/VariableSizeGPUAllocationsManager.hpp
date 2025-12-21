@@ -45,8 +45,8 @@ private:
     {
         OffsetType Offset;
         OffsetType Size;
-        Uint64     FenceValue;
-        StaleAllocationAttribs(OffsetType _Offset, OffsetType _Size, Uint64 _FenceValue) :
+        UInt64     FenceValue;
+        StaleAllocationAttribs(OffsetType _Offset, OffsetType _Size, UInt64 _FenceValue) :
             Offset{_Offset}, Size{_Size}, FenceValue{_FenceValue}
         {}
     };
@@ -78,13 +78,13 @@ public:
     VariableSizeGPUAllocationsManager& operator = (const VariableSizeGPUAllocationsManager&) = delete;
     // clang-format on
 
-    void Free(VariableSizeAllocationsManager::Allocation&& allocation, Uint64 FenceValue)
+    void Free(VariableSizeAllocationsManager::Allocation&& allocation, UInt64 FenceValue)
     {
         Free(allocation.UnalignedOffset, allocation.Size, FenceValue);
         allocation = VariableSizeAllocationsManager::Allocation{};
     }
 
-    void Free(OffsetType Offset, OffsetType Size, Uint64 FenceValue)
+    void Free(OffsetType Offset, OffsetType Size, UInt64 FenceValue)
     {
         // Do not release the block immediately, but add
         // it to the queue instead
@@ -96,7 +96,7 @@ public:
     // The method takes the last known completed fence value N
     // and releases all allocations whose associated fence value
     // is at most N (n <= N)
-    void ReleaseStaleAllocations(Uint64 LastCompletedFenceValue)
+    void ReleaseStaleAllocations(UInt64 LastCompletedFenceValue)
     {
         // Free all allocations from the beginning of the queue that belong to completed command lists
         while (!m_StaleAllocations.empty() && m_StaleAllocations.front().FenceValue <= LastCompletedFenceValue)

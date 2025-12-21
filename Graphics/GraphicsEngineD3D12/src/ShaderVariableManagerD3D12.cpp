@@ -47,13 +47,13 @@ namespace Diligent
 template <typename HandlerType>
 void ProcessSignatureResources(const PipelineResourceSignatureD3D12Impl& Signature,
                                const SHADER_RESOURCE_VARIABLE_TYPE*      AllowedVarTypes,
-                               Uint32                                    NumAllowedTypes,
+                               UInt32                                    NumAllowedTypes,
                                SHADER_TYPE                               ShaderStages,
                                HandlerType&&                             Handler)
 {
     const bool UsingCombinedSamplers = Signature.IsUsingCombinedSamplers();
     Signature.ProcessResources(AllowedVarTypes, NumAllowedTypes, ShaderStages,
-                               [&](const PipelineResourceDesc& ResDesc, Uint32 Index) //
+                               [&](const PipelineResourceDesc& ResDesc, UInt32 Index) //
                                {
                                    const PipelineResourceSignatureD3D12Impl::ResourceAttribs& ResAttr = Signature.GetResourceAttribs(Index);
 
@@ -68,16 +68,16 @@ void ProcessSignatureResources(const PipelineResourceSignatureD3D12Impl& Signatu
 
 size_t ShaderVariableManagerD3D12::GetRequiredMemorySize(const PipelineResourceSignatureD3D12Impl& Signature,
                                                          const SHADER_RESOURCE_VARIABLE_TYPE*      AllowedVarTypes,
-                                                         Uint32                                    NumAllowedTypes,
+                                                         UInt32                                    NumAllowedTypes,
                                                          SHADER_TYPE                               ShaderStages,
-                                                         Uint32*                                   pNumVariables)
+                                                         UInt32*                                   pNumVariables)
 {
-    Uint32 NumVariables = 0;
+    UInt32 NumVariables = 0;
     if (pNumVariables == nullptr)
         pNumVariables = &NumVariables;
     *pNumVariables = 0;
     ProcessSignatureResources(Signature, AllowedVarTypes, NumAllowedTypes, ShaderStages,
-                              [pNumVariables](Uint32) //
+                              [pNumVariables](UInt32) //
                               {
                                   ++(*pNumVariables);
                               });
@@ -89,7 +89,7 @@ size_t ShaderVariableManagerD3D12::GetRequiredMemorySize(const PipelineResourceS
 void ShaderVariableManagerD3D12::Initialize(const PipelineResourceSignatureD3D12Impl& Signature,
                                             IMemoryAllocator&                         Allocator,
                                             const SHADER_RESOURCE_VARIABLE_TYPE*      AllowedVarTypes,
-                                            Uint32                                    NumAllowedTypes,
+                                            UInt32                                    NumAllowedTypes,
                                             SHADER_TYPE                               ShaderType)
 {
     VERIFY_EXPR(m_NumVariables == 0);
@@ -100,9 +100,9 @@ void ShaderVariableManagerD3D12::Initialize(const PipelineResourceSignatureD3D12
 
     TBase::Initialize(Signature, Allocator, MemSize);
 
-    Uint32 VarInd = 0;
+    UInt32 VarInd = 0;
     ProcessSignatureResources(Signature, AllowedVarTypes, NumAllowedTypes, ShaderType,
-                              [this, &VarInd](Uint32 ResIndex) //
+                              [this, &VarInd](UInt32 ResIndex) //
                               {
                                   ::new (m_pVariables + VarInd) ShaderVariableD3D12Impl{*this, ResIndex};
                                   ++VarInd;
@@ -114,19 +114,19 @@ void ShaderVariableManagerD3D12::Destroy(IMemoryAllocator& Allocator)
 {
     if (m_pVariables != nullptr)
     {
-        for (Uint32 v = 0; v < m_NumVariables; ++v)
+        for (UInt32 v = 0; v < m_NumVariables; ++v)
             m_pVariables[v].~ShaderVariableD3D12Impl();
     }
     TBase::Destroy(Allocator);
 }
 
-const PipelineResourceDesc& ShaderVariableManagerD3D12::GetResourceDesc(Uint32 Index) const
+const PipelineResourceDesc& ShaderVariableManagerD3D12::GetResourceDesc(UInt32 Index) const
 {
     VERIFY_EXPR(m_pSignature != nullptr);
     return m_pSignature->GetResourceDesc(Index);
 }
 
-const ShaderVariableManagerD3D12::ResourceAttribs& ShaderVariableManagerD3D12::GetResourceAttribs(Uint32 Index) const
+const ShaderVariableManagerD3D12::ResourceAttribs& ShaderVariableManagerD3D12::GetResourceAttribs(UInt32 Index) const
 {
     VERIFY_EXPR(m_pSignature != nullptr);
     return m_pSignature->GetResourceAttribs(Index);
@@ -135,7 +135,7 @@ const ShaderVariableManagerD3D12::ResourceAttribs& ShaderVariableManagerD3D12::G
 
 ShaderVariableD3D12Impl* ShaderVariableManagerD3D12::GetVariable(const Char* Name) const
 {
-    for (Uint32 v = 0; v < m_NumVariables; ++v)
+    for (UInt32 v = 0; v < m_NumVariables; ++v)
     {
         ShaderVariableD3D12Impl& Var = m_pVariables[v];
         if (strcmp(Var.GetDesc().Name, Name) == 0)
@@ -145,7 +145,7 @@ ShaderVariableD3D12Impl* ShaderVariableManagerD3D12::GetVariable(const Char* Nam
 }
 
 
-ShaderVariableD3D12Impl* ShaderVariableManagerD3D12::GetVariable(Uint32 Index) const
+ShaderVariableD3D12Impl* ShaderVariableManagerD3D12::GetVariable(UInt32 Index) const
 {
     if (Index >= m_NumVariables)
     {
@@ -156,7 +156,7 @@ ShaderVariableD3D12Impl* ShaderVariableManagerD3D12::GetVariable(Uint32 Index) c
     return m_pVariables + Index;
 }
 
-Uint32 ShaderVariableManagerD3D12::GetVariableIndex(const ShaderVariableD3D12Impl& Variable)
+UInt32 ShaderVariableManagerD3D12::GetVariableIndex(const ShaderVariableD3D12Impl& Variable)
 {
     if (m_pVariables == nullptr)
     {
@@ -164,9 +164,9 @@ Uint32 ShaderVariableManagerD3D12::GetVariableIndex(const ShaderVariableD3D12Imp
         return ~0u;
     }
 
-    const ptrdiff_t Offset = reinterpret_cast<const Uint8*>(&Variable) - reinterpret_cast<Uint8*>(m_pVariables);
+    const ptrdiff_t Offset = reinterpret_cast<const UInt8*>(&Variable) - reinterpret_cast<UInt8*>(m_pVariables);
     DEV_CHECK_ERR(Offset % sizeof(ShaderVariableD3D12Impl) == 0, "Offset is not multiple of ShaderVariableD3D12Impl class size");
-    Uint32 Index = static_cast<Uint32>(Offset / sizeof(ShaderVariableD3D12Impl));
+    UInt32 Index = static_cast<UInt32>(Offset / sizeof(ShaderVariableD3D12Impl));
     if (Index < m_NumVariables)
         return Index;
     else
@@ -196,8 +196,8 @@ class BindResourceHelper
 public:
     BindResourceHelper(const PipelineResourceSignatureD3D12Impl& Signature,
                        ShaderResourceCacheD3D12&                 ResourceCache,
-                       Uint32                                    ResIndex,
-                       Uint32                                    ArrayIndex,
+                       UInt32                                    ResIndex,
+                       UInt32                                    ArrayIndex,
                        SET_SHADER_RESOURCE_FLAGS                 Flags);
 
     void operator()(const BindResourceInfo& BindInfo) const;
@@ -209,8 +209,8 @@ private:
     void CacheAccelStruct(const BindResourceInfo& BindInfo) const;
     // clang-format on
 
-    void BindCombinedSampler(TextureViewD3D12Impl* pTexView, Uint32 ArrayIndex, SET_SHADER_RESOURCE_FLAGS Flags) const;
-    void BindCombinedSampler(BufferViewD3D12Impl* pTexView, Uint32 ArrayIndex, SET_SHADER_RESOURCE_FLAGS Flags) const {}
+    void BindCombinedSampler(TextureViewD3D12Impl* pTexView, UInt32 ArrayIndex, SET_SHADER_RESOURCE_FLAGS Flags) const;
+    void BindCombinedSampler(BufferViewD3D12Impl* pTexView, UInt32 ArrayIndex, SET_SHADER_RESOURCE_FLAGS Flags) const {}
 
     template <typename TResourceViewType, ///< The type of the view (TextureViewD3D12Impl or BufferViewD3D12Impl)
               typename TViewTypeEnum      ///< The type of the expected view type enum (TEXTURE_VIEW_TYPE or BUFFER_VIEW_TYPE)
@@ -251,9 +251,9 @@ private:
     const ResourceAttribs&      m_Attribs; // Must go before m_RootIndex, m_OffsetFromTableStart
 
     const ResourceCacheContentType m_CacheType; // Must go before m_RootIndex, m_OffsetFromTableStart
-    const Uint32                   m_RootIndex; // Must go before m_DstRes
-    const Uint32                   m_ArrayIndex;
-    const Uint32                   m_OffsetFromTableStart; // Must go before m_DstRes
+    const UInt32                   m_RootIndex; // Must go before m_DstRes
+    const UInt32                   m_ArrayIndex;
+    const UInt32                   m_OffsetFromTableStart; // Must go before m_DstRes
     const bool                     m_AllowOverwrite;
 
     const ShaderResourceCacheD3D12::Resource& m_DstRes;
@@ -263,8 +263,8 @@ private:
 
 BindResourceHelper::BindResourceHelper(const PipelineResourceSignatureD3D12Impl& Signature,
                                        ShaderResourceCacheD3D12&                 ResourceCache,
-                                       Uint32                                    ResIndex,
-                                       Uint32                                    ArrayIndex,
+                                       UInt32                                    ResIndex,
+                                       UInt32                                    ArrayIndex,
                                        SET_SHADER_RESOURCE_FLAGS                 Flags) :
     // clang-format off
     m_Signature     {Signature},
@@ -351,7 +351,7 @@ void BindResourceHelper::CacheCB(const BindResourceInfo& BindInfo) const
             VERIFY(CPUDescriptorHandle.ptr != 0, "CPU descriptor handle must not be null for resources allocated in descriptor tables");
 
         const BufferDesc& BuffDesc  = pBuffD3D12->GetDesc();
-        const Uint64      RangeSize = BindInfo.BufferRangeSize == 0 ? BuffDesc.Size - BindInfo.BufferBaseOffset : BindInfo.BufferRangeSize;
+        const UInt64      RangeSize = BindInfo.BufferRangeSize == 0 ? BuffDesc.Size - BindInfo.BufferBaseOffset : BindInfo.BufferRangeSize;
 
         if (RangeSize != BuffDesc.Size)
         {
@@ -452,7 +452,7 @@ struct ResourceViewTraits<TextureViewD3D12Impl>
 
     static constexpr RESOURCE_DIMENSION ExpectedResDimension = RESOURCE_DIM_UNDEFINED;
 
-    static bool VerifyView(const TextureViewD3D12Impl* pViewD3D12, const PipelineResourceDesc& ResDesc, Uint32 ArrayIndex)
+    static bool VerifyView(const TextureViewD3D12Impl* pViewD3D12, const PipelineResourceDesc& ResDesc, UInt32 ArrayIndex)
     {
         return true;
     }
@@ -466,7 +466,7 @@ struct ResourceViewTraits<BufferViewD3D12Impl>
 
     static constexpr RESOURCE_DIMENSION ExpectedResDimension = RESOURCE_DIM_BUFFER;
 
-    static bool VerifyView(const BufferViewD3D12Impl* pViewD3D12, const PipelineResourceDesc& ResDesc, Uint32 ArrayIndex)
+    static bool VerifyView(const BufferViewD3D12Impl* pViewD3D12, const PipelineResourceDesc& ResDesc, UInt32 ArrayIndex)
     {
         if (pViewD3D12 != nullptr)
         {
@@ -524,7 +524,7 @@ void BindResourceHelper::CacheResourceView(const BindResourceInfo& BindInfo,
 }
 
 
-void BindResourceHelper::BindCombinedSampler(TextureViewD3D12Impl* pTexView, Uint32 ArrayIndex, SET_SHADER_RESOURCE_FLAGS Flags) const
+void BindResourceHelper::BindCombinedSampler(TextureViewD3D12Impl* pTexView, UInt32 ArrayIndex, SET_SHADER_RESOURCE_FLAGS Flags) const
 {
     VERIFY_EXPR(pTexView != nullptr);
 
@@ -559,7 +559,7 @@ void BindResourceHelper::BindCombinedSampler(TextureViewD3D12Impl* pTexView, Uin
     }
 
     VERIFY_EXPR(m_ResDesc.ArraySize == SamplerResDesc.ArraySize || SamplerResDesc.ArraySize == 1);
-    const Uint32 SamplerArrInd = SamplerResDesc.ArraySize > 1 ? ArrayIndex : 0;
+    const UInt32 SamplerArrInd = SamplerResDesc.ArraySize > 1 ? ArrayIndex : 0;
 
     BindResourceHelper BindSampler{m_Signature, m_ResourceCache, m_Attribs.SamplerInd, SamplerArrInd, Flags};
     BindSampler(BindResourceInfo{SamplerArrInd, pSampler, Flags});
@@ -621,9 +621,9 @@ void BindResourceHelper::operator()(const BindResourceInfo& BindInfo) const
 
             if (!SamplerAttribs.IsImmutableSamplerAssigned())
             {
-                const Uint32 SamplerArrInd           = SamplerResDesc.ArraySize > 1 ? m_ArrayIndex : 0;
-                const Uint32 SamRootIndex            = SamplerAttribs.RootIndex(m_CacheType);
-                const Uint32 SamOffsetFromTableStart = SamplerAttribs.OffsetFromTableStart(m_CacheType) + SamplerArrInd;
+                const UInt32 SamplerArrInd           = SamplerResDesc.ArraySize > 1 ? m_ArrayIndex : 0;
+                const UInt32 SamRootIndex            = SamplerAttribs.RootIndex(m_CacheType);
+                const UInt32 SamOffsetFromTableStart = SamplerAttribs.OffsetFromTableStart(m_CacheType) + SamplerArrInd;
 
                 const ShaderResourceCacheD3D12::Resource& DstSam =
                     const_cast<const ShaderResourceCacheD3D12&>(m_ResourceCache).GetRootTable(SamRootIndex).GetResource(SamOffsetFromTableStart);
@@ -641,7 +641,7 @@ void BindResourceHelper::operator()(const BindResourceInfo& BindInfo) const
 } // namespace
 
 
-void ShaderVariableManagerD3D12::BindResource(Uint32 ResIndex, const BindResourceInfo& BindInfo)
+void ShaderVariableManagerD3D12::BindResource(UInt32 ResIndex, const BindResourceInfo& BindInfo)
 {
     VERIFY(m_pSignature->IsUsingSeparateSamplers() || GetResourceDesc(ResIndex).ResourceType != SHADER_RESOURCE_TYPE_SAMPLER,
            "Samplers should not be set directly when using combined texture samplers");
@@ -649,14 +649,14 @@ void ShaderVariableManagerD3D12::BindResource(Uint32 ResIndex, const BindResourc
     BindResHelper(BindInfo);
 }
 
-void ShaderVariableManagerD3D12::SetBufferDynamicOffset(Uint32 ResIndex,
-                                                        Uint32 ArrayIndex,
-                                                        Uint32 BufferDynamicOffset)
+void ShaderVariableManagerD3D12::SetBufferDynamicOffset(UInt32 ResIndex,
+                                                        UInt32 ArrayIndex,
+                                                        UInt32 BufferDynamicOffset)
 {
     const ResourceAttribs&         Attribs              = m_pSignature->GetResourceAttribs(ResIndex);
     const ResourceCacheContentType CacheType            = m_ResourceCache.GetContentType();
-    const Uint32                   RootIndex            = Attribs.RootIndex(CacheType);
-    const Uint32                   OffsetFromTableStart = Attribs.OffsetFromTableStart(CacheType) + ArrayIndex;
+    const UInt32                   RootIndex            = Attribs.RootIndex(CacheType);
+    const UInt32                   OffsetFromTableStart = Attribs.OffsetFromTableStart(CacheType) + ArrayIndex;
 
 #ifdef DILIGENT_DEVELOPMENT
     {
@@ -669,14 +669,14 @@ void ShaderVariableManagerD3D12::SetBufferDynamicOffset(Uint32 ResIndex,
     m_ResourceCache.SetBufferDynamicOffset(RootIndex, OffsetFromTableStart, BufferDynamicOffset);
 }
 
-IDeviceObject* ShaderVariableManagerD3D12::Get(Uint32 ArrayIndex,
-                                               Uint32 ResIndex) const
+IDeviceObject* ShaderVariableManagerD3D12::Get(UInt32 ArrayIndex,
+                                               UInt32 ResIndex) const
 {
     const PipelineResourceDesc&    ResDesc              = GetResourceDesc(ResIndex);
     const ResourceAttribs&         Attribs              = GetResourceAttribs(ResIndex);
     const ResourceCacheContentType CacheType            = m_ResourceCache.GetContentType();
-    const Uint32                   RootIndex            = Attribs.RootIndex(CacheType);
-    const Uint32                   OffsetFromTableStart = Attribs.OffsetFromTableStart(CacheType) + ArrayIndex;
+    const UInt32                   RootIndex            = Attribs.RootIndex(CacheType);
+    const UInt32                   OffsetFromTableStart = Attribs.OffsetFromTableStart(CacheType) + ArrayIndex;
 
     VERIFY_EXPR(ArrayIndex < ResDesc.ArraySize);
 

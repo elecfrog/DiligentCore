@@ -53,12 +53,12 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_QueryWebGPU, TQueryBase)
 
     /// Implementation of IQuery::GetData().
-    bool DILIGENT_CALL_TYPE GetData(void* pData, Uint32 DataSize, bool AutoInvalidate) override final;
+    bool DILIGENT_CALL_TYPE GetData(void* pData, UInt32 DataSize, bool AutoInvalidate) override final;
 
     /// Implementation of IQuery::Invalidate().
     void DILIGENT_CALL_TYPE Invalidate() override final;
 
-    Uint32 GetIndexInsideQuerySet(Uint32 QueryId) const;
+    UInt32 GetIndexInsideQuerySet(UInt32 QueryId) const;
 
     bool OnBeginQuery(DeviceContextWebGPUImpl* pContext);
 
@@ -70,9 +70,9 @@ private:
     void DiscardQueries();
 
 private:
-    std::array<Uint32, 2> m_QuerySetIndices    = {QueryManagerWebGPU::InvalidIndex, QueryManagerWebGPU::InvalidIndex};
+    std::array<UInt32, 2> m_QuerySetIndices    = {QueryManagerWebGPU::InvalidIndex, QueryManagerWebGPU::InvalidIndex};
     QueryManagerWebGPU*   m_pQueryMgr          = nullptr;
-    Uint64                m_QueryEndFenceValue = 0;
+    UInt64                m_QueryEndFenceValue = 0;
 };
 
 } // namespace Diligent

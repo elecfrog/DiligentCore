@@ -55,10 +55,10 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferSuballocator =
 struct IBufferSuballocation : public IObject
 {
     /// Returns the start offset of the suballocation, in bytes.
-    virtual Uint32 GetOffset() const = 0;
+    virtual UInt32 GetOffset() const = 0;
 
     /// Returns the suballocation size, in bytes.
-    virtual Uint32 GetSize() const = 0;
+    virtual UInt32 GetSize() const = 0;
 
     /// Returns a pointer to the parent allocator.
     virtual IBufferSuballocator* GetAllocator() = 0;
@@ -95,16 +95,16 @@ struct IBufferSuballocation : public IObject
 struct BufferSuballocatorUsageStats
 {
     /// Committed memory size of the internal buffer, in bytes.
-    Uint64 CommittedSize = 0;
+    UInt64 CommittedSize = 0;
 
     /// The total memory size used by all allocations, in bytes.
-    Uint64 UsedSize = 0;
+    UInt64 UsedSize = 0;
 
     /// The maximum size of the continuous free chunk in the buffer, in bytes.
-    Uint64 MaxFreeChunkSize = 0;
+    UInt64 MaxFreeChunkSize = 0;
 
     /// The current number of allocations.
-    Uint32 AllocationCount = 0;
+    UInt32 AllocationCount = 0;
 
     BufferSuballocatorUsageStats& operator+=(const BufferSuballocatorUsageStats& rhs)
     {
@@ -148,8 +148,8 @@ struct IBufferSuballocator : public IObject
     ///                               stored.
     ///
     /// \remarks    The method is thread-safe and can be called from multiple threads simultaneously.
-    virtual void Allocate(Uint32                 Size,
-                          Uint32                 Alignment,
+    virtual void Allocate(UInt32                 Size,
+                          UInt32                 Alignment,
                           IBufferSuballocation** ppSuballocation) = 0;
 
 
@@ -160,7 +160,7 @@ struct IBufferSuballocator : public IObject
     /// Returns the internal buffer version.
 
     /// The version is incremented every time the buffer is expanded.
-    virtual Uint32 GetVersion() const = 0;
+    virtual UInt32 GetVersion() const = 0;
 };
 
 /// Buffer suballocator create information.
@@ -174,14 +174,14 @@ struct BufferSuballocatorCreateInfo
     /// When non-zero, the buffer will be expanded by the specified amount every time
     /// there is insufficient space. If zero, the buffer size will be doubled when
     /// more space is needed.
-    Uint32 ExpansionSize = 0;
+    UInt32 ExpansionSize = 0;
 
     /// The maximum buffer size, in bytes.
 
     /// If `Desc.Usage == USAGE_SPARSE`, also the buffer virtual size.
     ///
     /// \remarks    If MaxSize is zero, the buffer will not be expanded beyond the initial size.
-    Uint64 MaxSize = 0;
+    UInt64 MaxSize = 0;
 
     /// Whether to disable debug validation of the internal buffer structure.
 

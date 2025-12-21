@@ -40,7 +40,7 @@
 namespace Diligent
 {
 
-enum ROOT_PARAMETER_GROUP : Uint32
+enum ROOT_PARAMETER_GROUP : UInt32
 {
     ROOT_PARAMETER_GROUP_STATIC_MUTABLE = 0,
     ROOT_PARAMETER_GROUP_DYNAMIC        = 1,
@@ -55,12 +55,12 @@ inline ROOT_PARAMETER_GROUP VariableTypeToRootParameterGroup(SHADER_RESOURCE_VAR
 struct RootParameter
 {
 private:
-    static constexpr Uint32 ParameterGroupBits = 1;
-    static constexpr Uint32 RootIndexBits      = 32 - ParameterGroupBits;
+    static constexpr UInt32 ParameterGroupBits = 1;
+    static constexpr UInt32 RootIndexBits      = 32 - ParameterGroupBits;
     static_assert((1 << ParameterGroupBits) >= ROOT_PARAMETER_GROUP_COUNT, "Not enough bits to represent ROOT_PARAMETER_GROUP");
 
 public:
-    const Uint32 RootIndex : RootIndexBits;
+    const UInt32 RootIndex : RootIndexBits;
 
     const ROOT_PARAMETER_GROUP Group : ParameterGroupBits;
 
@@ -68,16 +68,16 @@ public:
     // {CBV_SRV_UAV, SAMPLER} x {STATIC_MUTABLE, DYNAMIC}.
     // TableOffsetInGroupAllocation indicates starting offset from the beginning of the
     // corresponding allocation.
-    const Uint32 TableOffsetInGroupAllocation;
+    const UInt32 TableOffsetInGroupAllocation;
 
-    static constexpr Uint32 InvalidTableOffsetInGroupAllocation = ~0u;
+    static constexpr UInt32 InvalidTableOffsetInGroupAllocation = ~0u;
 
     const D3D12_ROOT_PARAMETER d3d12RootParam;
 
-    RootParameter(Uint32                      _RootIndex,
+    RootParameter(UInt32                      _RootIndex,
                   ROOT_PARAMETER_GROUP        _Group,
                   const D3D12_ROOT_PARAMETER& _d3d12RootParam,
-                  Uint32                      _TableOffsetInGroupAllocation = InvalidTableOffsetInGroupAllocation) noexcept;
+                  UInt32                      _TableOffsetInGroupAllocation = InvalidTableOffsetInGroupAllocation) noexcept;
 
     // clang-format off
     RootParameter           (const RootParameter&)  = delete;
@@ -86,7 +86,7 @@ public:
     RootParameter& operator=(RootParameter&&)       = delete;
     // clang-format on
 
-    Uint32 GetDescriptorTableSize() const
+    UInt32 GetDescriptorTableSize() const
     {
         VERIFY(d3d12RootParam.ParameterType == D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE,
                "Incorrect parameter type: descriptor table is expected");
@@ -105,7 +105,7 @@ public:
 
     size_t GetHash() const;
 };
-static_assert(sizeof(RootParameter) == sizeof(D3D12_ROOT_PARAMETER) + sizeof(Uint32) * 2, "Unexpected sizeof(RootParameter) - did you pack the members properly?");
+static_assert(sizeof(RootParameter) == sizeof(D3D12_ROOT_PARAMETER) + sizeof(UInt32) * 2, "Unexpected sizeof(RootParameter) - did you pack the members properly?");
 
 
 /// Container for root parameters
@@ -137,23 +137,23 @@ public:
     RootParamsManager& operator=(RootParamsManager&&)      = delete;
     // clang-format on
 
-    Uint32 GetNumRootTables() const { return m_NumRootTables; }
-    Uint32 GetNumRootViews() const { return m_NumRootViews; }
+    UInt32 GetNumRootTables() const { return m_NumRootTables; }
+    UInt32 GetNumRootViews() const { return m_NumRootViews; }
 
-    const RootParameter& GetRootTable(Uint32 TableInd) const
+    const RootParameter& GetRootTable(UInt32 TableInd) const
     {
         VERIFY_EXPR(TableInd < m_NumRootTables);
         return m_pRootTables[TableInd];
     }
 
-    const RootParameter& GetRootView(Uint32 ViewInd) const
+    const RootParameter& GetRootView(UInt32 ViewInd) const
     {
         VERIFY_EXPR(ViewInd < m_NumRootViews);
         return m_pRootViews[ViewInd];
     }
 
     // Returns the total number of resources in a given parameter group and descriptor heap type
-    Uint32 GetParameterGroupSize(D3D12_DESCRIPTOR_HEAP_TYPE d3d12HeapType, ROOT_PARAMETER_GROUP Group) const
+    UInt32 GetParameterGroupSize(D3D12_DESCRIPTOR_HEAP_TYPE d3d12HeapType, ROOT_PARAMETER_GROUP Group) const
     {
         return m_ParameterGroupSizes[d3d12HeapType][Group];
     }
@@ -169,14 +169,14 @@ private:
 
     std::unique_ptr<void, STDDeleter<void, IMemoryAllocator>> m_pMemory;
 
-    Uint32 m_NumRootTables = 0;
-    Uint32 m_NumRootViews  = 0;
+    UInt32 m_NumRootTables = 0;
+    UInt32 m_NumRootViews  = 0;
 
     const RootParameter* m_pRootTables = nullptr;
     const RootParameter* m_pRootViews  = nullptr;
 
     // The total number of resources placed in descriptor tables for each heap type and parameter group type
-    std::array<std::array<Uint32, ROOT_PARAMETER_GROUP_COUNT>, D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER + 1> m_ParameterGroupSizes{};
+    std::array<std::array<UInt32, ROOT_PARAMETER_GROUP_COUNT>, D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER + 1> m_ParameterGroupSizes{};
 };
 
 class RootParamsBuilder
@@ -189,18 +189,18 @@ public:
                               SHADER_RESOURCE_VARIABLE_TYPE VariableType,
                               D3D12_ROOT_PARAMETER_TYPE     RootParameterType,
                               D3D12_DESCRIPTOR_RANGE_TYPE   RangeType,
-                              Uint32                        ArraySize,
-                              Uint32                        Register,
-                              Uint32                        Space,
-                              Uint32&                       RootIndex,
-                              Uint32&                       OffsetFromTableStart);
+                              UInt32                        ArraySize,
+                              UInt32                        Register,
+                              UInt32                        Space,
+                              UInt32&                       RootIndex,
+                              UInt32&                       OffsetFromTableStart);
 
     void InitializeMgr(IMemoryAllocator& MemAllocator, RootParamsManager& ParamsMgr);
 
 private:
     // Adds a new root view parameter and returns the reference to it.
     RootParameter& AddRootView(D3D12_ROOT_PARAMETER_TYPE ParameterType,
-                               Uint32                    RootIndex,
+                               UInt32                    RootIndex,
                                UINT                      Register,
                                UINT                      RegisterSpace,
                                D3D12_SHADER_VISIBILITY   Visibility,
@@ -208,22 +208,22 @@ private:
 
     struct RootTableData;
     // Adds a new root table parameter and returns the reference to it.
-    RootTableData& AddRootTable(Uint32                  RootIndex,
+    RootTableData& AddRootTable(UInt32                  RootIndex,
                                 D3D12_SHADER_VISIBILITY Visibility,
                                 ROOT_PARAMETER_GROUP    RootType,
-                                Uint32                  NumRangesInNewTable = 1);
+                                UInt32                  NumRangesInNewTable = 1);
 
 
 private:
     struct RootTableData
     {
-        RootTableData(Uint32                  _RootIndex,
+        RootTableData(UInt32                  _RootIndex,
                       D3D12_SHADER_VISIBILITY _Visibility,
                       ROOT_PARAMETER_GROUP    _Group,
-                      Uint32                  _NumRanges);
-        void Extend(Uint32 NumExtraRanges);
+                      UInt32                  _NumRanges);
+        void Extend(UInt32 NumExtraRanges);
 
-        const Uint32               RootIndex;
+        const UInt32               RootIndex;
         const ROOT_PARAMETER_GROUP Group;
         D3D12_ROOT_PARAMETER       d3d12RootParam{};
 

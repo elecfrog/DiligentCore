@@ -81,22 +81,22 @@ public:
         return m_pShader->GetUserData();
     }
 
-    virtual Uint32 DILIGENT_CALL_TYPE GetResourceCount() const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetResourceCount() const override final
     {
         return m_pShader->GetResourceCount();
     }
 
-    virtual void DILIGENT_CALL_TYPE GetResourceDesc(Uint32 Index, ShaderResourceDesc& ResourceDesc) const override final
+    virtual void DILIGENT_CALL_TYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final
     {
         m_pShader->GetResourceDesc(Index, ResourceDesc);
     }
 
-    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(Uint32 Index) const override final
+    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(UInt32 Index) const override final
     {
         return m_pShader->GetConstantBufferDesc(Index);
     }
 
-    virtual void DILIGENT_CALL_TYPE GetBytecode(const void** ppBytecode, Uint64& Size) const override final
+    virtual void DILIGENT_CALL_TYPE GetBytecode(const void** ppBytecode, UInt64& Size) const override final
     {
         m_pShader->GetBytecode(ppBytecode, Size);
     }

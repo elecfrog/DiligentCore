@@ -46,7 +46,7 @@ namespace Testing
 class ReferenceBuffers
 {
 public:
-    ReferenceBuffers(Uint32           NumBuffers,
+    ReferenceBuffers(UInt32           NumBuffers,
                      USAGE            Usage,
                      BIND_FLAGS       BindFlags,
                      BUFFER_VIEW_TYPE ViewType   = BUFFER_VIEW_UNDEFINED,
@@ -61,7 +61,7 @@ public:
         auto* pEnv    = GPUTestingEnvironment::GetInstance();
         auto* pDevice = pEnv->GetDevice();
 
-        for (Uint32 i = 0; i < NumBuffers; ++i)
+        for (UInt32 i = 0; i < NumBuffers; ++i)
         {
             static std::atomic_int Counter{10};
 
@@ -79,7 +79,7 @@ public:
             BuffDesc.Usage             = Usage;
             BuffDesc.BindFlags         = BindFlags;
             BuffDesc.Mode              = BufferMode;
-            BuffDesc.Size              = static_cast<Uint64>(InitData.size() * sizeof(InitData[0]));
+            BuffDesc.Size              = static_cast<UInt64>(InitData.size() * sizeof(InitData[0]));
             BuffDesc.ElementByteStride = BufferMode != BUFFER_MODE_UNDEFINED ? 16 : 0;
 
             auto&      pBuffer = Buffers[i];
@@ -155,9 +155,9 @@ private:
 class ReferenceTextures
 {
 public:
-    ReferenceTextures(Uint32            NumTextures,
-                      Uint32            Width,
-                      Uint32            Height,
+    ReferenceTextures(UInt32            NumTextures,
+                      UInt32            Width,
+                      UInt32            Height,
                       USAGE             Usage,
                       BIND_FLAGS        BindFlags,
                       TEXTURE_VIEW_TYPE ViewType) :
@@ -168,7 +168,7 @@ public:
     {
         auto* pEnv = GPUTestingEnvironment::GetInstance();
 
-        for (Uint32 i = 0; i < NumTextures; ++i)
+        for (UInt32 i = 0; i < NumTextures; ++i)
         {
             auto& pTexture = Textures[i];
             auto& Value    = Values[i];
@@ -183,7 +183,7 @@ public:
                 (v & 0x08) ? 1.f : 0.f //
             };
 
-            std::vector<Uint32> TexData(Width * Height, F4Color_To_RGBA8Unorm(Value));
+            std::vector<UInt32> TexData(Width * Height, F4Color_To_RGBA8Unorm(Value));
 
             String Name      = String{"Reference texture "} + std::to_string(i);
             pTexture         = pEnv->CreateTexture(Name.c_str(), TEX_FORMAT_RGBA8_UNORM, BindFlags, Width, Height, TexData.data());

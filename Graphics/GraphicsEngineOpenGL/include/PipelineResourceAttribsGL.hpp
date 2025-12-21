@@ -30,7 +30,7 @@
 /// \file
 /// Declaration of Diligent::PipelineResourceAttribsGL struct
 
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "DebugUtilities.hpp"
 #include "HashUtils.hpp"
 
@@ -41,24 +41,24 @@ namespace Diligent
 struct PipelineResourceAttribsGL
 {
 private:
-    static constexpr Uint32 _SamplerIndBits      = 31;
-    static constexpr Uint32 _SamplerAssignedBits = 1;
+    static constexpr UInt32 _SamplerIndBits      = 31;
+    static constexpr UInt32 _SamplerAssignedBits = 1;
 
 public:
-    static constexpr Uint32 InvalidCacheOffset = ~0u;
-    static constexpr Uint32 InvalidSamplerInd  = (1u << _SamplerIndBits) - 1;
+    static constexpr UInt32 InvalidCacheOffset = ~0u;
+    static constexpr UInt32 InvalidSamplerInd  = (1u << _SamplerIndBits) - 1;
 
     // clang-format off
-    const Uint32  CacheOffset;                                 // SRB and Signature use the same cache offsets for static resources.
+    const UInt32  CacheOffset;                                 // SRB and Signature use the same cache offsets for static resources.
                                                                // (thanks to sorting variables by type, where all static vars go first).
                                                                // Binding == BaseBinding[Range] + CacheOffset
-    const Uint32  SamplerInd           : _SamplerIndBits;      // ImtblSamplerAssigned == true:  index of the immutable sampler in m_ImmutableSamplers.
+    const UInt32  SamplerInd           : _SamplerIndBits;      // ImtblSamplerAssigned == true:  index of the immutable sampler in m_ImmutableSamplers.
                                                                // ImtblSamplerAssigned == false: index of the assigned sampler in m_Desc.Resources.
-    const Uint32  ImtblSamplerAssigned : _SamplerAssignedBits; // Immutable sampler flag
+    const UInt32  ImtblSamplerAssigned : _SamplerAssignedBits; // Immutable sampler flag
     // clang-format on
 
-    PipelineResourceAttribsGL(Uint32 _CacheOffset,
-                              Uint32 _SamplerInd,
+    PipelineResourceAttribsGL(UInt32 _CacheOffset,
+                              UInt32 _SamplerInd,
                               bool   _ImtblSamplerAssigned) noexcept :
         // clang-format off
         CacheOffset         {_CacheOffset                   },

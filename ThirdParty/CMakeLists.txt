@@ -57,15 +57,15 @@ if (VULKAN_SUPPORTED OR METAL_SUPPORTED OR WEBGPU_SUPPORTED OR (ARCHIVER_SUPPORT
             set(SPIRV_CHECK_CONTEXT OFF CACHE BOOL "Do not check if the IR context is in a valid state")
         endif()
         set(CMAKE_MACOSX_RPATH TRUE)
-        add_subdirectory(SPIRV-Tools)
-        set_directory_root_folder("SPIRV-Tools" "DiligentCore/ThirdParty/SPIRV-Tools")
+#        add_subdirectory(SPIRV-Tools)
+#        set_directory_root_folder("SPIRV-Tools" "DiligentCore/ThirdParty/SPIRV-Tools")
         # We only need SPIRV-Tools-opt for glslang that also depends on SPIRV-Tools-static.
         # Exclude all other targets from the build to save build time
         set(SPIRV_TOOLS_EXCLUDE_TARGETS SPIRV-Tools-link SPIRV-Tools-lint SPIRV-Tools-reduce SPIRV-Tools-shared)
         set_target_properties(${SPIRV_TOOLS_EXCLUDE_TARGETS} PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
 
         set(THIRD_PARTY_LIBS SPIRV-Tools-static SPIRV-Tools-opt)
-        install(FILES "${spirv-tools_SOURCE_DIR}/LICENSE" DESTINATION "Licenses/ThirdParty/${DILIGENT_CORE_DIR}" RENAME SPIRV-Tools-License.txt)
+#        install(FILES "${spirv-tools_SOURCE_DIR}/LICENSE" DESTINATION "Licenses/ThirdParty/${DILIGENT_CORE_DIR}" RENAME SPIRV-Tools-License.txt)
     endif()
 
     if (NOT ${DILIGENT_NO_GLSLANG} AND (NOT TARGET glslang))
@@ -110,19 +110,7 @@ if (VULKAN_SUPPORTED OR METAL_SUPPORTED OR WEBGPU_SUPPORTED OR (ARCHIVER_SUPPORT
         set(SPIRV_CROSS_ENABLE_UTIL OFF CACHE BOOL "Enable util module support.")
         set(SPIRV_CROSS_FORCE_PIC ON CACHE BOOL "Force position-independent code.")
         set(SPIRV_CROSS_SKIP_INSTALL ON CACHE BOOL "Skip SPIRV-Cross installation.")
-        set(SPIRV_CROSS_NAMESPACE_OVERRIDE diligent_spirv_cross CACHE STRING "Override the namespace used in the C++ API.")
-        add_subdirectory(SPIRV-Cross)
-        set_directory_root_folder("SPIRV-Cross" "DiligentCore/ThirdParty/SPIRV-Cross")
-
-        list(APPEND THIRD_PARTY_LIBS spirv-cross-core)
-        if(SPIRV_CROSS_ENABLE_GLSL)
-            list(APPEND THIRD_PARTY_LIBS spirv-cross-glsl)
-        endif()
-        if (SPIRV_CROSS_ENABLE_MSL)
-            list(APPEND THIRD_PARTY_LIBS spirv-cross-msl)
-        endif()
-
-        install(FILES "${SPIRV-Cross_SOURCE_DIR}/LICENSE" DESTINATION "Licenses/ThirdParty/${DILIGENT_CORE_DIR}" RENAME SPIRV-Cross-License.txt)
+        set(SPIRV_CROSS_NAMESPACE_OVERRIDE spirv_cross CACHE STRING "Override the namespace used in the C++ API.")
     endif()
 
     if (MSVC)
@@ -188,15 +176,6 @@ if ((${DILIGENT_BUILD_GOOGLE_TEST}) AND (NOT TARGET gtest))
         find_targets_in_directory(GTEST_TARGETS ${GTEST_SOURCE_DIR})
         set_targets_emscripten_properties(${GTEST_TARGETS})
     endif()
-endif()
-
-if (NOT TARGET xxHash::xxhash)
-    set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build xxHash as dynamic library")
-    set(XXHASH_BUILD_XXHSUM OFF CACHE BOOL "Build the xxhsum binary")
-    add_subdirectory(xxHash/build/cmake)
-    set_directory_root_folder("xxHash/build/cmake" "DiligentCore/ThirdParty/xxHash")
-    install(FILES "${xxHash_SOURCE_DIR}/../../LICENSE" DESTINATION "Licenses/ThirdParty/${DILIGENT_CORE_DIR}" RENAME xxHash-License.txt)
-    list(APPEND THIRD_PARTY_LIBS xxhash)
 endif()
 
 # Make sure that symbols do not leak out when third-party

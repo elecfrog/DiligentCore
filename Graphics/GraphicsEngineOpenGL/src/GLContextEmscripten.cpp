@@ -124,7 +124,7 @@ GLContext::GLContext(const EngineGLCreateInfo& InitAttribs, RENDER_DEVICE_TYPE& 
     LOG_INFO_MESSAGE(InitAttribs.Window.pCanvasId != nullptr ? "Initialized OpenGLES " : "Attached to OpenGLES ", MajorVersion, '.', MinorVersion, " context (", GLVersionString, ", ", GLRenderer, ')');
 
     DevType    = RENDER_DEVICE_TYPE_GLES;
-    APIVersion = Version{static_cast<Uint32>(MajorVersion), static_cast<Uint32>(MinorVersion)};
+    APIVersion = Version{static_cast<UInt32>(MajorVersion), static_cast<UInt32>(MinorVersion)};
 
     if (InitAttribs.Window.pCanvasId != nullptr)
     {

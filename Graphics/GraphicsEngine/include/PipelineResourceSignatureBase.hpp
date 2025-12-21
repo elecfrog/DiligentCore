@@ -63,21 +63,21 @@ void ValidatePipelineResourceSignatureDesc(const PipelineResourceSignatureDesc& 
                                            const IRenderDevice*                 pDevice,
                                            RENDER_DEVICE_TYPE                   DeviceType) noexcept(false);
 
-static constexpr Uint32 InvalidImmutableSamplerIndex = ~0u;
+static constexpr UInt32 InvalidImmutableSamplerIndex = ~0u;
 /// Finds an immutable sampler for the resource name 'ResourceName' that is defined in shader stages 'ShaderStages'.
 /// If 'SamplerSuffix' is not null, it will be appended to the 'ResourceName'.
 /// Returns an index of the sampler in ImtblSamplers array, or InvalidImmutableSamplerIndex if there is no suitable sampler.
-Uint32 FindImmutableSampler(const ImmutableSamplerDesc ImtblSamplers[],
-                            Uint32                     NumImtblSamplers,
+UInt32 FindImmutableSampler(const ImmutableSamplerDesc ImtblSamplers[],
+                            UInt32                     NumImtblSamplers,
                             SHADER_TYPE                ShaderStages,
                             const char*                ResourceName,
                             const char*                SamplerSuffix);
 
-static constexpr Uint32 InvalidPipelineResourceIndex = ~0u;
+static constexpr UInt32 InvalidPipelineResourceIndex = ~0u;
 /// Finds a resource with the given name in the specified shader stage and returns its
 /// index in Resources[], or InvalidPipelineResourceIndex if the resource is not found.
-Uint32 FindResource(const PipelineResourceDesc Resources[],
-                    Uint32                     NumResources,
+UInt32 FindResource(const PipelineResourceDesc Resources[],
+                    UInt32                     NumResources,
                     SHADER_TYPE                ShaderStage,
                     const char*                ResourceName);
 
@@ -98,7 +98,7 @@ void ReserveSpaceForPipelineResourceSignatureDesc(FixedLinearAllocator&         
 void CopyPipelineResourceSignatureDesc(FixedLinearAllocator&                                            Allocator,
                                        const PipelineResourceSignatureDesc&                             SrcDesc,
                                        PipelineResourceSignatureDesc&                                   DstDesc,
-                                       std::array<Uint16, SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES + 1>& ResourceOffsets);
+                                       std::array<UInt16, SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES + 1>& ResourceOffsets);
 
 /// Pipeline resource signature internal data required for serialization/deserialization.
 template <typename PipelineResourceAttribsType, typename ImmutableSamplerAttribsType>
@@ -110,10 +110,10 @@ struct PipelineResourceSignatureInternalData
     std::array<Int8, MAX_SHADERS_IN_PIPELINE> StaticResStageIndex   = {};
 
     // The struct is used in serialization and must be tightly packed
-    Uint8 _Padding = 0;
+    UInt8 _Padding = 0;
 
-    Uint32 NumResources         = 0;
-    Uint32 NumImmutableSamplers = 0;
+    UInt32 NumResources         = 0;
+    UInt32 NumImmutableSamplers = 0;
 
     const PipelineResourceAttribsType* pResourceAttribs   = nullptr; // [NumResources]
     const ImmutableSamplerAttribsType* pImmutableSamplers = nullptr; // [NumImmutableSamplers]
@@ -132,13 +132,13 @@ struct PipelineResourceSignatureInternalData
             return false;
         }
 
-        for (Uint32 i = 0; i < NumResources; ++i)
+        for (UInt32 i = 0; i < NumResources; ++i)
         {
             if (pResourceAttribs[i] != Rhs.pResourceAttribs[i])
                 return false;
         }
 
-        for (Uint32 i = 0; i < NumImmutableSamplers; ++i)
+        for (UInt32 i = 0; i < NumImmutableSamplers; ++i)
         {
             if (pImmutableSamplers[i] != Rhs.pImmutableSamplers[i])
                 return false;
@@ -162,7 +162,7 @@ public:
 
     PipelineResourceSignatureDescWrapper(const char*                       PSOName,
                                          const PipelineResourceLayoutDesc& ResourceLayout,
-                                         Uint32                            SRBAllocationGranularity)
+                                         UInt32                            SRBAllocationGranularity)
     {
         if (PSOName != nullptr)
         {
@@ -173,7 +173,7 @@ public:
         }
 
         m_ImmutableSamplers.reserve(ResourceLayout.NumImmutableSamplers);
-        for (Uint32 i = 0; i < ResourceLayout.NumImmutableSamplers; ++i)
+        for (UInt32 i = 0; i < ResourceLayout.NumImmutableSamplers; ++i)
             AddImmutableSampler(ResourceLayout.ImmutableSamplers[i]);
 
         m_Desc.SRBAllocationGranularity = SRBAllocationGranularity;
@@ -189,11 +189,11 @@ public:
             m_Desc.CombinedSamplerSuffix = m_CombinedSamplerSuffix.c_str();
 
         m_Resources.reserve(Desc.NumResources);
-        for (Uint32 i = 0; i < Desc.NumResources; ++i)
+        for (UInt32 i = 0; i < Desc.NumResources; ++i)
             AddResource(Desc.Resources[i]);
 
         m_ImmutableSamplers.reserve(Desc.NumImmutableSamplers);
-        for (Uint32 i = 0; i < Desc.NumImmutableSamplers; ++i)
+        for (UInt32 i = 0; i < Desc.NumImmutableSamplers; ++i)
             AddImmutableSampler(Desc.ImmutableSamplers[i]);
     }
 
@@ -216,7 +216,7 @@ public:
     void AddResource(ArgsType&&... Args)
     {
         m_Resources.emplace_back(std::forward<ArgsType>(Args)...);
-        m_Desc.NumResources = StaticCast<Uint32>(m_Resources.size());
+        m_Desc.NumResources = StaticCast<UInt32>(m_Resources.size());
         m_Desc.Resources    = m_Resources.data();
 
         PipelineResourceDesc& Res{m_Resources.back()};
@@ -227,7 +227,7 @@ public:
     void AddImmutableSampler(ArgsType&&... Args)
     {
         m_ImmutableSamplers.emplace_back(std::forward<ArgsType>(Args)...);
-        m_Desc.NumImmutableSamplers = StaticCast<Uint32>(m_ImmutableSamplers.size());
+        m_Desc.NumImmutableSamplers = StaticCast<UInt32>(m_ImmutableSamplers.size());
         m_Desc.ImmutableSamplers    = m_ImmutableSamplers.data();
 
         ImmutableSamplerDesc& ImtblSam{m_ImmutableSamplers.back()};
@@ -298,10 +298,10 @@ private:
         m_Desc.Name                  = m_Name.c_str();
         m_Desc.CombinedSamplerSuffix = m_CombinedSamplerSuffix.c_str();
 
-        m_Desc.NumResources = StaticCast<Uint32>(m_Resources.size());
+        m_Desc.NumResources = StaticCast<UInt32>(m_Resources.size());
         m_Desc.Resources    = m_Resources.data();
 
-        m_Desc.NumImmutableSamplers = StaticCast<Uint32>(m_ImmutableSamplers.size());
+        m_Desc.NumImmutableSamplers = StaticCast<UInt32>(m_ImmutableSamplers.size());
         m_Desc.ImmutableSamplers    = m_ImmutableSamplers.data();
     }
 
@@ -382,7 +382,7 @@ public:
 
         // Determine shader stages that have any resources as well as
         // shader stages that have static resources.
-        for (Uint32 i = 0; i < Desc.NumResources; ++i)
+        for (UInt32 i = 0; i < Desc.NumResources; ++i)
         {
             const PipelineResourceDesc& ResDesc = Desc.Resources[i];
 
@@ -398,7 +398,7 @@ public:
         }
 
         {
-            Uint32 StaticVarStageIdx = 0;
+            UInt32 StaticVarStageIdx = 0;
             for (SHADER_TYPE StaticResStages = m_StaticResShaderStages; StaticResStages != SHADER_TYPE_UNKNOWN; ++StaticVarStageIdx)
             {
                 const SHADER_TYPE StageBit           = ExtractLSB(StaticResStages);
@@ -440,7 +440,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_PipelineResourceSignature, TDeviceObjectBase)
 
     /// Implementation of IPipelineResourceSignature::GetStaticVariableCount.
-    virtual Uint32 DILIGENT_CALL_TYPE GetStaticVariableCount(SHADER_TYPE ShaderType) const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetStaticVariableCount(SHADER_TYPE ShaderType) const override final
     {
         if (!IsConsistentShaderType(ShaderType, m_PipelineType))
         {
@@ -454,7 +454,7 @@ public:
         if (VarMngrInd < 0)
             return 0;
 
-        VERIFY_EXPR(static_cast<Uint32>(VarMngrInd) < GetNumStaticResStages());
+        VERIFY_EXPR(static_cast<UInt32>(VarMngrInd) < GetNumStaticResStages());
         return m_StaticVarsMgrs[VarMngrInd].GetVariableCount();
     }
 
@@ -474,13 +474,13 @@ public:
         if (VarMngrInd < 0)
             return nullptr;
 
-        VERIFY_EXPR(static_cast<Uint32>(VarMngrInd) < GetNumStaticResStages());
+        VERIFY_EXPR(static_cast<UInt32>(VarMngrInd) < GetNumStaticResStages());
         return m_StaticVarsMgrs[VarMngrInd].GetVariable(Name);
     }
 
     /// Implementation of IPipelineResourceSignature::GetStaticVariableByIndex.
     virtual IShaderResourceVariable* DILIGENT_CALL_TYPE GetStaticVariableByIndex(SHADER_TYPE ShaderType,
-                                                                                 Uint32      Index) override final
+                                                                                 UInt32      Index) override final
     {
         if (!IsConsistentShaderType(ShaderType, m_PipelineType))
         {
@@ -494,7 +494,7 @@ public:
         if (VarMngrInd < 0)
             return nullptr;
 
-        VERIFY_EXPR(static_cast<Uint32>(VarMngrInd) < GetNumStaticResStages());
+        VERIFY_EXPR(static_cast<UInt32>(VarMngrInd) < GetNumStaticResStages());
         return m_StaticVarsMgrs[VarMngrInd].GetVariable(Index);
     }
 
@@ -504,12 +504,12 @@ public:
                                                         BIND_SHADER_RESOURCES_FLAGS Flags) override final
     {
         const PIPELINE_TYPE PipelineType = GetPipelineType();
-        for (Uint32 ShaderInd = 0; ShaderInd < m_StaticResStageIndex.size(); ++ShaderInd)
+        for (UInt32 ShaderInd = 0; ShaderInd < m_StaticResStageIndex.size(); ++ShaderInd)
         {
             const int VarMngrInd = m_StaticResStageIndex[ShaderInd];
             if (VarMngrInd >= 0)
             {
-                VERIFY_EXPR(static_cast<Uint32>(VarMngrInd) < GetNumStaticResStages());
+                VERIFY_EXPR(static_cast<UInt32>(VarMngrInd) < GetNumStaticResStages());
                 // ShaderInd is the shader type pipeline index here
                 const SHADER_TYPE ShaderType = GetShaderTypeFromPipelineIndex(ShaderInd, PipelineType);
                 if (ShaderStages & ShaderType)
@@ -610,9 +610,9 @@ public:
         if (!PipelineResourceSignaturesCompatible(This.GetDesc(), Other.GetDesc()))
             return false;
 
-        const Uint32 ResCount = This.GetTotalResourceCount();
+        const UInt32 ResCount = This.GetTotalResourceCount();
         VERIFY_EXPR(ResCount == Other.GetTotalResourceCount());
-        for (Uint32 r = 0; r < ResCount; ++r)
+        for (UInt32 r = 0; r < ResCount; ++r)
         {
             const PipelineResourceAttribsType& Res      = This.GetResourceAttribs(r);
             const PipelineResourceAttribsType& OtherRes = Other.GetResourceAttribs(r);
@@ -637,33 +637,33 @@ public:
     bool IsUsingCombinedSamplers() const { return this->m_Desc.CombinedSamplerSuffix != nullptr; }
     bool IsUsingSeparateSamplers() const { return !IsUsingCombinedSamplers(); }
 
-    Uint32 GetTotalResourceCount() const { return this->m_Desc.NumResources; }
-    Uint32 GetImmutableSamplerCount() const { return this->m_Desc.NumImmutableSamplers; }
+    UInt32 GetTotalResourceCount() const { return this->m_Desc.NumResources; }
+    UInt32 GetImmutableSamplerCount() const { return this->m_Desc.NumImmutableSamplers; }
 
-    std::pair<Uint32, Uint32> GetResourceIndexRange(SHADER_RESOURCE_VARIABLE_TYPE VarType) const
+    std::pair<UInt32, UInt32> GetResourceIndexRange(SHADER_RESOURCE_VARIABLE_TYPE VarType) const
     {
-        return std::pair<Uint32, Uint32>{m_ResourceOffsets[VarType], m_ResourceOffsets[size_t{VarType} + 1]};
+        return std::pair<UInt32, UInt32>{m_ResourceOffsets[VarType], m_ResourceOffsets[size_t{VarType} + 1]};
     }
 
     // Returns the number of shader stages that have resources.
-    Uint32 GetNumActiveShaderStages() const
+    UInt32 GetNumActiveShaderStages() const
     {
-        return PlatformMisc::CountOneBits(Uint32{m_ShaderStages});
+        return PlatformMisc::CountOneBits(UInt32{m_ShaderStages});
     }
 
     // Returns the number of shader stages that have static resources.
-    Uint32 GetNumStaticResStages() const
+    UInt32 GetNumStaticResStages() const
     {
-        return PlatformMisc::CountOneBits(Uint32{m_StaticResShaderStages});
+        return PlatformMisc::CountOneBits(UInt32{m_StaticResShaderStages});
     }
 
     // Returns the type of the active shader stage with the given index.
-    SHADER_TYPE GetActiveShaderStageType(Uint32 StageIndex) const
+    SHADER_TYPE GetActiveShaderStageType(UInt32 StageIndex) const
     {
         VERIFY_EXPR(StageIndex < GetNumActiveShaderStages());
 
         SHADER_TYPE Stages = m_ShaderStages;
-        for (Uint32 Index = 0; Stages != SHADER_TYPE_UNKNOWN; ++Index)
+        for (UInt32 Index = 0; Stages != SHADER_TYPE_UNKNOWN; ++Index)
         {
             SHADER_TYPE StageBit = ExtractLSB(Stages);
 
@@ -677,38 +677,38 @@ public:
 
     /// Finds a resource with the given name in the specified shader stage and returns its
     /// index in m_Desc.Resources[], or InvalidPipelineResourceIndex if the resource is not found.
-    Uint32 FindResource(SHADER_TYPE ShaderStage, const char* ResourceName) const
+    UInt32 FindResource(SHADER_TYPE ShaderStage, const char* ResourceName) const
     {
         return Diligent::FindResource(this->m_Desc.Resources, this->m_Desc.NumResources, ShaderStage, ResourceName);
     }
 
     /// Finds an immutable with the given name in the specified shader stage and returns its
     /// index in m_Desc.ImmutableSamplers[], or InvalidImmutableSamplerIndex if the sampler is not found.
-    Uint32 FindImmutableSampler(SHADER_TYPE ShaderStage, const char* ResourceName) const
+    UInt32 FindImmutableSampler(SHADER_TYPE ShaderStage, const char* ResourceName) const
     {
         return Diligent::FindImmutableSampler(this->m_Desc.ImmutableSamplers, this->m_Desc.NumImmutableSamplers,
                                               ShaderStage, ResourceName, GetCombinedSamplerSuffix());
     }
 
-    const PipelineResourceDesc& GetResourceDesc(Uint32 ResIndex) const
+    const PipelineResourceDesc& GetResourceDesc(UInt32 ResIndex) const
     {
         VERIFY_EXPR(ResIndex < this->m_Desc.NumResources);
         return this->m_Desc.Resources[ResIndex];
     }
 
-    const ImmutableSamplerDesc& GetImmutableSamplerDesc(Uint32 SampIndex) const
+    const ImmutableSamplerDesc& GetImmutableSamplerDesc(UInt32 SampIndex) const
     {
         VERIFY_EXPR(SampIndex < this->m_Desc.NumImmutableSamplers);
         return this->m_Desc.ImmutableSamplers[SampIndex];
     }
 
-    const PipelineResourceAttribsType& GetResourceAttribs(Uint32 ResIndex) const
+    const PipelineResourceAttribsType& GetResourceAttribs(UInt32 ResIndex) const
     {
         VERIFY_EXPR(ResIndex < this->m_Desc.NumResources);
         return m_pResourceAttribs[ResIndex];
     }
 
-    const ImmutableSamplerAttribsType& GetImmutableSamplerAttribs(Uint32 SampIndex) const
+    const ImmutableSamplerAttribsType& GetImmutableSamplerAttribs(UInt32 SampIndex) const
     {
         VERIFY_EXPR(SampIndex < this->m_Desc.NumImmutableSamplers);
         return m_pImmutableSamplerAttribs[SampIndex];
@@ -741,19 +741,19 @@ public:
     // and calls user-provided handler for each resource.
     template <typename HandlerType>
     void ProcessResources(const SHADER_RESOURCE_VARIABLE_TYPE* AllowedVarTypes,
-                          Uint32                               NumAllowedTypes,
+                          UInt32                               NumAllowedTypes,
                           SHADER_TYPE                          AllowedStages,
                           HandlerType&&                        Handler) const
     {
         if (AllowedVarTypes == nullptr)
             NumAllowedTypes = 1;
 
-        for (Uint32 TypeIdx = 0; TypeIdx < NumAllowedTypes; ++TypeIdx)
+        for (UInt32 TypeIdx = 0; TypeIdx < NumAllowedTypes; ++TypeIdx)
         {
             const auto IdxRange = AllowedVarTypes != nullptr ?
                 GetResourceIndexRange(AllowedVarTypes[TypeIdx]) :
-                std::make_pair<Uint32, Uint32>(0, GetTotalResourceCount());
-            for (Uint32 ResIdx = IdxRange.first; ResIdx < IdxRange.second; ++ResIdx)
+                std::make_pair<UInt32, UInt32>(0, GetTotalResourceCount());
+            for (UInt32 ResIdx = IdxRange.first; ResIdx < IdxRange.second; ++ResIdx)
             {
                 const PipelineResourceDesc& ResDesc = GetResourceDesc(ResIdx);
                 VERIFY_EXPR(AllowedVarTypes == nullptr || ResDesc.VarType == AllowedVarTypes[TypeIdx]);
@@ -806,7 +806,7 @@ protected:
 
         Allocator.AddSpace<PipelineResourceAttribsType>(Desc.NumResources);
 
-        const Uint32 NumStaticResStages = GetNumStaticResStages();
+        const UInt32 NumStaticResStages = GetNumStaticResStages();
         if (NumStaticResStages > 0)
         {
             Allocator.AddSpace<ShaderResourceCacheImplType>(1);
@@ -827,10 +827,10 @@ protected:
 
 #ifdef DILIGENT_DEBUG
         VERIFY_EXPR(m_ResourceOffsets[SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES] == this->m_Desc.NumResources);
-        for (Uint32 VarType = 0; VarType < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++VarType)
+        for (UInt32 VarType = 0; VarType < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++VarType)
         {
             const auto IdxRange = GetResourceIndexRange(static_cast<SHADER_RESOURCE_VARIABLE_TYPE>(VarType));
-            for (Uint32 idx = IdxRange.first; idx < IdxRange.second; ++idx)
+            for (UInt32 idx = IdxRange.first; idx < IdxRange.second; ++idx)
                 VERIFY(this->m_Desc.Resources[idx].VarType == VarType, "Unexpected resource var type");
         }
 #endif
@@ -860,7 +860,7 @@ protected:
             if (this->HasDevice())
             {
                 IRenderDevice* pDevice = this->GetDevice();
-                for (Uint32 s = 0; s < Desc.NumImmutableSamplers; ++s)
+                for (UInt32 s = 0; s < Desc.NumImmutableSamplers; ++s)
                 {
                     const ImmutableSamplerDesc&     ImtblSamDesc = Desc.ImmutableSamplers[s];
                     RefCntAutoPtr<SamplerImplType>& pSampler     = m_pImmutableSamplers[s];
@@ -877,12 +877,12 @@ protected:
         if (NumStaticResStages > 0)
         {
             constexpr SHADER_RESOURCE_VARIABLE_TYPE AllowedVarTypes[] = {SHADER_RESOURCE_VARIABLE_TYPE_STATIC};
-            for (Uint32 i = 0; i < m_StaticResStageIndex.size(); ++i)
+            for (UInt32 i = 0; i < m_StaticResStageIndex.size(); ++i)
             {
                 Int8 Idx = m_StaticResStageIndex[i];
                 if (Idx >= 0)
                 {
-                    VERIFY_EXPR(static_cast<Uint32>(Idx) < NumStaticResStages);
+                    VERIFY_EXPR(static_cast<UInt32>(Idx) < NumStaticResStages);
                     const SHADER_TYPE ShaderType = GetShaderTypeFromPipelineIndex(i, GetPipelineType());
                     m_StaticVarsMgrs[Idx].Initialize(*pThisImpl, RawAllocator, AllowedVarTypes, _countof(AllowedVarTypes), ShaderType);
                 }
@@ -892,7 +892,7 @@ protected:
         if (Desc.SRBAllocationGranularity > 1)
         {
             std::array<size_t, MAX_SHADERS_IN_PIPELINE> ShaderVariableDataSizes = {};
-            for (Uint32 s = 0; s < GetNumActiveShaderStages(); ++s)
+            for (UInt32 s = 0; s < GetNumActiveShaderStages(); ++s)
             {
                 constexpr SHADER_RESOURCE_VARIABLE_TYPE AllowedVarTypes[]{SHADER_RESOURCE_VARIABLE_TYPE_MUTABLE, SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC};
                 ShaderVariableDataSizes[s] = ShaderVariableManagerImplType::GetRequiredMemorySize(*pThisImpl, AllowedVarTypes, _countof(AllowedVarTypes), GetActiveShaderStageType(s));
@@ -934,7 +934,7 @@ protected:
         PipelineResourceSignatureDescWrapper UpdatedDesc{Desc};
 
         bool HasCombinedSamplers = false;
-        for (Uint32 r = 0; r < Desc.NumResources; ++r)
+        for (UInt32 r = 0; r < Desc.NumResources; ++r)
         {
             const PipelineResourceDesc& Res{Desc.Resources[r]};
             if ((Res.Flags & PIPELINE_RESOURCE_FLAG_COMBINED_SAMPLER) == 0)
@@ -1023,15 +1023,15 @@ protected:
     // Finds a sampler that is assigned to texture Tex, when combined texture samplers are used.
     // Returns an index of the sampler in m_Desc.Resources array, or InvalidSamplerValue if there is
     // no such sampler, or if combined samplers are not used.
-    Uint32 FindAssignedSampler(const PipelineResourceDesc& Tex, Uint32 InvalidSamplerValue) const
+    UInt32 FindAssignedSampler(const PipelineResourceDesc& Tex, UInt32 InvalidSamplerValue) const
     {
         VERIFY_EXPR(Tex.ResourceType == SHADER_RESOURCE_TYPE_TEXTURE_SRV);
-        Uint32 SamplerInd = InvalidSamplerValue;
+        UInt32 SamplerInd = InvalidSamplerValue;
         if (IsUsingCombinedSamplers())
         {
             const auto IdxRange = GetResourceIndexRange(Tex.VarType);
 
-            for (Uint32 i = IdxRange.first; i < IdxRange.second; ++i)
+            for (UInt32 i = IdxRange.first; i < IdxRange.second; ++i)
             {
                 const PipelineResourceDesc& Res = this->m_Desc.Resources[i];
                 VERIFY_EXPR(Tex.VarType == Res.VarType);
@@ -1054,7 +1054,7 @@ protected:
         const PipelineResourceSignatureImplType* const pThisImpl = static_cast<const PipelineResourceSignatureImplType*>(this);
 
         m_Hash = CalculatePipelineResourceSignatureDescHash(this->m_Desc);
-        for (Uint32 i = 0; i < this->m_Desc.NumResources; ++i)
+        for (UInt32 i = 0; i < this->m_Desc.NumResources; ++i)
         {
             const PipelineResourceAttribsType& Attr = pThisImpl->GetResourceAttribs(i);
             HashCombine(m_Hash, Attr.GetHash());
@@ -1082,7 +1082,7 @@ protected:
     size_t m_Hash = 0;
 
     // Resource offsets (e.g. index of the first resource), for each variable type.
-    std::array<Uint16, SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES + 1> m_ResourceOffsets = {};
+    std::array<UInt16, SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES + 1> m_ResourceOffsets = {};
 
     // Shader stages that have resources.
     SHADER_TYPE m_ShaderStages = SHADER_TYPE_UNKNOWN;

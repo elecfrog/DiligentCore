@@ -44,19 +44,19 @@ namespace Diligent
 namespace Testing
 {
 
-void CompareTestImages(const Uint8*                          pReferencePixels,
-                       Uint64                                RefPixelsStride,
-                       const Uint8*                          pPixels,
-                       Uint64                                PixelsStride,
-                       Uint32                                Width,
-                       Uint32                                Height,
+void CompareTestImages(const UInt8*                          pReferencePixels,
+                       UInt64                                RefPixelsStride,
+                       const UInt8*                          pPixels,
+                       UInt64                                PixelsStride,
+                       UInt32                                Width,
+                       UInt32                                Height,
                        TEXTURE_FORMAT                        Format,
                        std::unordered_map<std::string, int>& FailureCounters);
 
-void DumpTestImage(const Uint8*   pPixels,
-                   Uint64         PixelsStride,
-                   Uint32         Width,
-                   Uint32         Height,
+void DumpTestImage(const UInt8*   pPixels,
+                   UInt64         PixelsStride,
+                   UInt32         Width,
+                   UInt32         Height,
                    TEXTURE_FORMAT Format,
                    const char*    DumpName,
                    bool           bIsOpenGL);
@@ -173,12 +173,12 @@ public:
         }
     }
 
-    virtual void DILIGENT_CALL_TYPE Present(Uint32 SyncInterval = 1) override
+    virtual void DILIGENT_CALL_TYPE Present(UInt32 SyncInterval = 1) override
     {
         CompareWithSnapshot(nullptr);
     }
 
-    virtual void DILIGENT_CALL_TYPE Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final
+    virtual void DILIGENT_CALL_TYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final
     {
         UNEXPECTED("Resizing testing swap chains is not supported");
     }
@@ -193,7 +193,7 @@ public:
         UNEXPECTED("Testing swap chain can't switch between windowed and full screen modes");
     }
 
-    virtual void DILIGENT_CALL_TYPE SetMaximumFrameLatency(Uint32 MaxLatency) override final
+    virtual void DILIGENT_CALL_TYPE SetMaximumFrameLatency(UInt32 MaxLatency) override final
     {
         UNEXPECTED("Testing swap chain can't set the maximum frame latency");
     }
@@ -243,7 +243,7 @@ public:
         }
 
         m_pContext->MapTextureSubresource(m_pStagingTexture, 0, 0, MAP_READ, MapFlag, nullptr, MapData);
-        DumpTestImage(static_cast<const Uint8*>(MapData.pData), MapData.Stride, m_SwapChainDesc.Width, m_SwapChainDesc.Height, m_SwapChainDesc.ColorBufferFormat, FileName, m_pDevice->GetDeviceInfo().IsGLDevice());
+        DumpTestImage(static_cast<const UInt8*>(MapData.pData), MapData.Stride, m_SwapChainDesc.Width, m_SwapChainDesc.Height, m_SwapChainDesc.ColorBufferFormat, FileName, m_pDevice->GetDeviceInfo().IsGLDevice());
         m_pContext->UnmapTextureSubresource(m_pStagingTexture, 0, 0);
     }
 
@@ -278,7 +278,7 @@ public:
         }
 
         m_pContext->MapTextureSubresource(m_pStagingTexture, 0, 0, MAP_READ, MapFlag, nullptr, MapData);
-        CompareTestImages(m_ReferenceData.data(), m_ReferenceDataPitch, static_cast<const Uint8*>(MapData.pData), MapData.Stride,
+        CompareTestImages(m_ReferenceData.data(), m_ReferenceDataPitch, static_cast<const UInt8*>(MapData.pData), MapData.Stride,
                           m_SwapChainDesc.Width, m_SwapChainDesc.Height, m_SwapChainDesc.ColorBufferFormat, m_FailureCounters);
 
         m_pContext->UnmapTextureSubresource(m_pStagingTexture, 0, 0);
@@ -297,8 +297,8 @@ protected:
 
     std::unordered_map<std::string, int> m_FailureCounters;
 
-    std::vector<Uint8> m_ReferenceData;
-    Uint32             m_ReferenceDataPitch = 0;
+    std::vector<UInt8> m_ReferenceData;
+    UInt32             m_ReferenceDataPitch = 0;
 };
 
 } // namespace Testing

@@ -28,7 +28,7 @@
 
 #include <cstring>
 
-#include "../../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "../../../Graphics/GraphicsEngine/interface/Shader.h"
 #include "../../../Common/interface/StringTools.hpp"
 #include "../../../Common/interface/HashUtils.hpp"
@@ -40,8 +40,8 @@ namespace Diligent
 
 struct XXH128Hash
 {
-    Uint64 LowPart  = {};
-    Uint64 HighPart = {};
+    UInt64 LowPart  = {};
+    UInt64 HighPart = {};
 
     constexpr bool operator==(const XXH128Hash& RHS) const noexcept
     {

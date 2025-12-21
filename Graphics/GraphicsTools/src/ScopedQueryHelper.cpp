@@ -32,15 +32,15 @@ namespace Diligent
 
 ScopedQueryHelper::ScopedQueryHelper(IRenderDevice*   pDevice,
                                      const QueryDesc& queryDesc,
-                                     Uint32           NumQueriesToReserve,
-                                     Uint32           ExpectedQueryLimit) :
+                                     UInt32           NumQueriesToReserve,
+                                     UInt32           ExpectedQueryLimit) :
     m_pDevice{pDevice},
     m_QueryDesc{queryDesc},
     m_ExpectedQueryLimit{ExpectedQueryLimit}
 {
     VERIFY(queryDesc.Type != QUERY_TYPE_TIMESTAMP, "Scoped query type is expected");
     m_AvailableQueries.resize(NumQueriesToReserve);
-    for (Uint32 i = 0; i < NumQueriesToReserve; ++i)
+    for (UInt32 i = 0; i < NumQueriesToReserve; ++i)
     {
         m_pDevice->CreateQuery(queryDesc, &m_AvailableQueries[i]);
         VERIFY(m_AvailableQueries[i], "Failed to create query");
@@ -62,7 +62,7 @@ void ScopedQueryHelper::Begin(IDeviceContext* pCtx)
     m_PendingQueries.push_front(std::move(pQuery));
 }
 
-bool ScopedQueryHelper::End(IDeviceContext* pCtx, void* pData, Uint32 DataSize)
+bool ScopedQueryHelper::End(IDeviceContext* pCtx, void* pData, UInt32 DataSize)
 {
     if (m_PendingQueries.empty())
     {

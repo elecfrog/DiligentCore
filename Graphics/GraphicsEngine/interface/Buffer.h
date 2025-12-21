@@ -45,7 +45,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_Buffer =
 /// Describes the buffer access mode.
 
 /// This enumeration is used by BufferDesc structure.
-DILIGENT_TYPED_ENUM(BUFFER_MODE, Uint8)
+DILIGENT_TYPED_ENUM(BUFFER_MODE, UInt8)
 {
     /// Undefined mode.
     BUFFER_MODE_UNDEFINED = 0,
@@ -71,7 +71,7 @@ DILIGENT_TYPED_ENUM(BUFFER_MODE, Uint8)
 };
 
 /// Miscellaneous buffer flags.
-DILIGENT_TYPED_ENUM(MISC_BUFFER_FLAGS, Uint8)
+DILIGENT_TYPED_ENUM(MISC_BUFFER_FLAGS, UInt8)
 {
     /// No special flags are set.
     MISC_BUFFER_FLAG_NONE            = 0,
@@ -86,7 +86,7 @@ DEFINE_FLAG_ENUM_OPERATORS(MISC_BUFFER_FLAGS)
 struct BufferDesc DILIGENT_DERIVE(DeviceObjectAttribs)
 
     /// Size of the buffer, in bytes. For a uniform buffer, this must be a multiple of 16.
-    Uint64 Size                    DEFAULT_INITIALIZER(0);
+    UInt64 Size                    DEFAULT_INITIALIZER(0);
 
     /// Buffer bind flags, see Diligent::BIND_FLAGS for details
 
@@ -116,7 +116,7 @@ struct BufferDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     /// (BufferDesc::Mode equals Diligent::BUFFER_MODE_FORMATTED) and optionally for a raw buffer
     /// (Diligent::BUFFER_MODE_RAW), this member defines the size of the format that will be used for views
     /// created for this buffer.
-    Uint32 ElementByteStride        DEFAULT_INITIALIZER(0);
+    UInt32 ElementByteStride        DEFAULT_INITIALIZER(0);
 
     /// Defines which immediate contexts are allowed to execute commands that use this buffer.
 
@@ -127,7 +127,7 @@ struct BufferDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     ///
     /// \remarks    Only specify these bits that will indicate those immediate contexts where the buffer
     ///             will actually be used. Do not set unnecessary bits as this will result in extra overhead.
-    Uint64 ImmediateContextMask     DEFAULT_INITIALIZER(1);
+    UInt64 ImmediateContextMask     DEFAULT_INITIALIZER(1);
 
 
 #if DILIGENT_CPP_INTERFACE
@@ -137,13 +137,13 @@ struct BufferDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     constexpr BufferDesc() noexcept {}
 
     constexpr BufferDesc(const Char*      _Name,
-                         Uint64           _Size,
+                         UInt64           _Size,
                          BIND_FLAGS       _BindFlags,
                          USAGE            _Usage                = BufferDesc{}.Usage,
                          CPU_ACCESS_FLAGS _CPUAccessFlags       = BufferDesc{}.CPUAccessFlags,
                          BUFFER_MODE      _Mode                 = BufferDesc{}.Mode,
-                         Uint32           _ElementByteStride    = BufferDesc{}.ElementByteStride,
-                         Uint64           _ImmediateContextMask = BufferDesc{}.ImmediateContextMask) noexcept :
+                         UInt32           _ElementByteStride    = BufferDesc{}.ElementByteStride,
+                         UInt64           _ImmediateContextMask = BufferDesc{}.ImmediateContextMask) noexcept :
         DeviceObjectAttribs  {_Name             },
         Size                 {_Size             },
         BindFlags            {_BindFlags        },
@@ -188,7 +188,7 @@ struct BufferData
     const void* pData DEFAULT_INITIALIZER(nullptr);
 
     /// Data size, in bytes
-    Uint64 DataSize   DEFAULT_INITIALIZER(0);
+    UInt64 DataSize   DEFAULT_INITIALIZER(0);
 
     /// Defines which device context will be used to initialize the buffer.
 
@@ -204,7 +204,7 @@ struct BufferData
     constexpr BufferData() noexcept {}
 
     constexpr BufferData(const void*     _pData,
-                         Uint64          _DataSize,
+                         UInt64          _DataSize,
                          IDeviceContext* _pContext = nullptr) :
         pData   {_pData   },
         DataSize{_DataSize},
@@ -218,7 +218,7 @@ typedef struct BufferData BufferData;
 struct SparseBufferProperties
 {
     /// The size of the buffer's virtual address space.
-    Uint64  AddressSpaceSize  DEFAULT_INITIALIZER(0);
+    UInt64  AddressSpaceSize  DEFAULT_INITIALIZER(0);
 
     /// The size of the sparse memory block.
 
@@ -226,7 +226,7 @@ struct SparseBufferProperties
     ///       binding command, must be multiples of the block size.
     ///       In Direct3D11 and Direct3D12, the block size is always 64Kb.
     ///       In Vulkan, the block size is not documented, but is usually also 64Kb.
-    Uint32  BlockSize  DEFAULT_INITIALIZER(0);
+    UInt32  BlockSize  DEFAULT_INITIALIZER(0);
 };
 typedef struct SparseBufferProperties SparseBufferProperties;
 
@@ -284,7 +284,7 @@ DILIGENT_BEGIN_INTERFACE(IBuffer, IDeviceObject)
     ///         GL buffer name, for OpenGL implementation\n
     ///         `MtlBuffer`, for Metal implementation\n
     ///         `WGPUBuffer`, for WGPU implementation\n
-    VIRTUAL Uint64 METHOD(GetNativeHandle)(THIS) PURE;
+    VIRTUAL UInt64 METHOD(GetNativeHandle)(THIS) PURE;
 
     /// Sets the buffer usage state.
 
@@ -326,8 +326,8 @@ DILIGENT_BEGIN_INTERFACE(IBuffer, IDeviceObject)
     /// When a mapped buffer is unmapped it is automatically flushed by
     /// the engine if necessary.
     VIRTUAL void METHOD(FlushMappedRange)(THIS_
-                                          Uint64 StartOffset,
-                                          Uint64 Size) PURE;
+                                          UInt64 StartOffset,
+                                          UInt64 Size) PURE;
 
 
     /// Invalidates the specified range of non-coherent memory modified by the GPU to make
@@ -347,8 +347,8 @@ DILIGENT_BEGIN_INTERFACE(IBuffer, IDeviceObject)
     /// When a mapped buffer is unmapped, it is automatically invalidated by
     /// the engine if necessary.
     VIRTUAL void METHOD(InvalidateMappedRange)(THIS_
-                                               Uint64 StartOffset,
-                                               Uint64 Size) PURE;
+                                               UInt64 StartOffset,
+                                               UInt64 Size) PURE;
 
     /// Returns the sparse buffer memory properties
     VIRTUAL SparseBufferProperties METHOD(GetSparseProperties)(THIS) CONST PURE;

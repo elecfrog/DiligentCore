@@ -43,19 +43,19 @@ public:
 
     ~SRBMemoryAllocator();
 
-    void Initialize(Uint32              SRBAllocationGranularity,
-                    Uint32              ShaderVariableDataAllocatorCount,
+    void Initialize(UInt32              SRBAllocationGranularity,
+                    UInt32              ShaderVariableDataAllocatorCount,
                     const size_t* const ShaderVariableDataSizes,
-                    Uint32              ResourceCacheDataAllocatorCount,
+                    UInt32              ResourceCacheDataAllocatorCount,
                     const size_t* const ResourceCacheDataSizes);
 
-    IMemoryAllocator& GetShaderVariableDataAllocator(Uint32 Ind)
+    IMemoryAllocator& GetShaderVariableDataAllocator(UInt32 Ind)
     {
         VERIFY_EXPR(m_DataAllocators == nullptr || Ind < m_ShaderVariableDataAllocatorCount);
         return m_DataAllocators != nullptr ? m_DataAllocators[Ind] : m_RawMemAllocator;
     }
 
-    IMemoryAllocator& GetResourceCacheDataAllocator(Uint32 Ind)
+    IMemoryAllocator& GetResourceCacheDataAllocator(UInt32 Ind)
     {
         VERIFY_EXPR(m_DataAllocators == nullptr || Ind < m_ResourceCacheDataAllocatorCount);
         return m_DataAllocators != nullptr ? m_DataAllocators[m_ShaderVariableDataAllocatorCount + Ind] : m_RawMemAllocator;
@@ -67,8 +67,8 @@ private:
     // Fixed-block allocators for every shader stage
     FixedBlockMemoryAllocator* m_DataAllocators = nullptr;
 
-    Uint32 m_ShaderVariableDataAllocatorCount = 0;
-    Uint32 m_ResourceCacheDataAllocatorCount  = 0;
+    UInt32 m_ShaderVariableDataAllocatorCount = 0;
+    UInt32 m_ResourceCacheDataAllocatorCount  = 0;
 };
 
 } // namespace Diligent

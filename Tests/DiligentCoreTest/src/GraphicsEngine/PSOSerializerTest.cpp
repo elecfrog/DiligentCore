@@ -43,7 +43,7 @@ namespace Diligent
 
 struct TestResourceAttribs
 {
-    Uint32 Index = 0;
+    UInt32 Index = 0;
     bool   operator==(const TestResourceAttribs& rhs) const
     {
         return Index == rhs.Index;
@@ -55,7 +55,7 @@ struct TestResourceAttribs
 };
 struct TestImmutableSamplerAttribs
 {
-    Uint32 Index = 0;
+    UInt32 Index = 0;
     bool   operator==(const TestImmutableSamplerAttribs& rhs) const
     {
         return Index == rhs.Index;
@@ -191,7 +191,7 @@ TEST(PSOSerializerTest, SerializePRSDesc)
         SrcPRSDesc.ImmutableSamplers    = ImmutableSamplers;
         SrcPRSDesc.NumImmutableSamplers = _countof(ImmutableSamplers);
 
-        SrcPRSDesc.BindingIndex = Val(Uint8{0}, Uint8{DILIGENT_MAX_RESOURCE_SIGNATURES});
+        SrcPRSDesc.BindingIndex = Val(UInt8{0}, UInt8{DILIGENT_MAX_RESOURCE_SIGNATURES});
 
         TestResourceAttribs ResAttribs[] =
             {
@@ -272,7 +272,7 @@ static void TestSerializePSOCreateInfo(HelperType&& Helper)
         SrcPSO.Flags                   = Val(PSO_CREATE_FLAG_NONE, (PSO_CREATE_FLAG_LAST << 1) - 1);
         SrcPSO.ResourceSignaturesCount = Val(1u, _countof(PRSNames));
 
-        for (Uint32 i = 0; i < SrcPSO.ResourceSignaturesCount; ++i)
+        for (UInt32 i = 0; i < SrcPSO.ResourceSignaturesCount; ++i)
             SrcPRSNames[i] = PRSNames[i].c_str();
 
         Helper.Init(SrcPSO, Val);
@@ -381,8 +381,8 @@ TEST(PSOSerializerTest, SerializeGraphicsPSOCreateInfo)
             DepthStencilDesc.DepthWriteEnable             = Val.Bool();
             DepthStencilDesc.DepthFunc                    = Val(COMPARISON_FUNC_UNKNOWN, COMPARISON_FUNC_NUM_FUNCTIONS - 1);
             DepthStencilDesc.StencilEnable                = Val.Bool();
-            DepthStencilDesc.StencilReadMask              = Val(Uint8{0}, Uint8{0xFF});
-            DepthStencilDesc.StencilWriteMask             = Val(Uint8{0}, Uint8{0xFF});
+            DepthStencilDesc.StencilReadMask              = Val(UInt8{0}, UInt8{0xFF});
+            DepthStencilDesc.StencilWriteMask             = Val(UInt8{0}, UInt8{0xFF});
             DepthStencilDesc.FrontFace.StencilFailOp      = Val(STENCIL_OP_UNDEFINED, STENCIL_OP_NUM_OPS - 1);
             DepthStencilDesc.FrontFace.StencilDepthFailOp = Val(STENCIL_OP_UNDEFINED, STENCIL_OP_NUM_OPS - 1);
             DepthStencilDesc.FrontFace.StencilPassOp      = Val(STENCIL_OP_UNDEFINED, STENCIL_OP_NUM_OPS - 1);
@@ -403,8 +403,8 @@ TEST(PSOSerializerTest, SerializeGraphicsPSOCreateInfo)
                 for (size_t i = 0; i < LayoutElements.size(); ++i)
                 {
                     auto& Elem          = LayoutElements[i];
-                    Elem.InputIndex     = Val(static_cast<Uint32>(i), 16u);
-                    Elem.BufferSlot     = Val(static_cast<Uint32>(i / 2), 4u);
+                    Elem.InputIndex     = Val(static_cast<UInt32>(i), 16u);
+                    Elem.BufferSlot     = Val(static_cast<UInt32>(i / 2), 4u);
                     Elem.NumComponents  = Val(0u, 4u);
                     Elem.ValueType      = Val(VT_UNDEFINED, VT_NUM_TYPES - 1);
                     Elem.IsNormalized   = Val.Bool();
@@ -420,18 +420,18 @@ TEST(PSOSerializerTest, SerializeGraphicsPSOCreateInfo)
             }
 
             GraphicsPipeline.PrimitiveTopology = Val(PRIMITIVE_TOPOLOGY_UNDEFINED, PRIMITIVE_TOPOLOGY_NUM_TOPOLOGIES - 1);
-            GraphicsPipeline.NumViewports      = Val(Uint8{1}, Uint8{8});
-            GraphicsPipeline.SubpassIndex      = Val(Uint8{1}, Uint8{8});
+            GraphicsPipeline.NumViewports      = Val(UInt8{1}, UInt8{8});
+            GraphicsPipeline.SubpassIndex      = Val(UInt8{1}, UInt8{8});
             GraphicsPipeline.ShadingRateFlags  = Val(PIPELINE_SHADING_RATE_FLAG_NONE, (PIPELINE_SHADING_RATE_FLAG_LAST << 1) - 1);
-            GraphicsPipeline.NumRenderTargets  = Val(Uint8{1}, Uint8{8});
-            for (Uint32 i = 0; i < GraphicsPipeline.NumRenderTargets; ++i)
+            GraphicsPipeline.NumRenderTargets  = Val(UInt8{1}, UInt8{8});
+            for (UInt32 i = 0; i < GraphicsPipeline.NumRenderTargets; ++i)
             {
                 GraphicsPipeline.RTVFormats[i] = Val(TEX_FORMAT_UNKNOWN, TEX_FORMAT_NUM_FORMATS - 1, i + 1);
             }
             GraphicsPipeline.DSVFormat        = Val(TEX_FORMAT_UNKNOWN, TEX_FORMAT_NUM_FORMATS - 1, 9);
             GraphicsPipeline.ReadOnlyDSV      = Val.Bool();
-            GraphicsPipeline.SmplDesc.Count   = Val(Uint8{0}, Uint8{64});
-            GraphicsPipeline.SmplDesc.Quality = Val(Uint8{0}, Uint8{8});
+            GraphicsPipeline.SmplDesc.Count   = Val(UInt8{0}, UInt8{64});
+            GraphicsPipeline.SmplDesc.Quality = Val(UInt8{0}, UInt8{8});
 
             ASSERT_SIZEOF64(GraphicsPipelineStateCreateInfo, 344, "Did you add a new member to GraphicsPipelineStateCreateInfo? Please add serialization test here.");
         }
@@ -491,9 +491,9 @@ TEST(PSOSerializerTest, SerializeTilePSOCreateInfo)
     {
         void Init(TilePipelineStateCreateInfo& CI, ValueIterator& Val)
         {
-            CI.TilePipeline.SampleCount      = Val(Uint8{1}, Uint8{64});
-            CI.TilePipeline.NumRenderTargets = Val(Uint8{1}, Uint8{8});
-            for (Uint32 i = 0; i < CI.TilePipeline.NumRenderTargets; ++i)
+            CI.TilePipeline.SampleCount      = Val(UInt8{1}, UInt8{64});
+            CI.TilePipeline.NumRenderTargets = Val(UInt8{1}, UInt8{8});
+            for (UInt32 i = 0; i < CI.TilePipeline.NumRenderTargets; ++i)
             {
                 CI.TilePipeline.RTVFormats[i] = Val(TEX_FORMAT_UNKNOWN, TEX_FORMAT_NUM_FORMATS - 1, i + 1);
             }
@@ -532,7 +532,7 @@ TEST(PSOSerializerTest, SerializeRayTracingPSOCreateInfo)
             StringAlloc{GetRawAllocator()}
         {}
 
-        const char* GenGroupName(const String& Prefix, Uint32 Index)
+        const char* GenGroupName(const String& Prefix, UInt32 Index)
         {
             String Name{Prefix};
             Name += " - ";
@@ -543,8 +543,8 @@ TEST(PSOSerializerTest, SerializeRayTracingPSOCreateInfo)
 
         void Init(RayTracingPipelineStateCreateInfo& CI, ValueIterator& Val)
         {
-            CI.RayTracingPipeline.MaxRecursionDepth = Val(Uint8{0}, Uint8{16});
-            CI.RayTracingPipeline.ShaderRecordSize  = Val(Uint16{0}, Uint16{128});
+            CI.RayTracingPipeline.MaxRecursionDepth = Val(UInt8{0}, UInt8{16});
+            CI.RayTracingPipeline.ShaderRecordSize  = Val(UInt16{0}, UInt16{128});
 
             CI.MaxAttributeSize = Val(0u, 128u);
             CI.MaxPayloadSize   = Val(0u, 128u);
@@ -560,22 +560,22 @@ TEST(PSOSerializerTest, SerializeRayTracingPSOCreateInfo)
             TriangleHitShaders.resize(CI.TriangleHitShaderCount);
             ProceduralHitShaders.resize(CI.ProceduralHitShaderCount);
 
-            Uint32 ShaderIndex = 0x10000;
+            UInt32 ShaderIndex = 0x10000;
 
-            for (Uint32 i = 0; i < CI.GeneralShaderCount; ++i)
+            for (UInt32 i = 0; i < CI.GeneralShaderCount; ++i)
             {
                 auto& Group   = GeneralShaders[i];
                 Group.Name    = GenGroupName("General", i);
                 Group.pShader = BitCast<IShader*>(++ShaderIndex);
             }
-            for (Uint32 i = 0; i < CI.TriangleHitShaderCount; ++i)
+            for (UInt32 i = 0; i < CI.TriangleHitShaderCount; ++i)
             {
                 auto& Group             = TriangleHitShaders[i];
                 Group.Name              = GenGroupName("TriangleHit", i);
                 Group.pClosestHitShader = BitCast<IShader*>(++ShaderIndex);
                 Group.pAnyHitShader     = BitCast<IShader*>(++ShaderIndex);
             }
-            for (Uint32 i = 0; i < CI.ProceduralHitShaderCount; ++i)
+            for (UInt32 i = 0; i < CI.ProceduralHitShaderCount; ++i)
             {
                 auto& Group               = ProceduralHitShaders[i];
                 Group.Name                = GenGroupName("ProceduralHit", i);
@@ -594,7 +594,7 @@ TEST(PSOSerializerTest, SerializeRayTracingPSOCreateInfo)
             auto res =
                 PSOSerializer<SerializerMode::Measure>::SerializeCreateInfo(
                     Ser, CI, PRSNames, nullptr,
-                    [](Uint32& outIndex, IShader* const& inShader) { outIndex = static_cast<Uint32>(BitCast<size_t>(inShader)); });
+                    [](UInt32& outIndex, IShader* const& inShader) { outIndex = static_cast<UInt32>(BitCast<size_t>(inShader)); });
             EXPECT_TRUE(res);
         }
 
@@ -603,7 +603,7 @@ TEST(PSOSerializerTest, SerializeRayTracingPSOCreateInfo)
             auto res =
                 PSOSerializer<SerializerMode::Write>::SerializeCreateInfo(
                     Ser, CI, PRSNames, nullptr,
-                    [](Uint32& outIndex, IShader* const& inShader) { outIndex = static_cast<Uint32>(BitCast<size_t>(inShader)); });
+                    [](UInt32& outIndex, IShader* const& inShader) { outIndex = static_cast<UInt32>(BitCast<size_t>(inShader)); });
             EXPECT_TRUE(res);
         }
 
@@ -612,7 +612,7 @@ TEST(PSOSerializerTest, SerializeRayTracingPSOCreateInfo)
             auto res =
                 PSOSerializer<SerializerMode::Read>::SerializeCreateInfo(
                     Ser, CI, PRSNames, Allocator,
-                    [](Uint32& inIndex, IShader*& outShader) { outShader = BitCast<IShader*>(inIndex); });
+                    [](UInt32& inIndex, IShader*& outShader) { outShader = BitCast<IShader*>(inIndex); });
             EXPECT_TRUE(res);
         }
     };
@@ -636,22 +636,22 @@ TEST(PSOSerializerTest, SerializeRenderPassDesc)
         SrcRP.SubpassCount    = Val(1u, _countof(Subpasses));
         SrcRP.DependencyCount = Val(0u, _countof(Dependencies));
 
-        const auto GenAttachmentIndex = [&SrcRP, &Val](Uint32 Offset = 0) {
-            auto Idx = Val(Uint32{0}, SrcRP.AttachmentCount);
+        const auto GenAttachmentIndex = [&SrcRP, &Val](UInt32 Offset = 0) {
+            auto Idx = Val(UInt32{0}, SrcRP.AttachmentCount);
             Idx      = (Idx + Offset) % SrcRP.AttachmentCount;
             if (Idx == SrcRP.AttachmentCount)
                 Idx = ATTACHMENT_UNUSED;
             return Idx;
         };
-        const auto GenState = [&Val](Uint32 Step) {
+        const auto GenState = [&Val](UInt32 Step) {
             return Val(RESOURCE_STATE_UNKNOWN, (RESOURCE_STATE_MAX_BIT << 1) - 1, Step);
         };
 
-        for (Uint32 i = 0; i < SrcRP.AttachmentCount; ++i)
+        for (UInt32 i = 0; i < SrcRP.AttachmentCount; ++i)
         {
             auto& Attachment{Attachments[i]};
             Attachment.Format         = Val(TEX_FORMAT_UNKNOWN, TEX_FORMAT_NUM_FORMATS, i + 1);
-            Attachment.SampleCount    = Val(Uint8{1}, Uint8{32});
+            Attachment.SampleCount    = Val(UInt8{1}, UInt8{32});
             Attachment.LoadOp         = Val(ATTACHMENT_LOAD_OP_LOAD, ATTACHMENT_LOAD_OP_COUNT - 1);
             Attachment.StoreOp        = Val(ATTACHMENT_STORE_OP_STORE, ATTACHMENT_STORE_OP_COUNT - 1);
             Attachment.StencilLoadOp  = Val(ATTACHMENT_LOAD_OP_LOAD, ATTACHMENT_LOAD_OP_COUNT - 1);
@@ -659,7 +659,7 @@ TEST(PSOSerializerTest, SerializeRenderPassDesc)
             Attachment.InitialState   = GenState(0xEF + i);
             Attachment.FinalState     = GenState(0x47 + i);
         }
-        for (Uint32 i = 0; i < SrcRP.SubpassCount; ++i)
+        for (UInt32 i = 0; i < SrcRP.SubpassCount; ++i)
         {
             auto& Subpass{Subpasses[i]};
             Subpass.InputAttachmentCount        = Val(0u, 2u);
@@ -673,27 +673,27 @@ TEST(PSOSerializerTest, SerializeRenderPassDesc)
             auto* pInputAttachments        = TmpAlloc.ConstructArray<AttachmentReference>(Subpass.InputAttachmentCount);
             auto* pRenderTargetAttachments = TmpAlloc.ConstructArray<AttachmentReference>(Subpass.RenderTargetAttachmentCount);
             auto* pResolveAttachments      = TmpAlloc.ConstructArray<AttachmentReference>(HasResolveAttachments ? Subpass.RenderTargetAttachmentCount : 0);
-            auto* pPreserveAttachments     = TmpAlloc.ConstructArray<Uint32>(Subpass.PreserveAttachmentCount);
+            auto* pPreserveAttachments     = TmpAlloc.ConstructArray<UInt32>(Subpass.PreserveAttachmentCount);
 
-            for (Uint32 j = 0; j < Subpass.InputAttachmentCount; ++j)
+            for (UInt32 j = 0; j < Subpass.InputAttachmentCount; ++j)
             {
                 pInputAttachments[i].AttachmentIndex = GenAttachmentIndex(0);
                 pInputAttachments[i].State           = GenState(0x55 + j + i * 10);
             }
-            for (Uint32 j = 0; j < Subpass.RenderTargetAttachmentCount; ++j)
+            for (UInt32 j = 0; j < Subpass.RenderTargetAttachmentCount; ++j)
             {
                 pRenderTargetAttachments[i].AttachmentIndex = GenAttachmentIndex(1);
                 pRenderTargetAttachments[i].State           = GenState(0x49 + j + i * 16);
             }
             if (pResolveAttachments)
             {
-                for (Uint32 j = 0; j < Subpass.RenderTargetAttachmentCount; ++j)
+                for (UInt32 j = 0; j < Subpass.RenderTargetAttachmentCount; ++j)
                 {
                     pResolveAttachments[i].AttachmentIndex = GenAttachmentIndex(2);
                     pResolveAttachments[i].State           = GenState(0x38 + j + i * 9);
                 }
             }
-            for (Uint32 j = 0; j < Subpass.PreserveAttachmentCount; ++j)
+            for (UInt32 j = 0; j < Subpass.PreserveAttachmentCount; ++j)
             {
                 pPreserveAttachments[j] = GenAttachmentIndex(3);
             }
@@ -720,7 +720,7 @@ TEST(PSOSerializerTest, SerializeRenderPassDesc)
                 pShadingRateAttachment->Attachment.State           = GenState(0x63 + i);
             }
         }
-        for (Uint32 i = 0; i < SrcRP.DependencyCount; ++i)
+        for (UInt32 i = 0; i < SrcRP.DependencyCount; ++i)
         {
             auto& Dep{Dependencies[i]};
             Dep.SrcSubpass    = Val(0u, 10u);
@@ -774,7 +774,7 @@ void SerializeShaderCreateInfo(bool UseBytecode)
     RefCI.WebGPUEmulatedArrayIndexSuffix = "My suffix";
 
     constexpr size_t RefBytecodeSize              = 7;
-    const Uint8      RefBytecode[RefBytecodeSize] = {42, 13, 179, 211, 97, 65, 71};
+    const UInt8      RefBytecode[RefBytecodeSize] = {42, 13, 179, 211, 97, 65, 71};
 
     constexpr char   RefSource[]  = "Test shader source";
     constexpr size_t RefSourceLen = sizeof(RefSource);

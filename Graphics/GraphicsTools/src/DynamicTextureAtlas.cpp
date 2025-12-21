@@ -55,8 +55,8 @@ public:
     TextureAtlasSuballocationImpl(IReferenceCounters*           pRefCounters,
                                   DynamicTextureAtlasImpl*      pParentAtlas,
                                   DynamicAtlasManager::Region&& Subregion,
-                                  Uint32                        Slice,
-                                  Uint32                        Alignment,
+                                  UInt32                        Slice,
+                                  UInt32                        Alignment,
                                   const uint2&                  Size) noexcept :
         // clang-format off
         TBase         {pRefCounters},
@@ -96,7 +96,7 @@ public:
             };
     }
 
-    virtual Uint32 GetSlice() const override final
+    virtual UInt32 GetSlice() const override final
     {
         return m_Slice;
     }
@@ -108,7 +108,7 @@ public:
 
     virtual Vector4f GetUVScaleBias() const override final;
 
-    virtual Uint32 GetAlignment() const override final
+    virtual UInt32 GetAlignment() const override final
     {
         return m_Alignment;
     }
@@ -130,8 +130,8 @@ private:
 
     DynamicAtlasManager::Region m_Subregion;
 
-    const Uint32 m_Slice;
-    const Uint32 m_Alignment;
+    const UInt32 m_Slice;
+    const UInt32 m_Alignment;
     const uint2  m_Size;
 
     RefCntAutoPtr<IObject> m_pUserData;
@@ -198,7 +198,7 @@ public:
             return pAtlasMgr != nullptr;
         }
 
-        DynamicAtlasManager::Region Allocate(Uint32 Width, Uint32 Height)
+        DynamicAtlasManager::Region Allocate(UInt32 Width, UInt32 Height)
         {
             VERIFY_EXPR(pAtlasMgr != nullptr);
             VERIFY_EXPR(pAtlasMgr->UseCount > 0);
@@ -289,7 +289,7 @@ struct SliceBatch
     SliceBatch& operator=(      SliceBatch&&) = delete;
     // clang-format on
 
-    ThreadSafeAtlasManager::ManagerGuard LockSlice(Uint32 Slice)
+    ThreadSafeAtlasManager::ManagerGuard LockSlice(UInt32 Slice)
     {
         std::lock_guard<std::mutex> Guard{m_Mtx};
 
@@ -298,7 +298,7 @@ struct SliceBatch
         return it != m_Slices.end() ? it->second.Lock() : ThreadSafeAtlasManager::ManagerGuard{};
     }
 
-    ThreadSafeAtlasManager::ManagerGuard LockSliceAfter(Uint32& Slice)
+    ThreadSafeAtlasManager::ManagerGuard LockSliceAfter(UInt32& Slice)
     {
         std::lock_guard<std::mutex> Guard{m_Mtx};
 
@@ -313,7 +313,7 @@ struct SliceBatch
         return {};
     }
 
-    ThreadSafeAtlasManager::ManagerGuard AddSlice(Uint32 Slice)
+    ThreadSafeAtlasManager::ManagerGuard AddSlice(UInt32 Slice)
     {
         std::lock_guard<std::mutex> Guard{m_Mtx};
 
@@ -323,7 +323,7 @@ struct SliceBatch
         return it->second.Lock();
     }
 
-    bool Purge(Uint32 Slice)
+    bool Purge(UInt32 Slice)
     {
         std::lock_guard<std::mutex> Guard{m_Mtx};
 
@@ -357,7 +357,7 @@ private:
 
     std::mutex m_Mtx;
     // For every alignment, we keep a list of slice managers sorted by the slice index.
-    std::map<Uint32, ThreadSafeAtlasManager> m_Slices;
+    std::map<UInt32, ThreadSafeAtlasManager> m_Slices;
 };
 
 } // namespace
@@ -385,13 +385,13 @@ public:
         m_MinAlignment    {CreateInfo.MinAlignment},
         m_ExtraSliceCount {CreateInfo.ExtraSliceCount},
         m_ExtraSliceFactor{clamp(CreateInfo.GrowthFactor, 1.f, 2.f) - 1.f},
-        m_MaxSliceCount   {CreateInfo.Desc.Type == RESOURCE_DIM_TEX_2D_ARRAY ? std::min(CreateInfo.MaxSliceCount, Uint32{2048}) : 1},
+        m_MaxSliceCount   {CreateInfo.Desc.Type == RESOURCE_DIM_TEX_2D_ARRAY ? std::min(CreateInfo.MaxSliceCount, UInt32{2048}) : 1},
         m_Silent          {CreateInfo.Silent},
         m_SuballocationsAllocator
         {
             DefaultRawMemoryAllocator::GetAllocator(),
             sizeof(TextureAtlasSuballocationImpl),
-            1024u / Uint32{sizeof(TextureAtlasSuballocationImpl)} // Use 1KB pages.
+            1024u / UInt32{sizeof(TextureAtlasSuballocationImpl)} // Use 1KB pages.
         }
     // clang-format on
     {
@@ -419,7 +419,7 @@ public:
                 LOG_ERROR_AND_THROW("Texture height (", m_Desc.Height, ") is not a multiple of minimum alignment (", m_MinAlignment, ")");
         }
 
-        for (Uint32 i = 0; i < m_MaxSliceCount; ++i)
+        for (UInt32 i = 0; i < m_MaxSliceCount; ++i)
             m_AvailableSlices.insert(i);
 
         m_TexArraySize.store(m_Desc.ArraySize);
@@ -454,7 +454,7 @@ public:
     {
         if (m_DynamicTexArray)
         {
-            Uint32 ArraySize = m_TexArraySize.load();
+            UInt32 ArraySize = m_TexArraySize.load();
             if (m_DynamicTexArray->GetDesc().ArraySize != ArraySize)
             {
                 m_DynamicTexArray->Resize(pDevice, pContext, ArraySize);
@@ -483,13 +483,13 @@ public:
             m_pTexture;
     }
 
-    virtual Uint32 GetAllocationAlignment(Uint32 Width, Uint32 Height) const override final
+    virtual UInt32 GetAllocationAlignment(UInt32 Width, UInt32 Height) const override final
     {
         return ComputeTextureAtlasSuballocationAlignment(Width, Height, m_MinAlignment);
     }
 
-    virtual void Allocate(Uint32                       Width,
-                          Uint32                       Height,
+    virtual void Allocate(UInt32                       Width,
+                          UInt32                       Height,
                           ITextureAtlasSuballocation** ppSuballocation) override final
     {
         if (Width == 0 || Height == 0)
@@ -504,24 +504,24 @@ public:
             return;
         }
 
-        const Uint32 Alignment     = GetAllocationAlignment(Width, Height);
-        const Uint32 AlignedWidth  = AlignUp(Width, Alignment);
-        const Uint32 AlignedHeight = AlignUp(Height, Alignment);
+        const UInt32 Alignment     = GetAllocationAlignment(Width, Height);
+        const UInt32 AlignedWidth  = AlignUp(Width, Alignment);
+        const UInt32 AlignedHeight = AlignUp(Height, Alignment);
 
         SliceBatch* pBatch = GetSliceBatch(Alignment, m_Desc.Width / Alignment, m_Desc.Height / Alignment);
         VERIFY_EXPR(pBatch != nullptr);
 
         DynamicAtlasManager::Region Subregion;
 
-        Uint32 Slice = 0;
+        UInt32 Slice = 0;
         while (Slice < m_MaxSliceCount)
         {
             // Lock the first available slice with index >= Slice
             ThreadSafeAtlasManager::ManagerGuard SliceMgr = pBatch->LockSliceAfter(Slice);
             if (!SliceMgr)
             {
-                const Uint32 NewSlice = GetNextAvailableSlice();
-                if (NewSlice != ~Uint32{0})
+                const UInt32 NewSlice = GetNextAvailableSlice();
+                if (NewSlice != ~UInt32{0})
                 {
                     Slice    = NewSlice;
                     SliceMgr = pBatch->AddSlice(Slice);
@@ -576,7 +576,7 @@ public:
         pSuballocation->QueryInterface(IID_TextureAtlasSuballocation, ppSuballocation);
     }
 
-    void Free(Uint32 Slice, Uint32 Alignment, DynamicAtlasManager::Region&& Subregion, Uint32 Width, Uint32 Height)
+    void Free(UInt32 Slice, UInt32 Alignment, DynamicAtlasManager::Region&& Subregion, UInt32 Width, UInt32 Height)
     {
         const Int64 AllocatedArea = Int64{Width} * Int64{Height};
         const Int64 UsedArea      = (Int64{Subregion.width} * Int64{Alignment}) * (Int64{Subregion.height} * Int64{Alignment});
@@ -642,7 +642,7 @@ public:
         return m_DynamicTexArray ? m_DynamicTexArray->GetDesc() : m_Desc;
     }
 
-    virtual Uint32 GetVersion() const override final
+    virtual UInt32 GetVersion() const override final
     {
         if (m_DynamicTexArray)
             return m_DynamicTexArray->GetVersion();
@@ -658,15 +658,15 @@ public:
         {
             Stats.CommittedSize = m_DynamicTexArray->GetMemoryUsage();
             const TextureDesc& Desc{m_DynamicTexArray->GetDesc()};
-            Stats.TotalArea = Uint64{Desc.Width} * Uint64{Desc.Height} * Uint64{Desc.ArraySize};
+            Stats.TotalArea = UInt64{Desc.Width} * UInt64{Desc.Height} * UInt64{Desc.ArraySize};
         }
         else
         {
             VERIFY_EXPR(m_Desc.Type == RESOURCE_DIM_TEX_2D);
             Stats.CommittedSize = 0;
-            for (Uint32 mip = 0; mip < m_Desc.MipLevels; ++mip)
+            for (UInt32 mip = 0; mip < m_Desc.MipLevels; ++mip)
                 Stats.CommittedSize += GetMipLevelProperties(m_Desc, mip).MipSize;
-            Stats.TotalArea = Uint64{m_Desc.Width} * Uint64{m_Desc.Height};
+            Stats.TotalArea = UInt64{m_Desc.Width} * UInt64{m_Desc.Height};
         }
 
         Stats.AllocationCount = m_AllocationCount.load();
@@ -675,21 +675,21 @@ public:
     }
 
 private:
-    Uint32 GetNextAvailableSlice()
+    UInt32 GetNextAvailableSlice()
     {
         std::lock_guard<std::mutex> Guard{m_AvailableSlicesMtx};
         if (m_AvailableSlices.empty())
-            return ~Uint32{0};
+            return ~UInt32{0};
 
-        Uint32 FirstFreeSlice = *m_AvailableSlices.begin();
+        UInt32 FirstFreeSlice = *m_AvailableSlices.begin();
         VERIFY_EXPR(FirstFreeSlice < m_MaxSliceCount);
         m_AvailableSlices.erase(m_AvailableSlices.begin());
 
         while (m_TexArraySize <= FirstFreeSlice)
         {
-            const Uint32 ExtraSliceCount = m_ExtraSliceCount != 0 ?
+            const UInt32 ExtraSliceCount = m_ExtraSliceCount != 0 ?
                 m_ExtraSliceCount :
-                std::max(static_cast<Uint32>(static_cast<float>(m_TexArraySize.load()) * m_ExtraSliceFactor), 1u);
+                std::max(static_cast<UInt32>(static_cast<float>(m_TexArraySize.load()) * m_ExtraSliceFactor), 1u);
 
             m_TexArraySize.store(std::min(m_TexArraySize + ExtraSliceCount, m_MaxSliceCount));
         }
@@ -697,14 +697,14 @@ private:
         return FirstFreeSlice;
     }
 
-    void RecycleSlice(Uint32 Slice)
+    void RecycleSlice(UInt32 Slice)
     {
         std::lock_guard<std::mutex> Guard{m_AvailableSlicesMtx};
         VERIFY(m_AvailableSlices.find(Slice) == m_AvailableSlices.end(), "Slice ", Slice, " is already in the available slices list. This is a bug.");
         m_AvailableSlices.insert(Slice);
     }
 
-    SliceBatch* GetSliceBatch(Uint32 Alignment, Uint32 AtlasWidth = 0, Uint32 AtlasHeight = 0)
+    SliceBatch* GetSliceBatch(UInt32 Alignment, UInt32 AtlasWidth = 0, UInt32 AtlasHeight = 0)
     {
         std::lock_guard<std::mutex> Guard{m_SliceBatchesByAlignmentMtx};
 
@@ -720,16 +720,16 @@ private:
     const std::string m_Name;
     const TextureDesc m_Desc;
 
-    const Uint32 m_MinAlignment;
-    const Uint32 m_ExtraSliceCount;
+    const UInt32 m_MinAlignment;
+    const UInt32 m_ExtraSliceCount;
     const float  m_ExtraSliceFactor;
-    const Uint32 m_MaxSliceCount;
+    const UInt32 m_MaxSliceCount;
     const bool   m_Silent;
 
     std::unique_ptr<DynamicTextureArray> m_DynamicTexArray;
     RefCntAutoPtr<ITexture>              m_pTexture;
 
-    std::atomic<Uint32> m_TexArraySize{0};
+    std::atomic<UInt32> m_TexArraySize{0};
 
     FixedBlockMemoryAllocator m_SuballocationsAllocator;
 
@@ -740,11 +740,11 @@ private:
 
     std::mutex m_SliceBatchesByAlignmentMtx;
     // Alignment -> slice batch
-    std::unordered_map<Uint32, SliceBatch> m_SliceBatchesByAlignment;
+    std::unordered_map<UInt32, SliceBatch> m_SliceBatchesByAlignment;
 
     // Keep available slice indices sorted.
     std::mutex       m_AvailableSlicesMtx;
-    std::set<Uint32> m_AvailableSlices;
+    std::set<UInt32> m_AvailableSlices;
 };
 
 
@@ -772,9 +772,9 @@ Vector4f TextureAtlasSuballocationImpl::GetUVScaleBias() const
         };
 }
 
-Uint32 ComputeTextureAtlasSuballocationAlignment(Uint32 Width, Uint32 Height, Uint32 MinAlignment)
+UInt32 ComputeTextureAtlasSuballocationAlignment(UInt32 Width, UInt32 Height, UInt32 MinAlignment)
 {
-    Uint32 Alignment = MinAlignment;
+    UInt32 Alignment = MinAlignment;
     if (Alignment > 0)
     {
         while (std::min(Width, Height) > Alignment)

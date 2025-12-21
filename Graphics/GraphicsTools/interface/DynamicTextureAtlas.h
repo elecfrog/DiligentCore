@@ -57,7 +57,7 @@ struct ITextureAtlasSuballocation : public IObject
     virtual uint2 GetOrigin() const = 0;
 
     /// Returns the suballocation slice.
-    virtual Uint32 GetSlice() const = 0;
+    virtual UInt32 GetSlice() const = 0;
 
     /// Returns the suballocation size.
     virtual uint2 GetSize() const = 0;
@@ -66,7 +66,7 @@ struct ITextureAtlasSuballocation : public IObject
     virtual Vector4f GetUVScaleBias() const = 0;
 
     /// Returns the suballocation alignment.
-    virtual Uint32 GetAlignment() const = 0;
+    virtual UInt32 GetAlignment() const = 0;
 
     /// Returns the pointer to the parent texture atlas.
     virtual IDynamicTextureAtlas* GetAtlas() = 0;
@@ -93,25 +93,25 @@ struct ITextureAtlasSuballocation : public IObject
 struct DynamicTextureAtlasUsageStats
 {
     /// The total committed memory size of the atlas, in bytes.
-    Uint64 CommittedSize = 0;
+    UInt64 CommittedSize = 0;
 
     /// The total number of allocations in the atlas.
-    Uint32 AllocationCount = 0;
+    UInt32 AllocationCount = 0;
 
     /// The total area of the texture atlas, e.g.
     /// the total number of texels in all slices.
-    Uint64 TotalArea = 0;
+    UInt64 TotalArea = 0;
 
     /// The total allocated area, e.g. the total
     /// number of texels in all allocations.
-    Uint64 AllocatedArea = 0;
+    UInt64 AllocatedArea = 0;
 
     /// The total used area, e.g. the total number
     /// of texels actually used by all allocations.
 
     /// Used area is always equal to or larger than the
     /// allocated area due to alignment requirements.
-    Uint64 UsedArea = 0;
+    UInt64 UsedArea = 0;
 };
 
 
@@ -154,8 +154,8 @@ struct IDynamicTextureAtlas : public IObject
     /// Internal texture array may need to be extended after the allocation happened.
     /// An application may call the Update() to ensure that the texture is resized and old
     /// contents is copied.
-    virtual void Allocate(Uint32                       Width,
-                          Uint32                       Height,
+    virtual void Allocate(UInt32                       Width,
+                          UInt32                       Height,
                           ITextureAtlasSuballocation** ppSuballocation) = 0;
 
 
@@ -164,7 +164,7 @@ struct IDynamicTextureAtlas : public IObject
 
     /// Returns internal texture array version. The version is incremented every time
     /// the array is expanded.
-    virtual Uint32 GetVersion() const = 0;
+    virtual UInt32 GetVersion() const = 0;
 
     /// Returns the usage stats, see Diligent::DynamicTextureAtlasUsageStats.
     virtual void GetUsageStats(DynamicTextureAtlasUsageStats& Stats) const = 0;
@@ -175,7 +175,7 @@ struct IDynamicTextureAtlas : public IObject
     /// \param [in] Width  - Region width.
     /// \param [in] Height - Region height.
     /// \return            - Allocation alignment.
-    virtual Uint32 GetAllocationAlignment(Uint32 Width, Uint32 Height) const = 0;
+    virtual UInt32 GetAllocationAlignment(UInt32 Width, UInt32 Height) const = 0;
 };
 
 
@@ -220,13 +220,13 @@ struct DynamicTextureAtlasCreateInfo
     /// Be aware that coarse mip levels may not be 4-aligned (even though their placement is properly aligned with mip 0).
     /// Consider a [256, 512] x [512, 768] region. Its mip levels 7, 8 will be [2, 4] x [4, 6] and [1, 2] x [2, 3].
     /// These mip-levels are not block-aligned. Moreover, they are smaller than the block.
-    Uint32 MinAlignment = 64;
+    UInt32 MinAlignment = 64;
 
     /// The number of extra slices.
 
     /// When non-zero, the array will be expanded by the specified number of slices every time
     /// there is insufficient space. If zero, the array size will be expanded by the growth factor.
-    Uint32 ExtraSliceCount = 0;
+    UInt32 ExtraSliceCount = 0;
 
     /// Growth factor.
 
@@ -236,7 +236,7 @@ struct DynamicTextureAtlasCreateInfo
     float GrowthFactor = 2.0f;
 
     /// Maximum number of slices in texture array.
-    Uint32 MaxSliceCount = 2048;
+    UInt32 MaxSliceCount = 2048;
 
     /// Silence allocation errors.
     bool Silent = false;
@@ -249,7 +249,7 @@ struct DynamicTextureAtlasCreateInfo
 /// \param [in] Height       - Region height.
 /// \param [in] MinAlignment - Minimum required alignment, see DynamicTextureAtlasCreateInfo::MinAlignment.
 /// \return                  - Allocation alignment.
-Uint32 ComputeTextureAtlasSuballocationAlignment(Uint32 Width, Uint32 Height, Uint32 MinAlignment);
+UInt32 ComputeTextureAtlasSuballocationAlignment(UInt32 Width, UInt32 Height, UInt32 MinAlignment);
 
 
 /// Creates a new dynamic texture atlas.

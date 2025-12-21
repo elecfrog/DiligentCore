@@ -58,9 +58,9 @@ bool QueryWebGPUImpl::AllocateQueries()
     VERIFY_EXPR(m_pContext != nullptr);
     m_pQueryMgr = &m_pContext->GetQueryManager();
     VERIFY_EXPR(m_pQueryMgr != nullptr);
-    for (Uint32 Index = 0; Index < (m_Desc.Type == QUERY_TYPE_DURATION ? Uint32{2} : Uint32{1}); ++Index)
+    for (UInt32 Index = 0; Index < (m_Desc.Type == QUERY_TYPE_DURATION ? UInt32{2} : UInt32{1}); ++Index)
     {
-        Uint32& QuerySetIdx = m_QuerySetIndices[Index];
+        UInt32& QuerySetIdx = m_QuerySetIndices[Index];
         VERIFY_EXPR(QuerySetIdx == QueryManagerWebGPU::InvalidIndex);
         QuerySetIdx = m_pQueryMgr->AllocateQuery(m_Desc.Type);
 
@@ -77,7 +77,7 @@ bool QueryWebGPUImpl::AllocateQueries()
 
 void QueryWebGPUImpl::DiscardQueries()
 {
-    for (Uint32& QuerySetIdx : m_QuerySetIndices)
+    for (UInt32& QuerySetIdx : m_QuerySetIndices)
     {
         if (QuerySetIdx != QueryManagerWebGPU::InvalidIndex)
         {
@@ -89,7 +89,7 @@ void QueryWebGPUImpl::DiscardQueries()
     m_pQueryMgr = nullptr;
 }
 
-bool QueryWebGPUImpl::GetData(void* pData, Uint32 DataSize, bool AutoInvalidate)
+bool QueryWebGPUImpl::GetData(void* pData, UInt32 DataSize, bool AutoInvalidate)
 {
     TQueryBase::CheckQueryDataPtr(pData, DataSize);
     DEV_CHECK_ERR(m_pQueryMgr != nullptr, "Requesting data from query that has not been ended or has been invalidated");
@@ -102,7 +102,7 @@ bool QueryWebGPUImpl::GetData(void* pData, Uint32 DataSize, bool AutoInvalidate)
         {
             case QUERY_TYPE_TIMESTAMP:
             {
-                const Uint64 Timestamp = m_pQueryMgr->GetQueryResult(m_Desc.Type, m_QuerySetIndices[0]);
+                const UInt64 Timestamp = m_pQueryMgr->GetQueryResult(m_Desc.Type, m_QuerySetIndices[0]);
                 if (pData != nullptr)
                 {
                     QueryDataTimestamp& QueryData{*reinterpret_cast<QueryDataTimestamp*>(pData)};
@@ -113,8 +113,8 @@ bool QueryWebGPUImpl::GetData(void* pData, Uint32 DataSize, bool AutoInvalidate)
             }
             case QUERY_TYPE_DURATION:
             {
-                const Uint64 T0 = m_pQueryMgr->GetQueryResult(m_Desc.Type, m_QuerySetIndices[0]);
-                const Uint64 T1 = m_pQueryMgr->GetQueryResult(m_Desc.Type, m_QuerySetIndices[1]);
+                const UInt64 T0 = m_pQueryMgr->GetQueryResult(m_Desc.Type, m_QuerySetIndices[0]);
+                const UInt64 T1 = m_pQueryMgr->GetQueryResult(m_Desc.Type, m_QuerySetIndices[1]);
                 if (pData != nullptr)
                 {
                     QueryDataDuration& QueryData{*reinterpret_cast<QueryDataDuration*>(pData)};
@@ -125,7 +125,7 @@ bool QueryWebGPUImpl::GetData(void* pData, Uint32 DataSize, bool AutoInvalidate)
             }
             case QUERY_TYPE_OCCLUSION:
             {
-                const Uint64 NumSamples = m_pQueryMgr->GetQueryResult(m_Desc.Type, m_QuerySetIndices[0]);
+                const UInt64 NumSamples = m_pQueryMgr->GetQueryResult(m_Desc.Type, m_QuerySetIndices[0]);
                 if (pData != nullptr)
                 {
                     QueryDataOcclusion& QueryData{*reinterpret_cast<QueryDataOcclusion*>(pData)};
@@ -154,7 +154,7 @@ void QueryWebGPUImpl::Invalidate()
     TQueryBase::Invalidate();
 }
 
-Uint32 QueryWebGPUImpl::GetIndexInsideQuerySet(Uint32 QueryId) const
+UInt32 QueryWebGPUImpl::GetIndexInsideQuerySet(UInt32 QueryId) const
 {
     VERIFY_EXPR(QueryId == 0 || m_Desc.Type == QUERY_TYPE_DURATION && QueryId == 1);
     return m_QuerySetIndices[QueryId];

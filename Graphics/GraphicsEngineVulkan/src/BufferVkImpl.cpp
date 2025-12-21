@@ -59,7 +59,7 @@ BufferVkImpl::BufferVkImpl(IReferenceCounters*        pRefCounters,
     const VulkanUtilities::PhysicalDevice& PhysicalDevice = pRenderDeviceVk->GetPhysicalDevice();
     const VkPhysicalDeviceLimits&          DeviceLimits   = PhysicalDevice.GetProperties().limits;
 
-    m_DynamicOffsetAlignment = std::max(Uint32{4}, static_cast<Uint32>(DeviceLimits.optimalBufferCopyOffsetAlignment));
+    m_DynamicOffsetAlignment = std::max(UInt32{4}, static_cast<UInt32>(DeviceLimits.optimalBufferCopyOffsetAlignment));
 
     VkBufferCreateInfo VkBuffCI{};
     VkBuffCI.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -83,13 +83,13 @@ BufferVkImpl::BufferVkImpl(IReferenceCounters*        pRefCounters,
                 {
                     // Formatted buffers are mapped to uniform texel buffers in Vulkan.
                     VkBuffCI.usage |= VK_BUFFER_USAGE_UNIFORM_TEXEL_BUFFER_BIT;
-                    m_DynamicOffsetAlignment = std::max(m_DynamicOffsetAlignment, static_cast<Uint32>(DeviceLimits.minTexelBufferOffsetAlignment));
+                    m_DynamicOffsetAlignment = std::max(m_DynamicOffsetAlignment, static_cast<UInt32>(DeviceLimits.minTexelBufferOffsetAlignment));
                 }
                 else
                 {
                     // Structured and ByteAddress buffers are mapped to read-only storage buffers in Vulkan.
                     VkBuffCI.usage |= VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
-                    m_DynamicOffsetAlignment = std::max(m_DynamicOffsetAlignment, static_cast<Uint32>(DeviceLimits.minStorageBufferOffsetAlignment));
+                    m_DynamicOffsetAlignment = std::max(m_DynamicOffsetAlignment, static_cast<UInt32>(DeviceLimits.minStorageBufferOffsetAlignment));
                 }
 
                 break;
@@ -100,7 +100,7 @@ BufferVkImpl::BufferVkImpl(IReferenceCounters*        pRefCounters,
                 {
                     // RW formatted buffers are mapped to storage texel buffers in Vulkan.
                     VkBuffCI.usage |= VK_BUFFER_USAGE_STORAGE_TEXEL_BUFFER_BIT;
-                    m_DynamicOffsetAlignment = std::max(m_DynamicOffsetAlignment, static_cast<Uint32>(DeviceLimits.minTexelBufferOffsetAlignment));
+                    m_DynamicOffsetAlignment = std::max(m_DynamicOffsetAlignment, static_cast<UInt32>(DeviceLimits.minTexelBufferOffsetAlignment));
                 }
                 else
                 {
@@ -109,7 +109,7 @@ BufferVkImpl::BufferVkImpl(IReferenceCounters*        pRefCounters,
                     // Each element of pDynamicOffsets of vkCmdBindDescriptorSets function which corresponds to a descriptor
                     // binding with type VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC must be a multiple of
                     // VkPhysicalDeviceLimits::minStorageBufferOffsetAlignment (13.2.5)
-                    m_DynamicOffsetAlignment = std::max(m_DynamicOffsetAlignment, static_cast<Uint32>(DeviceLimits.minStorageBufferOffsetAlignment));
+                    m_DynamicOffsetAlignment = std::max(m_DynamicOffsetAlignment, static_cast<UInt32>(DeviceLimits.minStorageBufferOffsetAlignment));
                 }
 
                 break;
@@ -136,7 +136,7 @@ BufferVkImpl::BufferVkImpl(IReferenceCounters*        pRefCounters,
                 // Each element of pDynamicOffsets parameter of vkCmdBindDescriptorSets function which corresponds to a descriptor
                 // binding with type VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC must be a multiple of
                 // VkPhysicalDeviceLimits::minUniformBufferOffsetAlignment (13.2.5)
-                m_DynamicOffsetAlignment = std::max(m_DynamicOffsetAlignment, static_cast<Uint32>(DeviceLimits.minUniformBufferOffsetAlignment));
+                m_DynamicOffsetAlignment = std::max(m_DynamicOffsetAlignment, static_cast<UInt32>(DeviceLimits.minUniformBufferOffsetAlignment));
                 break;
             }
             case BIND_RAY_TRACING:
@@ -330,7 +330,7 @@ BufferVkImpl::BufferVkImpl(IReferenceCounters*        pRefCounters,
         }
 #endif
 
-        const Uint64 InitialDataSize = (pBuffData != nullptr && pBuffData->pData != nullptr) ?
+        const UInt64 InitialDataSize = (pBuffData != nullptr && pBuffData->pData != nullptr) ?
             std::min(pBuffData->DataSize, VkBuffCI.size) :
             0;
 
@@ -434,8 +434,8 @@ BufferVkImpl::BufferVkImpl(IReferenceCounters*        pRefCounters,
                 //              |            |                                                |   - {F+1, StagingBuffer} -> Release Queue
                 //              |            |                                                |
 
-                pRenderDeviceVk->SafeReleaseDeviceObject(std::move(StagingBuffer), Uint64{1} << Uint64{CmdQueueInd});
-                pRenderDeviceVk->SafeReleaseDeviceObject(std::move(StagingMemoryAllocation), Uint64{1} << Uint64{CmdQueueInd});
+                pRenderDeviceVk->SafeReleaseDeviceObject(std::move(StagingBuffer), UInt64{1} << UInt64{CmdQueueInd});
+                pRenderDeviceVk->SafeReleaseDeviceObject(std::move(StagingMemoryAllocation), UInt64{1} << UInt64{CmdQueueInd});
             }
         }
 
@@ -579,7 +579,7 @@ VkDeviceAddress BufferVkImpl::GetVkDeviceAddress() const
     }
 }
 
-void BufferVkImpl::FlushMappedRange(Uint64 StartOffset, Uint64 Size)
+void BufferVkImpl::FlushMappedRange(UInt64 StartOffset, UInt64 Size)
 {
     DvpVerifyFlushMappedRangeArguments(StartOffset, Size);
 
@@ -594,7 +594,7 @@ void BufferVkImpl::FlushMappedRange(Uint64 StartOffset, Uint64 Size)
     LogicalDevice.FlushMappedMemoryRanges(1, &MappedRange);
 }
 
-void BufferVkImpl::InvalidateMappedRange(Uint64 StartOffset, Uint64 Size)
+void BufferVkImpl::InvalidateMappedRange(UInt64 StartOffset, UInt64 Size)
 {
     DvpVerifyInvalidateMappedRangeArguments(StartOffset, Size);
 
@@ -618,7 +618,7 @@ SparseBufferProperties BufferVkImpl::GetSparseProperties() const
 
     SparseBufferProperties Props{};
     Props.AddressSpaceSize = MemReq.size;
-    Props.BlockSize        = StaticCast<Uint32>(MemReq.alignment);
+    Props.BlockSize        = StaticCast<UInt32>(MemReq.alignment);
     return Props;
 }
 

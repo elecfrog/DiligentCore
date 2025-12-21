@@ -75,7 +75,7 @@ SwapChainD3D12Impl::~SwapChainD3D12Impl()
 void SwapChainD3D12Impl::InitBuffersAndViews()
 {
     m_pBackBufferRTV.resize(m_SwapChainDesc.BufferCount);
-    for (Uint32 backbuff = 0; backbuff < m_SwapChainDesc.BufferCount; ++backbuff)
+    for (UInt32 backbuff = 0; backbuff < m_SwapChainDesc.BufferCount; ++backbuff)
     {
         CComPtr<ID3D12Resource> pBackBuffer;
 
@@ -123,7 +123,7 @@ void SwapChainD3D12Impl::InitBuffersAndViews()
     }
 }
 
-void SwapChainD3D12Impl::Present(Uint32 SyncInterval)
+void SwapChainD3D12Impl::Present(UInt32 SyncInterval)
 {
 #if PLATFORM_UNIVERSAL_WINDOWS
     SyncInterval = 1; // Interval 0 is not supported on Windows Phone
@@ -186,7 +186,7 @@ void SwapChainD3D12Impl::UpdateSwapChain(bool CreateNew)
         {
             DeviceContextD3D12Impl* pImmediateCtxD3D12 = pDeviceContext.RawPtr<DeviceContextD3D12Impl>();
             bool                    RenderTargetsReset = false;
-            for (Uint32 i = 0; i < m_pBackBufferRTV.size() && !RenderTargetsReset; ++i)
+            for (UInt32 i = 0; i < m_pBackBufferRTV.size() && !RenderTargetsReset; ++i)
             {
                 TextureD3D12Impl* pCurrentBackBuffer = ClassPtrCast<TextureD3D12Impl>(m_pBackBufferRTV[i]->GetTexture());
                 RenderTargetsReset                   = pImmediateCtxD3D12->UnbindTextureFromFramebuffer(pCurrentBackBuffer, false);
@@ -237,7 +237,7 @@ void SwapChainD3D12Impl::UpdateSwapChain(bool CreateNew)
     }
 }
 
-void SwapChainD3D12Impl::Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewPreTransform)
+void SwapChainD3D12Impl::Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform)
 {
     if (TSwapChainBase::Resize(NewWidth, NewHeight, NewPreTransform))
     {

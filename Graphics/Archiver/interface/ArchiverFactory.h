@@ -238,7 +238,7 @@ struct SerializationDeviceCreateInfo
     ///             
     /// If `pAsyncShaderCompilationThreadPool` is not `null`, the value is ignored as the user-provided
     /// thread pool is used instead.
-    Uint32 NumAsyncShaderCompilationThreads DEFAULT_INITIALIZER(0);
+    UInt32 NumAsyncShaderCompilationThreads DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     SerializationDeviceCreateInfo() noexcept
@@ -319,7 +319,7 @@ DILIGENT_BEGIN_INTERFACE(IArchiverFactory, IObject)
     /// \return     `true` if the archives were successfully merged, and `false` otherwise.
     VIRTUAL Bool METHOD(MergeArchives)(THIS_
                                        const IDataBlob* ppSrcArchives[],
-                                       Uint32           NumSrcArchives,
+                                       UInt32           NumSrcArchives,
                                        IDataBlob**      ppDstArchive) CONST PURE;
 
 

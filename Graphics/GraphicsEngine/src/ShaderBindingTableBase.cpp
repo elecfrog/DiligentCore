@@ -30,7 +30,7 @@
 namespace Diligent
 {
 
-void ValidateShaderBindingTableDesc(const ShaderBindingTableDesc& Desc, Uint32 ShaderGroupHandleSize, Uint32 MaxShaderRecordStride) noexcept(false)
+void ValidateShaderBindingTableDesc(const ShaderBindingTableDesc& Desc, UInt32 ShaderGroupHandleSize, UInt32 MaxShaderRecordStride) noexcept(false)
 {
 #define LOG_SBT_ERROR_AND_THROW(...) LOG_ERROR_AND_THROW("Description of Shader binding table '", (Desc.Name ? Desc.Name : ""), "' is invalid: ", ##__VA_ARGS__)
 
@@ -45,8 +45,8 @@ void ValidateShaderBindingTableDesc(const ShaderBindingTableDesc& Desc, Uint32 S
     }
 
 
-    const Uint32 ShaderRecordSize   = Desc.pPSO->GetRayTracingPipelineDesc().ShaderRecordSize;
-    const Uint32 ShaderRecordStride = ShaderRecordSize + ShaderGroupHandleSize;
+    const UInt32 ShaderRecordSize   = Desc.pPSO->GetRayTracingPipelineDesc().ShaderRecordSize;
+    const UInt32 ShaderRecordStride = ShaderRecordSize + ShaderGroupHandleSize;
 
     if (ShaderRecordStride > MaxShaderRecordStride)
     {

@@ -51,7 +51,7 @@ FenceD3D11Impl::~FenceD3D11Impl()
         LOG_WARNING_MESSAGE("Max pending queries (", m_MaxPendingQueries, ") is large. This may indicate that none of GetCompletedValue() or Wait() have been used.");
 }
 
-Uint64 FenceD3D11Impl::GetCompletedValue()
+UInt64 FenceD3D11Impl::GetCompletedValue()
 {
     while (!m_PendingQueries.empty())
     {
@@ -73,12 +73,12 @@ Uint64 FenceD3D11Impl::GetCompletedValue()
     return m_LastCompletedFenceValue.load();
 }
 
-void FenceD3D11Impl::Wait(Uint64 Value)
+void FenceD3D11Impl::Wait(UInt64 Value)
 {
     return Wait(Value, true);
 }
 
-void FenceD3D11Impl::Wait(Uint64 Value, bool FlushCommands)
+void FenceD3D11Impl::Wait(UInt64 Value, bool FlushCommands)
 {
     while (!m_PendingQueries.empty())
     {
@@ -96,7 +96,7 @@ void FenceD3D11Impl::Wait(Uint64 Value, bool FlushCommands)
     }
 }
 
-void FenceD3D11Impl::Signal(Uint64 Value)
+void FenceD3D11Impl::Signal(UInt64 Value)
 {
     DEV_ERROR("Signal() is not supported in Direct3D11 backend");
 }

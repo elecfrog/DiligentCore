@@ -133,7 +133,7 @@ void SerializedPipelineStateImpl::PatchShadersD3D12(const CreateInfoType& Create
     }
 
     IPipelineResourceSignature** ppSignatures    = CreateInfo.ppResourceSignatures;
-    Uint32                       SignaturesCount = CreateInfo.ResourceSignaturesCount;
+    UInt32                       SignaturesCount = CreateInfo.ResourceSignaturesCount;
 
     IPipelineResourceSignature* DefaultSignatures[1] = {};
     if (CreateInfo.ResourceSignaturesCount == 0)
@@ -212,19 +212,19 @@ void SerializationDeviceImpl::GetPipelineResourceBindingsD3D12(const PipelineRes
     const SHADER_TYPE ShaderStages = (Info.ShaderStages == SHADER_TYPE_UNKNOWN ? static_cast<SHADER_TYPE>(~0u) : Info.ShaderStages);
 
     SignatureArray<PipelineResourceSignatureD3D12Impl> Signatures      = {};
-    Uint32                                             SignaturesCount = 0;
+    UInt32                                             SignaturesCount = 0;
     SortResourceSignatures(Info.ppResourceSignatures, Info.ResourceSignaturesCount, Signatures, SignaturesCount);
 
     RootSignatureD3D12 RootSig{nullptr, nullptr, Signatures.data(), SignaturesCount, 0};
-    for (Uint32 sign = 0; sign < SignaturesCount; ++sign)
+    for (UInt32 sign = 0; sign < SignaturesCount; ++sign)
     {
         const RefCntAutoPtr<PipelineResourceSignatureD3D12Impl>& pSignature = Signatures[sign];
         if (pSignature == nullptr)
             continue;
 
-        const Uint32 BaseRegisterSpace = RootSig.GetBaseRegisterSpace(sign);
+        const UInt32 BaseRegisterSpace = RootSig.GetBaseRegisterSpace(sign);
 
-        for (Uint32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
+        for (UInt32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
         {
             const PipelineResourceDesc&                                ResDesc = pSignature->GetResourceDesc(r);
             const PipelineResourceSignatureD3D12Impl::ResourceAttribs& ResAttr = pSignature->GetResourceAttribs(r);

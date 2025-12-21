@@ -41,19 +41,19 @@ TEST(SerializerTest, SerializerTest)
     const char* const RefStr      = "serialized text";
     const char* const RefEmptyStr = "";
     const char* const RefNullStr  = nullptr;
-    const Uint64      RefU64      = 0x12345678ABCDEF01ull;
-    const Uint8       RefU8       = 0x72;
-    const Uint32      RefU32      = 0x52830394u;
-    const Uint16      RefU16      = 0x4172;
+    const UInt64      RefU64      = 0x12345678ABCDEF01ull;
+    const UInt8       RefU8       = 0x72;
+    const UInt32      RefU32      = 0x52830394u;
+    const UInt16      RefU16      = 0x4172;
 
-    const Uint32 RefArraySize            = 3;
-    const Uint32 RefArray[RefArraySize]  = {0x1251, 0x620, 0x8816};
-    const Uint32 NumBytes1               = 7;
-    const Uint8  RefBytes1[NumBytes1]    = {5, 124, 9, 44, 79, 40, 251};
+    const UInt32 RefArraySize            = 3;
+    const UInt32 RefArray[RefArraySize]  = {0x1251, 0x620, 0x8816};
+    const UInt32 NumBytes1               = 7;
+    const UInt8  RefBytes1[NumBytes1]    = {5, 124, 9, 44, 79, 40, 251};
     const size_t RefNumBytes2            = 5;
-    const Uint8  RefBytes2[RefNumBytes2] = {37, 53, 13, 94, 129};
+    const UInt8  RefBytes2[RefNumBytes2] = {37, 53, 13, 94, 129};
     const size_t RefNumBytes3            = 7;
-    const Uint8  RefBytes3[RefNumBytes3] = {93, 67, 50, 145, 41, 59, 43};
+    const UInt8  RefBytes3[RefNumBytes3] = {93, 67, 50, 145, 41, 59, 43};
 
     auto& RawAllocator{DefaultRawMemoryAllocator::GetAllocator()};
 
@@ -86,7 +86,7 @@ TEST(SerializerTest, SerializerTest)
     Serializer<SerializerMode::Read> RSer{Data};
 
     {
-        Uint16 U16 = 0;
+        UInt16 U16 = 0;
         EXPECT_TRUE(RSer(U16));
         EXPECT_EQ(U16, RefU16);
     }
@@ -110,36 +110,36 @@ TEST(SerializerTest, SerializerTest)
     }
 
     {
-        Uint64 U64 = 0;
+        UInt64 U64 = 0;
         EXPECT_TRUE(RSer(U64));
         EXPECT_EQ(U64, RefU64);
     }
 
     {
-        Uint8 U8 = 0;
+        UInt8 U8 = 0;
         EXPECT_TRUE(RSer(U8));
         EXPECT_EQ(U8, RefU8);
     }
 
     {
-        Uint32 U32 = 0;
+        UInt32 U32 = 0;
         EXPECT_TRUE(RSer(U32));
         EXPECT_EQ(U32, RefU32);
     }
 
     {
-        Uint32  ArraySize = 0;
-        Uint32* pArray    = nullptr;
+        UInt32  ArraySize = 0;
+        UInt32* pArray    = nullptr;
         EXPECT_TRUE(RSer.SerializeArrayRaw(&TmpAllocator, pArray, ArraySize));
         EXPECT_EQ(ArraySize, RefArraySize);
-        for (Uint32 i = 0; i < RefArraySize; ++i)
+        for (UInt32 i = 0; i < RefArraySize; ++i)
             EXPECT_EQ(RefArray[i], pArray[i]);
     }
 
     {
-        Uint8 Bytes[NumBytes1] = {};
+        UInt8 Bytes[NumBytes1] = {};
         EXPECT_TRUE(RSer.CopyBytes(Bytes, sizeof(Bytes)));
-        for (Uint32 i = 0; i < NumBytes1; ++i)
+        for (UInt32 i = 0; i < NumBytes1; ++i)
             EXPECT_EQ(Bytes[i], RefBytes1[i]);
     }
 

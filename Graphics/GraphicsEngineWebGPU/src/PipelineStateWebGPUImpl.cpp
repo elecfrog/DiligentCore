@@ -106,7 +106,7 @@ std::vector<PipelineStateWebGPUImpl::ShaderStageInfo> PipelineStateWebGPUImpl::I
 void PipelineStateWebGPUImpl::RemapOrVerifyShaderResources(
     TShaderStages&                                           ShaderStages,
     const RefCntAutoPtr<PipelineResourceSignatureWebGPUImpl> pSignatures[],
-    const Uint32                                             SignatureCount,
+    const UInt32                                             SignatureCount,
     const TBindIndexToBindGroupIndex&                        BindIndexToBindGroupIndex,
     bool                                                     bVerifyOnly,
     const char*                                              PipelineName,
@@ -133,7 +133,7 @@ void PipelineStateWebGPUImpl::RemapOrVerifyShaderResources(
         WGSLResourceMapping ResMapping;
 
         pShaderResources->ProcessResources(
-            [&](const WGSLShaderResourceAttribs& WGSLAttribs, Uint32) //
+            [&](const WGSLShaderResourceAttribs& WGSLAttribs, UInt32) //
             {
                 const ResourceAttribution ResAttribution = GetResourceAttribution(WGSLAttribs.Name, ShaderType, pSignatures, SignatureCount);
                 if (!ResAttribution)
@@ -147,9 +147,9 @@ void PipelineStateWebGPUImpl::RemapOrVerifyShaderResources(
                 const SHADER_RESOURCE_TYPE           ResType  = WGSLShaderResourceAttribs::GetShaderResourceType(WGSLAttribs.Type);
                 const PIPELINE_RESOURCE_FLAGS        Flags    = WGSLShaderResourceAttribs::GetPipelineResourceFlags(WGSLAttribs.Type);
 
-                Uint32 ResourceBinding = ~0u;
-                Uint32 BindGroup       = ~0u;
-                Uint32 ArraySize       = 1;
+                UInt32 ResourceBinding = ~0u;
+                UInt32 BindGroup       = ~0u;
+                UInt32 ArraySize       = 1;
                 if (ResAttribution.ResourceIndex != ResourceAttribution::InvalidResourceIndex)
                 {
                     PipelineResourceDesc ResDesc = ResAttribution.pSignature->GetResourceDesc(ResAttribution.ResourceIndex);
@@ -236,7 +236,7 @@ void PipelineStateWebGPUImpl::InitPipelineLayout(const PipelineStateCreateInfo& 
     {
         VERIFY_EXPR(RemapResources ^ VerifyBindings);
         TBindIndexToBindGroupIndex BindIndexToBindGroupIndex = {};
-        for (Uint32 i = 0; i < m_SignatureCount; ++i)
+        for (UInt32 i = 0; i < m_SignatureCount; ++i)
             BindIndexToBindGroupIndex[i] = m_PipelineLayout.GetFirstBindGroupIndex(i);
 
         // Note that we always need to strip reflection information when it is present
@@ -424,11 +424,11 @@ void PipelineStateWebGPUImpl::InitializeWebGPURenderPipeline(const TShaderStages
     {
         const InputLayoutDesc& InputLayout = GraphicsPipeline.InputLayout;
 
-        Uint32 MaxBufferSlot = 0;
-        for (Uint32 Idx = 0; Idx < InputLayout.NumElements; ++Idx)
+        UInt32 MaxBufferSlot = 0;
+        for (UInt32 Idx = 0; Idx < InputLayout.NumElements; ++Idx)
         {
             const LayoutElement& Item       = InputLayout.LayoutElements[Idx];
-            const Uint32         BufferSlot = Item.BufferSlot;
+            const UInt32         BufferSlot = Item.BufferSlot;
 
             wgpuVertexBufferLayouts[BufferSlot].arrayStride = Item.Stride;
             wgpuVertexBufferLayouts[BufferSlot].stepMode    = InputElementFrequencyToWGPUVertexStepMode(Item.Frequency);
@@ -459,7 +459,7 @@ void PipelineStateWebGPUImpl::InitializeWebGPURenderPipeline(const TShaderStages
     {
         const BlendStateDesc&        BlendDesc = GraphicsPipeline.BlendDesc;
         const RenderTargetBlendDesc& RT0       = BlendDesc.RenderTargets[0];
-        for (Uint32 RTIndex = 0; RTIndex < GraphicsPipeline.NumRenderTargets; ++RTIndex)
+        for (UInt32 RTIndex = 0; RTIndex < GraphicsPipeline.NumRenderTargets; ++RTIndex)
         {
             const RenderTargetBlendDesc& RT = BlendDesc.RenderTargets[RTIndex];
 
@@ -746,7 +746,7 @@ static void VerifyResourceMerge(const char*                      PSOName,
 PipelineResourceSignatureDescWrapper PipelineStateWebGPUImpl::GetDefaultResourceSignatureDesc(const TShaderStages&              ShaderStages,
                                                                                               const char*                       PSOName,
                                                                                               const PipelineResourceLayoutDesc& ResourceLayout,
-                                                                                              Uint32                            SRBAllocationGranularity)
+                                                                                              UInt32                            SRBAllocationGranularity)
 {
     PipelineResourceSignatureDescWrapper SignDesc{PSOName, ResourceLayout, SRBAllocationGranularity};
 
@@ -757,7 +757,7 @@ PipelineResourceSignatureDescWrapper PipelineStateWebGPUImpl::GetDefaultResource
         const WGSLShaderResources& ShaderResources = *pShader->GetShaderResources();
 
         ShaderResources.ProcessResources(
-            [&](const WGSLShaderResourceAttribs& Attribs, Uint32) //
+            [&](const WGSLShaderResourceAttribs& Attribs, UInt32) //
             {
                 const char* const SamplerSuffix =
                     (ShaderResources.IsUsingCombinedSamplers() && (Attribs.Type == WGSLShaderResourceAttribs::ResourceType::Sampler || Attribs.Type == WGSLShaderResourceAttribs::ResourceType::ComparisonSampler)) ?
@@ -803,7 +803,7 @@ void PipelineStateWebGPUImpl::DvpVerifySRBResources(const DeviceContextWebGPUImp
     for (const auto& pResources : m_ShaderResources)
     {
         pResources->ProcessResources(
-            [&](const WGSLShaderResourceAttribs& ResAttribs, Uint32) //
+            [&](const WGSLShaderResourceAttribs& ResAttribs, UInt32) //
             {
                 VERIFY_EXPR(res_info->pSignature != nullptr);
                 VERIFY_EXPR(res_info->pSignature->GetDesc().BindingIndex == res_info->SignatureIndex);

@@ -64,8 +64,8 @@ public:
     {
         RenderPassCacheKey() {}
 
-        RenderPassCacheKey(Uint32               _NumRenderTargets,
-                           Uint32               _SampleCount,
+        RenderPassCacheKey(UInt32               _NumRenderTargets,
+                           UInt32               _SampleCount,
                            const TEXTURE_FORMAT _RTVFormats[],
                            TEXTURE_FORMAT       _DSVFormat,
                            bool                 _EnableVRS,
@@ -80,11 +80,11 @@ public:
         {
             VERIFY_EXPR(_NumRenderTargets <= std::numeric_limits<decltype(NumRenderTargets)>::max());
             VERIFY_EXPR(_SampleCount <= std::numeric_limits<decltype(SampleCount)>::max());
-            for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+            for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
                 RTVFormats[rt] = _RTVFormats[rt];
         }
-        Uint8          NumRenderTargets               = 0;
-        Uint8          SampleCount                    = 0;
+        UInt8          NumRenderTargets               = 0;
+        UInt8          SampleCount                    = 0;
         bool           EnableVRS                      = false;
         bool           ReadOnlyDSV                    = false;
         TEXTURE_FORMAT DSVFormat                      = TEX_FORMAT_UNKNOWN;
@@ -104,7 +104,7 @@ public:
             }
             // clang-format on
 
-            for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+            for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
                 if (RTVFormats[rt] != rhs.RTVFormats[rt])
                     return false;
 
@@ -116,7 +116,7 @@ public:
             if (Hash == 0)
             {
                 Hash = ComputeHash(NumRenderTargets, SampleCount, DSVFormat, EnableVRS, ReadOnlyDSV);
-                for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+                for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
                     HashCombine(Hash, RTVFormats[rt]);
             }
             return Hash;

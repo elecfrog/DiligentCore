@@ -105,7 +105,7 @@ public:
     // Releases all allocated pages that are later returned to the global memory manager by the release queues.
     // As global memory manager is hosted by the render device, the upload heap can be destroyed before the
     // pages are actually returned to the manager.
-    void ReleaseAllocatedPages(Uint64 CmdQueueMask);
+    void ReleaseAllocatedPages(UInt64 CmdQueueMask);
 
     size_t GetStalePagesCount() const
     {
@@ -122,7 +122,7 @@ private:
         // clang-format off
         UploadPageInfo(VulkanUtilities::MemoryAllocation&& _MemAllocation,
                        VulkanUtilities::BufferWrapper&&          _Buffer,
-                       Uint8*                                    _CPUAddress) :
+                       UInt8*                                    _CPUAddress) :
             MemAllocation{std::move(_MemAllocation)},
             Buffer       {std::move(_Buffer)       },
             CPUAddress   {_CPUAddress              }
@@ -132,14 +132,14 @@ private:
 
         VulkanUtilities::MemoryAllocation MemAllocation;
         VulkanUtilities::BufferWrapper    Buffer;
-        Uint8* const                      CPUAddress = nullptr;
+        UInt8* const                      CPUAddress = nullptr;
     };
     std::vector<UploadPageInfo> m_Pages;
 
     struct CurrPageInfo
     {
         VkBuffer     vkBuffer       = VK_NULL_HANDLE;
-        Uint8*       CurrCPUAddress = nullptr;
+        UInt8*       CurrCPUAddress = nullptr;
         VkDeviceSize CurrOffset     = 0;
         VkDeviceSize AvailableSize  = 0;
 

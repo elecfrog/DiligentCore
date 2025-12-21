@@ -90,7 +90,7 @@ static std::vector<uint8_t> CompilePS(IRenderDevice* pDevice)
     if (pShader)
     {
         const void* pBytecode = nullptr;
-        Uint64      Size      = 0;
+        UInt64      Size      = 0;
         pShader->GetBytecode(&pBytecode, Size);
 
         Bytecode.resize(static_cast<size_t>(Size));

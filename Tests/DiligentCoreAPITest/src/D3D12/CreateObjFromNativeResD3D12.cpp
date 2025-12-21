@@ -89,7 +89,7 @@ void TestCreateObjFromNativeResD3D12::CreateBuffer(Diligent::IBuffer* pBuffer)
     ASSERT_NE(pBufferD3D12, nullptr);
 
 
-    Uint64 DataStartByteOffset;
+    UInt64 DataStartByteOffset;
     auto*  pD3D12Buffer = pBufferD3D12->GetD3D12Buffer(DataStartByteOffset, nullptr);
     ASSERT_NE(pD3D12Buffer, nullptr);
     EXPECT_EQ(DataStartByteOffset, 0);
@@ -107,7 +107,7 @@ void TestCreateObjFromNativeResD3D12::CreateBuffer(Diligent::IBuffer* pBuffer)
         RefCntAutoPtr<IBufferD3D12> pTestBufferD3D12(pBufferFromNativeD3D12Handle, IID_BufferD3D12);
         ASSERT_NE(pTestBufferD3D12, nullptr);
 
-        Uint64 TestBuffDataStartByteOffset;
+        UInt64 TestBuffDataStartByteOffset;
         EXPECT_EQ(pTestBufferD3D12->GetD3D12Buffer(TestBuffDataStartByteOffset, nullptr), pD3D12Buffer);
         EXPECT_EQ(TestBuffDataStartByteOffset, 0);
         EXPECT_EQ(reinterpret_cast<ID3D12Resource*>(pTestBufferD3D12->GetNativeHandle()), pD3D12Buffer);

@@ -94,7 +94,7 @@ void TestWGSLResources(const char*                                   FilePath,
         RefResourcesMap[RefRes.Name] = &RefRes;
     }
 
-    for (Uint32 i = 0; i < Resources.GetTotalResources(); ++i)
+    for (UInt32 i = 0; i < Resources.GetTotalResources(); ++i)
     {
         const auto& Res     = const_cast<const WGSLShaderResources&>(Resources).GetResource(i);
         const auto* pRefRes = RefResourcesMap[Res.Name];

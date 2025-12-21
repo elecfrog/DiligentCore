@@ -31,26 +31,26 @@
 namespace Diligent
 {
 
-Uint64 LinuxMisc::SetCurrentThreadAffinity(Uint64 Mask)
+UInt64 LinuxMisc::SetCurrentThreadAffinity(UInt64 Mask)
 {
     const auto CurrThread = pthread_self();
 
-    Uint64 CurrAffinity = 0;
+    UInt64 CurrAffinity = 0;
 
     cpu_set_t CPUSet;
     if (pthread_getaffinity_np(CurrThread, sizeof(CPUSet), &CPUSet) == 0)
     {
-        for (Uint32 j = 0; j < 64; ++j)
+        for (UInt32 j = 0; j < 64; ++j)
         {
             if (CPU_ISSET(j, &CPUSet))
-                CurrAffinity |= Uint64{1} << j;
+                CurrAffinity |= UInt64{1} << j;
         }
     }
 
     CPU_ZERO(&CPUSet);
-    for (Uint32 j = 0; j < 64; j++)
+    for (UInt32 j = 0; j < 64; j++)
     {
-        if (Mask & (Uint64{1} << j))
+        if (Mask & (UInt64{1} << j))
             CPU_SET(j, &CPUSet);
     }
 

@@ -43,7 +43,7 @@ class QueryManagerWebGPU
 {
 public:
     QueryManagerWebGPU(RenderDeviceWebGPUImpl* pRenderDeviceWebGPU,
-                       const Uint32            QueryHeapSizes[]);
+                       const UInt32            QueryHeapSizes[]);
 
     ~QueryManagerWebGPU();
 
@@ -54,15 +54,15 @@ public:
     QueryManagerWebGPU& operator = (      QueryManagerWebGPU&&) = delete;
     // clang-format on
 
-    static constexpr Uint32 InvalidIndex = UINT32_MAX;
+    static constexpr UInt32 InvalidIndex = UINT32_MAX;
 
-    Uint32 AllocateQuery(QUERY_TYPE Type);
+    UInt32 AllocateQuery(QUERY_TYPE Type);
 
-    void DiscardQuery(QUERY_TYPE Type, Uint32 Index);
+    void DiscardQuery(QUERY_TYPE Type, UInt32 Index);
 
     WGPUQuerySet GetQuerySet(QUERY_TYPE Type) const;
 
-    Uint64 GetQueryResult(QUERY_TYPE Type, Uint32 Index) const;
+    UInt64 GetQueryResult(QUERY_TYPE Type, UInt32 Index) const;
 
     void ResolveQuerySet(RenderDeviceWebGPUImpl* pDevice, DeviceContextWebGPUImpl* pDeviceContext);
 
@@ -70,23 +70,23 @@ private:
     class QuerySetObject final : public ObjectBase<IDeviceObject>, public WebGPUResourceBase
     {
     public:
-        QuerySetObject(IReferenceCounters* pRefCounters, RenderDeviceWebGPUImpl* pDevice, Uint32 HeapSize, QUERY_TYPE QueryType);
+        QuerySetObject(IReferenceCounters* pRefCounters, RenderDeviceWebGPUImpl* pDevice, UInt32 HeapSize, QUERY_TYPE QueryType);
 
         ~QuerySetObject();
 
-        Uint32 Allocate();
+        UInt32 Allocate();
 
-        void Discard(Uint32 Index);
+        void Discard(UInt32 Index);
 
         QUERY_TYPE GetType() const;
 
-        Uint32 GetQueryCount() const;
+        UInt32 GetQueryCount() const;
 
-        Uint64 GetQueryResult(Uint32 Index) const;
+        UInt64 GetQueryResult(UInt32 Index) const;
 
         WGPUQuerySet GetWebGPUQuerySet() const;
 
-        Uint32 GetMaxAllocatedQueries() const;
+        UInt32 GetMaxAllocatedQueries() const;
 
         void ResolveQueries(RenderDeviceWebGPUImpl* pDevice, DeviceContextWebGPUImpl* pDeviceContext);
 
@@ -102,11 +102,11 @@ private:
         DeviceObjectAttribs   m_Desc;
         WebGPUQuerySetWrapper m_wgpuQuerySet;
         WebGPUBufferWrapper   m_wgpuResolveBuffer;
-        std::vector<Uint32>   m_AvailableQueries;
+        std::vector<UInt32>   m_AvailableQueries;
 
         QUERY_TYPE m_Type                = QUERY_TYPE_UNDEFINED;
-        Uint32     m_QueryCount          = 0;
-        Uint32     m_MaxAllocatedQueries = 0;
+        UInt32     m_QueryCount          = 0;
+        UInt32     m_MaxAllocatedQueries = 0;
     };
 
     std::array<RefCntAutoPtr<QuerySetObject>, QUERY_TYPE_NUM_TYPES> m_QuerySets;

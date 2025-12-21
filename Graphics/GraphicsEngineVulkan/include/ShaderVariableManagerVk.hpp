@@ -84,22 +84,22 @@ public:
     void Initialize(const PipelineResourceSignatureVkImpl& Signature,
                     IMemoryAllocator&                      Allocator,
                     const SHADER_RESOURCE_VARIABLE_TYPE*   AllowedVarTypes,
-                    Uint32                                 NumAllowedTypes,
+                    UInt32                                 NumAllowedTypes,
                     SHADER_TYPE                            ShaderType);
 
     void Destroy(IMemoryAllocator& Allocator);
 
     ShaderVariableVkImpl* GetVariable(const Char* Name) const;
-    ShaderVariableVkImpl* GetVariable(Uint32 Index) const;
+    ShaderVariableVkImpl* GetVariable(UInt32 Index) const;
 
-    void BindResource(Uint32 ResIndex, const BindResourceInfo& BindInfo);
+    void BindResource(UInt32 ResIndex, const BindResourceInfo& BindInfo);
 
-    void SetBufferDynamicOffset(Uint32 ResIndex,
-                                Uint32 ArrayIndex,
-                                Uint32 BufferDynamicOffset);
+    void SetBufferDynamicOffset(UInt32 ResIndex,
+                                UInt32 ArrayIndex,
+                                UInt32 BufferDynamicOffset);
 
-    IDeviceObject* Get(Uint32 ArrayIndex,
-                       Uint32 ResIndex) const;
+    IDeviceObject* Get(UInt32 ArrayIndex,
+                       UInt32 ResIndex) const;
 
     void BindResources(IResourceMapping* pResourceMapping, BIND_SHADER_RESOURCES_FLAGS Flags);
 
@@ -109,11 +109,11 @@ public:
 
     static size_t GetRequiredMemorySize(const PipelineResourceSignatureVkImpl& Signature,
                                         const SHADER_RESOURCE_VARIABLE_TYPE*   AllowedVarTypes,
-                                        Uint32                                 NumAllowedTypes,
+                                        UInt32                                 NumAllowedTypes,
                                         SHADER_TYPE                            ShaderStages,
-                                        Uint32*                                pNumVariables = nullptr);
+                                        UInt32*                                pNumVariables = nullptr);
 
-    Uint32 GetVariableCount() const { return m_NumVariables; }
+    UInt32 GetVariableCount() const { return m_NumVariables; }
 
     IObject& GetOwner() { return m_Owner; }
 
@@ -124,14 +124,14 @@ private:
 
     using ResourceAttribs = PipelineResourceAttribsVk;
 
-    Uint32 GetVariableIndex(const ShaderVariableVkImpl& Variable);
+    UInt32 GetVariableIndex(const ShaderVariableVkImpl& Variable);
 
     // These two methods can't be implemented in the header because they depend on PipelineResourceSignatureVkImpl
-    const PipelineResourceDesc& GetResourceDesc(Uint32 Index) const;
-    const ResourceAttribs&      GetResourceAttribs(Uint32 Index) const;
+    const PipelineResourceDesc& GetResourceDesc(UInt32 Index) const;
+    const ResourceAttribs&      GetResourceAttribs(UInt32 Index) const;
 
 private:
-    Uint32 m_NumVariables = 0;
+    UInt32 m_NumVariables = 0;
 };
 
 // sizeof(ShaderVariableVkImpl) == 24 (x64)
@@ -141,7 +141,7 @@ public:
     using TBase = ShaderVariableBase<ShaderVariableVkImpl, ShaderVariableManagerVk, IShaderResourceVariable>;
 
     ShaderVariableVkImpl(ShaderVariableManagerVk& ParentManager,
-                         Uint32                   ResIndex) :
+                         UInt32                   ResIndex) :
         TBase{ParentManager, ResIndex}
     {}
 
@@ -152,7 +152,7 @@ public:
     ShaderVariableVkImpl& operator= (ShaderVariableVkImpl&&)      = delete;
     // clang-format on
 
-    virtual IDeviceObject* DILIGENT_CALL_TYPE Get(Uint32 ArrayIndex) const override final
+    virtual IDeviceObject* DILIGENT_CALL_TYPE Get(UInt32 ArrayIndex) const override final
     {
         return m_ParentManager.Get(ArrayIndex, m_ResIndex);
     }
@@ -162,8 +162,8 @@ public:
         m_ParentManager.BindResource(m_ResIndex, BindInfo);
     }
 
-    void SetDynamicOffset(Uint32 ArrayIndex,
-                          Uint32 BufferDynamicOffset) const
+    void SetDynamicOffset(UInt32 ArrayIndex,
+                          UInt32 BufferDynamicOffset) const
     {
         m_ParentManager.SetBufferDynamicOffset(m_ResIndex, ArrayIndex, BufferDynamicOffset);
     }

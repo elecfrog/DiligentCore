@@ -38,7 +38,7 @@ struct AndroidMisc : public LinuxMisc
 {
     /// Sets the current thread affinity mask and on success returns the previous mask.
     /// On failure, returns 0.
-    static Uint64 SetCurrentThreadAffinity(Uint64 Mask);
+    static UInt64 SetCurrentThreadAffinity(UInt64 Mask);
 };
 
 } // namespace Diligent

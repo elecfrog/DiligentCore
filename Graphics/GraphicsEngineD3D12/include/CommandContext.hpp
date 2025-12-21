@@ -172,7 +172,7 @@ public:
     };
     void SetDescriptorHeaps(ShaderDescriptorHeaps Heaps);
 
-    void ExecuteIndirect(ID3D12CommandSignature* pCmdSignature, Uint32 MaxCommandCount, ID3D12Resource* pArgsBuff, Uint64 ArgsOffset, ID3D12Resource* pCountBuff = nullptr, Uint64 CountOffset = 0)
+    void ExecuteIndirect(ID3D12CommandSignature* pCmdSignature, UInt32 MaxCommandCount, ID3D12Resource* pArgsBuff, UInt64 ArgsOffset, ID3D12Resource* pCountBuff = nullptr, UInt64 CountOffset = 0)
     {
         FlushResourceBarriers();
         m_pCommandList->ExecuteIndirect(pCmdSignature, MaxCommandCount, pArgsBuff, ArgsOffset, pCountBuff, CountOffset);
@@ -269,7 +269,7 @@ protected:
 
     D3D12_PRIMITIVE_TOPOLOGY m_PrimitiveTopology = D3D_PRIMITIVE_TOPOLOGY_UNDEFINED;
 
-    Uint32 m_MaxInterfaceVer = 0;
+    UInt32 m_MaxInterfaceVer = 0;
 };
 
 class ComputeContext : public CommandContext

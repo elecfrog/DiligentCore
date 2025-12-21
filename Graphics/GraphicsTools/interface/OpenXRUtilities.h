@@ -88,7 +88,7 @@ XrResult DILIGENT_GLOBAL_FUNCTION(DestroyOpenXRDebugUtilsMessenger)(XrDebugUtils
 ///                                pSwapchainImageData->GetDataPtr<XrSwapchainImageBaseHeader>());
 ///
 void DILIGENT_GLOBAL_FUNCTION(AllocateOpenXRSwapchainImageData)(RENDER_DEVICE_TYPE DeviceType,
-                                                                Uint32             ImageCount,
+                                                                UInt32             ImageCount,
                                                                 IDataBlob**        ppSwapchainImageData);
 
 /// Returns the texture object that corresponds to the specified OpenXR swapchain image.
@@ -117,7 +117,7 @@ void DILIGENT_GLOBAL_FUNCTION(AllocateOpenXRSwapchainImageData)(RENDER_DEVICE_TY
 ///
 void DILIGENT_GLOBAL_FUNCTION(GetOpenXRSwapchainImage)(IRenderDevice*                    pDevice,
                                                        const XrSwapchainImageBaseHeader* ImageData,
-                                                       Uint32                            ImageIndex,
+                                                       UInt32                            ImageIndex,
                                                        const TextureDesc REF             TexDesc,
                                                        ITexture**                        ppImage);
 

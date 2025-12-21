@@ -111,7 +111,7 @@ SwapChainGLImpl::~SwapChainGLImpl()
 {
 }
 
-void SwapChainGLImpl::Present(Uint32 SyncInterval)
+void SwapChainGLImpl::Present(UInt32 SyncInterval)
 {
 #if PLATFORM_WIN32 || PLATFORM_LINUX || PLATFORM_ANDROID
     RenderDeviceGLImpl* pDeviceGL = m_pRenderDevice.RawPtr<RenderDeviceGLImpl>();
@@ -134,14 +134,14 @@ void SwapChainGLImpl::Present(Uint32 SyncInterval)
     }
 }
 
-void SwapChainGLImpl::Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewPreTransform)
+void SwapChainGLImpl::Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform)
 {
 #if PLATFORM_ANDROID
     RenderDeviceGLImpl* pDeviceGL = m_pRenderDevice.RawPtr<RenderDeviceGLImpl>();
     auto&               GLContext = pDeviceGL->m_GLContext;
     GLContext.UpdateScreenSize();
-    const Uint32 ScreenWidth  = static_cast<Uint32>(GLContext.GetScreenWidth());
-    const Uint32 ScreenHeight = static_cast<Uint32>(GLContext.GetScreenHeight());
+    const UInt32 ScreenWidth  = static_cast<UInt32>(GLContext.GetScreenWidth());
+    const UInt32 ScreenHeight = static_cast<UInt32>(GLContext.GetScreenHeight());
 
     if (NewWidth == 0)
     {

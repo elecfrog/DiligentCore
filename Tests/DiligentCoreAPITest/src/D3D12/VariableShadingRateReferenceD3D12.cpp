@@ -248,7 +248,7 @@ void VariableShadingRatePerPrimitiveTestReferenceD3D12(ISwapChain* pSwapChain)
 }
 
 
-RefCntAutoPtr<ITextureView> CreateShadingRateTexture(IRenderDevice* pDevice, ISwapChain* pSwapChain, Uint32 SampleCount = 1, Uint32 ArraySize = 1);
+RefCntAutoPtr<ITextureView> CreateShadingRateTexture(IRenderDevice* pDevice, ISwapChain* pSwapChain, UInt32 SampleCount = 1, UInt32 ArraySize = 1);
 
 void VariableShadingRateTextureBasedTestReferenceD3D12(ISwapChain* pSwapChain)
 {

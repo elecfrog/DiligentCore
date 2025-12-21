@@ -61,13 +61,13 @@ public:
     IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_ShaderGL, IID_InternalImpl, TShaderBase)
 
     /// Implementation of IShader::GetResourceCount() in OpenGL backend.
-    virtual Uint32 DILIGENT_CALL_TYPE GetResourceCount() const override final;
+    virtual UInt32 DILIGENT_CALL_TYPE GetResourceCount() const override final;
 
     /// Implementation of IShader::GetResource() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE GetResourceDesc(Uint32 Index, ShaderResourceDesc& ResourceDesc) const override final;
+    virtual void DILIGENT_CALL_TYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final;
 
     /// Implementation of IShader::GetConstantBufferDesc() in OpenGL backend.
-    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(Uint32 Index) const override final;
+    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(UInt32 Index) const override final;
 
     /// Implementation of IShaderGL::GetGLShaderHandle() in OpenGL backend.
     virtual GLuint DILIGENT_CALL_TYPE GetGLShaderHandle() const override final { return m_GLShaderObj; }
@@ -77,7 +77,7 @@ public:
     SHADER_SOURCE_LANGUAGE GetSourceLanguage() const { return m_SourceLanguage; }
 
     virtual void DILIGENT_CALL_TYPE GetBytecode(const void** ppData,
-                                                Uint64&      DataSize) const override final
+                                                UInt64&      DataSize) const override final
     {
         *ppData  = !m_GLSLSourceString.empty() ? m_GLSLSourceString.c_str() : nullptr;
         DataSize = m_GLSLSourceString.length();

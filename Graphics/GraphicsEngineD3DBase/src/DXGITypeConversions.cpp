@@ -26,14 +26,14 @@
  */
 
 #include "DXGITypeConversions.hpp"
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "DebugUtilities.hpp"
 #include "GraphicsAccessories.hpp"
 
 namespace Diligent
 {
 
-DXGI_FORMAT TypeToDXGI_Format(VALUE_TYPE ValType, Uint32 NumComponents, Bool bIsNormalized)
+DXGI_FORMAT TypeToDXGI_Format(VALUE_TYPE ValType, UInt32 NumComponents, Bool bIsNormalized)
 {
     switch (ValType)
     {
@@ -188,7 +188,7 @@ DXGI_FORMAT TypeToDXGI_Format(VALUE_TYPE ValType, Uint32 NumComponents, Bool bIs
     }
 }
 
-DXGI_FORMAT CorrectDXGIFormat(DXGI_FORMAT DXGIFormat, Uint32 BindFlags)
+DXGI_FORMAT CorrectDXGIFormat(DXGI_FORMAT DXGIFormat, UInt32 BindFlags)
 {
     if ((BindFlags & BIND_DEPTH_STENCIL) && (BindFlags != BIND_DEPTH_STENCIL))
     {
@@ -289,7 +289,7 @@ DXGI_FORMAT CorrectDXGIFormat(DXGI_FORMAT DXGIFormat, Uint32 BindFlags)
     return DXGIFormat;
 }
 
-DXGI_FORMAT TexFormatToDXGI_Format(TEXTURE_FORMAT TexFormat, Uint32 BindFlags)
+DXGI_FORMAT TexFormatToDXGI_Format(TEXTURE_FORMAT TexFormat, UInt32 BindFlags)
 {
     static Bool        bFormatMapInitialized                   = false;
     static DXGI_FORMAT FmtToDXGIFmtMap[TEX_FORMAT_NUM_FORMATS] = {DXGI_FORMAT_UNKNOWN};

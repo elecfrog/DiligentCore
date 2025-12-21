@@ -77,11 +77,11 @@ void GetOpenXRGraphicsBindingD3D12(IRenderDevice*  pDevice,
     *ppGraphicsBinding = pDataBlob.Detach();
 }
 
-void AllocateOpenXRSwapchainImageDataD3D12(Uint32      ImageCount,
+void AllocateOpenXRSwapchainImageDataD3D12(UInt32      ImageCount,
                                            IDataBlob** ppSwapchainImageData)
 {
     RefCntAutoPtr<DataBlobImpl> pDataBlob{DataBlobImpl::Create(sizeof(XrSwapchainImageD3D12KHR) * ImageCount)};
-    for (Uint32 i = 0; i < ImageCount; ++i)
+    for (UInt32 i = 0; i < ImageCount; ++i)
     {
         XrSwapchainImageD3D12KHR& Image{pDataBlob->GetDataPtr<XrSwapchainImageD3D12KHR>()[i]};
         Image.type = XR_TYPE_SWAPCHAIN_IMAGE_D3D12_KHR;
@@ -94,7 +94,7 @@ void AllocateOpenXRSwapchainImageDataD3D12(Uint32      ImageCount,
 
 void GetOpenXRSwapchainImageD3D12(IRenderDevice*                    pDevice,
                                   const XrSwapchainImageBaseHeader* ImageData,
-                                  Uint32                            ImageIndex,
+                                  UInt32                            ImageIndex,
                                   ITexture**                        ppImage)
 {
     const XrSwapchainImageD3D12KHR* ImageD3D12 = reinterpret_cast<const XrSwapchainImageD3D12KHR*>(ImageData);

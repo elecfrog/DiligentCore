@@ -117,11 +117,11 @@ public:
             TexDesc.Name = "Texture1D_D3D11 from native d3d11 texture";
 
         TexDesc.Type           = D3D11TexDesc.ArraySize > 1 ? RESOURCE_DIM_TEX_1D_ARRAY : RESOURCE_DIM_TEX_1D;
-        TexDesc.Width          = Uint32{D3D11TexDesc.Width};
+        TexDesc.Width          = UInt32{D3D11TexDesc.Width};
         TexDesc.Height         = 1;
-        TexDesc.ArraySize      = Uint32{D3D11TexDesc.ArraySize};
+        TexDesc.ArraySize      = UInt32{D3D11TexDesc.ArraySize};
         TexDesc.Format         = DXGI_FormatToTexFormat(D3D11TexDesc.Format);
-        TexDesc.MipLevels      = Uint32{D3D11TexDesc.MipLevels};
+        TexDesc.MipLevels      = UInt32{D3D11TexDesc.MipLevels};
         TexDesc.SampleCount    = 1;
         TexDesc.Usage          = D3D11UsageToUsage(D3D11TexDesc.Usage);
         TexDesc.BindFlags      = D3D11BindFlagsToBindFlags(D3D11TexDesc.BindFlags);

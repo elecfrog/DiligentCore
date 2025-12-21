@@ -190,7 +190,7 @@ private:
 
 } // namespace
 
-GLenum TexFormatToGLInternalTexFormat(TEXTURE_FORMAT TexFormat, Uint32 BindFlags)
+GLenum TexFormatToGLInternalTexFormat(TEXTURE_FORMAT TexFormat, UInt32 BindFlags)
 {
     static const FormatToGLInternalTexFormatMap FormatMap;
     if (TexFormat >= TEX_FORMAT_UNKNOWN && TexFormat < TEX_FORMAT_NUM_FORMATS)
@@ -439,7 +439,7 @@ NativePixelAttribs GetNativePixelTransferAttribs(TEXTURE_FORMAT TexFormat)
     }
 }
 
-GLenum TypeToGLTexFormat(VALUE_TYPE ValType, Uint32 NumComponents, Bool bIsNormalized)
+GLenum TypeToGLTexFormat(VALUE_TYPE ValType, UInt32 NumComponents, Bool bIsNormalized)
 {
     switch (ValType)
     {

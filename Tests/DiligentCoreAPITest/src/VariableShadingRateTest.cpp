@@ -50,17 +50,17 @@ void VariableShadingRatePerPrimitiveTestReferenceVk(ISwapChain* pSwapChain);
 void VariableShadingRateTextureBasedTestReferenceVk(ISwapChain* pSwapChain);
 #endif
 
-RefCntAutoPtr<ITextureView> CreateShadingRateTexture(IRenderDevice* pDevice, ISwapChain* pSwapChain, Uint32 SampleCount = 1, Uint32 ArraySize = 1)
+RefCntAutoPtr<ITextureView> CreateShadingRateTexture(IRenderDevice* pDevice, ISwapChain* pSwapChain, UInt32 SampleCount = 1, UInt32 ArraySize = 1)
 {
     const auto& SCDesc  = pSwapChain->GetDesc();
     const auto& SRProps = pDevice->GetAdapterInfo().ShadingRate;
 
     SHADING_RATE RemapShadingRate[SHADING_RATE_MAX + 1] = {};
 
-    for (Uint32 i = 0; i < _countof(RemapShadingRate); ++i)
+    for (UInt32 i = 0; i < _countof(RemapShadingRate); ++i)
     {
         // ShadingRates is sorted from largest to lower rate.
-        for (Uint32 j = 0; j < SRProps.NumShadingRates; ++j)
+        for (UInt32 j = 0; j < SRProps.NumShadingRates; ++j)
         {
             if (static_cast<SHADING_RATE>(i) >= SRProps.ShadingRates[j].Rate && SRProps.ShadingRates[j].HasSampleCount(SampleCount))
             {
@@ -81,13 +81,13 @@ RefCntAutoPtr<ITextureView> CreateShadingRateTexture(IRenderDevice* pDevice, ISw
     TexDesc.Usage       = USAGE_IMMUTABLE;
     TexDesc.SampleCount = 1;
 
-    std::vector<Uint8> SRData;
+    std::vector<UInt8> SRData;
     SRData.resize(TexDesc.Width * TexDesc.Height * ArraySize);
-    for (Uint32 a = 0; a < ArraySize; ++a)
+    for (UInt32 a = 0; a < ArraySize; ++a)
     {
-        for (Uint32 y = 0; y < TexDesc.Height; ++y)
+        for (UInt32 y = 0; y < TexDesc.Height; ++y)
         {
-            for (Uint32 x = 0; x < TexDesc.Width; ++x)
+            for (UInt32 x = 0; x < TexDesc.Width; ++x)
             {
                 auto SR  = VRSTestingConstants::TextureBased::GenTexture(x, y, TexDesc.Width, TexDesc.Height);
                 auto Idx = x + y * TexDesc.Width + a * TexDesc.Width * TexDesc.Height;
@@ -98,7 +98,7 @@ RefCntAutoPtr<ITextureView> CreateShadingRateTexture(IRenderDevice* pDevice, ISw
     }
 
     std::vector<TextureSubResData> SubResData(ArraySize);
-    for (Uint32 a = 0; a < ArraySize; ++a)
+    for (UInt32 a = 0; a < ArraySize; ++a)
     {
         SubResData[a].pData  = SRData.data() + (a * TexDesc.Width * TexDesc.Height);
         SubResData[a].Stride = TexDesc.Width;
@@ -141,7 +141,7 @@ TEST(VariableShadingRateTest, ValidateSupportedShadingRates)
 
     const auto& SRProps = pDevice->GetAdapterInfo().ShadingRate;
 
-    for (Uint32 i = 1; i < SRProps.NumShadingRates; ++i)
+    for (UInt32 i = 1; i < SRProps.NumShadingRates; ++i)
     {
         const auto& Prev = SRProps.ShadingRates[i - 1];
         const auto& Curr = SRProps.ShadingRates[i];
@@ -601,7 +601,7 @@ TEST(VariableShadingRateTest, TextureBasedWithTextureArray)
     GPUTestingEnvironment::ScopedReleaseResources EnvironmentAutoReset;
 
     const auto&  SCDesc    = pSwapChain->GetDesc();
-    const Uint32 ArraySize = 2;
+    const UInt32 ArraySize = 2;
 
     RefCntAutoPtr<IPipelineState> pPSO;
     {

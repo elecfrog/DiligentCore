@@ -59,13 +59,13 @@ public:
 
     virtual const ShaderDesc& DILIGENT_CALL_TYPE GetDesc() const override final { return m_CreateInfo.Get().Desc; }
 
-    UNSUPPORTED_CONST_METHOD(Uint32, GetResourceCount)
-    UNSUPPORTED_CONST_METHOD(void, GetResourceDesc, Uint32 Index, ShaderResourceDesc& ResourceDesc)
-    UNSUPPORTED_CONST_METHOD(const ShaderCodeBufferDesc*, GetConstantBufferDesc, Uint32 Index)
+    UNSUPPORTED_CONST_METHOD(UInt32, GetResourceCount)
+    UNSUPPORTED_CONST_METHOD(void, GetResourceDesc, UInt32 Index, ShaderResourceDesc& ResourceDesc)
+    UNSUPPORTED_CONST_METHOD(const ShaderCodeBufferDesc*, GetConstantBufferDesc, UInt32 Index)
     UNSUPPORTED_CONST_METHOD(Int32, GetUniqueID)
     UNSUPPORTED_METHOD(void, SetUserData, IObject* pUserData)
     UNSUPPORTED_CONST_METHOD(IObject*, GetUserData)
-    UNSUPPORTED_CONST_METHOD(void, GetBytecode, const void** ppBytecode, Uint64& Size);
+    UNSUPPORTED_CONST_METHOD(void, GetBytecode, const void** ppBytecode, UInt64& Size);
 
     virtual SHADER_STATUS DILIGENT_CALL_TYPE GetStatus(bool WaitForCompletion) override final;
     virtual IShader* DILIGENT_CALL_TYPE      GetDeviceShader(RENDER_DEVICE_TYPE Type) const override final;

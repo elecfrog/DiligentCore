@@ -54,19 +54,19 @@ struct PipelineLayoutWebGPU::WGPUPipelineLayoutCreateInfo
     std::vector<RefCntAutoPtr<PipelineResourceSignatureWebGPUImpl>> Signatures;
 };
 
-void PipelineLayoutWebGPU::Create(RenderDeviceWebGPUImpl* pDeviceWebGPU, RefCntAutoPtr<PipelineResourceSignatureWebGPUImpl> ppSignatures[], Uint32 SignatureCount) noexcept(false)
+void PipelineLayoutWebGPU::Create(RenderDeviceWebGPUImpl* pDeviceWebGPU, RefCntAutoPtr<PipelineResourceSignatureWebGPUImpl> ppSignatures[], UInt32 SignatureCount) noexcept(false)
 {
     VERIFY(m_BindGroupCount == 0 && !m_wgpuPipelineLayout, "This pipeline layout is already initialized");
 
     m_PipelineLayoutCreateInfo               = std::make_unique<WGPUPipelineLayoutCreateInfo>();
     m_PipelineLayoutCreateInfo->DeviceWebGPU = pDeviceWebGPU;
 
-    Uint32 BindGroupLayoutCount      = 0;
-    Uint32 DynamicUniformBufferCount = 0;
-    Uint32 DynamicStorageBufferCount = 0;
+    UInt32 BindGroupLayoutCount      = 0;
+    UInt32 DynamicUniformBufferCount = 0;
+    UInt32 DynamicStorageBufferCount = 0;
 
     m_PipelineLayoutCreateInfo->Signatures.reserve(SignatureCount);
-    for (Uint32 BindInd = 0; BindInd < SignatureCount; ++BindInd)
+    for (UInt32 BindInd = 0; BindInd < SignatureCount; ++BindInd)
     {
         // Signatures are arranged by binding index by PipelineStateBase::CopyResourceSignatures
         const auto& pSignature = ppSignatures[BindInd];
@@ -88,7 +88,7 @@ void PipelineLayoutWebGPU::Create(RenderDeviceWebGPUImpl* pDeviceWebGPU, RefCntA
         DynamicUniformBufferCount += pSignature->GetDynamicUniformBufferCount();
         DynamicStorageBufferCount += pSignature->GetDynamicStorageBufferCount();
 #ifdef DILIGENT_DEBUG
-        m_DbgMaxBindIndex = std::max(m_DbgMaxBindIndex, Uint32{pSignature->GetDesc().BindingIndex});
+        m_DbgMaxBindIndex = std::max(m_DbgMaxBindIndex, UInt32{pSignature->GetDesc().BindingIndex});
 #endif
     }
     VERIFY_EXPR(BindGroupLayoutCount <= MAX_RESOURCE_SIGNATURES * 2);
@@ -116,7 +116,7 @@ void PipelineLayoutWebGPU::Create(RenderDeviceWebGPUImpl* pDeviceWebGPU, RefCntA
     VERIFY(m_BindGroupCount <= std::numeric_limits<decltype(m_BindGroupCount)>::max(),
            "Descriptor set count (", BindGroupLayoutCount, ") exceeds the maximum representable value");
 
-    m_BindGroupCount = static_cast<Uint8>(BindGroupLayoutCount);
+    m_BindGroupCount = static_cast<UInt8>(BindGroupLayoutCount);
 }
 
 WGPUPipelineLayout PipelineLayoutWebGPU::GetWebGPUPipelineLayout()
@@ -125,7 +125,7 @@ WGPUPipelineLayout PipelineLayoutWebGPU::GetWebGPUPipelineLayout()
     {
         std::array<WGPUBindGroupLayout, MAX_RESOURCE_SIGNATURES * PipelineResourceSignatureWebGPUImpl::MAX_BIND_GROUPS> BindGroupLayouts{};
 
-        Uint32 BindGroupLayoutCount = 0;
+        UInt32 BindGroupLayoutCount = 0;
         for (auto& Signature : m_PipelineLayoutCreateInfo->Signatures)
         {
             VERIFY_EXPR(Signature);

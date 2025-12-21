@@ -43,7 +43,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_Sampler =
 // clang-format off
 
 /// Sampler flags
-DILIGENT_TYPED_ENUM(SAMPLER_FLAGS, Uint8)
+DILIGENT_TYPED_ENUM(SAMPLER_FLAGS, UInt8)
 {
     /// No flags are set.
     SAMPLER_FLAG_NONE        = 0,
@@ -130,7 +130,7 @@ struct SamplerDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     Float32 MipLODBias                  DEFAULT_INITIALIZER(0);
 
     /// Maximum anisotropy level for the anisotropic filter. Default value: 0.
-    Uint32 MaxAnisotropy                DEFAULT_INITIALIZER(0);
+    UInt32 MaxAnisotropy                DEFAULT_INITIALIZER(0);
 
     /// A function that compares sampled data against existing sampled data when comparison filter is used.
 
@@ -169,7 +169,7 @@ struct SamplerDesc DILIGENT_DERIVE(DeviceObjectAttribs)
                           TEXTURE_ADDRESS_MODE _AddressV           = SamplerDesc{}.AddressV,
                           TEXTURE_ADDRESS_MODE _AddressW           = SamplerDesc{}.AddressW,
                           Float32              _MipLODBias         = SamplerDesc{}.MipLODBias,
-                          Uint32               _MaxAnisotropy      = SamplerDesc{}.MaxAnisotropy,
+                          UInt32               _MaxAnisotropy      = SamplerDesc{}.MaxAnisotropy,
                           COMPARISON_FUNCTION  _ComparisonFunc     = SamplerDesc{}.ComparisonFunc,
                           float                _MinLOD             = SamplerDesc{}.MinLOD,
                           float                _MaxLOD             = SamplerDesc{}.MaxLOD,

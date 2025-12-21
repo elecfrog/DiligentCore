@@ -94,7 +94,7 @@ void DynamicBuffer::CreateSparseBuffer(IRenderDevice* pDevice)
     }
 
     const SparseResourceProperties& SparseResources    = pDevice->GetAdapterInfo().SparseResources;
-    const Uint32                    SparseMemBlockSize = SparseResources.StandardBlockSize;
+    const UInt32                    SparseMemBlockSize = SparseResources.StandardBlockSize;
 
     m_MemoryPageSize = std::max(AlignUpNonPw2(m_MemoryPageSize, SparseMemBlockSize), SparseMemBlockSize);
 
@@ -102,7 +102,7 @@ void DynamicBuffer::CreateSparseBuffer(IRenderDevice* pDevice)
         BufferDesc Desc = m_Desc;
 
         Desc.Size      = AlignUpNonPw2(m_VirtualSize, m_MemoryPageSize);
-        Uint64 MaxSize = AlignDownNonPw2(SparseResources.ResourceSpaceSize, m_MemoryPageSize);
+        UInt64 MaxSize = AlignDownNonPw2(SparseResources.ResourceSpaceSize, m_MemoryPageSize);
         if (m_Desc.BindFlags & (BIND_SHADER_RESOURCE | BIND_UNORDERED_ACCESS))
         {
             VERIFY_EXPR(m_Desc.ElementByteStride != 0);
@@ -190,19 +190,19 @@ void DynamicBuffer::ResizeSparseBuffer(IDeviceContext* pContext)
     SparseBufferMemoryBindInfo BufferBindInfo;
     BufferBindInfo.pBuffer = m_pBuffer;
 
-    Uint64 StartOffset = m_Desc.Size;
-    Uint64 EndOffset   = m_PendingSize;
+    UInt64 StartOffset = m_Desc.Size;
+    UInt64 EndOffset   = m_PendingSize;
     if (StartOffset > EndOffset)
         std::swap(StartOffset, EndOffset);
     VERIFY_EXPR((EndOffset - StartOffset) % m_MemoryPageSize == 0);
-    const Uint32 NumPages = StaticCast<Uint32>((EndOffset - StartOffset) / m_MemoryPageSize);
+    const UInt32 NumPages = StaticCast<UInt32>((EndOffset - StartOffset) / m_MemoryPageSize);
 
     std::vector<SparseBufferMemoryBindRange> Ranges;
     Ranges.reserve(NumPages);
-    for (Uint32 i = 0; i < NumPages; ++i)
+    for (UInt32 i = 0; i < NumPages; ++i)
     {
         SparseBufferMemoryBindRange Range;
-        Range.BufferOffset = StartOffset + i * Uint64{m_MemoryPageSize};
+        Range.BufferOffset = StartOffset + i * UInt64{m_MemoryPageSize};
         Range.MemorySize   = m_MemoryPageSize;
         Range.pMemory      = m_PendingSize > m_Desc.Size ? m_pMemory.RawPtr() : nullptr;
         Range.MemoryOffset = Range.pMemory != nullptr ? Range.BufferOffset : 0;
@@ -210,13 +210,13 @@ void DynamicBuffer::ResizeSparseBuffer(IDeviceContext* pContext)
     }
 
     BufferBindInfo.pRanges   = Ranges.data();
-    BufferBindInfo.NumRanges = static_cast<Uint32>(Ranges.size());
+    BufferBindInfo.NumRanges = static_cast<UInt32>(Ranges.size());
 
     BindSparseResourceMemoryAttribs BindMemAttribs;
     BindMemAttribs.NumBufferBinds = 1;
     BindMemAttribs.pBufferBinds   = &BufferBindInfo;
 
-    Uint64  WaitFenceValue = 0;
+    UInt64  WaitFenceValue = 0;
     IFence* pWaitFence     = nullptr;
     if (m_pBeforeResizeFence)
     {
@@ -230,7 +230,7 @@ void DynamicBuffer::ResizeSparseBuffer(IDeviceContext* pContext)
         pContext->EnqueueSignal(m_pBeforeResizeFence, WaitFenceValue);
     }
 
-    Uint64  SignalFenceValue = 0;
+    UInt64  SignalFenceValue = 0;
     IFence* pSignalFence     = nullptr;
     if (m_pAfterResizeFence)
     {
@@ -254,7 +254,7 @@ void DynamicBuffer::ResizeDefaultBuffer(IDeviceContext* pContext)
         return;
 
     VERIFY_EXPR(m_pBuffer);
-    Uint64 CopySize = std::min(m_pBuffer->GetDesc().Size, m_pStaleBuffer->GetDesc().Size);
+    UInt64 CopySize = std::min(m_pBuffer->GetDesc().Size, m_pStaleBuffer->GetDesc().Size);
     pContext->CopyBuffer(m_pStaleBuffer, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
                          m_pBuffer, 0, CopySize, RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
     m_pStaleBuffer.Release();
@@ -296,7 +296,7 @@ void DynamicBuffer::CommitResize(IRenderDevice*  pDevice,
 
 IBuffer* DynamicBuffer::Resize(IRenderDevice*  pDevice,
                                IDeviceContext* pContext,
-                               Uint64          NewSize,
+                               UInt64          NewSize,
                                bool            DiscardContent)
 {
     if (m_Desc.Usage == USAGE_SPARSE)

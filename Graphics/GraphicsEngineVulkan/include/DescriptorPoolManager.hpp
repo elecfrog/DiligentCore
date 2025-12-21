@@ -53,7 +53,7 @@ public:
     // clang-format off
     DescriptorSetAllocation(VkDescriptorSet         _Set,
                             VkDescriptorPool        _Pool,
-                            Uint64                  _CmdQueueMask,
+                            UInt64                  _CmdQueueMask,
                             DescriptorSetAllocator& _DescrSetAllocator)noexcept :
         Set              {_Set               },
         Pool             {_Pool              },
@@ -114,7 +114,7 @@ public:
 private:
     VkDescriptorSet         Set               = VK_NULL_HANDLE;
     VkDescriptorPool        Pool              = VK_NULL_HANDLE;
-    Uint64                  CmdQueueMask      = 0;
+    UInt64                  CmdQueueMask      = 0;
     DescriptorSetAllocator* DescrSetAllocator = nullptr;
 };
 
@@ -149,7 +149,7 @@ public:
 
     VulkanUtilities::DescriptorPoolWrapper GetPool(const char* DebugName);
 
-    void DisposePool(VulkanUtilities::DescriptorPoolWrapper&& Pool, Uint64 QueueMask);
+    void DisposePool(VulkanUtilities::DescriptorPoolWrapper&& Pool, UInt64 QueueMask);
 
     RenderDeviceVkImpl& GetDeviceVkImpl() { return m_DeviceVkImpl; }
 
@@ -211,7 +211,7 @@ public:
 
     ~DescriptorSetAllocator();
 
-    DescriptorSetAllocation Allocate(Uint64 CommandQueueMask, VkDescriptorSetLayout SetLayout, const char* DebugName = "");
+    DescriptorSetAllocation Allocate(UInt64 CommandQueueMask, VkDescriptorSetLayout SetLayout, const char* DebugName = "");
 
 #ifdef DILIGENT_DEVELOPMENT
     Int32 GetAllocatedDescriptorSetCounter() const
@@ -221,7 +221,7 @@ public:
 #endif
 
 private:
-    void FreeDescriptorSet(VkDescriptorSet Set, VkDescriptorPool Pool, Uint64 QueueMask);
+    void FreeDescriptorSet(VkDescriptorSet Set, VkDescriptorPool Pool, UInt64 QueueMask);
 
 #ifdef DILIGENT_DEVELOPMENT
     std::atomic<Int32> m_AllocatedSetCounter;
@@ -266,7 +266,7 @@ public:
     // Releases all allocated pools that are later returned to the global pool manager.
     // As global pool manager is hosted by the render device, the allocator can
     // be destroyed before the pools are actually returned to the global pool manager.
-    void ReleasePools(Uint64 QueueMask);
+    void ReleasePools(UInt64 QueueMask);
 
     size_t GetAllocatedPoolCount() const { return m_AllocatedPools.size(); }
 

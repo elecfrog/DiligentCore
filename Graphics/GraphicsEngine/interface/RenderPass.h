@@ -44,7 +44,7 @@ static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_RenderPass =
 /// Render pass attachment load operation
 /// Vulkan counterpart: [VkAttachmentLoadOp](https://www.khronos.org/registry/vulkan/specs/1.1-extensions/html/vkspec.html#VkAttachmentLoadOp).
 /// D3D12 counterpart: [D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE](https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ne-d3d12-d3d12_render_pass_beginning_access_type).
-DILIGENT_TYPED_ENUM(ATTACHMENT_LOAD_OP, Uint8)
+DILIGENT_TYPED_ENUM(ATTACHMENT_LOAD_OP, UInt8)
 {
     /// The previous contents of the texture within the render area will be preserved.
     /// Vulkan counterpart: VK_ATTACHMENT_LOAD_OP_LOAD.
@@ -71,7 +71,7 @@ DILIGENT_TYPED_ENUM(ATTACHMENT_LOAD_OP, Uint8)
 /// Render pass attachment store operation
 /// Vulkan counterpart: [VkAttachmentStoreOp](https://www.khronos.org/registry/vulkan/specs/1.1-extensions/html/vkspec.html#VkAttachmentStoreOp).
 /// D3D12 counterpart: [D3D12_RENDER_PASS_ENDING_ACCESS_TYPE](https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ne-d3d12-d3d12_render_pass_ending_access_type).
-DILIGENT_TYPED_ENUM(ATTACHMENT_STORE_OP, Uint8)
+DILIGENT_TYPED_ENUM(ATTACHMENT_STORE_OP, UInt8)
 {
     /// The contents generated during the render pass and within the render area are written to memory.
     /// Vulkan counterpart: VK_ATTACHMENT_STORE_OP_STORE.
@@ -97,7 +97,7 @@ struct RenderPassAttachmentDesc
     TEXTURE_FORMAT          Format          DEFAULT_INITIALIZER(TEX_FORMAT_UNKNOWN);
 
     /// The number of samples in the texture.
-    Uint8                   SampleCount     DEFAULT_INITIALIZER(1);
+    UInt8                   SampleCount     DEFAULT_INITIALIZER(1);
 
     /// Load operation.
 
@@ -163,7 +163,7 @@ typedef struct RenderPassAttachmentDesc RenderPassAttachmentDesc;
 #define DILIGENT_ATTACHMENT_UNUSED 0xFFFFFFFFU
 
 /// Special constant indicating that the render pass attachment is not used.
-static DILIGENT_CONSTEXPR Uint32 ATTACHMENT_UNUSED = DILIGENT_ATTACHMENT_UNUSED;
+static DILIGENT_CONSTEXPR UInt32 ATTACHMENT_UNUSED = DILIGENT_ATTACHMENT_UNUSED;
 
 /// Attachment reference description.
 struct AttachmentReference
@@ -172,7 +172,7 @@ struct AttachmentReference
 
     /// Either an integer value identifying an attachment at the corresponding index in RenderPassDesc::pAttachments,
     /// or ATTACHMENT_UNUSED to signify that this attachment is not used.
-    Uint32          AttachmentIndex DEFAULT_INITIALIZER(0);
+    UInt32          AttachmentIndex DEFAULT_INITIALIZER(0);
 
     /// The state of the attachment during the subpass.
     RESOURCE_STATE  State           DEFAULT_INITIALIZER(RESOURCE_STATE_UNKNOWN);
@@ -180,7 +180,7 @@ struct AttachmentReference
 #if DILIGENT_CPP_INTERFACE
     constexpr AttachmentReference() noexcept {}
 
-    constexpr AttachmentReference(Uint32          _AttachmentIndex,
+    constexpr AttachmentReference(UInt32          _AttachmentIndex,
                                   RESOURCE_STATE  _State)noexcept :
         AttachmentIndex{_AttachmentIndex},
         State          {_State}
@@ -219,14 +219,14 @@ struct ShadingRateAttachment
     /// Each texel in the attachment contains shading rate for the whole tile.
     /// The size must be a power-of-two value between ShadingRateProperties::MinTileSize and ShadingRateProperties::MaxTileSize.
     /// Keep zero to use the default tile size.
-    Uint32              TileSize[2] DEFAULT_INITIALIZER({});
+    UInt32              TileSize[2] DEFAULT_INITIALIZER({});
 
 #if DILIGENT_CPP_INTERFACE
     constexpr ShadingRateAttachment() noexcept {}
 
     constexpr ShadingRateAttachment(const AttachmentReference& _Attachment,
-                                    Uint32                     TileWidth,
-                                    Uint32                     TileHeight) noexcept :
+                                    UInt32                     TileWidth,
+                                    UInt32                     TileHeight) noexcept :
         Attachment{_Attachment},
         TileSize{TileWidth, TileHeight}
     {}
@@ -252,13 +252,13 @@ typedef struct ShadingRateAttachment ShadingRateAttachment;
 struct SubpassDesc
 {
     /// The number of input attachments the subpass uses.
-    Uint32                      InputAttachmentCount        DEFAULT_INITIALIZER(0);
+    UInt32                      InputAttachmentCount        DEFAULT_INITIALIZER(0);
 
     /// Pointer to the array of input attachments, see Diligent::AttachmentReference.
     const AttachmentReference*  pInputAttachments           DEFAULT_INITIALIZER(nullptr);
 
     /// The number of color render target attachments.
-    Uint32                      RenderTargetAttachmentCount DEFAULT_INITIALIZER(0);
+    UInt32                      RenderTargetAttachmentCount DEFAULT_INITIALIZER(0);
 
     /// Pointer to the array of color render target attachments, see Diligent::AttachmentReference.
 
@@ -281,10 +281,10 @@ struct SubpassDesc
     const AttachmentReference*  pDepthStencilAttachment     DEFAULT_INITIALIZER(nullptr);
 
     /// The number of preserve attachments.
-    Uint32                      PreserveAttachmentCount     DEFAULT_INITIALIZER(0);
+    UInt32                      PreserveAttachmentCount     DEFAULT_INITIALIZER(0);
 
     /// Pointer to the array of preserve attachments, see Diligent::AttachmentReference.
-    const Uint32*               pPreserveAttachments        DEFAULT_INITIALIZER(nullptr);
+    const UInt32*               pPreserveAttachments        DEFAULT_INITIALIZER(nullptr);
 
     /// Pointer to the shading rate attachment, see Diligent::ShadingRateAttachment.
     const ShadingRateAttachment* pShadingRateAttachment     DEFAULT_INITIALIZER(nullptr);
@@ -303,13 +303,13 @@ struct SubpassDesc
             PreserveAttachmentCount     != RHS.PreserveAttachmentCount)
             return false;
 
-        for(Uint32 i=0; i < InputAttachmentCount; ++i)
+        for(UInt32 i=0; i < InputAttachmentCount; ++i)
         {
             if (pInputAttachments[i] != RHS.pInputAttachments[i])
                 return false;
         }
 
-        for(Uint32 i=0; i < RenderTargetAttachmentCount; ++i)
+        for(UInt32 i=0; i < RenderTargetAttachmentCount; ++i)
         {
             if (pRenderTargetAttachments[i] != RHS.pRenderTargetAttachments[i])
                 return false;
@@ -321,7 +321,7 @@ struct SubpassDesc
 
         if (pResolveAttachments != nullptr && RHS.pResolveAttachments != nullptr)
         {
-            for(Uint32 i=0; i < RenderTargetAttachmentCount; ++i)
+            for(UInt32 i=0; i < RenderTargetAttachmentCount; ++i)
             {
                 if (pResolveAttachments[i] != RHS.pResolveAttachments[i])
                     return false;
@@ -343,7 +343,7 @@ struct SubpassDesc
 
         if (pPreserveAttachments != nullptr && RHS.pPreserveAttachments != nullptr)
         {
-            for(Uint32 i=0; i < PreserveAttachmentCount; ++i)
+            for(UInt32 i=0; i < PreserveAttachmentCount; ++i)
             {
                 if (pPreserveAttachments[i] != RHS.pPreserveAttachments[i])
                     return false;
@@ -374,16 +374,16 @@ typedef struct SubpassDesc SubpassDesc;
 #define DILIGENT_SUBPASS_EXTERNAL 0xFFFFFFFFU
 
 /// Special subpass index value expanding synchronization scope outside a subpass.
-static DILIGENT_CONSTEXPR Uint32 SUBPASS_EXTERNAL = DILIGENT_SUBPASS_EXTERNAL;
+static DILIGENT_CONSTEXPR UInt32 SUBPASS_EXTERNAL = DILIGENT_SUBPASS_EXTERNAL;
 
 /// Subpass dependency description
 struct SubpassDependencyDesc
 {
     /// The subpass index of the first subpass in the dependency, or SUBPASS_EXTERNAL.
-    Uint32                SrcSubpass    DEFAULT_INITIALIZER(0);
+    UInt32                SrcSubpass    DEFAULT_INITIALIZER(0);
 
     /// The subpass index of the second subpass in the dependency, or SUBPASS_EXTERNAL.
-    Uint32                DstSubpass    DEFAULT_INITIALIZER(0);
+    UInt32                DstSubpass    DEFAULT_INITIALIZER(0);
 
     /// A bitmask of PIPELINE_STAGE_FLAGS specifying the source stage mask.
     PIPELINE_STAGE_FLAGS  SrcStageMask  DEFAULT_INITIALIZER(PIPELINE_STAGE_FLAG_UNDEFINED);
@@ -427,19 +427,19 @@ typedef struct SubpassDependencyDesc SubpassDependencyDesc;
 struct RenderPassDesc DILIGENT_DERIVE(DeviceObjectAttribs)
 
     /// The number of attachments used by the render pass.
-    Uint32                           AttachmentCount    DEFAULT_INITIALIZER(0);
+    UInt32                           AttachmentCount    DEFAULT_INITIALIZER(0);
 
     /// Pointer to the array of subpass attachments, see Diligent::RenderPassAttachmentDesc.
     const RenderPassAttachmentDesc*  pAttachments       DEFAULT_INITIALIZER(nullptr);
 
     /// The number of subpasses in the render pass.
-    Uint32                           SubpassCount       DEFAULT_INITIALIZER(0);
+    UInt32                           SubpassCount       DEFAULT_INITIALIZER(0);
 
     /// Pointer to the array of subpass descriptions, see Diligent::SubpassDesc.
     const SubpassDesc*               pSubpasses         DEFAULT_INITIALIZER(nullptr);
 
     /// The number of memory dependencies between pairs of subpasses.
-    Uint32                           DependencyCount    DEFAULT_INITIALIZER(0);
+    UInt32                           DependencyCount    DEFAULT_INITIALIZER(0);
 
     /// Pointer to the array of subpass dependencies, see Diligent::SubpassDependencyDesc.
     const SubpassDependencyDesc*     pDependencies      DEFAULT_INITIALIZER(nullptr);
@@ -462,7 +462,7 @@ struct RenderPassDesc DILIGENT_DERIVE(DeviceObjectAttribs)
             DependencyCount != Rhs.DependencyCount)
             return false;
 
-        for (Uint32 i = 0; i < AttachmentCount; ++i)
+        for (UInt32 i = 0; i < AttachmentCount; ++i)
         {
             const auto& LhsAttach = pAttachments[i];
             const auto& RhsAttach = Rhs.pAttachments[i];
@@ -470,7 +470,7 @@ struct RenderPassDesc DILIGENT_DERIVE(DeviceObjectAttribs)
                 return false;
         }
 
-        for (Uint32 i = 0; i < SubpassCount; ++i)
+        for (UInt32 i = 0; i < SubpassCount; ++i)
         {
             const auto& LhsSubpass = pSubpasses[i];
             const auto& RhsSubpass = Rhs.pSubpasses[i];
@@ -478,7 +478,7 @@ struct RenderPassDesc DILIGENT_DERIVE(DeviceObjectAttribs)
                 return false;
         }
 
-        for (Uint32 i = 0; i < DependencyCount; ++i)
+        for (UInt32 i = 0; i < DependencyCount; ++i)
         {
             const auto& LhsDep = pDependencies[i];
             const auto& RhsDep = Rhs.pDependencies[i];

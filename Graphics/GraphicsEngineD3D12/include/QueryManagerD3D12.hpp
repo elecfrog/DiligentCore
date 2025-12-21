@@ -45,7 +45,7 @@ class QueryManagerD3D12
 {
 public:
     QueryManagerD3D12(class RenderDeviceD3D12Impl* pDeviceD3D12Impl,
-                      const Uint32                 QueryHeapSizes[],
+                      const UInt32                 QueryHeapSizes[],
                       SoftwareQueueIndex           CommandQueueId,
                       HardwareQueueIndex           HwQueueInd);
     ~QueryManagerD3D12();
@@ -57,19 +57,19 @@ public:
     QueryManagerD3D12& operator = (      QueryManagerD3D12&&) = delete;
     // clang-format on
 
-    static constexpr Uint32 InvalidIndex = static_cast<Uint32>(-1);
+    static constexpr UInt32 InvalidIndex = static_cast<UInt32>(-1);
 
-    Uint32 AllocateQuery(QUERY_TYPE Type);
-    void   ReleaseQuery(QUERY_TYPE Type, Uint32 Index);
+    UInt32 AllocateQuery(QUERY_TYPE Type);
+    void   ReleaseQuery(QUERY_TYPE Type, UInt32 Index);
 
     ID3D12QueryHeap* GetQueryHeap(QUERY_TYPE Type) const
     {
         return m_Heaps[Type].GetD3D12QueryHeap();
     }
 
-    void BeginQuery(CommandContext& Ctx, QUERY_TYPE Type, Uint32 Index) const;
-    void EndQuery(CommandContext& Ctx, QUERY_TYPE Type, Uint32 Index) const;
-    void ReadQueryData(QUERY_TYPE Type, Uint32 Index, void* pDataPtr, Uint32 DataSize) const;
+    void BeginQuery(CommandContext& Ctx, QUERY_TYPE Type, UInt32 Index) const;
+    void EndQuery(CommandContext& Ctx, QUERY_TYPE Type, UInt32 Index) const;
+    void ReadQueryData(QUERY_TYPE Type, UInt32 Index, void* pDataPtr, UInt32 DataSize) const;
 
     SoftwareQueueIndex GetCommandQueueId() const
     {
@@ -83,7 +83,7 @@ private:
         void Init(ID3D12Device*                pd3d12Device,
                   const D3D12_QUERY_HEAP_DESC& d3d12HeapDesc,
                   QUERY_TYPE                   QueryType,
-                  Uint32&                      CurrResolveBufferOffset);
+                  UInt32&                      CurrResolveBufferOffset);
 
         QueryHeapInfo() noexcept {}
         ~QueryHeapInfo();
@@ -95,10 +95,10 @@ private:
         QueryHeapInfo& operator = (      QueryHeapInfo&&) = delete;
         // clang-format on
 
-        Uint32 Allocate();
-        void   Release(Uint32 Index);
+        UInt32 Allocate();
+        void   Release(UInt32 Index);
 
-        Uint32 GetQueryCount() const
+        UInt32 GetQueryCount() const
         {
             return m_QueryCount;
         }
@@ -106,11 +106,11 @@ private:
         {
             return m_Type;
         }
-        Uint32 GetMaxAllocatedQueries() const
+        UInt32 GetMaxAllocatedQueries() const
         {
             return m_MaxAllocatedQueries;
         }
-        Uint32 GetResolveBufferOffset(Uint32 QueryIdx) const
+        UInt32 GetResolveBufferOffset(UInt32 QueryIdx) const
         {
             VERIFY_EXPR(QueryIdx < m_QueryCount);
             return m_ResolveBufferBaseOffset + QueryIdx * m_AlignedQueryDataSize;
@@ -128,15 +128,15 @@ private:
         CComPtr<ID3D12QueryHeap> m_pd3d12QueryHeap;
 
         std::mutex          m_AvailableQueriesMtx;
-        std::vector<Uint32> m_AvailableQueries;
+        std::vector<UInt32> m_AvailableQueries;
 
         QUERY_TYPE m_Type = QUERY_TYPE_UNDEFINED;
 
-        Uint32 m_QueryCount          = 0;
-        Uint32 m_MaxAllocatedQueries = 0;
+        UInt32 m_QueryCount          = 0;
+        UInt32 m_MaxAllocatedQueries = 0;
 
-        Uint32 m_ResolveBufferBaseOffset = 0;
-        Uint32 m_AlignedQueryDataSize    = 0;
+        UInt32 m_ResolveBufferBaseOffset = 0;
+        UInt32 m_AlignedQueryDataSize    = 0;
     };
 
     const SoftwareQueueIndex m_CommandQueueId;

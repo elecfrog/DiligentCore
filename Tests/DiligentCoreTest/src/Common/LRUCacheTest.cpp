@@ -40,22 +40,22 @@ namespace
 
 struct CacheData
 {
-    Uint32 Value = ~0u;
+    UInt32 Value = ~0u;
 };
 
 TEST(Common_LRUCache, Get)
 {
     LRUCache<int, CacheData> Cache{16};
 
-    constexpr Uint32         NumThreads = 16;
+    constexpr UInt32         NumThreads = 16;
     std::vector<std::thread> Threads(NumThreads);
     std::vector<CacheData>   Data(NumThreads);
 
     Threading::Signal StartSignal;
-    for (Uint32 i = 0; i < NumThreads; ++i)
+    for (UInt32 i = 0; i < NumThreads; ++i)
     {
         Threads[i] = std::thread(
-            [&](Uint32 ThreadId) {
+            [&](UInt32 ThreadId) {
                 StartSignal.Wait();
                 // Get data with the same key from all threads
                 Data[ThreadId] = Cache.Get(1,
@@ -85,21 +85,21 @@ TEST(Common_LRUCache, ReleaseQueue)
 {
     LRUCache<int, CacheData> Cache{16};
 
-    constexpr Uint32                    NumThreads = 16;
+    constexpr UInt32                    NumThreads = 16;
     std::vector<std::thread>            Threads(NumThreads);
     std::vector<std::vector<CacheData>> ThreadsData(NumThreads);
 
     Threading::Signal StartSignal;
-    for (Uint32 i = 0; i < NumThreads; ++i)
+    for (UInt32 i = 0; i < NumThreads; ++i)
     {
         ThreadsData[i].resize(128);
 
         Threads[i] = std::thread(
-            [&](Uint32 ThreadId) {
+            [&](UInt32 ThreadId) {
                 StartSignal.Wait();
 
                 auto& Data = ThreadsData[ThreadId];
-                for (Uint32 i = 0; i < Data.size(); ++i)
+                for (UInt32 i = 0; i < Data.size(); ++i)
                 {
                     // Set elements with the same keys from all threads
                     Data[i] = Cache.Get(i,
@@ -119,7 +119,7 @@ TEST(Common_LRUCache, ReleaseQueue)
 
     for (auto& Data : ThreadsData)
     {
-        for (Uint32 i = 0; i < Data.size(); ++i)
+        for (UInt32 i = 0; i < Data.size(); ++i)
         {
             EXPECT_EQ(Data[i].Value, i);
         }
@@ -131,21 +131,21 @@ TEST(Common_LRUCache, Exceptions)
 {
     LRUCache<int, CacheData> Cache{16};
 
-    constexpr Uint32                    NumThreads = 15; // Use odd number
+    constexpr UInt32                    NumThreads = 15; // Use odd number
     std::vector<std::thread>            Threads(NumThreads);
     std::vector<std::vector<CacheData>> ThreadsData(NumThreads);
 
     Threading::Signal StartSignal;
-    for (Uint32 i = 0; i < NumThreads; ++i)
+    for (UInt32 i = 0; i < NumThreads; ++i)
     {
         ThreadsData[i].resize(128);
 
         Threads[i] = std::thread(
-            [&](Uint32 ThreadId) {
+            [&](UInt32 ThreadId) {
                 StartSignal.Wait();
 
                 auto& Data = ThreadsData[ThreadId];
-                for (Uint32 i = 0; i < Data.size(); ++i)
+                for (UInt32 i = 0; i < Data.size(); ++i)
                 {
                     try
                     {
@@ -175,7 +175,7 @@ TEST(Common_LRUCache, Exceptions)
 
     for (auto& Data : ThreadsData)
     {
-        for (Uint32 i = 0; i < Data.size(); ++i)
+        for (UInt32 i = 0; i < Data.size(); ++i)
         {
             auto Value = Data[i].Value;
             EXPECT_TRUE(Value == ~0u || Value == i);

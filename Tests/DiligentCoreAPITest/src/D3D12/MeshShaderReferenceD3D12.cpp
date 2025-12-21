@@ -243,7 +243,7 @@ void MeshShaderIndirectDrawReferenceD3D12(ISwapChain* pSwapChain)
 
     ASSERT_HRESULT_SUCCEEDED(hr) << "Failed to create draw mesh indirect command signature";
 
-    Uint32 IndirectBufferData[3] = {1, 1, 1};
+    UInt32 IndirectBufferData[3] = {1, 1, 1};
 
     BufferDesc IndirectBufferDesc;
     IndirectBufferDesc.Name      = "Indirect buffer";

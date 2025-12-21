@@ -176,7 +176,7 @@ public:
     /// Implementation of IRenderDevice::GetSparseTextureFormatInfo() in Direct3D12 backend.
     virtual SparseTextureFormatInfo DILIGENT_CALL_TYPE GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                                   RESOURCE_DIMENSION Dimension,
-                                                                                  Uint32             SampleCount) const override final;
+                                                                                  UInt32             SampleCount) const override final;
 
     /// Implementation of IRenderDeviceD3D12::GetD3D12Device().
     virtual ID3D12Device* DILIGENT_CALL_TYPE GetD3D12Device() const override final { return m_pd3d12Device; }
@@ -210,7 +210,7 @@ public:
         return m_pDxCompiler.get();
     }
 
-    void CreateRootSignature(const RefCntAutoPtr<class PipelineResourceSignatureD3D12Impl>* ppSignatures, Uint32 SignatureCount, size_t Hash, RootSignatureD3D12** ppRootSig);
+    void CreateRootSignature(const RefCntAutoPtr<class PipelineResourceSignatureD3D12Impl>* ppSignatures, UInt32 SignatureCount, size_t Hash, RootSignatureD3D12** ppRootSig);
 
     RootSignatureCacheD3D12& GetRootSignatureCache() { return m_RootSignatureCache; }
 
@@ -230,15 +230,15 @@ public:
 
     void CloseAndExecuteTransientCommandContext(SoftwareQueueIndex CommandQueueId, PooledCommandContext&& Ctx);
 
-    Uint64 CloseAndExecuteCommandContexts(SoftwareQueueIndex                                     CommandQueueId,
-                                          Uint32                                                 NumContexts,
+    UInt64 CloseAndExecuteCommandContexts(SoftwareQueueIndex                                     CommandQueueId,
+                                          UInt32                                                 NumContexts,
                                           PooledCommandContext                                   pContexts[],
                                           bool                                                   DiscardStaleObjects,
-                                          std::vector<std::pair<Uint64, RefCntAutoPtr<IFence>>>* pSignalFences,
-                                          std::vector<std::pair<Uint64, RefCntAutoPtr<IFence>>>* pWaitFences);
+                                          std::vector<std::pair<UInt64, RefCntAutoPtr<IFence>>>* pSignalFences,
+                                          std::vector<std::pair<UInt64, RefCntAutoPtr<IFence>>>* pWaitFences);
 
-    void SignalFences(SoftwareQueueIndex CommandQueueId, std::vector<std::pair<Uint64, RefCntAutoPtr<IFence>>>& SignalFences);
-    void WaitFences(SoftwareQueueIndex CommandQueueId, std::vector<std::pair<Uint64, RefCntAutoPtr<IFence>>>& WaitFences);
+    void SignalFences(SoftwareQueueIndex CommandQueueId, std::vector<std::pair<UInt64, RefCntAutoPtr<IFence>>>& SignalFences);
+    void WaitFences(SoftwareQueueIndex CommandQueueId, std::vector<std::pair<UInt64, RefCntAutoPtr<IFence>>>& WaitFences);
 
     // Disposes an unused command context
     void DisposeCommandContext(PooledCommandContext&& Ctx);
@@ -287,9 +287,9 @@ public:
 
     struct Properties
     {
-        Uint32 DynamicHeapPageSize = 0;
+        UInt32 DynamicHeapPageSize = 0;
 
-        std::array<Uint32, _countof(EngineD3D12CreateInfo::DynamicDescriptorAllocationChunkSize)> DynamicDescriptorAllocationChunkSize = {};
+        std::array<UInt32, _countof(EngineD3D12CreateInfo::DynamicDescriptorAllocationChunkSize)> DynamicDescriptorAllocationChunkSize = {};
     };
 
     const Properties& GetProperties() const { return m_Properties; }
@@ -337,7 +337,7 @@ private:
     bool m_IsPSOCacheSupported = false;
 
 #ifdef DILIGENT_DEVELOPMENT
-    Uint32 m_MaxD3D12DeviceVersion = 0;
+    UInt32 m_MaxD3D12DeviceVersion = 0;
 #endif
 };
 

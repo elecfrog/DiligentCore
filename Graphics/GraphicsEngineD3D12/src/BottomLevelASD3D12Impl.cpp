@@ -60,7 +60,7 @@ BottomLevelASD3D12Impl::BottomLevelASD3D12Impl(IReferenceCounters*      pRefCoun
         if (m_Desc.pTriangles != nullptr)
         {
             d3d12Geometries.resize(m_Desc.TriangleCount);
-            Uint32 MaxPrimitiveCount = 0;
+            UInt32 MaxPrimitiveCount = 0;
             for (uint32_t i = 0; i < m_Desc.TriangleCount; ++i)
             {
                 const BLASTriangleDesc&         src = m_Desc.pTriangles[i];
@@ -87,7 +87,7 @@ BottomLevelASD3D12Impl::BottomLevelASD3D12Impl(IReferenceCounters*      pRefCoun
         else if (m_Desc.pBoxes != nullptr)
         {
             d3d12Geometries.resize(m_Desc.BoxCount);
-            Uint32 MaxBoxCount = 0;
+            UInt32 MaxBoxCount = 0;
             for (uint32_t i = 0; i < m_Desc.BoxCount; ++i)
             {
                 const BLASBoundingBoxDesc&      src = m_Desc.pBoxes[i];

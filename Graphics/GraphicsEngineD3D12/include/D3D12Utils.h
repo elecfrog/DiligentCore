@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 
 namespace Diligent
 {

@@ -31,7 +31,7 @@
 /// Implementation for the IDataBlob interface
 
 #include <vector>
-#include "../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "../../Primitives/interface/DataBlob.h"
 #include "../../Primitives/interface/MemoryAllocator.h"
 #include "STDAllocator.hpp"
@@ -46,7 +46,7 @@ class DataBlobImpl final : public ObjectBase<IDataBlob>
 {
 public:
     using TBase          = ObjectBase<IDataBlob>;
-    using DataBufferType = std::vector<Uint8, STDAllocatorRawMem<Uint8>>;
+    using DataBufferType = std::vector<UInt8, STDAllocatorRawMem<UInt8>>;
 
     static RefCntAutoPtr<DataBlobImpl> Create(size_t InitialSize = 0, const void* pData = nullptr);
     static RefCntAutoPtr<DataBlobImpl> Create(IMemoryAllocator* pAllocator, size_t InitialSize = 0, const void* pData = nullptr);

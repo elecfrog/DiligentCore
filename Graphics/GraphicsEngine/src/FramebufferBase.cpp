@@ -48,7 +48,7 @@ void ValidateFramebufferDesc(const FramebufferDesc& Desc, IRenderDevice* pDevice
         LOG_FRAMEBUFFER_ERROR_AND_THROW("attachment count is not zero, but ppAttachments is null.");
     }
 
-    for (Uint32 i = 0; i < Desc.AttachmentCount; ++i)
+    for (UInt32 i = 0; i < Desc.AttachmentCount; ++i)
     {
         if (Desc.ppAttachments[i] == nullptr)
         {
@@ -71,7 +71,7 @@ void ValidateFramebufferDesc(const FramebufferDesc& Desc, IRenderDevice* pDevice
 
     const bool IsMetal = pDevice->GetDeviceInfo().IsMetalDevice();
 
-    for (Uint32 i = 0; i < RPDesc.AttachmentCount; ++i)
+    for (UInt32 i = 0; i < RPDesc.AttachmentCount; ++i)
     {
         if (Desc.ppAttachments[i] == nullptr)
             continue;
@@ -105,8 +105,8 @@ void ValidateFramebufferDesc(const FramebufferDesc& Desc, IRenderDevice* pDevice
         // https://www.khronos.org/registry/vulkan/specs/1.1-extensions/html/vkspec.html#VUID-VkFramebufferCreateInfo-pAttachments-00881
         if (TexDesc.SampleCount != AttDesc.SampleCount)
         {
-            LOG_FRAMEBUFFER_ERROR_AND_THROW("the sample count (", Uint32{TexDesc.SampleCount}, ") of attachment ", i,
-                                            " does not match the sample count (", Uint32{AttDesc.SampleCount},
+            LOG_FRAMEBUFFER_ERROR_AND_THROW("the sample count (", UInt32{TexDesc.SampleCount}, ") of attachment ", i,
+                                            " does not match the sample count (", UInt32{AttDesc.SampleCount},
                                             ") defined by the render pass for the same attachment.");
         }
 
@@ -127,19 +127,19 @@ void ValidateFramebufferDesc(const FramebufferDesc& Desc, IRenderDevice* pDevice
 
 #if PLATFORM_MACOS || PLATFORM_IOS || PLATFORM_TVOS
             {
-                Uint32 NumSubpasses = 0;
-                for (Uint32 s = 0; s < RPDesc.SubpassCount; ++s)
+                UInt32 NumSubpasses = 0;
+                for (UInt32 s = 0; s < RPDesc.SubpassCount; ++s)
                 {
                     const SubpassDesc& Subpass = RPDesc.pSubpasses[s];
 
                     bool UsedInSubpass = false;
-                    for (Uint32 rt_attachment = 0; rt_attachment < Subpass.RenderTargetAttachmentCount; ++rt_attachment)
+                    for (UInt32 rt_attachment = 0; rt_attachment < Subpass.RenderTargetAttachmentCount; ++rt_attachment)
                     {
                         const AttachmentReference& AttchRef = Subpass.pRenderTargetAttachments[rt_attachment];
                         if (AttchRef.AttachmentIndex == i)
                             UsedInSubpass = true;
                     }
-                    for (Uint32 input_attachment = 0; input_attachment < Subpass.InputAttachmentCount; ++input_attachment)
+                    for (UInt32 input_attachment = 0; input_attachment < Subpass.InputAttachmentCount; ++input_attachment)
                     {
                         const AttachmentReference& AttchRef = Subpass.pInputAttachments[input_attachment];
                         if (AttchRef.AttachmentIndex == i)
@@ -163,10 +163,10 @@ void ValidateFramebufferDesc(const FramebufferDesc& Desc, IRenderDevice* pDevice
         }
     }
 
-    for (Uint32 i = 0; i < RPDesc.SubpassCount; ++i)
+    for (UInt32 i = 0; i < RPDesc.SubpassCount; ++i)
     {
         const SubpassDesc& Subpass = RPDesc.pSubpasses[i];
-        for (Uint32 input_attachment = 0; input_attachment < Subpass.InputAttachmentCount; ++input_attachment)
+        for (UInt32 input_attachment = 0; input_attachment < Subpass.InputAttachmentCount; ++input_attachment)
         {
             const AttachmentReference& AttchRef = Subpass.pInputAttachments[input_attachment];
             if (AttchRef.AttachmentIndex == ATTACHMENT_UNUSED)
@@ -199,7 +199,7 @@ void ValidateFramebufferDesc(const FramebufferDesc& Desc, IRenderDevice* pDevice
             }
         }
 
-        for (Uint32 rt_attachment = 0; rt_attachment < Subpass.RenderTargetAttachmentCount; ++rt_attachment)
+        for (UInt32 rt_attachment = 0; rt_attachment < Subpass.RenderTargetAttachmentCount; ++rt_attachment)
         {
             const AttachmentReference& AttchRef = Subpass.pRenderTargetAttachments[rt_attachment];
             if (AttchRef.AttachmentIndex == ATTACHMENT_UNUSED)
@@ -244,7 +244,7 @@ void ValidateFramebufferDesc(const FramebufferDesc& Desc, IRenderDevice* pDevice
 
         if (Subpass.pResolveAttachments != nullptr)
         {
-            for (Uint32 rslv_attachment = 0; rslv_attachment < Subpass.RenderTargetAttachmentCount; ++rslv_attachment)
+            for (UInt32 rslv_attachment = 0; rslv_attachment < Subpass.RenderTargetAttachmentCount; ++rslv_attachment)
             {
                 const AttachmentReference& AttchRef = Subpass.pResolveAttachments[rslv_attachment];
                 if (AttchRef.AttachmentIndex == ATTACHMENT_UNUSED)
@@ -333,7 +333,7 @@ void ValidateFramebufferDesc(const FramebufferDesc& Desc, IRenderDevice* pDevice
     }
 
     bool IsVRSEnabled = false;
-    for (Uint32 i = 0; i < RPDesc.SubpassCount; ++i)
+    for (UInt32 i = 0; i < RPDesc.SubpassCount; ++i)
     {
         const SubpassDesc& Subpass = RPDesc.pSubpasses[i];
         if (Subpass.pShadingRateAttachment != nullptr)
@@ -390,7 +390,7 @@ void ValidateFramebufferDesc(const FramebufferDesc& Desc, IRenderDevice* pDevice
         VERIFY((SRProps.CapFlags & SHADING_RATE_CAP_FLAG_SUBSAMPLED_RENDER_TARGET) != 0,
                "One of NON_SUBSAMPLED_RENDER_TARGET or SUBSAMPLED_RENDER_TARGET caps must be presented if texture-based VRS is supported");
 
-        for (Uint32 i = 0; i < RPDesc.AttachmentCount; ++i)
+        for (UInt32 i = 0; i < RPDesc.AttachmentCount; ++i)
         {
             if (Desc.ppAttachments[i] == nullptr)
                 continue;

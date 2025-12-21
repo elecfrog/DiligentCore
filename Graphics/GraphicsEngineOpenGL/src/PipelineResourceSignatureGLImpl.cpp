@@ -106,7 +106,7 @@ void PipelineResourceSignatureGLImpl::CreateLayout(const bool IsSerialized)
 {
     TBindings StaticResCounter = {};
 
-    for (Uint32 i = 0; i < m_Desc.NumResources; ++i)
+    for (UInt32 i = 0; i < m_Desc.NumResources; ++i)
     {
         const PipelineResourceDesc& ResDesc = m_Desc.Resources[i];
         VERIFY(i == 0 || ResDesc.VarType >= m_Desc.Resources[i - 1].VarType, "Resources must be sorted by variable type");
@@ -114,7 +114,7 @@ void PipelineResourceSignatureGLImpl::CreateLayout(const bool IsSerialized)
         ResourceAttribs* const pAttribs = m_pResourceAttribs + i;
         if (ResDesc.ResourceType == SHADER_RESOURCE_TYPE_SAMPLER)
         {
-            const Uint32 ImtblSamplerIdx = FindImmutableSampler(ResDesc.ShaderStages, ResDesc.Name);
+            const UInt32 ImtblSamplerIdx = FindImmutableSampler(ResDesc.ShaderStages, ResDesc.Name);
             // Create sampler resource without cache space
             if (!IsSerialized)
             {
@@ -139,8 +139,8 @@ void PipelineResourceSignatureGLImpl::CreateLayout(const bool IsSerialized)
             const BINDING_RANGE Range = PipelineResourceToBindingRange(ResDesc);
             VERIFY_EXPR(Range != BINDING_RANGE_UNKNOWN);
 
-            Uint32 ImtblSamplerIdx = InvalidImmutableSamplerIndex;
-            Uint32 SamplerIdx      = ResourceAttribs::InvalidSamplerInd;
+            UInt32 ImtblSamplerIdx = InvalidImmutableSamplerIndex;
+            UInt32 SamplerIdx      = ResourceAttribs::InvalidSamplerInd;
             if (ResDesc.ResourceType == SHADER_RESOURCE_TYPE_TEXTURE_SRV)
             {
                 // Do not use combined sampler suffix - in OpenGL immutable samplers should be defined for textures directly
@@ -152,7 +152,7 @@ void PipelineResourceSignatureGLImpl::CreateLayout(const bool IsSerialized)
                     SamplerIdx = FindAssignedSampler(ResDesc, ResourceAttribs::InvalidSamplerInd);
             }
 
-            Uint16& CacheOffset = m_BindingCount[Range];
+            UInt16& CacheOffset = m_BindingCount[Range];
             if (!IsSerialized)
             {
                 new (pAttribs) ResourceAttribs //
@@ -173,14 +173,14 @@ void PipelineResourceSignatureGLImpl::CreateLayout(const bool IsSerialized)
             if (Range == BINDING_RANGE_UNIFORM_BUFFER && (ResDesc.Flags & PIPELINE_RESOURCE_FLAG_NO_DYNAMIC_BUFFERS) == 0)
             {
                 DEV_CHECK_ERR(size_t{CacheOffset} + ResDesc.ArraySize < sizeof(m_DynamicUBOMask) * 8, "Dynamic UBO index exceeds maximum representable bit position in the mask");
-                for (Uint64 elem = 0; elem < ResDesc.ArraySize; ++elem)
-                    m_DynamicUBOMask |= Uint64{1} << (Uint64{CacheOffset} + elem);
+                for (UInt64 elem = 0; elem < ResDesc.ArraySize; ++elem)
+                    m_DynamicUBOMask |= UInt64{1} << (UInt64{CacheOffset} + elem);
             }
             else if (Range == BINDING_RANGE_STORAGE_BUFFER && (ResDesc.Flags & PIPELINE_RESOURCE_FLAG_NO_DYNAMIC_BUFFERS) == 0)
             {
                 DEV_CHECK_ERR(size_t{CacheOffset} + ResDesc.ArraySize < sizeof(m_DynamicSSBOMask) * 8, "Dynamic SSBO index exceeds maximum representable bit position in the mask");
-                for (Uint64 elem = 0; elem < ResDesc.ArraySize; ++elem)
-                    m_DynamicSSBOMask |= Uint64{1} << (Uint64{CacheOffset} + elem);
+                for (UInt64 elem = 0; elem < ResDesc.ArraySize; ++elem)
+                    m_DynamicSSBOMask |= UInt64{1} << (UInt64{CacheOffset} + elem);
             }
 
             VERIFY(CacheOffset + ResDesc.ArraySize <= std::numeric_limits<TBindings::value_type>::max(), "Cache offset exceeds representable range");
@@ -209,27 +209,27 @@ PipelineResourceSignatureGLImpl::~PipelineResourceSignatureGLImpl()
 namespace
 {
 
-inline void ApplyUBBindigs(GLuint glProg, const char* UBName, Uint32 BaseBinding, Uint32 ArraySize)
+inline void ApplyUBBindigs(GLuint glProg, const char* UBName, UInt32 BaseBinding, UInt32 ArraySize)
 {
     const GLuint UniformBlockIndex = glGetUniformBlockIndex(glProg, UBName);
     VERIFY(UniformBlockIndex != GL_INVALID_INDEX,
            "Failed to find uniform buffer '", UBName,
            "', which is unexpected as it is present in the list of program resources.");
 
-    for (Uint32 ArrInd = 0; ArrInd < ArraySize; ++ArrInd)
+    for (UInt32 ArrInd = 0; ArrInd < ArraySize; ++ArrInd)
     {
         glUniformBlockBinding(glProg, UniformBlockIndex + ArrInd, BaseBinding + ArrInd);
         DEV_CHECK_GL_ERROR("Failed to set binding point for uniform buffer '", UBName, '\'');
     }
 }
 
-inline void ApplyTextureBindings(GLuint glProg, const char* TexName, Uint32 BaseBinding, Uint32 ArraySize)
+inline void ApplyTextureBindings(GLuint glProg, const char* TexName, UInt32 BaseBinding, UInt32 ArraySize)
 {
     const GLint UniformLocation = glGetUniformLocation(glProg, TexName);
     VERIFY(UniformLocation >= 0, "Failed to find texture '", TexName,
            "', which is unexpected as it is present in the list of program resources.");
 
-    for (Uint32 ArrInd = 0; ArrInd < ArraySize; ++ArrInd)
+    for (UInt32 ArrInd = 0; ArrInd < ArraySize; ++ArrInd)
     {
         glUniform1i(UniformLocation + ArrInd, BaseBinding + ArrInd);
         DEV_CHECK_GL_ERROR("Failed to set binding point for sampler uniform '", TexName, '\'');
@@ -237,17 +237,17 @@ inline void ApplyTextureBindings(GLuint glProg, const char* TexName, Uint32 Base
 }
 
 #if GL_ARB_shader_image_load_store
-inline void ApplyImageBindings(GLuint glProg, const char* ImgName, Uint32 BaseBinding, Uint32 ArraySize)
+inline void ApplyImageBindings(GLuint glProg, const char* ImgName, UInt32 BaseBinding, UInt32 ArraySize)
 {
     const GLint UniformLocation = glGetUniformLocation(glProg, ImgName);
     VERIFY(UniformLocation >= 0, "Failed to find image '", ImgName,
            "', which is unexpected as it is present in the list of program resources.");
 
-    for (Uint32 ArrInd = 0; ArrInd < ArraySize; ++ArrInd)
+    for (UInt32 ArrInd = 0; ArrInd < ArraySize; ++ArrInd)
     {
         // glUniform1i for image uniforms is not supported in at least GLES3.2.
         // glProgramUniform1i is not available in GLES3.0
-        const Uint32 ImgBinding = BaseBinding + ArrInd;
+        const UInt32 ImgBinding = BaseBinding + ArrInd;
         glUniform1i(UniformLocation + ArrInd, ImgBinding);
 #    ifdef DILIGENT_DEVELOPMENT
         if (glGetError() != GL_NO_ERROR)
@@ -277,7 +277,7 @@ inline void ApplyImageBindings(GLuint glProg, const char* ImgName, Uint32 BaseBi
 #endif
 
 #if GL_ARB_shader_storage_buffer_object
-inline void ApplySSBOBindings(GLuint glProg, const char* SBName, Uint32 BaseBinding, Uint32 ArraySize)
+inline void ApplySSBOBindings(GLuint glProg, const char* SBName, UInt32 BaseBinding, UInt32 ArraySize)
 {
     const GLuint SBIndex = glGetProgramResourceIndex(glProg, GL_SHADER_STORAGE_BLOCK, SBName);
     VERIFY(SBIndex != GL_INVALID_INDEX, "Failed to find storage buffer '", SBName,
@@ -285,7 +285,7 @@ inline void ApplySSBOBindings(GLuint glProg, const char* SBName, Uint32 BaseBind
 
     if (glShaderStorageBlockBinding)
     {
-        for (Uint32 ArrInd = 0; ArrInd < ArraySize; ++ArrInd)
+        for (UInt32 ArrInd = 0; ArrInd < ArraySize; ++ArrInd)
         {
             glShaderStorageBlockBinding(glProg, SBIndex + ArrInd, BaseBinding + ArrInd);
             DEV_CHECK_GL_ERROR("glShaderStorageBlockBinding() failed");
@@ -298,7 +298,7 @@ inline void ApplySSBOBindings(GLuint glProg, const char* SBName, Uint32 BaseBind
         glGetProgramResourceiv(glProg, GL_SHADER_STORAGE_BLOCK, SBIndex, _countof(props), props, _countof(params), nullptr, params);
         DEV_CHECK_GL_ERROR("glGetProgramResourceiv() failed");
 
-        if (BaseBinding != static_cast<Uint32>(params[0]))
+        if (BaseBinding != static_cast<UInt32>(params[0]))
         {
             LOG_WARNING_MESSAGE("glShaderStorageBlockBinding is not available on this device and "
                                 "the engine is unable to automatically assign shader storage block binding for '",
@@ -324,7 +324,7 @@ void PipelineResourceSignatureGLImpl::ApplyBindings(GLObjectWrappers::GLProgramO
 
     auto AssignBinding = [&](const ShaderResourcesGL::GLResourceAttribs& Attribs, BINDING_RANGE Range) //
     {
-        const Uint32 ResIdx = FindResource(Attribs.ShaderStages, Attribs.Name);
+        const UInt32 ResIdx = FindResource(Attribs.ShaderStages, Attribs.Name);
         if (ResIdx == InvalidPipelineResourceIndex)
             return; // The resource is defined in another signature
 
@@ -336,7 +336,7 @@ void PipelineResourceSignatureGLImpl::ApplyBindings(GLObjectWrappers::GLProgramO
         VERIFY_EXPR(Attribs.ArraySize <= ResDesc.ArraySize);
 
         VERIFY_EXPR(Range == PipelineResourceToBindingRange(ResDesc));
-        const Uint32 BindingIndex = BaseBindings[Range] + ResAttr.CacheOffset;
+        const UInt32 BindingIndex = BaseBindings[Range] + ResAttr.CacheOffset;
 
         static_assert(BINDING_RANGE_COUNT == 4, "Please update the switch below to handle the new shader resource range");
         switch (Range)
@@ -390,7 +390,7 @@ void PipelineResourceSignatureGLImpl::CopyStaticResources(ShaderResourceCacheGL&
     const ResourceCacheContentType DstCacheType = DstResourceCache.GetContentType();
 
     const auto StaticResIdxRange = GetResourceIndexRange(SHADER_RESOURCE_VARIABLE_TYPE_STATIC);
-    for (Uint32 r = StaticResIdxRange.first; r < StaticResIdxRange.second; ++r)
+    for (UInt32 r = StaticResIdxRange.first; r < StaticResIdxRange.second; ++r)
     {
         const PipelineResourceDesc& ResDesc = GetResourceDesc(r);
         const ResourceAttribs&      ResAttr = GetResourceAttribs(r);
@@ -403,7 +403,7 @@ void PipelineResourceSignatureGLImpl::CopyStaticResources(ShaderResourceCacheGL&
         switch (PipelineResourceToBindingRange(ResDesc))
         {
             case BINDING_RANGE_UNIFORM_BUFFER:
-                for (Uint32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
+                for (UInt32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
                 {
                     const ShaderResourceCacheGL::CachedUB& SrcCachedRes = SrcResourceCache.GetConstUB(ResAttr.CacheOffset + ArrInd);
                     if (!SrcCachedRes.pBuffer)
@@ -419,7 +419,7 @@ void PipelineResourceSignatureGLImpl::CopyStaticResources(ShaderResourceCacheGL&
                 }
                 break;
             case BINDING_RANGE_STORAGE_BUFFER:
-                for (Uint32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
+                for (UInt32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
                 {
                     const ShaderResourceCacheGL::CachedSSBO& SrcCachedRes = SrcResourceCache.GetConstSSBO(ResAttr.CacheOffset + ArrInd);
                     if (!SrcCachedRes.pBufferView)
@@ -433,7 +433,7 @@ void PipelineResourceSignatureGLImpl::CopyStaticResources(ShaderResourceCacheGL&
                 }
                 break;
             case BINDING_RANGE_TEXTURE:
-                for (Uint32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
+                for (UInt32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
                 {
                     const ShaderResourceCacheGL::CachedResourceView& SrcCachedRes = SrcResourceCache.GetConstTexture(ResAttr.CacheOffset + ArrInd);
                     if (!SrcCachedRes.pView)
@@ -467,7 +467,7 @@ void PipelineResourceSignatureGLImpl::CopyStaticResources(ShaderResourceCacheGL&
                 }
                 break;
             case BINDING_RANGE_IMAGE:
-                for (Uint32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
+                for (UInt32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
                 {
                     const ShaderResourceCacheGL::CachedResourceView& SrcCachedRes = SrcResourceCache.GetConstImage(ResAttr.CacheOffset + ArrInd);
                     if (!SrcCachedRes.pView)
@@ -513,7 +513,7 @@ void PipelineResourceSignatureGLImpl::InitSRBResourceCache(ShaderResourceCacheGL
     ResourceCache.Initialize(m_BindingCount, m_SRBMemAllocator.GetResourceCacheDataAllocator(0), m_DynamicUBOMask, m_DynamicSSBOMask);
 
     // Initialize immutable samplers
-    for (Uint32 r = 0; r < m_Desc.NumResources; ++r)
+    for (UInt32 r = 0; r < m_Desc.NumResources; ++r)
     {
         const PipelineResourceDesc& ResDesc = GetResourceDesc(r);
         const ResourceAttribs&      ResAttr = GetResourceAttribs(r);
@@ -521,13 +521,13 @@ void PipelineResourceSignatureGLImpl::InitSRBResourceCache(ShaderResourceCacheGL
         if (ResDesc.ResourceType != SHADER_RESOURCE_TYPE_TEXTURE_SRV)
             continue;
 
-        const Uint32 ImtblSamplerIdx = GetImmutableSamplerIdx(ResAttr);
+        const UInt32 ImtblSamplerIdx = GetImmutableSamplerIdx(ResAttr);
         if (ImtblSamplerIdx != InvalidImmutableSamplerIndex)
         {
             ISampler* pSampler = m_pImmutableSamplers[ImtblSamplerIdx];
             VERIFY(pSampler != nullptr, "Immutable sampler is not initialized - this is a bug");
 
-            for (Uint32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
+            for (UInt32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
                 ResourceCache.SetSampler(ResAttr.CacheOffset + ArrInd, pSampler);
         }
     }
@@ -537,7 +537,7 @@ void PipelineResourceSignatureGLImpl::InitSRBResourceCache(ShaderResourceCacheGL
 bool PipelineResourceSignatureGLImpl::DvpValidateCommittedResource(const ShaderResourcesGL::GLResourceAttribs& GLAttribs,
                                                                    RESOURCE_DIMENSION                          ResourceDim,
                                                                    bool                                        IsMultisample,
-                                                                   Uint32                                      ResIndex,
+                                                                   UInt32                                      ResIndex,
                                                                    const ShaderResourceCacheGL&                ResourceCache,
                                                                    const char*                                 ShaderName,
                                                                    const char*                                 PSOName) const
@@ -558,7 +558,7 @@ bool PipelineResourceSignatureGLImpl::DvpValidateCommittedResource(const ShaderR
     switch (PipelineResourceToBindingRange(ResDesc))
     {
         case BINDING_RANGE_UNIFORM_BUFFER:
-            for (Uint32 ArrInd = 0; ArrInd < GLAttribs.ArraySize; ++ArrInd)
+            for (UInt32 ArrInd = 0; ArrInd < GLAttribs.ArraySize; ++ArrInd)
             {
                 if (!ResourceCache.IsUBBound(ResAttr.CacheOffset + ArrInd))
                 {
@@ -570,7 +570,7 @@ bool PipelineResourceSignatureGLImpl::DvpValidateCommittedResource(const ShaderR
             break;
 
         case BINDING_RANGE_STORAGE_BUFFER:
-            for (Uint32 ArrInd = 0; ArrInd < GLAttribs.ArraySize; ++ArrInd)
+            for (UInt32 ArrInd = 0; ArrInd < GLAttribs.ArraySize; ++ArrInd)
             {
                 if (!ResourceCache.IsSSBOBound(ResAttr.CacheOffset + ArrInd))
                 {
@@ -582,7 +582,7 @@ bool PipelineResourceSignatureGLImpl::DvpValidateCommittedResource(const ShaderR
             break;
 
         case BINDING_RANGE_TEXTURE:
-            for (Uint32 ArrInd = 0; ArrInd < GLAttribs.ArraySize; ++ArrInd)
+            for (UInt32 ArrInd = 0; ArrInd < GLAttribs.ArraySize; ++ArrInd)
             {
                 const bool IsTexView = (ResDesc.ResourceType == SHADER_RESOURCE_TYPE_TEXTURE_SRV || ResDesc.ResourceType == SHADER_RESOURCE_TYPE_INPUT_ATTACHMENT);
                 if (!ResourceCache.IsTextureBound(ResAttr.CacheOffset + ArrInd, IsTexView))
@@ -599,7 +599,7 @@ bool PipelineResourceSignatureGLImpl::DvpValidateCommittedResource(const ShaderR
                 else
                     ValidateResourceViewDimension(GLAttribs.Name, GLAttribs.ArraySize, ArrInd, Tex.pView.RawPtr<IBufferView>(), ResourceDim, IsMultisample);
 
-                const Uint32 ImmutableSamplerIdx = GetImmutableSamplerIdx(ResAttr);
+                const UInt32 ImmutableSamplerIdx = GetImmutableSamplerIdx(ResAttr);
                 if (ImmutableSamplerIdx != InvalidImmutableSamplerIndex)
                 {
                     VERIFY(Tex.pSampler != nullptr, "Immutable sampler is not initialized in the cache - this is a bug");
@@ -609,7 +609,7 @@ bool PipelineResourceSignatureGLImpl::DvpValidateCommittedResource(const ShaderR
             break;
 
         case BINDING_RANGE_IMAGE:
-            for (Uint32 ArrInd = 0; ArrInd < GLAttribs.ArraySize; ++ArrInd)
+            for (UInt32 ArrInd = 0; ArrInd < GLAttribs.ArraySize; ++ArrInd)
             {
                 const bool IsTexView = (ResDesc.ResourceType == SHADER_RESOURCE_TYPE_TEXTURE_SRV || ResDesc.ResourceType == SHADER_RESOURCE_TYPE_TEXTURE_UAV);
                 if (!ResourceCache.IsImageBound(ResAttr.CacheOffset + ArrInd, IsTexView))

@@ -37,7 +37,7 @@ int TestShaderResourceBindingCInterface(struct IShaderResourceBinding* pSRB)
 
     struct IPipelineResourceSignature* pPRS     = NULL;
     IShaderResourceVariable*           pVar     = NULL;
-    Uint32                             VarCount = 0;
+    UInt32                             VarCount = 0;
 
     int num_errors = TestObjectCInterface((struct IObject*)pSRB);
 

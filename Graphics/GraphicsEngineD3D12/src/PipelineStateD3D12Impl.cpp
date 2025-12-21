@@ -125,14 +125,14 @@ void BuildRTPipelineDescription(const RayTracingPipelineStateCreateInfo& CreateI
 {
 #define LOG_PSO_ERROR_AND_THROW(...) LOG_ERROR_AND_THROW("Description of ray tracing PSO '", (CreateInfo.PSODesc.Name ? CreateInfo.PSODesc.Name : ""), "' is invalid: ", ##__VA_ARGS__)
 
-    Uint32 UnnamedExportIndex = 0;
+    UInt32 UnnamedExportIndex = 0;
 
     std::unordered_map<IShader*, LPCWSTR> UniqueShaders;
 
     using ShaderStageInfo = PipelineStateD3D12Impl::ShaderStageInfo;
 
     std::array<ShaderStageInfo*, MAX_SHADERS_IN_PIPELINE> StagesPtr     = {};
-    std::array<Uint32, MAX_SHADERS_IN_PIPELINE>           ShaderIndices = {};
+    std::array<UInt32, MAX_SHADERS_IN_PIPELINE>           ShaderIndices = {};
 
     for (ShaderStageInfo& Stage : ShaderStages)
     {
@@ -150,7 +150,7 @@ void BuildRTPipelineDescription(const RayTracingPipelineStateCreateInfo& CreateI
         {
             const Int32            StageIdx    = GetShaderTypePipelineIndex(pShader->GetDesc().ShaderType, PIPELINE_TYPE_RAY_TRACING);
             const ShaderStageInfo& Stage       = *StagesPtr[StageIdx];
-            Uint32&                ShaderIndex = ShaderIndices[StageIdx];
+            UInt32&                ShaderIndex = ShaderIndices[StageIdx];
 
             // shaders must be in same order as in ExtractShaders()
             RefCntAutoPtr<ShaderD3D12Impl> pShaderD3D12{pShader, ShaderD3D12Impl::IID_InternalImpl};
@@ -188,13 +188,13 @@ void BuildRTPipelineDescription(const RayTracingPipelineStateCreateInfo& CreateI
             return it_inserted.first->second;
     };
 
-    for (Uint32 i = 0; i < CreateInfo.GeneralShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.GeneralShaderCount; ++i)
     {
         const RayTracingGeneralShaderGroup& GeneralShader = CreateInfo.pGeneralShaders[i];
         AddDxilLib(GeneralShader.pShader, GeneralShader.Name);
     }
 
-    for (Uint32 i = 0; i < CreateInfo.TriangleHitShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.TriangleHitShaderCount; ++i)
     {
         const RayTracingTriangleHitShaderGroup& TriHitShader = CreateInfo.pTriangleHitShaders[i];
 
@@ -208,7 +208,7 @@ void BuildRTPipelineDescription(const RayTracingPipelineStateCreateInfo& CreateI
         Subobjects.push_back({D3D12_STATE_SUBOBJECT_TYPE_HIT_GROUP, &HitGroupDesc});
     }
 
-    for (Uint32 i = 0; i < CreateInfo.ProceduralHitShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.ProceduralHitShaderCount; ++i)
     {
         const RayTracingProceduralHitShaderGroup& ProcHitShader = CreateInfo.pProceduralHitShaders[i];
 
@@ -222,7 +222,7 @@ void BuildRTPipelineDescription(const RayTracingPipelineStateCreateInfo& CreateI
         Subobjects.push_back({D3D12_STATE_SUBOBJECT_TYPE_HIT_GROUP, &HitGroupDesc});
     }
 
-    constexpr Uint32 DefaultPayloadSize = sizeof(float) * 8;
+    constexpr UInt32 DefaultPayloadSize = sizeof(float) * 8;
 
     D3D12_RAYTRACING_PIPELINE_CONFIG& PipelineConfig = *TempPool.Construct<D3D12_RAYTRACING_PIPELINE_CONFIG>();
 
@@ -240,8 +240,8 @@ template <typename TNameToGroupIndexMap>
 void GetShaderIdentifiers(ID3D12DeviceChild*                       pSO,
                           const RayTracingPipelineStateCreateInfo& CreateInfo,
                           const TNameToGroupIndexMap&              NameToGroupIndex,
-                          Uint8*                                   ShaderData,
-                          Uint32                                   ShaderIdentifierSize)
+                          UInt8*                                   ShaderData,
+                          UInt32                                   ShaderIdentifierSize)
 {
     CComPtr<ID3D12StateObjectProperties> pStateObjectProperties;
 
@@ -249,7 +249,7 @@ void GetShaderIdentifiers(ID3D12DeviceChild*                       pSO,
     if (FAILED(hr))
         LOG_ERROR_AND_THROW("Failed to get state object properties");
 
-    for (Uint32 i = 0; i < CreateInfo.GeneralShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.GeneralShaderCount; ++i)
     {
         const RayTracingGeneralShaderGroup& GeneralShader = CreateInfo.pGeneralShaders[i];
 
@@ -266,7 +266,7 @@ void GetShaderIdentifiers(ID3D12DeviceChild*                       pSO,
         std::memcpy(&ShaderData[ShaderIdentifierSize * iter->second], ShaderID, ShaderIdentifierSize);
     }
 
-    for (Uint32 i = 0; i < CreateInfo.TriangleHitShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.TriangleHitShaderCount; ++i)
     {
         const RayTracingTriangleHitShaderGroup& TriHitShader = CreateInfo.pTriangleHitShaders[i];
 
@@ -283,7 +283,7 @@ void GetShaderIdentifiers(ID3D12DeviceChild*                       pSO,
         std::memcpy(&ShaderData[ShaderIdentifierSize * iter->second], ShaderID, ShaderIdentifierSize);
     }
 
-    for (Uint32 i = 0; i < CreateInfo.ProceduralHitShaderCount; ++i)
+    for (UInt32 i = 0; i < CreateInfo.ProceduralHitShaderCount; ++i)
     {
         const RayTracingProceduralHitShaderGroup& ProcHitShader = CreateInfo.pProceduralHitShaders[i];
 
@@ -344,7 +344,7 @@ PipelineResourceSignatureDescWrapper PipelineStateD3D12Impl::GetDefaultResourceS
     const TShaderStages&              ShaderStages,
     const char*                       PSOName,
     const PipelineResourceLayoutDesc& ResourceLayout,
-    Uint32                            SRBAllocationGranularity,
+    UInt32                            SRBAllocationGranularity,
     const LocalRootSignatureD3D12*    pLocalRootSig) noexcept(false)
 {
     PipelineResourceSignatureDescWrapper SignDesc{PSOName, ResourceLayout, SRBAllocationGranularity};
@@ -357,7 +357,7 @@ PipelineResourceSignatureDescWrapper PipelineStateD3D12Impl::GetDefaultResourceS
             const ShaderResourcesD3D12& ShaderResources = *pShader->GetShaderResources();
 
             ShaderResources.ProcessResources(
-                [&](const D3DShaderResourceAttribs& Attribs, Uint32) //
+                [&](const D3DShaderResourceAttribs& Attribs, UInt32) //
                 {
                     if (pLocalRootSig != nullptr && pLocalRootSig->IsShaderRecord(Attribs))
                         return;
@@ -402,7 +402,7 @@ PipelineResourceSignatureDescWrapper PipelineStateD3D12Impl::GetDefaultResourceS
 
 void PipelineStateD3D12Impl::RemapOrVerifyShaderResources(TShaderStages&                                           ShaderStages,
                                                           const RefCntAutoPtr<PipelineResourceSignatureD3D12Impl>* pSignatures,
-                                                          Uint32                                                   SignatureCount,
+                                                          UInt32                                                   SignatureCount,
                                                           const RootSignatureD3D12&                                RootSig,
                                                           IDXCompiler*                                             pDxCompiler,
                                                           LocalRootSignatureD3D12*                                 pLocalRootSig,
@@ -419,7 +419,7 @@ void PipelineStateD3D12Impl::RemapOrVerifyShaderResources(TShaderStages&        
         ResourceBinding::TMap ResourceMap;
         // Note that we must use signatures from m_ResourceSignatures for resource binding map,
         // because signatures from RootSig may have resources with different names.
-        for (Uint32 sign = 0; sign < SignatureCount; ++sign)
+        for (UInt32 sign = 0; sign < SignatureCount; ++sign)
         {
             const PipelineResourceSignatureD3D12Impl* const pSignature = pSignatures[sign];
             if (pSignature == nullptr)
@@ -450,7 +450,7 @@ void PipelineStateD3D12Impl::RemapOrVerifyShaderResources(TShaderStages&        
         {
             const ShaderD3D12Impl* const pShader = Shaders[i];
 
-            Uint32 VerMajor, VerMinor;
+            UInt32 VerMajor, VerMinor;
             pShader->GetShaderResources()->GetShaderModel(VerMajor, VerMinor);
             const bool IsSM51orAbove = ((VerMajor == 5 && VerMinor >= 1) || VerMajor >= 6);
 
@@ -566,7 +566,7 @@ void PipelineStateD3D12Impl::ValidateShaderResources(const ShaderD3D12Impl* pSha
 
     // Check compatibility between shader resources and resource signature.
     pShaderResources->ProcessResources(
-        [&](const D3DShaderResourceAttribs& Attribs, Uint32) //
+        [&](const D3DShaderResourceAttribs& Attribs, UInt32) //
         {
 #ifdef DILIGENT_DEVELOPMENT
             m_ResourceAttibutions.emplace_back();
@@ -630,7 +630,7 @@ void PipelineStateD3D12Impl::DvpVerifySRBResources(const DeviceContextD3D12Impl*
     for (const auto& pResources : m_ShaderResources)
     {
         pResources->ProcessResources(
-            [&](const D3DShaderResourceAttribs& Attribs, Uint32) //
+            [&](const D3DShaderResourceAttribs& Attribs, UInt32) //
             {
                 if (*attrib_it && !attrib_it->IsImmutableSampler())
                 {
@@ -745,9 +745,9 @@ void PipelineStateD3D12Impl::InitializePipeline(const GraphicsPipelineStateCreat
         d3d12PSODesc.PrimitiveTopologyType = PrimTopologyToD3D12TopologyType[GraphicsPipeline.PrimitiveTopology];
 
         d3d12PSODesc.NumRenderTargets = GraphicsPipeline.NumRenderTargets;
-        for (Uint32 rt = 0; rt < GraphicsPipeline.NumRenderTargets; ++rt)
+        for (UInt32 rt = 0; rt < GraphicsPipeline.NumRenderTargets; ++rt)
             d3d12PSODesc.RTVFormats[rt] = TexFormatToDXGI_Format(GraphicsPipeline.RTVFormats[rt]);
-        for (Uint32 rt = GraphicsPipeline.NumRenderTargets; rt < _countof(d3d12PSODesc.RTVFormats); ++rt)
+        for (UInt32 rt = GraphicsPipeline.NumRenderTargets; rt < _countof(d3d12PSODesc.RTVFormats); ++rt)
             d3d12PSODesc.RTVFormats[rt] = DXGI_FORMAT_UNKNOWN;
         d3d12PSODesc.DSVFormat = TexFormatToDXGI_Format(GraphicsPipeline.DSVFormat);
 
@@ -834,9 +834,9 @@ void PipelineStateD3D12Impl::InitializePipeline(const GraphicsPipelineStateCreat
         DepthStencilStateDesc_To_D3D12_DEPTH_STENCIL_DESC(GraphicsPipeline.DepthStencilDesc, *d3d12PSODesc.DepthStencilState);
 
         d3d12PSODesc.RTVFormatArray->NumRenderTargets = GraphicsPipeline.NumRenderTargets;
-        for (Uint32 rt = 0; rt < GraphicsPipeline.NumRenderTargets; ++rt)
+        for (UInt32 rt = 0; rt < GraphicsPipeline.NumRenderTargets; ++rt)
             d3d12PSODesc.RTVFormatArray->RTFormats[rt] = TexFormatToDXGI_Format(GraphicsPipeline.RTVFormats[rt]);
-        for (Uint32 rt = GraphicsPipeline.NumRenderTargets; rt < _countof(d3d12PSODesc.RTVFormatArray->RTFormats); ++rt)
+        for (UInt32 rt = GraphicsPipeline.NumRenderTargets; rt < _countof(d3d12PSODesc.RTVFormatArray->RTFormats); ++rt)
             d3d12PSODesc.RTVFormatArray->RTFormats[rt] = DXGI_FORMAT_UNKNOWN;
         d3d12PSODesc.DSVFormat = TexFormatToDXGI_Format(GraphicsPipeline.DSVFormat);
 

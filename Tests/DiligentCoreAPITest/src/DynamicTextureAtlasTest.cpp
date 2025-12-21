@@ -215,8 +215,8 @@ TEST(DynamicTextureAtlas, Allocate)
                         auto& Allocs = pSubAllocations[thread_id];
                         for (auto& Alloc : Allocs)
                         {
-                            Uint32 Width  = static_cast<Uint32>(rnd());
-                            Uint32 Height = static_cast<Uint32>(rnd());
+                            UInt32 Width  = static_cast<UInt32>(rnd());
+                            UInt32 Height = static_cast<UInt32>(rnd());
                             pAtlas->Allocate(Width, Height, &Alloc);
                             ASSERT_TRUE(Alloc);
                             EXPECT_EQ(Alloc->GetSize().x, Width);
@@ -266,12 +266,12 @@ TEST(DynamicTextureAtlas, Overflow)
 
     GPUTestingEnvironment::ScopedReleaseResources AutoreleaseResources;
 
-    constexpr Uint32 AtlasDim            = 512;
-    constexpr Uint32 AllocDim            = 128;
-    constexpr Uint32 AllocationsPerSlice = (AtlasDim / AllocDim) * (AtlasDim / AllocDim);
-    constexpr Uint32 MaxSliceCount       = 2;
+    constexpr UInt32 AtlasDim            = 512;
+    constexpr UInt32 AllocDim            = 128;
+    constexpr UInt32 AllocationsPerSlice = (AtlasDim / AllocDim) * (AtlasDim / AllocDim);
+    constexpr UInt32 MaxSliceCount       = 2;
 
-    const Uint32 NumThreads = std::max(4u, std::thread::hardware_concurrency() * 4);
+    const UInt32 NumThreads = std::max(4u, std::thread::hardware_concurrency() * 4);
 
     DynamicTextureAtlasCreateInfo CI;
     CI.ExtraSliceCount = 2;
@@ -330,11 +330,11 @@ TEST(DynamicTextureAtlas, AllocRace)
 
     GPUTestingEnvironment::ScopedReleaseResources AutoreleaseResources;
 
-    const Uint32 NumThreads = std::max(4u, std::thread::hardware_concurrency() * 4);
+    const UInt32 NumThreads = std::max(4u, std::thread::hardware_concurrency() * 4);
 
-    constexpr Uint32 AtlasDim            = 512;
-    constexpr Uint32 AllocDim            = 256;
-    constexpr Uint32 AllocationsPerSlice = (AtlasDim / AllocDim) * (AtlasDim / AllocDim);
+    constexpr UInt32 AtlasDim            = 512;
+    constexpr UInt32 AllocDim            = 256;
+    constexpr UInt32 AllocationsPerSlice = (AtlasDim / AllocDim) * (AtlasDim / AllocDim);
 
     DynamicTextureAtlasCreateInfo CI;
     CI.ExtraSliceCount = 2;
@@ -356,7 +356,7 @@ TEST(DynamicTextureAtlas, AllocRace)
     Threading::Signal   ReleaseSignal;
     Threading::Signal   AllocCompleteSignal;
     Threading::Signal   ReleaseCompleteSignal;
-    std::atomic<Uint32> NumThreadsReady{0};
+    std::atomic<UInt32> NumThreadsReady{0};
 
     std::vector<std::thread> Threads(NumThreads);
     for (size_t t = 0; t < Threads.size(); ++t)
@@ -432,11 +432,11 @@ TEST(DynamicTextureAtlas, AllocFreeRace)
 
     GPUTestingEnvironment::ScopedReleaseResources AutoreleaseResources;
 
-    const Uint32 NumThreads = std::max(4u, std::thread::hardware_concurrency() * 4);
+    const UInt32 NumThreads = std::max(4u, std::thread::hardware_concurrency() * 4);
 
-    constexpr Uint32 AtlasDim            = 512;
-    constexpr Uint32 AllocDim            = 256;
-    constexpr Uint32 AllocationsPerSlice = (AtlasDim / AllocDim) * (AtlasDim / AllocDim);
+    constexpr UInt32 AtlasDim            = 512;
+    constexpr UInt32 AllocDim            = 256;
+    constexpr UInt32 AllocationsPerSlice = (AtlasDim / AllocDim) * (AtlasDim / AllocDim);
 
     DynamicTextureAtlasCreateInfo CI;
     CI.ExtraSliceCount = 2;
@@ -458,7 +458,7 @@ TEST(DynamicTextureAtlas, AllocFreeRace)
     Threading::Signal   ReleaseSignal;
     Threading::Signal   AllocCompleteSignal;
     Threading::Signal   ReleaseCompleteSignal;
-    std::atomic<Uint32> NumThreadsReady{0};
+    std::atomic<UInt32> NumThreadsReady{0};
 
     // Pre-populate half of the atlas
     const auto                                             PrePopulatedSliceCount = NumThreads / 2;

@@ -65,10 +65,10 @@ TEST(TextureComponentMappingTest, OperatorMultiply)
     Test("rgba", "abgr", "abgr");
     Test("rrr1", "bbbb", "rrrr");
 
-    for (Uint32 swizzle1 = 1; swizzle1 < TEXTURE_COMPONENT_SWIZZLE_COUNT; ++swizzle1)
+    for (UInt32 swizzle1 = 1; swizzle1 < TEXTURE_COMPONENT_SWIZZLE_COUNT; ++swizzle1)
     {
         const auto Swizzle1 = static_cast<TEXTURE_COMPONENT_SWIZZLE>(swizzle1);
-        for (Uint32 swizzle2 = 1; swizzle2 < TEXTURE_COMPONENT_SWIZZLE_COUNT; ++swizzle2)
+        for (UInt32 swizzle2 = 1; swizzle2 < TEXTURE_COMPONENT_SWIZZLE_COUNT; ++swizzle2)
         {
             const auto              Swizzle2 = static_cast<TEXTURE_COMPONENT_SWIZZLE>(swizzle2);
             TextureComponentMapping Mapping1{Swizzle1, Swizzle1, Swizzle1, Swizzle1};
@@ -110,7 +110,7 @@ TEST(TextureComponentMappingTest, OperatorMultiply)
         };
         TextureComponentMapping Res = Mapping1 * Mapping2;
 
-        for (Uint32 c = 0; c < 4; ++c)
+        for (UInt32 c = 0; c < 4; ++c)
         {
             if (Mapping1[c] == TEXTURE_COMPONENT_SWIZZLE_IDENTITY)
                 Mapping1[c] = static_cast<TEXTURE_COMPONENT_SWIZZLE>(c + TEXTURE_COMPONENT_SWIZZLE_R);

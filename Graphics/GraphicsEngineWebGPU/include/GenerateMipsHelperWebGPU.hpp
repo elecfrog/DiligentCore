@@ -87,7 +87,7 @@ private:
             size_t operator()(const ComputePipelineHashKey& Key) const;
         };
 
-        ComputePipelineHashKey(const UAVFormats& Formats, Uint32 PowerOfTwo) :
+        ComputePipelineHashKey(const UAVFormats& Formats, UInt32 PowerOfTwo) :
             Formats{Formats},
             PowerOfTwo{PowerOfTwo}
         {}
@@ -97,7 +97,7 @@ private:
         size_t GetHash() const;
 
         UAVFormats Formats    = {};
-        Uint32     PowerOfTwo = 0;
+        UInt32     PowerOfTwo = 0;
 
     private:
         mutable size_t Hash = 0;
@@ -132,7 +132,7 @@ private:
 
     WebGPUShaderModuleWrapper& GetShaderModule(const UAVFormats& Formats, SHADER_TYPE ShaderType);
 
-    ComputePipelineGroupLayout& GetComputePipelineAndGroupLayout(const UAVFormats& Formats, Uint32 PowerOfTwo);
+    ComputePipelineGroupLayout& GetComputePipelineAndGroupLayout(const UAVFormats& Formats, UInt32 PowerOfTwo);
 
     RenderPipelineGroupLayout& GetRenderPipelineAndGroupLayout(TEXTURE_FORMAT Format);
 

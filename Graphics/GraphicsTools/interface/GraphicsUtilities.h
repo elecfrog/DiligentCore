@@ -41,7 +41,7 @@ DILIGENT_BEGIN_NAMESPACE(Diligent)
 
 // clang-format off
 void DILIGENT_GLOBAL_FUNCTION(CreateUniformBuffer)(IRenderDevice*                  pDevice,
-                                                   Uint64                          Size,
+                                                   UInt64                          Size,
                                                    const Char*                     Name,
                                                    IBuffer**                       ppBuffer,
                                                    USAGE                           Usage          DEFAULT_VALUE(USAGE_DYNAMIC),
@@ -50,18 +50,18 @@ void DILIGENT_GLOBAL_FUNCTION(CreateUniformBuffer)(IRenderDevice*               
                                                    void*                           pInitialData   DEFAULT_VALUE(nullptr));
 // clang-format on
 
-void DILIGENT_GLOBAL_FUNCTION(GenerateCheckerBoardPattern)(Uint32         Width,
-                                                           Uint32         Height,
+void DILIGENT_GLOBAL_FUNCTION(GenerateCheckerBoardPattern)(UInt32         Width,
+                                                           UInt32         Height,
                                                            TEXTURE_FORMAT Fmt,
-                                                           Uint32         HorzCells,
-                                                           Uint32         VertCells,
-                                                           Uint8*         pData,
-                                                           Uint64         StrideInBytes);
+                                                           UInt32         HorzCells,
+                                                           UInt32         VertCells,
+                                                           UInt8*         pData,
+                                                           UInt64         StrideInBytes);
 
 // clang-format off
 
 /// Coarse mip filter type
-DILIGENT_TYPED_ENUM(MIP_FILTER_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(MIP_FILTER_TYPE, UInt8)
 {
     /// Default filter type: BOX_AVERAGE for UNORM/SNORM and FP formats, and
     /// MOST_FREQUENT for UINT/SINT formats.
@@ -84,10 +84,10 @@ struct ComputeMipLevelAttribs
     TEXTURE_FORMAT Format     DEFAULT_INITIALIZER(TEX_FORMAT_UNKNOWN);
 
     /// Fine mip level width.
-    Uint32 FineMipWidth       DEFAULT_INITIALIZER(0);
+    UInt32 FineMipWidth       DEFAULT_INITIALIZER(0);
 
     /// Fine mip level height.
-    Uint32 FineMipHeight      DEFAULT_INITIALIZER(0);
+    UInt32 FineMipHeight      DEFAULT_INITIALIZER(0);
 
     /// Pointer to the fine mip level data
     const void* pFineMipData  DEFAULT_INITIALIZER(nullptr);
@@ -115,8 +115,8 @@ struct ComputeMipLevelAttribs
     constexpr ComputeMipLevelAttribs() noexcept {}
 
     constexpr ComputeMipLevelAttribs(TEXTURE_FORMAT   _Format,
-                                     Uint32           _FineMipWidth,
-                                     Uint32           _FineMipHeight,
+                                     UInt32           _FineMipWidth,
+                                     UInt32           _FineMipHeight,
                                      const void*      _pFineMipData,
                                      size_t           _FineMipStride,
                                      void*            _pCoarseMipData,

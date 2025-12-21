@@ -41,7 +41,7 @@ TopLevelASVkImpl::TopLevelASVkImpl(IReferenceCounters*   pRefCounters,
     const VulkanUtilities::LogicalDevice&  LogicalDevice   = pRenderDeviceVk->GetLogicalDevice();
     const VulkanUtilities::PhysicalDevice& PhysicalDevice  = pRenderDeviceVk->GetPhysicalDevice();
     const RayTracingProperties&            RTProps         = pRenderDeviceVk->GetAdapterInfo().RayTracing;
-    Uint64                                 AccelStructSize = m_Desc.CompactedSize;
+    UInt64                                 AccelStructSize = m_Desc.CompactedSize;
 
     if (AccelStructSize == 0)
     {

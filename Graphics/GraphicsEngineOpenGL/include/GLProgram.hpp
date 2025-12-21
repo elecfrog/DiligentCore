@@ -43,7 +43,7 @@ class GLProgram
 {
 public:
     GLProgram(ShaderGLImpl* const* ppShaders,
-              Uint32               NumShaders,
+              UInt32               NumShaders,
               bool                 IsSeparableProgram) noexcept;
     ~GLProgram();
 

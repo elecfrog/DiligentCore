@@ -44,12 +44,12 @@ namespace Diligent
 
 struct BLASGeomIndex
 {
-    Uint32 IndexInDesc = INVALID_INDEX; // Geometry index in BottomLevelASDesc
-    Uint32 ActualIndex = INVALID_INDEX; // Geometry index in build operation
+    UInt32 IndexInDesc = INVALID_INDEX; // Geometry index in BottomLevelASDesc
+    UInt32 ActualIndex = INVALID_INDEX; // Geometry index in build operation
 
     BLASGeomIndex() {}
-    BLASGeomIndex(Uint32 _IndexInDesc,
-                  Uint32 _ActualIndex) :
+    BLASGeomIndex(UInt32 _IndexInDesc,
+                  UInt32 _ActualIndex) :
         IndexInDesc{_IndexInDesc},
         ActualIndex{_ActualIndex}
     {}
@@ -116,7 +116,7 @@ public:
 
     // Maps geometry that was used in a build operation to the geometry description.
     // Returns the geometry index in geometry description.
-    Uint32 UpdateGeometryIndex(const char* Name, Uint32& ActualIndex, bool OnUpdate)
+    UInt32 UpdateGeometryIndex(const char* Name, UInt32& ActualIndex, bool OnUpdate)
     {
         DEV_CHECK_ERR(Name != nullptr && Name[0] != '\0', "Geometry name must not be empty");
 
@@ -134,7 +134,7 @@ public:
     }
 
     /// Implementation of IBottomLevelAS::GetGeometryDescIndex()
-    virtual Uint32 DILIGENT_CALL_TYPE GetGeometryDescIndex(const char* Name) const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetGeometryDescIndex(const char* Name) const override final
     {
         DEV_CHECK_ERR(Name != nullptr && Name[0] != '\0', "Geometry name must not be empty");
 
@@ -147,7 +147,7 @@ public:
     }
 
     /// Implementation of IBottomLevelAS::GetGeometryIndex()
-    virtual Uint32 DILIGENT_CALL_TYPE GetGeometryIndex(const char* Name) const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetGeometryIndex(const char* Name) const override final
     {
         DEV_CHECK_ERR(Name != nullptr && Name[0] != '\0', "Geometry name must not be empty");
 
@@ -199,7 +199,7 @@ public:
         this->m_DvpVersion.fetch_add(1);
     }
 
-    Uint32 DvpGetVersion() const
+    UInt32 DvpGetVersion() const
     {
         return this->m_DvpVersion.load();
     }
@@ -219,12 +219,12 @@ public:
         }
     }
 
-    void SetActualGeometryCount(Uint32 Count)
+    void SetActualGeometryCount(UInt32 Count)
     {
         m_GeometryCount = Count;
     }
 
-    virtual Uint32 DILIGENT_CALL_TYPE GetActualGeometryCount() const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetActualGeometryCount() const override final
     {
         return m_GeometryCount;
     }
@@ -258,11 +258,11 @@ protected:
     RESOURCE_STATE     m_State = RESOURCE_STATE_UNKNOWN;
     BLASNameToIndex    m_NameToIndex;
     void*              m_pRawPtr       = nullptr;
-    Uint32             m_GeometryCount = 0;
+    UInt32             m_GeometryCount = 0;
     ScratchBufferSizes m_ScratchSize;
 
 #ifdef DILIGENT_DEVELOPMENT
-    std::atomic<Uint32> m_DvpVersion{0};
+    std::atomic<UInt32> m_DvpVersion{0};
 #endif
 };
 

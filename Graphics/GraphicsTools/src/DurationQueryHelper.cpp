@@ -44,13 +44,13 @@ DurationQueryHelper::DurationQuery::DurationQuery(IRenderDevice* pDevice)
 }
 
 DurationQueryHelper::DurationQueryHelper(IRenderDevice* pDevice,
-                                         Uint32         NumQueriesToReserve,
-                                         Uint32         ExpectedQueryLimit) :
+                                         UInt32         NumQueriesToReserve,
+                                         UInt32         ExpectedQueryLimit) :
     m_pDevice{pDevice},
     m_ExpectedQueryLimit{ExpectedQueryLimit}
 {
     m_AvailableQueries.reserve(NumQueriesToReserve);
-    for (Uint32 i = 0; i < NumQueriesToReserve; ++i)
+    for (UInt32 i = 0; i < NumQueriesToReserve; ++i)
     {
         m_AvailableQueries.emplace_back(pDevice);
     }

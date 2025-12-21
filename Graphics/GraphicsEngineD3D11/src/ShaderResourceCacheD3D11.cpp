@@ -48,16 +48,16 @@ size_t ShaderResourceCacheD3D11::GetRequiredMemorySize(const D3D11ShaderResource
 {
     size_t MemSize = 0;
     // clang-format off
-    for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
         MemSize = AlignUp(MemSize + (sizeof(CachedCB)       + sizeof(ID3D11Buffer*))              * ResCount[D3D11_RESOURCE_RANGE_CBV][ShaderInd],     MaxAlignment);
 
-    for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
         MemSize = AlignUp(MemSize + (sizeof(CachedResource) + sizeof(ID3D11ShaderResourceView*))  * ResCount[D3D11_RESOURCE_RANGE_SRV][ShaderInd],     MaxAlignment);
 
-    for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
         MemSize = AlignUp(MemSize + (sizeof(CachedSampler)  + sizeof(ID3D11SamplerState*))        * ResCount[D3D11_RESOURCE_RANGE_SAMPLER][ShaderInd], MaxAlignment);
 
-    for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
         MemSize = AlignUp(MemSize + (sizeof(CachedResource) + sizeof(ID3D11UnorderedAccessView*)) * ResCount[D3D11_RESOURCE_RANGE_UAV][ShaderInd],     MaxAlignment);
     // clang-format on
 
@@ -66,36 +66,36 @@ size_t ShaderResourceCacheD3D11::GetRequiredMemorySize(const D3D11ShaderResource
 }
 
 template <D3D11_RESOURCE_RANGE RangeType>
-void ShaderResourceCacheD3D11::ConstructResources(Uint32 ShaderInd)
+void ShaderResourceCacheD3D11::ConstructResources(UInt32 ShaderInd)
 {
     using ResourceType = typename CachedResourceTraits<RangeType>::CachedResourceType;
 
-    const Uint32 ResCount = GetResourceCount<RangeType>(ShaderInd);
+    const UInt32 ResCount = GetResourceCount<RangeType>(ShaderInd);
     if (ResCount > 0)
     {
         const auto Arrays = GetResourceArrays<RangeType>(ShaderInd);
-        for (Uint32 r = 0; r < ResCount; ++r)
+        for (UInt32 r = 0; r < ResCount; ++r)
             new (Arrays.first + r) ResourceType{};
     }
 }
 
 template <D3D11_RESOURCE_RANGE RangeType>
-void ShaderResourceCacheD3D11::DestructResources(Uint32 ShaderInd)
+void ShaderResourceCacheD3D11::DestructResources(UInt32 ShaderInd)
 {
     using ResourceType = typename CachedResourceTraits<RangeType>::CachedResourceType;
 
-    const Uint32 ResCount = GetResourceCount<RangeType>(ShaderInd);
+    const UInt32 ResCount = GetResourceCount<RangeType>(ShaderInd);
     if (ResCount > 0)
     {
         auto Arrays = GetResourceArrays<RangeType>(ShaderInd);
-        for (Uint32 r = 0; r < ResCount; ++r)
+        for (UInt32 r = 0; r < ResCount; ++r)
             Arrays.first[r].~ResourceType();
     }
 }
 
 void ShaderResourceCacheD3D11::Initialize(const D3D11ShaderResourceCounters&        ResCount,
                                           IMemoryAllocator&                         MemAllocator,
-                                          const std::array<Uint16, NumShaderTypes>* pDynamicCBSlotsMask)
+                                          const std::array<UInt16, NumShaderTypes>* pDynamicCBSlotsMask)
 {
     // http://diligentgraphics.com/diligent-engine/architecture/d3d11/shader-resource-cache/
     VERIFY(!IsInitialized(), "Resource cache has already been initialized!");
@@ -104,25 +104,25 @@ void ShaderResourceCacheD3D11::Initialize(const D3D11ShaderResourceCounters&    
         m_DynamicCBSlotsMask = *pDynamicCBSlotsMask;
 
     size_t MemOffset = 0;
-    for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
     {
         const size_t Idx = FirstCBOffsetIdx + ShaderInd;
         m_Offsets[Idx]   = static_cast<OffsetType>(MemOffset);
         MemOffset        = AlignUp(MemOffset + (sizeof(CachedCB) + sizeof(ID3D11Buffer*)) * ResCount[D3D11_RESOURCE_RANGE_CBV][ShaderInd], MaxAlignment);
     }
-    for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
     {
         const size_t Idx = FirstSRVOffsetIdx + ShaderInd;
         m_Offsets[Idx]   = static_cast<OffsetType>(MemOffset);
         MemOffset        = AlignUp(MemOffset + (sizeof(CachedResource) + sizeof(ID3D11ShaderResourceView*)) * ResCount[D3D11_RESOURCE_RANGE_SRV][ShaderInd], MaxAlignment);
     }
-    for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
     {
         const size_t Idx = FirstSamOffsetIdx + ShaderInd;
         m_Offsets[Idx]   = static_cast<OffsetType>(MemOffset);
         MemOffset        = AlignUp(MemOffset + (sizeof(CachedSampler) + sizeof(ID3D11SamplerState*)) * ResCount[D3D11_RESOURCE_RANGE_SAMPLER][ShaderInd], MaxAlignment);
     }
-    for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
     {
         const size_t Idx = FirstUAVOffsetIdx + ShaderInd;
         m_Offsets[Idx]   = static_cast<OffsetType>(MemOffset);
@@ -138,14 +138,14 @@ void ShaderResourceCacheD3D11::Initialize(const D3D11ShaderResourceCounters&    
     if (BufferSize > 0)
     {
         m_pResourceData = decltype(m_pResourceData){
-            ALLOCATE(MemAllocator, "Shader resource cache data buffer", Uint8, BufferSize),
-            STDDeleter<Uint8, IMemoryAllocator>(MemAllocator) //
+            ALLOCATE(MemAllocator, "Shader resource cache data buffer", UInt8, BufferSize),
+            STDDeleter<UInt8, IMemoryAllocator>(MemAllocator) //
         };
         memset(m_pResourceData.get(), 0, BufferSize);
     }
 
     // Explicitly construct all objects
-    for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
     {
         ConstructResources<D3D11_RESOURCE_RANGE_CBV>(ShaderInd);
         ConstructResources<D3D11_RESOURCE_RANGE_SRV>(ShaderInd);
@@ -161,7 +161,7 @@ ShaderResourceCacheD3D11::~ShaderResourceCacheD3D11()
     if (IsInitialized())
     {
         // Explicitly destroy all objects
-        for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+        for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
         {
             DestructResources<D3D11_RESOURCE_RANGE_CBV>(ShaderInd);
             DestructResources<D3D11_RESOURCE_RANGE_SRV>(ShaderInd);
@@ -193,14 +193,14 @@ template void ShaderResourceCacheD3D11::TransitionResourceStates<ShaderResourceC
 template <ShaderResourceCacheD3D11::StateTransitionMode Mode>
 void ShaderResourceCacheD3D11::TransitionResources(DeviceContextD3D11Impl& Ctx, const ID3D11Buffer* /*Selector*/) const
 {
-    for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
     {
-        const Uint32 CBCount = GetCBCount(ShaderInd);
+        const UInt32 CBCount = GetCBCount(ShaderInd);
         if (CBCount == 0)
             continue;
 
         auto CBArrays = GetResourceArrays<D3D11_RESOURCE_RANGE_CBV>(ShaderInd);
-        for (Uint32 i = 0; i < CBCount; ++i)
+        for (UInt32 i = 0; i < CBCount; ++i)
         {
             if (BufferD3D11Impl* pBuffer = CBArrays.first[i].pBuff)
             {
@@ -225,14 +225,14 @@ void ShaderResourceCacheD3D11::TransitionResources(DeviceContextD3D11Impl& Ctx, 
 template <ShaderResourceCacheD3D11::StateTransitionMode Mode>
 void ShaderResourceCacheD3D11::TransitionResources(DeviceContextD3D11Impl& Ctx, const ID3D11ShaderResourceView* /*Selector*/) const
 {
-    for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
     {
-        const Uint32 SRVCount = GetSRVCount(ShaderInd);
+        const UInt32 SRVCount = GetSRVCount(ShaderInd);
         if (SRVCount == 0)
             continue;
 
         auto SRVArrays = GetResourceArrays<D3D11_RESOURCE_RANGE_SRV>(ShaderInd);
-        for (Uint32 i = 0; i < SRVCount; ++i)
+        for (UInt32 i = 0; i < SRVCount; ++i)
         {
             CachedResource& SRVRes = SRVArrays.first[i];
             if (TextureBaseD3D11* pTexture = SRVRes.pTexture)
@@ -288,14 +288,14 @@ void ShaderResourceCacheD3D11::TransitionResources(DeviceContextD3D11Impl& Ctx, 
 template <ShaderResourceCacheD3D11::StateTransitionMode Mode>
 void ShaderResourceCacheD3D11::TransitionResources(DeviceContextD3D11Impl& Ctx, const ID3D11UnorderedAccessView* /*Selector*/) const
 {
-    for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
     {
-        const Uint32 UAVCount = GetUAVCount(ShaderInd);
+        const UInt32 UAVCount = GetUAVCount(ShaderInd);
         if (UAVCount == 0)
             continue;
 
         auto UAVArrays = GetResourceArrays<D3D11_RESOURCE_RANGE_UAV>(ShaderInd);
-        for (Uint32 i = 0; i < UAVCount; ++i)
+        for (UInt32 i = 0; i < UAVCount; ++i)
         {
             CachedResource& UAVRes = UAVArrays.first[i];
             if (TextureBaseD3D11* pTexture = UAVRes.pTexture)
@@ -337,16 +337,16 @@ void ShaderResourceCacheD3D11::TransitionResources(DeviceContextD3D11Impl& Ctx, 
 #ifdef DILIGENT_DEBUG
 void ShaderResourceCacheD3D11::DbgVerifyDynamicBufferMasks() const
 {
-    for (Uint32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
+    for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)
     {
-        const Uint32 CBCount = GetCBCount(ShaderInd);
+        const UInt32 CBCount = GetCBCount(ShaderInd);
         if (CBCount == 0)
             continue;
 
         auto CBArrays = GetResourceArrays<D3D11_RESOURCE_RANGE_CBV>(ShaderInd);
-        for (Uint32 i = 0; i < CBCount; ++i)
+        for (UInt32 i = 0; i < CBCount; ++i)
         {
-            const Uint32    BuffBit = 1u << i;
+            const UInt32    BuffBit = 1u << i;
             const CachedCB& CB      = CBArrays.first[i];
 
             const bool IsDynamicOffset = CB.AllowsDynamicOffset() && (m_DynamicCBSlotsMask[ShaderInd] & BuffBit) != 0;

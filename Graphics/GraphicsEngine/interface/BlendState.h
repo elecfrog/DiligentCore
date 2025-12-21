@@ -32,7 +32,7 @@
 /// \file
 /// Blend state description
 
-#include "../../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "../../../Primitives/interface/FlagEnum.h"
 #include "Constants.h"
 
@@ -170,7 +170,7 @@ DILIGENT_TYPED_ENUM(BLEND_OPERATION, Int8)
 
 /// These flags are used by RenderTargetBlendDesc structure to define
 /// writable components of the render target
-DILIGENT_TYPED_ENUM(COLOR_MASK, Uint8)
+DILIGENT_TYPED_ENUM(COLOR_MASK, UInt8)
 {
     /// Do not store any components.
     COLOR_MASK_NONE  = 0u,

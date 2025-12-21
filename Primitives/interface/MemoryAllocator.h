@@ -30,7 +30,7 @@
 /// \file
 /// Defines Diligent::IMemoryAllocator interface
 
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 
 DILIGENT_BEGIN_NAMESPACE(Diligent)
 

@@ -39,7 +39,7 @@
 DILIGENT_BEGIN_NAMESPACE(Diligent)
 
 /// Pipeline state cache mode.
-DILIGENT_TYPED_ENUM(PSO_CACHE_MODE, Uint8)
+DILIGENT_TYPED_ENUM(PSO_CACHE_MODE, UInt8)
 {
     /// PSO cache will be used to load PSOs from it.
     PSO_CACHE_MODE_LOAD  = 1u << 0u,
@@ -53,7 +53,7 @@ DILIGENT_TYPED_ENUM(PSO_CACHE_MODE, Uint8)
 DEFINE_FLAG_ENUM_OPERATORS(PSO_CACHE_MODE);
 
 /// Pipeline state cache flags.
-DILIGENT_TYPED_ENUM(PSO_CACHE_FLAGS, Uint8)
+DILIGENT_TYPED_ENUM(PSO_CACHE_FLAGS, UInt8)
 {
     /// No flags.
     PSO_CACHE_FLAG_NONE = 0u,
@@ -92,7 +92,7 @@ struct PipelineStateCacheCreateInfo
     const void* pCacheData    DEFAULT_INITIALIZER(nullptr);
 
     /// The size of data pointed to by pCacheData
-    Uint32      CacheDataSize DEFAULT_INITIALIZER(0);
+    UInt32      CacheDataSize DEFAULT_INITIALIZER(0);
 };
 typedef struct PipelineStateCacheCreateInfo PipelineStateCacheCreateInfo;
 

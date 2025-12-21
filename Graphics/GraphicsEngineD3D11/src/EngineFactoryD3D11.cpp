@@ -250,7 +250,7 @@ void EngineFactoryD3D11Impl::CreateDeviceAndContextsD3D11(const EngineD3D11Creat
 
     LUID              AdapterLUID{};
     D3D_FEATURE_LEVEL d3dFeatureLevel = GetD3DFeatureLevel((std::max)(EngineCI.GraphicsAPIVersion, Version{10, 0}));
-    Uint32            AdapterId       = EngineCI.AdapterId;
+    UInt32            AdapterId       = EngineCI.AdapterId;
 #if DILIGENT_USE_OPENXR
     if (EngineCI.pXRAttribs != nullptr && EngineCI.pXRAttribs->Instance != 0)
     {
@@ -354,7 +354,7 @@ void EngineFactoryD3D11Impl::AttachToD3D11Device(void*                        pd
     if (!ppDevice || !ppContexts)
         return;
 
-    const Uint32 NumImmediateContexts = std::max(1u, EngineCI.NumImmediateContexts);
+    const UInt32 NumImmediateContexts = std::max(1u, EngineCI.NumImmediateContexts);
 
     *ppDevice = nullptr;
     memset(ppContexts, 0, sizeof(*ppContexts) * (size_t{NumImmediateContexts} + size_t{EngineCI.NumDeferredContexts}));
@@ -403,7 +403,7 @@ void EngineFactoryD3D11Impl::AttachToD3D11Device(void*                        pd
         pDeviceContextD3D11->QueryInterface(IID_DeviceContext, ppContexts);
         pRenderDeviceD3D11->SetImmediateContext(0, pDeviceContextD3D11);
 
-        for (Uint32 DeferredCtx = 0; DeferredCtx < EngineCI.NumDeferredContexts; ++DeferredCtx)
+        for (UInt32 DeferredCtx = 0; DeferredCtx < EngineCI.NumDeferredContexts; ++DeferredCtx)
         {
             pRenderDeviceD3D11->CreateDeferredContext(ppContexts + 1 + DeferredCtx);
         }
@@ -415,7 +415,7 @@ void EngineFactoryD3D11Impl::AttachToD3D11Device(void*                        pd
             (*ppDevice)->Release();
             *ppDevice = nullptr;
         }
-        for (Uint32 ctx = 0; ctx < NumImmediateContexts + EngineCI.NumDeferredContexts; ++ctx)
+        for (UInt32 ctx = 0; ctx < NumImmediateContexts + EngineCI.NumDeferredContexts; ++ctx)
         {
             if (ppContexts[ctx] != nullptr)
             {
@@ -576,7 +576,7 @@ GraphicsAdapterInfo EngineFactoryD3D11Impl::GetGraphicsAdapterInfo(void*        
 
                 SparseResourceProperties& SparseRes{AdapterInfo.SparseResources};
                 // https://docs.microsoft.com/en-us/windows/win32/direct3d11/address-space-available-for-tiled-resources
-                SparseRes.AddressSpaceSize  = Uint64{1} << (sizeof(void*) > 4 ? 40 : 32);
+                SparseRes.AddressSpaceSize  = UInt64{1} << (sizeof(void*) > 4 ? 40 : 32);
                 SparseRes.ResourceSpaceSize = std::numeric_limits<UINT>::max(); // buffer size limits to number of bits in UINT
                 SparseRes.StandardBlockSize = D3D11_2_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
                 SparseRes.CapFlags =
@@ -626,7 +626,7 @@ GraphicsAdapterInfo EngineFactoryD3D11Impl::GetGraphicsAdapterInfo(void*        
                     SparseRes.CapFlags &= ~SPARSE_RESOURCE_CAP_FLAG_ALIGNED_MIP_SIZE;
                 }
 
-                for (Uint32 q = 0; q < AdapterInfo.NumQueues; ++q)
+                for (UInt32 q = 0; q < AdapterInfo.NumQueues; ++q)
                     AdapterInfo.Queues[q].QueueType |= COMMAND_QUEUE_TYPE_SPARSE_BINDING;
 
                 ASSERT_SIZEOF(SparseRes, 32, "Did you add a new member to SparseResourceProperties? Please initialize it here.");

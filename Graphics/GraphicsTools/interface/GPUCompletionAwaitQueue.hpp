@@ -100,17 +100,17 @@ public:
 private:
     struct PendingObject
     {
-        PendingObject(ObjectType&& _Object, Uint64 _FenceValue) :
+        PendingObject(ObjectType&& _Object, UInt64 _FenceValue) :
             Object{std::move(_Object)},
             FenceValue{_FenceValue}
         {}
 
         ObjectType   Object;
-        const Uint64 FenceValue;
+        const UInt64 FenceValue;
     };
 
     RefCntAutoPtr<IFence> m_pFence;
-    Uint64                m_NextFenceValue = 1;
+    UInt64                m_NextFenceValue = 1;
 
     std::queue<PendingObject> m_PendingObjects;
     std::vector<ObjectType>   m_RecycledObjects;

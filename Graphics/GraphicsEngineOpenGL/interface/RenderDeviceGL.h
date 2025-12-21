@@ -103,8 +103,8 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceGL, IRenderDevice)
     /// \note  Diligent engine texture object does not take ownership of the GL resource,
     ///        and the application must not destroy it while it is in use by the engine.
     VIRTUAL void METHOD(CreateTextureFromGLHandle)(THIS_
-                                                   Uint32                GLHandle,
-                                                   Uint32                GLBindTarget,
+                                                   UInt32                GLHandle,
+                                                   UInt32                GLBindTarget,
                                                    const TextureDesc REF TexDesc,
                                                    RESOURCE_STATE        InitialState,
                                                    ITexture**            ppTexture) PURE;
@@ -124,7 +124,7 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceGL, IRenderDevice)
     /// \note  Diligent engine buffer object does not take ownership of the GL resource,
     ///        and the application must not destroy it while it is in use by the engine.
     VIRTUAL void METHOD(CreateBufferFromGLHandle)(THIS_
-                                                  Uint32               GLHandle,
+                                                  UInt32               GLHandle,
                                                   const BufferDesc REF BuffDesc,
                                                   RESOURCE_STATE       InitialState,
                                                   IBuffer**            ppBuffer) PURE;

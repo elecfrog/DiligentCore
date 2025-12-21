@@ -186,7 +186,7 @@ public:
 protected:
     virtual SparseTextureFormatInfo DILIGENT_CALL_TYPE GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                                   RESOURCE_DIMENSION Dimension,
-                                                                                  Uint32             SampleCount) const override
+                                                                                  UInt32             SampleCount) const override
     {
         const COMPONENT_TYPE ComponentType = CheckSparseTextureFormatSupport(TexFormat, Dimension, SampleCount, this->m_AdapterInfo.SparseResources);
         if (ComponentType == COMPONENT_TYPE_UNDEFINED)

@@ -40,8 +40,8 @@ namespace
 
 void GetArray2DMinMaxValueGeneric(const float* pData,
                                   size_t       StrideInFloats,
-                                  Uint32       Width,
-                                  Uint32       Height,
+                                  UInt32       Width,
+                                  UInt32       Height,
                                   float&       MinValue,
                                   float&       MaxValue)
 {
@@ -60,8 +60,8 @@ void GetArray2DMinMaxValueGeneric(const float* pData,
 #if DILIGENT_AVX2_ENABLED
 bool GetArray2DMinMaxValueAVX2(const float* pData,
                                size_t       StrideInFloats,
-                               Uint32       Width,
-                               Uint32       Height,
+                               UInt32       Width,
+                               UInt32       Height,
                                float&       MinValue,
                                float&       MaxValue)
 {
@@ -131,8 +131,8 @@ bool GetArray2DMinMaxValueAVX2(const float* pData,
 
 void GetArray2DMinMaxValue(const float* pData,
                            size_t       StrideInFloats,
-                           Uint32       Width,
-                           Uint32       Height,
+                           UInt32       Width,
+                           UInt32       Height,
                            float&       MinValue,
                            float&       MaxValue)
 {

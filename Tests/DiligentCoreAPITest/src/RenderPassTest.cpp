@@ -124,7 +124,7 @@ protected:
     }
 
     static void CreateDrawTrisPSO(IRenderPass*                   pRenderPass,
-                                  Uint8                          SampleCount,
+                                  UInt8                          SampleCount,
                                   RefCntAutoPtr<IPipelineState>& pPSO)
     {
         auto* pEnv    = GPUTestingEnvironment::GetInstance();
@@ -288,7 +288,7 @@ TEST_F(RenderPassTest, CreateRenderPassAndFramebuffer)
         {2, RESOURCE_STATE_INPUT_ATTACHMENT},
         {5, RESOURCE_STATE_INPUT_ATTACHMENT}
     };
-    constexpr Uint32 PrsvAttachmentRefs1[] =
+    constexpr UInt32 PrsvAttachmentRefs1[] =
     {
         0
     };
@@ -331,13 +331,13 @@ TEST_F(RenderPassTest, CreateRenderPassAndFramebuffer)
 
     const auto& RPDesc2 = pRenderPass->GetDesc();
     EXPECT_EQ(RPDesc.AttachmentCount, RPDesc2.AttachmentCount);
-    for (Uint32 i = 0; i < std::min(RPDesc.AttachmentCount, RPDesc2.AttachmentCount); ++i)
+    for (UInt32 i = 0; i < std::min(RPDesc.AttachmentCount, RPDesc2.AttachmentCount); ++i)
         EXPECT_EQ(RPDesc.pAttachments[i], RPDesc2.pAttachments[i]);
 
     EXPECT_EQ(RPDesc.SubpassCount, RPDesc2.SubpassCount);
     if (DeviceType != RENDER_DEVICE_TYPE_VULKAN)
     {
-        for (Uint32 i = 0; i < std::min(RPDesc.SubpassCount, RPDesc2.SubpassCount); ++i)
+        for (UInt32 i = 0; i < std::min(RPDesc.SubpassCount, RPDesc2.SubpassCount); ++i)
             EXPECT_EQ(RPDesc.pSubpasses[i], RPDesc2.pSubpasses[i]);
     }
     else
@@ -349,13 +349,13 @@ TEST_F(RenderPassTest, CreateRenderPassAndFramebuffer)
                 SP1.PreserveAttachmentCount != SP2.PreserveAttachmentCount)
                 return false;
 
-            for (Uint32 i = 0; i < SP1.InputAttachmentCount; ++i)
+            for (UInt32 i = 0; i < SP1.InputAttachmentCount; ++i)
             {
                 if (SP1.pInputAttachments[i] != SP2.pInputAttachments[i])
                     return false;
             }
 
-            for (Uint32 i = 0; i < SP1.RenderTargetAttachmentCount; ++i)
+            for (UInt32 i = 0; i < SP1.RenderTargetAttachmentCount; ++i)
             {
                 if (SP1.pRenderTargetAttachments[i] != SP2.pRenderTargetAttachments[i])
                     return false;
@@ -367,7 +367,7 @@ TEST_F(RenderPassTest, CreateRenderPassAndFramebuffer)
 
             if (SP1.pResolveAttachments != nullptr && SP2.pResolveAttachments != nullptr)
             {
-                for (Uint32 i = 0; i < SP1.RenderTargetAttachmentCount; ++i)
+                for (UInt32 i = 0; i < SP1.RenderTargetAttachmentCount; ++i)
                 {
                     if (SP1.pResolveAttachments[i].AttachmentIndex != SP2.pResolveAttachments[i].AttachmentIndex)
                         return false;
@@ -394,7 +394,7 @@ TEST_F(RenderPassTest, CreateRenderPassAndFramebuffer)
 
             if (SP1.pPreserveAttachments != nullptr && SP2.pPreserveAttachments != nullptr)
             {
-                for (Uint32 i = 0; i < SP1.PreserveAttachmentCount; ++i)
+                for (UInt32 i = 0; i < SP1.PreserveAttachmentCount; ++i)
                 {
                     if (SP1.pPreserveAttachments[i] != SP2.pPreserveAttachments[i])
                         return false;
@@ -404,19 +404,19 @@ TEST_F(RenderPassTest, CreateRenderPassAndFramebuffer)
             return true;
         };
         // Resolve attachment states may be corrected in Vulkan, so we can't use comparison operator
-        for (Uint32 i = 0; i < std::min(RPDesc.SubpassCount, RPDesc2.SubpassCount); ++i)
+        for (UInt32 i = 0; i < std::min(RPDesc.SubpassCount, RPDesc2.SubpassCount); ++i)
         {
             EXPECT_TRUE(CompareSubpassDescVk(RPDesc.pSubpasses[i], RPDesc2.pSubpasses[i]));
         }
     }
 
     EXPECT_EQ(RPDesc.DependencyCount, RPDesc2.DependencyCount);
-    for (Uint32 i = 0; i < std::min(RPDesc.DependencyCount, RPDesc2.DependencyCount); ++i)
+    for (UInt32 i = 0; i < std::min(RPDesc.DependencyCount, RPDesc2.DependencyCount); ++i)
         EXPECT_EQ(RPDesc.pDependencies[i], RPDesc2.pDependencies[i]);
 
     RefCntAutoPtr<ITexture> pTextures[_countof(Attachments)];
     ITextureView*           pTexViews[_countof(Attachments)] = {};
-    for (Uint32 i = 0; i < _countof(pTextures); ++i)
+    for (UInt32 i = 0; i < _countof(pTextures); ++i)
     {
         TextureDesc TexDesc;
         std::string Name = "Test framebuffer attachment ";
@@ -462,7 +462,7 @@ TEST_F(RenderPassTest, CreateRenderPassAndFramebuffer)
 
     const auto& FBDesc2 = pFramebuffer->GetDesc();
     EXPECT_EQ(FBDesc2.AttachmentCount, FBDesc.AttachmentCount);
-    for (Uint32 i = 0; i < std::min(FBDesc.AttachmentCount, FBDesc2.AttachmentCount); ++i)
+    for (UInt32 i = 0; i < std::min(FBDesc.AttachmentCount, FBDesc2.AttachmentCount); ++i)
         EXPECT_EQ(FBDesc2.ppAttachments[i], FBDesc.ppAttachments[i]);
 
     BeginRenderPassAttribs RPBeginInfo;

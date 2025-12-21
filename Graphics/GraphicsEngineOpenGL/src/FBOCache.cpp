@@ -43,7 +43,7 @@ bool FBOCache::FBOCacheKey::operator==(const FBOCacheKey& Key) const noexcept
 
     if (NumRenderTargets != Key.NumRenderTargets || Width != Key.Width || Height != Key.Height)
         return false;
-    for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
     {
         if (RTIds[rt] != Key.RTIds[rt])
             return false;
@@ -69,7 +69,7 @@ std::size_t FBOCache::FBOCacheKeyHashFunc::operator()(const FBOCacheKey& Key) co
     {
         Key.Hash = 0;
         HashCombine(Key.Hash, Key.NumRenderTargets, Key.Width, Key.Height);
-        for (Uint32 rt = 0; rt < Key.NumRenderTargets; ++rt)
+        for (UInt32 rt = 0; rt < Key.NumRenderTargets; ++rt)
         {
             HashCombine(Key.Hash, Key.RTIds[rt]);
             if (Key.RTIds[rt])
@@ -124,18 +124,18 @@ void FBOCache::Clear()
 }
 
 GLObjectWrappers::GLFrameBufferObj FBOCache::CreateFBO(GLContextState&    ContextState,
-                                                       Uint32             NumRenderTargets,
+                                                       UInt32             NumRenderTargets,
                                                        TextureViewGLImpl* ppRTVs[],
                                                        TextureViewGLImpl* pDSV,
-                                                       Uint32             DefaultWidth,
-                                                       Uint32             DefaultHeight)
+                                                       UInt32             DefaultWidth,
+                                                       UInt32             DefaultHeight)
 {
     GLObjectWrappers::GLFrameBufferObj FBO{true};
 
     ContextState.BindFBO(FBO);
 
     // Initialize the FBO
-    for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
     {
         if (TextureViewGLImpl* pRTView = ppRTVs[rt])
         {
@@ -225,7 +225,7 @@ GLObjectWrappers::GLFrameBufferObj FBOCache::CreateFBO(GLContextState&    Contex
     return FBO;
 }
 
-GLObjectWrappers::GLFrameBufferObj& FBOCache::GetFBO(Uint32             NumRenderTargets,
+GLObjectWrappers::GLFrameBufferObj& FBOCache::GetFBO(UInt32             NumRenderTargets,
                                                      TextureViewGLImpl* ppRTVs[],
                                                      TextureViewGLImpl* pDSV,
                                                      GLContextState&    ContextState)
@@ -241,7 +241,7 @@ GLObjectWrappers::GLFrameBufferObj& FBOCache::GetFBO(Uint32             NumRende
     VERIFY(NumRenderTargets <= MAX_RENDER_TARGETS, "Too many render targets are being set");
     NumRenderTargets     = std::min(NumRenderTargets, MAX_RENDER_TARGETS);
     Key.NumRenderTargets = NumRenderTargets;
-    for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
     {
         TextureViewGLImpl* pRTView = ppRTVs[rt];
         if (pRTView == nullptr)
@@ -282,7 +282,7 @@ GLObjectWrappers::GLFrameBufferObj& FBOCache::GetFBO(Uint32             NumRende
         VERIFY(it_inserted.second, "New FBO was not inserted");
         if (Key.DSId != 0)
             m_TexIdToKey.emplace(Key.DSId, Key);
-        for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+        for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
         {
             if (Key.RTIds[rt] != 0)
                 m_TexIdToKey.emplace(Key.RTIds[rt], Key);
@@ -293,7 +293,7 @@ GLObjectWrappers::GLFrameBufferObj& FBOCache::GetFBO(Uint32             NumRende
     return fbo_it->second;
 }
 
-const GLObjectWrappers::GLFrameBufferObj& FBOCache::GetFBO(Uint32 Width, Uint32 Height, GLContextState& ContextState)
+const GLObjectWrappers::GLFrameBufferObj& FBOCache::GetFBO(UInt32 Width, UInt32 Height, GLContextState& ContextState)
 {
     FBOCacheKey Key;
     Key.Width  = Width;
@@ -332,8 +332,8 @@ inline GLenum GetFramebufferAttachmentPoint(TEXTURE_FORMAT Format)
 }
 
 const GLObjectWrappers::GLFrameBufferObj& FBOCache::GetFBO(TextureBaseGL*                          pTex,
-                                                           Uint32                                  ArraySlice,
-                                                           Uint32                                  MipLevel,
+                                                           UInt32                                  ArraySlice,
+                                                           UInt32                                  MipLevel,
                                                            TextureBaseGL::FRAMEBUFFER_TARGET_FLAGS Targets)
 {
     const TextureDesc& TexDesc = pTex->GetDesc();

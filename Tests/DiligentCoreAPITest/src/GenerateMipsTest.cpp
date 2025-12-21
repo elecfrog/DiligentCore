@@ -68,7 +68,7 @@ TEST(GenerateMipsTest, GenerateMips)
         TexDesc.Usage     = USAGE_DEFAULT;
         TexDesc.MiscFlags = MISC_TEXTURE_FLAG_GENERATE_MIPS;
 
-        std::vector<Uint8> ZeroData(TexDesc.Width * TexDesc.Height * 16);
+        std::vector<UInt8> ZeroData(TexDesc.Width * TexDesc.Height * 16);
 
         {
             RefCntAutoPtr<ITexture>        pTex;

@@ -238,16 +238,16 @@ TEST(GraphicsAccessories_GraphicsAccessories, GetSurfaceTransformString)
 
 TEST(GraphicsAccessories_GraphicsAccessories, GetTextureFormatAttribs)
 {
-    auto CheckFormatSize = [](TEXTURE_FORMAT* begin, TEXTURE_FORMAT* end, Uint32 RefSize) //
+    auto CheckFormatSize = [](TEXTURE_FORMAT* begin, TEXTURE_FORMAT* end, UInt32 RefSize) //
     {
         for (auto fmt = begin; fmt != end; ++fmt)
         {
             auto FmtAttrs = GetTextureFormatAttribs(*fmt);
-            EXPECT_EQ(Uint32{FmtAttrs.ComponentSize} * Uint32{FmtAttrs.NumComponents}, RefSize);
+            EXPECT_EQ(UInt32{FmtAttrs.ComponentSize} * UInt32{FmtAttrs.NumComponents}, RefSize);
         }
     };
 
-    auto CheckNumComponents = [](TEXTURE_FORMAT* begin, TEXTURE_FORMAT* end, Uint32 RefComponents) //
+    auto CheckNumComponents = [](TEXTURE_FORMAT* begin, TEXTURE_FORMAT* end, UInt32 RefComponents) //
     {
         for (auto fmt = begin; fmt != end; ++fmt)
         {
@@ -783,7 +783,7 @@ TEST(GraphicsAccessories_GraphicsAccessories, GetTextureComponentMappingString)
                  "rgb1");
     for (size_t Comp = 0; Comp < 4; ++Comp)
     {
-        for (Uint32 Swizzle = 0; Swizzle < TEXTURE_COMPONENT_SWIZZLE_COUNT; ++Swizzle)
+        for (UInt32 Swizzle = 0; Swizzle < TEXTURE_COMPONENT_SWIZZLE_COUNT; ++Swizzle)
         {
             TextureComponentMapping Mapping{TextureComponentMapping::Identity()};
             Mapping[Comp]      = static_cast<TEXTURE_COMPONENT_SWIZZLE>(Swizzle);
@@ -803,7 +803,7 @@ TEST(GraphicsAccessories_GraphicsAccessories, TextureComponentMappingFromString)
         EXPECT_EQ(Mapping, TextureComponentMapping::Identity());
     }
 
-    for (Uint32 Swizzle = 0; Swizzle < TEXTURE_COMPONENT_SWIZZLE_COUNT; ++Swizzle)
+    for (UInt32 Swizzle = 0; Swizzle < TEXTURE_COMPONENT_SWIZZLE_COUNT; ++Swizzle)
     {
         {
             const char*             Strings[TEXTURE_COMPONENT_SWIZZLE_COUNT] = {"r", "0", "1", "r", "g", "b", "a"};
@@ -1276,8 +1276,8 @@ TEST(GraphicsAccessories_GraphicsAccessories, GetPipelineStateStatusString)
 
 TEST(GraphicsAccessories_GraphicsAccessories, ResolveInputLayoutAutoOffsetsAndStrides)
 {
-    auto Test = [](std::vector<LayoutElement> Elems, const std::vector<LayoutElement>& RefElems, const std::vector<Uint32>& RefStides) {
-        auto Stides = ResolveInputLayoutAutoOffsetsAndStrides(Elems.data(), static_cast<Uint32>(Elems.size()));
+    auto Test = [](std::vector<LayoutElement> Elems, const std::vector<LayoutElement>& RefElems, const std::vector<UInt32>& RefStides) {
+        auto Stides = ResolveInputLayoutAutoOffsetsAndStrides(Elems.data(), static_cast<UInt32>(Elems.size()));
         ASSERT_EQ(Elems.size(), RefElems.size());
         for (size_t i = 0; i < Elems.size(); ++i)
         {
@@ -1437,9 +1437,9 @@ TEST(GraphicsAccessories_GraphicsAccessories, TextureComponentAttribsToTextureFo
             RefFmtAttribs.ComponentType == COMPONENT_TYPE_SNORM;
         const VALUE_TYPE     TestValType  = ComponentTypeToValueType(RefFmtAttribs.ComponentType, RefFmtAttribs.ComponentSize);
         const COMPONENT_TYPE TestCompType = ValueTypeToComponentType(TestValType, IsNormalized, RefFmt == TEX_FORMAT_RGBA8_UNORM_SRGB);
-        const Uint32         TestSize     = GetValueSize(TestValType);
-        EXPECT_EQ(Uint32{RefFmtAttribs.ComponentType}, Uint32{TestCompType}) << RefFmtAttribs.Name;
-        EXPECT_EQ(Uint32{RefFmtAttribs.ComponentSize}, TestSize) << RefFmtAttribs.Name;
+        const UInt32         TestSize     = GetValueSize(TestValType);
+        EXPECT_EQ(UInt32{RefFmtAttribs.ComponentType}, UInt32{TestCompType}) << RefFmtAttribs.Name;
+        EXPECT_EQ(UInt32{RefFmtAttribs.ComponentSize}, TestSize) << RefFmtAttribs.Name;
 
         const TEXTURE_FORMAT Fmt = TextureComponentAttribsToTextureFormat(RefFmtAttribs.ComponentType, RefFmtAttribs.ComponentSize, RefFmtAttribs.NumComponents);
         EXPECT_EQ(Fmt, RefFmt) << GetTextureFormatAttribs(Fmt).Name << " != " << RefFmtAttribs.Name;
@@ -1535,7 +1535,7 @@ TEST(GraphicsAccessories_GraphicsAccessories, ComputeRenderTargetFormatsHash)
 {
     std::unordered_set<size_t> Hashes;
 
-    auto Test = [&Hashes](Uint32 NumRenderTargets, const TEXTURE_FORMAT RTVFormats[], TEXTURE_FORMAT DepthFormat) {
+    auto Test = [&Hashes](UInt32 NumRenderTargets, const TEXTURE_FORMAT RTVFormats[], TEXTURE_FORMAT DepthFormat) {
         size_t Hash = ComputeRenderTargetFormatsHash(NumRenderTargets, RTVFormats, DepthFormat);
         if (NumRenderTargets == 0 && DepthFormat == TEX_FORMAT_UNKNOWN)
         {
@@ -1560,7 +1560,7 @@ TEST(GraphicsAccessories_GraphicsAccessories, ComputeRenderTargetFormatsHash)
             TEX_FORMAT_R8_UINT,
             TEX_FORMAT_RG16_SINT,
         };
-        for (Uint32 NumRTVs = 0; NumRTVs <= _countof(RTVs); ++NumRTVs)
+        for (UInt32 NumRTVs = 0; NumRTVs <= _countof(RTVs); ++NumRTVs)
         {
             Test(NumRTVs, RTVs, DsvFmt);
         }

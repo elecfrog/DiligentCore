@@ -129,7 +129,7 @@ public:
                                                             ICommandQueueD3D12** ppCommandQueue) override final;
 
     virtual void DILIGENT_CALL_TYPE AttachToD3D12Device(void*                        pd3d12NativeDevice,
-                                                        Uint32                       CommandQueueCount,
+                                                        UInt32                       CommandQueueCount,
                                                         ICommandQueueD3D12**         ppCommandQueues,
                                                         const EngineD3D12CreateInfo& EngineCI,
                                                         IRenderDevice**              ppDevice,
@@ -143,14 +143,14 @@ public:
                                                          ISwapChain**              ppSwapChain) override final;
 
     virtual void DILIGENT_CALL_TYPE EnumerateAdapters(Version              MinFeatureLevel,
-                                                      Uint32&              NumAdapters,
+                                                      UInt32&              NumAdapters,
                                                       GraphicsAdapterInfo* Adapters) const override final;
 
     virtual void DILIGENT_CALL_TYPE EnumerateDisplayModes(Version             MinFeatureLevel,
-                                                          Uint32              AdapterId,
-                                                          Uint32              OutputId,
+                                                          UInt32              AdapterId,
+                                                          UInt32              OutputId,
                                                           TEXTURE_FORMAT      Format,
-                                                          Uint32&             NumDisplayModes,
+                                                          UInt32&             NumDisplayModes,
                                                           DisplayModeAttribs* DisplayModes) override final;
 
     virtual GraphicsAdapterInfo GetGraphicsAdapterInfo(void*          pd3dDevice,
@@ -250,10 +250,10 @@ CComPtr<IDXGIAdapter1> DXGIAdapterFromD3D12Device(ID3D12Device* pd3d12Device)
 
 void ValidateD3D12CreateInfo(const EngineD3D12CreateInfo& EngineCI) noexcept(false)
 {
-    for (Uint32 Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV; Type < D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES; ++Type)
+    for (UInt32 Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV; Type < D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES; ++Type)
     {
-        Uint32 CPUHeapAllocSize = EngineCI.CPUDescriptorHeapAllocationSize[Type];
-        Uint32 MaxSize          = 1 << 20;
+        UInt32 CPUHeapAllocSize = EngineCI.CPUDescriptorHeapAllocationSize[Type];
+        UInt32 MaxSize          = 1 << 20;
         if (CPUHeapAllocSize > 1 << 20)
         {
             LOG_ERROR_AND_THROW("CPU Heap allocation size is too large (", CPUHeapAllocSize, "). Max allowed size is ", MaxSize);
@@ -338,7 +338,7 @@ void EngineFactoryD3D12Impl::CreateDeviceAndContextsD3D12(const EngineD3D12Creat
         LUID AdapterLUID{};
         // Direct3D12 does not allow feature levels below 11.0 (D3D12CreateDevice fails to create a device).
         D3D_FEATURE_LEVEL MinFeatureLevel = GetD3DFeatureLevel((std::max)(EngineCI.GraphicsAPIVersion, Version{11, 0}));
-        Uint32            AdapterId       = EngineCI.AdapterId;
+        UInt32            AdapterId       = EngineCI.AdapterId;
 #if DILIGENT_USE_OPENXR
         if (EngineCI.pXRAttribs != nullptr && EngineCI.pXRAttribs->Instance != 0)
         {
@@ -497,7 +497,7 @@ void EngineFactoryD3D12Impl::CreateDeviceAndContextsD3D12(const EngineD3D12Creat
         if (EngineCI.NumImmediateContexts > 0)
         {
             VERIFY(EngineCI.pImmediateContextInfo != nullptr, "Must have been caught by VerifyEngineCreateInfo()");
-            for (Uint32 CtxInd = 0; CtxInd < EngineCI.NumImmediateContexts; ++CtxInd)
+            for (UInt32 CtxInd = 0; CtxInd < EngineCI.NumImmediateContexts; ++CtxInd)
                 CreateQueue(EngineCI.pImmediateContextInfo[CtxInd]);
         }
         else
@@ -515,7 +515,7 @@ void EngineFactoryD3D12Impl::CreateDeviceAndContextsD3D12(const EngineD3D12Creat
         return;
     }
 
-    AttachToD3D12Device(d3d12Device, static_cast<Uint32>(CmdQueues.size()), CmdQueues.data(), EngineCI, ppDevice, ppContexts);
+    AttachToD3D12Device(d3d12Device, static_cast<UInt32>(CmdQueues.size()), CmdQueues.data(), EngineCI, ppDevice, ppContexts);
 }
 
 
@@ -548,7 +548,7 @@ void EngineFactoryD3D12Impl::CreateCommandQueueD3D12(void*                pd3d12
 }
 
 void EngineFactoryD3D12Impl::AttachToD3D12Device(void*                        pd3d12NativeDevice,
-                                                 const Uint32                 CommandQueueCount,
+                                                 const UInt32                 CommandQueueCount,
                                                  ICommandQueueD3D12**         ppCommandQueues,
                                                  const EngineD3D12CreateInfo& EngineCI,
                                                  IRenderDevice**              ppDevice,
@@ -569,7 +569,7 @@ void EngineFactoryD3D12Impl::AttachToD3D12Device(void*                        pd
 
     ImmediateContextCreateInfo DefaultImmediateCtxCI;
 
-    const Uint32                            NumImmediateContexts  = EngineCI.NumImmediateContexts > 0 ? EngineCI.NumImmediateContexts : 1;
+    const UInt32                            NumImmediateContexts  = EngineCI.NumImmediateContexts > 0 ? EngineCI.NumImmediateContexts : 1;
     const ImmediateContextCreateInfo* const pImmediateContextInfo = EngineCI.NumImmediateContexts > 0 ? EngineCI.pImmediateContextInfo : &DefaultImmediateCtxCI;
 
     VERIFY_EXPR(NumImmediateContexts == CommandQueueCount);
@@ -584,7 +584,7 @@ void EngineFactoryD3D12Impl::AttachToD3D12Device(void*                        pd
             LOG_ERROR_MESSAGE("EngineCI.NumImmediateContexts (", EngineCI.NumImmediateContexts, ") must be the same as CommandQueueCount (", CommandQueueCount, ") or zero.");
             return;
         }
-        for (Uint32 q = 0; q < CommandQueueCount; ++q)
+        for (UInt32 q = 0; q < CommandQueueCount; ++q)
         {
             D3D12_COMMAND_QUEUE_DESC Desc        = ppCommandQueues[q]->GetD3D12CommandQueue()->GetDesc();
             D3D12_COMMAND_LIST_TYPE  CmdListType = QueueIdToD3D12CommandListType(HardwareQueueIndex{pImmediateContextInfo[q].QueueId});
@@ -613,7 +613,7 @@ void EngineFactoryD3D12Impl::AttachToD3D12Device(void*                        pd
             NEW_RC_OBJ(RawMemAllocator, "RenderDeviceD3D12Impl instance", RenderDeviceD3D12Impl)(RawMemAllocator, this, EngineCI, AdapterInfo, d3d12Device, CommandQueueCount, ppCommandQueues)};
         pRenderDeviceD3D12->QueryInterface(IID_RenderDevice, ppDevice);
 
-        for (Uint32 CtxInd = 0; CtxInd < NumImmediateContexts; ++CtxInd)
+        for (UInt32 CtxInd = 0; CtxInd < NumImmediateContexts; ++CtxInd)
         {
             const D3D12_COMMAND_LIST_TYPE d3d12CmdListType = ppCommandQueues[CtxInd]->GetD3D12CommandQueueDesc().Type;
             const HardwareQueueIndex      QueueId          = D3D12CommandListTypeToQueueId(d3d12CmdListType);
@@ -634,7 +634,7 @@ void EngineFactoryD3D12Impl::AttachToD3D12Device(void*                        pd
             pRenderDeviceD3D12->SetImmediateContext(CtxInd, pImmediateCtxD3D12);
         }
 
-        for (Uint32 DeferredCtx = 0; DeferredCtx < EngineCI.NumDeferredContexts; ++DeferredCtx)
+        for (UInt32 DeferredCtx = 0; DeferredCtx < EngineCI.NumDeferredContexts; ++DeferredCtx)
         {
             pRenderDeviceD3D12->CreateDeferredContext(ppContexts + NumImmediateContexts + DeferredCtx);
         }
@@ -646,7 +646,7 @@ void EngineFactoryD3D12Impl::AttachToD3D12Device(void*                        pd
             (*ppDevice)->Release();
             *ppDevice = nullptr;
         }
-        for (Uint32 ctx = 0; ctx < NumImmediateContexts + EngineCI.NumDeferredContexts; ++ctx)
+        for (UInt32 ctx = 0; ctx < NumImmediateContexts + EngineCI.NumDeferredContexts; ++ctx)
         {
             if (ppContexts[ctx] != nullptr)
             {
@@ -695,7 +695,7 @@ void EngineFactoryD3D12Impl::CreateSwapChainD3D12(IRenderDevice*            pDev
 }
 
 void EngineFactoryD3D12Impl::EnumerateAdapters(Version              MinFeatureLevel,
-                                               Uint32&              NumAdapters,
+                                               UInt32&              NumAdapters,
                                                GraphicsAdapterInfo* Adapters) const
 {
 #if USE_D3D12_LOADER
@@ -709,10 +709,10 @@ void EngineFactoryD3D12Impl::EnumerateAdapters(Version              MinFeatureLe
 }
 
 void EngineFactoryD3D12Impl::EnumerateDisplayModes(Version             MinFeatureLevel,
-                                                   Uint32              AdapterId,
-                                                   Uint32              OutputId,
+                                                   UInt32              AdapterId,
+                                                   UInt32              OutputId,
                                                    TEXTURE_FORMAT      Format,
-                                                   Uint32&             NumDisplayModes,
+                                                   UInt32&             NumDisplayModes,
                                                    DisplayModeAttribs* DisplayModes)
 {
 #if USE_D3D12_LOADER
@@ -760,7 +760,7 @@ GraphicsAdapterInfo EngineFactoryD3D12Impl::GetGraphicsAdapterInfo(void*        
     // Set queue info
     {
         AdapterInfo.NumQueues = 3;
-        for (Uint32 q = 0; q < AdapterInfo.NumQueues; ++q)
+        for (UInt32 q = 0; q < AdapterInfo.NumQueues; ++q)
         {
             CommandQueueInfo& Queue         = AdapterInfo.Queues[q];
             Queue.QueueType                 = D3D12CommandListTypeToCmdQueueType(QueueIdToD3D12CommandListType(HardwareQueueIndex{q}));
@@ -837,13 +837,13 @@ GraphicsAdapterInfo EngineFactoryD3D12Impl::GetGraphicsAdapterInfo(void*        
                     D3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT d3d12Address = {};
                     if (SUCCEEDED(d3d12Device->CheckFeatureSupport(D3D12_FEATURE_GPU_VIRTUAL_ADDRESS_SUPPORT, &d3d12Address, sizeof(d3d12Address))))
                     {
-                        SparseRes.AddressSpaceSize  = Uint64{1} << d3d12Address.MaxGPUVirtualAddressBitsPerProcess;
-                        SparseRes.ResourceSpaceSize = Uint64{1} << d3d12Address.MaxGPUVirtualAddressBitsPerResource;
+                        SparseRes.AddressSpaceSize  = UInt64{1} << d3d12Address.MaxGPUVirtualAddressBitsPerProcess;
+                        SparseRes.ResourceSpaceSize = UInt64{1} << d3d12Address.MaxGPUVirtualAddressBitsPerResource;
                     }
                     else
                     {
-                        SparseRes.AddressSpaceSize  = Uint64{1} << d3d12Features.MaxGPUVirtualAddressBitsPerResource;
-                        SparseRes.ResourceSpaceSize = Uint64{1} << d3d12Features.MaxGPUVirtualAddressBitsPerResource;
+                        SparseRes.AddressSpaceSize  = UInt64{1} << d3d12Features.MaxGPUVirtualAddressBitsPerResource;
+                        SparseRes.ResourceSpaceSize = UInt64{1} << d3d12Features.MaxGPUVirtualAddressBitsPerResource;
                     }
 
                     SparseRes.CapFlags =
@@ -900,7 +900,7 @@ GraphicsAdapterInfo EngineFactoryD3D12Impl::GetGraphicsAdapterInfo(void*        
                         BIND_INDIRECT_DRAW_ARGS |
                         BIND_RAY_TRACING;
 
-                    for (Uint32 q = 0; q < AdapterInfo.NumQueues; ++q)
+                    for (UInt32 q = 0; q < AdapterInfo.NumQueues; ++q)
                         AdapterInfo.Queues[q].QueueType |= COMMAND_QUEUE_TYPE_SPARSE_BINDING;
 
                     ASSERT_SIZEOF(SparseRes, 32, "Did you add a new member to SparseResourceProperties? Please initialize it here.");

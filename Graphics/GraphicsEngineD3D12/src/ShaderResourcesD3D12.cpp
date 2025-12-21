@@ -43,7 +43,7 @@ namespace Diligent
 {
 
 template <>
-Uint32 GetRegisterSpace<>(const D3D12_SHADER_INPUT_BIND_DESC& BindingDesc)
+UInt32 GetRegisterSpace<>(const D3D12_SHADER_INPUT_BIND_DESC& BindingDesc)
 {
     return BindingDesc.Space;
 }

@@ -56,10 +56,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_SwapChainWebGPU, TSwapChainBase)
 
     /// Implementation of ISwapChain::Present() in Direct3D11 backend.
-    void DILIGENT_CALL_TYPE Present(Uint32 SyncInterval) override final;
+    void DILIGENT_CALL_TYPE Present(UInt32 SyncInterval) override final;
 
     /// Implementation of ISwapChain::Resize() in Direct3D11 backend.
-    void DILIGENT_CALL_TYPE Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
+    void DILIGENT_CALL_TYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
 
     /// Implementation of ISwapChain::SetFullscreenMode() in WebGPU backend.
     void DILIGENT_CALL_TYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final;

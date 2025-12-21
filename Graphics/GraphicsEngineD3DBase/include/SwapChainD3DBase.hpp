@@ -87,7 +87,7 @@ public:
 protected:
     virtual void UpdateSwapChain(bool CreateNew) = 0;
 
-    bool Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewPreTransform, Int32 Dummy = 0 /*To be different from virtual function*/)
+    bool Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform, Int32 Dummy = 0 /*To be different from virtual function*/)
     {
         if (NewPreTransform != SURFACE_TRANSFORM_OPTIMAL &&
             NewPreTransform != SURFACE_TRANSFORM_IDENTITY)
@@ -336,7 +336,7 @@ protected:
         }
     }
 
-    virtual void DILIGENT_CALL_TYPE SetMaximumFrameLatency(Uint32 MaxLatency) override final
+    virtual void DILIGENT_CALL_TYPE SetMaximumFrameLatency(UInt32 MaxLatency) override final
     {
         if (m_MaxFrameLatency == MaxLatency)
             return;
@@ -351,8 +351,8 @@ protected:
             {
                 // SetFullscreenState(FALSE) calls Resize that initializes Width and Height
                 // with the window size. We need to save current values and restore them.
-                Uint32 Width  = m_SwapChainDesc.Width;
-                Uint32 Height = m_SwapChainDesc.Height;
+                UInt32 Width  = m_SwapChainDesc.Width;
+                UInt32 Height = m_SwapChainDesc.Height;
                 m_pSwapChain->SetFullscreenState(FALSE, nullptr);
                 m_SwapChainDesc.Width  = Width;
                 m_SwapChainDesc.Height = Height;
@@ -371,7 +371,7 @@ protected:
 protected:
     virtual void SetDXGIDeviceMaximumFrameLatency() {}
 
-    HRESULT PresentInternal(Uint32 SyncInterval)
+    HRESULT PresentInternal(UInt32 SyncInterval)
     {
         if (!m_pSwapChain)
             return E_FAIL;
@@ -395,7 +395,7 @@ protected:
 
     HANDLE m_FrameLatencyWaitableObject = NULL;
 
-    Uint32 m_MaxFrameLatency  = 0;
+    UInt32 m_MaxFrameLatency  = 0;
     bool   m_TearingSupported = false;
 };
 

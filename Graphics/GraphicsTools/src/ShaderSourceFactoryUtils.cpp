@@ -56,7 +56,7 @@ public:
         if (CI.ppFactories != nullptr)
         {
             m_pFactories.reserve(CI.NumFactories);
-            for (Uint32 i = 0; i < CI.NumFactories; ++i)
+            for (UInt32 i = 0; i < CI.NumFactories; ++i)
             {
                 m_pFactories.emplace_back(CI.ppFactories[i]);
             }
@@ -64,7 +64,7 @@ public:
 
         if (CI.pFileSubstitutes != nullptr)
         {
-            for (Uint32 i = 0; i < CI.NumFileSubstitutes; ++i)
+            for (UInt32 i = 0; i < CI.NumFileSubstitutes; ++i)
             {
                 m_FileSubstituteMap.emplace(HashMapStringKey{CI.pFileSubstitutes[i].Name, true}, CI.pFileSubstitutes[i].Substitute);
             }
@@ -135,7 +135,7 @@ public:
         if (CI.CopySources)
         {
             m_Sources.resize(CI.NumSources);
-            for (Uint32 i = 0; i < CI.NumSources; ++i)
+            for (UInt32 i = 0; i < CI.NumSources; ++i)
             {
                 const MemoryShaderSourceFileInfo& Source = CI.pSources[i];
                 if (Source.Length > 0)
@@ -149,7 +149,7 @@ public:
             }
         }
 
-        for (Uint32 i = 0; i < CI.NumSources; ++i)
+        for (UInt32 i = 0; i < CI.NumSources; ++i)
         {
             const MemoryShaderSourceFileInfo& Source = CI.pSources[i];
             DEV_CHECK_ERR(Source.Name != nullptr && Source.Name[0] != '\0', "Source name must not be null or empty");

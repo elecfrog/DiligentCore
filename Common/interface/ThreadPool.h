@@ -30,14 +30,14 @@
 /// Defines Diligent::IAsyncTask and Diligent::IThreadPool interfaces.
 
 #include "../../Primitives/interface/Object.h"
-#include "../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 
 // clang-format off
 
 DILIGENT_BEGIN_NAMESPACE(Diligent)
 
 /// Asynchronous task status
-DILIGENT_TYPED_ENUM(ASYNC_TASK_STATUS, Uint32)
+DILIGENT_TYPED_ENUM(ASYNC_TASK_STATUS, UInt32)
 {
     /// The asynchronous task status is unknown.
     ASYNC_TASK_STATUS_UNKNOWN,
@@ -88,7 +88,7 @@ DILIGENT_BEGIN_INTERFACE(IAsyncTask, IObject)
     /// any value other than Diligent::ASYNC_TASK_STATUS_RUNNING, it is guaranteed that the task
     /// is not executed by any thread.
     VIRTUAL ASYNC_TASK_STATUS METHOD(Run)(THIS_
-                                     Uint32 ThreadId) PURE;
+                                     UInt32 ThreadId) PURE;
 
     /// Cancel the task, if possible.
     
@@ -176,7 +176,7 @@ DILIGENT_BEGIN_INTERFACE(IThreadPool, IObject)
     VIRTUAL void METHOD(EnqueueTask)(THIS_
                                      IAsyncTask*  pTask,
                                      IAsyncTask** ppPrerequisites  DEFAULT_VALUE(nullptr),
-                                     Uint32       NumPrerequisites DEFAULT_VALUE(0)) PURE;
+                                     UInt32       NumPrerequisites DEFAULT_VALUE(0)) PURE;
 
 
     /// Reprioritizes the task in the queue.
@@ -221,10 +221,10 @@ DILIGENT_BEGIN_INTERFACE(IThreadPool, IObject)
 
 
     /// Returns the current queue size.
-    VIRTUAL Uint32 METHOD(GetQueueSize)(THIS) PURE;
+    VIRTUAL UInt32 METHOD(GetQueueSize)(THIS) PURE;
 
     /// Returns the number of currently running tasks
-    VIRTUAL Uint32 METHOD(GetRunningTaskCount)(THIS) CONST PURE;
+    VIRTUAL UInt32 METHOD(GetRunningTaskCount)(THIS) CONST PURE;
 
 
     /// Stops all worker threads.
@@ -261,7 +261,7 @@ DILIGENT_BEGIN_INTERFACE(IThreadPool, IObject)
     ///     auto pThreadPool = CreateThreadPool(ThreadPoolCreateInfo{0});
     ///
     ///     std::vector<std::thread> WorkerThreads(4);
-    ///     for (Uint32 i PURE; i < WorkerThreads.size(); ++i)
+    ///     for (UInt32 i PURE; i < WorkerThreads.size(); ++i)
     ///     {
     ///         WorkerThreads[i] = std::thread{
     ///             [&ThreadPool = *pThreadPool, i] //
@@ -286,7 +286,7 @@ DILIGENT_BEGIN_INTERFACE(IThreadPool, IObject)
     ///     }
     ///
     VIRTUAL bool METHOD(ProcessTask)(THIS_
-                                     Uint32 ThreadId,
+                                     UInt32 ThreadId,
                                      bool   WaitForTask) PURE;
 };
 DILIGENT_END_INTERFACE

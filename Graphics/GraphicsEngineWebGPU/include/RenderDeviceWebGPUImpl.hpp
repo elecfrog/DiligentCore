@@ -152,7 +152,7 @@ public:
     /// Implementation of IRenderDevice::GetSparseTextureFormatInfo() in WebGPU backend.
     SparseTextureFormatInfo DILIGENT_CALL_TYPE GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                           RESOURCE_DIMENSION Dimension,
-                                                                          Uint32             SampleCount) const override final;
+                                                                          UInt32             SampleCount) const override final;
 
     /// Implementation of IRenderDeviceWebGPU::GetWebGPUInstance() in WebGPU backend.
     WGPUInstance DILIGENT_CALL_TYPE GetWebGPUInstance() const override final;
@@ -203,9 +203,9 @@ public:
 
     QueryManagerWebGPU& GetQueryManager() { return *m_pQueryManager; }
 
-    Uint64 GetCommandQueueCount() const { return 1; }
+    UInt64 GetCommandQueueCount() const { return 1; }
 
-    Uint64 GetCommandQueueMask() const { return 1; }
+    UInt64 GetCommandQueueMask() const { return 1; }
 
     GenerateMipsHelperWebGPU& GetMipsGenerator() const;
 

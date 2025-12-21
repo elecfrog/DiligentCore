@@ -88,7 +88,7 @@ template <> struct VALUE_TYPE2CType<VT_INT32>
 ///     VALUE_TYPE2CType<VT_UINT8>::CType MyUint8Var;
 template <> struct VALUE_TYPE2CType<VT_UINT8>
 {
-    typedef Uint8 CType;
+    typedef UInt8 CType;
 };
 
 /// VALUE_TYPE2CType<> template specialization for 16-bit unsigned-integer value type.
@@ -98,7 +98,7 @@ template <> struct VALUE_TYPE2CType<VT_UINT8>
 ///     VALUE_TYPE2CType<VT_UINT16>::CType MyUint16Var;
 template <> struct VALUE_TYPE2CType<VT_UINT16>
 {
-    typedef Uint16 CType;
+    typedef UInt16 CType;
 };
 
 /// VALUE_TYPE2CType<> template specialization for 32-bit unsigned-integer value type.
@@ -108,7 +108,7 @@ template <> struct VALUE_TYPE2CType<VT_UINT16>
 ///     VALUE_TYPE2CType<VT_UINT32>::CType MyUint32Var;
 template <> struct VALUE_TYPE2CType<VT_UINT32>
 {
-    typedef Uint32 CType;
+    typedef UInt32 CType;
 };
 
 /// VALUE_TYPE2CType<> template specialization for half-precision 16-bit floating-point value type.
@@ -117,10 +117,10 @@ template <> struct VALUE_TYPE2CType<VT_UINT32>
 ///
 ///     VALUE_TYPE2CType<VT_FLOAT16>::CType MyFloat16Var;
 ///
-/// \note 16-bit floating-point values have no corresponding C++ type and are translated to Uint16
+/// \note 16-bit floating-point values have no corresponding C++ type and are translated to UInt16
 template <> struct VALUE_TYPE2CType<VT_FLOAT16>
 {
-    typedef Uint16 CType;
+    typedef UInt16 CType;
 };
 
 /// VALUE_TYPE2CType<> template specialization for full-precision 32-bit floating-point value type.
@@ -144,7 +144,7 @@ template <> struct VALUE_TYPE2CType<VT_FLOAT64>
 };
 
 // clang-format off
-static constexpr Uint32 ValueTypeToSizeMap[] =
+static constexpr UInt32 ValueTypeToSizeMap[] =
 {
     0,
     sizeof(VALUE_TYPE2CType<VT_INT8>    :: CType),
@@ -161,7 +161,7 @@ static constexpr Uint32 ValueTypeToSizeMap[] =
 static_assert(VT_NUM_TYPES == 10, "Not all value type sizes initialized.");
 
 /// Returns the size of the specified value type
-inline Uint32 GetValueSize(VALUE_TYPE Val)
+inline UInt32 GetValueSize(VALUE_TYPE Val)
 {
     VERIFY_EXPR(Val < _countof(ValueTypeToSizeMap));
     return ValueTypeToSizeMap[Val];
@@ -192,7 +192,7 @@ COMPONENT_TYPE ValueTypeToComponentType(VALUE_TYPE ValType, bool IsNormalized, b
 /// For example:
 ///  * `COMPONENT_TYPE_UNORM, 1 -> VT_UINT8`
 ///  * `COMPONENT_TYPE_FLOAT, 4 -> VT_FLOAT32`
-VALUE_TYPE ComponentTypeToValueType(COMPONENT_TYPE CompType, Uint32 Size);
+VALUE_TYPE ComponentTypeToValueType(COMPONENT_TYPE CompType, UInt32 Size);
 
 /// Returns texture format for the specified component type, size and number of components
 
@@ -201,7 +201,7 @@ VALUE_TYPE ComponentTypeToValueType(COMPONENT_TYPE CompType, Uint32 Size);
 ///  * `COMPONENT_TYPE_FLOAT, 4, 1 -> TEX_FORMAT_R32_FLOAT`
 ///
 /// If the format is not found, `TEXTURE_FORMAT_UNKNOWN` is returned.
-TEXTURE_FORMAT TextureComponentAttribsToTextureFormat(COMPONENT_TYPE CompType, Uint32 ComponentSize, Uint32 NumComponents);
+TEXTURE_FORMAT TextureComponentAttribsToTextureFormat(COMPONENT_TYPE CompType, UInt32 ComponentSize, UInt32 NumComponents);
 
 
 /// Returns the default format for a specified texture view type
@@ -223,7 +223,7 @@ TEXTURE_FORMAT TextureComponentAttribsToTextureFormat(COMPONENT_TYPE CompType, U
 /// \param [in] ViewType - texture view type
 /// \param [in] BindFlags - texture bind flags
 /// \return  texture view type format
-TEXTURE_FORMAT GetDefaultTextureViewFormat(TEXTURE_FORMAT TextureFormat, TEXTURE_VIEW_TYPE ViewType, Uint32 BindFlags);
+TEXTURE_FORMAT GetDefaultTextureViewFormat(TEXTURE_FORMAT TextureFormat, TEXTURE_VIEW_TYPE ViewType, UInt32 BindFlags);
 
 /// Returns the default format for a specified texture view type
 
@@ -371,13 +371,13 @@ const Char* GetUsageString(USAGE Usage);
 const Char* GetResourceDimString(RESOURCE_DIMENSION TexType);
 
 /// Returns the string containing single bind flag
-const Char* GetBindFlagString(Uint32 BindFlag);
+const Char* GetBindFlagString(UInt32 BindFlag);
 
 /// Returns the string containing the bind flags
-String GetBindFlagsString(Uint32 BindFlags, const char* Delimiter = "|");
+String GetBindFlagsString(UInt32 BindFlags, const char* Delimiter = "|");
 
 /// Returns the string containing the CPU access flags
-String GetCPUAccessFlagsString(Uint32 CpuAccessFlags);
+String GetCPUAccessFlagsString(UInt32 CpuAccessFlags);
 
 /// Returns the string containing the texture description
 String GetTextureDescString(const TextureDesc& Desc);
@@ -520,13 +520,13 @@ ARCHIVE_DEVICE_DATA_FLAGS RenderDeviceTypeToArchiveDataFlag(RENDER_DEVICE_TYPE D
 RENDER_DEVICE_TYPE        ArchiveDataFlagToRenderDeviceType(ARCHIVE_DEVICE_DATA_FLAGS Flag);
 
 /// Returns the number of mip levels for the specified texture dimensions
-Uint32 ComputeMipLevelsCount(Uint32 Width);
+UInt32 ComputeMipLevelsCount(UInt32 Width);
 
 /// Returns the number of mip levels for the specified texture dimensions
-Uint32 ComputeMipLevelsCount(Uint32 Width, Uint32 Height);
+UInt32 ComputeMipLevelsCount(UInt32 Width, UInt32 Height);
 
 /// Returns the number of mip levels for the specified texture dimensions
-Uint32 ComputeMipLevelsCount(Uint32 Width, Uint32 Height, Uint32 Depth);
+UInt32 ComputeMipLevelsCount(UInt32 Width, UInt32 Height, UInt32 Depth);
 
 /// Checks if the specified filter type is a point filter
 inline bool IsComparisonFilter(FILTER_TYPE FilterType)
@@ -551,10 +551,10 @@ bool VerifyResourceStates(RESOURCE_STATE State, bool IsTexture);
 struct MipLevelProperties
 {
     /// Logical mip width.
-    Uint32 LogicalWidth = 0;
+    UInt32 LogicalWidth = 0;
 
     /// Logical mip height.
-    Uint32 LogicalHeight = 0;
+    UInt32 LogicalHeight = 0;
 
     /// Storage mip width.
 
@@ -562,7 +562,7 @@ struct MipLevelProperties
     ///         up to the block size. For example, for a texture
     ///         mip with logical width 10 and BC1 format (with 4x4
     ///         pixel block size), the storage width will be 12.
-    Uint32 StorageWidth = 0;
+    UInt32 StorageWidth = 0;
 
     /// Storage mip height.
 
@@ -570,31 +570,31 @@ struct MipLevelProperties
     ///         up to the block size. For example, for a texture
     ///         mip with logical height 10 and BC1 format (with 4x4
     ///         pixel block size), the storage height will be 12.
-    Uint32 StorageHeight = 0;
+    UInt32 StorageHeight = 0;
 
     /// Mip level depth.
 
     /// \note that logical and storage depths are always the same.
-    Uint32 Depth = 1;
+    UInt32 Depth = 1;
 
     /// Row size in bytes.
 
     /// \note   For compressed formats, row size defines
     ///         the size of one row of compressed blocks.
-    Uint64 RowSize = 0;
+    UInt64 RowSize = 0;
 
     /// Depth slice size in bytes.
-    Uint64 DepthSliceSize = 0;
+    UInt64 DepthSliceSize = 0;
 
     /// Total mip level data size in bytes.
-    Uint64 MipSize = 0;
+    UInt64 MipSize = 0;
 };
 
 /// Returns mip level properties for the specified texture description and mip level
-MipLevelProperties GetMipLevelProperties(const TextureDesc& TexDesc, Uint32 MipLevel);
+MipLevelProperties GetMipLevelProperties(const TextureDesc& TexDesc, UInt32 MipLevel);
 
-ADAPTER_VENDOR VendorIdToAdapterVendor(Uint32 VendorId);
-Uint32         AdapterVendorToVendorId(ADAPTER_VENDOR Vendor);
+ADAPTER_VENDOR VendorIdToAdapterVendor(UInt32 VendorId);
+UInt32         AdapterVendorToVendorId(ADAPTER_VENDOR Vendor);
 
 
 inline Int32 GetShaderTypeIndex(SHADER_TYPE Type)
@@ -602,8 +602,8 @@ inline Int32 GetShaderTypeIndex(SHADER_TYPE Type)
     if (Type == SHADER_TYPE_UNKNOWN)
         return -1;
 
-    VERIFY(Type > SHADER_TYPE_UNKNOWN && Type <= SHADER_TYPE_LAST, "Value ", Uint32{Type}, " is not a valid SHADER_TYPE enum value");
-    VERIFY(((Uint32{Type} & (Uint32{Type} - 1)) == 0), "Only single shader stage should be provided");
+    VERIFY(Type > SHADER_TYPE_UNKNOWN && Type <= SHADER_TYPE_LAST, "Value ", UInt32{Type}, " is not a valid SHADER_TYPE enum value");
+    VERIFY(((UInt32{Type} & (UInt32{Type} - 1)) == 0), "Only single shader stage should be provided");
 
     return PlatformMisc::GetLSB(Type);
 }
@@ -613,7 +613,7 @@ inline Int32 GetFirstShaderStageIndex(SHADER_TYPE Stages)
     if (Stages == SHADER_TYPE_UNKNOWN)
         return -1;
 
-    VERIFY(Stages > SHADER_TYPE_UNKNOWN && Stages < SHADER_TYPE_LAST * 2, "Value ", Uint32{Stages}, " is not a valid SHADER_TYPE enum value");
+    VERIFY(Stages > SHADER_TYPE_UNKNOWN && Stages < SHADER_TYPE_LAST * 2, "Value ", UInt32{Stages}, " is not a valid SHADER_TYPE enum value");
 
     return PlatformMisc::GetLSB(Stages);
 }
@@ -623,9 +623,9 @@ inline Int32 ExtractFirstShaderStageIndex(SHADER_TYPE& Stages)
     if (Stages == SHADER_TYPE_UNKNOWN)
         return -1;
 
-    VERIFY(Stages > SHADER_TYPE_UNKNOWN && Stages < SHADER_TYPE_LAST * 2, "Value ", Uint32{Stages}, " is not a valid SHADER_TYPE enum value");
+    VERIFY(Stages > SHADER_TYPE_UNKNOWN && Stages < SHADER_TYPE_LAST * 2, "Value ", UInt32{Stages}, " is not a valid SHADER_TYPE enum value");
 
-    const Uint32 StageIndex = PlatformMisc::GetLSB(Stages);
+    const UInt32 StageIndex = PlatformMisc::GetLSB(Stages);
     Stages &= ~static_cast<SHADER_TYPE>(1u << StageIndex);
     return StageIndex;
 }
@@ -721,29 +721,29 @@ PIPELINE_TYPE PipelineTypeFromShaderStages(SHADER_TYPE ShaderStages);
 ///         Buffer start            Subres 1 offset,               Subres N offset,
 ///                              aligned by 'Alignment'         aligned by 'Alignment'
 ///
-Uint64 GetStagingTextureLocationOffset(const TextureDesc& TexDesc,
-                                       Uint32             ArraySlice,
-                                       Uint32             MipLevel,
-                                       Uint32             Alignment,
-                                       Uint32             LocationX,
-                                       Uint32             LocationY,
-                                       Uint32             LocationZ);
+UInt64 GetStagingTextureLocationOffset(const TextureDesc& TexDesc,
+                                       UInt32             ArraySlice,
+                                       UInt32             MipLevel,
+                                       UInt32             Alignment,
+                                       UInt32             LocationX,
+                                       UInt32             LocationY,
+                                       UInt32             LocationZ);
 
 /// Returns an offset from the beginning of the buffer backing a staging texture
 /// to the given subresource.
 /// Texels within subresources are assumed to be tightly packed. There is no padding
 /// except between whole subresources.
-inline Uint64 GetStagingTextureSubresourceOffset(const TextureDesc& TexDesc,
-                                                 Uint32             ArraySlice,
-                                                 Uint32             MipLevel,
-                                                 Uint32             Alignment)
+inline UInt64 GetStagingTextureSubresourceOffset(const TextureDesc& TexDesc,
+                                                 UInt32             ArraySlice,
+                                                 UInt32             MipLevel,
+                                                 UInt32             Alignment)
 {
     return GetStagingTextureLocationOffset(TexDesc, ArraySlice, MipLevel, Alignment, 0, 0, 0);
 }
 
 /// Returns the total memory size required to store the staging texture data.
-inline Uint64 GetStagingTextureDataSize(const TextureDesc& TexDesc,
-                                        Uint32             Alignment = 4)
+inline UInt64 GetStagingTextureDataSize(const TextureDesc& TexDesc,
+                                        UInt32             Alignment = 4)
 {
     return GetStagingTextureSubresourceOffset(TexDesc, TexDesc.GetArraySize(), 0, Alignment);
 }
@@ -753,31 +753,31 @@ struct BufferToTextureCopyInfo
 {
     /// Texture region row size, in bytes. For compressed formats,
     /// this is the size of one row of compressed blocks.
-    Uint64 RowSize = 0;
+    UInt64 RowSize = 0;
 
     /// Row stride, in bytes. The stride is computed by
     /// aligning the RowSize, and is thus always >= RowSize.
-    Uint64 RowStride = 0;
+    UInt64 RowStride = 0;
 
     /// Row stride in texels.
-    Uint32 RowStrideInTexels = 0;
+    UInt32 RowStrideInTexels = 0;
 
     /// The number of rows in the region. For compressed formats,
     /// this is the number of compressed-block rows.
-    Uint32 RowCount = 0;
+    UInt32 RowCount = 0;
 
     /// Depth stride (RowStride * RowCount)
-    Uint64 DepthStride = 0;
+    UInt64 DepthStride = 0;
 
     /// Total memory size required to store the pixels in the region.
-    Uint64 MemorySize = 0;
+    UInt64 MemorySize = 0;
 
     /// Texture region
     Box Region;
 };
 BufferToTextureCopyInfo GetBufferToTextureCopyInfo(TEXTURE_FORMAT Format,
                                                    const Box&     Region,
-                                                   Uint32         RowStrideAlignment);
+                                                   UInt32         RowStrideAlignment);
 
 
 /// Copies texture subresource data on the CPU.
@@ -790,15 +790,15 @@ BufferToTextureCopyInfo GetBufferToTextureCopyInfo(TEXTURE_FORMAT Format,
 /// \param [in] DstRowStride   - Destination subresource row stride, in bytes.
 /// \param [in] DstDepthStride - Destination subresource depth stride, in bytes.
 void CopyTextureSubresource(const TextureSubResData& SrcSubres,
-                            Uint32                   NumRows,
-                            Uint32                   NumDepthSlices,
-                            Uint64                   RowSize,
+                            UInt32                   NumRows,
+                            UInt32                   NumDepthSlices,
+                            UInt64                   RowSize,
                             void*                    pDstData,
-                            Uint64                   DstRowStride,
-                            Uint64                   DstDepthStride);
+                            UInt64                   DstRowStride,
+                            UInt64                   DstDepthStride);
 
 
-inline String GetShaderResourcePrintName(const char* Name, Uint32 ArraySize, Uint32 ArrayIndex)
+inline String GetShaderResourcePrintName(const char* Name, UInt32 ArraySize, UInt32 ArrayIndex)
 {
     VERIFY(ArrayIndex < ArraySize, "Array index is out of range");
     String PrintName = Name;
@@ -812,7 +812,7 @@ inline String GetShaderResourcePrintName(const char* Name, Uint32 ArraySize, Uin
 }
 
 template <typename DescType>
-String GetShaderResourcePrintName(const DescType& ResDesc, Uint32 ArrayIndex = 0)
+String GetShaderResourcePrintName(const DescType& ResDesc, UInt32 ArrayIndex = 0)
 {
     return GetShaderResourcePrintName(ResDesc.Name, ResDesc.ArraySize, ArrayIndex);
 }
@@ -880,7 +880,7 @@ bool TextureComponentMappingFromString(const String& MappingStr, TextureComponen
 SparseTextureProperties GetStandardSparseTextureProperties(const TextureDesc& TexDesc);
 
 /// Returns the number of sparse memory tiles in the given box region
-inline uint3 GetNumSparseTilesInBox(const Box& Region, const Uint32 TileSize[3])
+inline uint3 GetNumSparseTilesInBox(const Box& Region, const UInt32 TileSize[3])
 {
     return uint3 // clang-format off
         {
@@ -892,8 +892,8 @@ inline uint3 GetNumSparseTilesInBox(const Box& Region, const Uint32 TileSize[3])
 
 /// Returns the number of sparse memory tiles in the given texture mip level
 inline uint3 GetNumSparseTilesInMipLevel(const TextureDesc& Desc,
-                                         const Uint32       TileSize[3],
-                                         Uint32             MipLevel)
+                                         const UInt32       TileSize[3],
+                                         UInt32             MipLevel)
 {
     // Texture dimensions may not be multiples of the tile size
     const MipLevelProperties MipProps = GetMipLevelProperties(Desc, MipLevel);
@@ -905,7 +905,7 @@ bool IsIdentityComponentMapping(const TextureComponentMapping& Mapping);
 
 /// Resolves LAYOUT_ELEMENT_AUTO_OFFSET and LAYOUT_ELEMENT_AUTO_STRIDE values in the input layout,
 /// and returns an array of buffer strides for each used input buffer slot.
-std::vector<Uint32> ResolveInputLayoutAutoOffsetsAndStrides(LayoutElement* pLayoutElements, Uint32 NumElements);
+std::vector<UInt32> ResolveInputLayoutAutoOffsetsAndStrides(LayoutElement* pLayoutElements, UInt32 NumElements);
 
 inline void WriteShaderMatrix(void* pDst, const Matrix4x4f& Mat, bool Transpose)
 {
@@ -967,18 +967,18 @@ template <typename CreateInfoType, typename HandlerType>
 typename std::enable_if<std::is_same<typename std::decay<CreateInfoType>::type, RayTracingPipelineStateCreateInfo>::value>::type
 ProcessPipelineStateCreateInfoShaders(CreateInfoType&& CI, HandlerType&& Handler)
 {
-    for (Uint32 i = 0; i < CI.GeneralShaderCount; ++i)
+    for (UInt32 i = 0; i < CI.GeneralShaderCount; ++i)
     {
         Handler(CI.pGeneralShaders[i].pShader);
     }
 
-    for (Uint32 i = 0; i < CI.TriangleHitShaderCount; ++i)
+    for (UInt32 i = 0; i < CI.TriangleHitShaderCount; ++i)
     {
         Handler(CI.pTriangleHitShaders[i].pClosestHitShader);
         Handler(CI.pTriangleHitShaders[i].pAnyHitShader);
     }
 
-    for (Uint32 i = 0; i < CI.ProceduralHitShaderCount; ++i)
+    for (UInt32 i = 0; i < CI.ProceduralHitShaderCount; ++i)
     {
         Handler(CI.pProceduralHitShaders[i].pIntersectionShader);
         Handler(CI.pProceduralHitShaders[i].pClosestHitShader);
@@ -1020,7 +1020,7 @@ SHADER_STATUS GetPipelineStateCreateInfoShadersStatus(const CreateInfoType& CI, 
     return OverallStatus;
 }
 
-size_t ComputeRenderTargetFormatsHash(Uint32 NumRenderTargets, const TEXTURE_FORMAT RTVFormats[], TEXTURE_FORMAT DSVFormat);
+size_t ComputeRenderTargetFormatsHash(UInt32 NumRenderTargets, const TEXTURE_FORMAT RTVFormats[], TEXTURE_FORMAT DSVFormat);
 
 
 /// Returns the string containing the device features
@@ -1037,7 +1037,7 @@ std::string GetDeviceFeaturesString(const FeaturesType& Features,
                                     size_t              NumColumns,
                                     int                 Indent  = 4,
                                     int                 Spacing = 4,
-                                    Uint32              Flags   = ~0u)
+                                    UInt32              Flags   = ~0u)
 {
     VERIFY_EXPR(NumColumns > 0);
 

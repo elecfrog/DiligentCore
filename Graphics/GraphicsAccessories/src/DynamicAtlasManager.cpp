@@ -43,8 +43,8 @@ void DynamicAtlasManager::Node::Validate() const
     VERIFY(NumChildren == 0 || !IsAllocated, "Allocated nodes must not have children");
     if (NumChildren > 0)
     {
-        Uint32 Area = 0;
-        for (Uint32 i = 0; i < NumChildren; ++i)
+        UInt32 Area = 0;
+        for (UInt32 i = 0; i < NumChildren; ++i)
         {
             const Region& R0 = Child(i).R;
 
@@ -55,7 +55,7 @@ void DynamicAtlasManager::Node::Validate() const
 
             Area += R0.width * R0.height;
 
-            for (Uint32 j = i + 1; j < NumChildren; ++j)
+            for (UInt32 j = i + 1; j < NumChildren; ++j)
             {
                 const Region& R1 = Child(j).R;
                 if (CheckBox2DBox2DOverlap<false>(uint2{R0.x, R0.y}, uint2{R0.x + R0.width, R0.y + R0.height},
@@ -95,7 +95,7 @@ void DynamicAtlasManager::Node::Split(const std::initializer_list<Region>& Regio
 bool DynamicAtlasManager::Node::CanMergeChildren() const
 {
     bool CanMerge = true;
-    for (Uint32 i = 0; i < NumChildren && CanMerge; ++i)
+    for (UInt32 i = 0; i < NumChildren && CanMerge; ++i)
         CanMerge = !Child(i).IsAllocated && !Child(i).HasChildren();
 
     return CanMerge;
@@ -110,10 +110,10 @@ void DynamicAtlasManager::Node::MergeChildren()
 }
 
 
-DynamicAtlasManager::DynamicAtlasManager(Uint32 Width, Uint32 Height) :
+DynamicAtlasManager::DynamicAtlasManager(UInt32 Width, UInt32 Height) :
     m_Width{Width},
     m_Height{Height},
-    m_TotalFreeArea{Uint64{Width} * Uint64{Height}}
+    m_TotalFreeArea{UInt64{Width} * UInt64{Height}}
 {
     m_Root->R = Region{0, 0, Width, Height};
     RegisterNode(*m_Root);
@@ -182,7 +182,7 @@ void DynamicAtlasManager::UnregisterNode(const Node& N)
 
 
 
-DynamicAtlasManager::Region DynamicAtlasManager::Allocate(Uint32 Width, Uint32 Height)
+DynamicAtlasManager::Region DynamicAtlasManager::Allocate(UInt32 Width, UInt32 Height)
 {
     auto it_w = m_FreeRegionsByWidth.lower_bound(Region{0, 0, Width, 0});
     while (it_w != m_FreeRegionsByWidth.end() && it_w->first.height < Height)
@@ -194,8 +194,8 @@ DynamicAtlasManager::Region DynamicAtlasManager::Allocate(Uint32 Width, Uint32 H
         ++it_h;
     VERIFY_EXPR(it_h == m_FreeRegionsByHeight.end() || (it_h->first.width >= Width && it_h->first.height >= Height));
 
-    const Uint32 AreaW = it_w != m_FreeRegionsByWidth.end() ? it_w->first.width * it_w->first.height : 0;
-    const Uint32 AreaH = it_h != m_FreeRegionsByHeight.end() ? it_h->first.width * it_h->first.height : 0;
+    const UInt32 AreaW = it_w != m_FreeRegionsByWidth.end() ? it_w->first.width * it_w->first.height : 0;
+    const UInt32 AreaH = it_h != m_FreeRegionsByHeight.end() ? it_h->first.width * it_h->first.height : 0;
     VERIFY_EXPR(AreaW == 0 || AreaW >= Width * Height);
     VERIFY_EXPR(AreaH == 0 || AreaH >= Width * Height);
 
@@ -316,8 +316,8 @@ DynamicAtlasManager::Region DynamicAtlasManager::Allocate(Uint32 Width, Uint32 H
         RegisterNode(*pSrcNode);
     }
 
-    VERIFY_EXPR(m_TotalFreeArea >= Uint64{R.width} * Uint64{R.height});
-    m_TotalFreeArea -= Uint64{R.width} * Uint64{R.height};
+    VERIFY_EXPR(m_TotalFreeArea >= UInt64{R.width} * UInt64{R.height});
+    m_TotalFreeArea -= UInt64{R.width} * UInt64{R.height};
 
 #if DILIGENT_DEBUG
     DbgVerifyConsistency();
@@ -360,7 +360,7 @@ void DynamicAtlasManager::Free(Region&& R)
         N = N->Parent;
     }
 
-    m_TotalFreeArea += Uint64{R.width} * Uint64{R.height};
+    m_TotalFreeArea += UInt64{R.width} * UInt64{R.height};
 
 #if DILIGENT_DEBUG
     DbgVerifyConsistency();
@@ -383,7 +383,7 @@ void DynamicAtlasManager::DbgVerifyRegion(const Region& R) const
     VERIFY(R.y + R.height <= m_Height, "Region top boundary (", R.y + R.height, ") exceeds atlas height (", m_Height, ").");
 }
 
-void DynamicAtlasManager::DbgRecursiveVerifyConsistency(const Node& N, Uint32& Area) const
+void DynamicAtlasManager::DbgRecursiveVerifyConsistency(const Node& N, UInt32& Area) const
 {
     N.Validate();
     if (N.HasChildren())
@@ -420,22 +420,22 @@ void DynamicAtlasManager::DbgRecursiveVerifyConsistency(const Node& N, Uint32& A
 void DynamicAtlasManager::DbgVerifyConsistency() const
 {
     VERIFY_EXPR(m_FreeRegionsByWidth.size() == m_FreeRegionsByHeight.size());
-    Uint32 Area = 0;
+    UInt32 Area = 0;
 
     DbgRecursiveVerifyConsistency(*m_Root, Area);
 
     VERIFY(Area == m_Width * m_Height, "Not entire atlas area has been covered");
 
     {
-        Uint64 FreeArea = 0;
+        UInt64 FreeArea = 0;
         for (const auto& it : m_FreeRegionsByWidth)
-            FreeArea += Uint64{it.second->R.width} * Uint64{it.second->R.height};
+            FreeArea += UInt64{it.second->R.width} * UInt64{it.second->R.height};
         VERIFY_EXPR(FreeArea == m_TotalFreeArea);
     }
     {
-        Uint32 FreeArea = 0;
+        UInt32 FreeArea = 0;
         for (const auto& it : m_FreeRegionsByHeight)
-            FreeArea += Uint64{it.second->R.width} * Uint64{it.second->R.height};
+            FreeArea += UInt64{it.second->R.width} * UInt64{it.second->R.height};
         VERIFY_EXPR(FreeArea == m_TotalFreeArea);
     }
 }

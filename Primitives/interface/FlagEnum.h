@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 
 #if DILIGENT_C_INTERFACE
 
@@ -38,7 +38,7 @@
 
 #    if defined(DILIGENT_SHARP_GEN)
 template <typename EnumType>
-using _UNDERLYING_ENUM_T = Diligent::Uint64;
+using _UNDERLYING_ENUM_T = UInt64;
 #    else
 template <typename EnumType>
 using _UNDERLYING_ENUM_T = typename std::underlying_type<EnumType>::type;

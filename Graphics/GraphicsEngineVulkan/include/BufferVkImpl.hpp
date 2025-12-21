@@ -68,7 +68,7 @@ public:
     virtual VkBuffer DILIGENT_CALL_TYPE GetVkBuffer() const override final;
 
     /// Implementation of IBuffer::GetNativeHandle() in Vulkan backend.
-    virtual Uint64 DILIGENT_CALL_TYPE GetNativeHandle() override final { return BitCast<Uint64>(GetVkBuffer()); }
+    virtual UInt64 DILIGENT_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetVkBuffer()); }
 
     /// Implementation of IBufferVk::SetAccessFlags().
     virtual void DILIGENT_CALL_TYPE SetAccessFlags(VkAccessFlags AccessFlags) override final;
@@ -80,12 +80,12 @@ public:
     virtual VkDeviceAddress DILIGENT_CALL_TYPE GetVkDeviceAddress() const override final;
 
     /// Implementation of IBuffer::FlushMappedRange().
-    virtual void DILIGENT_CALL_TYPE FlushMappedRange(Uint64 StartOffset,
-                                                     Uint64 Size) override final;
+    virtual void DILIGENT_CALL_TYPE FlushMappedRange(UInt64 StartOffset,
+                                                     UInt64 Size) override final;
 
     /// Implementation of IBuffer::InvalidateMappedRange().
-    virtual void DILIGENT_CALL_TYPE InvalidateMappedRange(Uint64 StartOffset,
-                                                          Uint64 Size) override final;
+    virtual void DILIGENT_CALL_TYPE InvalidateMappedRange(UInt64 StartOffset,
+                                                          UInt64 Size) override final;
 
     /// Implementation of IBuffer::GetSparseProperties().
     virtual SparseBufferProperties DILIGENT_CALL_TYPE GetSparseProperties() const override final;
@@ -98,7 +98,7 @@ public:
     void* GetCPUAddress()
     {
         VERIFY_EXPR(m_Desc.Usage == USAGE_STAGING || m_Desc.Usage == USAGE_UNIFIED);
-        return reinterpret_cast<Uint8*>(m_MemoryAllocation.Page->GetCPUMemory()) + m_BufferMemoryAlignedOffset;
+        return reinterpret_cast<UInt8*>(m_MemoryAllocation.Page->GetCPUMemory()) + m_BufferMemoryAlignedOffset;
     }
 
 private:
@@ -108,7 +108,7 @@ private:
 
     VulkanUtilities::BufferViewWrapper CreateView(struct BufferViewDesc& ViewDesc);
 
-    Uint32       m_DynamicOffsetAlignment    = 0;
+    UInt32       m_DynamicOffsetAlignment    = 0;
     VkDeviceSize m_BufferMemoryAlignedOffset = 0;
 
     VulkanUtilities::BufferWrapper    m_VulkanBuffer;

@@ -226,7 +226,7 @@ TEST_F(FenceTest, ContextWaitForAnotherContext)
     {
         constexpr auto  QueueTypeMask = COMMAND_QUEUE_TYPE_GRAPHICS | COMMAND_QUEUE_TYPE_COMPUTE;
         IDeviceContext* pGraphicsCtx2 = nullptr;
-        for (Uint32 CtxInd = 0; CtxInd < pEnv->GetNumImmediateContexts(); ++CtxInd)
+        for (UInt32 CtxInd = 0; CtxInd < pEnv->GetNumImmediateContexts(); ++CtxInd)
         {
             auto*       Ctx  = pEnv->GetDeviceContext(CtxInd);
             const auto& Desc = Ctx->GetDesc();

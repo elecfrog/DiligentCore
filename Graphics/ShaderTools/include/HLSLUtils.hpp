@@ -29,7 +29,7 @@
 
 #include <sstream>
 
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "GraphicsTypes.h"
 #include "Shader.h"
 #include "RefCountedObjectImpl.hpp"

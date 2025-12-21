@@ -272,7 +272,7 @@ protected:
         pEnv->Reset();
     }
 
-    static RefCntAutoPtr<ITexture> CreateTexture(BIND_FLAGS Flags, Uint64 QueueMask, const char* Name, IDeviceContext* pInitialCtx)
+    static RefCntAutoPtr<ITexture> CreateTexture(BIND_FLAGS Flags, UInt64 QueueMask, const char* Name, IDeviceContext* pInitialCtx)
     {
         auto*       pEnv       = GPUTestingEnvironment::GetInstance();
         auto*       pDevice    = pEnv->GetDevice();
@@ -327,7 +327,7 @@ TEST_F(MultipleContextTest, GraphicsAndComputeQueue)
         constexpr auto  QueueTypeMask = COMMAND_QUEUE_TYPE_GRAPHICS | COMMAND_QUEUE_TYPE_COMPUTE;
         IDeviceContext* pGraphicsCtx2 = nullptr;
 
-        for (Uint32 CtxInd = 0; CtxInd < pEnv->GetNumImmediateContexts(); ++CtxInd)
+        for (UInt32 CtxInd = 0; CtxInd < pEnv->GetNumImmediateContexts(); ++CtxInd)
         {
             auto*       Ctx  = pEnv->GetDeviceContext(CtxInd);
             const auto& Desc = Ctx->GetDesc();
@@ -349,7 +349,7 @@ TEST_F(MultipleContextTest, GraphicsAndComputeQueue)
     }
     ASSERT_NE(pGraphicsCtx->GetDesc().ContextId, pComputeCtx->GetDesc().ContextId);
 
-    const Uint64 QueueMask = (1ull << pGraphicsCtx->GetDesc().ContextId) | (1ull << pComputeCtx->GetDesc().ContextId);
+    const UInt64 QueueMask = (1ull << pGraphicsCtx->GetDesc().ContextId) | (1ull << pComputeCtx->GetDesc().ContextId);
 
     RefCntAutoPtr<IBuffer> pConstants1;
     RefCntAutoPtr<IBuffer> pConstants2;
@@ -451,8 +451,8 @@ TEST_F(MultipleContextTest, GraphicsAndComputeQueue)
     ASSERT_NE(pTextureRT, nullptr);
     ASSERT_NE(pTextureUAV, nullptr);
 
-    const Uint64 GraphicsFenceValue    = 11;
-    const Uint64 ComputeFenceValue     = 22;
+    const UInt64 GraphicsFenceValue    = 11;
+    const UInt64 ComputeFenceValue     = 22;
     const auto   DefaultTransitionMode = RESOURCE_STATE_TRANSITION_MODE_NONE;
 
     // graphics pass
@@ -547,7 +547,7 @@ TEST_F(MultipleContextTest, GraphicsAndTransferQueue)
         constexpr auto  QueueTypeMask = COMMAND_QUEUE_TYPE_GRAPHICS | COMMAND_QUEUE_TYPE_COMPUTE | COMMAND_QUEUE_TYPE_TRANSFER;
         IDeviceContext* pGraphicsCtx2 = nullptr;
 
-        for (Uint32 CtxInd = 0; CtxInd < pEnv->GetNumImmediateContexts(); ++CtxInd)
+        for (UInt32 CtxInd = 0; CtxInd < pEnv->GetNumImmediateContexts(); ++CtxInd)
         {
             auto*       Ctx  = pEnv->GetDeviceContext(CtxInd);
             const auto& Desc = Ctx->GetDesc();
@@ -569,22 +569,22 @@ TEST_F(MultipleContextTest, GraphicsAndTransferQueue)
     }
     ASSERT_NE(pGraphicsCtx->GetDesc().ContextId, pTransferCtx->GetDesc().ContextId);
 
-    std::vector<Uint8> Pixels;
+    std::vector<UInt8> Pixels;
     {
         Pixels.resize(SCDesc.Height * SCDesc.Width * 4);
-        for (Uint32 y = 0; y < SCDesc.Height; ++y)
+        for (UInt32 y = 0; y < SCDesc.Height; ++y)
         {
-            for (Uint32 x = 0; x < SCDesc.Width; ++x)
+            for (UInt32 x = 0; x < SCDesc.Width; ++x)
             {
-                Uint32 ix = x >> 4;
-                Uint32 iy = y >> 4;
-                Uint32 a1 = (ix >> 1) & 1;
-                Uint32 a2 = (iy >> 2) & 5;
+                UInt32 ix = x >> 4;
+                UInt32 iy = y >> 4;
+                UInt32 a1 = (ix >> 1) & 1;
+                UInt32 a2 = (iy >> 2) & 5;
 
                 iy = (iy << a1) | (iy >> a1);
                 ix = (ix << a2) | (ix >> a2);
 
-                const Uint32 i = (x + SCDesc.Width * y) * 4;
+                const UInt32 i = (x + SCDesc.Width * y) * 4;
                 Pixels[i + 0]  = ((ix | iy) & 1) ? 255 : 0;
                 Pixels[i + 1]  = ((ix ^ iy) & 2) ? 255 : 0;
                 Pixels[i + 2]  = 0;
@@ -593,7 +593,7 @@ TEST_F(MultipleContextTest, GraphicsAndTransferQueue)
         }
     }
 
-    const Uint64 QueueMask = (1ull << pGraphicsCtx->GetDesc().ContextId) | (1ull << pTransferCtx->GetDesc().ContextId);
+    const UInt64 QueueMask = (1ull << pGraphicsCtx->GetDesc().ContextId) | (1ull << pTransferCtx->GetDesc().ContextId);
 
     RefCntAutoPtr<IBuffer> pConstants;
     {
@@ -693,8 +693,8 @@ TEST_F(MultipleContextTest, GraphicsAndTransferQueue)
     ASSERT_NE(pTextureRT, nullptr);
     ASSERT_NE(pUploadTexture, nullptr);
 
-    const Uint64 GraphicsFenceValue    = 11;
-    const Uint64 TransferFenceValue    = 22;
+    const UInt64 GraphicsFenceValue    = 11;
+    const UInt64 TransferFenceValue    = 22;
     const auto   DefaultTransitionMode = RESOURCE_STATE_TRANSITION_MODE_NONE;
 
     // graphics queue

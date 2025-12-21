@@ -66,7 +66,7 @@ bool VerifyDispatchComputeIndirectAttribs(const DispatchComputeIndirectAttribs& 
 // clang-format on
 
 bool VerifyDrawMeshAttribs(const MeshShaderProperties& MeshShaderProps, const DrawMeshAttribs& Attribs);
-bool VerifyDrawMeshIndirectAttribs(const DrawMeshIndirectAttribs& Attribs, Uint32 IndirectCmdStride);
+bool VerifyDrawMeshIndirectAttribs(const DrawMeshIndirectAttribs& Attribs, UInt32 IndirectCmdStride);
 
 bool VerifyResolveTextureSubresourceAttribs(const ResolveTextureSubresourceAttribs& ResolveAttribs,
                                             const TextureDesc&                      SrcTexDesc,
@@ -91,7 +91,7 @@ bool VerifyWriteTLASCompactedSizeAttribs(const IRenderDevice* pDevice, const Wri
 bool VerifyTraceRaysAttribs(const TraceRaysAttribs& Attribs);
 bool VerifyTraceRaysIndirectAttribs(const IRenderDevice*            pDevice,
                                     const TraceRaysIndirectAttribs& Attribs,
-                                    Uint32                          SBTSize);
+                                    UInt32                          SBTSize);
 
 bool VerifyBindSparseResourceMemoryAttribs(const IRenderDevice* pDevice, const BindSparseResourceMemoryAttribs& Attribs);
 
@@ -106,7 +106,7 @@ struct VertexStreamInfo
     RefCntAutoPtr<BufferImplType> pBuffer;
 
     /// Offset in bytes
-    Uint64 Offset = 0;
+    UInt64 Offset = 0;
 };
 
 /// Base implementation of the device context.
@@ -152,7 +152,7 @@ public:
         {
             Desc.Name != nullptr && *Desc.Name != '\0' ?
                 String{Desc.Name} :
-                String{"Context #"} + std::to_string(Uint32{Desc.ContextId}) + (Desc.IsDeferred ? " (deferred)" : " (immediate)")
+                String{"Context #"} + std::to_string(UInt32{Desc.ContextId}) + (Desc.IsDeferred ? " (deferred)" : " (immediate)")
         },
         m_Desc
         {
@@ -178,7 +178,7 @@ public:
     virtual const DeviceContextDesc& DILIGENT_CALL_TYPE GetDesc() const override final { return m_Desc; }
 
     /// Implementation of IDeviceContext::SetRenderTargets().
-    virtual void DILIGENT_CALL_TYPE SetRenderTargets(Uint32                         NumRenderTargets,
+    virtual void DILIGENT_CALL_TYPE SetRenderTargets(UInt32                         NumRenderTargets,
                                                      ITextureView*                  ppRenderTargets[],
                                                      ITextureView*                  pDepthStencil,
                                                      RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final
@@ -188,10 +188,10 @@ public:
 
     /// Base implementation of IDeviceContext::SetVertexBuffers(); validates parameters and
     /// caches references to the buffers.
-    inline virtual void DILIGENT_CALL_TYPE SetVertexBuffers(Uint32                         StartSlot,
-                                                            Uint32                         NumBuffersSet,
+    inline virtual void DILIGENT_CALL_TYPE SetVertexBuffers(UInt32                         StartSlot,
+                                                            UInt32                         NumBuffersSet,
                                                             IBuffer* const*                ppBuffers,
-                                                            const Uint64*                  pOffsets,
+                                                            const UInt64*                  pOffsets,
                                                             RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
                                                             SET_VERTEX_BUFFERS_FLAGS       Flags) override = 0;
 
@@ -204,14 +204,14 @@ public:
 
     /// Base implementation of IDeviceContext::SetIndexBuffer(); caches the strong reference to the index buffer
     inline virtual void DILIGENT_CALL_TYPE SetIndexBuffer(IBuffer*                       pIndexBuffer,
-                                                          Uint64                         ByteOffset,
+                                                          UInt64                         ByteOffset,
                                                           RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override = 0;
 
     /// Caches the viewports
-    inline void SetViewports(Uint32 NumViewports, const Viewport* pViewports, Uint32& RTWidth, Uint32& RTHeight);
+    inline void SetViewports(UInt32 NumViewports, const Viewport* pViewports, UInt32& RTWidth, UInt32& RTHeight);
 
     /// Caches the scissor rects
-    inline void SetScissorRects(Uint32 NumRects, const Rect* pRects, Uint32& RTWidth, Uint32& RTHeight);
+    inline void SetScissorRects(UInt32 NumRects, const Rect* pRects, UInt32& RTWidth, UInt32& RTHeight);
 
     virtual void DILIGENT_CALL_TYPE BeginRenderPass(const BeginRenderPassAttribs& Attribs) override = 0;
 
@@ -221,18 +221,18 @@ public:
 
     /// Base implementation of IDeviceContext::UpdateBuffer(); validates input parameters.
     virtual void DILIGENT_CALL_TYPE UpdateBuffer(IBuffer*                       pBuffer,
-                                                 Uint64                         Offset,
-                                                 Uint64                         Size,
+                                                 UInt64                         Offset,
+                                                 UInt64                         Size,
                                                  const void*                    pData,
                                                  RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override = 0;
 
     /// Base implementation of IDeviceContext::CopyBuffer(); validates input parameters.
     virtual void DILIGENT_CALL_TYPE CopyBuffer(IBuffer*                       pSrcBuffer,
-                                               Uint64                         SrcOffset,
+                                               UInt64                         SrcOffset,
                                                RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
                                                IBuffer*                       pDstBuffer,
-                                               Uint64                         DstOffset,
-                                               Uint64                         Size,
+                                               UInt64                         DstOffset,
+                                               UInt64                         Size,
                                                RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) override = 0;
 
     /// Base implementation of IDeviceContext::MapBuffer(); validates input parameters.
@@ -246,8 +246,8 @@ public:
 
     /// Base implementation of IDeviceContext::UpdateData(); validates input parameters
     virtual void DILIGENT_CALL_TYPE UpdateTexture(ITexture*                      pTexture,
-                                                  Uint32                         MipLevel,
-                                                  Uint32                         Slice,
+                                                  UInt32                         MipLevel,
+                                                  UInt32                         Slice,
                                                   const Box&                     DstBox,
                                                   const TextureSubResData&       SubresData,
                                                   RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
@@ -258,8 +258,8 @@ public:
 
     /// Base implementation of IDeviceContext::MapTextureSubresource()
     virtual void DILIGENT_CALL_TYPE MapTextureSubresource(ITexture*                 pTexture,
-                                                          Uint32                    MipLevel,
-                                                          Uint32                    ArraySlice,
+                                                          UInt32                    MipLevel,
+                                                          UInt32                    ArraySlice,
                                                           MAP_TYPE                  MapType,
                                                           MAP_FLAGS                 MapFlags,
                                                           const Box*                pMapRegion,
@@ -267,8 +267,8 @@ public:
 
     /// Base implementation of IDeviceContext::UnmapTextureSubresource()
     virtual void DILIGENT_CALL_TYPE UnmapTextureSubresource(ITexture* pTexture,
-                                                            Uint32    MipLevel,
-                                                            Uint32    ArraySlice) override = 0;
+                                                            UInt32    MipLevel,
+                                                            UInt32    ArraySlice) override = 0;
 
     virtual void DILIGENT_CALL_TYPE GenerateMips(ITextureView* pTexView) override = 0;
 
@@ -276,7 +276,7 @@ public:
                                                               ITexture*                               pDstTexture,
                                                               const ResolveTextureSubresourceAttribs& ResolveAttribs) override = 0;
 
-    virtual Uint64 DILIGENT_CALL_TYPE GetFrameNumber() const override final
+    virtual UInt64 DILIGENT_CALL_TYPE GetFrameNumber() const override final
     {
         return m_FrameNumber;
     }
@@ -300,7 +300,7 @@ public:
     }
 
     /// Base implementation of IDeviceContext::GetTileSize.
-    virtual void DILIGENT_CALL_TYPE GetTileSize(Uint32& TileSizeX, Uint32& TileSizeY) override
+    virtual void DILIGENT_CALL_TYPE GetTileSize(UInt32& TileSizeX, UInt32& TileSizeY) override
     {
         UNSUPPORTED("Tile pipeline is not supported by this device. Please check DeviceFeatures.TileShaders feature.");
     }
@@ -316,13 +316,13 @@ public:
     }
 
     /// Returns currently bound pipeline state and blend factors
-    inline void GetPipelineState(IPipelineState** ppPSO, float* BlendFactors, Uint32& StencilRef);
+    inline void GetPipelineState(IPipelineState** ppPSO, float* BlendFactors, UInt32& StencilRef);
 
     /// Returns currently bound render targets
-    inline void GetRenderTargets(Uint32& NumRenderTargets, ITextureView** ppRTVs, ITextureView** ppDSV);
+    inline void GetRenderTargets(UInt32& NumRenderTargets, ITextureView** ppRTVs, ITextureView** ppDSV);
 
     /// Returns currently set viewports
-    inline void GetViewports(Uint32& NumViewports, Viewport* pViewports);
+    inline void GetViewports(UInt32& NumViewports, Viewport* pViewports);
 
     /// Returns the render device
     IRenderDevice* GetDevice() { return m_pDevice; }
@@ -361,13 +361,13 @@ protected:
         std::array<RefCntWeakPtr<ShaderResourceBindingImplType>, MAX_RESOURCE_SIGNATURES> SRBs;
 
         // Shader resource cache version for every SRB at the time when the SRB was set
-        std::array<Uint32, MAX_RESOURCE_SIGNATURES> CacheRevisions = {};
+        std::array<UInt32, MAX_RESOURCE_SIGNATURES> CacheRevisions = {};
 
         // Indicates if the resources have been validated since they were committed
         bool ResourcesValidated = false;
 #endif
 
-        using SRBMaskType = Uint8;
+        using SRBMaskType = UInt8;
         static_assert(sizeof(SRBMaskType) * 8 >= MAX_RESOURCE_SIGNATURES, "Not enough space to store MAX_RESOURCE_SIGNATURES bits");
 
         // Indicates which SRBs are active in current PSO
@@ -381,7 +381,7 @@ protected:
         // buffers with dynamic offsets in all backends).
         SRBMaskType DynamicSRBMask = 0;
 
-        void Set(Uint32 Index, ShaderResourceBindingImplType* pSRB)
+        void Set(UInt32 Index, ShaderResourceBindingImplType* pSRB)
         {
             VERIFY_EXPR(Index < MAX_RESOURCE_SIGNATURES);
             ShaderResourceCacheImplType* pResourceCache = pSRB != nullptr ? &pSRB->GetResourceCache() : nullptr;
@@ -432,10 +432,10 @@ protected:
 #ifdef DILIGENT_DEVELOPMENT
         void DvpVerifyCacheRevisions() const
         {
-            for (Uint32 ActiveSRBs = ActiveSRBMask; ActiveSRBs != 0;)
+            for (UInt32 ActiveSRBs = ActiveSRBMask; ActiveSRBs != 0;)
             {
-                const Uint32                       SRBBit = ExtractLSB(ActiveSRBs);
-                const Uint32                       Idx    = PlatformMisc::GetLSB(SRBBit);
+                const UInt32                       SRBBit = ExtractLSB(ActiveSRBs);
+                const UInt32                       Idx    = PlatformMisc::GetLSB(SRBBit);
                 const ShaderResourceCacheImplType* pCache = ResourceCaches[Idx];
                 if (pCache != nullptr)
                 {
@@ -463,7 +463,7 @@ protected:
 
     inline bool SetBlendFactors(const float* BlendFactors, int Dummy);
 
-    inline bool SetStencilRef(Uint32 StencilRef, int Dummy);
+    inline bool SetStencilRef(UInt32 StencilRef, int Dummy);
 
     inline bool SetPipelineState(IPipelineState* pPipelineState, const INTERFACE_ID& IID_PSOImpl);
 
@@ -477,7 +477,7 @@ protected:
     bool CheckIfBoundAsDepthStencil(TextureImplType* pTexture);
 
     /// Updates the states of render pass attachments to match states within the given subpass
-    void UpdateAttachmentStates(Uint32 SubpassIndex);
+    void UpdateAttachmentStates(UInt32 SubpassIndex);
 
     void ClearDepthStencil(ITextureView* pView);
 
@@ -487,15 +487,15 @@ protected:
 
     void EndQuery(IQuery* pQuery, int);
 
-    void EnqueueSignal(IFence* pFence, Uint64 Value, int);
-    void DeviceWaitForFence(IFence* pFence, Uint64 Value, int);
+    void EnqueueSignal(IFence* pFence, UInt64 Value, int);
+    void DeviceWaitForFence(IFence* pFence, UInt64 Value, int);
 
     void EndFrame()
     {
         ++m_FrameNumber;
     }
 
-    void PrepareCommittedResources(CommittedShaderResources& Resources, Uint32& DvpCompatibleSRBCount);
+    void PrepareCommittedResources(CommittedShaderResources& Resources, UInt32& DvpCompatibleSRBCount);
 
     bool IsRecordingDeferredCommands() const
     {
@@ -507,7 +507,7 @@ protected:
     {
         DEV_CHECK_ERR(IsDeferred(), "Begin() is only allowed for deferred contexts.");
         DEV_CHECK_ERR(!IsRecordingDeferredCommands(), "This context is already recording commands. Call FinishCommandList() before beginning new recording.");
-        m_DstImmediateContextId = static_cast<Uint8>(ImmediateContextId);
+        m_DstImmediateContextId = static_cast<UInt8>(ImmediateContextId);
         VERIFY_EXPR(m_DstImmediateContextId == ImmediateContextId);
 
         // Set command queue type while commands are being recorded
@@ -541,7 +541,7 @@ protected:
     // Verifies compatibility between current PSO and SRBs
     void DvpVerifySRBCompatibility(
         CommittedShaderResources&                                 Resources,
-        std::function<PipelineResourceSignatureImplType*(Uint32)> CustomGetSignature = nullptr) const;
+        std::function<PipelineResourceSignatureImplType*(UInt32)> CustomGetSignature = nullptr) const;
 #else
     // clang-format off
     void DvpVerifyDispatchTileArguments(const DispatchTileAttribs& Attribs) const {}
@@ -585,11 +585,11 @@ protected:
     void BindSparseResourceMemory(const BindSparseResourceMemoryAttribs& Attribs, int);
 
 protected:
-    static constexpr Uint32 DrawMeshIndirectCommandStride = sizeof(Uint32) * 3; // D3D12: 12 bytes (x, y, z dimension)
+    static constexpr UInt32 DrawMeshIndirectCommandStride = sizeof(UInt32) * 3; // D3D12: 12 bytes (x, y, z dimension)
                                                                                 // Vulkan: 8 bytes (task count, first task)
-    static constexpr Uint32 TraceRaysIndirectCommandSBTSize = 88;               // D3D12: 88 bytes, size of SBT offsets
+    static constexpr UInt32 TraceRaysIndirectCommandSBTSize = 88;               // D3D12: 88 bytes, size of SBT offsets
                                                                                 // Vulkan: 0 bytes, SBT offsets placed directly into function call
-    static constexpr Uint32 TraceRaysIndirectCommandSize = 104;                 // SBT (88 bytes) + Dimension (3*4 bytes) aligned to 8 bytes
+    static constexpr UInt32 TraceRaysIndirectCommandSize = 104;                 // SBT (88 bytes) + Dimension (3*4 bytes) aligned to 8 bytes
 
     /// Strong reference to the device.
     RefCntAutoPtr<DeviceImplType> m_pDevice;
@@ -598,7 +598,7 @@ protected:
     VertexStreamInfo<BufferImplType> m_VertexStreams[MAX_BUFFER_SLOTS];
 
     /// Number of bound vertex streams
-    Uint32 m_NumVertexStreams = 0;
+    UInt32 m_NumVertexStreams = 0;
 
     /// Strong reference to the bound pipeline state object.
     /// Use final PSO implementation type to avoid virtual calls to AddRef()/Release().
@@ -611,10 +611,10 @@ protected:
     RefCntAutoPtr<BufferImplType> m_pIndexBuffer;
 
     /// Offset from the beginning of the index buffer to the start of the index data, in bytes.
-    Uint64 m_IndexDataStartOffset = 0;
+    UInt64 m_IndexDataStartOffset = 0;
 
     /// Current stencil reference value
-    Uint32 m_StencilRef = 0;
+    UInt32 m_StencilRef = 0;
 
     /// Current blend factors
     Float32 m_BlendFactors[4] = {-1, -1, -1, -1};
@@ -622,26 +622,26 @@ protected:
     /// Current viewports
     Viewport m_Viewports[MAX_VIEWPORTS];
     /// Number of current viewports
-    Uint32 m_NumViewports = 0;
+    UInt32 m_NumViewports = 0;
 
     /// Current scissor rects
     Rect m_ScissorRects[MAX_VIEWPORTS];
     /// Number of current scissor rects
-    Uint32 m_NumScissorRects = 0;
+    UInt32 m_NumScissorRects = 0;
 
     /// Vector of strong references to the bound render targets.
     /// Use final texture view implementation type to avoid virtual calls to AddRef()/Release()
     RefCntAutoPtr<TextureViewImplType> m_pBoundRenderTargets[MAX_RENDER_TARGETS];
     /// Number of bound render targets
-    Uint32 m_NumBoundRenderTargets = 0;
+    UInt32 m_NumBoundRenderTargets = 0;
     /// Width of the currently bound framebuffer
-    Uint32 m_FramebufferWidth = 0;
+    UInt32 m_FramebufferWidth = 0;
     /// Height of the currently bound framebuffer
-    Uint32 m_FramebufferHeight = 0;
+    UInt32 m_FramebufferHeight = 0;
     /// Number of array slices in the currently bound framebuffer
-    Uint32 m_FramebufferSlices = 0;
+    UInt32 m_FramebufferSlices = 0;
     /// Number of samples in the currently bound framebuffer
-    Uint32 m_FramebufferSamples = 0;
+    UInt32 m_FramebufferSamples = 0;
 
     /// Strong references to the bound depth stencil view.
     /// Use final texture view implementation type to avoid virtual calls to AddRef()/Release()
@@ -658,12 +658,12 @@ protected:
     RefCntAutoPtr<ITextureView> m_pBoundShadingRateMap;
 
     /// Current subpass index.
-    Uint32 m_SubpassIndex = 0;
+    UInt32 m_SubpassIndex = 0;
 
     /// Render pass attachments transition mode.
     RESOURCE_STATE_TRANSITION_MODE m_RenderPassAttachmentsTransitionMode = RESOURCE_STATE_TRANSITION_MODE_NONE;
 
-    Uint64 m_FrameNumber = 0;
+    UInt64 m_FrameNumber = 0;
 
     RefCntAutoPtr<IObject> m_pUserData;
 
@@ -681,7 +681,7 @@ protected:
 
     DeviceContextStats m_Stats;
 
-    std::vector<Uint8> m_ScratchSpace;
+    std::vector<UInt8> m_ScratchSpace;
 
 #ifdef DILIGENT_DEBUG
     // std::unordered_map is unbelievably slow. Keeping track of mapped buffers
@@ -712,10 +712,10 @@ protected:
 
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::SetVertexBuffers(
-    Uint32                         StartSlot,
-    Uint32                         NumBuffersSet,
+    UInt32                         StartSlot,
+    UInt32                         NumBuffersSet,
     IBuffer* const*                ppBuffers,
-    const Uint64*                  pOffsets,
+    const UInt64*                  pOffsets,
     RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
     SET_VERTEX_BUFFERS_FLAGS       Flags)
 {
@@ -736,15 +736,15 @@ inline void DeviceContextBase<ImplementationTraits>::SetVertexBuffers(
         // Reset only these buffer slots that are not being set.
         // It is very important to not reset buffers that stay unchanged
         // as AddRef()/Release() are not free
-        for (Uint32 s = 0; s < StartSlot; ++s)
+        for (UInt32 s = 0; s < StartSlot; ++s)
             m_VertexStreams[s] = VertexStreamInfo<BufferImplType>{};
-        for (Uint32 s = StartSlot + NumBuffersSet; s < m_NumVertexStreams; ++s)
+        for (UInt32 s = StartSlot + NumBuffersSet; s < m_NumVertexStreams; ++s)
             m_VertexStreams[s] = VertexStreamInfo<BufferImplType>{};
         m_NumVertexStreams = 0;
     }
     m_NumVertexStreams = (std::max)(m_NumVertexStreams, StartSlot + NumBuffersSet);
 
-    for (Uint32 Buff = 0; Buff < NumBuffersSet; ++Buff)
+    for (UInt32 Buff = 0; Buff < NumBuffersSet; ++Buff)
     {
         VertexStreamInfo<BufferImplType>& CurrStream{m_VertexStreams[StartSlot + Buff]};
         CurrStream.pBuffer = ppBuffers ? ClassPtrCast<BufferImplType>(ppBuffers[Buff]) : nullptr;
@@ -779,7 +779,7 @@ inline bool DeviceContextBase<ImplementationTraits>::SetPipelineState(
 
     DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_COMPUTE, "SetPipelineState");
 
-    DEV_CHECK_ERR((pPipelineState->GetDesc().ImmediateContextMask & (Uint64{1} << GetExecutionCtxId())) != 0,
+    DEV_CHECK_ERR((pPipelineState->GetDesc().ImmediateContextMask & (UInt64{1} << GetExecutionCtxId())) != 0,
                   "PSO '", pPipelineState->GetDesc().Name, "' can't be used in device context '", m_Desc.Name, "'.");
 
     // Check that the PSO is ready before querying the implementation.
@@ -826,7 +826,7 @@ inline void DeviceContextBase<ImplementationTraits>::InvalidateState()
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::SetIndexBuffer(
     IBuffer*                       pIndexBuffer,
-    Uint64                         ByteOffset,
+    UInt64                         ByteOffset,
     RESOURCE_STATE_TRANSITION_MODE StateTransitionMode)
 {
     m_pIndexBuffer         = ClassPtrCast<BufferImplType>(pIndexBuffer);
@@ -852,7 +852,7 @@ inline void DeviceContextBase<ImplementationTraits>::SetIndexBuffer(
 
 
 template <typename ImplementationTraits>
-inline void DeviceContextBase<ImplementationTraits>::GetPipelineState(IPipelineState** ppPSO, float* BlendFactors, Uint32& StencilRef)
+inline void DeviceContextBase<ImplementationTraits>::GetPipelineState(IPipelineState** ppPSO, float* BlendFactors, UInt32& StencilRef)
 {
     DEV_CHECK_ERR(ppPSO != nullptr, "Null pointer provided null");
     DEV_CHECK_ERR(*ppPSO == nullptr, "Memory address contains a pointer to a non-null blend state");
@@ -865,7 +865,7 @@ inline void DeviceContextBase<ImplementationTraits>::GetPipelineState(IPipelineS
         *ppPSO = nullptr;
     }
 
-    for (Uint32 f = 0; f < 4; ++f)
+    for (UInt32 f = 0; f < 4; ++f)
         BlendFactors[f] = m_BlendFactors[f];
     StencilRef = m_StencilRef;
 };
@@ -876,7 +876,7 @@ inline bool DeviceContextBase<ImplementationTraits>::SetBlendFactors(const float
     DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "SetBlendFactors");
 
     bool FactorsDiffer = false;
-    for (Uint32 f = 0; f < 4; ++f)
+    for (UInt32 f = 0; f < 4; ++f)
     {
         if (m_BlendFactors[f] != BlendFactors[f])
             FactorsDiffer = true;
@@ -889,7 +889,7 @@ inline bool DeviceContextBase<ImplementationTraits>::SetBlendFactors(const float
 }
 
 template <typename ImplementationTraits>
-inline bool DeviceContextBase<ImplementationTraits>::SetStencilRef(Uint32 StencilRef, int)
+inline bool DeviceContextBase<ImplementationTraits>::SetStencilRef(UInt32 StencilRef, int)
 {
     DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "SetStencilRef");
 
@@ -904,10 +904,10 @@ inline bool DeviceContextBase<ImplementationTraits>::SetStencilRef(Uint32 Stenci
 
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::SetViewports(
-    Uint32          NumViewports,
+    UInt32          NumViewports,
     const Viewport* pViewports,
-    Uint32&         RTWidth,
-    Uint32&         RTHeight)
+    UInt32&         RTWidth,
+    UInt32&         RTHeight)
 {
     DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "SetViewports");
 
@@ -933,7 +933,7 @@ inline void DeviceContextBase<ImplementationTraits>::SetViewports(
     }
     DEV_CHECK_ERR(pViewports != nullptr, "pViewports must not be null");
 
-    for (Uint32 vp = 0; vp < m_NumViewports; ++vp)
+    for (UInt32 vp = 0; vp < m_NumViewports; ++vp)
     {
         m_Viewports[vp] = pViewports[vp];
         DEV_CHECK_ERR(m_Viewports[vp].Width >= 0, "Incorrect viewport width (", m_Viewports[vp].Width, ")");
@@ -945,22 +945,22 @@ inline void DeviceContextBase<ImplementationTraits>::SetViewports(
 }
 
 template <typename ImplementationTraits>
-inline void DeviceContextBase<ImplementationTraits>::GetViewports(Uint32& NumViewports, Viewport* pViewports)
+inline void DeviceContextBase<ImplementationTraits>::GetViewports(UInt32& NumViewports, Viewport* pViewports)
 {
     NumViewports = m_NumViewports;
     if (pViewports)
     {
-        for (Uint32 vp = 0; vp < m_NumViewports; ++vp)
+        for (UInt32 vp = 0; vp < m_NumViewports; ++vp)
             pViewports[vp] = m_Viewports[vp];
     }
 }
 
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::SetScissorRects(
-    Uint32      NumRects,
+    UInt32      NumRects,
     const Rect* pRects,
-    Uint32&     RTWidth,
-    Uint32&     RTHeight)
+    UInt32&     RTWidth,
+    UInt32&     RTHeight)
 {
     DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "SetScissorRects");
 
@@ -978,7 +978,7 @@ inline void DeviceContextBase<ImplementationTraits>::SetScissorRects(
     DEV_CHECK_ERR(NumRects < MAX_VIEWPORTS, "Number of scissor rects (", NumRects, ") exceeds the limit (", MAX_VIEWPORTS, ")");
     m_NumScissorRects = (std::min)(MAX_VIEWPORTS, NumRects);
 
-    for (Uint32 sr = 0; sr < m_NumScissorRects; ++sr)
+    for (UInt32 sr = 0; sr < m_NumScissorRects; ++sr)
     {
         m_ScissorRects[sr] = pRects[sr];
         DEV_CHECK_ERR(m_ScissorRects[sr].left <= m_ScissorRects[sr].right, "Incorrect horizontal bounds for a scissor rect [", m_ScissorRects[sr].left, ", ", m_ScissorRects[sr].right, ")");
@@ -1010,13 +1010,13 @@ inline bool DeviceContextBase<ImplementationTraits>::SetRenderTargets(const SetR
     if (Attribs.NumRenderTargets != m_NumBoundRenderTargets)
     {
         bBindRenderTargets = true;
-        for (Uint32 rt = Attribs.NumRenderTargets; rt < m_NumBoundRenderTargets; ++rt)
+        for (UInt32 rt = Attribs.NumRenderTargets; rt < m_NumBoundRenderTargets; ++rt)
             m_pBoundRenderTargets[rt].Release();
 
         m_NumBoundRenderTargets = Attribs.NumRenderTargets;
     }
 
-    for (Uint32 rt = 0; rt < Attribs.NumRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < Attribs.NumRenderTargets; ++rt)
     {
         ITextureView* pRTView = Attribs.ppRenderTargets[rt];
         if (pRTView)
@@ -1133,10 +1133,10 @@ inline bool DeviceContextBase<ImplementationTraits>::SetRenderTargets(const SetR
                     DEV_ERROR("IDeviceContext::SetRenderTargets: unexpected shading rate format");
             }
 
-            const Uint32 Width     = (std::max)(TexDesc.Width >> ViewDesc.MostDetailedMip, 1u);
-            const Uint32 Height    = (std::max)(TexDesc.Height >> ViewDesc.MostDetailedMip, 1u);
-            const Uint32 MinWidth  = (m_FramebufferWidth + SRProps.MaxTileSize[0] - 1) / SRProps.MaxTileSize[0];
-            const Uint32 MinHeight = (m_FramebufferHeight + SRProps.MaxTileSize[1] - 1) / SRProps.MaxTileSize[1];
+            const UInt32 Width     = (std::max)(TexDesc.Width >> ViewDesc.MostDetailedMip, 1u);
+            const UInt32 Height    = (std::max)(TexDesc.Height >> ViewDesc.MostDetailedMip, 1u);
+            const UInt32 MinWidth  = (m_FramebufferWidth + SRProps.MaxTileSize[0] - 1) / SRProps.MaxTileSize[0];
+            const UInt32 MinHeight = (m_FramebufferHeight + SRProps.MaxTileSize[1] - 1) / SRProps.MaxTileSize[1];
             DEV_CHECK_ERR(Width >= MinWidth,
                           "IDeviceContext::SetRenderTargets: shading rate texture width (", Width, ") must be at least ",
                           MinWidth, "). Note: minimum width is defined by (framebuffer width) / ShadingRate::MaxTileSize[0].");
@@ -1162,7 +1162,7 @@ inline bool DeviceContextBase<ImplementationTraits>::SetRenderTargets(const SetR
         VERIFY((SRProps.CapFlags & SHADING_RATE_CAP_FLAG_SUBSAMPLED_RENDER_TARGET) != 0,
                "One of NON_SUBSAMPLED_RENDER_TARGET or SUBSAMPLED_RENDER_TARGET caps must be presented if texture-based VRS is supported");
 
-        for (Uint32 i = 0; i < m_NumBoundRenderTargets; ++i)
+        for (UInt32 i = 0; i < m_NumBoundRenderTargets; ++i)
         {
             if (TextureViewImplType* pRTV = m_pBoundRenderTargets[i])
             {
@@ -1182,7 +1182,7 @@ inline bool DeviceContextBase<ImplementationTraits>::SetRenderTargets(const SetR
 
     {
         std::array<TEXTURE_FORMAT, MAX_RENDER_TARGETS> RTFormats{};
-        for (Uint32 i = 0; i < m_NumBoundRenderTargets; ++i)
+        for (UInt32 i = 0; i < m_NumBoundRenderTargets; ++i)
         {
             if (TextureViewImplType* pRTV = m_pBoundRenderTargets[i])
             {
@@ -1219,7 +1219,7 @@ inline bool DeviceContextBase<ImplementationTraits>::SetSubpassRenderTargets()
     ITextureView* ppRTVs[MAX_RENDER_TARGETS] = {};
     ITextureView* pDSV                       = nullptr;
     ITextureView* pSRM                       = nullptr;
-    for (Uint32 rt = 0; rt < Subpass.RenderTargetAttachmentCount; ++rt)
+    for (UInt32 rt = 0; rt < Subpass.RenderTargetAttachmentCount; ++rt)
     {
         const AttachmentReference& RTAttachmentRef = Subpass.pRenderTargetAttachments[rt];
         if (RTAttachmentRef.AttachmentIndex != ATTACHMENT_UNUSED)
@@ -1279,7 +1279,7 @@ inline bool DeviceContextBase<ImplementationTraits>::SetSubpassRenderTargets()
 
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::GetRenderTargets(
-    Uint32&        NumRenderTargets,
+    UInt32&        NumRenderTargets,
     ITextureView** ppRTVs,
     ITextureView** ppDSV)
 {
@@ -1287,7 +1287,7 @@ inline void DeviceContextBase<ImplementationTraits>::GetRenderTargets(
 
     if (ppRTVs)
     {
-        for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+        for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
         {
             DEV_CHECK_ERR(ppRTVs[rt] == nullptr, "Non-null pointer found in RTV array element #", rt);
             if (TextureViewImplType* pBoundRTV = m_pBoundRenderTargets[rt])
@@ -1295,7 +1295,7 @@ inline void DeviceContextBase<ImplementationTraits>::GetRenderTargets(
             else
                 ppRTVs[rt] = nullptr;
         }
-        for (Uint32 rt = NumRenderTargets; rt < MAX_RENDER_TARGETS; ++rt)
+        for (UInt32 rt = NumRenderTargets; rt < MAX_RENDER_TARGETS; ++rt)
         {
             DEV_CHECK_ERR(ppRTVs[rt] == nullptr, "Non-null pointer found in RTV array element #", rt);
             ppRTVs[rt] = nullptr;
@@ -1315,10 +1315,10 @@ inline void DeviceContextBase<ImplementationTraits>::GetRenderTargets(
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::ClearStateCache()
 {
-    for (Uint32 stream = 0; stream < m_NumVertexStreams; ++stream)
+    for (UInt32 stream = 0; stream < m_NumVertexStreams; ++stream)
         m_VertexStreams[stream] = VertexStreamInfo<BufferImplType>{};
 #ifdef DILIGENT_DEBUG
-    for (Uint32 stream = m_NumVertexStreams; stream < _countof(m_VertexStreams); ++stream)
+    for (UInt32 stream = m_NumVertexStreams; stream < _countof(m_VertexStreams); ++stream)
     {
         VERIFY(m_VertexStreams[stream].pBuffer == nullptr, "Unexpected non-null buffer");
         VERIFY(m_VertexStreams[stream].Offset == 0, "Unexpected non-zero offset");
@@ -1336,11 +1336,11 @@ inline void DeviceContextBase<ImplementationTraits>::ClearStateCache()
     for (int i = 0; i < 4; ++i)
         m_BlendFactors[i] = -1;
 
-    for (Uint32 vp = 0; vp < m_NumViewports; ++vp)
+    for (UInt32 vp = 0; vp < m_NumViewports; ++vp)
         m_Viewports[vp] = Viewport();
     m_NumViewports = 0;
 
-    for (Uint32 sr = 0; sr < m_NumScissorRects; ++sr)
+    for (UInt32 sr = 0; sr < m_NumScissorRects; ++sr)
         m_ScissorRects[sr] = Rect();
     m_NumScissorRects = 0;
 
@@ -1357,7 +1357,7 @@ bool DeviceContextBase<ImplementationTraits>::CheckIfBoundAsRenderTarget(Texture
     if (pTexture == nullptr)
         return false;
 
-    for (Uint32 rt = 0; rt < m_NumBoundRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < m_NumBoundRenderTargets; ++rt)
     {
         if (m_pBoundRenderTargets[rt] && m_pBoundRenderTargets[rt]->GetTexture() == pTexture)
         {
@@ -1434,10 +1434,10 @@ bool DeviceContextBase<ImplementationTraits>::UnbindTextureFromFramebuffer(Textu
 template <typename ImplementationTraits>
 void DeviceContextBase<ImplementationTraits>::ResetRenderTargets()
 {
-    for (Uint32 rt = 0; rt < m_NumBoundRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < m_NumBoundRenderTargets; ++rt)
         m_pBoundRenderTargets[rt].Release();
 #ifdef DILIGENT_DEBUG
-    for (Uint32 rt = m_NumBoundRenderTargets; rt < _countof(m_pBoundRenderTargets); ++rt)
+    for (UInt32 rt = m_NumBoundRenderTargets; rt < _countof(m_pBoundRenderTargets); ++rt)
     {
         VERIFY(m_pBoundRenderTargets[rt] == nullptr, "Non-null render target found");
     }
@@ -1480,7 +1480,7 @@ inline void DeviceContextBase<ImplementationTraits>::BeginRenderPass(const Begin
                       "The number of attachments (", FBDesc.AttachmentCount,
                       ") in currently bound framebuffer is smaller than the number of attachments in the render pass (", RPDesc.AttachmentCount, ")");
         const bool IsMetal = m_pDevice->GetDeviceInfo().IsMetalDevice();
-        for (Uint32 i = 0; i < FBDesc.AttachmentCount; ++i)
+        for (UInt32 i = 0; i < FBDesc.AttachmentCount; ++i)
         {
             ITextureView* pView = FBDesc.ppAttachments[i];
             if (pView == nullptr)
@@ -1527,7 +1527,7 @@ inline void DeviceContextBase<ImplementationTraits>::NextSubpass()
 }
 
 template <typename ImplementationTraits>
-inline void DeviceContextBase<ImplementationTraits>::UpdateAttachmentStates(Uint32 SubpassIndex)
+inline void DeviceContextBase<ImplementationTraits>::UpdateAttachmentStates(UInt32 SubpassIndex)
 {
     if (m_RenderPassAttachmentsTransitionMode != RESOURCE_STATE_TRANSITION_MODE_TRANSITION)
         return;
@@ -1541,7 +1541,7 @@ inline void DeviceContextBase<ImplementationTraits>::UpdateAttachmentStates(Uint
            "Framebuffer attachment count (", FBDesc.AttachmentCount, ") is not consistent with the render pass attachment count (", RPDesc.AttachmentCount, ")");
     VERIFY_EXPR(SubpassIndex <= RPDesc.SubpassCount);
     const bool IsMetal = m_pDevice->GetDeviceInfo().IsMetalDevice();
-    for (Uint32 i = 0; i < RPDesc.AttachmentCount; ++i)
+    for (UInt32 i = 0; i < RPDesc.AttachmentCount; ++i)
     {
         if (ITextureView* pView = FBDesc.ppAttachments[i])
         {
@@ -1634,7 +1634,7 @@ inline void DeviceContextBase<ImplementationTraits>::ClearRenderTarget(ITextureV
                       "' is invalid: ClearRenderTarget command expects render target view (TEXTURE_VIEW_RENDER_TARGET).");
 
         bool RTFound = false;
-        for (Uint32 i = 0; i < m_NumBoundRenderTargets && !RTFound; ++i)
+        for (UInt32 i = 0; i < m_NumBoundRenderTargets && !RTFound; ++i)
         {
             RTFound = m_pBoundRenderTargets[i] == pView;
         }
@@ -1695,14 +1695,14 @@ inline void DeviceContextBase<ImplementationTraits>::EndQuery(IQuery* pQuery, in
 }
 
 template <typename ImplementationTraits>
-inline void DeviceContextBase<ImplementationTraits>::EnqueueSignal(IFence* pFence, Uint64 Value, int)
+inline void DeviceContextBase<ImplementationTraits>::EnqueueSignal(IFence* pFence, UInt64 Value, int)
 {
     DEV_CHECK_ERR(!IsDeferred(), "Fence signal can only be enqueued from immediate context");
     DEV_CHECK_ERR(pFence != nullptr, "Fence must not be null");
 }
 
 template <typename ImplementationTraits>
-inline void DeviceContextBase<ImplementationTraits>::DeviceWaitForFence(IFence* pFence, Uint64 Value, int)
+inline void DeviceContextBase<ImplementationTraits>::DeviceWaitForFence(IFence* pFence, UInt64 Value, int)
 {
     DEV_CHECK_ERR(!IsDeferred(), "Fence can only be waited from immediate context");
     DEV_CHECK_ERR(pFence, "Fence must not be null");
@@ -1712,8 +1712,8 @@ inline void DeviceContextBase<ImplementationTraits>::DeviceWaitForFence(IFence* 
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::UpdateBuffer(
     IBuffer*                       pBuffer,
-    Uint64                         Offset,
-    Uint64                         Size,
+    UInt64                         Offset,
+    UInt64                         Size,
     const void*                    pData,
     RESOURCE_STATE_TRANSITION_MODE StateTransitionMode)
 {
@@ -1735,11 +1735,11 @@ inline void DeviceContextBase<ImplementationTraits>::UpdateBuffer(
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::CopyBuffer(
     IBuffer*                       pSrcBuffer,
-    Uint64                         SrcOffset,
+    UInt64                         SrcOffset,
     RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
     IBuffer*                       pDstBuffer,
-    Uint64                         DstOffset,
-    Uint64                         Size,
+    UInt64                         DstOffset,
+    UInt64                         Size,
     RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode)
 {
     DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_TRANSFER, "CopyBuffer");
@@ -1836,8 +1836,8 @@ inline void DeviceContextBase<ImplementationTraits>::UnmapBuffer(IBuffer* pBuffe
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::UpdateTexture(
     ITexture*                      pTexture,
-    Uint32                         MipLevel,
-    Uint32                         Slice,
+    UInt32                         MipLevel,
+    UInt32                         Slice,
     const Box&                     DstBox,
     const TextureSubResData&       SubresData,
     RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
@@ -1866,8 +1866,8 @@ inline void DeviceContextBase<ImplementationTraits>::CopyTexture(const CopyTextu
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::MapTextureSubresource(
     ITexture*                 pTexture,
-    Uint32                    MipLevel,
-    Uint32                    ArraySlice,
+    UInt32                    MipLevel,
+    UInt32                    ArraySlice,
     MAP_TYPE                  MapType,
     MAP_FLAGS                 MapFlags,
     const Box*                pMapRegion,
@@ -1881,8 +1881,8 @@ inline void DeviceContextBase<ImplementationTraits>::MapTextureSubresource(
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::UnmapTextureSubresource(
     ITexture* pTexture,
-    Uint32    MipLevel,
-    Uint32    ArraySlice)
+    UInt32    MipLevel,
+    UInt32    ArraySlice)
 {
     DEV_CHECK_ERR(pTexture, "pTexture must not be null");
     DEV_CHECK_ERR(MipLevel < pTexture->GetDesc().MipLevels, "Mip level is out of range");
@@ -2144,7 +2144,7 @@ void DeviceContextBase<ImplementationTraits>::SetShadingRate(SHADING_RATE BaseRa
         DEV_CHECK_ERR(TextureCombiner == SHADING_RATE_COMBINER_PASSTHROUGH, "IDeviceContext::SetShadingRate: TextureCombiner must be PASSTHROUGH when texture based shading is not supported");
 
     bool IsSupported = false;
-    for (Uint32 i = 0; i < SRProps.NumShadingRates && !IsSupported; ++i)
+    for (UInt32 i = 0; i < SRProps.NumShadingRates && !IsSupported; ++i)
     {
         IsSupported = (SRProps.ShadingRates[i].Rate == BaseRate);
     }
@@ -2166,12 +2166,12 @@ void DeviceContextBase<ImplementationTraits>::BindSparseResourceMemory(const Bin
 }
 
 template <typename ImplementationTraits>
-inline void DeviceContextBase<ImplementationTraits>::PrepareCommittedResources(CommittedShaderResources& Resources, Uint32& DvpCompatibleSRBCount)
+inline void DeviceContextBase<ImplementationTraits>::PrepareCommittedResources(CommittedShaderResources& Resources, UInt32& DvpCompatibleSRBCount)
 {
-    const Uint32 SignCount = m_pPipelineState->GetResourceSignatureCount();
+    const UInt32 SignCount = m_pPipelineState->GetResourceSignatureCount();
 
     Resources.ActiveSRBMask = 0;
-    for (Uint32 i = 0; i < SignCount; ++i)
+    for (UInt32 i = 0; i < SignCount; ++i)
     {
         const PipelineResourceSignatureImplType* pSignature = m_pPipelineState->GetResourceSignature(i);
         if (pSignature == nullptr || pSignature->GetTotalResourceCount() == 0)
@@ -2216,7 +2216,7 @@ inline void DeviceContextBase<ImplementationTraits>::PrepareCommittedResources(C
     // A consequence of layout compatibility is that when the implementation compiles a pipeline
     // layout and maps pipeline resources to implementation resources, the mechanism for set N
     // should only be a function of sets [0..N].
-    for (Uint32 sign = DvpCompatibleSRBCount; sign < SignCount; ++sign)
+    for (UInt32 sign = DvpCompatibleSRBCount; sign < SignCount; ++sign)
     {
         Resources.Set(sign, nullptr);
     }
@@ -2225,7 +2225,7 @@ inline void DeviceContextBase<ImplementationTraits>::PrepareCommittedResources(C
 #endif
 }
 
-inline Uint32 GetPrimitiveCount(PRIMITIVE_TOPOLOGY Topology, Uint32 Elements)
+inline UInt32 GetPrimitiveCount(PRIMITIVE_TOPOLOGY Topology, UInt32 Elements)
 {
     if (Topology >= PRIMITIVE_TOPOLOGY_1_CONTROL_POINT_PATCHLIST && Topology <= PRIMITIVE_TOPOLOGY_32_CONTROL_POINT_PATCHLIST)
     {
@@ -2432,7 +2432,7 @@ inline void DeviceContextBase<ImplementationTraits>::MultiDraw(const MultiDrawAt
     if (m_pPipelineState)
     {
         const PRIMITIVE_TOPOLOGY Topology = m_pPipelineState->GetGraphicsPipelineDesc().PrimitiveTopology;
-        for (Uint32 i = 0; i < Attribs.DrawCount; ++i)
+        for (UInt32 i = 0; i < Attribs.DrawCount; ++i)
             m_Stats.PrimitiveCounts[Topology] += GetPrimitiveCount(Topology, Attribs.pDrawItems[i].NumVertices) * Attribs.NumInstances;
     }
     if (m_NativeMultiDrawSupported)
@@ -2463,7 +2463,7 @@ inline void DeviceContextBase<ImplementationTraits>::MultiDrawIndexed(const Mult
     if (m_pPipelineState)
     {
         const PRIMITIVE_TOPOLOGY Topology = m_pPipelineState->GetGraphicsPipelineDesc().PrimitiveTopology;
-        for (Uint32 i = 0; i < Attribs.DrawCount; ++i)
+        for (UInt32 i = 0; i < Attribs.DrawCount; ++i)
             m_Stats.PrimitiveCounts[Topology] += GetPrimitiveCount(Topology, Attribs.pDrawItems[i].NumIndices) * Attribs.NumInstances;
     }
     if (m_NativeMultiDrawSupported)
@@ -2492,7 +2492,7 @@ inline void DeviceContextBase<ImplementationTraits>::DvpVerifyRenderTargets() co
                   "Pipeline state '", PSODesc.Name, "' is not a graphics pipeline");
 
     TEXTURE_FORMAT BoundRTVFormats[MAX_RENDER_TARGETS] = {};
-    for (Uint32 rt = 0; rt < m_NumBoundRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < m_NumBoundRenderTargets; ++rt)
     {
         if (const TextureViewImplType* pRT = m_pBoundRenderTargets[rt])
             BoundRTVFormats[rt] = pRT->GetDesc().Format;
@@ -2501,7 +2501,7 @@ inline void DeviceContextBase<ImplementationTraits>::DvpVerifyRenderTargets() co
     }
     const TEXTURE_FORMAT BoundDSVFormat = m_pBoundDepthStencil ? m_pBoundDepthStencil->GetDesc().Format : TEX_FORMAT_UNKNOWN;
 
-    Uint32                NumPipelineRenderTargets = 0;
+    UInt32                NumPipelineRenderTargets = 0;
     const TEXTURE_FORMAT* PipelineRTVFormats       = nullptr;
     TEXTURE_FORMAT        PipelineDSVFormat        = TEX_FORMAT_UNKNOWN;
     if (PSODesc.IsAnyGraphicsPipeline())
@@ -2537,7 +2537,7 @@ inline void DeviceContextBase<ImplementationTraits>::DvpVerifyRenderTargets() co
                             "' (", GetTextureFormatAttribs(PipelineDSVFormat).Name, ").");
     }
 
-    for (Uint32 rt = 0; rt < m_NumBoundRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < m_NumBoundRenderTargets; ++rt)
     {
         TEXTURE_FORMAT BoundFmt = BoundRTVFormats[rt];
         TEXTURE_FORMAT PSOFmt   = PipelineRTVFormats[rt];
@@ -2685,12 +2685,12 @@ void DeviceContextBase<ImplementationTraits>::DvpVerifyTLASState(
 template <typename ImplementationTraits>
 void DeviceContextBase<ImplementationTraits>::DvpVerifySRBCompatibility(
     CommittedShaderResources&                                 Resources,
-    std::function<PipelineResourceSignatureImplType*(Uint32)> CustomGetSignature) const
+    std::function<PipelineResourceSignatureImplType*(UInt32)> CustomGetSignature) const
 {
     DEV_CHECK_ERR(m_pPipelineState, "No PSO is bound in the context");
 
-    const Uint32 SignCount = m_pPipelineState->GetResourceSignatureCount();
-    for (Uint32 sign = 0; sign < SignCount; ++sign)
+    const UInt32 SignCount = m_pPipelineState->GetResourceSignatureCount();
+    for (UInt32 sign = 0; sign < SignCount; ++sign)
     {
         const PipelineResourceSignatureImplType* const pPSOSign = CustomGetSignature ? CustomGetSignature(sign) : m_pPipelineState->GetResourceSignature(sign);
         if (pPSOSign == nullptr || pPSOSign->GetTotalResourceCount() == 0)

@@ -39,7 +39,7 @@ using namespace Diligent::Testing;
 namespace
 {
 
-BufferDesc GetSparseBuffDesc(const char* Name, USAGE Usage, Uint64 Size)
+BufferDesc GetSparseBuffDesc(const char* Name, USAGE Usage, UInt64 Size)
 {
     BufferDesc BuffDesc;
     BuffDesc.Name              = Name;
@@ -175,8 +175,8 @@ TEST_P(DynamicBufferResizeTest, Run)
 
     FastRandInt rnd{0, 0, 255};
 
-    constexpr Uint32   MaxSize = 1024 << 10;
-    std::vector<Uint8> RefData(MaxSize);
+    constexpr UInt32   MaxSize = 1024 << 10;
+    std::vector<UInt8> RefData(MaxSize);
     for (auto& Val : RefData)
         Val = rnd() & 0xFF;
 
@@ -192,13 +192,13 @@ TEST_P(DynamicBufferResizeTest, Run)
         ASSERT_NE(pStagingBuff, nullptr);
     }
 
-    auto UpdateBuffer = [&](IBuffer* pBuffer, Uint64 Offset, Uint64 Size) //
+    auto UpdateBuffer = [&](IBuffer* pBuffer, UInt64 Offset, UInt64 Size) //
     {
         VERIFY_EXPR(Offset + Size <= RefData.size());
         pContext->UpdateBuffer(pBuffer, Offset, Size, &RefData[static_cast<size_t>(Offset)], RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
     };
 
-    auto VerifyBuffer = [&](IBuffer* pBuffer, Uint64 Offset, Uint64 Size) //
+    auto VerifyBuffer = [&](IBuffer* pBuffer, UInt64 Offset, UInt64 Size) //
     {
         VERIFY_EXPR(Size > 0);
         VERIFY_EXPR(Offset + Size <= RefData.size());
@@ -206,7 +206,7 @@ TEST_P(DynamicBufferResizeTest, Run)
         pContext->WaitForIdle();
         void* pData = nullptr;
         pContext->MapBuffer(pStagingBuff, MAP_READ, MAP_FLAG_DO_NOT_WAIT, pData);
-        bool IsEqual = (memcmp(reinterpret_cast<const Uint8*>(pData) + Offset, &RefData[static_cast<size_t>(Offset)], static_cast<size_t>(Size)) == 0);
+        bool IsEqual = (memcmp(reinterpret_cast<const UInt8*>(pData) + Offset, &RefData[static_cast<size_t>(Offset)], static_cast<size_t>(Size)) == 0);
         pContext->UnmapBuffer(pStagingBuff, MAP_READ);
         return IsEqual;
     };
@@ -225,7 +225,7 @@ TEST_P(DynamicBufferResizeTest, Run)
 
         auto* pBuffer = DynBuff.Update(pDevice, Usage == USAGE_SPARSE ? pContext : nullptr);
         EXPECT_EQ(pBuffer, DynBuff.GetBuffer());
-        EXPECT_EQ(DynBuff.GetVersion(), Uint32{1});
+        EXPECT_EQ(DynBuff.GetVersion(), UInt32{1});
         EXPECT_FALSE(DynBuff.PendingUpdate());
         ASSERT_NE(pBuffer, nullptr);
         if (Usage != USAGE_SPARSE)

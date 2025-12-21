@@ -122,10 +122,10 @@ void TestingSwapChainD3D11::TakeSnapshot(ITexture* pCopyFrom)
     {
         m_ReferenceDataPitch = MappedData.RowPitch;
         m_ReferenceData.resize(m_ReferenceDataPitch * m_SwapChainDesc.Height);
-        for (Uint32 row = 0; row < m_SwapChainDesc.Height; ++row)
+        for (UInt32 row = 0; row < m_SwapChainDesc.Height; ++row)
         {
             memcpy(&m_ReferenceData[row * m_ReferenceDataPitch],
-                   reinterpret_cast<const Uint8*>(MappedData.pData) + row * m_ReferenceDataPitch,
+                   reinterpret_cast<const UInt8*>(MappedData.pData) + row * m_ReferenceDataPitch,
                    m_ReferenceDataPitch);
         }
     }

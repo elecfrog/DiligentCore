@@ -65,18 +65,18 @@ public:
     void Initialize(const PipelineResourceSignatureD3D11Impl& Signature,
                     IMemoryAllocator&                         Allocator,
                     const SHADER_RESOURCE_VARIABLE_TYPE*      AllowedVarTypes,
-                    Uint32                                    NumAllowedTypes,
+                    UInt32                                    NumAllowedTypes,
                     SHADER_TYPE                               ShaderType);
 
     static size_t GetRequiredMemorySize(const PipelineResourceSignatureD3D11Impl& Signature,
                                         const SHADER_RESOURCE_VARIABLE_TYPE*      AllowedVarTypes,
-                                        Uint32                                    NumAllowedTypes,
+                                        UInt32                                    NumAllowedTypes,
                                         SHADER_TYPE                               ShaderType);
 
     using ResourceAttribs = PipelineResourceAttribsD3D11;
 
-    const PipelineResourceDesc& GetResourceDesc(Uint32 Index) const;
-    const ResourceAttribs&      GetResourceAttribs(Uint32 Index) const;
+    const PipelineResourceDesc& GetResourceDesc(UInt32 Index) const;
+    const ResourceAttribs&      GetResourceAttribs(UInt32 Index) const;
 
 
     template <typename ThisImplType, D3D11_RESOURCE_RANGE ResRange>
@@ -85,7 +85,7 @@ public:
     public:
         using TBase = ShaderVariableBase<ThisImplType, ShaderVariableManagerD3D11, IShaderResourceVariableD3D>;
 
-        ShaderVariableD3D11Base(ShaderVariableManagerD3D11& ParentLayout, Uint32 ResIndex) :
+        ShaderVariableD3D11Base(ShaderVariableManagerD3D11& ParentLayout, UInt32 ResIndex) :
             TBase{ParentLayout, ResIndex}
         {}
 
@@ -122,13 +122,13 @@ public:
             HLSLResDesc.ShaderRegister = GetAttribs().BindPoints[m_ParentManager.m_ShaderTypeIndex];
         }
 
-        virtual IDeviceObject* DILIGENT_CALL_TYPE Get(Uint32 ArrayIndex) const override final
+        virtual IDeviceObject* DILIGENT_CALL_TYPE Get(UInt32 ArrayIndex) const override final
         {
             VERIFY_EXPR(ArrayIndex < this->GetDesc().ArraySize);
             return m_ParentManager.m_ResourceCache.template GetResource<ResRange>(GetAttribs().BindPoints + ArrayIndex).Get();
         }
 
-        void SetDynamicOffset(Uint32 ArrayIndex, Uint32 DynamicOffset)
+        void SetDynamicOffset(UInt32 ArrayIndex, UInt32 DynamicOffset)
         {
             UNSUPPORTED("Dynamic offset may only be set for constant buffers.");
         }
@@ -136,18 +136,18 @@ public:
 
     struct ConstBuffBindInfo final : ShaderVariableD3D11Base<ConstBuffBindInfo, D3D11_RESOURCE_RANGE_CBV>
     {
-        ConstBuffBindInfo(ShaderVariableManagerD3D11& ParentLayout, Uint32 ResIndex) :
+        ConstBuffBindInfo(ShaderVariableManagerD3D11& ParentLayout, UInt32 ResIndex) :
             ShaderVariableD3D11Base<ConstBuffBindInfo, D3D11_RESOURCE_RANGE_CBV>{ParentLayout, ResIndex}
         {}
 
         void BindResource(const BindResourceInfo& BindInfo);
 
-        void SetDynamicOffset(Uint32 ArrayIndex, Uint32 Offset);
+        void SetDynamicOffset(UInt32 ArrayIndex, UInt32 Offset);
     };
 
     struct TexSRVBindInfo final : ShaderVariableD3D11Base<TexSRVBindInfo, D3D11_RESOURCE_RANGE_SRV>
     {
-        TexSRVBindInfo(ShaderVariableManagerD3D11& ParentLayout, Uint32 ResIndex) :
+        TexSRVBindInfo(ShaderVariableManagerD3D11& ParentLayout, UInt32 ResIndex) :
             ShaderVariableD3D11Base<TexSRVBindInfo, D3D11_RESOURCE_RANGE_SRV>{ParentLayout, ResIndex}
         {}
 
@@ -156,7 +156,7 @@ public:
 
     struct TexUAVBindInfo final : ShaderVariableD3D11Base<TexUAVBindInfo, D3D11_RESOURCE_RANGE_UAV>
     {
-        TexUAVBindInfo(ShaderVariableManagerD3D11& ParentLayout, Uint32 ResIndex) :
+        TexUAVBindInfo(ShaderVariableManagerD3D11& ParentLayout, UInt32 ResIndex) :
             ShaderVariableD3D11Base<TexUAVBindInfo, D3D11_RESOURCE_RANGE_UAV>{ParentLayout, ResIndex}
         {}
 
@@ -165,7 +165,7 @@ public:
 
     struct BuffUAVBindInfo final : ShaderVariableD3D11Base<BuffUAVBindInfo, D3D11_RESOURCE_RANGE_UAV>
     {
-        BuffUAVBindInfo(ShaderVariableManagerD3D11& ParentLayout, Uint32 ResIndex) :
+        BuffUAVBindInfo(ShaderVariableManagerD3D11& ParentLayout, UInt32 ResIndex) :
             ShaderVariableD3D11Base<BuffUAVBindInfo, D3D11_RESOURCE_RANGE_UAV>{ParentLayout, ResIndex}
         {}
 
@@ -174,7 +174,7 @@ public:
 
     struct BuffSRVBindInfo final : ShaderVariableD3D11Base<BuffSRVBindInfo, D3D11_RESOURCE_RANGE_SRV>
     {
-        BuffSRVBindInfo(ShaderVariableManagerD3D11& ParentLayout, Uint32 ResIndex) :
+        BuffSRVBindInfo(ShaderVariableManagerD3D11& ParentLayout, UInt32 ResIndex) :
             ShaderVariableD3D11Base<BuffSRVBindInfo, D3D11_RESOURCE_RANGE_SRV>{ParentLayout, ResIndex}
         {}
 
@@ -183,7 +183,7 @@ public:
 
     struct SamplerBindInfo final : ShaderVariableD3D11Base<SamplerBindInfo, D3D11_RESOURCE_RANGE_SAMPLER>
     {
-        SamplerBindInfo(ShaderVariableManagerD3D11& ParentLayout, Uint32 ResIndex) :
+        SamplerBindInfo(ShaderVariableManagerD3D11& ParentLayout, UInt32 ResIndex) :
             ShaderVariableD3D11Base<SamplerBindInfo, D3D11_RESOURCE_RANGE_SAMPLER>{ParentLayout, ResIndex}
         {}
 
@@ -197,40 +197,40 @@ public:
                         SHADER_RESOURCE_VARIABLE_TYPE_FLAGS& StaleVarTypes) const;
 
     IShaderResourceVariable* GetVariable(const Char* Name) const;
-    IShaderResourceVariable* GetVariable(Uint32 Index) const;
+    IShaderResourceVariable* GetVariable(UInt32 Index) const;
 
     IObject& GetOwner() { return m_Owner; }
 
-    Uint32 GetVariableCount() const;
+    UInt32 GetVariableCount() const;
 
-    Uint32 GetVariableIndex(const IShaderResourceVariable& Variable) const;
+    UInt32 GetVariableIndex(const IShaderResourceVariable& Variable) const;
 
     // clang-format off
-    Uint32 GetNumCBs()      const { return (m_TexSRVsOffset  - 0               ) / sizeof(ConstBuffBindInfo);}
-    Uint32 GetNumTexSRVs()  const { return (m_TexUAVsOffset  - m_TexSRVsOffset ) / sizeof(TexSRVBindInfo);   }
-    Uint32 GetNumTexUAVs()  const { return (m_BuffSRVsOffset - m_TexUAVsOffset ) / sizeof(TexUAVBindInfo) ;  }
-    Uint32 GetNumBufSRVs()  const { return (m_BuffUAVsOffset - m_BuffSRVsOffset) / sizeof(BuffSRVBindInfo);  }
-    Uint32 GetNumBufUAVs()  const { return (m_SamplerOffset  - m_BuffUAVsOffset) / sizeof(BuffUAVBindInfo);  }
-    Uint32 GetNumSamplers() const { return (m_MemorySize     - m_SamplerOffset ) / sizeof(SamplerBindInfo);  }
+    UInt32 GetNumCBs()      const { return (m_TexSRVsOffset  - 0               ) / sizeof(ConstBuffBindInfo);}
+    UInt32 GetNumTexSRVs()  const { return (m_TexUAVsOffset  - m_TexSRVsOffset ) / sizeof(TexSRVBindInfo);   }
+    UInt32 GetNumTexUAVs()  const { return (m_BuffSRVsOffset - m_TexUAVsOffset ) / sizeof(TexUAVBindInfo) ;  }
+    UInt32 GetNumBufSRVs()  const { return (m_BuffUAVsOffset - m_BuffSRVsOffset) / sizeof(BuffSRVBindInfo);  }
+    UInt32 GetNumBufUAVs()  const { return (m_SamplerOffset  - m_BuffUAVsOffset) / sizeof(BuffUAVBindInfo);  }
+    UInt32 GetNumSamplers() const { return (m_MemorySize     - m_SamplerOffset ) / sizeof(SamplerBindInfo);  }
 
-    template<typename ResourceType> Uint32 GetNumResources()const;
-    template<> Uint32 GetNumResources<ConstBuffBindInfo>() const { return GetNumCBs();      }
-    template<> Uint32 GetNumResources<TexSRVBindInfo>   () const { return GetNumTexSRVs();  }
-    template<> Uint32 GetNumResources<TexUAVBindInfo>   () const { return GetNumTexUAVs();  }
-    template<> Uint32 GetNumResources<BuffSRVBindInfo>  () const { return GetNumBufSRVs();  }
-    template<> Uint32 GetNumResources<BuffUAVBindInfo>  () const { return GetNumBufUAVs();  }
-    template<> Uint32 GetNumResources<SamplerBindInfo>  () const { return GetNumSamplers(); }
+    template<typename ResourceType> UInt32 GetNumResources()const;
+    template<> UInt32 GetNumResources<ConstBuffBindInfo>() const { return GetNumCBs();      }
+    template<> UInt32 GetNumResources<TexSRVBindInfo>   () const { return GetNumTexSRVs();  }
+    template<> UInt32 GetNumResources<TexUAVBindInfo>   () const { return GetNumTexUAVs();  }
+    template<> UInt32 GetNumResources<BuffSRVBindInfo>  () const { return GetNumBufSRVs();  }
+    template<> UInt32 GetNumResources<BuffUAVBindInfo>  () const { return GetNumBufUAVs();  }
+    template<> UInt32 GetNumResources<SamplerBindInfo>  () const { return GetNumSamplers(); }
     // clang-format on
 
 private:
     static D3DShaderResourceCounters CountResources(
         const PipelineResourceSignatureD3D11Impl& Signature,
         const SHADER_RESOURCE_VARIABLE_TYPE*      AllowedVarTypes,
-        Uint32                                    NumAllowedTypes,
+        UInt32                                    NumAllowedTypes,
         SHADER_TYPE                               ShaderType);
 
     // clang-format off
-    using OffsetType = Uint16;
+    using OffsetType = UInt16;
     template<typename ResourceType> OffsetType GetResourceOffset()const;
     template<> OffsetType GetResourceOffset<ConstBuffBindInfo>() const { return 0;                }
     template<> OffsetType GetResourceOffset<TexSRVBindInfo>   () const { return m_TexSRVsOffset;  }
@@ -241,19 +241,19 @@ private:
     // clang-format on
 
     template <typename ResourceType>
-    ResourceType& GetResource(Uint32 ResIndex) const
+    ResourceType& GetResource(UInt32 ResIndex) const
     {
         VERIFY(ResIndex < GetNumResources<ResourceType>(), "Resource index (", ResIndex, ") must be less than (", GetNumResources<ResourceType>(), ")");
         OffsetType Offset = GetResourceOffset<ResourceType>();
-        return reinterpret_cast<ResourceType*>(reinterpret_cast<Uint8*>(m_pVariables) + Offset)[ResIndex];
+        return reinterpret_cast<ResourceType*>(reinterpret_cast<UInt8*>(m_pVariables) + Offset)[ResIndex];
     }
 
     template <typename ResourceType>
-    const ResourceType& GetConstResource(Uint32 ResIndex) const
+    const ResourceType& GetConstResource(UInt32 ResIndex) const
     {
         VERIFY(ResIndex < GetNumResources<ResourceType>(), "Resource index (", ResIndex, ") must be less than (", GetNumResources<ResourceType>(), ")");
         OffsetType Offset = GetResourceOffset<ResourceType>();
-        return reinterpret_cast<const ResourceType*>(reinterpret_cast<const Uint8*>(m_pVariables) + Offset)[ResIndex];
+        return reinterpret_cast<const ResourceType*>(reinterpret_cast<const UInt8*>(m_pVariables) + Offset)[ResIndex];
     }
 
     template <typename ResourceType>
@@ -272,22 +272,22 @@ private:
                          THandleBufUAV  HandleBufUAV,
                          THandleSampler HandleSampler)
     {
-        for (Uint32 cb = 0; cb < GetNumResources<ConstBuffBindInfo>(); ++cb)
+        for (UInt32 cb = 0; cb < GetNumResources<ConstBuffBindInfo>(); ++cb)
             HandleCB(GetResource<ConstBuffBindInfo>(cb));
 
-        for (Uint32 t = 0; t < GetNumResources<TexSRVBindInfo>(); ++t)
+        for (UInt32 t = 0; t < GetNumResources<TexSRVBindInfo>(); ++t)
             HandleTexSRV(GetResource<TexSRVBindInfo>(t));
 
-        for (Uint32 u = 0; u < GetNumResources<TexUAVBindInfo>(); ++u)
+        for (UInt32 u = 0; u < GetNumResources<TexUAVBindInfo>(); ++u)
             HandleTexUAV(GetResource<TexUAVBindInfo>(u));
 
-        for (Uint32 s = 0; s < GetNumResources<BuffSRVBindInfo>(); ++s)
+        for (UInt32 s = 0; s < GetNumResources<BuffSRVBindInfo>(); ++s)
             HandleBufSRV(GetResource<BuffSRVBindInfo>(s));
 
-        for (Uint32 u = 0; u < GetNumResources<BuffUAVBindInfo>(); ++u)
+        for (UInt32 u = 0; u < GetNumResources<BuffUAVBindInfo>(); ++u)
             HandleBufUAV(GetResource<BuffUAVBindInfo>(u));
 
-        for (Uint32 s = 0; s < GetNumResources<SamplerBindInfo>(); ++s)
+        for (UInt32 s = 0; s < GetNumResources<SamplerBindInfo>(); ++s)
             HandleSampler(GetResource<SamplerBindInfo>(s));
     }
 
@@ -304,27 +304,27 @@ private:
                               THandleBufUAV  HandleBufUAV,
                               THandleSampler HandleSampler) const
     {
-        for (Uint32 cb = 0; cb < GetNumResources<ConstBuffBindInfo>(); ++cb)
+        for (UInt32 cb = 0; cb < GetNumResources<ConstBuffBindInfo>(); ++cb)
             if (!HandleCB(GetConstResource<ConstBuffBindInfo>(cb)))
                 return;
 
-        for (Uint32 t = 0; t < GetNumResources<TexSRVBindInfo>(); ++t)
+        for (UInt32 t = 0; t < GetNumResources<TexSRVBindInfo>(); ++t)
             if (!HandleTexSRV(GetConstResource<TexSRVBindInfo>(t)))
                 return;
 
-        for (Uint32 u = 0; u < GetNumResources<TexUAVBindInfo>(); ++u)
+        for (UInt32 u = 0; u < GetNumResources<TexUAVBindInfo>(); ++u)
             if (!HandleTexUAV(GetConstResource<TexUAVBindInfo>(u)))
                 return;
 
-        for (Uint32 s = 0; s < GetNumResources<BuffSRVBindInfo>(); ++s)
+        for (UInt32 s = 0; s < GetNumResources<BuffSRVBindInfo>(); ++s)
             if (!HandleBufSRV(GetConstResource<BuffSRVBindInfo>(s)))
                 return;
 
-        for (Uint32 u = 0; u < GetNumResources<BuffUAVBindInfo>(); ++u)
+        for (UInt32 u = 0; u < GetNumResources<BuffUAVBindInfo>(); ++u)
             if (!HandleBufUAV(GetConstResource<BuffUAVBindInfo>(u)))
                 return;
 
-        for (Uint32 s = 0; s < GetNumResources<SamplerBindInfo>(); ++s)
+        for (UInt32 s = 0; s < GetNumResources<SamplerBindInfo>(); ++s)
             if (!HandleSampler(GetConstResource<SamplerBindInfo>(s)))
                 return;
     }
@@ -341,7 +341,7 @@ private:
     OffsetType m_SamplerOffset  = 0;
     OffsetType m_MemorySize     = 0;
 
-    Uint8 m_ShaderTypeIndex = 0;
+    UInt8 m_ShaderTypeIndex = 0;
 };
 
 } // namespace Diligent

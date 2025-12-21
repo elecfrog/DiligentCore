@@ -40,13 +40,13 @@ namespace Diligent
 template <typename HandlerType>
 void ProcessSignatureResources(const PipelineResourceSignatureVkImpl& Signature,
                                const SHADER_RESOURCE_VARIABLE_TYPE*   AllowedVarTypes,
-                               Uint32                                 NumAllowedTypes,
+                               UInt32                                 NumAllowedTypes,
                                SHADER_TYPE                            ShaderStages,
                                HandlerType&&                          Handler)
 {
     const bool UsingSeparateSamplers = Signature.IsUsingSeparateSamplers();
     Signature.ProcessResources(AllowedVarTypes, NumAllowedTypes, ShaderStages,
-                               [&](const PipelineResourceDesc& ResDesc, Uint32 Index) //
+                               [&](const PipelineResourceDesc& ResDesc, UInt32 Index) //
                                {
                                    const PipelineResourceAttribsVk& ResAttr = Signature.GetResourceAttribs(Index);
 
@@ -62,16 +62,16 @@ void ProcessSignatureResources(const PipelineResourceSignatureVkImpl& Signature,
 
 size_t ShaderVariableManagerVk::GetRequiredMemorySize(const PipelineResourceSignatureVkImpl& Signature,
                                                       const SHADER_RESOURCE_VARIABLE_TYPE*   AllowedVarTypes,
-                                                      Uint32                                 NumAllowedTypes,
+                                                      UInt32                                 NumAllowedTypes,
                                                       SHADER_TYPE                            ShaderStages,
-                                                      Uint32*                                pNumVariables)
+                                                      UInt32*                                pNumVariables)
 {
-    Uint32 NumVariables = 0;
+    UInt32 NumVariables = 0;
     if (pNumVariables == nullptr)
         pNumVariables = &NumVariables;
     *pNumVariables = 0;
     ProcessSignatureResources(Signature, AllowedVarTypes, NumAllowedTypes, ShaderStages,
-                              [pNumVariables](Uint32) //
+                              [pNumVariables](UInt32) //
                               {
                                   ++(*pNumVariables);
                               });
@@ -83,7 +83,7 @@ size_t ShaderVariableManagerVk::GetRequiredMemorySize(const PipelineResourceSign
 void ShaderVariableManagerVk::Initialize(const PipelineResourceSignatureVkImpl& Signature,
                                          IMemoryAllocator&                      Allocator,
                                          const SHADER_RESOURCE_VARIABLE_TYPE*   AllowedVarTypes,
-                                         Uint32                                 NumAllowedTypes,
+                                         UInt32                                 NumAllowedTypes,
                                          SHADER_TYPE                            ShaderType)
 {
     VERIFY_EXPR(m_NumVariables == 0);
@@ -94,9 +94,9 @@ void ShaderVariableManagerVk::Initialize(const PipelineResourceSignatureVkImpl& 
 
     TBase::Initialize(Signature, Allocator, MemSize);
 
-    Uint32 VarInd = 0;
+    UInt32 VarInd = 0;
     ProcessSignatureResources(Signature, AllowedVarTypes, NumAllowedTypes, ShaderType,
-                              [this, &VarInd](Uint32 ResIndex) //
+                              [this, &VarInd](UInt32 ResIndex) //
                               {
                                   ::new (m_pVariables + VarInd) ShaderVariableVkImpl{*this, ResIndex};
                                   ++VarInd;
@@ -108,7 +108,7 @@ void ShaderVariableManagerVk::Destroy(IMemoryAllocator& Allocator)
 {
     if (m_pVariables != nullptr)
     {
-        for (Uint32 v = 0; v < m_NumVariables; ++v)
+        for (UInt32 v = 0; v < m_NumVariables; ++v)
             m_pVariables[v].~ShaderVariableVkImpl();
     }
     TBase::Destroy(Allocator);
@@ -116,7 +116,7 @@ void ShaderVariableManagerVk::Destroy(IMemoryAllocator& Allocator)
 
 ShaderVariableVkImpl* ShaderVariableManagerVk::GetVariable(const Char* Name) const
 {
-    for (Uint32 v = 0; v < m_NumVariables; ++v)
+    for (UInt32 v = 0; v < m_NumVariables; ++v)
     {
         ShaderVariableVkImpl& Var = m_pVariables[v];
         if (strcmp(Var.GetDesc().Name, Name) == 0)
@@ -126,7 +126,7 @@ ShaderVariableVkImpl* ShaderVariableManagerVk::GetVariable(const Char* Name) con
 }
 
 
-ShaderVariableVkImpl* ShaderVariableManagerVk::GetVariable(Uint32 Index) const
+ShaderVariableVkImpl* ShaderVariableManagerVk::GetVariable(UInt32 Index) const
 {
     if (Index >= m_NumVariables)
     {
@@ -137,7 +137,7 @@ ShaderVariableVkImpl* ShaderVariableManagerVk::GetVariable(Uint32 Index) const
     return m_pVariables + Index;
 }
 
-Uint32 ShaderVariableManagerVk::GetVariableIndex(const ShaderVariableVkImpl& Variable)
+UInt32 ShaderVariableManagerVk::GetVariableIndex(const ShaderVariableVkImpl& Variable)
 {
     if (m_pVariables == nullptr)
     {
@@ -145,9 +145,9 @@ Uint32 ShaderVariableManagerVk::GetVariableIndex(const ShaderVariableVkImpl& Var
         return ~0u;
     }
 
-    const ptrdiff_t Offset = reinterpret_cast<const Uint8*>(&Variable) - reinterpret_cast<Uint8*>(m_pVariables);
+    const ptrdiff_t Offset = reinterpret_cast<const UInt8*>(&Variable) - reinterpret_cast<UInt8*>(m_pVariables);
     DEV_CHECK_ERR(Offset % sizeof(ShaderVariableVkImpl) == 0, "Offset is not multiple of ShaderVariableVkImpl class size");
-    const Uint32 Index = static_cast<Uint32>(Offset / sizeof(ShaderVariableVkImpl));
+    const UInt32 Index = static_cast<UInt32>(Offset / sizeof(ShaderVariableVkImpl));
     if (Index < m_NumVariables)
         return Index;
     else
@@ -157,13 +157,13 @@ Uint32 ShaderVariableManagerVk::GetVariableIndex(const ShaderVariableVkImpl& Var
     }
 }
 
-const PipelineResourceDesc& ShaderVariableManagerVk::GetResourceDesc(Uint32 Index) const
+const PipelineResourceDesc& ShaderVariableManagerVk::GetResourceDesc(UInt32 Index) const
 {
     VERIFY_EXPR(m_pSignature);
     return m_pSignature->GetResourceDesc(Index);
 }
 
-const ShaderVariableManagerVk::ResourceAttribs& ShaderVariableManagerVk::GetResourceAttribs(Uint32 Index) const
+const ShaderVariableManagerVk::ResourceAttribs& ShaderVariableManagerVk::GetResourceAttribs(UInt32 Index) const
 {
     VERIFY_EXPR(m_pSignature);
     return m_pSignature->GetResourceAttribs(Index);
@@ -188,7 +188,7 @@ namespace
 #ifdef DILIGENT_DEVELOPMENT
 inline BUFFER_VIEW_TYPE DvpDescriptorTypeToBufferView(DescriptorType Type)
 {
-    static_assert(static_cast<Uint32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
+    static_assert(static_cast<UInt32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
     switch (Type)
     {
         case DescriptorType::UniformTexelBuffer:
@@ -210,7 +210,7 @@ inline BUFFER_VIEW_TYPE DvpDescriptorTypeToBufferView(DescriptorType Type)
 
 inline TEXTURE_VIEW_TYPE DvpDescriptorTypeToTextureView(DescriptorType Type)
 {
-    static_assert(static_cast<Uint32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
+    static_assert(static_cast<UInt32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
     switch (Type)
     {
         case DescriptorType::StorageImage:
@@ -233,8 +233,8 @@ struct BindResourceHelper
 {
     BindResourceHelper(const PipelineResourceSignatureVkImpl& Signature,
                        ShaderResourceCacheVk&                 ResourceCache,
-                       Uint32                                 ResIndex,
-                       Uint32                                 ArrayIndex);
+                       UInt32                                 ResIndex,
+                       UInt32                                 ArrayIndex);
 
     void operator()(const BindResourceInfo& BindInfo) const;
 
@@ -252,8 +252,8 @@ private:
     template <typename ObjectType>
     bool UpdateCachedResource(RefCntAutoPtr<ObjectType>&& pObject,
                               SET_SHADER_RESOURCE_FLAGS   Flags,
-                              Uint64                      BufferBaseOffset = 0,
-                              Uint64                      BufferRangeSize  = 0) const;
+                              UInt64                      BufferBaseOffset = 0,
+                              UInt64                      BufferRangeSize  = 0) const;
 
 private:
     using ResourceAttribs = PipelineResourceSignatureVkImpl::ResourceAttribs;
@@ -261,19 +261,19 @@ private:
 
     const PipelineResourceSignatureVkImpl& m_Signature;
     ShaderResourceCacheVk&                 m_ResourceCache;
-    const Uint32                           m_ArrayIndex;
+    const UInt32                           m_ArrayIndex;
     const ResourceCacheContentType         m_CacheType;
     const PipelineResourceDesc&            m_ResDesc;
     const ResourceAttribs&                 m_Attribs;
-    const Uint32                           m_DstResCacheOffset;
+    const UInt32                           m_DstResCacheOffset;
     const CachedSet&                       m_CachedSet;
     const ShaderResourceCacheVk::Resource& m_DstRes;
 };
 
 BindResourceHelper::BindResourceHelper(const PipelineResourceSignatureVkImpl& Signature,
                                        ShaderResourceCacheVk&                 ResourceCache,
-                                       Uint32                                 ResIndex,
-                                       Uint32                                 ArrayIndex) :
+                                       UInt32                                 ResIndex,
+                                       UInt32                                 ArrayIndex) :
     // clang-format off
     m_Signature         {Signature},
     m_ResourceCache     {ResourceCache},
@@ -322,7 +322,7 @@ void BindResourceHelper::operator()(const BindResourceInfo& BindInfo) const
 
     if (BindInfo.pObject != nullptr)
     {
-        static_assert(static_cast<Uint32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
+        static_assert(static_cast<UInt32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
         switch (m_DstRes.Type)
         {
             case DescriptorType::UniformBuffer:
@@ -371,7 +371,7 @@ void BindResourceHelper::operator()(const BindResourceInfo& BindInfo) const
                 CacheAccelerationStructure(BindInfo);
                 break;
 
-            default: UNEXPECTED("Unknown resource type ", static_cast<Uint32>(m_DstRes.Type));
+            default: UNEXPECTED("Unknown resource type ", static_cast<UInt32>(m_DstRes.Type));
         }
     }
     else
@@ -390,8 +390,8 @@ void BindResourceHelper::operator()(const BindResourceInfo& BindInfo) const
 template <typename ObjectType>
 bool BindResourceHelper::UpdateCachedResource(RefCntAutoPtr<ObjectType>&& pObject,
                                               SET_SHADER_RESOURCE_FLAGS   Flags,
-                                              Uint64                      BufferBaseOffset,
-                                              Uint64                      BufferRangeSize) const
+                                              UInt64                      BufferBaseOffset,
+                                              UInt64                      BufferRangeSize) const
 {
     if (pObject)
     {
@@ -622,7 +622,7 @@ void BindResourceHelper::CacheAccelerationStructure(const BindResourceInfo& Bind
 } // namespace
 
 
-void ShaderVariableManagerVk::BindResource(Uint32 ResIndex, const BindResourceInfo& BindInfo)
+void ShaderVariableManagerVk::BindResource(UInt32 ResIndex, const BindResourceInfo& BindInfo)
 {
     BindResourceHelper BindHelper{
         *m_pSignature,
@@ -633,12 +633,12 @@ void ShaderVariableManagerVk::BindResource(Uint32 ResIndex, const BindResourceIn
     BindHelper(BindInfo);
 }
 
-void ShaderVariableManagerVk::SetBufferDynamicOffset(Uint32 ResIndex,
-                                                     Uint32 ArrayIndex,
-                                                     Uint32 BufferDynamicOffset)
+void ShaderVariableManagerVk::SetBufferDynamicOffset(UInt32 ResIndex,
+                                                     UInt32 ArrayIndex,
+                                                     UInt32 BufferDynamicOffset)
 {
     const PipelineResourceAttribsVk& Attribs           = m_pSignature->GetResourceAttribs(ResIndex);
-    const Uint32                     DstResCacheOffset = Attribs.CacheOffset(m_ResourceCache.GetContentType()) + ArrayIndex;
+    const UInt32                     DstResCacheOffset = Attribs.CacheOffset(m_ResourceCache.GetContentType()) + ArrayIndex;
 #ifdef DILIGENT_DEVELOPMENT
     {
         const PipelineResourceDesc&                 ResDesc = m_pSignature->GetResourceDesc(ResIndex);
@@ -650,11 +650,11 @@ void ShaderVariableManagerVk::SetBufferDynamicOffset(Uint32 ResIndex,
     m_ResourceCache.SetDynamicBufferOffset(Attribs.DescrSet, DstResCacheOffset, BufferDynamicOffset);
 }
 
-IDeviceObject* ShaderVariableManagerVk::Get(Uint32 ArrayIndex, Uint32 ResIndex) const
+IDeviceObject* ShaderVariableManagerVk::Get(UInt32 ArrayIndex, UInt32 ResIndex) const
 {
     const PipelineResourceDesc&      ResDesc     = GetResourceDesc(ResIndex);
     const PipelineResourceAttribsVk& Attribs     = GetResourceAttribs(ResIndex);
-    const Uint32                     CacheOffset = Attribs.CacheOffset(m_ResourceCache.GetContentType());
+    const UInt32                     CacheOffset = Attribs.CacheOffset(m_ResourceCache.GetContentType());
 
     VERIFY_EXPR(ArrayIndex < ResDesc.ArraySize);
 

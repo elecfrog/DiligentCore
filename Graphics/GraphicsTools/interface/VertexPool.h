@@ -52,10 +52,10 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_VertexPool =
 struct IVertexPoolAllocation : public IObject
 {
     /// Returns the start vertex of the allocation.
-    virtual Uint32 GetStartVertex() const = 0;
+    virtual UInt32 GetStartVertex() const = 0;
 
     /// Returns the number of vertices in the allocation.
-    virtual Uint32 GetVertexCount() const = 0;
+    virtual UInt32 GetVertexCount() const = 0;
 
     /// Returns a pointer to the parent vertex pool.
     virtual IVertexPool* GetPool() = 0;
@@ -63,12 +63,12 @@ struct IVertexPoolAllocation : public IObject
     /// Updates internal buffer at the given index.
 
     /// \remarks    This method is a shortcut for GetPool()->Update(Index, pDevice, pContext).
-    virtual IBuffer* Update(Uint32 Index, IRenderDevice* pDevice, IDeviceContext* pContext) = 0;
+    virtual IBuffer* Update(UInt32 Index, IRenderDevice* pDevice, IDeviceContext* pContext) = 0;
 
     /// Returns a pointer to the internal buffer at the given index.
 
     /// \remarks    This method is a shortcut for GetPool()->GetBuffer(Index).
-    virtual IBuffer* GetBuffer(Uint32 Index) const = 0;
+    virtual IBuffer* GetBuffer(UInt32 Index) const = 0;
 
     /// Stores a pointer to the user-provided data object, which
     /// may later be retrieved through GetUserData().
@@ -91,19 +91,19 @@ struct IVertexPoolAllocation : public IObject
 struct VertexPoolUsageStats
 {
     /// The total number of vertices in the pool.
-    Uint64 TotalVertexCount = 0;
+    UInt64 TotalVertexCount = 0;
 
     /// The number of vertices allocated from the pool.
-    Uint64 AllocatedVertexCount = 0;
+    UInt64 AllocatedVertexCount = 0;
 
     /// Committed memory size, in bytes.
-    Uint64 CommittedMemorySize = 0;
+    UInt64 CommittedMemorySize = 0;
 
     /// The total memory size used by all allocations, in bytes.
-    Uint64 UsedMemorySize = 0;
+    UInt64 UsedMemorySize = 0;
 
     /// The number of allocations.
-    Uint32 AllocationCount = 0;
+    UInt32 AllocationCount = 0;
 
     VertexPoolUsageStats& operator+=(const VertexPoolUsageStats& RHS)
     {
@@ -121,7 +121,7 @@ struct VertexPoolUsageStats
 struct VertexPoolElementDesc
 {
     /// Element size, in bytes.
-    Uint32 Size DEFAULT_INITIALIZER(0);
+    UInt32 Size DEFAULT_INITIALIZER(0);
 
     /// Buffer bind flags, see Diligent::BIND_FLAGS.
     BIND_FLAGS BindFlags DEFAULT_INITIALIZER(BIND_VERTEX_BUFFER);
@@ -137,7 +137,7 @@ struct VertexPoolElementDesc
 
     constexpr VertexPoolElementDesc() noexcept {}
 
-    constexpr explicit VertexPoolElementDesc(Uint32           _Size,
+    constexpr explicit VertexPoolElementDesc(UInt32           _Size,
                                              BIND_FLAGS       _BindFlags      = VertexPoolElementDesc{}.BindFlags,
                                              USAGE            _Usage          = VertexPoolElementDesc{}.Usage,
                                              BUFFER_MODE      _Mode           = VertexPoolElementDesc{}.Mode,
@@ -178,10 +178,10 @@ struct VertexPoolDesc
     const VertexPoolElementDesc* pElements DEFAULT_INITIALIZER(nullptr);
 
     /// The number of elements.
-    Uint32 NumElements DEFAULT_INITIALIZER(0);
+    UInt32 NumElements DEFAULT_INITIALIZER(0);
 
     /// The number of vertices in the pool.
-    Uint32 VertexCount DEFAULT_INITIALIZER(0);
+    UInt32 VertexCount DEFAULT_INITIALIZER(0);
 
     bool operator==(const VertexPoolDesc& RHS) const
     {
@@ -190,7 +190,7 @@ struct VertexPoolDesc
             VertexCount != RHS.VertexCount)
             return false;
 
-        for (Uint32 i = 0; i < NumElements; ++i)
+        for (UInt32 i = 0; i < NumElements; ++i)
         {
             if (pElements[i] != RHS.pElements[i])
                 return false;
@@ -224,7 +224,7 @@ struct IVertexPool : public IObject
     /// be used to create a new buffer and copy existing contents to the new buffer.
     /// The method is not thread-safe and an application must externally synchronize the
     /// access.
-    virtual IBuffer* Update(Uint32 Index, IRenderDevice* pDevice, IDeviceContext* pContext) = 0;
+    virtual IBuffer* Update(UInt32 Index, IRenderDevice* pDevice, IDeviceContext* pContext) = 0;
 
     /// Updates all internal buffers.
     ///
@@ -236,7 +236,7 @@ struct IVertexPool : public IObject
     /// If the internal buffer has not been initialized yet, the method will return null.
     /// If the buffer may need to be updated (resized or initialized), use the Update()
     /// method.
-    virtual IBuffer* GetBuffer(Uint32 Index) const = 0;
+    virtual IBuffer* GetBuffer(UInt32 Index) const = 0;
 
 
     /// Allocates vertices from the pool.
@@ -246,7 +246,7 @@ struct IVertexPool : public IObject
     ///                            stored.
     ///
     /// \remarks    The method is thread-safe and can be called from multiple threads simultaneously.
-    virtual void Allocate(Uint32                  NumVertices,
+    virtual void Allocate(UInt32                  NumVertices,
                           IVertexPoolAllocation** ppAllocation) = 0;
 
 
@@ -255,7 +255,7 @@ struct IVertexPool : public IObject
 
     /// Returns the internal buffer version. The version is incremented every time
     /// any internal buffer is recreated.
-    virtual Uint32 GetVersion() const = 0;
+    virtual UInt32 GetVersion() const = 0;
 
     /// Returns the pool description.
     virtual const VertexPoolDesc& GetDesc() const = 0;
@@ -273,12 +273,12 @@ struct VertexPoolCreateInfo
     /// When non-zero, the pool will be expanded by the specified number of vertices
     /// every time there is insufficient space. If zero, the pool size will be doubled
     /// when more space is needed.
-    Uint32 ExtraVertexCount = 0;
+    UInt32 ExtraVertexCount = 0;
 
     /// The maximum number of vertices that can be stored in the pool.
 
     /// If zero, the number of vertices is unlimited.
-    Uint32 MaxVertexCount = 0;
+    UInt32 MaxVertexCount = 0;
 
     /// Whether to disable debug validation of the internal pool structure.
 

@@ -122,11 +122,11 @@ void MultithreadedResourceCreationTest::WorkerThreadFunc(MultithreadedResourceCr
 
     const int NumThreads = static_cast<int>(This->m_Threads.size());
 
-    constexpr Uint32 TexWidth  = 512;
-    constexpr Uint32 TexHeight = 512;
+    constexpr UInt32 TexWidth  = 512;
+    constexpr UInt32 TexHeight = 512;
 
-    std::vector<Uint8> RawBufferData(1024);
-    std::vector<Uint8> RawTextureData(TexWidth * TexHeight * 4);
+    std::vector<UInt8> RawBufferData(1024);
+    std::vector<UInt8> RawTextureData(TexWidth * TexHeight * 4);
 
     int SignalIdx = 0;
     while (true)
@@ -137,13 +137,13 @@ void MultithreadedResourceCreationTest::WorkerThreadFunc(MultithreadedResourceCr
             return;
         }
 
-        for (Uint32 i = 0; i < NumBuffersToCreate; ++i)
+        for (UInt32 i = 0; i < NumBuffersToCreate; ++i)
         {
             BufferDesc BuffDesc;
             BuffDesc.Name      = "MT creation test uniform buffer";
             BuffDesc.Usage     = USAGE_DEFAULT;
             BuffDesc.BindFlags = BIND_UNIFORM_BUFFER;
-            BuffDesc.Size      = static_cast<Uint32>(RawBufferData.size());
+            BuffDesc.Size      = static_cast<UInt32>(RawBufferData.size());
 
             BufferData BuffData;
             BuffData.DataSize = BuffDesc.Size;
@@ -201,7 +201,7 @@ void MultithreadedResourceCreationTest::WorkerThreadFunc(MultithreadedResourceCr
                                          << BuffDesc;
         }
 
-        for (Uint32 i = 0; i < NumTexturesToCreate; ++i)
+        for (UInt32 i = 0; i < NumTexturesToCreate; ++i)
         {
             RefCntAutoPtr<ITexture> pTexture;
 
@@ -227,7 +227,7 @@ void MultithreadedResourceCreationTest::WorkerThreadFunc(MultithreadedResourceCr
                                          << TexDesc;
         }
 
-        for (Uint32 i = 0; i < NumPSOToCreate; ++i)
+        for (UInt32 i = 0; i < NumPSOToCreate; ++i)
         {
             RefCntAutoPtr<IShader>        pTrivialVS, pTrivialPS;
             RefCntAutoPtr<IPipelineState> pPSO;
@@ -314,7 +314,7 @@ TEST_F(MultithreadedResourceCreationTest, CreateResources)
         t = std::thread(WorkerThreadFunc, this, &t - m_Threads.data());
 
     int SignalIdx = 0;
-    for (Uint32 iter = 0; iter < NumIterations; ++iter)
+    for (UInt32 iter = 0; iter < NumIterations; ++iter)
     {
         StartWorkerThreadsAndWait(SignalIdx);
         pEnv->ReleaseResources();

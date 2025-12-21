@@ -28,13 +28,13 @@
 #pragma once
 
 #include "../../../Primitives/interface/CommonDefinitions.h"
-#include "../../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 
 DILIGENT_BEGIN_NAMESPACE(Diligent)
 
 struct LinuxNativeWindow
 {
-    Uint32 WindowId      DEFAULT_INITIALIZER(0);
+    UInt32 WindowId      DEFAULT_INITIALIZER(0);
     void* pDisplay       DEFAULT_INITIALIZER(nullptr);
     void* pXCBConnection DEFAULT_INITIALIZER(nullptr);
 };

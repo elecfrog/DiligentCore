@@ -66,10 +66,10 @@ public:
     /// Queries the specific interface, see IObject::QueryInterface() for details
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_BufferGL, TBufferBase)
 
-    void UpdateData(GLContextState& CtxState, Uint64 Offset, Uint64 Size, const void* pData);
-    void CopyData(GLContextState& CtxState, BufferGLImpl& SrcBufferGL, Uint64 SrcOffset, Uint64 DstOffset, Uint64 Size);
-    void Map(GLContextState& CtxState, MAP_TYPE MapType, Uint32 MapFlags, PVoid& pMappedData);
-    void MapRange(GLContextState& CtxState, MAP_TYPE MapType, Uint32 MapFlags, Uint64 Offset, Uint64 Length, PVoid& pMappedData);
+    void UpdateData(GLContextState& CtxState, UInt64 Offset, UInt64 Size, const void* pData);
+    void CopyData(GLContextState& CtxState, BufferGLImpl& SrcBufferGL, UInt64 SrcOffset, UInt64 DstOffset, UInt64 Size);
+    void Map(GLContextState& CtxState, MAP_TYPE MapType, UInt32 MapFlags, PVoid& pMappedData);
+    void MapRange(GLContextState& CtxState, MAP_TYPE MapType, UInt32 MapFlags, UInt64 Offset, UInt64 Length, PVoid& pMappedData);
     void Unmap(GLContextState& CtxState);
 
     __forceinline void BufferMemoryBarrier(MEMORY_BARRIER RequiredBarriers, GLContextState& GLContextState);
@@ -80,7 +80,7 @@ public:
     virtual GLuint DILIGENT_CALL_TYPE GetGLBufferHandle() const override final { return GetGLHandle(); }
 
     /// Implementation of IBuffer::GetNativeHandle() in OpenGL backend.
-    virtual Uint64 DILIGENT_CALL_TYPE GetNativeHandle() override final { return BitCast<Uint64>(GetGLBufferHandle()); }
+    virtual UInt64 DILIGENT_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetGLBufferHandle()); }
 
     /// Implementation of IBuffer::GetSparseProperties().
     virtual SparseBufferProperties DILIGENT_CALL_TYPE GetSparseProperties() const override final;
@@ -92,15 +92,15 @@ private:
     friend class VAOCache;
 
     GLObjectWrappers::GLBufferObj m_GlBuffer;
-    const Uint32                  m_BindTarget;
+    const UInt32                  m_BindTarget;
     const GLenum                  m_GLUsageHint;
 
 #if PLATFORM_WEB
     struct MappedData
     {
-        std::vector<Uint8> Data;
+        std::vector<UInt8> Data;
         MAP_TYPE           Type   = MAP_WRITE;
-        Uint64             Offset = 0;
+        UInt64             Offset = 0;
     } m_Mapped;
 #endif
 };

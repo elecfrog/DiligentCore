@@ -40,7 +40,7 @@ int TestPipelineStateCInterface(struct IPipelineState* pPSO)
 
     PipelineStateDesc PSODesc;
 
-    Uint32 StaticVarCount = 0;
+    UInt32 StaticVarCount = 0;
     bool   IsCompatible   = false;
 
     IShaderResourceVariable* pVar = NULL;

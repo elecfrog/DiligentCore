@@ -70,7 +70,7 @@ void TestDXBCRemapping(const char* Source, const char* Entry, const char* Profil
 
     std::unordered_set<HashMapStringKey> UsedMappings;
 
-    for (Uint32 ResInd = 0; ResInd < ShaderDesc.BoundResources; ++ResInd)
+    for (UInt32 ResInd = 0; ResInd < ShaderDesc.BoundResources; ++ResInd)
     {
         D3D12_SHADER_INPUT_BIND_DESC BindDesc = {};
 
@@ -95,7 +95,7 @@ void TestDXBCRemapping(const char* Source, const char* Entry, const char* Profil
             continue;
         }
 
-        Uint32 ArrayInd = 0;
+        UInt32 ArrayInd = 0;
         {
             size_t ArrEnd   = ResName.length() - 1;
             size_t ArrStart = ArrEnd - 1;
@@ -190,12 +190,12 @@ float4 PSMain(in float4 f4Position : SV_Position) : SV_Target
 }
 )hlsl";
 
-    Uint32 Tex  = 0;
-    Uint32 UAV  = 1; // in because render targets acquire first UAV bindings
-    Uint32 Samp = 0;
-    Uint32 Buff = 0;
+    UInt32 Tex  = 0;
+    UInt32 UAV  = 1; // in because render targets acquire first UAV bindings
+    UInt32 Samp = 0;
+    UInt32 Buff = 0;
 
-    constexpr Uint32 Space = 0;
+    constexpr UInt32 Space = 0;
 
     DXBCUtils::TResourceBindingMap ResMap;
     // clang-format off
@@ -278,9 +278,9 @@ float4 PSMain(in float4 f4Position : SV_Position) : SV_Target
     DXBCUtils::TResourceBindingMap ResMap;
     // space 0
     {
-        const Uint32 Space = 0;
-        Uint32       Tex   = 0;
-        Uint32       Buff  = 0;
+        const UInt32 Space = 0;
+        UInt32       Tex   = 0;
+        UInt32       Buff  = 0;
         // clang-format off
         ResMap["g_Tex2D_2"]  = {Tex++,  Space, 1, SHADER_RESOURCE_TYPE_TEXTURE_SRV    };
         ResMap["g_Tex2D_3"]  = {Tex++,  Space, 1, SHADER_RESOURCE_TYPE_TEXTURE_SRV    };
@@ -290,9 +290,9 @@ float4 PSMain(in float4 f4Position : SV_Position) : SV_Target
     }
     // space 1
     {
-        const Uint32 Space = 1;
-        Uint32       Samp  = 0;
-        Uint32       UAV   = 0;
+        const UInt32 Space = 1;
+        UInt32       Samp  = 0;
+        UInt32       UAV   = 0;
         // clang-format off
         ResMap["g_OutColorBuffer_1"] = {UAV++,  Space, 1, SHADER_RESOURCE_TYPE_TEXTURE_UAV};
         ResMap["g_OutColorBuffer_2"] = {UAV++,  Space, 1, SHADER_RESOURCE_TYPE_TEXTURE_UAV};
@@ -302,8 +302,8 @@ float4 PSMain(in float4 f4Position : SV_Position) : SV_Target
     }
     // space 2
     {
-        const Uint32 Space = 2;
-        Uint32       Tex   = 0;
+        const UInt32 Space = 2;
+        UInt32       Tex   = 0;
         // clang-format off
         ResMap["g_Tex2D_1"]      = {Tex++, Space, 1, SHADER_RESOURCE_TYPE_TEXTURE_SRV};
         ResMap["g_Tex2D_4"]      = {Tex++, Space, 1, SHADER_RESOURCE_TYPE_TEXTURE_SRV};

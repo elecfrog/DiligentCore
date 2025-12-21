@@ -36,12 +36,12 @@
 namespace Diligent
 {
 
-static bool UseDefaultFBO(Uint32             NumRenderTargets,
+static bool UseDefaultFBO(UInt32             NumRenderTargets,
                           TextureViewGLImpl* ppRTVs[],
                           TextureViewGLImpl* pDSV)
 {
     bool useDefaultFBO = false;
-    for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
     {
         if (ppRTVs[rt] != nullptr && ppRTVs[rt]->GetHandle() == 0)
         {
@@ -88,14 +88,14 @@ FramebufferGLImpl::FramebufferGLImpl(IReferenceCounters*    pRefCounters,
 {
     const RenderPassDesc& RPDesc = m_Desc.pRenderPass->GetDesc();
     m_SubpassFramebuffers.reserve(RPDesc.SubpassCount);
-    for (Uint32 subpass = 0; subpass < RPDesc.SubpassCount; ++subpass)
+    for (UInt32 subpass = 0; subpass < RPDesc.SubpassCount; ++subpass)
     {
         const SubpassDesc& SPDesc = RPDesc.pSubpasses[subpass];
 
         TextureViewGLImpl* ppRTVs[MAX_RENDER_TARGETS] = {};
         TextureViewGLImpl* pDSV                       = nullptr;
 
-        for (Uint32 rt = 0; rt < SPDesc.RenderTargetAttachmentCount; ++rt)
+        for (UInt32 rt = 0; rt < SPDesc.RenderTargetAttachmentCount; ++rt)
         {
             const AttachmentReference& RTAttachmentRef = SPDesc.pRenderTargetAttachments[rt];
             if (RTAttachmentRef.AttachmentIndex != ATTACHMENT_UNUSED)
@@ -116,7 +116,7 @@ FramebufferGLImpl::FramebufferGLImpl(IReferenceCounters*    pRefCounters,
         if (SPDesc.pResolveAttachments != nullptr)
         {
             TextureViewGLImpl* ppRsvlViews[MAX_RENDER_TARGETS] = {};
-            for (Uint32 rt = 0; rt < SPDesc.RenderTargetAttachmentCount; ++rt)
+            for (UInt32 rt = 0; rt < SPDesc.RenderTargetAttachmentCount; ++rt)
             {
                 const AttachmentReference& RslvAttachmentRef = SPDesc.pResolveAttachments[rt];
                 if (RslvAttachmentRef.AttachmentIndex != ATTACHMENT_UNUSED)

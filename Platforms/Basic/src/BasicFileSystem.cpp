@@ -271,7 +271,7 @@ std::string BasicFileSystem::SimplifyPath(const Char* Path, Char Slash)
 
     const size_t RootLen = SimplifiedPath.length();
 
-    Uint32 NumLeadingDirUps = 0;
+    UInt32 NumLeadingDirUps = 0;
     while (*c != '\0')
     {
         // Skip leading slashes
@@ -330,7 +330,7 @@ std::string BasicFileSystem::SimplifyPath(const Char* Path, Char Slash)
     {
         const bool IsPathEmpty = SimplifiedPath.empty();
         SimplifiedPath.insert(0, NumLeadingDirUps * 3 - (IsPathEmpty ? 1 : 0), '.');
-        for (Uint32 i = 0; i < NumLeadingDirUps - (IsPathEmpty ? 1 : 0); ++i)
+        for (UInt32 i = 0; i < NumLeadingDirUps - (IsPathEmpty ? 1 : 0); ++i)
         {
             SimplifiedPath[i * 3 + 2] = Slash;
         }

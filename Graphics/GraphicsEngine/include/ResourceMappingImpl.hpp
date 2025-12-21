@@ -67,17 +67,17 @@ public:
 
     /// Implementation of IResourceMapping::AddResourceArray()
     virtual void DILIGENT_CALL_TYPE AddResourceArray(const Char*           Name,
-                                                     Uint32                StartIndex,
+                                                     UInt32                StartIndex,
                                                      IDeviceObject* const* ppObjects,
-                                                     Uint32                NumElements,
+                                                     UInt32                NumElements,
                                                      bool                  bIsUnique) override final;
 
     /// Implementation of IResourceMapping::RemoveResourceByName()
-    virtual void DILIGENT_CALL_TYPE RemoveResourceByName(const Char* Name, Uint32 ArrayIndex) override final;
+    virtual void DILIGENT_CALL_TYPE RemoveResourceByName(const Char* Name, UInt32 ArrayIndex) override final;
 
     /// Implementation of IResourceMapping::GetResource()
     virtual IDeviceObject* DILIGENT_CALL_TYPE GetResource(const Char* Name,
-                                                          Uint32      ArrayIndex) override final;
+                                                          UInt32      ArrayIndex) override final;
 
     /// Returns number of resources in the resource mapping.
     virtual size_t DILIGENT_CALL_TYPE GetSize() override final;
@@ -87,7 +87,7 @@ private:
     {
         using TBase = HashMapStringKey;
 
-        ResMappingHashKey(const Char* Str, bool bMakeCopy, Uint32 ArrInd) noexcept :
+        ResMappingHashKey(const Char* Str, bool bMakeCopy, UInt32 ArrInd) noexcept :
             HashMapStringKey{Str, bMakeCopy},
             ArrayIndex{ArrInd}
         {
@@ -119,7 +119,7 @@ private:
             return static_cast<const TBase&>(*this) == static_cast<const TBase&>(RHS);
         }
 
-        const Uint32 ArrayIndex;
+        const UInt32 ArrayIndex;
     };
 
     Threading::SpinLock m_Lock;

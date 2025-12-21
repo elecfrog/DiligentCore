@@ -103,7 +103,7 @@ TEST(ThreadgroupMemoryTest, SetComputeThreadgroupMemoryLength)
 
     pSRB->GetVariableByName(SHADER_TYPE_COMPUTE, "g_OutImage")->Set(pTestingSwapChain->GetCurrentBackBufferUAV());
 
-    const Uint32                     LocalSize = 8;
+    const UInt32                     LocalSize = 8;
     RefCntAutoPtr<IDeviceContextMtl> pContextMtl{pContext, IID_DeviceContextMtl};
     pContextMtl->SetComputeThreadgroupMemoryLength(LocalSize * LocalSize * sizeof(float) * 4, 0);
 

@@ -52,10 +52,10 @@ public:
     // clang-format on
 
     // Returns the maximum supported interface version
-    void CreateNewCommandList(ID3D12GraphicsCommandList** ppList, ID3D12CommandAllocator** ppAllocator, Uint32& IfaceVersion);
+    void CreateNewCommandList(ID3D12GraphicsCommandList** ppList, ID3D12CommandAllocator** ppAllocator, UInt32& IfaceVersion);
 
     void RequestAllocator(ID3D12CommandAllocator** ppAllocator);
-    void ReleaseAllocator(CComPtr<ID3D12CommandAllocator>&& Allocator, SoftwareQueueIndex CmdQueue, Uint64 FenceValue);
+    void ReleaseAllocator(CComPtr<ID3D12CommandAllocator>&& Allocator, SoftwareQueueIndex CmdQueue, UInt64 FenceValue);
 
     // Returns allocator to the list of available allocators. The GPU must have finished using the
     // allocator

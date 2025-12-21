@@ -65,7 +65,7 @@ void ValidatePipelineStateArchiveInfo(const PipelineStateCreateInfo&  PSOCreateI
                "ppResourceSignatures must not be null if ResourceSignaturesCount is not zero");
 
     std::bitset<MAX_RESOURCE_SIGNATURES> PRSExists{0};
-    for (Uint32 i = 0; i < PSOCreateInfo.ResourceSignaturesCount; ++i)
+    for (UInt32 i = 0; i < PSOCreateInfo.ResourceSignaturesCount; ++i)
     {
         VERIFY_PSO(PSOCreateInfo.ppResourceSignatures[i] != nullptr, "ppResourceSignatures[", i, "] must not be null");
 
@@ -133,7 +133,7 @@ void SerializePSOCreateInfo(Serializer<Mode>&                                 Se
     else
         return;
 
-    auto RemapShaders = [&ShaderMap](Uint32& outIndex, IShader* const& inShader) //
+    auto RemapShaders = [&ShaderMap](UInt32& outIndex, IShader* const& inShader) //
     {
         auto Iter = ShaderMap.find(inShader);
         if (Iter != ShaderMap.end())
@@ -259,7 +259,7 @@ void SerializedPipelineStateImpl::Initialize(const PSOCreateInfoType&        Cre
             m_Data.DoNotPackSignatures = (ArchiveInfo.PSOFlags & PSO_ARCHIVE_FLAG_DO_NOT_PACK_SIGNATURES) != 0;
         }
 
-        Uint32                       SignaturesCount = CreateInfo.ResourceSignaturesCount;
+        UInt32                       SignaturesCount = CreateInfo.ResourceSignaturesCount;
         IPipelineResourceSignature** ppSignatures    = CreateInfo.ppResourceSignatures;
 
         IPipelineResourceSignature* DefaultSignatures[1] = {};
@@ -272,7 +272,7 @@ void SerializedPipelineStateImpl::Initialize(const PSOCreateInfoType&        Cre
 
         TPRSNames PRSNames = {};
         m_Signatures.resize(SignaturesCount);
-        for (Uint32 i = 0; i < SignaturesCount; ++i)
+        for (UInt32 i = 0; i < SignaturesCount; ++i)
         {
             IPipelineResourceSignature* pSignature = ppSignatures[i];
             VERIFY(pSignature != nullptr, "This error should've been caught by ValidatePipelineResourceSignatures");
@@ -403,7 +403,7 @@ SerializedPipelineStateImpl::SerializedPipelineStateImpl(IReferenceCounters*    
              Shaders,
 #endif
              CreateInfo = typename PipelineStateCreateInfoXTraits<PSOCreateInfoType>::CreateInfoXType{CreateInfo},
-             ArchiveInfo](Uint32 ThreadId) mutable //
+             ArchiveInfo](UInt32 ThreadId) mutable //
             {
 #ifdef DILIGENT_DEBUG
                 for (const SerializedShaderImpl* pShader : Shaders)
@@ -455,18 +455,18 @@ void SerializedPipelineStateImpl::SerializeShaderCreateInfo(DeviceType          
     m_Data.Shaders[static_cast<size_t>(Type)].emplace_back(std::move(ShaderData));
 }
 
-Uint32 DILIGENT_CALL_TYPE SerializedPipelineStateImpl::GetPatchedShaderCount(ARCHIVE_DEVICE_DATA_FLAGS DeviceType) const
+UInt32 DILIGENT_CALL_TYPE SerializedPipelineStateImpl::GetPatchedShaderCount(ARCHIVE_DEVICE_DATA_FLAGS DeviceType) const
 {
     DEV_CHECK_ERR(m_Status.load() == PIPELINE_STATE_STATUS_READY, "Pipeline state '", m_Desc.Name, "' is not ready. Use GetStatus() to check the pipeline state status.");
     DEV_CHECK_ERR(IsPowerOfTwo(DeviceType), "Only single device data flag is expected");
     const DeviceObjectArchive::DeviceType Type    = ArchiveDeviceDataFlagToArchiveDeviceType(DeviceType);
     const auto&                           Shaders = m_Data.Shaders[static_cast<size_t>(Type)];
-    return StaticCast<Uint32>(Shaders.size());
+    return StaticCast<UInt32>(Shaders.size());
 }
 
 ShaderCreateInfo DILIGENT_CALL_TYPE SerializedPipelineStateImpl::GetPatchedShaderCreateInfo(
     ARCHIVE_DEVICE_DATA_FLAGS DeviceType,
-    Uint32                    ShaderIndex) const
+    UInt32                    ShaderIndex) const
 {
     DEV_CHECK_ERR(m_Status.load() == PIPELINE_STATE_STATUS_READY, "Pipeline state '", m_Desc.Name, "' is not ready. Use GetStatus() to check the pipeline state status.");
     DEV_CHECK_ERR(IsPowerOfTwo(DeviceType), "Only single device data flag is expected");

@@ -177,11 +177,11 @@ struct DepthStencilStateDesc
 
     /// Identify which bits of the depth-stencil buffer are accessed when reading stencil data.
     /// Default value: 0xFF.
-    Uint8               StencilReadMask     DEFAULT_INITIALIZER(0xFF);
+    UInt8               StencilReadMask     DEFAULT_INITIALIZER(0xFF);
 
     /// Identify which bits of the depth-stencil buffer are accessed when writing stencil data.
     /// Default value: 0xFF.
-    Uint8               StencilWriteMask    DEFAULT_INITIALIZER(0xFF);
+    UInt8               StencilWriteMask    DEFAULT_INITIALIZER(0xFF);
 
     /// Identify stencil operations for the front-facing triangles, see Diligent::StencilOpDesc.
     StencilOpDesc FrontFace;
@@ -203,8 +203,8 @@ struct DepthStencilStateDesc
                                     Bool                _DepthWriteEnable,
                                     COMPARISON_FUNCTION _DepthFunc        = DepthStencilStateDesc{}.DepthFunc,
                                     Bool                _StencilEnable    = DepthStencilStateDesc{}.StencilEnable,
-                                    Uint8               _StencilReadMask  = DepthStencilStateDesc{}.StencilReadMask,
-                                    Uint8               _StencilWriteMask = DepthStencilStateDesc{}.StencilWriteMask,
+                                    UInt8               _StencilReadMask  = DepthStencilStateDesc{}.StencilReadMask,
+                                    UInt8               _StencilWriteMask = DepthStencilStateDesc{}.StencilWriteMask,
                                     StencilOpDesc       _FrontFace        = StencilOpDesc{},
                                     StencilOpDesc       _BackFace         = StencilOpDesc{}) noexcept :
         DepthEnable     {_DepthEnable     },

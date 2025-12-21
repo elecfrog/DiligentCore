@@ -56,7 +56,7 @@ public:
     static constexpr const OffsetType InvalidOffset = RingBuffer::InvalidOffset;
 
     MasterBlockRingBufferBasedManager(IMemoryAllocator& Allocator,
-                                      Uint32            Size) :
+                                      UInt32            Size) :
         m_RingBuffer{Size, Allocator}
     {}
 
@@ -67,13 +67,13 @@ public:
     MasterBlockRingBufferBasedManager& operator= (      MasterBlockRingBufferBasedManager&&) = delete;
     // clang-format on
 
-    void DiscardMasterBlocks(std::vector<MasterBlock>& /*Blocks*/, Uint64 FenceValue)
+    void DiscardMasterBlocks(std::vector<MasterBlock>& /*Blocks*/, UInt64 FenceValue)
     {
         std::lock_guard<std::mutex> Lock{m_RingBufferMtx};
         m_RingBuffer.FinishCurrentFrame(FenceValue);
     }
 
-    void ReleaseStaleBlocks(Uint64 LastCompletedFenceValue)
+    void ReleaseStaleBlocks(UInt64 LastCompletedFenceValue)
     {
         std::lock_guard<std::mutex> Lock{m_RingBufferMtx};
         m_RingBuffer.ReleaseCompletedFrames(LastCompletedFenceValue);
@@ -102,7 +102,7 @@ public:
     using MasterBlock = VariableSizeAllocationsManager::Allocation;
 
     MasterBlockListBasedManager(IMemoryAllocator& Allocator,
-                                Uint32            Size) :
+                                UInt32            Size) :
         m_AllocationsMgr{Size, Allocator}
     {
 #ifdef DILIGENT_DEVELOPMENT
@@ -123,7 +123,7 @@ public:
     }
 
     template <typename RenderDeviceImplType>
-    void ReleaseMasterBlocks(std::vector<MasterBlock>& Blocks, RenderDeviceImplType& Device, Uint64 CmdQueueMask)
+    void ReleaseMasterBlocks(std::vector<MasterBlock>& Blocks, RenderDeviceImplType& Device, UInt64 CmdQueueMask)
     {
         struct StaleMasterBlock
         {

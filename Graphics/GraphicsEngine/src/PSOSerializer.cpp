@@ -129,7 +129,7 @@ bool PSOSerializer<Mode>::SerializeCreateInfo(
         return false;
 
     // Instead of ppResourceSignatures
-    for (Uint32 i = 0; i < std::max(CreateInfo.ResourceSignaturesCount, 1u); ++i)
+    for (UInt32 i = 0; i < std::max(CreateInfo.ResourceSignaturesCount, 1u); ++i)
     {
         if (!Ser(PRSNames[i]))
             return false;
@@ -233,7 +233,7 @@ bool PSOSerializer<Mode>::SerializeCreateInfo(
     ConstQual<RayTracingPipelineStateCreateInfo>&             CreateInfo,
     ConstQual<TPRSNames>&                                     PRSNames,
     DynamicLinearAllocator*                                   Allocator,
-    const std::function<void(Uint32&, ConstQual<IShader*>&)>& ShaderToIndex)
+    const std::function<void(UInt32&, ConstQual<IShader*>&)>& ShaderToIndex)
 {
     const bool IsReading = (Allocator != nullptr);
     const bool IsWriting = !IsReading;
@@ -258,7 +258,7 @@ bool PSOSerializer<Mode>::SerializeCreateInfo(
                            [&](Serializer<Mode>&                        Ser,
                                ConstQual<RayTracingGeneralShaderGroup>& Group) //
                            {
-                               Uint32 ShaderIndex = ~0u;
+                               UInt32 ShaderIndex = ~0u;
                                if (IsWriting)
                                {
                                    ShaderToIndex(ShaderIndex, Group.pShader);
@@ -283,8 +283,8 @@ bool PSOSerializer<Mode>::SerializeCreateInfo(
                            [&](Serializer<Mode>&                            Ser,
                                ConstQual<RayTracingTriangleHitShaderGroup>& Group) //
                            {
-                               Uint32 ClosestHitShaderIndex = ~0u;
-                               Uint32 AnyHitShaderIndex     = ~0u;
+                               UInt32 ClosestHitShaderIndex = ~0u;
+                               UInt32 AnyHitShaderIndex     = ~0u;
                                if (IsWriting)
                                {
                                    ShaderToIndex(ClosestHitShaderIndex, Group.pClosestHitShader);
@@ -311,9 +311,9 @@ bool PSOSerializer<Mode>::SerializeCreateInfo(
                            [&](Serializer<Mode>&                              Ser,
                                ConstQual<RayTracingProceduralHitShaderGroup>& Group) //
                            {
-                               Uint32 IntersectionShaderIndex = ~0u;
-                               Uint32 ClosestHitShaderIndex   = ~0u;
-                               Uint32 AnyHitShaderIndex       = ~0u;
+                               UInt32 IntersectionShaderIndex = ~0u;
+                               UInt32 ClosestHitShaderIndex   = ~0u;
+                               UInt32 AnyHitShaderIndex       = ~0u;
                                if (IsWriting)
                                {
                                    ShaderToIndex(IntersectionShaderIndex, Group.pIntersectionShader);
@@ -382,24 +382,24 @@ bool RPSerializer<Mode>::SerializeDesc(
                                    return false;
 
                                // Note: in Read mode, ResolveAttachCount, DepthStencilAttachCount, and ShadingRateAttachCount will be overwritten
-                               Uint32 ResolveAttachCount = Subpass.pResolveAttachments != nullptr ? Subpass.RenderTargetAttachmentCount : 0;
+                               UInt32 ResolveAttachCount = Subpass.pResolveAttachments != nullptr ? Subpass.RenderTargetAttachmentCount : 0;
                                if (!Ser.SerializeArray(Allocator, Subpass.pResolveAttachments, ResolveAttachCount, SerializeAttachmentRef))
                                    return false;
 
-                               Uint32 DepthStencilAttachCount = Subpass.pDepthStencilAttachment != nullptr ? 1 : 0;
+                               UInt32 DepthStencilAttachCount = Subpass.pDepthStencilAttachment != nullptr ? 1 : 0;
                                if (!Ser.SerializeArray(Allocator, Subpass.pDepthStencilAttachment, DepthStencilAttachCount, SerializeAttachmentRef))
                                    return false;
 
 
                                if (!Ser.SerializeArray(Allocator, Subpass.pPreserveAttachments, Subpass.PreserveAttachmentCount,
                                                        [](Serializer<Mode>&  Ser,
-                                                          ConstQual<Uint32>& Attach) //
+                                                          ConstQual<UInt32>& Attach) //
                                                        {
                                                            return Ser(Attach);
                                                        }))
                                    return false;
 
-                               Uint32 ShadingRateAttachCount = Subpass.pShadingRateAttachment != nullptr ? 1 : 0;
+                               UInt32 ShadingRateAttachCount = Subpass.pShadingRateAttachment != nullptr ? 1 : 0;
                                return Ser.SerializeArray(Allocator, Subpass.pShadingRateAttachment, ShadingRateAttachCount,
                                                          [](Serializer<Mode>&                 Ser,
                                                             ConstQual<ShadingRateAttachment>& SRAttachment) //
@@ -456,7 +456,7 @@ bool ShaderSerializer<Mode>::SerializeBytecodeOrSource(Serializer<Mode>&        
                                                        ConstQual<ShaderCreateInfo>& CI)
 {
     VERIFY(CI.Source == nullptr || CI.ByteCode == nullptr, "Only one of Source or Bytecode can be non-null");
-    const Uint8 UseBytecode = CI.ByteCode != nullptr ? 1 : 0;
+    const UInt8 UseBytecode = CI.ByteCode != nullptr ? 1 : 0;
 
     if (!Ser(UseBytecode))
         return false;
@@ -471,7 +471,7 @@ template <>
 bool ShaderSerializer<SerializerMode::Read>::SerializeBytecodeOrSource(Serializer<SerializerMode::Read>& Ser,
                                                                        ConstQual<ShaderCreateInfo>&      CI)
 {
-    Uint8 UseBytecode = 0;
+    UInt8 UseBytecode = 0;
     Ser(UseBytecode);
     if (UseBytecode)
     {

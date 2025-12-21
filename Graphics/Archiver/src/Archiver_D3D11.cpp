@@ -103,7 +103,7 @@ struct ShaderStageInfoD3D11
     // Needed only for ray tracing
     void Append(const SerializedShaderImpl*) {}
 
-    constexpr Uint32 Count() const { return 1; }
+    constexpr UInt32 Count() const { return 1; }
 
     SHADER_TYPE                 Type        = SHADER_TYPE_UNKNOWN;
     ShaderD3D11Impl*            pShader     = nullptr;
@@ -147,7 +147,7 @@ void SerializedPipelineStateImpl::PatchShadersD3D11(const CreateInfoType& Create
         ShadersD3D11[i] = ShaderStages[i].pShader;
 
     IPipelineResourceSignature** ppSignatures    = CreateInfo.ppResourceSignatures;
-    Uint32                       SignaturesCount = CreateInfo.ResourceSignaturesCount;
+    UInt32                       SignaturesCount = CreateInfo.ResourceSignaturesCount;
 
     IPipelineResourceSignature* DefaultSignatures[1] = {};
     if (CreateInfo.ResourceSignaturesCount == 0)
@@ -169,7 +169,7 @@ void SerializedPipelineStateImpl::PatchShadersD3D11(const CreateInfoType& Create
         D3D11ShaderResourceCounters ResCounters = {};
         InitD3D11ShaderResourceCounters(CreateInfo, ResCounters);
         std::array<D3D11ShaderResourceCounters, MAX_RESOURCE_SIGNATURES> BaseBindings = {};
-        for (Uint32 i = 0; i < SignaturesCount; ++i)
+        for (UInt32 i = 0; i < SignaturesCount; ++i)
         {
             const PipelineResourceSignatureD3D11Impl* const pSignature = Signatures[i];
             if (pSignature == nullptr)
@@ -235,20 +235,20 @@ void SerializationDeviceImpl::GetPipelineResourceBindingsD3D11(const PipelineRes
     constexpr SHADER_TYPE SupportedStagesMask = (SHADER_TYPE_ALL_GRAPHICS | SHADER_TYPE_COMPUTE);
 
     SignatureArray<PipelineResourceSignatureD3D11Impl> Signatures      = {};
-    Uint32                                             SignaturesCount = 0;
+    UInt32                                             SignaturesCount = 0;
     SortResourceSignatures(Info.ppResourceSignatures, Info.ResourceSignaturesCount, Signatures, SignaturesCount);
 
     D3D11ShaderResourceCounters BaseBindings = {};
     // In Direct3D11, UAVs use the same register space as render targets
     BaseBindings[D3D11_RESOURCE_RANGE_UAV][PSInd] = Info.NumRenderTargets;
 
-    for (Uint32 sign = 0; sign < SignaturesCount; ++sign)
+    for (UInt32 sign = 0; sign < SignaturesCount; ++sign)
     {
         const PipelineResourceSignatureD3D11Impl* const pSignature = Signatures[sign];
         if (pSignature == nullptr)
             continue;
 
-        for (Uint32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
+        for (UInt32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
         {
             using ResourceAttribsD3D11          = PipelineResourceSignatureD3D11Impl::ResourceAttribs;
             const PipelineResourceDesc& ResDesc = pSignature->GetResourceDesc(r);
@@ -263,12 +263,12 @@ void SerializationDeviceImpl::GetPipelineResourceBindingsD3D11(const PipelineRes
                     continue;
 
                 VERIFY_EXPR(ResAttr.BindPoints.IsStageActive(ShaderInd));
-                const Uint32 Register = Uint32{BaseBindings[Range][ShaderInd]} + Uint32{ResAttr.BindPoints[ShaderInd]};
+                const UInt32 Register = UInt32{BaseBindings[Range][ShaderInd]} + UInt32{ResAttr.BindPoints[ShaderInd]};
                 ResourceBindings.push_back(ResDescToPipelineResBinding(ResDesc, ShaderStage, Register, 0 /*space*/));
             }
         }
 
-        for (Uint32 samp = 0; samp < pSignature->GetImmutableSamplerCount(); ++samp)
+        for (UInt32 samp = 0; samp < pSignature->GetImmutableSamplerCount(); ++samp)
         {
             const ImmutableSamplerDesc&         ImtblSam = pSignature->GetImmutableSamplerDesc(samp);
             const ImmutableSamplerAttribsD3D11& SampAttr = pSignature->GetImmutableSamplerAttribs(samp);
@@ -283,7 +283,7 @@ void SerializationDeviceImpl::GetPipelineResourceBindingsD3D11(const PipelineRes
                     continue;
 
                 VERIFY_EXPR(SampAttr.BindPoints.IsStageActive(ShaderInd));
-                const Uint32 Binding = Uint32{BaseBindings[Range][ShaderInd]} + Uint32{SampAttr.BindPoints[ShaderInd]};
+                const UInt32 Binding = UInt32{BaseBindings[Range][ShaderInd]} + UInt32{SampAttr.BindPoints[ShaderInd]};
 
                 PipelineResourceBinding Dst{};
                 Dst.Name         = ImtblSam.SamplerOrTextureName;

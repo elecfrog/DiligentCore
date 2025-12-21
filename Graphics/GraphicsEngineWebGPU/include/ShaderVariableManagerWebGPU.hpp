@@ -51,22 +51,22 @@ public:
     void Initialize(const PipelineResourceSignatureWebGPUImpl& Signature,
                     IMemoryAllocator&                          Allocator,
                     const SHADER_RESOURCE_VARIABLE_TYPE*       AllowedVarTypes,
-                    Uint32                                     NumAllowedTypes,
+                    UInt32                                     NumAllowedTypes,
                     SHADER_TYPE                                ShaderType);
 
     void Destroy(IMemoryAllocator& Allocator);
 
     ShaderVariableWebGPUImpl* GetVariable(const Char* Name) const;
-    ShaderVariableWebGPUImpl* GetVariable(Uint32 Index) const;
+    ShaderVariableWebGPUImpl* GetVariable(UInt32 Index) const;
 
-    void BindResource(Uint32 ResIndex, const BindResourceInfo& BindInfo);
+    void BindResource(UInt32 ResIndex, const BindResourceInfo& BindInfo);
 
-    void SetBufferDynamicOffset(Uint32 ResIndex,
-                                Uint32 ArrayIndex,
-                                Uint32 BufferDynamicOffset);
+    void SetBufferDynamicOffset(UInt32 ResIndex,
+                                UInt32 ArrayIndex,
+                                UInt32 BufferDynamicOffset);
 
-    IDeviceObject* Get(Uint32 ArrayIndex,
-                       Uint32 ResIndex) const;
+    IDeviceObject* Get(UInt32 ArrayIndex,
+                       UInt32 ResIndex) const;
 
     void BindResources(IResourceMapping* pResourceMapping, BIND_SHADER_RESOURCES_FLAGS Flags);
 
@@ -76,11 +76,11 @@ public:
 
     static size_t GetRequiredMemorySize(const PipelineResourceSignatureWebGPUImpl& Signature,
                                         const SHADER_RESOURCE_VARIABLE_TYPE*       AllowedVarTypes,
-                                        Uint32                                     NumAllowedTypes,
+                                        UInt32                                     NumAllowedTypes,
                                         SHADER_TYPE                                ShaderStages,
-                                        Uint32*                                    pNumVariables = nullptr);
+                                        UInt32*                                    pNumVariables = nullptr);
 
-    Uint32 GetVariableCount() const { return m_NumVariables; }
+    UInt32 GetVariableCount() const { return m_NumVariables; }
 
     IObject& GetOwner() { return m_Owner; }
 
@@ -91,14 +91,14 @@ private:
 
     using ResourceAttribs = PipelineResourceAttribsWebGPU;
 
-    Uint32 GetVariableIndex(const ShaderVariableWebGPUImpl& Variable);
+    UInt32 GetVariableIndex(const ShaderVariableWebGPUImpl& Variable);
 
     // These two methods can't be implemented in the header because they depend on PipelineResourceSignatureWebGPUImpl
-    const PipelineResourceDesc& GetResourceDesc(Uint32 Index) const;
-    const ResourceAttribs&      GetResourceAttribs(Uint32 Index) const;
+    const PipelineResourceDesc& GetResourceDesc(UInt32 Index) const;
+    const ResourceAttribs&      GetResourceAttribs(UInt32 Index) const;
 
 private:
-    Uint32 m_NumVariables = 0;
+    UInt32 m_NumVariables = 0;
 };
 
 class ShaderVariableWebGPUImpl final : public ShaderVariableBase<ShaderVariableWebGPUImpl, ShaderVariableManagerWebGPU, IShaderResourceVariable>
@@ -107,7 +107,7 @@ public:
     using TBase = ShaderVariableBase<ShaderVariableWebGPUImpl, ShaderVariableManagerWebGPU, IShaderResourceVariable>;
 
     ShaderVariableWebGPUImpl(ShaderVariableManagerWebGPU& ParentManager,
-                             Uint32                       ResIndex) :
+                             UInt32                       ResIndex) :
         TBase{ParentManager, ResIndex}
     {}
 
@@ -118,7 +118,7 @@ public:
     ShaderVariableWebGPUImpl& operator=(      ShaderVariableWebGPUImpl&&) = delete;
     // clang-format on
 
-    virtual IDeviceObject* DILIGENT_CALL_TYPE Get(Uint32 ArrayIndex) const override final
+    virtual IDeviceObject* DILIGENT_CALL_TYPE Get(UInt32 ArrayIndex) const override final
     {
         return m_ParentManager.Get(ArrayIndex, m_ResIndex);
     }
@@ -128,8 +128,8 @@ public:
         m_ParentManager.BindResource(m_ResIndex, BindInfo);
     }
 
-    void SetDynamicOffset(Uint32 ArrayIndex,
-                          Uint32 BufferDynamicOffset) const
+    void SetDynamicOffset(UInt32 ArrayIndex,
+                          UInt32 BufferDynamicOffset) const
     {
         m_ParentManager.SetBufferDynamicOffset(m_ResIndex, ArrayIndex, BufferDynamicOffset);
     }

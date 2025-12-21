@@ -154,14 +154,14 @@ public:
                                          IPipelineResourceSignature**                   ppSignature);
 
     /// Implementation of IRenderDeviceGL::CreateTextureFromGLHandle().
-    virtual void DILIGENT_CALL_TYPE CreateTextureFromGLHandle(Uint32             GLHandle,
-                                                              Uint32             GLBindTarget,
+    virtual void DILIGENT_CALL_TYPE CreateTextureFromGLHandle(UInt32             GLHandle,
+                                                              UInt32             GLBindTarget,
                                                               const TextureDesc& TexDesc,
                                                               RESOURCE_STATE     InitialState,
                                                               ITexture**         ppTexture) override final;
 
     /// Implementation of IRenderDeviceGL::CreateBufferFromGLHandle().
-    virtual void DILIGENT_CALL_TYPE CreateBufferFromGLHandle(Uint32            GLHandle,
+    virtual void DILIGENT_CALL_TYPE CreateBufferFromGLHandle(UInt32            GLHandle,
                                                              const BufferDesc& BuffDesc,
                                                              RESOURCE_STATE    InitialState,
                                                              IBuffer**         ppBuffer) override final;
@@ -191,7 +191,7 @@ public:
     /// Implementation of IRenderDevice::GetSparseTextureFormatInfo() in OpenGL backend.
     virtual SparseTextureFormatInfo DILIGENT_CALL_TYPE GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                                   RESOURCE_DIMENSION Dimension,
-                                                                                  Uint32             SampleCount) const override final;
+                                                                                  UInt32             SampleCount) const override final;
 
 #if PLATFORM_WIN32 || PLATFORM_ANDROID
     virtual NativeGLContextAttribs DILIGENT_CALL_TYPE GetNativeGLContextAttribs() const override final;
@@ -209,7 +209,7 @@ public:
     GLProgramCache& GetProgramCache() { return m_ProgramCache; }
 
     size_t GetCommandQueueCount() const { return 1; }
-    Uint64 GetCommandQueueMask() const { return Uint64{1}; }
+    UInt64 GetCommandQueueMask() const { return UInt64{1}; }
 
     struct GLDeviceLimits
     {

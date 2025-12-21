@@ -58,7 +58,7 @@ QueryVkImpl::~QueryVkImpl()
 
 void QueryVkImpl::DiscardQueries()
 {
-    for (Uint32& QueryPoolIdx : m_QueryPoolIndex)
+    for (UInt32& QueryPoolIdx : m_QueryPoolIndex)
     {
         if (QueryPoolIdx != QueryManagerVk::InvalidIndex)
         {
@@ -68,7 +68,7 @@ void QueryVkImpl::DiscardQueries()
         }
     }
     m_pQueryMgr          = nullptr;
-    m_QueryEndFenceValue = ~Uint64{0};
+    m_QueryEndFenceValue = ~UInt64{0};
 }
 
 void QueryVkImpl::Invalidate()
@@ -85,9 +85,9 @@ bool QueryVkImpl::AllocateQueries()
     VERIFY_EXPR(m_pContext != nullptr);
     m_pQueryMgr = m_pContext->GetQueryManager();
     VERIFY_EXPR(m_pQueryMgr != nullptr);
-    for (Uint32 i = 0; i < (m_Desc.Type == QUERY_TYPE_DURATION ? Uint32{2} : Uint32{1}); ++i)
+    for (UInt32 i = 0; i < (m_Desc.Type == QUERY_TYPE_DURATION ? UInt32{2} : UInt32{1}); ++i)
     {
-        Uint32& QueryPoolIdx = m_QueryPoolIndex[i];
+        UInt32& QueryPoolIdx = m_QueryPoolIndex[i];
         VERIFY_EXPR(QueryPoolIdx == QueryManagerVk::InvalidIndex);
 
         QueryPoolIdx = m_pQueryMgr->AllocateQuery(m_Desc.Type);
@@ -184,7 +184,7 @@ inline bool GetOcclusionQueryData(const VulkanUtilities::LogicalDevice& LogicalD
                                   VkQueryPool                           vkQueryPool,
                                   uint32_t                              QueryIdx,
                                   void*                                 pData,
-                                  Uint32                                DataSize)
+                                  UInt32                                DataSize)
 {
     std::array<uint64_t, 2> Results{};
 
@@ -203,7 +203,7 @@ inline bool GetBinaryOcclusionQueryData(const VulkanUtilities::LogicalDevice& Lo
                                         VkQueryPool                           vkQueryPool,
                                         uint32_t                              QueryIdx,
                                         void*                                 pData,
-                                        Uint32                                DataSize)
+                                        UInt32                                DataSize)
 {
     std::array<uint64_t, 2> Results{};
 
@@ -221,9 +221,9 @@ inline bool GetBinaryOcclusionQueryData(const VulkanUtilities::LogicalDevice& Lo
 inline bool GetTimestampQueryData(const VulkanUtilities::LogicalDevice& LogicalDevice,
                                   VkQueryPool                           vkQueryPool,
                                   uint32_t                              QueryIdx,
-                                  Uint64                                CounterFrequency,
+                                  UInt64                                CounterFrequency,
                                   void*                                 pData,
-                                  Uint32                                DataSize)
+                                  UInt32                                DataSize)
 {
     std::array<uint64_t, 2> Results{};
 
@@ -241,16 +241,16 @@ inline bool GetTimestampQueryData(const VulkanUtilities::LogicalDevice& LogicalD
 
 inline bool GetDurationQueryData(const VulkanUtilities::LogicalDevice& LogicalDevice,
                                  VkQueryPool                           vkQueryPool,
-                                 const std::array<Uint32, 2>&          QueryIdx,
-                                 Uint64                                CounterFrequency,
+                                 const std::array<UInt32, 2>&          QueryIdx,
+                                 UInt64                                CounterFrequency,
                                  void*                                 pData,
-                                 Uint32                                DataSize)
+                                 UInt32                                DataSize)
 {
     uint64_t StartCounter = 0;
     uint64_t EndCounter   = 0;
 
     bool DataAvailable = true;
-    for (Uint32 i = 0; i < 2; ++i)
+    for (UInt32 i = 0; i < 2; ++i)
     {
         std::array<uint64_t, 2> Results{};
         if (!GetQueryResults(LogicalDevice, vkQueryPool, QueryIdx[i], Results))
@@ -273,16 +273,16 @@ inline bool GetDurationQueryData(const VulkanUtilities::LogicalDevice& LogicalDe
 
 inline bool GetStatisticsQueryData(const VulkanUtilities::LogicalDevice& LogicalDevice,
                                    VkQueryPool                           vkQueryPool,
-                                   Uint32                                QueryIdx,
+                                   UInt32                                QueryIdx,
                                    HardwareQueueIndex                    QueueFamilyIndex,
                                    void*                                 pData,
-                                   Uint32                                DataSize)
+                                   UInt32                                DataSize)
 {
     // Pipeline statistics queries write one integer value for each bit that is enabled in the
     // pipelineStatistics when the pool is created, and the statistics values are written in bit
     // order starting from the least significant bit. (17.2)
 
-    std::array<Uint64, 12> Results{};
+    std::array<UInt64, 12> Results{};
 
     bool DataAvailable = GetQueryResults(LogicalDevice, vkQueryPool, QueryIdx, Results);
     if (DataAvailable && pData != nullptr)
@@ -322,13 +322,13 @@ inline bool GetStatisticsQueryData(const VulkanUtilities::LogicalDevice& Logical
 
 } // namespace
 
-bool QueryVkImpl::GetData(void* pData, Uint32 DataSize, bool AutoInvalidate)
+bool QueryVkImpl::GetData(void* pData, UInt32 DataSize, bool AutoInvalidate)
 {
     TQueryBase::CheckQueryDataPtr(pData, DataSize);
 
     DEV_CHECK_ERR(m_pQueryMgr != nullptr, "Requesting data from query that has not been ended or has been invalidated");
     const SoftwareQueueIndex CmdQueueId          = m_pQueryMgr->GetCommandQueueId();
-    const Uint64             CompletedFenceValue = m_pDevice->GetCompletedFenceValue(CmdQueueId);
+    const UInt64             CompletedFenceValue = m_pDevice->GetCompletedFenceValue(CmdQueueId);
     bool                     DataAvailable       = false;
     if (CompletedFenceValue >= m_QueryEndFenceValue)
     {

@@ -77,7 +77,7 @@ struct Plane3D
 
 struct ViewFrustum
 {
-    enum PLANE_IDX : Uint32
+    enum PLANE_IDX : UInt32
     {
         LEFT_PLANE_IDX   = 0,
         RIGHT_PLANE_IDX  = 1,
@@ -188,7 +188,7 @@ inline void ExtractViewFrustumPlanesFromMatrix(const Matrix4x4f& Matrix, ViewFru
     Matrix4x4f InvMatrix = Matrix.Inverse();
 
     float NearClipZ = bIsOpenGL ? -1.f : 0.f;
-    for (Uint32 i = 0; i < 8; ++i)
+    for (UInt32 i = 0; i < 8; ++i)
     {
         const Vector3f ProjSpaceCorner{
             (i & 0x01u) ? +1.f : -1.f,
@@ -459,7 +459,7 @@ inline BoxVisibility GetBoxVisibilityAgainstPlane(const Plane3D& Plane, const Or
 
 // Flags must be listed in the same order as planes in the ViewFrustum struct:
 // LeftPlane, RightPlane, BottomPlane, TopPlane, NearPlane, FarPlane
-enum FRUSTUM_PLANE_FLAGS : Uint32
+enum FRUSTUM_PLANE_FLAGS : UInt32
 {
     FRUSTUM_PLANE_FLAG_NONE         = 0x00,
     FRUSTUM_PLANE_FLAG_LEFT_PLANE   = 1 << ViewFrustum::LEFT_PLANE_IDX,
@@ -492,7 +492,7 @@ inline BoxVisibility GetBoxVisibility(const ViewFrustum&  ViewFrustum,
 {
     int NumPlanesInside = 0;
     int TotalPlanes     = 0;
-    for (Uint32 plane_idx = 0; plane_idx < ViewFrustum::NUM_PLANES; ++plane_idx)
+    for (UInt32 plane_idx = 0; plane_idx < ViewFrustum::NUM_PLANES; ++plane_idx)
     {
         if ((PlaneFlags & (1 << plane_idx)) == 0)
             continue;
@@ -1237,7 +1237,7 @@ bool CheckLineSectionOverlap(T Min0, T Max0, T Min1, T Max1)
 }
 
 /// Triangulation result flags returned by the polygon triangulator.
-enum TRIANGULATE_POLYGON_RESULT : Uint32
+enum TRIANGULATE_POLYGON_RESULT : UInt32
 {
     /// The polygon was triangulated successfully.
     TRIANGULATE_POLYGON_RESULT_OK = 0,
@@ -1270,7 +1270,7 @@ DEFINE_FLAG_ENUM_OPERATORS(TRIANGULATE_POLYGON_RESULT);
 /// The class implements the ear-clipping algorithm to triangulate simple (i.e.
 /// non-self-intersecting) 2D polygons.
 ///
-/// \tparam IndexType - Index type (e.g. Uint32 or Uint16).
+/// \tparam IndexType - Index type (e.g. UInt32 or UInt16).
 template <typename IndexType>
 class Polygon2DTriangulator
 {
@@ -1512,7 +1512,7 @@ private:
     //          V
     //       Convex
     //
-    enum class VertexType : Uint8
+    enum class VertexType : UInt8
     {
         Convexx, // X11 #defines 'Convex'
         Reflex,
@@ -1530,7 +1530,7 @@ private:
 /// The class extends the Polygon2DTriangulator class to handle simple 3D polygons.
 /// It first projects the polygon onto a plane and then triangulates the resulting 2D polygon.
 ///
-/// \tparam IndexType     - Index type (e.g. Uint32 or Uint16).
+/// \tparam IndexType     - Index type (e.g. UInt32 or UInt16).
 /// \tparam ComponentType - Vertex component type, must be a floating point type (e.g. float or double).
 template <typename IndexType, typename ComponentType>
 class Polygon3DTriangulator : public Polygon2DTriangulator<typename std::enable_if<std::is_floating_point<ComponentType>::value, IndexType>::type>

@@ -131,19 +131,19 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_RenderPass, TDeviceObjectBase)
 
-    RESOURCE_STATE GetAttachmentState(Uint32 Subpass, Uint32 Attachment) const
+    RESOURCE_STATE GetAttachmentState(UInt32 Subpass, UInt32 Attachment) const
     {
         VERIFY_EXPR(Attachment < this->m_Desc.AttachmentCount);
         VERIFY_EXPR(Subpass < this->m_Desc.SubpassCount);
         return m_AttachmentStates[this->m_Desc.AttachmentCount * Subpass + Attachment];
     }
 
-    std::pair<Uint32, Uint32> GetAttachmentFirstLastUse(Uint32 Attachment) const
+    std::pair<UInt32, UInt32> GetAttachmentFirstLastUse(UInt32 Attachment) const
     {
         return m_AttachmentFirstLastUse[Attachment];
     }
 
-    const SubpassDesc& GetSubpass(Uint32 SubpassIndex) const
+    const SubpassDesc& GetSubpass(UInt32 SubpassIndex) const
     {
         VERIFY_EXPR(SubpassIndex < this->m_Desc.SubpassCount);
         return this->m_Desc.pSubpasses[SubpassIndex];
@@ -153,12 +153,12 @@ private:
     void ReserveSpace(const RenderPassDesc& Desc, FixedLinearAllocator& MemPool) const
     {
         MemPool.AddSpace<RESOURCE_STATE>(size_t{Desc.AttachmentCount} * size_t{Desc.SubpassCount}); // m_AttachmentStates
-        MemPool.AddSpace<std::pair<Uint32, Uint32>>(Desc.AttachmentCount);                          // m_AttachmentFirstLastUse
+        MemPool.AddSpace<std::pair<UInt32, UInt32>>(Desc.AttachmentCount);                          // m_AttachmentFirstLastUse
 
         MemPool.AddSpace<RenderPassAttachmentDesc>(Desc.AttachmentCount); // Desc.pAttachments
         MemPool.AddSpace<SubpassDesc>(Desc.SubpassCount);                 // Desc.pSubpasses
 
-        for (Uint32 subpass = 0; subpass < Desc.SubpassCount; ++subpass)
+        for (UInt32 subpass = 0; subpass < Desc.SubpassCount; ++subpass)
         {
             const SubpassDesc& SrcSubpass = Desc.pSubpasses[subpass];
 
@@ -171,7 +171,7 @@ private:
             if (SrcSubpass.pDepthStencilAttachment != nullptr)
                 MemPool.AddSpace<AttachmentReference>(1); // Subpass.pDepthStencilAttachment
 
-            MemPool.AddSpace<Uint32>(SrcSubpass.PreserveAttachmentCount); // Subpass.pPreserveAttachments
+            MemPool.AddSpace<UInt32>(SrcSubpass.PreserveAttachmentCount); // Subpass.pPreserveAttachments
 
             if (SrcSubpass.pShadingRateAttachment != nullptr)
                 MemPool.AddSpace<ShadingRateAttachment>(1); // Subpass.pShadingRateAttachment
@@ -180,10 +180,10 @@ private:
         MemPool.AddSpace<SubpassDependencyDesc>(Desc.DependencyCount); // Desc.pDependencies
     }
 
-    void CopyDesc(RenderPassDesc& Desc, RESOURCE_STATE*& AttachmentStates, const std::pair<Uint32, Uint32>*& outAttachmentFirstLastUse, FixedLinearAllocator& MemPool) const
+    void CopyDesc(RenderPassDesc& Desc, RESOURCE_STATE*& AttachmentStates, const std::pair<UInt32, UInt32>*& outAttachmentFirstLastUse, FixedLinearAllocator& MemPool) const
     {
         AttachmentStates             = MemPool.ConstructArray<RESOURCE_STATE>(size_t{Desc.AttachmentCount} * size_t{Desc.SubpassCount}, RESOURCE_STATE_UNKNOWN);
-        auto* AttachmentFirstLastUse = MemPool.ConstructArray<std::pair<Uint32, Uint32>>(Desc.AttachmentCount, std::pair<Uint32, Uint32>{ATTACHMENT_UNUSED, 0});
+        auto* AttachmentFirstLastUse = MemPool.ConstructArray<std::pair<UInt32, UInt32>>(Desc.AttachmentCount, std::pair<UInt32, UInt32>{ATTACHMENT_UNUSED, 0});
         outAttachmentFirstLastUse    = AttachmentFirstLastUse;
 
         if (Desc.AttachmentCount != 0)
@@ -191,7 +191,7 @@ private:
             const RenderPassAttachmentDesc* SrcAttachments = Desc.pAttachments;
             RenderPassAttachmentDesc*       DstAttachments = MemPool.Allocate<RenderPassAttachmentDesc>(Desc.AttachmentCount);
             Desc.pAttachments                              = DstAttachments;
-            for (Uint32 i = 0; i < Desc.AttachmentCount; ++i)
+            for (UInt32 i = 0; i < Desc.AttachmentCount; ++i)
             {
                 DstAttachments[i] = SrcAttachments[i];
                 _CorrectAttachmentState<RenderDeviceImplType>(DstAttachments[i].FinalState);
@@ -203,7 +203,7 @@ private:
         SubpassDesc*       DstSubpasses = MemPool.Allocate<SubpassDesc>(Desc.SubpassCount);
         Desc.pSubpasses                 = DstSubpasses;
 
-        const auto SetAttachmentState = [AttachmentStates, &Desc](Uint32 Subpass, Uint32 Attachment, RESOURCE_STATE State) //
+        const auto SetAttachmentState = [AttachmentStates, &Desc](UInt32 Subpass, UInt32 Attachment, RESOURCE_STATE State) //
         {
             VERIFY_EXPR(Attachment < Desc.AttachmentCount);
             VERIFY_EXPR(Subpass < Desc.SubpassCount);
@@ -211,9 +211,9 @@ private:
             AttachmentStates[Desc.AttachmentCount * Subpass + Attachment] = State;
         };
 
-        for (Uint32 subpass = 0; subpass < Desc.SubpassCount; ++subpass)
+        for (UInt32 subpass = 0; subpass < Desc.SubpassCount; ++subpass)
         {
-            for (Uint32 att = 0; att < Desc.AttachmentCount; ++att)
+            for (UInt32 att = 0; att < Desc.AttachmentCount; ++att)
             {
                 SetAttachmentState(subpass, att, subpass > 0 ? GetAttachmentState(subpass - 1, att) : Desc.pAttachments[att].InitialState);
             }
@@ -238,7 +238,7 @@ private:
             {
                 AttachmentReference* DstInputAttachments = MemPool.Allocate<AttachmentReference>(SrcSubpass.InputAttachmentCount);
                 DstSubpass.pInputAttachments             = DstInputAttachments;
-                for (Uint32 i = 0; i < SrcSubpass.InputAttachmentCount; ++i)
+                for (UInt32 i = 0; i < SrcSubpass.InputAttachmentCount; ++i)
                 {
                     DstInputAttachments[i] = SrcSubpass.pInputAttachments[i];
                     UpdateAttachmentStateAndFirstUseSubpass(DstInputAttachments[i]);
@@ -251,7 +251,7 @@ private:
             {
                 AttachmentReference* DstRenderTargetAttachments = MemPool.Allocate<AttachmentReference>(SrcSubpass.RenderTargetAttachmentCount);
                 DstSubpass.pRenderTargetAttachments             = DstRenderTargetAttachments;
-                for (Uint32 i = 0; i < SrcSubpass.RenderTargetAttachmentCount; ++i)
+                for (UInt32 i = 0; i < SrcSubpass.RenderTargetAttachmentCount; ++i)
                 {
                     DstRenderTargetAttachments[i] = SrcSubpass.pRenderTargetAttachments[i];
                     UpdateAttachmentStateAndFirstUseSubpass(DstRenderTargetAttachments[i]);
@@ -261,7 +261,7 @@ private:
                 {
                     AttachmentReference* DstResolveAttachments = MemPool.Allocate<AttachmentReference>(SrcSubpass.RenderTargetAttachmentCount);
                     DstSubpass.pResolveAttachments             = DstResolveAttachments;
-                    for (Uint32 i = 0; i < SrcSubpass.RenderTargetAttachmentCount; ++i)
+                    for (UInt32 i = 0; i < SrcSubpass.RenderTargetAttachmentCount; ++i)
                     {
                         DstResolveAttachments[i] = SrcSubpass.pResolveAttachments[i];
                         _CorrectAttachmentState<RenderDeviceImplType>(DstResolveAttachments[i].State);
@@ -282,7 +282,7 @@ private:
             }
 
             if (SrcSubpass.PreserveAttachmentCount != 0)
-                DstSubpass.pPreserveAttachments = MemPool.CopyArray<Uint32>(SrcSubpass.pPreserveAttachments, SrcSubpass.PreserveAttachmentCount);
+                DstSubpass.pPreserveAttachments = MemPool.CopyArray<UInt32>(SrcSubpass.pPreserveAttachments, SrcSubpass.PreserveAttachmentCount);
             else
                 DstSubpass.pPreserveAttachments = nullptr;
 
@@ -306,7 +306,7 @@ private:
     RESOURCE_STATE* m_AttachmentStates = nullptr; // [m_Desc.AttachmentCount * m_Desc.SubpassCount]
 
     // The index of the subpass where the attachment is first used
-    const std::pair<Uint32, Uint32>* m_AttachmentFirstLastUse = nullptr; // [m_Desc.AttachmentCount]
+    const std::pair<UInt32, UInt32>* m_AttachmentFirstLastUse = nullptr; // [m_Desc.AttachmentCount]
 
 #ifdef DILIGENT_DEBUG
     bool m_IsDestructed = false;

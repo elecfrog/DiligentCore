@@ -34,7 +34,7 @@
 #include <map>
 #include <unordered_map>
 
-#include "../../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "../../../Common/interface/HashUtils.hpp"
 
 namespace Diligent
@@ -56,16 +56,16 @@ public:
     struct Region
     {
         /// x coordinate of the top-left corner of the region
-        Uint32 x = 0;
+        UInt32 x = 0;
 
         /// y coordinate of the top-left corner of the region
-        Uint32 y = 0;
+        UInt32 y = 0;
 
         /// width of the region
-        Uint32 width = 0;
+        UInt32 width = 0;
 
         /// height of the region
-        Uint32 height = 0;
+        UInt32 height = 0;
 
         Region() = default;
 
@@ -76,7 +76,7 @@ public:
         Region& operator=(      Region&&) = default;
         // clang-format on
 
-        Region(Uint32 _x, Uint32 _y, Uint32 _width, Uint32 _height) :
+        Region(UInt32 _x, UInt32 _y, UInt32 _width, UInt32 _height) :
             // clang-format off
             x     {_x},
             y     {_y},
@@ -114,7 +114,7 @@ public:
         };
     };
 
-    DynamicAtlasManager(Uint32 Width, Uint32 Height);
+    DynamicAtlasManager(UInt32 Width, UInt32 Height);
     ~DynamicAtlasManager();
 
     // clang-format off
@@ -132,7 +132,7 @@ public:
     /// \return         The allocated region.
     ///
     /// If the requested region cannot be allocated, an empty region is returned.
-    Region Allocate(Uint32 Width, Uint32 Height);
+    Region Allocate(UInt32 Width, UInt32 Height);
 
 
     /// Frees a previously allocated region in the atlas.
@@ -142,29 +142,29 @@ public:
 
 
     /// Returns the number of free regions in the atlas.
-    Uint32 GetFreeRegionCount() const
+    UInt32 GetFreeRegionCount() const
     {
         VERIFY_EXPR(m_FreeRegionsByWidth.size() == m_FreeRegionsByHeight.size());
-        return static_cast<Uint32>(m_FreeRegionsByWidth.size());
+        return static_cast<UInt32>(m_FreeRegionsByWidth.size());
     }
 
     /// Returns the atlas width.
-    Uint32 GetWidth() const { return m_Width; }
+    UInt32 GetWidth() const { return m_Width; }
 
     /// Returns the atlas height.
-    Uint32 GetHeight() const { return m_Height; }
+    UInt32 GetHeight() const { return m_Height; }
 
     /// Returns the total free area of the atlas.
 
     /// The total free area is the sum of the areas of all free regions in the atlas,
     /// and thus may be fragmented.
-    Uint64 GetTotalFreeArea() const { return m_TotalFreeArea; }
+    UInt64 GetTotalFreeArea() const { return m_TotalFreeArea; }
 
     /// Checks if the atlas is empty, i.e. if there are no allocated regions.
     bool IsEmpty() const
     {
-        VERIFY_EXPR(m_AllocatedRegions.empty() && (m_TotalFreeArea == Uint64{m_Width} * Uint64{m_Height}) ||
-                    !m_AllocatedRegions.empty() && (m_TotalFreeArea < Uint64{m_Width} * Uint64{m_Height}));
+        VERIFY_EXPR(m_AllocatedRegions.empty() && (m_TotalFreeArea == UInt64{m_Width} * UInt64{m_Height}) ||
+                    !m_AllocatedRegions.empty() && (m_TotalFreeArea < UInt64{m_Width} * UInt64{m_Height}));
         return m_AllocatedRegions.empty();
     }
 
@@ -203,13 +203,13 @@ private:
     void DbgVerifyRegion(const Region& R) const;
     void DbgVerifyConsistency() const;
     struct Node;
-    void DbgRecursiveVerifyConsistency(const Node& N, Uint32& Area) const;
+    void DbgRecursiveVerifyConsistency(const Node& N, UInt32& Area) const;
 #endif
 
-    const Uint32 m_Width;
-    const Uint32 m_Height;
+    const UInt32 m_Width;
+    const UInt32 m_Height;
 
-    Uint64 m_TotalFreeArea = 0;
+    UInt64 m_TotalFreeArea = 0;
 
     struct Node
     {
@@ -227,12 +227,12 @@ private:
             return NumChildren != 0;
         }
 
-        const Node& Child(Uint32 i) const
+        const Node& Child(UInt32 i) const
         {
             VERIFY_EXPR(i < NumChildren);
             return Children[i];
         }
-        Node& Child(Uint32 i)
+        Node& Child(UInt32 i)
         {
             VERIFY_EXPR(i < NumChildren);
             return Children[i];
@@ -241,13 +241,13 @@ private:
         template <typename ProcessChildType>
         void ProcessChildren(ProcessChildType ProcessChild) const
         {
-            for (Uint32 i = 0; i < NumChildren; ++i)
+            for (UInt32 i = 0; i < NumChildren; ++i)
                 ProcessChild(Child(i));
         }
         template <typename ProcessChildType>
         void ProcessChildren(ProcessChildType ProcessChild)
         {
-            for (Uint32 i = 0; i < NumChildren; ++i)
+            for (UInt32 i = 0; i < NumChildren; ++i)
                 ProcessChild(Child(i));
         }
 
@@ -255,7 +255,7 @@ private:
         void Validate() const;
 #endif
     private:
-        Uint32                  NumChildren = 0;
+        UInt32                  NumChildren = 0;
         std::unique_ptr<Node[]> Children;
     };
     std::unique_ptr<Node> m_Root{new Node};

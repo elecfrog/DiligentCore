@@ -61,11 +61,11 @@ public:
     struct FramebufferCacheKey
     {
         VkRenderPass Pass                     = VK_NULL_HANDLE;
-        Uint32       NumRenderTargets         = 0;
+        UInt32       NumRenderTargets         = 0;
         VkImageView  DSV                      = VK_NULL_HANDLE;
         VkImageView  RTVs[MAX_RENDER_TARGETS] = {};
         VkImageView  ShadingRate              = VK_NULL_HANDLE;
-        Uint64       CommandQueueMask         = 0;
+        UInt64       CommandQueueMask         = 0;
 
         bool   operator==(const FramebufferCacheKey& rhs) const;
         size_t GetHash() const;

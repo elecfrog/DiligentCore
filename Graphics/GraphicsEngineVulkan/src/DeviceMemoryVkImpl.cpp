@@ -55,7 +55,7 @@ DeviceMemoryVkImpl::DeviceMemoryVkImpl(IReferenceCounters*           pRefCounter
         DEVMEM_CHECK_CREATE_INFO("ppCompatibleResources must not be null");
 
     uint32_t MemoryTypeBits = ~0u;
-    for (Uint32 i = 0; i < MemCI.NumResources; ++i)
+    for (UInt32 i = 0; i < MemCI.NumResources; ++i)
     {
         IDeviceObject* pResource = MemCI.ppCompatibleResources[i];
 
@@ -111,7 +111,7 @@ DeviceMemoryVkImpl::~DeviceMemoryVkImpl()
     m_pDevice->SafeReleaseDeviceObject(std::move(m_Pages), m_Desc.ImmediateContextMask);
 }
 
-Bool DeviceMemoryVkImpl::Resize(Uint64 NewSize)
+Bool DeviceMemoryVkImpl::Resize(UInt64 NewSize)
 {
     DvpVerifyResize(NewSize);
 
@@ -147,7 +147,7 @@ Bool DeviceMemoryVkImpl::Resize(Uint64 NewSize)
     return true;
 }
 
-Uint64 DeviceMemoryVkImpl::GetCapacity() const
+UInt64 DeviceMemoryVkImpl::GetCapacity() const
 {
     return m_Desc.PageSize * m_Pages.size();
 }
@@ -174,7 +174,7 @@ Bool DeviceMemoryVkImpl::IsCompatible(IDeviceObject* pResource) const
     return (memoryTypeBits & (1u << m_MemoryTypeIndex)) != 0;
 }
 
-DeviceMemoryRangeVk DeviceMemoryVkImpl::GetRange(Uint64 Offset, Uint64 Size) const
+DeviceMemoryRangeVk DeviceMemoryVkImpl::GetRange(UInt64 Offset, UInt64 Size) const
 {
     const size_t PageIdx = static_cast<size_t>(Offset / m_Desc.PageSize);
 
@@ -185,7 +185,7 @@ DeviceMemoryRangeVk DeviceMemoryVkImpl::GetRange(Uint64 Offset, Uint64 Size) con
         return Range;
     }
 
-    const Uint64 OffsetInPage = Offset % m_Desc.PageSize;
+    const UInt64 OffsetInPage = Offset % m_Desc.PageSize;
     if (OffsetInPage + Size > m_Desc.PageSize)
     {
         DEV_ERROR("DeviceMemoryVkImpl::GetRange(): Offset and Size must be inside a single page");

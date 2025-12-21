@@ -29,7 +29,7 @@
 /// \file
 /// Implementation for the IDataBlob interface
 
-#include "../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "../../Primitives/interface/DataBlob.h"
 #include "ObjectBase.hpp"
 #include "RefCntAutoPtr.hpp"
@@ -89,14 +89,14 @@ public:
     virtual void* DILIGENT_CALL_TYPE GetDataPtr(size_t Offset = 0) override
     {
         VERIFY(Offset < m_Size, "Offset (", Offset, ") exceeds the data size (", m_Size, ")");
-        return static_cast<Uint8*>(m_pData) + Offset;
+        return static_cast<UInt8*>(m_pData) + Offset;
     }
 
     /// Returns the pointer to the internal data buffer
     virtual const void* DILIGENT_CALL_TYPE GetConstDataPtr(size_t Offset = 0) const override
     {
         VERIFY(Offset < m_Size, "Offset (", Offset, ") exceeds the data size (", m_Size, ")");
-        return static_cast<const Uint8*>(m_pConstData) + Offset;
+        return static_cast<const UInt8*>(m_pConstData) + Offset;
     }
 
 private:

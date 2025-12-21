@@ -70,12 +70,12 @@ struct ResourceSignatureUnpackInfo
 
     /// This member defines the allocation granularity for internal resources required by
     /// the shader resource binding object instances.
-    Uint32 SRBAllocationGranularity DEFAULT_INITIALIZER(1);
+    UInt32 SRBAllocationGranularity DEFAULT_INITIALIZER(1);
 };
 typedef struct ResourceSignatureUnpackInfo ResourceSignatureUnpackInfo;
 
 /// Pipeline state archive flags
-DILIGENT_TYPED_ENUM(PSO_ARCHIVE_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(PSO_ARCHIVE_FLAGS, UInt32)
 {
     /// No flags are set
     PSO_ARCHIVE_FLAG_NONE = 0u,
@@ -100,7 +100,7 @@ DEFINE_FLAG_ENUM_OPERATORS(PSO_ARCHIVE_FLAGS)
 
 
 /// Pipeline state unpack flags
-DILIGENT_TYPED_ENUM(PSO_UNPACK_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(PSO_UNPACK_FLAGS, UInt32)
 {
     /// No flags are set
     PSO_UNPACK_FLAG_NONE = 0u,
@@ -135,7 +135,7 @@ struct PipelineStateUnpackInfo
     /// This member defines allocation granularity for internal resources required by the shader resource
     /// binding object instances.
     /// Has no effect if the PSO is created with explicit pipeline resource signature(s).
-    Uint32 SRBAllocationGranularity DEFAULT_INITIALIZER(1);
+    UInt32 SRBAllocationGranularity DEFAULT_INITIALIZER(1);
 
     /// Defines which immediate contexts are allowed to execute commands that use this pipeline state.
 
@@ -146,7 +146,7 @@ struct PipelineStateUnpackInfo
     ///
     /// \remarks    Only specify these bits that will indicate those immediate contexts where the PSO
     ///             will actually be used. Do not set unnecessary bits as this will result in extra overhead.
-    Uint64 ImmediateContextMask     DEFAULT_INITIALIZER(1);
+    UInt64 ImmediateContextMask     DEFAULT_INITIALIZER(1);
 
     /// Optional PSO cache.
     IPipelineStateCache* pCache DEFAULT_INITIALIZER(nullptr);
@@ -241,7 +241,7 @@ DILIGENT_BEGIN_INTERFACE(IDearchiver, IObject)
     ///             with other methods.
     VIRTUAL Bool METHOD(LoadArchive)(THIS_
                                      const IDataBlob* pArchive,
-                                     Uint32           ContentVersion DEFAULT_VALUE(~0u),
+                                     UInt32           ContentVersion DEFAULT_VALUE(~0u),
                                      Bool             MakeCopy       DEFAULT_VALUE(false)) PURE;
 
     /// Unpacks a shader from the device object archive.
@@ -318,7 +318,7 @@ DILIGENT_BEGIN_INTERFACE(IDearchiver, IObject)
 
     /// Returns the content version of the archive.
     /// If no data has been loaded, returns ~0u (aka 0xFFFFFFFF).
-    VIRTUAL Uint32 METHOD(GetContentVersion)(THIS) CONST PURE;
+    VIRTUAL UInt32 METHOD(GetContentVersion)(THIS) CONST PURE;
 };
 DILIGENT_END_INTERFACE
 

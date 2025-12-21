@@ -61,12 +61,12 @@ protected:
         Attrs.ShaderCompiler = pEnv->GetDefaultCompiler(Attrs.SourceLanguage);
         pDevice->CreateShader(Attrs, &sm_Resources.pTrivialVS);
 
-        Uint32 MaxTestRenderTargets = pDevice->GetDeviceInfo().Type == RENDER_DEVICE_TYPE_GLES ? 4 : 8;
-        for (Uint32 NumRTs = 1; NumRTs <= MaxTestRenderTargets; ++NumRTs)
+        UInt32 MaxTestRenderTargets = pDevice->GetDeviceInfo().Type == RENDER_DEVICE_TYPE_GLES ? 4 : 8;
+        for (UInt32 NumRTs = 1; NumRTs <= MaxTestRenderTargets; ++NumRTs)
         {
             std::stringstream source_ss;
             source_ss << "void PSMain(";
-            for (Uint32 rt = 0; rt < NumRTs; ++rt)
+            for (UInt32 rt = 0; rt < NumRTs; ++rt)
             {
                 if (rt > 0)
                 {
@@ -76,7 +76,7 @@ protected:
                 source_ss << "out float4 col" << rt << " : SV_TARGET" << rt;
             }
             source_ss << ")\n{";
-            for (Uint32 rt = 0; rt < NumRTs; ++rt)
+            for (UInt32 rt = 0; rt < NumRTs; ++rt)
             {
                 source_ss << "\n    col" << rt << " = float4(0.0, 0.0, 0.0, 0.0);";
             }
@@ -126,13 +126,13 @@ protected:
         return pPSO;
     }
 
-    static GraphicsPipelineStateCreateInfo GetPSOCreateInfo(Uint32 NumRenderTargets)
+    static GraphicsPipelineStateCreateInfo GetPSOCreateInfo(UInt32 NumRenderTargets)
     {
         auto  PSOCreateInfo               = sm_Resources.PSOCreateInfo;
         auto& GraphicsPipeline            = PSOCreateInfo.GraphicsPipeline;
-        GraphicsPipeline.NumRenderTargets = static_cast<Uint8>(NumRenderTargets);
+        GraphicsPipeline.NumRenderTargets = static_cast<UInt8>(NumRenderTargets);
         PSOCreateInfo.pPS                 = sm_Resources.pTrivialPS[NumRenderTargets];
-        for (Uint32 rt = 1; rt < NumRenderTargets; ++rt)
+        for (UInt32 rt = 1; rt < NumRenderTargets; ++rt)
             GraphicsPipeline.RTVFormats[rt] = GraphicsPipeline.RTVFormats[0];
 
         return PSOCreateInfo;
@@ -275,7 +275,7 @@ TEST_P(BlendFactorTest, CreatePSO)
     const bool TestingAlpha = std::get<1>(Param);
 
     const auto& DeviceInfo           = pDevice->GetDeviceInfo();
-    Uint32      MaxTestRenderTargets = (DeviceInfo.Type == RENDER_DEVICE_TYPE_GLES) ? 4 : 8;
+    UInt32      MaxTestRenderTargets = (DeviceInfo.Type == RENDER_DEVICE_TYPE_GLES) ? 4 : 8;
 
     const bool TestSRC1 = DeviceInfo.Type != RENDER_DEVICE_TYPE_GLES; // || DevCaps.Vendor == GPU_VENDOR::NVIDIA;
     if (BlendFactor == BLEND_FACTOR_SRC1_COLOR ||
@@ -293,7 +293,7 @@ TEST_P(BlendFactorTest, CreatePSO)
         }
     }
 
-    for (Uint32 NumRenderTargets = 1; NumRenderTargets < MaxTestRenderTargets; ++NumRenderTargets)
+    for (UInt32 NumRenderTargets = 1; NumRenderTargets < MaxTestRenderTargets; ++NumRenderTargets)
     {
         GraphicsPipelineStateCreateInfo PSOCreateInfo = GetPSOCreateInfo(NumRenderTargets);
 
@@ -302,7 +302,7 @@ TEST_P(BlendFactorTest, CreatePSO)
         BlendStateDesc& BSDesc = PSOCreateInfo.GraphicsPipeline.BlendDesc;
 
         BSDesc.IndependentBlendEnable = True;
-        for (Uint32 i = 0; i < NumRenderTargets; ++i)
+        for (UInt32 i = 0; i < NumRenderTargets; ++i)
         {
             auto& RT = BSDesc.RenderTargets[i];
 
@@ -315,7 +315,7 @@ TEST_P(BlendFactorTest, CreatePSO)
 
         auto pPSO = CreateTestPSO(PSOCreateInfo, true);
         ASSERT_TRUE(pPSO) << "Number of render targets: " << NumRenderTargets;
-        for (Uint32 i = 0; i < NumRenderTargets; ++i)
+        for (UInt32 i = 0; i < NumRenderTargets; ++i)
         {
             auto& RT = pPSO->GetGraphicsPipelineDesc().BlendDesc.RenderTargets[i];
 
@@ -331,7 +331,7 @@ TEST_P(BlendFactorTest, CreatePSO)
         }
     }
 
-    for (Uint32 NumRenderTargets = 1; NumRenderTargets < MaxTestRenderTargets; ++NumRenderTargets)
+    for (UInt32 NumRenderTargets = 1; NumRenderTargets < MaxTestRenderTargets; ++NumRenderTargets)
     {
         GraphicsPipelineStateCreateInfo PSOCreateInfo = GetPSOCreateInfo(NumRenderTargets);
 
@@ -340,7 +340,7 @@ TEST_P(BlendFactorTest, CreatePSO)
         BlendStateDesc& BSDesc = PSOCreateInfo.GraphicsPipeline.BlendDesc;
 
         BSDesc.IndependentBlendEnable = True;
-        for (Uint32 i = 0; i < NumRenderTargets; ++i)
+        for (UInt32 i = 0; i < NumRenderTargets; ++i)
         {
             auto& RT = BSDesc.RenderTargets[i];
 
@@ -353,7 +353,7 @@ TEST_P(BlendFactorTest, CreatePSO)
 
         auto pPSO = CreateTestPSO(PSOCreateInfo, true);
         ASSERT_TRUE(pPSO) << "Number of render targets: " << NumRenderTargets;
-        for (Uint32 i = 0; i < NumRenderTargets; ++i)
+        for (UInt32 i = 0; i < NumRenderTargets; ++i)
         {
             auto& RT = pPSO->GetGraphicsPipelineDesc().BlendDesc.RenderTargets[i];
 
@@ -434,9 +434,9 @@ TEST_P(BlendOperationTest, CreatePSO)
     const auto TestingAlpha = std::get<1>(Param);
 
     const auto&  DeviceInfo           = pDevice->GetDeviceInfo();
-    const Uint32 MaxTestRenderTargets = (DeviceInfo.Type == RENDER_DEVICE_TYPE_GLES) ? 4 : 8;
+    const UInt32 MaxTestRenderTargets = (DeviceInfo.Type == RENDER_DEVICE_TYPE_GLES) ? 4 : 8;
 
-    for (Uint32 NumRenderTargets = 1; NumRenderTargets < MaxTestRenderTargets; ++NumRenderTargets)
+    for (UInt32 NumRenderTargets = 1; NumRenderTargets < MaxTestRenderTargets; ++NumRenderTargets)
     {
         GraphicsPipelineStateCreateInfo PSOCreateInfo = GetPSOCreateInfo(NumRenderTargets);
 
@@ -445,7 +445,7 @@ TEST_P(BlendOperationTest, CreatePSO)
         BlendStateDesc& BSDesc = PSOCreateInfo.GraphicsPipeline.BlendDesc;
 
         BSDesc.IndependentBlendEnable = True;
-        for (Uint32 i = 0; i < NumRenderTargets; ++i)
+        for (UInt32 i = 0; i < NumRenderTargets; ++i)
         {
             auto& RT          = BSDesc.RenderTargets[i];
             RT.BlendEnable    = True;
@@ -475,7 +475,7 @@ TEST_P(BlendOperationTest, CreatePSO)
 
         auto pPSO = CreateTestPSO(PSOCreateInfo, true);
         ASSERT_TRUE(pPSO) << "Number of render targets: " << NumRenderTargets;
-        for (Uint32 i = 0; i < NumRenderTargets; ++i)
+        for (UInt32 i = 0; i < NumRenderTargets; ++i)
         {
             auto& RT = pPSO->GetGraphicsPipelineDesc().BlendDesc.RenderTargets[i];
 

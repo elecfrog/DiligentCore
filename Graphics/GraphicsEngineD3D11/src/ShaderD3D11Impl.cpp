@@ -41,9 +41,9 @@ static const ShaderVersion HLSLValidateShaderVersion(const ShaderVersion& Versio
     if (Version > MaxVersion)
     {
         ModelVer = MaxVersion;
-        LOG_ERROR_MESSAGE("Shader model ", Uint32{Version.Major}, "_", Uint32{Version.Minor},
+        LOG_ERROR_MESSAGE("Shader model ", UInt32{Version.Major}, "_", UInt32{Version.Minor},
                           " is not supported by this device. Attempting to use the maximum supported model ",
-                          Uint32{MaxVersion.Major}, "_", Uint32{MaxVersion.Minor}, '.');
+                          UInt32{MaxVersion.Major}, "_", UInt32{MaxVersion.Minor}, '.');
     }
     else
     {
@@ -85,7 +85,7 @@ static const ShaderVersion GetD3D11ShaderModel(D3D_FEATURE_LEVEL d3dDeviceFeatur
                 HLSLValidateShaderVersion(HLSLVersion, {4, 0});
 
         default:
-            UNEXPECTED("Unexpected D3D feature level ", static_cast<Uint32>(d3dDeviceFeatureLevel));
+            UNEXPECTED("Unexpected D3D feature level ", static_cast<UInt32>(d3dDeviceFeatureLevel));
             return ShaderVersion{4, 0};
     }
 #if defined(_MSC_VER) && !defined(NTDDI_WIN10_FE)

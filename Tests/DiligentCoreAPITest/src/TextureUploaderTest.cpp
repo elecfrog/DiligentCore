@@ -39,25 +39,25 @@ using namespace Diligent::Testing;
 namespace
 {
 
-Uint32 WriteOrVerifyRGBAData(MappedTextureSubresource& MappedData,
+UInt32 WriteOrVerifyRGBAData(MappedTextureSubresource& MappedData,
                              const UploadBufferDesc&   UploadBuffDesc,
-                             Uint32                    Mip,
-                             Uint32                    Slice,
-                             Uint32&                   cnt,
+                             UInt32                    Mip,
+                             UInt32                    Slice,
+                             UInt32&                   cnt,
                              bool                      Verify)
 {
-    Uint8* pRGBAData        = reinterpret_cast<Uint8*>(MappedData.pData);
-    Uint32 NumInvalidPixels = 0;
+    UInt8* pRGBAData        = reinterpret_cast<UInt8*>(MappedData.pData);
+    UInt32 NumInvalidPixels = 0;
 
-    const Uint32 Width  = UploadBuffDesc.Width >> Mip;
-    const Uint32 Height = UploadBuffDesc.Height >> Mip;
+    const UInt32 Width  = UploadBuffDesc.Width >> Mip;
+    const UInt32 Height = UploadBuffDesc.Height >> Mip;
     if (Verify)
     {
-        for (Uint32 y = 0; y < Height; ++y)
+        for (UInt32 y = 0; y < Height; ++y)
         {
-            for (Uint32 x = 0; x < Width; ++x)
+            for (UInt32 x = 0; x < Width; ++x)
             {
-                const Uint8* pRGBA = pRGBAData + x * 4 + MappedData.Stride * y;
+                const UInt8* pRGBA = pRGBAData + x * 4 + MappedData.Stride * y;
                 NumInvalidPixels += (*(pRGBA++) != ((cnt += 13) & 0xFF)) ? 1 : 0;
                 NumInvalidPixels += (*(pRGBA++) != ((cnt += 27) & 0xFF)) ? 1 : 0;
                 NumInvalidPixels += (*(pRGBA++) != ((cnt += 7) & 0xFF)) ? 1 : 0;
@@ -72,11 +72,11 @@ Uint32 WriteOrVerifyRGBAData(MappedTextureSubresource& MappedData,
     }
     else
     {
-        for (Uint32 y = 0; y < Height; ++y)
+        for (UInt32 y = 0; y < Height; ++y)
         {
-            for (Uint32 x = 0; x < Width; ++x)
+            for (UInt32 x = 0; x < Width; ++x)
             {
-                Uint8* pRGBA = pRGBAData + x * 4 + MappedData.Stride * y;
+                UInt8* pRGBA = pRGBAData + x * 4 + MappedData.Stride * y;
 
                 *(pRGBA++) = (cnt += 13) & 0xFF;
                 *(pRGBA++) = (cnt += 27) & 0xFF;
@@ -128,8 +128,8 @@ void TextureUploaderTest(bool IsRenderThread, TEXTURE_UPLOADER_MODE Mode)
     RefCntAutoPtr<ITexture> pStagingTexture;
     pDevice->CreateTexture(TexDesc, nullptr, &pStagingTexture);
 
-    constexpr Uint32 StartDstSlice = 2;
-    constexpr Uint32 StartDstMip   = 1;
+    constexpr UInt32 StartDstSlice = 2;
+    constexpr UInt32 StartDstMip   = 1;
 
     UploadBufferDesc UploadBuffDesc;
     UploadBuffDesc.Width     = TexDesc.Width >> StartDstMip;
@@ -138,8 +138,8 @@ void TextureUploaderTest(bool IsRenderThread, TEXTURE_UPLOADER_MODE Mode)
     UploadBuffDesc.MipLevels = 2;
     UploadBuffDesc.ArraySize = 4;
 
-    Uint32 cnt = 0;
-    for (Uint32 i = 0; i < 3; ++i)
+    UInt32 cnt = 0;
+    for (UInt32 i = 0; i < 3; ++i)
     {
         auto ref_cnt = cnt;
 
@@ -150,9 +150,9 @@ void TextureUploaderTest(bool IsRenderThread, TEXTURE_UPLOADER_MODE Mode)
             RefCntAutoPtr<IUploadBuffer> pUploadBuffer;
             pTexUploader->AllocateUploadBuffer(pCtx, UploadBuffDesc, &pUploadBuffer);
 
-            for (Uint32 slice = 0; slice < UploadBuffDesc.ArraySize; ++slice)
+            for (UInt32 slice = 0; slice < UploadBuffDesc.ArraySize; ++slice)
             {
-                for (Uint32 mip = 0; mip < UploadBuffDesc.MipLevels; ++mip)
+                for (UInt32 mip = 0; mip < UploadBuffDesc.MipLevels; ++mip)
                 {
                     MappedTextureSubresource MappedData = pUploadBuffer->GetMappedData(mip, slice);
                     WriteOrVerifyRGBAData(MappedData, UploadBuffDesc, mip, slice, cnt, false);
@@ -182,9 +182,9 @@ void TextureUploaderTest(bool IsRenderThread, TEXTURE_UPLOADER_MODE Mode)
         }
 
 
-        for (Uint32 slice = StartDstSlice; slice < StartDstSlice + UploadBuffDesc.ArraySize; ++slice)
+        for (UInt32 slice = StartDstSlice; slice < StartDstSlice + UploadBuffDesc.ArraySize; ++slice)
         {
-            for (Uint32 mip = StartDstMip; mip < StartDstMip + UploadBuffDesc.MipLevels; ++mip)
+            for (UInt32 mip = StartDstMip; mip < StartDstMip + UploadBuffDesc.MipLevels; ++mip)
             {
                 CopyTextureAttribs CopyAttribs{pDstTexture, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, pStagingTexture, RESOURCE_STATE_TRANSITION_MODE_TRANSITION};
                 CopyAttribs.SrcMipLevel = mip;
@@ -197,9 +197,9 @@ void TextureUploaderTest(bool IsRenderThread, TEXTURE_UPLOADER_MODE Mode)
 
         pContext->WaitForIdle();
 
-        for (Uint32 slice = 0; slice < UploadBuffDesc.ArraySize; ++slice)
+        for (UInt32 slice = 0; slice < UploadBuffDesc.ArraySize; ++slice)
         {
-            for (Uint32 mip = 0; mip < UploadBuffDesc.MipLevels; ++mip)
+            for (UInt32 mip = 0; mip < UploadBuffDesc.MipLevels; ++mip)
             {
                 MappedTextureSubresource MappedData;
                 pContext->MapTextureSubresource(pStagingTexture, StartDstMip + mip, StartDstSlice + slice, MAP_READ, MAP_FLAG_DO_NOT_WAIT, nullptr, MappedData);
@@ -272,7 +272,7 @@ void TestAutoRecycle(bool IsRenderThread, TEXTURE_UPLOADER_MODE Mode)
         ASSERT_TRUE(pUploadBuffer);
 
         MappedTextureSubresource MappedData = pUploadBuffer->GetMappedData(0, 0);
-        Uint32                   cnt        = 0;
+        UInt32                   cnt        = 0;
         WriteOrVerifyRGBAData(MappedData, UploadBuffDesc, 0, 0, cnt, false);
 
         pTexUploader->ScheduleGPUCopy(pCtx, pDstTexture, 0, 0, pUploadBuffer, true);
@@ -299,7 +299,7 @@ void TestAutoRecycle(bool IsRenderThread, TEXTURE_UPLOADER_MODE Mode)
     EXPECT_EQ(pUploadBuffer, pUploadBuffer2);
 
     MappedTextureSubresource MappedData = pUploadBuffer->GetMappedData(0, 0);
-    Uint32                   cnt        = 0;
+    UInt32                   cnt        = 0;
     WriteOrVerifyRGBAData(MappedData, UploadBuffDesc, 0, 0, cnt, false);
 
     pTexUploader->ScheduleGPUCopy(pContext, pDstTexture, 0, 0, pUploadBuffer, true);

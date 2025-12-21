@@ -85,12 +85,12 @@ void Shuffle(It first, It last)
     std::shuffle(first, last, g);
 }
 
-void CreateBLAS(IRenderDevice* pDevice, IDeviceContext* pContext, BLASBuildTriangleData* pTriangles, Uint32 TriangleCount, RAYTRACING_BUILD_AS_FLAGS Flags, RefCntAutoPtr<IBottomLevelAS>& pBLAS)
+void CreateBLAS(IRenderDevice* pDevice, IDeviceContext* pContext, BLASBuildTriangleData* pTriangles, UInt32 TriangleCount, RAYTRACING_BUILD_AS_FLAGS Flags, RefCntAutoPtr<IBottomLevelAS>& pBLAS)
 {
     // Create BLAS for triangles
     std::vector<BLASTriangleDesc> TriangleInfos;
     TriangleInfos.resize(TriangleCount + 1);
-    for (Uint32 i = 0; i < TriangleCount; ++i)
+    for (UInt32 i = 0; i < TriangleCount; ++i)
     {
         auto& src = pTriangles[i];
         auto& dst = TriangleInfos[i];
@@ -123,7 +123,7 @@ void CreateBLAS(IRenderDevice* pDevice, IDeviceContext* pContext, BLASBuildTrian
     ASDesc.Name          = "Triangle BLAS";
     ASDesc.Flags         = Flags;
     ASDesc.pTriangles    = TriangleInfos.data();
-    ASDesc.TriangleCount = static_cast<Uint32>(TriangleInfos.size());
+    ASDesc.TriangleCount = static_cast<UInt32>(TriangleInfos.size());
 
     pDevice->CreateBLAS(ASDesc, &pBLAS);
     ASSERT_NE(pBLAS, nullptr);
@@ -161,12 +161,12 @@ void CreateBLAS(IRenderDevice* pDevice, IDeviceContext* pContext, BLASBuildTrian
     }
 }
 
-void CreateBLAS(IRenderDevice* pDevice, IDeviceContext* pContext, BLASBuildBoundingBoxData* pBoxes, Uint32 BoxCount, RAYTRACING_BUILD_AS_FLAGS Flags, RefCntAutoPtr<IBottomLevelAS>& pBLAS)
+void CreateBLAS(IRenderDevice* pDevice, IDeviceContext* pContext, BLASBuildBoundingBoxData* pBoxes, UInt32 BoxCount, RAYTRACING_BUILD_AS_FLAGS Flags, RefCntAutoPtr<IBottomLevelAS>& pBLAS)
 {
     // Create BLAS for boxes
     std::vector<BLASBoundingBoxDesc> BoxInfos;
     BoxInfos.resize(BoxCount);
-    for (Uint32 i = 0; i < BoxCount; ++i)
+    for (UInt32 i = 0; i < BoxCount; ++i)
     {
         auto& src = pBoxes[i];
         auto& dst = BoxInfos[i];
@@ -181,7 +181,7 @@ void CreateBLAS(IRenderDevice* pDevice, IDeviceContext* pContext, BLASBuildBound
     ASDesc.Name     = "Boxes BLAS";
     ASDesc.Flags    = Flags;
     ASDesc.pBoxes   = BoxInfos.data();
-    ASDesc.BoxCount = static_cast<Uint32>(BoxInfos.size());
+    ASDesc.BoxCount = static_cast<UInt32>(BoxInfos.size());
 
     pDevice->CreateBLAS(ASDesc, &pBLAS);
     ASSERT_NE(pBLAS, nullptr);
@@ -219,7 +219,7 @@ void CreateBLAS(IRenderDevice* pDevice, IDeviceContext* pContext, BLASBuildBound
     }
 }
 
-void CreateTLAS(IRenderDevice* pDevice, IDeviceContext* pContext, TLASBuildInstanceData* pInstances, Uint32 InstanceCount, Uint32 HitGroupStride, RAYTRACING_BUILD_AS_FLAGS Flags, RefCntAutoPtr<ITopLevelAS>& pTLAS)
+void CreateTLAS(IRenderDevice* pDevice, IDeviceContext* pContext, TLASBuildInstanceData* pInstances, UInt32 InstanceCount, UInt32 HitGroupStride, RAYTRACING_BUILD_AS_FLAGS Flags, RefCntAutoPtr<ITopLevelAS>& pTLAS)
 {
     // Create TLAS
     TopLevelASDesc TLASDesc;
@@ -294,13 +294,13 @@ void CompareGeometryDesc(const IBottomLevelAS* pLhsAS, const IBottomLevelAS* pRh
     std::unordered_map<std::string, const BLASTriangleDesc*>    TriangleMap;
     std::unordered_map<std::string, const BLASBoundingBoxDesc*> BoxMap;
 
-    for (Uint32 i = 0; i < lDesc.TriangleCount; ++i)
+    for (UInt32 i = 0; i < lDesc.TriangleCount; ++i)
         ASSERT_TRUE(TriangleMap.emplace(lDesc.pTriangles[i].GeometryName, &lDesc.pTriangles[i]).second);
 
-    for (Uint32 i = 0; i < lDesc.BoxCount; ++i)
+    for (UInt32 i = 0; i < lDesc.BoxCount; ++i)
         ASSERT_TRUE(BoxMap.emplace(lDesc.pBoxes[i].GeometryName, &lDesc.pBoxes[i]).second);
 
-    for (Uint32 i = 0; i < rDesc.TriangleCount; ++i)
+    for (UInt32 i = 0; i < rDesc.TriangleCount; ++i)
     {
         const auto& rTri = rDesc.pTriangles[i];
         auto        iter = TriangleMap.find(rTri.GeometryName);
@@ -316,7 +316,7 @@ void CompareGeometryDesc(const IBottomLevelAS* pLhsAS, const IBottomLevelAS* pRh
         ASSERT_EQ(lTri.AllowsTransforms, rTri.AllowsTransforms);
     }
 
-    for (Uint32 i = 0; i < rDesc.BoxCount; ++i)
+    for (UInt32 i = 0; i < rDesc.BoxCount; ++i)
     {
         const auto& rBox = rDesc.pBoxes[i];
         auto        iter = BoxMap.find(rBox.GeometryName);
@@ -355,7 +355,7 @@ void ASCompaction(IRenderDevice*             pDevice,
     BuffDesc.Usage     = USAGE_DEFAULT;
     BuffDesc.BindFlags = BIND_UNORDERED_ACCESS;
     BuffDesc.Mode      = BUFFER_MODE_RAW;
-    BuffDesc.Size      = sizeof(Uint64);
+    BuffDesc.Size      = sizeof(UInt64);
 
     pDevice->CreateBuffer(BuffDesc, nullptr, &pCompactedSizeBuffer);
     ASSERT_NE(pCompactedSizeBuffer, nullptr);
@@ -377,7 +377,7 @@ void ASCompaction(IRenderDevice*             pDevice,
     (pContext->*WriteASCompactedSizeFn)(Attribs);
 
     pContext->CopyBuffer(pCompactedSizeBuffer, 0, RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
-                         pReadbackBuffer, 0, sizeof(Uint64), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+                         pReadbackBuffer, 0, sizeof(UInt64), RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
     pContext->Flush();
     pContext->WaitForIdle();
@@ -387,7 +387,7 @@ void ASCompaction(IRenderDevice*             pDevice,
 
     ASDescType ASDesc;
     ASDesc.Name          = "AS compacted copy";
-    ASDesc.CompactedSize = static_cast<Uint32>(*static_cast<Uint64*>(pMapped));
+    ASDesc.CompactedSize = static_cast<UInt32>(*static_cast<UInt64*>(pMapped));
 
     pContext->UnmapBuffer(pReadbackBuffer, MAP_READ);
 
@@ -429,7 +429,7 @@ enum TestMode
     EndRange
 };
 
-void BLASCompaction(Uint32 TestId, IRenderDevice* pDevice, IDeviceContext* pContext, IBottomLevelAS* pSrcBLAS, RefCntAutoPtr<IBottomLevelAS>& pDstBLAS)
+void BLASCompaction(UInt32 TestId, IRenderDevice* pDevice, IDeviceContext* pContext, IBottomLevelAS* pSrcBLAS, RefCntAutoPtr<IBottomLevelAS>& pDstBLAS)
 {
     switch (TestId)
     {
@@ -492,7 +492,7 @@ void BLASCompaction(Uint32 TestId, IRenderDevice* pDevice, IDeviceContext* pCont
     }
 }
 
-void TLASCompaction(Uint32 TestId, IRenderDevice* pDevice, IDeviceContext* pContext, ITopLevelAS* pSrcTLAS, RefCntAutoPtr<ITopLevelAS>& pDstTLAS)
+void TLASCompaction(UInt32 TestId, IRenderDevice* pDevice, IDeviceContext* pContext, ITopLevelAS* pSrcTLAS, RefCntAutoPtr<ITopLevelAS>& pDstTLAS)
 {
     switch (TestId)
     {
@@ -560,7 +560,7 @@ std::string TestIdToString(const testing::TestParamInfo<int>& info)
     return name;
 }
 
-RAYTRACING_BUILD_AS_FLAGS BLASTestFlags(Uint32 TestId)
+RAYTRACING_BUILD_AS_FLAGS BLASTestFlags(UInt32 TestId)
 {
     switch (TestId)
     {
@@ -579,7 +579,7 @@ RAYTRACING_BUILD_AS_FLAGS BLASTestFlags(Uint32 TestId)
     }
 }
 
-RAYTRACING_BUILD_AS_FLAGS TLASTestFlags(Uint32 TestId)
+RAYTRACING_BUILD_AS_FLAGS TLASTestFlags(UInt32 TestId)
 {
     switch (TestId)
     {
@@ -600,14 +600,14 @@ RAYTRACING_BUILD_AS_FLAGS TLASTestFlags(Uint32 TestId)
 
 struct BufferOffsets
 {
-    Uint32 VBOffset;
-    Uint32 IBOffset;
+    UInt32 VBOffset;
+    UInt32 IBOffset;
 };
-BufferOffsets GetBufferOffsets(IRenderDevice* pDevice, Uint32 TestId, Uint32 VertexSize)
+BufferOffsets GetBufferOffsets(IRenderDevice* pDevice, UInt32 TestId, UInt32 VertexSize)
 {
     const auto& RTProps = pDevice->GetAdapterInfo().RayTracing;
     return BufferOffsets{AlignUp((TestId / 3) * VertexSize, RTProps.VertexBufferAlignment),
-                         AlignUp((TestId / 2) * Uint32{sizeof(Uint32)}, RTProps.IndexBufferAlignment)};
+                         AlignUp((TestId / 2) * UInt32{sizeof(UInt32)}, RTProps.IndexBufferAlignment)};
 }
 
 
@@ -619,7 +619,7 @@ class RT1 : public testing::TestWithParam<int>
 
 TEST_P(RT1, TriangleClosestHitShader)
 {
-    Uint32 TestId = GetParam();
+    UInt32 TestId = GetParam();
     auto*  pEnv   = GPUTestingEnvironment::GetInstance();
     if (!pEnv->SupportsRayTracing())
     {
@@ -757,7 +757,7 @@ TEST_P(RT1, TriangleClosestHitShader)
     Instance.Flags        = RAYTRACING_INSTANCE_NONE;
 
     RefCntAutoPtr<ITopLevelAS> pTempTLAS;
-    const Uint32               HitGroupStride = 1;
+    const UInt32               HitGroupStride = 1;
     CreateTLAS(pDevice, pContext, &Instance, 1, HitGroupStride, TLASTestFlags(TestId), pTempTLAS);
 
     RefCntAutoPtr<ITopLevelAS> pTLAS;
@@ -802,7 +802,7 @@ class RT2 : public testing::TestWithParam<int>
 
 TEST_P(RT2, TriangleAnyHitShader)
 {
-    Uint32 TestId = GetParam();
+    UInt32 TestId = GetParam();
     auto*  pEnv   = GPUTestingEnvironment::GetInstance();
     if (!pEnv->SupportsRayTracing())
     {
@@ -950,7 +950,7 @@ TEST_P(RT2, TriangleAnyHitShader)
     Instance.Flags        = RAYTRACING_INSTANCE_NONE;
 
     RefCntAutoPtr<ITopLevelAS> pTempTLAS;
-    const Uint32               HitGroupStride = 1;
+    const UInt32               HitGroupStride = 1;
     CreateTLAS(pDevice, pContext, &Instance, 1, HitGroupStride, TLASTestFlags(TestId), pTempTLAS);
 
     RefCntAutoPtr<ITopLevelAS> pTLAS;
@@ -995,7 +995,7 @@ class RT3 : public testing::TestWithParam<int>
 
 TEST_P(RT3, ProceduralIntersection)
 {
-    Uint32 TestId = GetParam();
+    UInt32 TestId = GetParam();
     auto*  pEnv   = GPUTestingEnvironment::GetInstance();
     if (!pEnv->SupportsRayTracing())
     {
@@ -1143,7 +1143,7 @@ TEST_P(RT3, ProceduralIntersection)
     Instance.Flags        = RAYTRACING_INSTANCE_NONE;
 
     RefCntAutoPtr<ITopLevelAS> pTempTLAS;
-    const Uint32               HitGroupStride = 1;
+    const UInt32               HitGroupStride = 1;
     CreateTLAS(pDevice, pContext, &Instance, 1, HitGroupStride, TLASTestFlags(TestId), pTempTLAS);
 
     RefCntAutoPtr<ITopLevelAS> pTLAS;
@@ -1188,7 +1188,7 @@ class RT4 : public testing::TestWithParam<int>
 
 TEST_P(RT4, MultiGeometry)
 {
-    Uint32 TestId = GetParam();
+    UInt32 TestId = GetParam();
     auto*  pEnv   = GPUTestingEnvironment::GetInstance();
     if (!pEnv->SupportsRayTracing())
     {
@@ -1411,7 +1411,7 @@ TEST_P(RT4, MultiGeometry)
     Instances[1].Transform.SetTranslation(0.1f, 0.5f, 0.0f);
 
     RefCntAutoPtr<ITopLevelAS> pTempTLAS;
-    const Uint32               HitGroupStride = 1;
+    const UInt32               HitGroupStride = 1;
     CreateTLAS(pDevice, pContext, Instances, _countof(Instances), HitGroupStride, TLASTestFlags(TestId), pTempTLAS);
 
     RefCntAutoPtr<ITopLevelAS> pTLAS;
@@ -1568,7 +1568,7 @@ class RT5 : public testing::TestWithParam<int>
 
 TEST_P(RT5, InlineRayTracing_RayTracingPSO)
 {
-    Uint32 TestId  = GetParam();
+    UInt32 TestId  = GetParam();
     auto*  pEnv    = GPUTestingEnvironment::GetInstance();
     auto*  pDevice = pEnv->GetDevice();
     if (!pEnv->SupportsRayTracing() || (pDevice->GetAdapterInfo().RayTracing.CapFlags & RAY_TRACING_CAP_FLAG_INLINE_RAY_TRACING) == 0)
@@ -1683,7 +1683,7 @@ TEST_P(RT5, InlineRayTracing_RayTracingPSO)
     Instance.Flags        = RAYTRACING_INSTANCE_NONE;
 
     RefCntAutoPtr<ITopLevelAS> pTempTLAS;
-    const Uint32               HitGroupStride = 1;
+    const UInt32               HitGroupStride = 1;
     CreateTLAS(pDevice, pContext, &Instance, 1, HitGroupStride, TLASTestFlags(TestId), pTempTLAS);
 
     RefCntAutoPtr<ITopLevelAS> pTLAS;
@@ -1726,7 +1726,7 @@ class RT6 : public testing::TestWithParam<int>
 
 TEST_P(RT6, InlineRayTracing_GraphicsPSO)
 {
-    Uint32 TestId  = GetParam();
+    UInt32 TestId  = GetParam();
     auto*  pEnv    = GPUTestingEnvironment::GetInstance();
     auto*  pDevice = pEnv->GetDevice();
     if (!pEnv->SupportsRayTracing() || (pDevice->GetAdapterInfo().RayTracing.CapFlags & RAY_TRACING_CAP_FLAG_INLINE_RAY_TRACING) == 0)
@@ -1852,7 +1852,7 @@ TEST_P(RT6, InlineRayTracing_GraphicsPSO)
     Instance.Flags        = RAYTRACING_INSTANCE_NONE;
 
     RefCntAutoPtr<ITopLevelAS> pTempTLAS;
-    const Uint32               HitGroupStride = 1;
+    const UInt32               HitGroupStride = 1;
     CreateTLAS(pDevice, pContext, &Instance, 1, HitGroupStride, TLASTestFlags(TestId), pTempTLAS);
 
     RefCntAutoPtr<ITopLevelAS> pTLAS;
@@ -1879,7 +1879,7 @@ class RT7 : public testing::TestWithParam<int>
 
 TEST_P(RT7, TraceRaysIndirect)
 {
-    Uint32 TestId  = GetParam();
+    UInt32 TestId  = GetParam();
     auto*  pEnv    = GPUTestingEnvironment::GetInstance();
     auto*  pDevice = pEnv->GetDevice();
     if (!pEnv->SupportsRayTracing() || (pDevice->GetAdapterInfo().RayTracing.CapFlags & RAY_TRACING_CAP_FLAG_INDIRECT_RAY_TRACING) == 0)
@@ -2017,7 +2017,7 @@ TEST_P(RT7, TraceRaysIndirect)
     Instance.Flags        = RAYTRACING_INSTANCE_NONE;
 
     RefCntAutoPtr<ITopLevelAS> pTempTLAS;
-    const Uint32               HitGroupStride = 1;
+    const UInt32               HitGroupStride = 1;
     CreateTLAS(pDevice, pContext, &Instance, 1, HitGroupStride, TLASTestFlags(TestId), pTempTLAS);
 
     RefCntAutoPtr<ITopLevelAS> pTLAS;
@@ -2042,10 +2042,10 @@ TEST_P(RT7, TraceRaysIndirect)
     {
         char   Unused[16];
         char   Reserved[88];
-        Uint32 DimensionX;
-        Uint32 DimensionY;
-        Uint32 DimensionZ;
-        Uint32 End;
+        UInt32 DimensionX;
+        UInt32 DimensionY;
+        UInt32 DimensionZ;
+        UInt32 End;
         char   Unused2[16];
     };
     TraceRaysIndirectArgs IndirectArgs = {};
@@ -2090,7 +2090,7 @@ class RT8 : public testing::TestWithParam<int>
 
 TEST_P(RT8, InlineRayTracing_ComputePSO)
 {
-    Uint32      TestId     = GetParam();
+    UInt32      TestId     = GetParam();
     auto*       pEnv       = GPUTestingEnvironment::GetInstance();
     auto*       pDevice    = pEnv->GetDevice();
     const auto& DeviceInfo = pDevice->GetDeviceInfo();
@@ -2231,7 +2231,7 @@ TEST_P(RT8, InlineRayTracing_ComputePSO)
     Instance.Flags        = RAYTRACING_INSTANCE_NONE;
 
     RefCntAutoPtr<ITopLevelAS> pTempTLAS;
-    const Uint32               HitGroupStride = 1;
+    const UInt32               HitGroupStride = 1;
     CreateTLAS(pDevice, pContext, &Instance, 1, HitGroupStride, TLASTestFlags(TestId), pTempTLAS);
 
     RefCntAutoPtr<ITopLevelAS> pTLAS;

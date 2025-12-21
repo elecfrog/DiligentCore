@@ -28,7 +28,7 @@
 
 #include <string.h>
 
-#include "../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "../../Primitives/interface/CommonDefinitions.h"
 
 #if !(defined(_MSC_VER) || defined(__MINGW64__) || defined(__MINGW32__))

@@ -84,38 +84,38 @@ struct D3DShaderResourceAttribs
 
 /* 0 */ const char* const Name;
 
-/* 8 */ const Uint32 BindPoint;
-/*12 */ const Uint32 BindCount;
-/*16 */ const Uint32 Space;
+/* 8 */ const UInt32 BindPoint;
+/*12 */ const UInt32 BindCount;
+/*16 */ const UInt32 Space;
 
     //            4               4                 24
     // bit | 0  1  2  3   |  4  5  6  7  |  8   9  10   ...   31  |
     //     |              |              |                        |
     //     |  InputType   |   SRV Dim    | SamplerOrTexSRVIdBits  |
-    static constexpr const Uint32 ShaderInputTypeBits    =  4;
-    static constexpr const Uint32 SRVDimBits             =  4;
-    static constexpr const Uint32 SamplerOrTexSRVIdBits  = 24;
+    static constexpr const UInt32 ShaderInputTypeBits    =  4;
+    static constexpr const UInt32 SRVDimBits             =  4;
+    static constexpr const UInt32 SamplerOrTexSRVIdBits  = 24;
     static_assert(ShaderInputTypeBits + SRVDimBits + SamplerOrTexSRVIdBits == 32, "Attributes are better be packed into 32 bits");
 
     static_assert(D3D_SIT_UAV_RWSTRUCTURED_WITH_COUNTER < (1 << ShaderInputTypeBits), "Not enough bits to represent D3D_SHADER_INPUT_TYPE");
     static_assert(D3D_SRV_DIMENSION_BUFFEREX            < (1 << SRVDimBits),          "Not enough bits to represent D3D_SRV_DIMENSION");
 
 private:
-         // We need to use Uint32 instead of the actual type for reliability and correctness.
+         // We need to use UInt32 instead of the actual type for reliability and correctness.
          // There originally was a problem when the type of InputType was D3D_SHADER_INPUT_TYPE:
          // the value of D3D_SIT_UAV_RWBYTEADDRESS (8) was interpreted as -8 (as the underlying enum type
          // is signed) causing errors
-/*20.0*/ const Uint32  InputType          : ShaderInputTypeBits;     // Max value: D3D_SIT_UAV_RWSTRUCTURED_WITH_COUNTER == 11
-/*20.4*/ const Uint32  SRVDimension       : SRVDimBits;              // Max value: D3D_SRV_DIMENSION_BUFFEREX == 11
-/*21.0*/       Uint32  SamplerOrTexSRVId  : SamplerOrTexSRVIdBits;   // Max value: 2^24-1
+/*20.0*/ const UInt32  InputType          : ShaderInputTypeBits;     // Max value: D3D_SIT_UAV_RWSTRUCTURED_WITH_COUNTER == 11
+/*20.4*/ const UInt32  SRVDimension       : SRVDimBits;              // Max value: D3D_SRV_DIMENSION_BUFFEREX == 11
+/*21.0*/       UInt32  SamplerOrTexSRVId  : SamplerOrTexSRVIdBits;   // Max value: 2^24-1
 /*24  */ // End of structure
 
     // clang-format on
 
 public:
-    static constexpr const Uint32 InvalidSamplerId = (1U << SamplerOrTexSRVIdBits) - 1U;
-    static constexpr const Uint32 MaxSamplerId     = InvalidSamplerId - 1;
-    static constexpr const Uint32 InvalidTexSRVId  = (1U << SamplerOrTexSRVIdBits) - 1U;
+    static constexpr const UInt32 InvalidSamplerId = (1U << SamplerOrTexSRVIdBits) - 1U;
+    static constexpr const UInt32 MaxSamplerId     = InvalidSamplerId - 1;
+    static constexpr const UInt32 InvalidTexSRVId  = (1U << SamplerOrTexSRVIdBits) - 1U;
     static constexpr const auto   InvalidBindPoint = std::numeric_limits<decltype(BindPoint)>::max();
 
 
@@ -125,7 +125,7 @@ public:
                              UINT                  _Space,
                              D3D_SHADER_INPUT_TYPE _InputType,
                              D3D_SRV_DIMENSION     _SRVDimension,
-                             Uint32                _SamplerId) noexcept :
+                             UInt32                _SamplerId) noexcept :
         // clang-format off
         Name               {_Name},
         BindPoint          {_BindPoint},
@@ -150,7 +150,7 @@ public:
 #endif
     }
 
-    D3DShaderResourceAttribs(StringPool& NamesPool, const D3DShaderResourceAttribs& rhs, Uint32 _SamplerId) noexcept :
+    D3DShaderResourceAttribs(StringPool& NamesPool, const D3DShaderResourceAttribs& rhs, UInt32 _SamplerId) noexcept :
         // clang-format off
         D3DShaderResourceAttribs
         {
@@ -250,7 +250,7 @@ public:
         return ResourceDesc;
     }
 
-    Uint32 GetCombinedSamplerId() const
+    UInt32 GetCombinedSamplerId() const
     {
         VERIFY(GetInputType() == D3D_SIT_TEXTURE && GetSRVDimension() != D3D_SRV_DIMENSION_BUFFER, "Invalid input type: D3D_SIT_TEXTURE is expected");
         return SamplerOrTexSRVId;
@@ -262,20 +262,20 @@ public:
 private:
     friend class ShaderResources;
 
-    void SetTexSRVId(Uint32 TexSRVId)
+    void SetTexSRVId(UInt32 TexSRVId)
     {
         VERIFY(GetInputType() == D3D_SIT_SAMPLER, "Invalid input type: D3D_SIT_SAMPLER is expected");
         VERIFY(TexSRVId < (1 << SamplerOrTexSRVIdBits), "TexSRVId (", TexSRVId, ") is out of representable range");
         SamplerOrTexSRVId = TexSRVId;
     }
 
-    Uint32 GetCombinedTexSRVId() const
+    UInt32 GetCombinedTexSRVId() const
     {
         VERIFY(GetInputType() == D3D_SIT_SAMPLER, "Invalid input type: D3D_SIT_SAMPLER is expected");
         return SamplerOrTexSRVId;
     }
 };
-static_assert(sizeof(D3DShaderResourceAttribs) == sizeof(void*) + sizeof(Uint32) * 4, "Unexpected sizeof(D3DShaderResourceAttribs)");
+static_assert(sizeof(D3DShaderResourceAttribs) == sizeof(void*) + sizeof(UInt32) * 4, "Unexpected sizeof(D3DShaderResourceAttribs)");
 
 
 /// Diligent::ShaderResources class
@@ -297,22 +297,22 @@ public:
     ~ShaderResources();
 
     // clang-format off
-    Uint32 GetNumCBs()         const noexcept { return (m_TexSRVOffset       - 0);                    }
-    Uint32 GetNumTexSRV()      const noexcept { return (m_TexUAVOffset       - m_TexSRVOffset);       }
-    Uint32 GetNumTexUAV()      const noexcept { return (m_BufSRVOffset       - m_TexUAVOffset);       }
-    Uint32 GetNumBufSRV()      const noexcept { return (m_BufUAVOffset       - m_BufSRVOffset);       }
-    Uint32 GetNumBufUAV()      const noexcept { return (m_SamplersOffset     - m_BufUAVOffset);       }
-    Uint32 GetNumSamplers()    const noexcept { return (m_AccelStructsOffset - m_SamplersOffset);     }
-    Uint32 GetNumAccelStructs()const noexcept { return (m_TotalResources     - m_AccelStructsOffset); }
-    Uint32 GetTotalResources() const noexcept { return  m_TotalResources;                             }
+    UInt32 GetNumCBs()         const noexcept { return (m_TexSRVOffset       - 0);                    }
+    UInt32 GetNumTexSRV()      const noexcept { return (m_TexUAVOffset       - m_TexSRVOffset);       }
+    UInt32 GetNumTexUAV()      const noexcept { return (m_BufSRVOffset       - m_TexUAVOffset);       }
+    UInt32 GetNumBufSRV()      const noexcept { return (m_BufUAVOffset       - m_BufSRVOffset);       }
+    UInt32 GetNumBufUAV()      const noexcept { return (m_SamplersOffset     - m_BufUAVOffset);       }
+    UInt32 GetNumSamplers()    const noexcept { return (m_AccelStructsOffset - m_SamplersOffset);     }
+    UInt32 GetNumAccelStructs()const noexcept { return (m_TotalResources     - m_AccelStructsOffset); }
+    UInt32 GetTotalResources() const noexcept { return  m_TotalResources;                             }
 
-    const D3DShaderResourceAttribs& GetCB         (Uint32 n)const noexcept { return GetResAttribs(n, GetNumCBs(),                       0);       }
-    const D3DShaderResourceAttribs& GetTexSRV     (Uint32 n)const noexcept { return GetResAttribs(n, GetNumTexSRV(),       m_TexSRVOffset);       }
-    const D3DShaderResourceAttribs& GetTexUAV     (Uint32 n)const noexcept { return GetResAttribs(n, GetNumTexUAV(),       m_TexUAVOffset);       }
-    const D3DShaderResourceAttribs& GetBufSRV     (Uint32 n)const noexcept { return GetResAttribs(n, GetNumBufSRV(),       m_BufSRVOffset);       }
-    const D3DShaderResourceAttribs& GetBufUAV     (Uint32 n)const noexcept { return GetResAttribs(n, GetNumBufUAV(),       m_BufUAVOffset);       }
-    const D3DShaderResourceAttribs& GetSampler    (Uint32 n)const noexcept { return GetResAttribs(n, GetNumSamplers(),     m_SamplersOffset);     }
-    const D3DShaderResourceAttribs& GetAccelStruct(Uint32 n)const noexcept { return GetResAttribs(n, GetNumAccelStructs(), m_AccelStructsOffset); }
+    const D3DShaderResourceAttribs& GetCB         (UInt32 n)const noexcept { return GetResAttribs(n, GetNumCBs(),                       0);       }
+    const D3DShaderResourceAttribs& GetTexSRV     (UInt32 n)const noexcept { return GetResAttribs(n, GetNumTexSRV(),       m_TexSRVOffset);       }
+    const D3DShaderResourceAttribs& GetTexUAV     (UInt32 n)const noexcept { return GetResAttribs(n, GetNumTexUAV(),       m_TexUAVOffset);       }
+    const D3DShaderResourceAttribs& GetBufSRV     (UInt32 n)const noexcept { return GetResAttribs(n, GetNumBufSRV(),       m_BufSRVOffset);       }
+    const D3DShaderResourceAttribs& GetBufUAV     (UInt32 n)const noexcept { return GetResAttribs(n, GetNumBufUAV(),       m_BufUAVOffset);       }
+    const D3DShaderResourceAttribs& GetSampler    (UInt32 n)const noexcept { return GetResAttribs(n, GetNumSamplers(),     m_SamplersOffset);     }
+    const D3DShaderResourceAttribs& GetAccelStruct(UInt32 n)const noexcept { return GetResAttribs(n, GetNumAccelStructs(), m_AccelStructsOffset); }
     // clang-format on
 
     const D3DShaderResourceAttribs& GetCombinedSampler(const D3DShaderResourceAttribs& TexSRV) const noexcept
@@ -329,9 +329,9 @@ public:
 
     SHADER_TYPE GetShaderType() const noexcept { return m_ShaderType; }
 
-    HLSLShaderResourceDesc GetHLSLShaderResourceDesc(Uint32 Index) const;
+    HLSLShaderResourceDesc GetHLSLShaderResourceDesc(UInt32 Index) const;
 
-    const ShaderCodeBufferDesc* GetConstantBufferDesc(Uint32 Index) const
+    const ShaderCodeBufferDesc* GetConstantBufferDesc(UInt32 Index) const
     {
         if (Index >= GetNumCBs())
         {
@@ -363,43 +363,43 @@ public:
                           THandleBufUAV      HandleBufUAV,
                           THandleAccelStruct HandleAccelStruct) const
     {
-        for (Uint32 n = 0; n < GetNumCBs(); ++n)
+        for (UInt32 n = 0; n < GetNumCBs(); ++n)
         {
             const D3DShaderResourceAttribs& CB = GetCB(n);
             HandleCB(CB, n);
         }
 
-        for (Uint32 n = 0; n < GetNumSamplers(); ++n)
+        for (UInt32 n = 0; n < GetNumSamplers(); ++n)
         {
             const D3DShaderResourceAttribs& Sampler = GetSampler(n);
             HandleSampler(Sampler, n);
         }
 
-        for (Uint32 n = 0; n < GetNumTexSRV(); ++n)
+        for (UInt32 n = 0; n < GetNumTexSRV(); ++n)
         {
             const D3DShaderResourceAttribs& TexSRV = GetTexSRV(n);
             HandleTexSRV(TexSRV, n);
         }
 
-        for (Uint32 n = 0; n < GetNumTexUAV(); ++n)
+        for (UInt32 n = 0; n < GetNumTexUAV(); ++n)
         {
             const D3DShaderResourceAttribs& TexUAV = GetTexUAV(n);
             HandleTexUAV(TexUAV, n);
         }
 
-        for (Uint32 n = 0; n < GetNumBufSRV(); ++n)
+        for (UInt32 n = 0; n < GetNumBufSRV(); ++n)
         {
             const D3DShaderResourceAttribs& BufSRV = GetBufSRV(n);
             HandleBufSRV(BufSRV, n);
         }
 
-        for (Uint32 n = 0; n < GetNumBufUAV(); ++n)
+        for (UInt32 n = 0; n < GetNumBufUAV(); ++n)
         {
             const D3DShaderResourceAttribs& BufUAV = GetBufUAV(n);
             HandleBufUAV(BufUAV, n);
         }
 
-        for (Uint32 n = 0; n < GetNumAccelStructs(); ++n)
+        for (UInt32 n = 0; n < GetNumAccelStructs(); ++n)
         {
             const D3DShaderResourceAttribs& AS = GetAccelStruct(n);
             HandleAccelStruct(AS, n);
@@ -421,12 +421,12 @@ public:
 #ifdef DILIGENT_DEVELOPMENT
     static void DvpVerifyResourceLayout(const PipelineResourceLayoutDesc& ResourceLayout,
                                         const ShaderResources* const      pShaderResources[],
-                                        Uint32                            NumShaders,
+                                        UInt32                            NumShaders,
                                         bool                              VerifyVariables,
                                         bool                              VerifyImmutableSamplers) noexcept;
 #endif
 
-    void GetShaderModel(Uint32& Major, Uint32& Minor) const
+    void GetShaderModel(UInt32& Major, UInt32& Minor) const
     {
         Major = (m_ShaderVersion & 0x000000F0) >> 4;
         Minor = (m_ShaderVersion & 0x0000000F);
@@ -443,14 +443,14 @@ protected:
                     bool                LoadConstantBufferReflection);
 
 
-    __forceinline D3DShaderResourceAttribs& GetResAttribs(Uint32 n, Uint32 NumResources, Uint32 Offset) noexcept
+    __forceinline D3DShaderResourceAttribs& GetResAttribs(UInt32 n, UInt32 NumResources, UInt32 Offset) noexcept
     {
         VERIFY(n < NumResources, "Resource index (", n, ") is out of range. Resource array size: ", NumResources);
         VERIFY_EXPR(Offset + n < m_TotalResources);
         return reinterpret_cast<D3DShaderResourceAttribs*>(m_MemoryBuffer.get())[Offset + n];
     }
 
-    __forceinline const D3DShaderResourceAttribs& GetResAttribs(Uint32 n, Uint32 NumResources, Uint32 Offset) const noexcept
+    __forceinline const D3DShaderResourceAttribs& GetResAttribs(UInt32 n, UInt32 NumResources, UInt32 Offset) const noexcept
     {
         VERIFY(n < NumResources, "Resource index (", n, ") is out of range. Resource array size: ", NumResources);
         VERIFY_EXPR(Offset + n < m_TotalResources);
@@ -458,13 +458,13 @@ protected:
     }
 
     // clang-format off
-    D3DShaderResourceAttribs& GetCB(Uint32 n)         noexcept { return GetResAttribs(n, GetNumCBs(), 0); }
-    D3DShaderResourceAttribs& GetTexSRV(Uint32 n)     noexcept { return GetResAttribs(n, GetNumTexSRV(), m_TexSRVOffset); }
-    D3DShaderResourceAttribs& GetTexUAV(Uint32 n)     noexcept { return GetResAttribs(n, GetNumTexUAV(), m_TexUAVOffset); }
-    D3DShaderResourceAttribs& GetBufSRV(Uint32 n)     noexcept { return GetResAttribs(n, GetNumBufSRV(), m_BufSRVOffset); }
-    D3DShaderResourceAttribs& GetBufUAV(Uint32 n)     noexcept { return GetResAttribs(n, GetNumBufUAV(), m_BufUAVOffset); }
-    D3DShaderResourceAttribs& GetSampler(Uint32 n)    noexcept { return GetResAttribs(n, GetNumSamplers(), m_SamplersOffset); }
-    D3DShaderResourceAttribs& GetAccelStruct(Uint32 n)noexcept { return GetResAttribs(n, GetNumAccelStructs(), m_AccelStructsOffset); }
+    D3DShaderResourceAttribs& GetCB(UInt32 n)         noexcept { return GetResAttribs(n, GetNumCBs(), 0); }
+    D3DShaderResourceAttribs& GetTexSRV(UInt32 n)     noexcept { return GetResAttribs(n, GetNumTexSRV(), m_TexSRVOffset); }
+    D3DShaderResourceAttribs& GetTexUAV(UInt32 n)     noexcept { return GetResAttribs(n, GetNumTexUAV(), m_TexUAVOffset); }
+    D3DShaderResourceAttribs& GetBufSRV(UInt32 n)     noexcept { return GetResAttribs(n, GetNumBufSRV(), m_BufSRVOffset); }
+    D3DShaderResourceAttribs& GetBufUAV(UInt32 n)     noexcept { return GetResAttribs(n, GetNumBufUAV(), m_BufUAVOffset); }
+    D3DShaderResourceAttribs& GetSampler(UInt32 n)    noexcept { return GetResAttribs(n, GetNumSamplers(), m_SamplersOffset); }
+    D3DShaderResourceAttribs& GetAccelStruct(UInt32 n)noexcept { return GetResAttribs(n, GetNumAccelStructs(), m_AccelStructsOffset); }
     // clang-format on
 
 private:
@@ -473,7 +473,7 @@ private:
                         size_t                           ResourceNamesPoolSize,
                         StringPool&                      ResourceNamesPool);
 
-    Uint32 FindAssignedSamplerId(const D3DShaderResourceAttribs& TexSRV, const char* SamplerSuffix) const;
+    UInt32 FindAssignedSamplerId(const D3DShaderResourceAttribs& TexSRV, const char* SamplerSuffix) const;
 
     // Memory buffer that holds all resources as continuous chunk of memory:
     // | CBs | TexSRVs | TexUAVs | BufSRVs | BufUAVs | Samplers |  Resource Names  |
@@ -486,7 +486,7 @@ private:
     const char* m_ShaderName    = nullptr; // are put into the Resource Names section
 
     // Offsets in elements of D3DShaderResourceAttribs
-    typedef Uint16 OffsetType;
+    typedef UInt16 OffsetType;
     OffsetType     m_TexSRVOffset       = 0;
     OffsetType     m_TexUAVOffset       = 0;
     OffsetType     m_BufSRVOffset       = 0;
@@ -497,7 +497,7 @@ private:
 
     const SHADER_TYPE m_ShaderType;
 
-    Uint32 m_ShaderVersion = 0;
+    UInt32 m_ShaderVersion = 0;
 };
 
 
@@ -512,7 +512,7 @@ void ShaderResources::Initialize(TShaderReflection*  pShaderReflection,
 {
     using D3D_SHADER_DESC = typename TD3DReflectionTraits::D3D_SHADER_DESC;
 
-    Uint32 CurrCB = 0, CurrTexSRV = 0, CurrTexUAV = 0, CurrBufSRV = 0, CurrBufUAV = 0, CurrSampler = 0, CurrAS = 0;
+    UInt32 CurrCB = 0, CurrTexSRV = 0, CurrTexUAV = 0, CurrBufSRV = 0, CurrBufUAV = 0, CurrSampler = 0, CurrAS = 0;
 
     // Resource names pool is only needed to facilitate string allocation.
     StringPool ResourceNamesPool;
@@ -581,7 +581,7 @@ void ShaderResources::Initialize(TShaderReflection*  pShaderReflection,
             VERIFY_EXPR(TexAttribs.GetInputType() == D3D_SIT_TEXTURE && TexAttribs.GetSRVDimension() != D3D_SRV_DIMENSION_BUFFER);
             VERIFY(CurrSampler == GetNumSamplers(), "All samplers must be initialized before texture SRVs");
 
-            Uint32                    SamplerId  = CombinedSamplerSuffix != nullptr ? FindAssignedSamplerId(TexAttribs, CombinedSamplerSuffix) : D3DShaderResourceAttribs::InvalidSamplerId;
+            UInt32                    SamplerId  = CombinedSamplerSuffix != nullptr ? FindAssignedSamplerId(TexAttribs, CombinedSamplerSuffix) : D3DShaderResourceAttribs::InvalidSamplerId;
             D3DShaderResourceAttribs* pNewTexSRV = new (&GetTexSRV(CurrTexSRV)) D3DShaderResourceAttribs{ResourceNamesPool, TexAttribs, SamplerId};
             if (SamplerId != D3DShaderResourceAttribs::InvalidSamplerId)
             {
@@ -606,7 +606,7 @@ void ShaderResources::Initialize(TShaderReflection*  pShaderReflection,
         m_SamplerSuffix = ResourceNamesPool.CopyString(CombinedSamplerSuffix);
 
 #ifdef DILIGENT_DEVELOPMENT
-        for (Uint32 n = 0; n < GetNumSamplers(); ++n)
+        for (UInt32 n = 0; n < GetNumSamplers(); ++n)
         {
             const D3DShaderResourceAttribs& Sampler = GetSampler(n);
             if (!Sampler.IsCombinedWithTexSRV())

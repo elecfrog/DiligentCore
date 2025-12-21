@@ -172,7 +172,7 @@ protected:
         Res = {};
     }
 
-    void RunTest(Uint32 RGBA, const TextureComponentMapping& Swizzle, const float4& ExpectedValue)
+    void RunTest(UInt32 RGBA, const TextureComponentMapping& Swizzle, const float4& ExpectedValue)
     {
         auto* const pEnv       = GPUTestingEnvironment::GetInstance();
         auto* const pDevice    = pEnv->GetDevice();
@@ -186,8 +186,8 @@ protected:
             GTEST_SKIP();
         }
 
-        constexpr Uint32    Dim = 128;
-        std::vector<Uint32> Data(Dim * Dim, RGBA);
+        constexpr UInt32    Dim = 128;
+        std::vector<UInt32> Data(Dim * Dim, RGBA);
         auto                pTex = pEnv->CreateTexture("Texture swizzle test", TEX_FORMAT_RGBA8_UNORM, BIND_SHADER_RESOURCE, Dim, Dim, Data.data());
         ASSERT_TRUE(pTex);
 
@@ -237,7 +237,7 @@ TextureSwizzleTest::Resources TextureSwizzleTest::Res;
 
 TEST_F(TextureSwizzleTest, Red)
 {
-    constexpr Uint32 RGBA = 0xFFu << 0u;
+    constexpr UInt32 RGBA = 0xFFu << 0u;
     RunTest(RGBA, TextureComponentMapping{}, float4{1, 0, 0, 0});
 
     RunTest(RGBA,
@@ -251,7 +251,7 @@ TEST_F(TextureSwizzleTest, Red)
 
 TEST_F(TextureSwizzleTest, Green)
 {
-    constexpr Uint32 RGBA = 0xFFu << 8u;
+    constexpr UInt32 RGBA = 0xFFu << 8u;
     RunTest(RGBA, TextureComponentMapping{}, float4{0, 1, 0, 0});
 
     RunTest(RGBA,
@@ -265,7 +265,7 @@ TEST_F(TextureSwizzleTest, Green)
 
 TEST_F(TextureSwizzleTest, Blue)
 {
-    constexpr Uint32 RGBA = 0xFFu << 16u;
+    constexpr UInt32 RGBA = 0xFFu << 16u;
     RunTest(RGBA, TextureComponentMapping{}, float4{0, 0, 1, 0});
 
     RunTest(RGBA,
@@ -279,7 +279,7 @@ TEST_F(TextureSwizzleTest, Blue)
 
 TEST_F(TextureSwizzleTest, Alpha)
 {
-    constexpr Uint32 RGBA = 0xFFu << 24u;
+    constexpr UInt32 RGBA = 0xFFu << 24u;
     RunTest(RGBA, TextureComponentMapping{}, float4{0, 0, 0, 1});
 
     RunTest(RGBA,
@@ -293,7 +293,7 @@ TEST_F(TextureSwizzleTest, Alpha)
 
 TEST_F(TextureSwizzleTest, One)
 {
-    constexpr Uint32 RGBA = 0;
+    constexpr UInt32 RGBA = 0;
     RunTest(RGBA, TextureComponentMapping{}, float4{0, 0, 0, 0});
 
     RunTest(RGBA,
@@ -307,7 +307,7 @@ TEST_F(TextureSwizzleTest, One)
 
 TEST_F(TextureSwizzleTest, Zero)
 {
-    constexpr Uint32 RGBA = 0xFFFFFFFFu;
+    constexpr UInt32 RGBA = 0xFFFFFFFFu;
     RunTest(RGBA, TextureComponentMapping{}, float4{1, 1, 1, 1});
 
     RunTest(RGBA,

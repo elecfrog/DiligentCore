@@ -108,7 +108,7 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryMtl, IEngineFactory)
     ///                                  pointers to the deferred contexts go afterwards.
     VIRTUAL void METHOD(AttachToMtlDevice)(THIS_
                                            void*                         pMtlNativeDevice,
-                                           Uint32                        CommandQueueCount,
+                                           UInt32                        CommandQueueCount,
                                            struct ICommandQueueMtl**     ppCommandQueues,
                                            const EngineMtlCreateInfo REF EngineCI,
                                            IRenderDevice**               ppDevice,

@@ -54,15 +54,15 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_FenceGL, TFenceBase)
 
     /// Implementation of IFence::GetCompletedValue() in OpenGL backend.
-    virtual Uint64 DILIGENT_CALL_TYPE GetCompletedValue() override final;
+    virtual UInt64 DILIGENT_CALL_TYPE GetCompletedValue() override final;
 
     /// Implementation of IFence::Signal() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE Signal(Uint64 Value) override final;
+    virtual void DILIGENT_CALL_TYPE Signal(UInt64 Value) override final;
 
     /// Implementation of IFence::Wait() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE Wait(Uint64 Value) override final;
+    virtual void DILIGENT_CALL_TYPE Wait(UInt64 Value) override final;
 
-    void AddPendingFence(GLObjectWrappers::GLSyncObj&& Fence, Uint64 Value)
+    void AddPendingFence(GLObjectWrappers::GLSyncObj&& Fence, UInt64 Value)
     {
         m_PendingFences.emplace_back(Value, std::move(Fence));
         DvpSignal(Value);
@@ -72,11 +72,11 @@ public:
 #endif
     }
 
-    void HostWait(Uint64 Value, bool FlushCommands);
-    void DeviceWait(Uint64 Value);
+    void HostWait(UInt64 Value, bool FlushCommands);
+    void DeviceWait(UInt64 Value);
 
 private:
-    std::deque<std::pair<Uint64, GLObjectWrappers::GLSyncObj>> m_PendingFences;
+    std::deque<std::pair<UInt64, GLObjectWrappers::GLSyncObj>> m_PendingFences;
 
 #ifdef DILIGENT_DEVELOPMENT
     size_t m_MaxPendingFences = 0;

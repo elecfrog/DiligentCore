@@ -34,7 +34,7 @@ namespace Parsing
 
 static TEXTURE_FORMAT ParseStandardGLSLImageFormat(const std::string& Format)
 {
-    Uint32 NumComponents = 0;
+    UInt32 NumComponents = 0;
 
     const std::string Components = "rgba";
     auto              Pos        = Format.begin();

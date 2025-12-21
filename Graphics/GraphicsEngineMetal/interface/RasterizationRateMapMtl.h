@@ -55,13 +55,13 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_RasterizationRateMapMtl =
 struct RasterizationRateMapDesc DILIGENT_DERIVE(DeviceObjectAttribs)
 
     /// Width of the final render target
-    Uint32 ScreenWidth  DEFAULT_INITIALIZER(0);
+    UInt32 ScreenWidth  DEFAULT_INITIALIZER(0);
 
     /// Height of the final render target
-    Uint32 ScreenHeight DEFAULT_INITIALIZER(0);
+    UInt32 ScreenHeight DEFAULT_INITIALIZER(0);
 
     /// The number of layers (aka array size)
-    Uint32 LayerCount   DEFAULT_INITIALIZER(0);
+    UInt32 LayerCount   DEFAULT_INITIALIZER(0);
 };
 typedef struct RasterizationRateMapDesc RasterizationRateMapDesc;
 
@@ -70,10 +70,10 @@ typedef struct RasterizationRateMapDesc RasterizationRateMapDesc;
 struct RasterizationRateLayerDesc
 {
     /// The number of elements in pHorizontal array
-    Uint32       HorizontalCount DEFAULT_INITIALIZER(0);
+    UInt32       HorizontalCount DEFAULT_INITIALIZER(0);
 
     /// The number of elements in pVertical array
-    Uint32       VerticalCount   DEFAULT_INITIALIZER(0);
+    UInt32       VerticalCount   DEFAULT_INITIALIZER(0);
 
     /// A pointer to the array of HorizontalCount horizontal rasterization rates
     /// for the layer map's rows.
@@ -111,19 +111,19 @@ DILIGENT_BEGIN_INTERFACE(IRasterizationRateMapMtl, IDeviceObject)
 
     /// Returns the physical size of the specified layer.
     VIRTUAL void METHOD(GetPhysicalSizeForLayer)(THIS_
-                                                 Uint32     LayerIndex,
-                                                 Uint32 REF PhysicalWidth,
-                                                 Uint32 REF PhysicalHeight) CONST PURE;
+                                                 UInt32     LayerIndex,
+                                                 UInt32 REF PhysicalWidth,
+                                                 UInt32 REF PhysicalHeight) CONST PURE;
 
     /// The granularity, in physical pixels, at which the rasterization rate varies.
     /// For better performance, tile size should be a multiple of physical granularity.
     VIRTUAL void METHOD(GetPhysicalGranularity)(THIS_
-                                                Uint32 REF XGranularity,
-                                                Uint32 REF YGranularity) CONST PURE;
+                                                UInt32 REF XGranularity,
+                                                UInt32 REF YGranularity) CONST PURE;
 
     /// Converts a point in logical viewport coordinates to the corresponding physical coordinates in the layer.
     VIRTUAL void METHOD(MapScreenToPhysicalCoordinates)(THIS_
-                                                        Uint32    LayerIndex,
+                                                        UInt32    LayerIndex,
                                                         float     ScreenCoordX,
                                                         float     ScreenCoordY,
                                                         float REF PhysicalCoordX,
@@ -131,7 +131,7 @@ DILIGENT_BEGIN_INTERFACE(IRasterizationRateMapMtl, IDeviceObject)
 
     /// Converts a point in physical coordinates inside a layer to its corresponding logical viewport coordinates.
     VIRTUAL void METHOD(MapPhysicalToScreenCoordinates)(THIS_
-                                                        Uint32    LayerIndex,
+                                                        UInt32    LayerIndex,
                                                         float     PhysicalCoordX,
                                                         float     PhysicalCoordY,
                                                         float REF ScreenCoordX,
@@ -139,8 +139,8 @@ DILIGENT_BEGIN_INTERFACE(IRasterizationRateMapMtl, IDeviceObject)
 
     /// Returns the size and alignment of the parameter buffer that will be used in the resolve pass.
     VIRTUAL void METHOD(GetParameterBufferSizeAndAlign)(THIS_
-                                                        Uint64 REF Size,
-                                                        Uint32 REF Align) CONST PURE;
+                                                        UInt64 REF Size,
+                                                        UInt32 REF Align) CONST PURE;
 
     /// Copy rasterization rate map parameters to the buffer.
 
@@ -150,7 +150,7 @@ DILIGENT_BEGIN_INTERFACE(IRasterizationRateMapMtl, IDeviceObject)
     ///                          GetParameterBufferSizeAndAlign().
     VIRTUAL void METHOD(CopyParameterDataToBuffer)(THIS_
                                                    IBuffer* pDstBuffer,
-                                                   Uint64   Offset) CONST PURE;
+                                                   UInt64   Offset) CONST PURE;
 
     /// Returns texture view that can be used to set the rasterization rate map as framebuffer attachment.
     VIRTUAL ITextureView* METHOD(GetView)(THIS) PURE;

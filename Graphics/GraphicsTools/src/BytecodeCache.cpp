@@ -45,13 +45,13 @@ public:
 
     struct BytecodeCacheHeader
     {
-        static constexpr Uint32 HeaderMagic   = 0x7ADECACE;
-        static constexpr Uint32 HeaderVersion = 1;
+        static constexpr UInt32 HeaderMagic   = 0x7ADECACE;
+        static constexpr UInt32 HeaderVersion = 1;
 
-        Uint32 Magic   = HeaderMagic;
-        Uint32 Version = HeaderVersion;
+        UInt32 Magic   = HeaderMagic;
+        UInt32 Version = HeaderVersion;
 
-        Uint64 ElementCount = 0;
+        UInt64 ElementCount = 0;
 
         template <typename SerType>
         void Serialize(SerType& Stream)
@@ -102,11 +102,11 @@ public:
 
         if (Header.Version != BytecodeCacheHeader::HeaderVersion)
         {
-            LOG_ERROR_MESSAGE("Incorrect bytecode header version (", Header.Version, "). ", Uint32{BytecodeCacheHeader::HeaderVersion}, " is expected.");
+            LOG_ERROR_MESSAGE("Incorrect bytecode header version (", Header.Version, "). ", UInt32{BytecodeCacheHeader::HeaderVersion}, " is expected.");
             return false;
         }
 
-        for (Uint64 ItemID = 0; ItemID < Header.ElementCount; ItemID++)
+        for (UInt64 ItemID = 0; ItemID < Header.ElementCount; ItemID++)
         {
             BytecodeCacheElementHeader ElementHeader;
             ElementHeader.Serialize(Stream);

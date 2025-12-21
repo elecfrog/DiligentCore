@@ -57,7 +57,7 @@ private:
     friend class ShaderVkImpl;
     /// Vk sampler handle
     VulkanUtilities::SamplerWrapper m_VkSampler;
-    static constexpr Uint64         m_ImmediateContextMask = ~Uint64{0};
+    static constexpr UInt64         m_ImmediateContextMask = ~UInt64{0};
 };
 
 } // namespace Diligent

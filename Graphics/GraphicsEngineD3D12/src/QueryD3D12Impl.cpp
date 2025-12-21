@@ -53,7 +53,7 @@ bool QueryD3D12Impl::AllocateQueries()
     DiscardQueries();
     VERIFY_EXPR(m_pContext != nullptr);
     m_pQueryMgr = &m_pContext->GetQueryManager();
-    for (Uint32 i = 0; i < (m_Desc.Type == QUERY_TYPE_DURATION ? Uint32{2} : Uint32{1}); ++i)
+    for (UInt32 i = 0; i < (m_Desc.Type == QUERY_TYPE_DURATION ? UInt32{2} : UInt32{1}); ++i)
     {
         m_QueryHeapIndex[i] = m_pQueryMgr->AllocateQuery(m_Desc.Type);
         if (m_QueryHeapIndex[i] == QueryManagerD3D12::InvalidIndex)
@@ -74,7 +74,7 @@ QueryD3D12Impl::~QueryD3D12Impl()
 
 void QueryD3D12Impl::DiscardQueries()
 {
-    for (Uint32& HeapIdx : m_QueryHeapIndex)
+    for (UInt32& HeapIdx : m_QueryHeapIndex)
     {
         if (HeapIdx != QueryManagerD3D12::InvalidIndex)
         {
@@ -84,7 +84,7 @@ void QueryD3D12Impl::DiscardQueries()
         }
     }
     m_pQueryMgr          = nullptr;
-    m_QueryEndFenceValue = ~Uint64{0};
+    m_QueryEndFenceValue = ~UInt64{0};
 }
 
 void QueryD3D12Impl::Invalidate()
@@ -123,13 +123,13 @@ bool QueryD3D12Impl::OnEndQuery(DeviceContextD3D12Impl* pContext)
     return true;
 }
 
-bool QueryD3D12Impl::GetData(void* pData, Uint32 DataSize, bool AutoInvalidate)
+bool QueryD3D12Impl::GetData(void* pData, UInt32 DataSize, bool AutoInvalidate)
 {
     TQueryBase::CheckQueryDataPtr(pData, DataSize);
 
     VERIFY_EXPR(m_pQueryMgr != nullptr);
     SoftwareQueueIndex CmdQueueId          = m_pQueryMgr->GetCommandQueueId();
-    Uint64             CompletedFenceValue = m_pDevice->GetCompletedFenceValue(CmdQueueId);
+    UInt64             CompletedFenceValue = m_pDevice->GetCompletedFenceValue(CmdQueueId);
     if (CompletedFenceValue >= m_QueryEndFenceValue)
     {
         auto GetTimestampFrequency = [this](SoftwareQueueIndex CmdQueueId) //

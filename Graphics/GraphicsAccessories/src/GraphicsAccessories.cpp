@@ -68,7 +68,7 @@ const Char* GetValueTypeString(VALUE_TYPE Val)
             }
             else
             {
-                UNEXPECTED("Incorrect value type (", static_cast<Uint32>(Val), ")");
+                UNEXPECTED("Incorrect value type (", static_cast<UInt32>(Val), ")");
                 return "unknown value type";
             }
         }
@@ -233,7 +233,7 @@ public:
         m_ViewFormats[TEX_FORMAT_RG8_UNORM][TEXTURE_VIEW_SHADING_RATE - 1]    = TEX_FORMAT_RG8_UNORM;
     }
 
-    TEXTURE_FORMAT GetViewFormat(TEXTURE_FORMAT Format, TEXTURE_VIEW_TYPE ViewType, Uint32 BindFlags)
+    TEXTURE_FORMAT GetViewFormat(TEXTURE_FORMAT Format, TEXTURE_VIEW_TYPE ViewType, UInt32 BindFlags)
     {
         VERIFY(ViewType > TEXTURE_VIEW_UNDEFINED && ViewType < TEXTURE_VIEW_NUM_VIEWS, "Unexpected texture view type");
         VERIFY(Format >= TEX_FORMAT_UNKNOWN && Format < TEX_FORMAT_NUM_FORMATS, "Unknown texture format");
@@ -275,7 +275,7 @@ private:
     std::array<std::array<TEXTURE_FORMAT, TEXTURE_VIEW_NUM_VIEWS - 1>, TEX_FORMAT_NUM_FORMATS> m_ViewFormats{};
 };
 
-TEXTURE_FORMAT GetDefaultTextureViewFormat(TEXTURE_FORMAT TextureFormat, TEXTURE_VIEW_TYPE ViewType, Uint32 BindFlags)
+TEXTURE_FORMAT GetDefaultTextureViewFormat(TEXTURE_FORMAT TextureFormat, TEXTURE_VIEW_TYPE ViewType, UInt32 BindFlags)
 {
     static TexFormatToViewFormatConverter FmtConverter;
     return FmtConverter.GetViewFormat(TextureFormat, ViewType, BindFlags);
@@ -421,7 +421,7 @@ const TextureFormatAttribs& GetTextureFormatAttribs(TEXTURE_FORMAT Format)
             static_assert(TEX_FORMAT_NUM_FORMATS == 106, "Not all texture formats initialized.");
 
 #ifdef DILIGENT_DEBUG
-            for (Uint32 Fmt = TEX_FORMAT_UNKNOWN; Fmt < TEX_FORMAT_NUM_FORMATS; ++Fmt)
+            for (UInt32 Fmt = TEX_FORMAT_UNKNOWN; Fmt < TEX_FORMAT_NUM_FORMATS; ++Fmt)
                 VERIFY(FmtAttribs[Fmt].Format == static_cast<TEXTURE_FORMAT>(Fmt), "Uninitialized format");
 #endif
         }
@@ -483,7 +483,7 @@ COMPONENT_TYPE ValueTypeToComponentType(VALUE_TYPE ValType, bool IsNormalized, b
     }
 }
 
-VALUE_TYPE ComponentTypeToValueType(COMPONENT_TYPE CompType, Uint32 Size)
+VALUE_TYPE ComponentTypeToValueType(COMPONENT_TYPE CompType, UInt32 Size)
 {
     switch (CompType)
     {
@@ -546,7 +546,7 @@ VALUE_TYPE ComponentTypeToValueType(COMPONENT_TYPE CompType, Uint32 Size)
     return VT_UNDEFINED;
 }
 
-TEXTURE_FORMAT TextureComponentAttribsToTextureFormat(COMPONENT_TYPE CompType, Uint32 ComponentSize, Uint32 NumComponents)
+TEXTURE_FORMAT TextureComponentAttribsToTextureFormat(COMPONENT_TYPE CompType, UInt32 ComponentSize, UInt32 NumComponents)
 {
     switch (CompType)
     {
@@ -724,7 +724,7 @@ const Char* GetTexViewTypeLiteralName(TEXTURE_VIEW_TYPE ViewType)
             }
             else
             {
-                UNEXPECTED("Texture view type (", static_cast<Uint32>(ViewType), ") is out of allowed range [0, ", static_cast<Uint32>(TEXTURE_VIEW_NUM_VIEWS) - 1, "]");
+                UNEXPECTED("Texture view type (", static_cast<UInt32>(ViewType), ") is out of allowed range [0, ", static_cast<UInt32>(TEXTURE_VIEW_NUM_VIEWS) - 1, "]");
                 return "<Unknown texture view type>";
             }
         }
@@ -761,7 +761,7 @@ const Char* GetBufferViewTypeLiteralName(BUFFER_VIEW_TYPE ViewType)
             }
             else
             {
-                UNEXPECTED("Buffer view type (", static_cast<Uint32>(ViewType), ") is out of allowed range [0, ", static_cast<Uint32>(BUFFER_VIEW_NUM_VIEWS) - 1, "]");
+                UNEXPECTED("Buffer view type (", static_cast<UInt32>(ViewType), ") is out of allowed range [0, ", static_cast<UInt32>(BUFFER_VIEW_NUM_VIEWS) - 1, "]");
                 return "<Unknown buffer view type>";
             }
         }
@@ -802,14 +802,14 @@ const Char* GetShaderTypeLiteralName(SHADER_TYPE ShaderType)
 #undef  RETURN_SHADER_TYPE_NAME
             // clang-format on
 
-        default: UNEXPECTED("Unknown shader type constant ", Uint32{ShaderType}); return "<Unknown shader type>";
+        default: UNEXPECTED("Unknown shader type constant ", UInt32{ShaderType}); return "<Unknown shader type>";
     }
 }
 
 String GetShaderStagesString(SHADER_TYPE ShaderStages)
 {
     String StagesStr;
-    for (Uint32 Stage = SHADER_TYPE_VERTEX; ShaderStages != 0 && Stage <= SHADER_TYPE_LAST; Stage <<= 1)
+    for (UInt32 Stage = SHADER_TYPE_VERTEX; ShaderStages != 0 && Stage <= SHADER_TYPE_LAST; Stage <<= 1)
     {
         if (ShaderStages & Stage)
         {
@@ -877,7 +877,7 @@ const Char* GetShaderResourceTypeLiteralName(SHADER_RESOURCE_TYPE ResourceType, 
         case SHADER_RESOURCE_TYPE_ACCEL_STRUCT:     return bGetFullName ?  "SHADER_RESOURCE_TYPE_ACCEL_STRUCT"     : "acceleration structure";
         // clang-format on
         default:
-            UNEXPECTED("Unexpected resource type (", Uint32{ResourceType}, ")");
+            UNEXPECTED("Unexpected resource type (", UInt32{ResourceType}, ")");
             return "UNKNOWN";
     }
 }
@@ -903,7 +903,7 @@ const Char* GetFilterTypeLiteralName(FILTER_TYPE FilterType, bool bGetFullName)
         case FILTER_TYPE_MAXIMUM_ANISOTROPIC:    return bGetFullName ? "FILTER_TYPE_MAXIMUM_ANISOTROPIC"    : "maximum anisotropic";
         // clang-format on
         default:
-            UNEXPECTED("Unexpected filter type (", Uint32{FilterType}, ")");
+            UNEXPECTED("Unexpected filter type (", UInt32{FilterType}, ")");
             return "UNKNOWN";
     }
 }
@@ -922,7 +922,7 @@ const Char* GetTextureAddressModeLiteralName(TEXTURE_ADDRESS_MODE AddressMode, b
         case TEXTURE_ADDRESS_MIRROR_ONCE: return bGetFullName ? "TEXTURE_ADDRESS_MIRROR_ONCE" : "mirror once";
         // clang-format on
         default:
-            UNEXPECTED("Unexpected texture address mode (", Uint32{AddressMode}, ")");
+            UNEXPECTED("Unexpected texture address mode (", UInt32{AddressMode}, ")");
             return "UNKNOWN";
     }
 }
@@ -944,7 +944,7 @@ const Char* GetComparisonFunctionLiteralName(COMPARISON_FUNCTION ComparisonFunc,
         case COMPARISON_FUNC_ALWAYS:        return bGetFullName ? "COMPARISON_FUNC_ALWAYS"       : "always";
         // clang-format on
         default:
-            UNEXPECTED("Unexpected comparison function (", Uint32{ComparisonFunc}, ")");
+            UNEXPECTED("Unexpected comparison function (", UInt32{ComparisonFunc}, ")");
             return "UNKNOWN";
     }
 }
@@ -968,7 +968,7 @@ const Char* GetStencilOpLiteralName(STENCIL_OP StencilOp)
         STENCIL_OP_TO_STR(STENCIL_OP_DECR_WRAP);
 
         default:
-            UNEXPECTED("Unexpected stencil operation (", static_cast<Uint32>(StencilOp), ")");
+            UNEXPECTED("Unexpected stencil operation (", static_cast<UInt32>(StencilOp), ")");
             return "UNKNOWN";
     }
 #undef STENCIL_OP_TO_STR
@@ -1154,7 +1154,7 @@ const Char* GetResourceDimString(RESOURCE_DIMENSION TexType)
     return TexTypeStrings[TexType];
 }
 
-const Char* GetBindFlagString(Uint32 BindFlag)
+const Char* GetBindFlagString(UInt32 BindFlag)
 {
     VERIFY(BindFlag == BIND_NONE || IsPowerOfTwo(BindFlag), "More than one bind flag is specified");
 
@@ -1181,12 +1181,12 @@ const Char* GetBindFlagString(Uint32 BindFlag)
     }
 }
 
-String GetBindFlagsString(Uint32 BindFlags, const char* Delimiter)
+String GetBindFlagsString(UInt32 BindFlags, const char* Delimiter)
 {
     if (BindFlags == 0)
         return "0";
     String Str;
-    for (Uint32 Flag = 1; BindFlags && Flag <= BIND_FLAG_LAST; Flag <<= 1)
+    for (UInt32 Flag = 1; BindFlags && Flag <= BIND_FLAG_LAST; Flag <<= 1)
     {
         if (BindFlags & Flag)
         {
@@ -1201,7 +1201,7 @@ String GetBindFlagsString(Uint32 BindFlags, const char* Delimiter)
 }
 
 
-static const Char* GetSingleCPUAccessFlagString(Uint32 CPUAccessFlag)
+static const Char* GetSingleCPUAccessFlagString(UInt32 CPUAccessFlag)
 {
     VERIFY(CPUAccessFlag == CPU_ACCESS_NONE || IsPowerOfTwo(CPUAccessFlag), "More than one access flag is specified");
     switch (CPUAccessFlag)
@@ -1217,12 +1217,12 @@ static const Char* GetSingleCPUAccessFlagString(Uint32 CPUAccessFlag)
     }
 }
 
-String GetCPUAccessFlagsString(Uint32 CpuAccessFlags)
+String GetCPUAccessFlagsString(UInt32 CpuAccessFlags)
 {
     if (CpuAccessFlags == 0)
         return "0";
     String Str;
-    for (Uint32 Flag = CPU_ACCESS_READ; CpuAccessFlags && Flag <= CPU_ACCESS_WRITE; Flag <<= 1)
+    for (UInt32 Flag = CPU_ACCESS_READ; CpuAccessFlags && Flag <= CPU_ACCESS_WRITE; Flag <<= 1)
     {
         if (CpuAccessFlags & Flag)
         {
@@ -1334,7 +1334,7 @@ String GetBufferFormatString(const BufferFormat& Fmt)
     if (Fmt.IsNormalized)
         Str += " norm";
     Str += " x ";
-    Str += ToString(Uint32{Fmt.NumComponents});
+    Str += ToString(UInt32{Fmt.NumComponents});
     return Str;
 }
 
@@ -1446,7 +1446,7 @@ String GetResourceStateString(RESOURCE_STATE State)
         if (!str.empty())
             str.push_back('|');
 
-        Uint32 lsb = State & ~(State - 1);
+        UInt32 lsb = State & ~(State - 1);
 
         const char* StateFlagString = GetResourceStateFlagString(static_cast<RESOURCE_STATE>(lsb));
         str.append(StateFlagString);
@@ -1552,7 +1552,7 @@ const char* GetArchiveDeviceDataFlagString(ARCHIVE_DEVICE_DATA_FLAGS Flag, bool 
         case ARCHIVE_DEVICE_DATA_FLAG_WEBGPU:      return bGetFullName ? "ARCHIVE_DEVICE_DATA_FLAG_WEBGPU"      : "WebGPU";
         // clang-format on
         default:
-            UNEXPECTED("Unexpected device data flag (", Uint32{Flag}, ")");
+            UNEXPECTED("Unexpected device data flag (", UInt32{Flag}, ")");
             return "UNKNOWN";
     }
 }
@@ -1567,7 +1567,7 @@ const char* GetDeviceFeatureStateString(DEVICE_FEATURE_STATE State, bool bGetFul
         case DEVICE_FEATURE_STATE_ENABLED:  return bGetFullName ? "DEVICE_FEATURE_STATE_ENABLED"  : "Enabled";
         // clang-format on
         default:
-            UNEXPECTED("Unexpected device feature state (", Uint32{State}, ")");
+            UNEXPECTED("Unexpected device feature state (", UInt32{State}, ")");
             return "UNKNOWN";
     }
 }
@@ -1716,7 +1716,7 @@ const char* GetShaderCodeBasicTypeString(SHADER_CODE_BASIC_TYPE Type)
     }
 }
 
-static void PrintShaderCodeVariables(std::stringstream& ss, size_t LevelIdent, size_t IdentShift, const ShaderCodeVariableDesc* pVars, Uint32 NumVars)
+static void PrintShaderCodeVariables(std::stringstream& ss, size_t LevelIdent, size_t IdentShift, const ShaderCodeVariableDesc* pVars, UInt32 NumVars)
 {
     if (pVars == nullptr || NumVars == 0)
         return;
@@ -1727,7 +1727,7 @@ static void PrintShaderCodeVariables(std::stringstream& ss, size_t LevelIdent, s
     int MaxOffsetLen    = 0;
     int MaxClassLen     = 0;
     int MaxBasicTypeLen = 0;
-    for (Uint32 i = 0; i < NumVars; ++i)
+    for (UInt32 i = 0; i < NumVars; ++i)
     {
         const ShaderCodeVariableDesc& Var = pVars[i];
         if (Var.Name != nullptr)
@@ -1740,14 +1740,14 @@ static void PrintShaderCodeVariables(std::stringstream& ss, size_t LevelIdent, s
         MaxBasicTypeLen = std::max(MaxBasicTypeLen, static_cast<int>(strlen(GetShaderCodeBasicTypeString(Var.BasicType))));
     }
 
-    for (Uint32 i = 0; i < NumVars; ++i)
+    for (UInt32 i = 0; i < NumVars; ++i)
     {
         const ShaderCodeVariableDesc& Var = pVars[i];
         ss << std::setw(static_cast<int>(LevelIdent) + MaxNameLen) << (Var.Name ? Var.Name : "?")
            << ": " << std::setw(MaxTypeLen) << (Var.TypeName ? Var.TypeName : "")
            << ' ' << std::setw(MaxClassLen) << GetShaderCodeVariableClassString(Var.Class)
            << ' ' << std::setw(MaxBasicTypeLen) << GetShaderCodeBasicTypeString(Var.BasicType)
-           << ' ' << Uint32{Var.NumRows} << 'x' << Uint32{Var.NumColumns} << " [" << std::setw(MaxArraySizeLen) << Var.ArraySize << ']'
+           << ' ' << UInt32{Var.NumRows} << 'x' << UInt32{Var.NumColumns} << " [" << std::setw(MaxArraySizeLen) << Var.ArraySize << ']'
            << " offset: " << std::setw(MaxOffsetLen) << Var.Offset << std::endl;
 
         PrintShaderCodeVariables(ss, LevelIdent + MaxNameLen + IdentShift, IdentShift, Var.pMembers, Var.NumMembers);
@@ -1965,24 +1965,24 @@ RENDER_DEVICE_TYPE ArchiveDataFlagToRenderDeviceType(ARCHIVE_DEVICE_DATA_FLAGS F
     }
 }
 
-Uint32 ComputeMipLevelsCount(Uint32 Width)
+UInt32 ComputeMipLevelsCount(UInt32 Width)
 {
     if (Width == 0)
         return 0;
 
-    Uint32 MipLevels = 0;
+    UInt32 MipLevels = 0;
     while ((Width >> MipLevels) > 0)
         ++MipLevels;
     VERIFY(Width >= (1U << (MipLevels - 1)) && Width < (1U << MipLevels), "Incorrect number of Mip levels");
     return MipLevels;
 }
 
-Uint32 ComputeMipLevelsCount(Uint32 Width, Uint32 Height)
+UInt32 ComputeMipLevelsCount(UInt32 Width, UInt32 Height)
 {
     return ComputeMipLevelsCount(std::max(Width, Height));
 }
 
-Uint32 ComputeMipLevelsCount(Uint32 Width, Uint32 Height, Uint32 Depth)
+UInt32 ComputeMipLevelsCount(UInt32 Width, UInt32 Height, UInt32 Depth)
 {
     return ComputeMipLevelsCount(std::max(std::max(Width, Height), Depth));
 }
@@ -2055,7 +2055,7 @@ if ( (State & ExclusiveState) != 0 && (State & ~ExclusiveState) != 0 )\
     return true;
 }
 
-MipLevelProperties GetMipLevelProperties(const TextureDesc& TexDesc, Uint32 MipLevel)
+MipLevelProperties GetMipLevelProperties(const TextureDesc& TexDesc, UInt32 MipLevel)
 {
     MipLevelProperties          MipProps;
     const TextureFormatAttribs& FmtAttribs = GetTextureFormatAttribs(TexDesc.Format);
@@ -2069,17 +2069,17 @@ MipLevelProperties GetMipLevelProperties(const TextureDesc& TexDesc, Uint32 MipL
         VERIFY((FmtAttribs.BlockWidth & (FmtAttribs.BlockWidth - 1)) == 0, "Compressed block width is expected to be power of 2");
         VERIFY((FmtAttribs.BlockHeight & (FmtAttribs.BlockHeight - 1)) == 0, "Compressed block height is expected to be power of 2");
         // For block-compression formats, all parameters are still specified in texels rather than compressed texel blocks (18.4.1)
-        MipProps.StorageWidth   = AlignUp(MipProps.LogicalWidth, Uint32{FmtAttribs.BlockWidth});
-        MipProps.StorageHeight  = AlignUp(MipProps.LogicalHeight, Uint32{FmtAttribs.BlockHeight});
-        MipProps.RowSize        = Uint64{MipProps.StorageWidth} / Uint32{FmtAttribs.BlockWidth} * Uint32{FmtAttribs.ComponentSize}; // ComponentSize is the block size
-        MipProps.DepthSliceSize = MipProps.StorageHeight / Uint32{FmtAttribs.BlockHeight} * MipProps.RowSize;
+        MipProps.StorageWidth   = AlignUp(MipProps.LogicalWidth, UInt32{FmtAttribs.BlockWidth});
+        MipProps.StorageHeight  = AlignUp(MipProps.LogicalHeight, UInt32{FmtAttribs.BlockHeight});
+        MipProps.RowSize        = UInt64{MipProps.StorageWidth} / UInt32{FmtAttribs.BlockWidth} * UInt32{FmtAttribs.ComponentSize}; // ComponentSize is the block size
+        MipProps.DepthSliceSize = MipProps.StorageHeight / UInt32{FmtAttribs.BlockHeight} * MipProps.RowSize;
         MipProps.MipSize        = MipProps.DepthSliceSize * MipProps.Depth;
     }
     else
     {
         MipProps.StorageWidth   = MipProps.LogicalWidth;
         MipProps.StorageHeight  = MipProps.LogicalHeight;
-        MipProps.RowSize        = Uint64{MipProps.StorageWidth} * Uint32{FmtAttribs.ComponentSize} * Uint32{FmtAttribs.NumComponents};
+        MipProps.RowSize        = UInt64{MipProps.StorageWidth} * UInt32{FmtAttribs.ComponentSize} * UInt32{FmtAttribs.NumComponents};
         MipProps.DepthSliceSize = MipProps.RowSize * MipProps.StorageHeight;
         MipProps.MipSize        = MipProps.DepthSliceSize * MipProps.Depth;
     }
@@ -2106,7 +2106,7 @@ enum ADAPTER_VENDOR_ID
 
 }
 
-ADAPTER_VENDOR VendorIdToAdapterVendor(Uint32 VendorId)
+ADAPTER_VENDOR VendorIdToAdapterVendor(UInt32 VendorId)
 {
     static_assert(ADAPTER_VENDOR_LAST == 10, "Please update the switch below to handle the new adapter type");
     switch (VendorId)
@@ -2131,7 +2131,7 @@ ADAPTER_VENDOR VendorIdToAdapterVendor(Uint32 VendorId)
     }
 }
 
-Uint32 AdapterVendorToVendorId(ADAPTER_VENDOR Vendor)
+UInt32 AdapterVendorToVendorId(ADAPTER_VENDOR Vendor)
 {
     static_assert(ADAPTER_VENDOR_LAST == 10, "Please update the switch below to handle the new adapter type");
     switch (Vendor)
@@ -2352,22 +2352,22 @@ PIPELINE_TYPE PipelineTypeFromShaderStages(SHADER_TYPE ShaderStages)
     return PIPELINE_TYPE_INVALID;
 }
 
-Uint64 GetStagingTextureLocationOffset(const TextureDesc& TexDesc,
-                                       Uint32             ArraySlice,
-                                       Uint32             MipLevel,
-                                       Uint32             Alignment,
-                                       Uint32             LocationX,
-                                       Uint32             LocationY,
-                                       Uint32             LocationZ)
+UInt64 GetStagingTextureLocationOffset(const TextureDesc& TexDesc,
+                                       UInt32             ArraySlice,
+                                       UInt32             MipLevel,
+                                       UInt32             Alignment,
+                                       UInt32             LocationX,
+                                       UInt32             LocationY,
+                                       UInt32             LocationZ)
 {
     VERIFY_EXPR(TexDesc.MipLevels > 0 && TexDesc.GetArraySize() > 0 && TexDesc.Width > 0 && TexDesc.Height > 0 && TexDesc.Format != TEX_FORMAT_UNKNOWN);
     VERIFY_EXPR(ArraySlice < TexDesc.GetArraySize() && MipLevel < TexDesc.MipLevels || ArraySlice == TexDesc.GetArraySize() && MipLevel == 0);
 
-    Uint64 Offset = 0;
+    UInt64 Offset = 0;
     if (ArraySlice > 0)
     {
-        Uint64 ArraySliceSize = 0;
-        for (Uint32 mip = 0; mip < TexDesc.MipLevels; ++mip)
+        UInt64 ArraySliceSize = 0;
+        for (UInt32 mip = 0; mip < TexDesc.MipLevels; ++mip)
         {
             MipLevelProperties MipInfo = GetMipLevelProperties(TexDesc, mip);
             ArraySliceSize += AlignUp(MipInfo.MipSize, Alignment);
@@ -2378,7 +2378,7 @@ Uint64 GetStagingTextureLocationOffset(const TextureDesc& TexDesc,
             Offset *= ArraySlice;
     }
 
-    for (Uint32 mip = 0; mip < MipLevel; ++mip)
+    for (UInt32 mip = 0; mip < MipLevel; ++mip)
     {
         MipLevelProperties MipInfo = GetMipLevelProperties(TexDesc, mip);
         Offset += AlignUp(MipInfo.MipSize, Alignment);
@@ -2406,7 +2406,7 @@ Uint64 GetStagingTextureLocationOffset(const TextureDesc& TexDesc,
         Offset += (LocationZ * MipLevelAttribs.StorageHeight + LocationY) / FmtAttribs.BlockHeight * MipLevelAttribs.RowSize;
 
         // For non-compressed formats, BlockWidth is 1.
-        Offset += Uint64{LocationX / FmtAttribs.BlockWidth} * FmtAttribs.GetElementSize();
+        Offset += UInt64{LocationX / FmtAttribs.BlockWidth} * FmtAttribs.GetElementSize();
 
         // Note: this addressing complies with how Vulkan (as well as OpenGL/GLES and Metal) address
         // textures when copying data to/from buffers:
@@ -2418,29 +2418,29 @@ Uint64 GetStagingTextureLocationOffset(const TextureDesc& TexDesc,
 
 BufferToTextureCopyInfo GetBufferToTextureCopyInfo(TEXTURE_FORMAT Format,
                                                    const Box&     Region,
-                                                   Uint32         RowStrideAlignment)
+                                                   UInt32         RowStrideAlignment)
 {
     BufferToTextureCopyInfo CopyInfo;
 
     const TextureFormatAttribs& FmtAttribs = GetTextureFormatAttribs(Format);
     VERIFY_EXPR(Region.IsValid());
-    const Uint32 UpdateRegionWidth  = Region.Width();
-    const Uint32 UpdateRegionHeight = Region.Height();
-    const Uint32 UpdateRegionDepth  = Region.Depth();
+    const UInt32 UpdateRegionWidth  = Region.Width();
+    const UInt32 UpdateRegionHeight = Region.Height();
+    const UInt32 UpdateRegionDepth  = Region.Depth();
     if (FmtAttribs.ComponentType == COMPONENT_TYPE_COMPRESSED)
     {
         // Align update region size by the block size
         VERIFY_EXPR(IsPowerOfTwo(FmtAttribs.BlockWidth));
         VERIFY_EXPR(IsPowerOfTwo(FmtAttribs.BlockHeight));
-        const Uint32 BlockAlignedRegionWidth  = AlignUp(UpdateRegionWidth, Uint32{FmtAttribs.BlockWidth});
-        const Uint32 BlockAlignedRegionHeight = AlignUp(UpdateRegionHeight, Uint32{FmtAttribs.BlockHeight});
+        const UInt32 BlockAlignedRegionWidth  = AlignUp(UpdateRegionWidth, UInt32{FmtAttribs.BlockWidth});
+        const UInt32 BlockAlignedRegionHeight = AlignUp(UpdateRegionHeight, UInt32{FmtAttribs.BlockHeight});
 
-        CopyInfo.RowSize  = Uint64{BlockAlignedRegionWidth} / Uint32{FmtAttribs.BlockWidth} * Uint32{FmtAttribs.ComponentSize};
+        CopyInfo.RowSize  = UInt64{BlockAlignedRegionWidth} / UInt32{FmtAttribs.BlockWidth} * UInt32{FmtAttribs.ComponentSize};
         CopyInfo.RowCount = BlockAlignedRegionHeight / FmtAttribs.BlockHeight;
     }
     else
     {
-        CopyInfo.RowSize  = Uint64{UpdateRegionWidth} * Uint32{FmtAttribs.ComponentSize} * Uint32{FmtAttribs.NumComponents};
+        CopyInfo.RowSize  = UInt64{UpdateRegionWidth} * UInt32{FmtAttribs.ComponentSize} * UInt32{FmtAttribs.NumComponents};
         CopyInfo.RowCount = UpdateRegionHeight;
     }
 
@@ -2448,11 +2448,11 @@ BufferToTextureCopyInfo GetBufferToTextureCopyInfo(TEXTURE_FORMAT Format,
     CopyInfo.RowStride = AlignUp(CopyInfo.RowSize, RowStrideAlignment);
     if (FmtAttribs.ComponentType == COMPONENT_TYPE_COMPRESSED)
     {
-        CopyInfo.RowStrideInTexels = StaticCast<Uint32>(CopyInfo.RowStride / Uint64{FmtAttribs.ComponentSize} * Uint64{FmtAttribs.BlockWidth});
+        CopyInfo.RowStrideInTexels = StaticCast<UInt32>(CopyInfo.RowStride / UInt64{FmtAttribs.ComponentSize} * UInt64{FmtAttribs.BlockWidth});
     }
     else
     {
-        CopyInfo.RowStrideInTexels = StaticCast<Uint32>(CopyInfo.RowStride / (Uint64{FmtAttribs.ComponentSize} * Uint64{FmtAttribs.NumComponents}));
+        CopyInfo.RowStrideInTexels = StaticCast<UInt32>(CopyInfo.RowStride / (UInt64{FmtAttribs.ComponentSize} * UInt64{FmtAttribs.NumComponents}));
     }
     CopyInfo.DepthStride = CopyInfo.RowCount * CopyInfo.RowStride;
     CopyInfo.MemorySize  = UpdateRegionDepth * CopyInfo.DepthStride;
@@ -2462,23 +2462,23 @@ BufferToTextureCopyInfo GetBufferToTextureCopyInfo(TEXTURE_FORMAT Format,
 
 
 void CopyTextureSubresource(const TextureSubResData& SrcSubres,
-                            Uint32                   NumRows,
-                            Uint32                   NumDepthSlices,
-                            Uint64                   RowSize,
+                            UInt32                   NumRows,
+                            UInt32                   NumDepthSlices,
+                            UInt64                   RowSize,
                             void*                    pDstData,
-                            Uint64                   DstRowStride,
-                            Uint64                   DstDepthStride)
+                            UInt64                   DstRowStride,
+                            UInt64                   DstDepthStride)
 {
     VERIFY_EXPR(SrcSubres.pSrcBuffer == nullptr && SrcSubres.pData != nullptr);
     VERIFY_EXPR(pDstData != nullptr);
     VERIFY(SrcSubres.Stride >= RowSize, "Source data row stride (", SrcSubres.Stride, ") is smaller than the row size (", RowSize, ")");
     VERIFY(DstRowStride >= RowSize, "Dst data row stride (", DstRowStride, ") is smaller than the row size (", RowSize, ")");
-    for (Uint32 z = 0; z < NumDepthSlices; ++z)
+    for (UInt32 z = 0; z < NumDepthSlices; ++z)
     {
-        const Uint8* pSrcSlice = reinterpret_cast<const Uint8*>(SrcSubres.pData) + SrcSubres.DepthStride * z;
-        Uint8*       pDstSlice = reinterpret_cast<Uint8*>(pDstData) + DstDepthStride * z;
+        const UInt8* pSrcSlice = reinterpret_cast<const UInt8*>(SrcSubres.pData) + SrcSubres.DepthStride * z;
+        UInt8*       pDstSlice = reinterpret_cast<UInt8*>(pDstData) + DstDepthStride * z;
 
-        for (Uint32 y = 0; y < NumRows; ++y)
+        for (UInt32 y = 0; y < NumRows; ++y)
         {
             memcpy(pDstSlice + DstRowStride * y,
                    pSrcSlice + SrcSubres.Stride * y,
@@ -2862,9 +2862,9 @@ bool TextureComponentMappingFromString(const String& MappingStr, TextureComponen
 
 SparseTextureProperties GetStandardSparseTextureProperties(const TextureDesc& TexDesc)
 {
-    constexpr Uint32            SparseBlockSize = 64 << 10;
+    constexpr UInt32            SparseBlockSize = 64 << 10;
     const TextureFormatAttribs& FmtAttribs      = GetTextureFormatAttribs(TexDesc.Format);
-    const Uint32                TexelSize       = FmtAttribs.GetElementSize();
+    const UInt32                TexelSize       = FmtAttribs.GetElementSize();
     VERIFY_EXPR(IsPowerOfTwo(TexelSize));
     VERIFY_EXPR(TexelSize >= 1 && TexelSize <= 16);
     VERIFY_EXPR(TexDesc.Is2D() || TexDesc.Is3D());
@@ -2889,7 +2889,7 @@ SparseTextureProperties GetStandardSparseTextureProperties(const TextureDesc& Te
         Props.TileSize[2] = 32;
 
         constexpr size_t Remap[] = {0, 2, 1};
-        for (Uint32 i = 0; (1u << i) < TexelSize; ++i)
+        for (UInt32 i = 0; (1u << i) < TexelSize; ++i)
         {
             Props.TileSize[Remap[i % 3]] /= 2;
         }
@@ -2911,7 +2911,7 @@ SparseTextureProperties GetStandardSparseTextureProperties(const TextureDesc& Te
         Props.TileSize[2] = 1;
 
         constexpr size_t Remap[] = {1, 0};
-        for (Uint32 i = 0; (1u << i) < TexelSize; ++i)
+        for (UInt32 i = 0; (1u << i) < TexelSize; ++i)
         {
             Props.TileSize[Remap[i & 1]] /= 2;
         }
@@ -2931,34 +2931,34 @@ SparseTextureProperties GetStandardSparseTextureProperties(const TextureDesc& Te
             //  |    64-Bit   |  128 x  64 x 1  |
             //  |   128-Bit   |   64 x  64 x 1  |
             constexpr size_t Remap[] = {1, 0};
-            for (Uint32 i = 0; (1u << i) < TexelSize; ++i)
+            for (UInt32 i = 0; (1u << i) < TexelSize; ++i)
             {
                 Props.TileSize[Remap[i & 1]] /= 2;
             }
         }
         else
         {
-            for (Uint32 i = 0; (FmtAttribs.ComponentSize << i) < (FmtAttribs.BlockWidth * FmtAttribs.BlockHeight); ++i)
+            for (UInt32 i = 0; (FmtAttribs.ComponentSize << i) < (FmtAttribs.BlockWidth * FmtAttribs.BlockHeight); ++i)
             {
                 Props.TileSize[i & 1] *= 2;
             }
         }
     }
 
-    const Uint32 BytesPerTile =
+    const UInt32 BytesPerTile =
         (Props.TileSize[0] / FmtAttribs.BlockWidth) *
         (Props.TileSize[1] / FmtAttribs.BlockHeight) *
         Props.TileSize[2] * TexDesc.SampleCount * TexelSize;
     VERIFY_EXPR(BytesPerTile == SparseBlockSize);
 
-    Uint64 SliceSize     = 0;
+    UInt64 SliceSize     = 0;
     Props.FirstMipInTail = ~0u;
-    for (Uint32 Mip = 0; Mip < TexDesc.MipLevels; ++Mip)
+    for (UInt32 Mip = 0; Mip < TexDesc.MipLevels; ++Mip)
     {
         const MipLevelProperties MipProps  = GetMipLevelProperties(TexDesc, Mip);
-        const Uint32             MipWidth  = MipProps.StorageWidth;
-        const Uint32             MipHeight = MipProps.StorageHeight;
-        const Uint32             MipDepth  = MipProps.Depth;
+        const UInt32             MipWidth  = MipProps.StorageWidth;
+        const UInt32             MipHeight = MipProps.StorageHeight;
+        const UInt32             MipDepth  = MipProps.Depth;
 
         // When the size of a texture mipmap level is at least one standard tile shape for its
         // format, the mipmap level is guaranteed to be nonpacked.
@@ -2980,7 +2980,7 @@ SparseTextureProperties GetStandardSparseTextureProperties(const TextureDesc& Te
         else
         {
             const uint3 NumTilesInMip = GetNumSparseTilesInBox(Box{0, MipWidth, 0, MipHeight, 0, MipDepth}, Props.TileSize);
-            SliceSize += Uint64{NumTilesInMip.x} * NumTilesInMip.y * NumTilesInMip.z * SparseBlockSize;
+            SliceSize += UInt64{NumTilesInMip.x} * NumTilesInMip.y * NumTilesInMip.z * SparseBlockSize;
         }
     }
 
@@ -3008,27 +3008,27 @@ bool IsIdentityComponentMapping(const TextureComponentMapping& Mapping)
 }
 
 
-std::vector<Uint32> ResolveInputLayoutAutoOffsetsAndStrides(LayoutElement* pLayoutElements, Uint32 NumElements)
+std::vector<UInt32> ResolveInputLayoutAutoOffsetsAndStrides(LayoutElement* pLayoutElements, UInt32 NumElements)
 {
-    Uint32 BufferSlotsUsed = 0;
-    for (Uint32 i = 0; i < NumElements; ++i)
+    UInt32 BufferSlotsUsed = 0;
+    for (UInt32 i = 0; i < NumElements; ++i)
     {
         BufferSlotsUsed = std::max(BufferSlotsUsed, pLayoutElements[i].BufferSlot + 1);
     }
 
-    std::vector<Uint32> TightStrides(BufferSlotsUsed);
+    std::vector<UInt32> TightStrides(BufferSlotsUsed);
     // Set all strides to an invalid value because an application may want to use 0 stride
-    std::vector<Uint32> Strides(BufferSlotsUsed, LAYOUT_ELEMENT_AUTO_STRIDE);
+    std::vector<UInt32> Strides(BufferSlotsUsed, LAYOUT_ELEMENT_AUTO_STRIDE);
 
-    for (Uint32 i = 0; i < NumElements; ++i)
+    for (UInt32 i = 0; i < NumElements; ++i)
     {
         LayoutElement& LayoutElem = pLayoutElements[i];
 
         if (LayoutElem.ValueType == VT_FLOAT32 || LayoutElem.ValueType == VT_FLOAT16)
             LayoutElem.IsNormalized = false; // Floating point values cannot be normalized
 
-        Uint32  BuffSlot       = LayoutElem.BufferSlot;
-        Uint32& CurrAutoStride = TightStrides[BuffSlot];
+        UInt32  BuffSlot       = LayoutElem.BufferSlot;
+        UInt32& CurrAutoStride = TightStrides[BuffSlot];
         // If offset is not explicitly specified, use current auto stride value
         if (LayoutElem.RelativeOffset == LAYOUT_ELEMENT_AUTO_OFFSET)
         {
@@ -3053,11 +3053,11 @@ std::vector<Uint32> ResolveInputLayoutAutoOffsetsAndStrides(LayoutElement* pLayo
         CurrAutoStride = std::max(CurrAutoStride, LayoutElem.RelativeOffset + LayoutElem.NumComponents * GetValueSize(LayoutElem.ValueType));
     }
 
-    for (Uint32 i = 0; i < NumElements; ++i)
+    for (UInt32 i = 0; i < NumElements; ++i)
     {
         LayoutElement& LayoutElem = pLayoutElements[i];
 
-        Uint32 BuffSlot = LayoutElem.BufferSlot;
+        UInt32 BuffSlot = LayoutElem.BufferSlot;
         // If no input elements explicitly defined stride for this buffer slot, use automatic stride
         if (Strides[BuffSlot] == LAYOUT_ELEMENT_AUTO_STRIDE)
         {
@@ -3077,7 +3077,7 @@ std::vector<Uint32> ResolveInputLayoutAutoOffsetsAndStrides(LayoutElement* pLayo
     }
 
     // Set strides for all unused slots to 0
-    for (Uint32& Stride : Strides)
+    for (UInt32& Stride : Strides)
     {
         if (Stride == LAYOUT_ELEMENT_AUTO_STRIDE)
             Stride = 0;
@@ -3086,13 +3086,13 @@ std::vector<Uint32> ResolveInputLayoutAutoOffsetsAndStrides(LayoutElement* pLayo
     return Strides;
 }
 
-size_t ComputeRenderTargetFormatsHash(Uint32 NumRenderTargets, const TEXTURE_FORMAT RTVFormats[], TEXTURE_FORMAT DSVFormat)
+size_t ComputeRenderTargetFormatsHash(UInt32 NumRenderTargets, const TEXTURE_FORMAT RTVFormats[], TEXTURE_FORMAT DSVFormat)
 {
     if (NumRenderTargets == 0 && DSVFormat == TEX_FORMAT_UNKNOWN)
         return 0;
 
     size_t Hash = ComputeHash(NumRenderTargets);
-    for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
         HashCombine(Hash, RTVFormats[rt]);
     HashCombine(Hash, DSVFormat);
     return Hash;

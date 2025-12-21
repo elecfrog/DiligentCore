@@ -325,29 +325,29 @@ WEB_GPU_BINDING_TYPE GetWebGPUTextureBindingType(WGSLShaderResourceAttribs::Text
 
 WGSLShaderResourceAttribs::WGSLShaderResourceAttribs(const char*                             _Name,
                                                      const tint::inspector::ResourceBinding& TintBinding,
-                                                     Uint32                                  _ArraySize) noexcept :
+                                                     UInt32                                  _ArraySize) noexcept :
     // clang-format off
     Name             {_Name},
-    ArraySize        {static_cast<Uint16>(_ArraySize)},
+    ArraySize        {static_cast<UInt16>(_ArraySize)},
     Type             {TintResourceTypeToWGSLShaderAttribsResourceType(TintBinding.resource_type)},
     ResourceDim      {TintBindingToResourceDimension(TintBinding)},
     Format			 {TintTexelFormatToTextureFormat(TintBinding)},
-    BindGroup        {static_cast<Uint16>(TintBinding.bind_group)},
-    BindIndex        {static_cast<Uint16>(TintBinding.binding)},
+    BindGroup        {static_cast<UInt16>(TintBinding.bind_group)},
+    BindIndex        {static_cast<UInt16>(TintBinding.binding)},
     SampleType       {TintSampleKindToWGSLShaderAttribsSampleType(TintBinding)},
-    BufferStaticSize {TintBinding.resource_type == tint::inspector::ResourceBinding::ResourceType::kUniformBuffer ? static_cast<Uint32>(TintBinding.size) : 0}
+    BufferStaticSize {TintBinding.resource_type == tint::inspector::ResourceBinding::ResourceType::kUniformBuffer ? static_cast<UInt32>(TintBinding.size) : 0}
 // clang-format on
 {}
 
 WGSLShaderResourceAttribs::WGSLShaderResourceAttribs(const char*        _Name,
                                                      ResourceType       _Type,
-                                                     Uint16             _ArraySize,
+                                                     UInt16             _ArraySize,
                                                      RESOURCE_DIMENSION _ResourceDim,
                                                      TEXTURE_FORMAT     _Format,
                                                      TextureSampleType  _SampleType,
                                                      uint16_t           _BindGroup,
                                                      uint16_t           _BindIndex,
-                                                     Uint32             _BufferStaticSize) noexcept :
+                                                     UInt32             _BufferStaticSize) noexcept :
     Name{_Name},
     ArraySize{_ArraySize},
     Type{_Type},
@@ -362,7 +362,7 @@ WGSLShaderResourceAttribs::WGSLShaderResourceAttribs(const char*        _Name,
 
 SHADER_RESOURCE_TYPE WGSLShaderResourceAttribs::GetShaderResourceType(ResourceType Type)
 {
-    static_assert(Uint32{WGSLShaderResourceAttribs::ResourceType::NumResourceTypes} == 13, "Please handle the new resource type below");
+    static_assert(UInt32{WGSLShaderResourceAttribs::ResourceType::NumResourceTypes} == 13, "Please handle the new resource type below");
     switch (Type)
     {
         case WGSLShaderResourceAttribs::ResourceType::UniformBuffer:
@@ -407,7 +407,7 @@ PIPELINE_RESOURCE_FLAGS WGSLShaderResourceAttribs::GetPipelineResourceFlags(Reso
 WebGPUResourceAttribs WGSLShaderResourceAttribs::GetWebGPUAttribs(SHADER_VARIABLE_FLAGS Flags) const
 {
     WebGPUResourceAttribs WebGPUAttribs;
-    static_assert(Uint32{WGSLShaderResourceAttribs::ResourceType::NumResourceTypes} == 13, "Please handle the new resource type below");
+    static_assert(UInt32{WGSLShaderResourceAttribs::ResourceType::NumResourceTypes} == 13, "Please handle the new resource type below");
     switch (Type)
     {
         case ResourceType::UniformBuffer:
@@ -492,7 +492,7 @@ bool ResourceBindingsCompatibile(const tint::inspector::ResourceBinding& Binding
     return true;
 }
 
-void MergeResources(std::vector<tint::inspector::ResourceBinding>& Bindings, std::vector<Uint32>& ArraySizes, const std::string& Suffix)
+void MergeResources(std::vector<tint::inspector::ResourceBinding>& Bindings, std::vector<UInt32>& ArraySizes, const std::string& Suffix)
 {
     std::vector<WGSLEmulatedResourceArrayElement> ArrayElements(Bindings.size());
 
@@ -557,7 +557,7 @@ void MergeResources(std::vector<tint::inspector::ResourceBinding>& Bindings, std
                 {
                     ArraySizes.resize(Array.ResourceIdx + 1, 0);
                 }
-                ArraySizes[Array.ResourceIdx] = std::max(ArraySizes[Array.ResourceIdx], static_cast<Uint32>(Element.Index + 1));
+                ArraySizes[Array.ResourceIdx] = std::max(ArraySizes[Array.ResourceIdx], static_cast<UInt32>(Element.Index + 1));
             }
             else
             {
@@ -604,7 +604,7 @@ void LoadShaderCodeVariableDesc(const tint::Program&          Program,
         }
     };
 
-    auto GetArraySize = [](const tint::core::type::Array* ArrType) -> Uint32 {
+    auto GetArraySize = [](const tint::core::type::Array* ArrType) -> UInt32 {
         if (ArrType->Count()->Is<tint::core::type::ConstantArrayCount>())
         {
             return ArrType->Count()->As<tint::core::type::ConstantArrayCount>()->value;
@@ -832,7 +832,7 @@ WGSLShaderResources::WGSLShaderResources(IMemoryAllocator&      Allocator,
         }
     }
 
-    std::vector<Uint32> ArraySizes;
+    std::vector<UInt32> ArraySizes;
     if (EmulatedArrayIndexSuffix != nullptr && EmulatedArrayIndexSuffix[0] != '\0')
     {
         MergeResources(ResourceBindings, ArraySizes, EmulatedArrayIndexSuffix);
@@ -914,7 +914,7 @@ WGSLShaderResources::WGSLShaderResources(IMemoryAllocator&      Allocator,
     {
         const tint::inspector::ResourceBinding& Binding   = ResourceBindings[i];
         const char*                             Name      = ResourceNamesPool.CopyString(Binding.variable_name);
-        const Uint32                            ArraySize = i < ArraySizes.size() && ArraySizes[i] != 0 ? ArraySizes[i] : 1;
+        const UInt32                            ArraySize = i < ArraySizes.size() && ArraySizes[i] != 0 ? ArraySizes[i] : 1;
         switch (Binding.resource_type)
         {
             case TintResourceType::kUniformBuffer:
@@ -1005,9 +1005,9 @@ void WGSLShaderResources::Initialize(IMemoryAllocator&       Allocator,
                                      size_t                  ResourceNamesPoolSize,
                                      StringPool&             ResourceNamesPool)
 {
-    Uint32           CurrentOffset = 0;
-    constexpr Uint32 MaxOffset     = std::numeric_limits<OffsetType>::max();
-    auto             AdvanceOffset = [&CurrentOffset, MaxOffset](Uint32 NumResources) -> OffsetType {
+    UInt32           CurrentOffset = 0;
+    constexpr UInt32 MaxOffset     = std::numeric_limits<OffsetType>::max();
+    auto             AdvanceOffset = [&CurrentOffset, MaxOffset](UInt32 NumResources) -> OffsetType {
         VERIFY(CurrentOffset <= MaxOffset, "Current offset (", CurrentOffset, ") exceeds max allowed value (", MaxOffset, ")");
         (void)MaxOffset;
         OffsetType Offset = static_cast<OffsetType>(CurrentOffset);
@@ -1023,7 +1023,7 @@ void WGSLShaderResources::Initialize(IMemoryAllocator&       Allocator,
     m_SamplerOffset         = AdvanceOffset(Counters.NumSamplers);
     m_ExternalTextureOffset = AdvanceOffset(Counters.NumExtTextures);
     m_TotalResources        = AdvanceOffset(0);
-    static_assert(Uint32{WGSLShaderResourceAttribs::ResourceType::NumResourceTypes} == 13, "Please update the new resource type offset");
+    static_assert(UInt32{WGSLShaderResourceAttribs::ResourceType::NumResourceTypes} == 13, "Please update the new resource type offset");
 
     size_t AlignedResourceNamesPoolSize = AlignUp(ResourceNamesPoolSize, sizeof(void*));
 
@@ -1038,7 +1038,7 @@ void WGSLShaderResources::Initialize(IMemoryAllocator&       Allocator,
     VERIFY_EXPR(GetNumStTextures()  == Counters.NumStTextures);
     VERIFY_EXPR(GetNumSamplers()    == Counters.NumSamplers);
     VERIFY_EXPR(GetNumExtTextures() == Counters.NumExtTextures);
-    static_assert(Uint32{WGSLShaderResourceAttribs::ResourceType::NumResourceTypes} == 13, "Please update the new resource count verification");
+    static_assert(UInt32{WGSLShaderResourceAttribs::ResourceType::NumResourceTypes} == 13, "Please update the new resource count verification");
     // clang-format on
 
     if (MemorySize > 0)
@@ -1053,7 +1053,7 @@ void WGSLShaderResources::Initialize(IMemoryAllocator&       Allocator,
 
 WGSLShaderResources::~WGSLShaderResources()
 {
-    for (Uint32 n = 0; n < GetTotalResources(); ++n)
+    for (UInt32 n = 0; n < GetTotalResources(); ++n)
         GetResource(n).~WGSLShaderResourceAttribs();
 }
 
@@ -1065,7 +1065,7 @@ std::string WGSLShaderResources::DumpResources()
        << "; Samplers: " << GetNumSamplers() << "; Ext Textures: " << GetNumExtTextures() << '.' << std::endl
        << "Resources:";
 
-    Uint32 ResNum       = 0;
+    UInt32 ResNum       = 0;
     auto   DumpResource = [&ss, &ResNum](const WGSLShaderResourceAttribs& Res) {
         std::stringstream FullResNameSS;
         FullResNameSS << '\'' << Res.Name;
@@ -1077,14 +1077,14 @@ std::string WGSLShaderResources::DumpResources()
     };
 
     ProcessResources(
-        [&](const WGSLShaderResourceAttribs& UB, Uint32) //
+        [&](const WGSLShaderResourceAttribs& UB, UInt32) //
         {
             VERIFY(UB.Type == WGSLShaderResourceAttribs::ResourceType::UniformBuffer, "Unexpected resource type");
             ss << std::endl
                << std::setw(3) << ResNum << " Uniform Buffer     ";
             DumpResource(UB);
         },
-        [&](const WGSLShaderResourceAttribs& SB, Uint32) //
+        [&](const WGSLShaderResourceAttribs& SB, UInt32) //
         {
             VERIFY((SB.Type == WGSLShaderResourceAttribs::ResourceType::ROStorageBuffer ||
                     SB.Type == WGSLShaderResourceAttribs::ResourceType::RWStorageBuffer),
@@ -1094,7 +1094,7 @@ std::string WGSLShaderResources::DumpResources()
                << (SB.Type == WGSLShaderResourceAttribs::ResourceType::ROStorageBuffer ? " RO Storage Buffer  " : " RW Storage Buffer  ");
             DumpResource(SB);
         },
-        [&](const WGSLShaderResourceAttribs& Tex, Uint32) //
+        [&](const WGSLShaderResourceAttribs& Tex, UInt32) //
         {
             if (Tex.Type == WGSLShaderResourceAttribs::ResourceType::Texture)
             {
@@ -1122,7 +1122,7 @@ std::string WGSLShaderResources::DumpResources()
             }
             DumpResource(Tex);
         },
-        [&](const WGSLShaderResourceAttribs& StTex, Uint32) //
+        [&](const WGSLShaderResourceAttribs& StTex, UInt32) //
         {
             if (StTex.Type == WGSLShaderResourceAttribs::ResourceType::WOStorageTexture)
             {
@@ -1145,7 +1145,7 @@ std::string WGSLShaderResources::DumpResources()
             }
             DumpResource(StTex);
         },
-        [&](const WGSLShaderResourceAttribs& Sam, Uint32) //
+        [&](const WGSLShaderResourceAttribs& Sam, UInt32) //
         {
             if (Sam.Type == WGSLShaderResourceAttribs::ResourceType::Sampler)
             {
@@ -1163,7 +1163,7 @@ std::string WGSLShaderResources::DumpResources()
             }
             DumpResource(Sam);
         },
-        [&](const WGSLShaderResourceAttribs& ExtTex, Uint32) //
+        [&](const WGSLShaderResourceAttribs& ExtTex, UInt32) //
         {
             VERIFY(ExtTex.Type == WGSLShaderResourceAttribs::ResourceType::ExternalTexture, "Unexpected resource type");
             ss << std::endl

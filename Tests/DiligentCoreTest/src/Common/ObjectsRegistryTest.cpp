@@ -41,14 +41,14 @@ namespace
 
 struct RegistryData
 {
-    Uint32 Value = ~0u;
+    UInt32 Value = ~0u;
 
     RegistryData() = default;
-    RegistryData(Uint32 _Value) :
+    RegistryData(UInt32 _Value) :
         Value{_Value}
     {}
 
-    static std::shared_ptr<RegistryData> Create(Uint32 _Value)
+    static std::shared_ptr<RegistryData> Create(UInt32 _Value)
     {
         return std::make_shared<RegistryData>(_Value);
     }
@@ -56,14 +56,14 @@ struct RegistryData
 
 struct RegistryDataObj : public ObjectBase<IObject>
 {
-    RegistryDataObj(IReferenceCounters* pRefCounters, Uint32 _Value) :
+    RegistryDataObj(IReferenceCounters* pRefCounters, UInt32 _Value) :
         ObjectBase<IObject>{pRefCounters},
         Value{_Value}
     {}
 
-    Uint32 Value = ~0u;
+    UInt32 Value = ~0u;
 
-    static RefCntAutoPtr<RegistryDataObj> Create(Uint32 _Value)
+    static RefCntAutoPtr<RegistryDataObj> Create(UInt32 _Value)
     {
         return RefCntAutoPtr<RegistryDataObj>{MakeNewRCObj<RegistryDataObj>()(_Value)};
     }
@@ -76,8 +76,8 @@ void TestObjectRegistryGet()
 
     {
         int    Key    = 999;
-        Uint32 Value  = 123;
-        Uint32 Value2 = 456;
+        UInt32 Value  = 123;
+        UInt32 Value2 = 456;
 
         EXPECT_EQ(Registry.Get(Key), nullptr);
 
@@ -94,15 +94,15 @@ void TestObjectRegistryGet()
         ASSERT_EQ(Registry.Get(Key), nullptr);
     }
 
-    constexpr Uint32                     NumThreads = 16;
+    constexpr UInt32                     NumThreads = 16;
     std::vector<std::thread>             Threads(NumThreads);
     std::vector<StrongPtrType<DataType>> Data(NumThreads);
 
     Threading::Signal StartSignal;
-    for (Uint32 i = 0; i < NumThreads; ++i)
+    for (UInt32 i = 0; i < NumThreads; ++i)
     {
         Threads[i] = std::thread(
-            [&](Uint32 ThreadId) {
+            [&](UInt32 ThreadId) {
                 StartSignal.Wait();
                 // Get data with the same key from all threads
                 Data[ThreadId] = Registry.Get(1, std::bind(DataType::Create, ThreadId));
@@ -137,14 +137,14 @@ void TestObjectRegistryCreateDestroyRace()
 {
     ObjectsRegistry<int, StrongPtrType<DataType>> Registry{64};
 
-    constexpr Uint32         NumThreads = 16;
+    constexpr UInt32         NumThreads = 16;
     std::vector<std::thread> Threads(NumThreads);
 
     Threading::Signal StartSignal;
-    for (Uint32 i = 0; i < NumThreads; ++i)
+    for (UInt32 i = 0; i < NumThreads; ++i)
     {
         Threads[i] = std::thread(
-            [&](Uint32 ThreadId) {
+            [&](UInt32 ThreadId) {
                 StartSignal.Wait();
                 // Get data with the same key from all threads
                 auto pData = Registry.Get(1, std::bind(DataType::Create, ThreadId));
@@ -174,22 +174,22 @@ void TestObjectRegistryExceptions()
 {
     ObjectsRegistry<int, StrongPtrType<DataType>> Registry{128};
 
-    constexpr Uint32         NumThreads = 15; // Use odd number
+    constexpr UInt32         NumThreads = 15; // Use odd number
     std::vector<std::thread> Threads(NumThreads);
 
     std::vector<std::vector<StrongPtrType<DataType>>> ThreadsData(NumThreads);
 
     Threading::Signal StartSignal;
-    for (Uint32 i = 0; i < NumThreads; ++i)
+    for (UInt32 i = 0; i < NumThreads; ++i)
     {
         ThreadsData[i].resize(128);
 
         Threads[i] = std::thread(
-            [&](Uint32 ThreadId) {
+            [&](UInt32 ThreadId) {
                 StartSignal.Wait();
 
                 auto& Data = ThreadsData[ThreadId];
-                for (Uint32 i = 0; i < Data.size(); ++i)
+                for (UInt32 i = 0; i < Data.size(); ++i)
                 {
                     try
                     {
@@ -222,7 +222,7 @@ void TestObjectRegistryExceptions()
 
     for (auto& Data : ThreadsData)
     {
-        for (Uint32 i = 0; i < Data.size(); ++i)
+        for (UInt32 i = 0; i < Data.size(); ++i)
         {
             if (Data[i])
             {

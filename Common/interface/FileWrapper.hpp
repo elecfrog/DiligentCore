@@ -90,7 +90,7 @@ public:
 
     explicit operator bool() const { return m_pFile != nullptr; }
 
-    static bool ReadWholeFile(const char* FilePath, std::vector<Uint8>& Data, bool Silent = false);
+    static bool ReadWholeFile(const char* FilePath, std::vector<UInt8>& Data, bool Silent = false);
     static bool ReadWholeFile(const char* FilePath, IDataBlob** ppData, bool Silent = false);
     static bool WriteFile(const char* FilePath, const void* Data, size_t Size, bool Silent = false);
 

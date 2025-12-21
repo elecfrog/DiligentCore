@@ -30,7 +30,7 @@ typedef unsigned int GLenum;
 
 namespace Diligent
 {
-GLenum         TexFormatToGLInternalTexFormat(TEXTURE_FORMAT TexFormat, Uint32 BindFlags = 0);
+GLenum         TexFormatToGLInternalTexFormat(TEXTURE_FORMAT TexFormat, UInt32 BindFlags = 0);
 TEXTURE_FORMAT GLInternalTexFormatToTexFormat(GLenum GlFormat);
 
 int64_t GetNativeTextureFormatGL(TEXTURE_FORMAT TexFormat)

@@ -41,7 +41,7 @@ namespace Diligent
 VkFormat       TexFormatToVkFormat(TEXTURE_FORMAT TexFmt);
 TEXTURE_FORMAT VkFormatToTexFormat(VkFormat VkFmt);
 
-VkFormat    TypeToVkFormat(VALUE_TYPE ValType, Uint32 NumComponents, Bool bIsNormalized);
+VkFormat    TypeToVkFormat(VALUE_TYPE ValType, UInt32 NumComponents, Bool bIsNormalized);
 VkIndexType TypeToVkIndexType(VALUE_TYPE IndexType);
 
 VkPipelineRasterizationStateCreateInfo RasterizerStateDesc_To_VkRasterizationStateCI(const struct RasterizerStateDesc& RasterizerDesc);

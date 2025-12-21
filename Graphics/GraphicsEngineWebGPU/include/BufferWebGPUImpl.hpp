@@ -68,7 +68,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_BufferWebGPU, TBufferBase)
 
     /// Implementation of IBuffer::GetNativeHandle().
-    Uint64 DILIGENT_CALL_TYPE GetNativeHandle() override final;
+    UInt64 DILIGENT_CALL_TYPE GetNativeHandle() override final;
 
     /// Implementation of IBuffer::GetSparseProperties().
     SparseBufferProperties DILIGENT_CALL_TYPE GetSparseProperties() const override final;
@@ -80,7 +80,7 @@ public:
 
     void Unmap();
 
-    Uint32 GetAlignment() const;
+    UInt32 GetAlignment() const;
 
     StagingBufferInfo* GetStagingBuffer();
 
@@ -90,10 +90,10 @@ private:
 private:
     friend class DeviceContextWebGPUImpl;
 
-    static constexpr Uint32 MaxStagingReadBuffers = 16;
+    static constexpr UInt32 MaxStagingReadBuffers = 16;
 
     WebGPUBufferWrapper m_wgpuBuffer;
-    const Uint32        m_Alignment;
+    const UInt32        m_Alignment;
 };
 
 } // namespace Diligent

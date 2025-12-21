@@ -47,64 +47,64 @@ namespace
 
 struct DXBCHeader
 {
-    Uint32 Magic;       // 0..3 "DXBC"
-    Uint32 Checksum[4]; // 4..19
-    Uint32 Reserved;    // 20..23
-    Uint32 TotalSize;   // 24..27
-    Uint32 ChunkCount;  // 28..31
+    UInt32 Magic;       // 0..3 "DXBC"
+    UInt32 Checksum[4]; // 4..19
+    UInt32 Reserved;    // 20..23
+    UInt32 TotalSize;   // 24..27
+    UInt32 ChunkCount;  // 28..31
 };
 static_assert(sizeof(DXBCHeader) == 32, "The size of DXBC header must be 32 bytes");
 
 struct ChunkHeader
 {
-    Uint32 Magic;  // 0..3 fourCC
-    Uint32 Length; // 4..7
+    UInt32 Magic;  // 0..3 fourCC
+    UInt32 Length; // 4..7
 };
 static_assert(sizeof(ChunkHeader) == 8, "The size of chunk header must be 8 bytes");
 
 struct ResourceDefChunkHeader : ChunkHeader
 {
-    Uint32 CBuffCount;          // 8..11
-    Uint32 CBuffOffset;         // 12..15, from start of chunk data
-    Uint32 ResBindingCount;     // 16..19
-    Uint32 ResBindingOffset;    // 20..23, from start of chunk data
-    Uint8  MinorVersion;        // 24
-    Uint8  MajorVersion;        // 25
-    Uint16 ShaderType;          // 26..27
-    Uint32 Flags;               // 28..31
-    Uint32 CreatorStringOffset; // 32..35, from start of chunk data
+    UInt32 CBuffCount;          // 8..11
+    UInt32 CBuffOffset;         // 12..15, from start of chunk data
+    UInt32 ResBindingCount;     // 16..19
+    UInt32 ResBindingOffset;    // 20..23, from start of chunk data
+    UInt8  MinorVersion;        // 24
+    UInt8  MajorVersion;        // 25
+    UInt16 ShaderType;          // 26..27
+    UInt32 Flags;               // 28..31
+    UInt32 CreatorStringOffset; // 32..35, from start of chunk data
 };
 static_assert(sizeof(ResourceDefChunkHeader) == 36, "The size of resource definition chunk header must be 36 bytes");
 
 struct ResourceBindingInfo50
 {
-    Uint32                   NameOffset;       // 0..3, from start of chunk data
+    UInt32                   NameOffset;       // 0..3, from start of chunk data
     D3D_SHADER_INPUT_TYPE    ShaderInputType;  // 4..7
     D3D_RESOURCE_RETURN_TYPE ReturnType;       // 8..11
     D3D_SRV_DIMENSION        ViewDim;          // 12..15
-    Uint32                   NumSamples;       // 16..19
-    Uint32                   BindPoint;        // 20..23
-    Uint32                   BindCount;        // 24..27
+    UInt32                   NumSamples;       // 16..19
+    UInt32                   BindPoint;        // 20..23
+    UInt32                   BindCount;        // 24..27
     D3D_SHADER_INPUT_FLAGS   ShaderInputFlags; // 28..31
 };
 static_assert(sizeof(ResourceBindingInfo50) == 32, "The size of SM50 resource binding info struct must be 32 bytes");
 
 struct ResourceBindingInfo51
 {
-    Uint32                   NameOffset;       // 0..3, from start of chunk data
+    UInt32                   NameOffset;       // 0..3, from start of chunk data
     D3D_SHADER_INPUT_TYPE    ShaderInputType;  // 4..7
     D3D_RESOURCE_RETURN_TYPE ReturnType;       // 8..11
     D3D_SRV_DIMENSION        ViewDim;          // 12..15
-    Uint32                   NumSamples;       // 16..19
-    Uint32                   BindPoint;        // 20..23
-    Uint32                   BindCount;        // 24..27
+    UInt32                   NumSamples;       // 16..19
+    UInt32                   BindPoint;        // 20..23
+    UInt32                   BindCount;        // 24..27
     D3D_SHADER_INPUT_FLAGS   ShaderInputFlags; // 28..31
-    Uint32                   Space;            // 32..35
-    Uint32                   Reserved;         // 36..39
+    UInt32                   Space;            // 32..35
+    UInt32                   Reserved;         // 36..39
 };
 static_assert(sizeof(ResourceBindingInfo51) == 40, "The size of SM51 resource binding info struct must be 40 bytes");
 
-enum PROGRAM_TYPE : Uint32
+enum PROGRAM_TYPE : UInt32
 {
     PROGRAM_TYPE_PIXEL  = 0,
     PROGRAM_TYPE_VERTEX = 1,
@@ -119,16 +119,16 @@ enum PROGRAM_TYPE : Uint32
 
 struct ShaderChunkHeader : ChunkHeader
 {
-    Uint32       VersionMinor : 4;
-    Uint32       VersionMajor : 4;
-    Uint32       _Padding : 8;
+    UInt32       VersionMinor : 4;
+    UInt32       VersionMajor : 4;
+    UInt32       _Padding : 8;
     PROGRAM_TYPE ProgramType : 16; // 2..3
-    Uint32       NumDWords;        // 4..7, number of DWORDs in the chunk
+    UInt32       NumDWords;        // 4..7, number of DWORDs in the chunk
 };
 static_assert(sizeof(ShaderChunkHeader) == 16, "The size of shader code header must be 16 bytes");
 
 // from d3d11TokenizedProgramFormat.hpp
-enum D3D10_SB_OPCODE_TYPE : Uint32
+enum D3D10_SB_OPCODE_TYPE : UInt32
 {
     D3D10_SB_OPCODE_ADD,
     D3D10_SB_OPCODE_AND,
@@ -412,7 +412,7 @@ enum D3D10_SB_OPCODE_TYPE : Uint32
 };
 
 // from d3d11TokenizedProgramFormat.hpp
-enum D3D10_SB_OPERAND_NUM_COMPONENTS : Uint32
+enum D3D10_SB_OPERAND_NUM_COMPONENTS : UInt32
 {
     D3D10_SB_OPERAND_0_COMPONENT = 0,
     D3D10_SB_OPERAND_1_COMPONENT = 1,
@@ -421,7 +421,7 @@ enum D3D10_SB_OPERAND_NUM_COMPONENTS : Uint32
 };
 
 // from d3d11TokenizedProgramFormat.hpp
-enum D3D10_SB_OPERAND_4_COMPONENT_SELECTION_MODE : Uint32
+enum D3D10_SB_OPERAND_4_COMPONENT_SELECTION_MODE : UInt32
 {
     D3D10_SB_OPERAND_4_COMPONENT_MASK_MODE     = 0, // mask 4 components
     D3D10_SB_OPERAND_4_COMPONENT_SWIZZLE_MODE  = 1, // swizzle 4 components
@@ -429,7 +429,7 @@ enum D3D10_SB_OPERAND_4_COMPONENT_SELECTION_MODE : Uint32
 };
 
 // from d3d11TokenizedProgramFormat.hpp
-enum D3D10_SB_OPERAND_TYPE : Uint32
+enum D3D10_SB_OPERAND_TYPE : UInt32
 {
     D3D10_SB_OPERAND_TYPE_TEMP           = 0,                      // Temporary Register File
     D3D10_SB_OPERAND_TYPE_INPUT          = 1,                      // General Input Register File
@@ -485,7 +485,7 @@ enum D3D10_SB_OPERAND_TYPE : Uint32
 };
 
 // from d3d11TokenizedProgramFormat.hpp
-enum D3D10_SB_OPERAND_INDEX_DIMENSION : Uint32
+enum D3D10_SB_OPERAND_INDEX_DIMENSION : UInt32
 {
     D3D10_SB_OPERAND_INDEX_0D = 0, // e.g. Position
     D3D10_SB_OPERAND_INDEX_1D = 1, // Most common.  e.g. Temp registers.
@@ -494,7 +494,7 @@ enum D3D10_SB_OPERAND_INDEX_DIMENSION : Uint32
 };
 
 // from d3d11TokenizedProgramFormat.hpp
-enum D3D10_SB_OPERAND_INDEX_REPRESENTATION : Uint32
+enum D3D10_SB_OPERAND_INDEX_REPRESENTATION : UInt32
 {
     D3D10_SB_OPERAND_INDEX_IMMEDIATE32 = 0,               // Extra DWORD
     D3D10_SB_OPERAND_INDEX_IMMEDIATE64 = 1,               // 2 Extra DWORDs
@@ -511,9 +511,9 @@ enum D3D10_SB_OPERAND_INDEX_REPRESENTATION : Uint32
 struct OpcodeToken
 {
     D3D10_SB_OPCODE_TYPE OpcodeType : 11;  // bits 0..10
-    Uint32               Controls : 13;    // bits 11..23, Opcode-Specific Controls
-    Uint32               OpcodeLength : 7; // bits 24..30
-    Uint32               Extended : 1;     // bit 31, 1 if opcode is "extended", otherwise 0
+    UInt32               Controls : 13;    // bits 11..23, Opcode-Specific Controls
+    UInt32               OpcodeLength : 7; // bits 24..30
+    UInt32               Extended : 1;     // bit 31, 1 if opcode is "extended", otherwise 0
 };
 static_assert(sizeof(OpcodeToken) == 4, "The size of opcode token must be 4 bytes");
 
@@ -521,13 +521,13 @@ struct OperandToken
 {
     D3D10_SB_OPERAND_NUM_COMPONENTS             NumComponents : 2;  // 0..1
     D3D10_SB_OPERAND_4_COMPONENT_SELECTION_MODE CompSelection : 2;  // 2..3
-    Uint32                                      CompMask : 8;       // 4..11
+    UInt32                                      CompMask : 8;       // 4..11
     D3D10_SB_OPERAND_TYPE                       OperandType : 8;    // 12..19
     D3D10_SB_OPERAND_INDEX_DIMENSION            IndexDim : 2;       // 20..21
     D3D10_SB_OPERAND_INDEX_REPRESENTATION       OperandIndex1D : 3; // 22..24
     D3D10_SB_OPERAND_INDEX_REPRESENTATION       OperandIndex2D : 3; // 25..27
     D3D10_SB_OPERAND_INDEX_REPRESENTATION       OperandIndex3D : 3; // 28..30
-    Uint32                                      Extended : 1;       // 31
+    UInt32                                      Extended : 1;       // 31
 };
 static_assert(sizeof(OperandToken) == 4, "The size of operand token must be 4 bytes");
 
@@ -542,7 +542,7 @@ enum D3D10_SB_CUSTOMDATA_CLASS
     D3D11_SB_CUSTOMDATA_SHADER_CLIP_PLANE_CONSTANT_MAPPINGS_FOR_DX9,
 };
 
-enum RES_TYPE : Uint32
+enum RES_TYPE : UInt32
 {
     RES_TYPE_CBV     = 0,
     RES_TYPE_SRV     = 1,
@@ -553,8 +553,8 @@ enum RES_TYPE : Uint32
 
 struct ResourceExtendedInfo
 {
-    Uint32   SrcBindPoint = ~0u;
-    Uint32   SrcSpace     = ~0u;
+    UInt32   SrcBindPoint = ~0u;
+    UInt32   SrcSpace     = ~0u;
     RES_TYPE Type         = RES_TYPE_COUNT;
 };
 
@@ -562,13 +562,13 @@ using ResourceBindingPerType = std::array<std::vector<DXBCUtils::BindInfo const*
 using TExtendedResourceMap   = std::unordered_map<DXBCUtils::BindInfo const*, ResourceExtendedInfo>;
 
 
-#define FOURCC(a, b, c, d) (Uint32{(d) << 24} | Uint32{(c) << 16} | Uint32{(b) << 8} | Uint32{a})
+#define FOURCC(a, b, c, d) (UInt32{(d) << 24} | UInt32{(c) << 16} | UInt32{(b) << 8} | UInt32{a})
 
-constexpr Uint32 DXBCFourCC = FOURCC('D', 'X', 'B', 'C');
-constexpr Uint32 RDEFFourCC = FOURCC('R', 'D', 'E', 'F'); // Resource definition. Describes constant buffers and resource bindings.
-constexpr Uint32 SHDRFourCC = FOURCC('S', 'H', 'D', 'R'); // Shader (SM4)
-constexpr Uint32 SHEXFourCC = FOURCC('S', 'H', 'E', 'X'); // Shader (SM5)
-//constexpr Uint32 DXILFourCC = FOURCC('D', 'X', 'I', 'L'); // Shader (SM6)
+constexpr UInt32 DXBCFourCC = FOURCC('D', 'X', 'B', 'C');
+constexpr UInt32 RDEFFourCC = FOURCC('R', 'D', 'E', 'F'); // Resource definition. Describes constant buffers and resource bindings.
+constexpr UInt32 SHDRFourCC = FOURCC('S', 'H', 'D', 'R'); // Shader (SM4)
+constexpr UInt32 SHEXFourCC = FOURCC('S', 'H', 'E', 'X'); // Shader (SM5)
+//constexpr UInt32 DXILFourCC = FOURCC('D', 'X', 'I', 'L'); // Shader (SM6)
 
 
 RES_TYPE ToResType(D3D_SHADER_INPUT_TYPE InputType)
@@ -617,7 +617,7 @@ const char* ResTypeToString(RES_TYPE Type)
     }
 }
 
-Uint32 GetNumOperands(D3D10_SB_OPCODE_TYPE Opcode)
+UInt32 GetNumOperands(D3D10_SB_OPCODE_TYPE Opcode)
 {
     switch (Opcode)
     {
@@ -885,7 +885,7 @@ void RemapShaderResources(const DXBCUtils::TResourceBindingMap& ResourceMap, con
     }
 
     String TempName;
-    for (Uint32 r = 0; r < RDEFHeader.ResBindingCount; ++r)
+    for (UInt32 r = 0; r < RDEFHeader.ResBindingCount; ++r)
     {
         ResourceBindingInfoType& Res  = ResBinding[r];
         const char*              Name = Ptr + Res.NameOffset;
@@ -904,7 +904,7 @@ void RemapShaderResources(const DXBCUtils::TResourceBindingMap& ResourceMap, con
 
         // before SM 5.1
         // Example: g_tex2D_sampler[2]
-        Uint32 ArrayInd = 0;
+        UInt32 ArrayInd = 0;
         if (TempName.back() == ']')
         {
             size_t ArrEnd   = TempName.length() - 1;
@@ -1007,22 +1007,22 @@ private:
 
     bool IsSM51 = false;
 
-    static constexpr Uint32 RuntimeSizedArraySize = ~0u;
+    static constexpr UInt32 RuntimeSizedArraySize = ~0u;
 
 private:
-    const Uint32* GetChunkEnd() const
+    const UInt32* GetChunkEnd() const
     {
-        return reinterpret_cast<const Uint32*>(Bytecode.data() + EndOffset);
+        return reinterpret_cast<const UInt32*>(Bytecode.data() + EndOffset);
     }
 
     // Inserts a new token at the specified offset (in tokens) and sets its value.
     // Updates the Token pointer and the chunk header.
-    void InsertToken(Uint32*& Token, Uint32 Offset, Uint32 Value)
+    void InsertToken(UInt32*& Token, UInt32 Offset, UInt32 Value)
     {
-        const ptrdiff_t TokenIdx = reinterpret_cast<Uint8*>(Token) - Bytecode.data();
+        const ptrdiff_t TokenIdx = reinterpret_cast<UInt8*>(Token) - Bytecode.data();
         VERIFY_EXPR(static_cast<size_t>(TokenIdx) < Bytecode.size());
         Bytecode.insert(Bytecode.begin() + TokenIdx + Offset * 4, {0, 0, 0, 0});
-        Token         = reinterpret_cast<Uint32*>(&Bytecode[TokenIdx]);
+        Token         = reinterpret_cast<UInt32*>(&Bytecode[TokenIdx]);
         Token[Offset] = Value;
 
         ShaderChunkHeader& Header = reinterpret_cast<ShaderChunkHeader&>(Bytecode[ChunkOffset]);
@@ -1031,21 +1031,21 @@ private:
         EndOffset += 4;
     }
 
-    void RemapResourceOperand(OperandToken*& Operand, Uint32*& Token);
-    void RemapResourceOperandSM50(const OperandToken& Operand, Uint32* Token);
-    void RemapResourceOperandSM51(OperandToken*& Operand, Uint32*& Token);
-    void RemapResourceOperandSM51_2(OperandToken*& Operand, Uint32*& Token, RES_TYPE Type);
+    void RemapResourceOperand(OperandToken*& Operand, UInt32*& Token);
+    void RemapResourceOperandSM50(const OperandToken& Operand, UInt32* Token);
+    void RemapResourceOperandSM51(OperandToken*& Operand, UInt32*& Token);
+    void RemapResourceOperandSM51_2(OperandToken*& Operand, UInt32*& Token, RES_TYPE Type);
 
-    void RemapResourceBinding(const OpcodeToken& Opcode, Uint32* Token, const void* Finish);
-    void RemapResourceBindingSM51(const OpcodeToken& Opcode, Uint32* Token, const void* Finish);
+    void RemapResourceBinding(const OpcodeToken& Opcode, UInt32* Token, const void* Finish);
+    void RemapResourceBindingSM51(const OpcodeToken& Opcode, UInt32* Token, const void* Finish);
 
-    void ParseOperand(Uint32*& Token);
-    void ParseIndex(D3D10_SB_OPERAND_INDEX_REPRESENTATION IndexType, Uint32*& Token);
-    void ParseCustomData(Uint32*& Token, D3D10_SB_CUSTOMDATA_CLASS Type);
-    void ParseOpcode(Uint32*& Token);
+    void ParseOperand(UInt32*& Token);
+    void ParseIndex(D3D10_SB_OPERAND_INDEX_REPRESENTATION IndexType, UInt32*& Token);
+    void ParseCustomData(UInt32*& Token, D3D10_SB_CUSTOMDATA_CLASS Type);
+    void ParseOpcode(UInt32*& Token);
 };
 
-void ShaderBytecodeRemapper::RemapResourceOperand(OperandToken*& Operand, Uint32*& Token)
+void ShaderBytecodeRemapper::RemapResourceOperand(OperandToken*& Operand, UInt32*& Token)
 {
     if (IsSM51)
     {
@@ -1057,7 +1057,7 @@ void ShaderBytecodeRemapper::RemapResourceOperand(OperandToken*& Operand, Uint32
     }
 }
 
-void ShaderBytecodeRemapper::RemapResourceBinding(const OpcodeToken& Opcode, Uint32* Token, const void* Finish)
+void ShaderBytecodeRemapper::RemapResourceBinding(const OpcodeToken& Opcode, UInt32* Token, const void* Finish)
 {
     if (IsSM51)
     {
@@ -1065,9 +1065,9 @@ void ShaderBytecodeRemapper::RemapResourceBinding(const OpcodeToken& Opcode, Uin
     }
 }
 
-void ShaderBytecodeRemapper::RemapResourceOperandSM50(const OperandToken& Operand, Uint32* Token)
+void ShaderBytecodeRemapper::RemapResourceOperandSM50(const OperandToken& Operand, UInt32* Token)
 {
-    const auto FindResourceBindings = [this](RES_TYPE Type, Uint32& Token) //
+    const auto FindResourceBindings = [this](RES_TYPE Type, UInt32& Token) //
     {
         auto& Bindings = BindingsPerType[Type];
         for (const DXBCUtils::BindInfo* Info : Bindings)
@@ -1147,7 +1147,7 @@ void ShaderBytecodeRemapper::RemapResourceOperandSM50(const OperandToken& Operan
     }
 }
 
-void ShaderBytecodeRemapper::RemapResourceOperandSM51_2(OperandToken*& Operand, Uint32*& Token, RES_TYPE Type)
+void ShaderBytecodeRemapper::RemapResourceOperandSM51_2(OperandToken*& Operand, UInt32*& Token, RES_TYPE Type)
 {
     const auto& Bindings = BindingsPerType[Type];
     if (Token[0] >= Bindings.size())
@@ -1180,7 +1180,7 @@ void ShaderBytecodeRemapper::RemapResourceOperandSM51_2(OperandToken*& Operand, 
                 // Change D3D10_SB_OPERAND_INDEX_RELATIVE to D3D10_SB_OPERAND_INDEX_IMMEDIATE32_PLUS_RELATIVE
                 Operand->OperandIndex2D = D3D10_SB_OPERAND_INDEX_IMMEDIATE32_PLUS_RELATIVE;
 
-                const ptrdiff_t OperandOffset = reinterpret_cast<Uint8*>(Operand) - Bytecode.data();
+                const ptrdiff_t OperandOffset = reinterpret_cast<UInt8*>(Operand) - Bytecode.data();
                 VERIFY_EXPR(static_cast<size_t>(OperandOffset) < Bytecode.size());
 
                 // Insert immediate index token
@@ -1194,11 +1194,11 @@ void ShaderBytecodeRemapper::RemapResourceOperandSM51_2(OperandToken*& Operand, 
         }
 
         default:
-            LOG_ERROR_AND_THROW("Unknown OperandIndex (", Uint32{Operand->OperandIndex2D}, ").");
+            LOG_ERROR_AND_THROW("Unknown OperandIndex (", UInt32{Operand->OperandIndex2D}, ").");
     }
 }
 
-void ShaderBytecodeRemapper::RemapResourceOperandSM51(OperandToken*& Operand, Uint32*& Token)
+void ShaderBytecodeRemapper::RemapResourceOperandSM51(OperandToken*& Operand, UInt32*& Token)
 {
     switch (Operand->OperandType)
     {
@@ -1263,7 +1263,7 @@ void ShaderBytecodeRemapper::RemapResourceOperandSM51(OperandToken*& Operand, Ui
     }
 }
 
-void ShaderBytecodeRemapper::RemapResourceBindingSM51(const OpcodeToken& Opcode, Uint32* Token, const void* Finish)
+void ShaderBytecodeRemapper::RemapResourceBindingSM51(const OpcodeToken& Opcode, UInt32* Token, const void* Finish)
 {
     const OperandToken Operand = *reinterpret_cast<OperandToken*>(Token);
 
@@ -1501,7 +1501,7 @@ void ShaderBytecodeRemapper::RemapResourceBindingSM51(const OpcodeToken& Opcode,
     }
 }
 
-void ShaderBytecodeRemapper::ParseIndex(D3D10_SB_OPERAND_INDEX_REPRESENTATION IndexType, Uint32*& Token)
+void ShaderBytecodeRemapper::ParseIndex(D3D10_SB_OPERAND_INDEX_REPRESENTATION IndexType, UInt32*& Token)
 {
     switch (IndexType)
     {
@@ -1537,11 +1537,11 @@ void ShaderBytecodeRemapper::ParseIndex(D3D10_SB_OPERAND_INDEX_REPRESENTATION In
     }
 }
 
-void ShaderBytecodeRemapper::ParseOperand(Uint32*& Token)
+void ShaderBytecodeRemapper::ParseOperand(UInt32*& Token)
 {
     OperandToken* Operand = reinterpret_cast<OperandToken*>(Token++);
 
-    Uint32 NumComponents = 0;
+    UInt32 NumComponents = 0;
     switch (Operand->NumComponents)
     {
         case D3D10_SB_OPERAND_0_COMPONENT: NumComponents = 0; break;
@@ -1563,13 +1563,13 @@ void ShaderBytecodeRemapper::ParseOperand(Uint32*& Token)
                 {
                     case D3D10_SB_OPERAND_4_COMPONENT_MASK_MODE:
                     {
-                        Uint32 WriteMask = Operand->CompMask;
+                        UInt32 WriteMask = Operand->CompMask;
                         (void)(WriteMask);
                         break;
                     }
                     case D3D10_SB_OPERAND_4_COMPONENT_SWIZZLE_MODE:
                     {
-                        Uint32 Swizzle[4];
+                        UInt32 Swizzle[4];
                         Swizzle[0] = (Operand->CompMask >> 0) & 3;
                         Swizzle[1] = (Operand->CompMask >> 2) & 3;
                         Swizzle[2] = (Operand->CompMask >> 4) & 3;
@@ -1578,7 +1578,7 @@ void ShaderBytecodeRemapper::ParseOperand(Uint32*& Token)
                     }
                     case D3D10_SB_OPERAND_4_COMPONENT_SELECT_1_MODE:
                     {
-                        Uint32 Component = Operand->CompMask & 3;
+                        UInt32 Component = Operand->CompMask & 3;
                         (void)(Component);
                         break;
                     }
@@ -1630,7 +1630,7 @@ void ShaderBytecodeRemapper::ParseOperand(Uint32*& Token)
     VERIFY_EXPR(Token <= GetChunkEnd());
 }
 
-void ShaderBytecodeRemapper::ParseCustomData(Uint32*& Token, D3D10_SB_CUSTOMDATA_CLASS Type)
+void ShaderBytecodeRemapper::ParseCustomData(UInt32*& Token, D3D10_SB_CUSTOMDATA_CLASS Type)
 {
     switch (Type)
     {
@@ -1646,21 +1646,21 @@ void ShaderBytecodeRemapper::ParseCustomData(Uint32*& Token, D3D10_SB_CUSTOMDATA
     }
 }
 
-void ShaderBytecodeRemapper::ParseOpcode(Uint32*& Token)
+void ShaderBytecodeRemapper::ParseOpcode(UInt32*& Token)
 {
     // based on code from
     // https://github.com/microsoft/D3D12TranslationLayer/blob/master/src/ShaderBinary.cpp
     // Copyright (c) Microsoft Corporation.
     // MIT License
 
-    const ptrdiff_t   OpcodeOffset      = reinterpret_cast<const Uint8*>(Token) - Bytecode.data();
+    const ptrdiff_t   OpcodeOffset      = reinterpret_cast<const UInt8*>(Token) - Bytecode.data();
     const OpcodeToken Opcode            = reinterpret_cast<OpcodeToken&>(*Token++);
-    const Uint32      NumOperands       = GetNumOperands(Opcode.OpcodeType);
-    Uint32            InstructionLength = Opcode.OpcodeLength;
+    const UInt32      NumOperands       = GetNumOperands(Opcode.OpcodeType);
+    UInt32            InstructionLength = Opcode.OpcodeLength;
 
     if (Opcode.OpcodeType >= D3D10_SB_NUM_OPCODES)
     {
-        LOG_ERROR_AND_THROW("Unknown opcode type (", Uint32{Opcode.OpcodeType}, ")");
+        LOG_ERROR_AND_THROW("Unknown opcode type (", UInt32{Opcode.OpcodeType}, ")");
     }
 
     if (Opcode.Extended &&
@@ -1672,12 +1672,12 @@ void ShaderBytecodeRemapper::ParseOpcode(Uint32*& Token)
     }
     else
     {
-        const Uint32 D3D11_SB_MAX_SIMULTANEOUS_EXTENDED_OPCODES = 3;
+        const UInt32 D3D11_SB_MAX_SIMULTANEOUS_EXTENDED_OPCODES = 3;
 
         bool Extended = (Opcode.Extended > 0);
-        for (Uint32 i = 0; i < (Extended ? D3D11_SB_MAX_SIMULTANEOUS_EXTENDED_OPCODES : 0); ++i)
+        for (UInt32 i = 0; i < (Extended ? D3D11_SB_MAX_SIMULTANEOUS_EXTENDED_OPCODES : 0); ++i)
         {
-            Uint32 ExtToken = *Token++;
+            UInt32 ExtToken = *Token++;
             Extended        = (ExtToken >> 31) > 0;
         }
     }
@@ -1722,7 +1722,7 @@ void ShaderBytecodeRemapper::ParseOpcode(Uint32*& Token)
             break;
 
         default:
-            for (Uint32 i = 0; i < NumOperands; ++i)
+            for (UInt32 i = 0; i < NumOperands; ++i)
                 ParseOperand(Token);
             break;
     }
@@ -1730,12 +1730,12 @@ void ShaderBytecodeRemapper::ParseOpcode(Uint32*& Token)
     if (Bytecode.size() > BytecodeSize)
     {
         // New tokens were inserted - update instruction length
-        InstructionLength += static_cast<Uint32>(Bytecode.size() - BytecodeSize) / 4;
+        InstructionLength += static_cast<UInt32>(Bytecode.size() - BytecodeSize) / 4;
         reinterpret_cast<OpcodeToken&>(Bytecode[OpcodeOffset]).OpcodeLength = InstructionLength;
     }
 
-    Uint32* StartToken = reinterpret_cast<Uint32*>(&Bytecode[OpcodeOffset]);
-    Uint32* EndToken   = StartToken + InstructionLength;
+    UInt32* StartToken = reinterpret_cast<UInt32*>(&Bytecode[OpcodeOffset]);
+    UInt32* EndToken   = StartToken + InstructionLength;
     VERIFY_EXPR(Token <= EndToken);
 
     RemapResourceBinding(Opcode, StartToken + 1, EndToken);
@@ -1747,7 +1747,7 @@ void ShaderBytecodeRemapper::PatchBytecode(const void* ChunkEnd) noexcept(false)
 {
     VERIFY_EXPR(ChunkEnd == GetChunkEnd());
 
-    Uint32* Token = reinterpret_cast<Uint32*>(&Bytecode[ChunkOffset + sizeof(ShaderChunkHeader)]);
+    UInt32* Token = reinterpret_cast<UInt32*>(&Bytecode[ChunkOffset + sizeof(ShaderChunkHeader)]);
     while (Token < GetChunkEnd())
     {
         ParseOpcode(Token);
@@ -1803,25 +1803,25 @@ RefCntAutoPtr<IDataBlob> RemapResourceBindings(const TResourceBindingMap& Resour
         return {};
     }
 
-    if (sizeof(Header) + sizeof(Uint32) * Header.ChunkCount > Size)
+    if (sizeof(Header) + sizeof(UInt32) * Header.ChunkCount > Size)
     {
         LOG_ERROR_MESSAGE("Not enough space for the chunk offsets. The byte code may be corrupted.");
         return {};
     }
 
     DataBlobImpl::DataBufferType RemappedBytecode{
-        static_cast<const Uint8*>(pBytecode),
-        static_cast<const Uint8*>(pBytecode) + Size,
-        STD_ALLOCATOR_RAW_MEM(Uint8, DefaultRawMemoryAllocator::GetAllocator(), "Allocator for vector<Uint8>"),
+        static_cast<const UInt8*>(pBytecode),
+        static_cast<const UInt8*>(pBytecode) + Size,
+        STD_ALLOCATOR_RAW_MEM(UInt8, DefaultRawMemoryAllocator::GetAllocator(), "Allocator for vector<UInt8>"),
     };
 
-    auto GetChunkOffset = [&RemappedBytecode](Uint32 i) -> Uint32 {
-        const Uint32* ChunkOffsets = reinterpret_cast<const Uint32*>(&RemappedBytecode[sizeof(DXBCHeader)]);
+    auto GetChunkOffset = [&RemappedBytecode](UInt32 i) -> UInt32 {
+        const UInt32* ChunkOffsets = reinterpret_cast<const UInt32*>(&RemappedBytecode[sizeof(DXBCHeader)]);
         return ChunkOffsets[i];
     };
 
-    auto UpdateChunkOffset = [&RemappedBytecode](Uint32 i, Uint32 ExtraOffset) {
-        Uint32* ChunkOffsets = reinterpret_cast<Uint32*>(&RemappedBytecode[sizeof(DXBCHeader)]);
+    auto UpdateChunkOffset = [&RemappedBytecode](UInt32 i, UInt32 ExtraOffset) {
+        UInt32* ChunkOffsets = reinterpret_cast<UInt32*>(&RemappedBytecode[sizeof(DXBCHeader)]);
         ChunkOffsets[i] += ExtraOffset;
     };
 
@@ -1832,9 +1832,9 @@ RefCntAutoPtr<IDataBlob> RemapResourceBindings(const TResourceBindingMap& Resour
     bool PatchOK     = false;
     try
     {
-        for (Uint32 i = 0; i < Header.ChunkCount; ++i)
+        for (UInt32 i = 0; i < Header.ChunkCount; ++i)
         {
-            const Uint32 ChunkOffset = GetChunkOffset(i);
+            const UInt32 ChunkOffset = GetChunkOffset(i);
             if (ChunkOffset + sizeof(ChunkHeader) > RemappedBytecode.size())
             {
                 LOG_ERROR_MESSAGE("Not enough space for the chunk header. The byte code may be corrupted.");
@@ -1849,7 +1849,7 @@ RefCntAutoPtr<IDataBlob> RemapResourceBindings(const TResourceBindingMap& Resour
                 LOG_ERROR_MESSAGE("Not enough space for the chunk data. The byte code may be corrupted.");
                 return {};
             }
-            const void* const ChunkEnd = reinterpret_cast<const Uint8*>(&Chunk + 1) + Chunk.Length;
+            const void* const ChunkEnd = reinterpret_cast<const UInt8*>(&Chunk + 1) + Chunk.Length;
 
             if (Chunk.Magic == RDEFFourCC)
             {
@@ -1875,13 +1875,13 @@ RefCntAutoPtr<IDataBlob> RemapResourceBindings(const TResourceBindingMap& Resour
             {
                 ShaderBytecodeRemapper Remapper{RemappedBytecode, ChunkOffset, ExtResourceMap, BindingsPerType};
 
-                const Uint32 ChunkLength = Remapper.GetHeader().Length;
+                const UInt32 ChunkLength = Remapper.GetHeader().Length;
                 Remapper.PatchBytecode(ChunkEnd);
-                const Uint32 ExtraBytes = Remapper.GetHeader().Length - ChunkLength;
+                const UInt32 ExtraBytes = Remapper.GetHeader().Length - ChunkLength;
                 if (ExtraBytes > 0)
                 {
                     // Chunk size has changed, update offsets of all subsequent chunks
-                    for (Uint32 j = i + 1; j < Header.ChunkCount; ++j)
+                    for (UInt32 j = i + 1; j < Header.ChunkCount; ++j)
                     {
                         UpdateChunkOffset(j, ExtraBytes);
                     }
@@ -1909,7 +1909,7 @@ RefCntAutoPtr<IDataBlob> RemapResourceBindings(const TResourceBindingMap& Resour
     }
 
     DXBCHeader& DstHeader = *reinterpret_cast<DXBCHeader*>(RemappedBytecode.data());
-    DstHeader.TotalSize   = static_cast<Uint32>(RemappedBytecode.size());
+    DstHeader.TotalSize   = static_cast<UInt32>(RemappedBytecode.size());
 
     // update checksum
     DWORD Checksum[4] = {};

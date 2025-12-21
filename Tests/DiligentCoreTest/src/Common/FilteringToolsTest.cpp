@@ -45,7 +45,7 @@ namespace
 {
 
 template <TEXTURE_ADDRESS_MODE AddressMode>
-void TestGetLinearTexFilterSampleInfo(float u, Int32 i0, Int32 i1, float w, Uint32 Width = 128)
+void TestGetLinearTexFilterSampleInfo(float u, Int32 i0, Int32 i1, float w, UInt32 Width = 128)
 {
     const LinearTexFilterSampleInfo RefSampleInfo{i0, i1, w};
 
@@ -158,8 +158,8 @@ void TestFilterTexture2DBilinear(float u, float v, float ref)
     };
     // clang-format on
 
-    constexpr Uint32 Width  = 4;
-    constexpr Uint32 Height = 4;
+    constexpr UInt32 Width  = 4;
+    constexpr UInt32 Height = 4;
 
     auto Val = FilterTexture2DBilinear<float, float, AddressMode, AddressMode, false>(Width, Height, Data, Width, u, v);
     EXPECT_EQ(Val, ref) << "u=" << u << " v=" << v;

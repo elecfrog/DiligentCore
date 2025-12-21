@@ -143,42 +143,42 @@ inline std::size_t ComputeHashRaw(const void* pData, size_t Size) noexcept
 {
     size_t Hash = 0;
 
-    const Uint8*  BytePtr  = static_cast<const Uint8*>(pData);
-    const Uint8*  EndPtr   = BytePtr + Size;
-    const Uint32* DwordPtr = static_cast<const Uint32*>(AlignUp(pData, alignof(Uint32)));
+    const UInt8*  BytePtr  = static_cast<const UInt8*>(pData);
+    const UInt8*  EndPtr   = BytePtr + Size;
+    const UInt32* DwordPtr = static_cast<const UInt32*>(AlignUp(pData, alignof(UInt32)));
 
     // Process initial bytes before we get to the 32-bit aligned pointer
-    Uint64 Buffer = 0;
-    Uint64 Shift  = 0;
-    while (BytePtr < EndPtr && BytePtr < reinterpret_cast<const Uint8*>(DwordPtr))
+    UInt64 Buffer = 0;
+    UInt64 Shift  = 0;
+    while (BytePtr < EndPtr && BytePtr < reinterpret_cast<const UInt8*>(DwordPtr))
     {
-        Buffer |= Uint64{*(BytePtr++)} << Shift;
+        Buffer |= UInt64{*(BytePtr++)} << Shift;
         Shift += 8;
     }
     VERIFY_EXPR(Shift <= 24);
 
     // Process dwords
-    while (DwordPtr + 1 <= reinterpret_cast<const Uint32*>(EndPtr))
+    while (DwordPtr + 1 <= reinterpret_cast<const UInt32*>(EndPtr))
     {
-        Buffer |= Uint64{*(DwordPtr++)} << Shift;
-        HashCombine(Hash, static_cast<Uint32>(Buffer & ~Uint32{0}));
-        Buffer = Buffer >> Uint64{32};
+        Buffer |= UInt64{*(DwordPtr++)} << Shift;
+        HashCombine(Hash, static_cast<UInt32>(Buffer & ~UInt32{0}));
+        Buffer = Buffer >> UInt64{32};
     }
 
     // Process the remaining bytes
-    BytePtr = reinterpret_cast<const Uint8*>(DwordPtr);
+    BytePtr = reinterpret_cast<const UInt8*>(DwordPtr);
     while (BytePtr < EndPtr)
     {
-        Buffer |= Uint64{*(BytePtr++)} << Shift;
+        Buffer |= UInt64{*(BytePtr++)} << Shift;
         Shift += 8;
     }
     VERIFY_EXPR(Shift <= (3 + 3) * 8);
 
     while (Shift != 0)
     {
-        HashCombine(Hash, static_cast<Uint32>(Buffer & ~Uint32{0}));
-        Buffer = Buffer >> Uint64{32};
-        Shift -= (std::min)(Shift, Uint64{32});
+        HashCombine(Hash, static_cast<UInt32>(Buffer & ~UInt32{0}));
+        Buffer = Buffer >> UInt64{32};
+        Shift -= (std::min)(Shift, UInt64{32});
     }
 
     return Hash;
@@ -1164,7 +1164,7 @@ void HashShaderBytecode(HasherType& Hasher, IShader* pShader)
         return;
 
     const void* pBytecode = nullptr;
-    Uint64      Size      = 0;
+    UInt64      Size      = 0;
     pShader->GetBytecode(&pBytecode, Size);
     VERIFY_EXPR(pBytecode != nullptr && Size != 0);
     Hasher.UpdateRaw(pBytecode, static_cast<size_t>(Size));

@@ -56,7 +56,7 @@ void ValidateBottomLevelASDesc(const BottomLevelASDesc& Desc) noexcept(false)
         if ((Desc.Flags & RAYTRACING_BUILD_AS_PREFER_FAST_TRACE) != 0 && (Desc.Flags & RAYTRACING_BUILD_AS_PREFER_FAST_BUILD) != 0)
             LOG_BLAS_ERROR_AND_THROW("RAYTRACING_BUILD_AS_PREFER_FAST_TRACE and RAYTRACING_BUILD_AS_PREFER_FAST_BUILD flags are mutually exclusive.");
 
-        for (Uint32 i = 0; i < Desc.TriangleCount; ++i)
+        for (UInt32 i = 0; i < Desc.TriangleCount; ++i)
         {
             const BLASTriangleDesc& tri = Desc.pTriangles[i];
 
@@ -68,7 +68,7 @@ void ValidateBottomLevelASDesc(const BottomLevelASDesc& Desc) noexcept(false)
                                          ") is invalid. Only the following values are allowed: VT_FLOAT32, VT_FLOAT16, VT_INT16.");
 
             if (tri.VertexComponentCount != 2 && tri.VertexComponentCount != 3)
-                LOG_BLAS_ERROR_AND_THROW("pTriangles[", i, "].VertexComponentCount (", Uint32{tri.VertexComponentCount}, ") is invalid. Only 2 or 3 are allowed.");
+                LOG_BLAS_ERROR_AND_THROW("pTriangles[", i, "].VertexComponentCount (", UInt32{tri.VertexComponentCount}, ") is invalid. Only 2 or 3 are allowed.");
 
             if (tri.MaxVertexCount == 0)
                 LOG_BLAS_ERROR_AND_THROW("pTriangles[", i, "].MaxVertexCount must be greater than 0.");
@@ -90,7 +90,7 @@ void ValidateBottomLevelASDesc(const BottomLevelASDesc& Desc) noexcept(false)
             }
         }
 
-        for (Uint32 i = 0; i < Desc.BoxCount; ++i)
+        for (UInt32 i = 0; i < Desc.BoxCount; ++i)
         {
             const BLASBoundingBoxDesc& box = Desc.pBoxes[i];
 
@@ -115,7 +115,7 @@ void CopyBLASGeometryDesc(const BottomLevelASDesc& SrcDesc,
     {
         MemPool.AddSpace<decltype(*SrcDesc.pTriangles)>(SrcDesc.TriangleCount);
 
-        for (Uint32 i = 0; i < SrcDesc.TriangleCount; ++i)
+        for (UInt32 i = 0; i < SrcDesc.TriangleCount; ++i)
             MemPool.AddSpaceForString(SrcDesc.pTriangles[i].GeometryName);
 
         MemPool.Reserve();
@@ -123,12 +123,12 @@ void CopyBLASGeometryDesc(const BottomLevelASDesc& SrcDesc,
         BLASTriangleDesc* pTriangles = MemPool.CopyArray(SrcDesc.pTriangles, SrcDesc.TriangleCount);
 
         // Copy strings
-        for (Uint32 i = 0; i < SrcDesc.TriangleCount; ++i)
+        for (UInt32 i = 0; i < SrcDesc.TriangleCount; ++i)
         {
             const char* GeoName        = MemPool.CopyString(SrcDesc.pTriangles[i].GeometryName);
             pTriangles[i].GeometryName = GeoName;
 
-            Uint32 ActualIndex = INVALID_INDEX;
+            UInt32 ActualIndex = INVALID_INDEX;
             if (pSrcNameToIndex)
             {
                 auto iter = pSrcNameToIndex->find(GeoName);
@@ -150,7 +150,7 @@ void CopyBLASGeometryDesc(const BottomLevelASDesc& SrcDesc,
     {
         MemPool.AddSpace<decltype(*SrcDesc.pBoxes)>(SrcDesc.BoxCount);
 
-        for (Uint32 i = 0; i < SrcDesc.BoxCount; ++i)
+        for (UInt32 i = 0; i < SrcDesc.BoxCount; ++i)
             MemPool.AddSpaceForString(SrcDesc.pBoxes[i].GeometryName);
 
         MemPool.Reserve();
@@ -158,12 +158,12 @@ void CopyBLASGeometryDesc(const BottomLevelASDesc& SrcDesc,
         BLASBoundingBoxDesc* pBoxes = MemPool.CopyArray(SrcDesc.pBoxes, SrcDesc.BoxCount);
 
         // Copy strings
-        for (Uint32 i = 0; i < SrcDesc.BoxCount; ++i)
+        for (UInt32 i = 0; i < SrcDesc.BoxCount; ++i)
         {
             const char* GeoName    = MemPool.CopyString(SrcDesc.pBoxes[i].GeometryName);
             pBoxes[i].GeometryName = GeoName;
 
-            Uint32 ActualIndex = INVALID_INDEX;
+            UInt32 ActualIndex = INVALID_INDEX;
             if (pSrcNameToIndex)
             {
                 auto iter = pSrcNameToIndex->find(GeoName);

@@ -90,22 +90,22 @@ public:
     void Initialize(const PipelineResourceSignatureD3D12Impl& Signature,
                     IMemoryAllocator&                         Allocator,
                     const SHADER_RESOURCE_VARIABLE_TYPE*      AllowedVarTypes,
-                    Uint32                                    NumAllowedTypes,
+                    UInt32                                    NumAllowedTypes,
                     SHADER_TYPE                               ShaderStages);
 
     void Destroy(IMemoryAllocator& Allocator);
 
     ShaderVariableD3D12Impl* GetVariable(const Char* Name) const;
-    ShaderVariableD3D12Impl* GetVariable(Uint32 Index) const;
+    ShaderVariableD3D12Impl* GetVariable(UInt32 Index) const;
 
-    void BindResource(Uint32 ResIndex, const BindResourceInfo& BindInfo);
+    void BindResource(UInt32 ResIndex, const BindResourceInfo& BindInfo);
 
-    void SetBufferDynamicOffset(Uint32 ResIndex,
-                                Uint32 ArrayIndex,
-                                Uint32 BufferDynamicOffset);
+    void SetBufferDynamicOffset(UInt32 ResIndex,
+                                UInt32 ArrayIndex,
+                                UInt32 BufferDynamicOffset);
 
-    IDeviceObject* Get(Uint32 ArrayIndex,
-                       Uint32 ResIndex) const;
+    IDeviceObject* Get(UInt32 ArrayIndex,
+                       UInt32 ResIndex) const;
 
     void BindResources(IResourceMapping* pResourceMapping, BIND_SHADER_RESOURCES_FLAGS Flags);
 
@@ -115,11 +115,11 @@ public:
 
     static size_t GetRequiredMemorySize(const PipelineResourceSignatureD3D12Impl& Signature,
                                         const SHADER_RESOURCE_VARIABLE_TYPE*      AllowedVarTypes,
-                                        Uint32                                    NumAllowedTypes,
+                                        UInt32                                    NumAllowedTypes,
                                         SHADER_TYPE                               ShaderStages,
-                                        Uint32*                                   pNumVariables = nullptr);
+                                        UInt32*                                   pNumVariables = nullptr);
 
-    Uint32 GetVariableCount() const { return m_NumVariables; }
+    UInt32 GetVariableCount() const { return m_NumVariables; }
 
     IObject& GetOwner() { return m_Owner; }
 
@@ -130,14 +130,14 @@ private:
 
     using ResourceAttribs = PipelineResourceAttribsD3D12;
 
-    Uint32 GetVariableIndex(const ShaderVariableD3D12Impl& Variable);
+    UInt32 GetVariableIndex(const ShaderVariableD3D12Impl& Variable);
 
     // These methods can't be defined in the header due to dependency on PipelineResourceSignatureD3D12Impl
-    const PipelineResourceDesc& GetResourceDesc(Uint32 Index) const;
-    const ResourceAttribs&      GetResourceAttribs(Uint32 Index) const;
+    const PipelineResourceDesc& GetResourceDesc(UInt32 Index) const;
+    const ResourceAttribs&      GetResourceAttribs(UInt32 Index) const;
 
 private:
-    Uint32 m_NumVariables = 0;
+    UInt32 m_NumVariables = 0;
 };
 
 // sizeof(ShaderVariableD3D12Impl) == 24 (x64)
@@ -146,7 +146,7 @@ class ShaderVariableD3D12Impl final : public ShaderVariableBase<ShaderVariableD3
 public:
     using TBase = ShaderVariableBase<ShaderVariableD3D12Impl, ShaderVariableManagerD3D12, IShaderResourceVariableD3D>;
     ShaderVariableD3D12Impl(ShaderVariableManagerD3D12& ParentManager,
-                            Uint32                      ResIndex) :
+                            UInt32                      ResIndex) :
         TBase{ParentManager, ResIndex}
     {}
 
@@ -172,7 +172,7 @@ public:
 
     using IObject::QueryInterface;
 
-    virtual IDeviceObject* DILIGENT_CALL_TYPE Get(Uint32 ArrayIndex) const override final
+    virtual IDeviceObject* DILIGENT_CALL_TYPE Get(UInt32 ArrayIndex) const override final
     {
         return m_ParentManager.Get(ArrayIndex, m_ResIndex);
     }
@@ -188,8 +188,8 @@ public:
         m_ParentManager.BindResource(m_ResIndex, BindInfo);
     }
 
-    void SetDynamicOffset(Uint32 ArrayIndex,
-                          Uint32 BufferRangeOffset)
+    void SetDynamicOffset(UInt32 ArrayIndex,
+                          UInt32 BufferRangeOffset)
     {
         m_ParentManager.SetBufferDynamicOffset(m_ResIndex, ArrayIndex, BufferRangeOffset);
     }

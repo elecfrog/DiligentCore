@@ -31,7 +31,7 @@
 /// Color conversion functions
 
 #include <cmath>
-#include "../../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "../../../Common/interface/BasicMath.hpp"
 
 DILIGENT_BEGIN_NAMESPACE(Diligent)
@@ -62,14 +62,14 @@ inline float GammaToLinear(float x)
 
 /// \param x - Linear color value in the range [0, 255]
 /// \return Gamma color value in the range [0, 255]
-float LinearToGamma(Uint8 x);
+float LinearToGamma(UInt8 x);
 
 
 /// Converts gamma color to linear color space
 
 /// \param x - Gamma color value in the range [0, 255]
 /// \return Linear color value in the range [0, 255]
-float GammaToLinear(Uint8 x);
+float GammaToLinear(UInt8 x);
 
 
 /// Converts linear color to gamma color space using fast approximation

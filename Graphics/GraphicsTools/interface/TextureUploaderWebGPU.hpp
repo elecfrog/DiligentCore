@@ -47,8 +47,8 @@ public:
 
     virtual void ScheduleGPUCopy(IDeviceContext* pContext,
                                  ITexture*       pDstTexture,
-                                 Uint32          ArraySlice,
-                                 Uint32          MipLevel,
+                                 UInt32          ArraySlice,
+                                 UInt32          MipLevel,
                                  IUploadBuffer*  pUploadBuffer,
                                  bool            AutoRecycle) override final;
 

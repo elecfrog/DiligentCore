@@ -76,7 +76,7 @@ DeviceContextGLImpl::DeviceContextGLImpl(IReferenceCounters*      pRefCounters,
     m_BoundWritableBuffers.reserve(16);
 }
 
-void DeviceContextGLImpl::Begin(Uint32 ImmediateContextId)
+void DeviceContextGLImpl::Begin(UInt32 ImmediateContextId)
 {
     UNEXPECTED("OpenGL does not support deferred contexts");
     (void)(ImmediateContextId);
@@ -157,7 +157,7 @@ void DeviceContextGLImpl::SetPipelineState(IPipelineState* pPipelineState)
     // the draw command.
     m_pPipelineState->CommitProgram(m_ContextState);
 
-    Uint32 DvpCompatibleSRBCount = 0;
+    UInt32 DvpCompatibleSRBCount = 0;
     PrepareCommittedResources(m_BindInfo, DvpCompatibleSRBCount);
 }
 
@@ -171,7 +171,7 @@ void DeviceContextGLImpl::CommitShaderResources(IShaderResourceBinding* pShaderR
     DeviceContextBase::CommitShaderResources(pShaderResourceBinding, StateTransitionMode, 0);
 
     ShaderResourceBindingGLImpl* const pShaderResBindingGL = ClassPtrCast<ShaderResourceBindingGLImpl>(pShaderResourceBinding);
-    const Uint32                       SRBIndex            = pShaderResBindingGL->GetBindingIndex();
+    const UInt32                       SRBIndex            = pShaderResBindingGL->GetBindingIndex();
 
     m_BindInfo.Set(SRBIndex, pShaderResBindingGL);
 
@@ -180,7 +180,7 @@ void DeviceContextGLImpl::CommitShaderResources(IShaderResourceBinding* pShaderR
 #endif
 }
 
-void DeviceContextGLImpl::SetStencilRef(Uint32 StencilRef)
+void DeviceContextGLImpl::SetStencilRef(UInt32 StencilRef)
 {
     if (TDeviceContextBase::SetStencilRef(StencilRef, 0))
     {
@@ -197,10 +197,10 @@ void DeviceContextGLImpl::SetBlendFactors(const float* pBlendFactors)
     }
 }
 
-void DeviceContextGLImpl::SetVertexBuffers(Uint32                         StartSlot,
-                                           Uint32                         NumBuffersSet,
+void DeviceContextGLImpl::SetVertexBuffers(UInt32                         StartSlot,
+                                           UInt32                         NumBuffersSet,
                                            IBuffer* const*                ppBuffers,
-                                           const Uint64*                  pOffsets,
+                                           const UInt64*                  pOffsets,
                                            RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
                                            SET_VERTEX_BUFFERS_FLAGS       Flags)
 {
@@ -221,13 +221,13 @@ void DeviceContextGLImpl::InvalidateState()
     m_DrawFBO              = nullptr;
 }
 
-void DeviceContextGLImpl::SetIndexBuffer(IBuffer* pIndexBuffer, Uint64 ByteOffset, RESOURCE_STATE_TRANSITION_MODE StateTransitionMode)
+void DeviceContextGLImpl::SetIndexBuffer(IBuffer* pIndexBuffer, UInt64 ByteOffset, RESOURCE_STATE_TRANSITION_MODE StateTransitionMode)
 {
     TDeviceContextBase::SetIndexBuffer(pIndexBuffer, ByteOffset, StateTransitionMode);
     m_ContextState.InvalidateVAO();
 }
 
-void DeviceContextGLImpl::SetViewports(Uint32 NumViewports, const Viewport* pViewports, Uint32 RTWidth, Uint32 RTHeight)
+void DeviceContextGLImpl::SetViewports(UInt32 NumViewports, const Viewport* pViewports, UInt32 RTWidth, UInt32 RTHeight)
 {
     TDeviceContextBase::SetViewports(NumViewports, pViewports, RTWidth, RTHeight);
 
@@ -277,7 +277,7 @@ void DeviceContextGLImpl::SetViewports(Uint32 NumViewports, const Viewport* pVie
     }
     else
     {
-        for (Uint32 i = 0; i < NumViewports; ++i)
+        for (UInt32 i = 0; i < NumViewports; ++i)
         {
             const Viewport& vp = m_Viewports[i];
 
@@ -296,8 +296,8 @@ void DeviceContextGLImpl::SetViewports(Uint32 NumViewports, const Viewport* pVie
 
         DEV_CHECK_ERR(m_NumViewports == 1, "Only a single viewport is supported when rendering without render targets");
 
-        const Uint32 VPWidth  = static_cast<Uint32>(m_Viewports[0].Width);
-        const Uint32 VPHeight = static_cast<Uint32>(m_Viewports[0].Height);
+        const UInt32 VPWidth  = static_cast<UInt32>(m_Viewports[0].Width);
+        const UInt32 VPHeight = static_cast<UInt32>(m_Viewports[0].Height);
         if (m_FramebufferWidth != VPWidth || m_FramebufferHeight != VPHeight)
         {
             // We need to bind another framebuffer since the size has changed
@@ -310,7 +310,7 @@ void DeviceContextGLImpl::SetViewports(Uint32 NumViewports, const Viewport* pVie
     }
 }
 
-void DeviceContextGLImpl::SetScissorRects(Uint32 NumRects, const Rect* pRects, Uint32 RTWidth, Uint32 RTHeight)
+void DeviceContextGLImpl::SetScissorRects(UInt32 NumRects, const Rect* pRects, UInt32 RTWidth, UInt32 RTHeight)
 {
     TDeviceContextBase::SetScissorRects(NumRects, pRects, RTWidth, RTHeight);
 
@@ -340,7 +340,7 @@ void DeviceContextGLImpl::SetScissorRects(Uint32 NumRects, const Rect* pRects, U
     }
     else
     {
-        for (Uint32 sr = 0; sr < NumRects; ++sr)
+        for (UInt32 sr = 0; sr < NumRects; ++sr)
         {
             const Rect& Rect = m_ScissorRects[sr];
 
@@ -406,16 +406,16 @@ void DeviceContextGLImpl::CommitRenderTargets()
     {
         VERIFY(m_NumBoundRenderTargets != 0 || m_pBoundDepthStencil, "At least one render target or a depth stencil is expected");
 
-        Uint32 NumRenderTargets = m_NumBoundRenderTargets;
+        UInt32 NumRenderTargets = m_NumBoundRenderTargets;
         DEV_CHECK_ERR(NumRenderTargets <= MAX_RENDER_TARGETS, "Too many render targets (", NumRenderTargets, ") are being set");
         NumRenderTargets = std::min(NumRenderTargets, MAX_RENDER_TARGETS);
 
         const GLContextState::ContextCaps& CtxCaps = m_ContextState.GetContextCaps();
-        DEV_CHECK_ERR(NumRenderTargets <= static_cast<Uint32>(CtxCaps.MaxDrawBuffers), "This device only supports ", CtxCaps.MaxDrawBuffers, " draw buffers, but ", NumRenderTargets, " are being set");
-        NumRenderTargets = std::min(NumRenderTargets, static_cast<Uint32>(CtxCaps.MaxDrawBuffers));
+        DEV_CHECK_ERR(NumRenderTargets <= static_cast<UInt32>(CtxCaps.MaxDrawBuffers), "This device only supports ", CtxCaps.MaxDrawBuffers, " draw buffers, but ", NumRenderTargets, " are being set");
+        NumRenderTargets = std::min(NumRenderTargets, static_cast<UInt32>(CtxCaps.MaxDrawBuffers));
 
         TextureViewGLImpl* pBoundRTVs[MAX_RENDER_TARGETS] = {};
-        for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+        for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
         {
             pBoundRTVs[rt] = m_pBoundRenderTargets[rt];
             DEV_CHECK_ERR(!pBoundRTVs[rt] || pBoundRTVs[rt]->GetTexture<TextureBaseGL>()->GetGLHandle(),
@@ -498,7 +498,7 @@ void DeviceContextGLImpl::BeginSubpass()
     }
 
 
-    for (Uint32 rt = 0; rt < SubpassDesc.RenderTargetAttachmentCount; ++rt)
+    for (UInt32 rt = 0; rt < SubpassDesc.RenderTargetAttachmentCount; ++rt)
     {
         const AttachmentReference& RTAttachmentRef = SubpassDesc.pRenderTargetAttachments[rt];
         if (RTAttachmentRef.AttachmentIndex != ATTACHMENT_UNUSED)
@@ -526,7 +526,7 @@ void DeviceContextGLImpl::BeginSubpass()
 
     if (SubpassDesc.pDepthStencilAttachment != nullptr)
     {
-        const Uint32 DepthAttachmentIndex = SubpassDesc.pDepthStencilAttachment->AttachmentIndex;
+        const UInt32 DepthAttachmentIndex = SubpassDesc.pDepthStencilAttachment->AttachmentIndex;
         if (DepthAttachmentIndex != ATTACHMENT_UNUSED)
         {
             TextureViewGLImpl* const pDSV = ClassPtrCast<TextureViewGLImpl>(FBDesc.ppAttachments[DepthAttachmentIndex]);
@@ -598,12 +598,12 @@ void DeviceContextGLImpl::EndSubpass()
         GLsizei InvalidateAttachmentsCount = 0;
 
         std::array<GLenum, MAX_RENDER_TARGETS + 1> InvalidateAttachments;
-        for (Uint32 rt = 0; rt < SubpassDesc.RenderTargetAttachmentCount; ++rt)
+        for (UInt32 rt = 0; rt < SubpassDesc.RenderTargetAttachmentCount; ++rt)
         {
-            const Uint32 RTAttachmentIdx = SubpassDesc.pRenderTargetAttachments[rt].AttachmentIndex;
+            const UInt32 RTAttachmentIdx = SubpassDesc.pRenderTargetAttachments[rt].AttachmentIndex;
             if (RTAttachmentIdx != ATTACHMENT_UNUSED)
             {
-                Uint32 AttachmentLastUse = m_pActiveRenderPass->GetAttachmentFirstLastUse(RTAttachmentIdx).second;
+                UInt32 AttachmentLastUse = m_pActiveRenderPass->GetAttachmentFirstLastUse(RTAttachmentIdx).second;
                 if (AttachmentLastUse == m_SubpassIndex && RPDesc.pAttachments[RTAttachmentIdx].StoreOp == ATTACHMENT_STORE_OP_DISCARD)
                 {
                     if (SubpassFBOs.RenderTarget == 0)
@@ -621,10 +621,10 @@ void DeviceContextGLImpl::EndSubpass()
 
         if (SubpassDesc.pDepthStencilAttachment != nullptr)
         {
-            const Uint32 DSAttachmentIdx = SubpassDesc.pDepthStencilAttachment->AttachmentIndex;
+            const UInt32 DSAttachmentIdx = SubpassDesc.pDepthStencilAttachment->AttachmentIndex;
             if (DSAttachmentIdx != ATTACHMENT_UNUSED)
             {
-                Uint32 AttachmentLastUse = m_pActiveRenderPass->GetAttachmentFirstLastUse(DSAttachmentIdx).second;
+                UInt32 AttachmentLastUse = m_pActiveRenderPass->GetAttachmentFirstLastUse(DSAttachmentIdx).second;
                 if (AttachmentLastUse == m_SubpassIndex && RPDesc.pAttachments[DSAttachmentIdx].StoreOp == ATTACHMENT_STORE_OP_DISCARD)
                 {
                     const TextureFormatAttribs& FmtAttribs = GetTextureFormatAttribs(RPDesc.pAttachments[DSAttachmentIdx].Format);
@@ -660,7 +660,7 @@ void DeviceContextGLImpl::BeginRenderPass(const BeginRenderPassAttribs& Attribs)
     TDeviceContextBase::BeginRenderPass(Attribs);
 
     m_AttachmentClearValues.resize(Attribs.ClearValueCount);
-    for (Uint32 i = 0; i < Attribs.ClearValueCount; ++i)
+    for (UInt32 i = 0; i < Attribs.ClearValueCount; ++i)
         m_AttachmentClearValues[i] = Attribs.pClearValues[i];
 
     VERIFY_EXPR(m_pBoundFramebuffer);
@@ -698,7 +698,7 @@ void DeviceContextGLImpl::DvpValidateCommittedShaderResources()
 }
 #endif
 
-void DeviceContextGLImpl::BindProgramResources(Uint32 BindSRBMask)
+void DeviceContextGLImpl::BindProgramResources(UInt32 BindSRBMask)
 {
     VERIFY_EXPR(BindSRBMask != 0);
     //if (m_CommittedResourcesTentativeBarriers != 0)
@@ -711,8 +711,8 @@ void DeviceContextGLImpl::BindProgramResources(Uint32 BindSRBMask)
 
     while (BindSRBMask != 0)
     {
-        Uint32 SignBit = ExtractLSB(BindSRBMask);
-        Uint32 sign    = PlatformMisc::GetLSB(SignBit);
+        UInt32 SignBit = ExtractLSB(BindSRBMask);
+        UInt32 sign    = PlatformMisc::GetLSB(SignBit);
         VERIFY_EXPR(sign < m_pPipelineState->GetResourceSignatureCount());
         const PipelineStateGLImpl::TBindings& BaseBindings = m_pPipelineState->GetBaseBindings(sign);
 #ifdef DILIGENT_DEVELOPMENT
@@ -797,7 +797,7 @@ void DeviceContextGLImpl::PrepareForDraw(DRAW_FLAGS Flags, bool IsIndexed, GLenu
     // The program might have changed since the last SetPipelineState call if a shader was
     // created after the call (ShaderResourcesGL needs to bind a program to load uniforms).
     m_pPipelineState->CommitProgram(m_ContextState);
-    if (Uint32 BindSRBMask = m_BindInfo.GetCommitMask(Flags & DRAW_FLAG_DYNAMIC_RESOURCE_BUFFERS_INTACT))
+    if (UInt32 BindSRBMask = m_BindInfo.GetCommitMask(Flags & DRAW_FLAG_DYNAMIC_RESOURCE_BUFFERS_INTACT))
     {
         BindProgramResources(BindSRBMask);
     }
@@ -850,13 +850,13 @@ void DeviceContextGLImpl::PrepareForDraw(DRAW_FLAGS Flags, bool IsIndexed, GLenu
     }
 }
 
-void DeviceContextGLImpl::PrepareForIndexedDraw(VALUE_TYPE IndexType, Uint32 FirstIndexLocation, GLenum& GLIndexType, size_t& FirstIndexByteOffset)
+void DeviceContextGLImpl::PrepareForIndexedDraw(VALUE_TYPE IndexType, UInt32 FirstIndexLocation, GLenum& GLIndexType, size_t& FirstIndexByteOffset)
 {
     GLIndexType = TypeToGLType(IndexType);
     VERIFY(GLIndexType == GL_UNSIGNED_BYTE || GLIndexType == GL_UNSIGNED_SHORT || GLIndexType == GL_UNSIGNED_INT,
            "Unsupported index type");
     VERIFY(m_pIndexBuffer, "Index Buffer is not bound to the pipeline");
-    FirstIndexByteOffset = StaticCast<size_t>(GetValueSize(IndexType) * Uint64{FirstIndexLocation} + m_IndexDataStartOffset);
+    FirstIndexByteOffset = StaticCast<size_t>(GetValueSize(IndexType) * UInt64{FirstIndexLocation} + m_IndexDataStartOffset);
 }
 
 void DeviceContextGLImpl::PostDraw()
@@ -947,7 +947,7 @@ void DeviceContextGLImpl::MultiDraw(const MultiDrawAttribs& Attribs)
             GLint*   StartVertexLocation = reinterpret_cast<GLint*>(m_ScratchSpace.data() + NumVerticesDataSize);
 
             GLsizei DrawCount = 0;
-            for (Uint32 i = 0; i < Attribs.DrawCount; ++i)
+            for (UInt32 i = 0; i < Attribs.DrawCount; ++i)
             {
                 const MultiDrawItem& DrawItem = Attribs.pDrawItems[i];
                 if (DrawItem.NumVertices > 0)
@@ -969,7 +969,7 @@ void DeviceContextGLImpl::MultiDraw(const MultiDrawAttribs& Attribs)
         }
         else
         {
-            for (Uint32 i = 0; i < Attribs.DrawCount; ++i)
+            for (UInt32 i = 0; i < Attribs.DrawCount; ++i)
             {
                 const MultiDrawItem& DrawItem = Attribs.pDrawItems[i];
                 if (DrawItem.NumVertices > 0)
@@ -1103,7 +1103,7 @@ void DeviceContextGLImpl::MultiDrawIndexed(const MultiDrawIndexedAttribs& Attrib
 
             GLsizei DrawCount     = 0;
             bool    HasBaseVertex = false;
-            for (Uint32 i = 0; i < Attribs.DrawCount; ++i)
+            for (UInt32 i = 0; i < Attribs.DrawCount; ++i)
             {
                 const MultiDrawIndexedItem& DrawItem = Attribs.pDrawItems[i];
                 if (DrawItem.NumIndices > 0)
@@ -1130,7 +1130,7 @@ void DeviceContextGLImpl::MultiDrawIndexed(const MultiDrawIndexedAttribs& Attrib
         }
         else
         {
-            for (Uint32 i = 0; i < Attribs.DrawCount; ++i)
+            for (UInt32 i = 0; i < Attribs.DrawCount; ++i)
             {
                 const MultiDrawIndexedItem& DrawItem = Attribs.pDrawItems[i];
                 if (DrawItem.NumIndices > 0)
@@ -1219,9 +1219,9 @@ void DeviceContextGLImpl::DrawIndirect(const DrawIndirectAttribs& Attribs)
         if (!NativeMultiDrawExecuted)
         {
 #if GL_ARB_draw_indirect
-            for (Uint32 draw = 0; draw < Attribs.DrawCount; ++draw)
+            for (UInt32 draw = 0; draw < Attribs.DrawCount; ++draw)
             {
-                Uint64 Offset = Attribs.DrawArgsOffset + draw * Uint64{Attribs.DrawArgsStride};
+                UInt64 Offset = Attribs.DrawArgsOffset + draw * UInt64{Attribs.DrawArgsStride};
                 //typedef  struct {
                 //   GLuint  count;
                 //   GLuint  instanceCount;
@@ -1298,9 +1298,9 @@ void DeviceContextGLImpl::DrawIndexedIndirect(const DrawIndexedIndirectAttribs& 
         if (!NativeMultiDrawExecuted)
         {
 #if GL_ARB_draw_indirect
-            for (Uint32 draw = 0; draw < Attribs.DrawCount; ++draw)
+            for (UInt32 draw = 0; draw < Attribs.DrawCount; ++draw)
             {
-                Uint64 Offset = Attribs.DrawArgsOffset + draw * Uint64{Attribs.DrawArgsStride};
+                UInt64 Offset = Attribs.DrawArgsOffset + draw * UInt64{Attribs.DrawArgsStride};
                 //typedef  struct {
                 //    GLuint  count;
                 //    GLuint  instanceCount;
@@ -1362,7 +1362,7 @@ void DeviceContextGLImpl::DispatchCompute(const DispatchComputeAttribs& Attribs)
     // The program might have changed since the last SetPipelineState call if a shader was
     // created after the call (ShaderResourcesGL needs to bind a program to load uniforms).
     m_pPipelineState->CommitProgram(m_ContextState);
-    if (Uint32 BindSRBMask = m_BindInfo.GetCommitMask())
+    if (UInt32 BindSRBMask = m_BindInfo.GetCommitMask())
     {
         BindProgramResources(BindSRBMask);
     }
@@ -1392,7 +1392,7 @@ void DeviceContextGLImpl::DispatchComputeIndirect(const DispatchComputeIndirectA
     // The program might have changed since the last SetPipelineState call if a shader was
     // created after the call (ShaderResourcesGL needs to bind a program to load uniforms).
     m_pPipelineState->CommitProgram(m_ContextState);
-    if (Uint32 BindSRBMask = m_BindInfo.GetCommitMask())
+    if (UInt32 BindSRBMask = m_BindInfo.GetCommitMask())
     {
         BindProgramResources(BindSRBMask);
     }
@@ -1429,7 +1429,7 @@ void DeviceContextGLImpl::DispatchComputeIndirect(const DispatchComputeIndirectA
 void DeviceContextGLImpl::ClearDepthStencil(ITextureView*                  pView,
                                             CLEAR_DEPTH_STENCIL_FLAGS      ClearFlags,
                                             float                          fDepth,
-                                            Uint8                          Stencil,
+                                            UInt8                          Stencil,
                                             RESOURCE_STATE_TRANSITION_MODE StateTransitionMode)
 {
     TDeviceContextBase::ClearDepthStencil(pView);
@@ -1440,7 +1440,7 @@ void DeviceContextGLImpl::ClearDepthStencil(ITextureView*                  pView
         return;
     }
 
-    Uint32 glClearFlags = 0;
+    UInt32 glClearFlags = 0;
     if (ClearFlags & CLEAR_DEPTH_FLAG) glClearFlags |= GL_DEPTH_BUFFER_BIT;
     if (ClearFlags & CLEAR_STENCIL_FLAG) glClearFlags |= GL_STENCIL_BUFFER_BIT;
     glClearDepthf(fDepth);
@@ -1450,7 +1450,7 @@ void DeviceContextGLImpl::ClearDepthStencil(ITextureView*                  pView
     m_ContextState.EnableDepthWrites(True);
 
     // Set stencil write mask
-    Uint8 StencilWriteMask = m_ContextState.GetStencilWriteMask();
+    UInt8 StencilWriteMask = m_ContextState.GetStencilWriteMask();
     m_ContextState.SetStencilWriteMask(0xFF);
 
     // Unlike OpenGL, in D3D10+, the full extent of the resource view is always cleared.
@@ -1474,7 +1474,7 @@ void DeviceContextGLImpl::ClearRenderTarget(ITextureView* pView, const void* RGB
     TDeviceContextBase::ClearRenderTarget(pView);
 
     Int32 RTIndex = -1;
-    for (Uint32 rt = 0; rt < m_NumBoundRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < m_NumBoundRenderTargets; ++rt)
     {
         if (m_pBoundRenderTargets[rt] == pView)
         {
@@ -1506,7 +1506,7 @@ void DeviceContextGLImpl::ClearRenderTarget(ITextureView* pView, const void* RGB
     m_ContextState.EnableScissorTest(False);
 
     // Set write mask
-    Uint32 WriteMask     = 0;
+    UInt32 WriteMask     = 0;
     Bool   bIndexedMasks = False;
     m_ContextState.GetColorWriteMask(RTIndex, WriteMask, bIndexedMasks);
     if (bIndexedMasks)
@@ -1567,13 +1567,13 @@ void DeviceContextGLImpl::FinishCommandList(ICommandList** ppCommandList)
     DG_LOG_ERROR("Deferred contexts are not supported in OpenGL mode");
 }
 
-void DeviceContextGLImpl::ExecuteCommandLists(Uint32               NumCommandLists,
+void DeviceContextGLImpl::ExecuteCommandLists(UInt32               NumCommandLists,
                                               ICommandList* const* ppCommandLists)
 {
     DG_LOG_ERROR("Deferred contexts are not supported in OpenGL mode");
 }
 
-void DeviceContextGLImpl::EnqueueSignal(IFence* pFence, Uint64 Value)
+void DeviceContextGLImpl::EnqueueSignal(IFence* pFence, UInt64 Value)
 {
     TDeviceContextBase::EnqueueSignal(pFence, Value, 0);
 
@@ -1586,7 +1586,7 @@ void DeviceContextGLImpl::EnqueueSignal(IFence* pFence, Uint64 Value)
     pFenceGLImpl->AddPendingFence(std::move(GLFence), Value);
 }
 
-void DeviceContextGLImpl::DeviceWaitForFence(IFence* pFence, Uint64 Value)
+void DeviceContextGLImpl::DeviceWaitForFence(IFence* pFence, UInt64 Value)
 {
     TDeviceContextBase::DeviceWaitForFence(pFence, Value, 0);
 
@@ -1722,8 +1722,8 @@ void DeviceContextGLImpl::PurgeCurrentGLContextCaches()
 }
 
 void DeviceContextGLImpl::UpdateBuffer(IBuffer*                       pBuffer,
-                                       Uint64                         Offset,
-                                       Uint64                         Size,
+                                       UInt64                         Offset,
+                                       UInt64                         Size,
                                        const void*                    pData,
                                        RESOURCE_STATE_TRANSITION_MODE StateTransitionMode)
 {
@@ -1734,11 +1734,11 @@ void DeviceContextGLImpl::UpdateBuffer(IBuffer*                       pBuffer,
 }
 
 void DeviceContextGLImpl::CopyBuffer(IBuffer*                       pSrcBuffer,
-                                     Uint64                         SrcOffset,
+                                     UInt64                         SrcOffset,
                                      RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
                                      IBuffer*                       pDstBuffer,
-                                     Uint64                         DstOffset,
-                                     Uint64                         Size,
+                                     UInt64                         DstOffset,
+                                     UInt64                         Size,
                                      RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode)
 {
     TDeviceContextBase::CopyBuffer(pSrcBuffer, SrcOffset, SrcBufferTransitionMode, pDstBuffer, DstOffset, Size, DstBufferTransitionMode);
@@ -1763,8 +1763,8 @@ void DeviceContextGLImpl::UnmapBuffer(IBuffer* pBuffer, MAP_TYPE MapType)
 }
 
 void DeviceContextGLImpl::UpdateTexture(ITexture*                      pTexture,
-                                        Uint32                         MipLevel,
-                                        Uint32                         Slice,
+                                        UInt32                         MipLevel,
+                                        UInt32                         Slice,
                                         const Box&                     DstBox,
                                         const TextureSubResData&       SubresData,
                                         RESOURCE_STATE_TRANSITION_MODE SrcBufferStateTransitionMode,
@@ -1864,7 +1864,7 @@ void DeviceContextGLImpl::CopyTexture(const CopyTextureAttribs& CopyAttribs)
         VERIFY(pDstBuffer != nullptr, "Internal staging buffer must not be null");
         // GetStagingTextureLocationOffset assumes pixels are tightly packed in every subresource - no padding
         // except between subresources.
-        const Uint64 DstOffset =
+        const UInt64 DstOffset =
             GetStagingTextureLocationOffset(DstTexDesc, CopyAttribs.DstSlice, CopyAttribs.DstMipLevel,
                                             TextureBaseGL::PBOOffsetAlignment,
                                             CopyAttribs.DstX, CopyAttribs.DstY, CopyAttribs.DstZ);
@@ -1890,8 +1890,8 @@ void DeviceContextGLImpl::CopyTexture(const CopyTextureAttribs& CopyAttribs)
 }
 
 void DeviceContextGLImpl::MapTextureSubresource(ITexture*                 pTexture,
-                                                Uint32                    MipLevel,
-                                                Uint32                    ArraySlice,
+                                                UInt32                    MipLevel,
+                                                UInt32                    ArraySlice,
                                                 MAP_TYPE                  MapType,
                                                 MAP_FLAGS                 MapFlags,
                                                 const Box*                pMapRegion,
@@ -1902,7 +1902,7 @@ void DeviceContextGLImpl::MapTextureSubresource(ITexture*                 pTextu
     const TextureDesc& TexDesc = pTexGL->GetDesc();
     if (TexDesc.Usage == USAGE_STAGING)
     {
-        Uint64             PBOOffset       = GetStagingTextureSubresourceOffset(TexDesc, ArraySlice, MipLevel, TextureBaseGL::PBOOffsetAlignment);
+        UInt64             PBOOffset       = GetStagingTextureSubresourceOffset(TexDesc, ArraySlice, MipLevel, TextureBaseGL::PBOOffsetAlignment);
         MipLevelProperties MipLevelAttribs = GetMipLevelProperties(TexDesc, MipLevel);
         BufferGLImpl*      pPBO            = ClassPtrCast<BufferGLImpl>(pTexGL->GetPBO());
         pPBO->MapRange(m_ContextState, MapType, MapFlags, PBOOffset, MipLevelAttribs.MipSize, MappedData.pData);
@@ -1918,7 +1918,7 @@ void DeviceContextGLImpl::MapTextureSubresource(ITexture*                 pTextu
 }
 
 
-void DeviceContextGLImpl::UnmapTextureSubresource(ITexture* pTexture, Uint32 MipLevel, Uint32 ArraySlice)
+void DeviceContextGLImpl::UnmapTextureSubresource(ITexture* pTexture, UInt32 MipLevel, UInt32 ArraySlice)
 {
     TDeviceContextBase::UnmapTextureSubresource(pTexture, MipLevel, ArraySlice);
     TextureBaseGL*     pTexGL  = ClassPtrCast<TextureBaseGL>(pTexture);
@@ -1945,7 +1945,7 @@ void DeviceContextGLImpl::GenerateMips(ITextureView* pTexView)
     m_ContextState.BindTexture(-1, BindTarget, GLObjectWrappers::GLTextureObj::Null());
 }
 
-void DeviceContextGLImpl::TransitionResourceStates(Uint32 BarrierCount, const StateTransitionDesc* pResourceBarriers)
+void DeviceContextGLImpl::TransitionResourceStates(UInt32 BarrierCount, const StateTransitionDesc* pResourceBarriers)
 {
     VERIFY(m_pActiveRenderPass == nullptr, "State transitions are not allowed inside a render pass");
 }

@@ -33,7 +33,7 @@
 #include <vector>
 #include <cstring>
 
-#include "../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "../../Primitives/interface/MemoryAllocator.h"
 #include "../../Platforms/Basic/interface/DebugUtilities.hpp"
 #include "CompilerDefinitions.h"

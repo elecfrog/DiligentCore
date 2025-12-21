@@ -46,13 +46,13 @@ namespace Diligent
 
 struct D3DShaderResourceCounters
 {
-    Uint32 NumCBs          = 0;
-    Uint32 NumTexSRVs      = 0;
-    Uint32 NumTexUAVs      = 0;
-    Uint32 NumBufSRVs      = 0;
-    Uint32 NumBufUAVs      = 0;
-    Uint32 NumSamplers     = 0;
-    Uint32 NumAccelStructs = 0;
+    UInt32 NumCBs          = 0;
+    UInt32 NumTexSRVs      = 0;
+    UInt32 NumTexUAVs      = 0;
+    UInt32 NumBufSRVs      = 0;
+    UInt32 NumBufUAVs      = 0;
+    UInt32 NumSamplers     = 0;
+    UInt32 NumAccelStructs = 0;
 };
 
 template <typename TReflectionTraits,
@@ -92,7 +92,7 @@ void LoadShaderCodeVariableDesc(TD3DShaderReflectionType* pd3dReflecionType, Sha
     // Offset, in bytes, between the start of the parent structure and this variable. Can be 0 if not a structure member.
     TypeDesc.Offset += d3dTypeDesc.Offset;
 
-    for (Uint32 m = 0; m < d3dTypeDesc.Members; ++m)
+    for (UInt32 m = 0; m < d3dTypeDesc.Members; ++m)
     {
         ShaderCodeVariableDesc MemberDesc;
         MemberDesc.Name = pd3dReflecionType->GetMemberTypeName(m);
@@ -107,11 +107,11 @@ void LoadShaderCodeVariableDesc(TD3DShaderReflectionType* pd3dReflecionType, Sha
 
 template <typename TReflectionTraits,
           typename TShaderReflection>
-void LoadD3DShaderConstantBufferReflection(TShaderReflection* pBuffReflection, ShaderCodeBufferDescX& BufferDesc, Uint32 NumVariables)
+void LoadD3DShaderConstantBufferReflection(TShaderReflection* pBuffReflection, ShaderCodeBufferDescX& BufferDesc, UInt32 NumVariables)
 {
     using D3D_SHADER_VARIABLE_DESC = typename TReflectionTraits::D3D_SHADER_VARIABLE_DESC;
 
-    for (Uint32 var = 0; var < NumVariables; ++var)
+    for (UInt32 var = 0; var < NumVariables; ++var)
     {
         if (auto* pVaribable = pBuffReflection->GetVariableByIndex(var))
         {
@@ -137,7 +137,7 @@ void LoadD3DShaderConstantBufferReflection(TShaderReflection* pBuffReflection, S
 }
 
 template <typename D3D_SHADER_INPUT_BIND_DESC>
-Uint32 GetRegisterSpace(const D3D_SHADER_INPUT_BIND_DESC&);
+UInt32 GetRegisterSpace(const D3D_SHADER_INPUT_BIND_DESC&);
 
 template <typename D3DShaderResourceAttribs,
           typename TReflectionTraits,

@@ -75,27 +75,27 @@ public:
     UNSUPPORTED_CONST_METHOD(const TilePipelineDesc&,       GetTilePipelineDesc)
 
     UNSUPPORTED_METHOD      (void,   BindStaticResources,    SHADER_TYPE ShaderStages, IResourceMapping* pResourceMapping, BIND_SHADER_RESOURCES_FLAGS Flags)
-    UNSUPPORTED_CONST_METHOD(Uint32, GetStaticVariableCount, SHADER_TYPE ShaderType)
+    UNSUPPORTED_CONST_METHOD(UInt32, GetStaticVariableCount, SHADER_TYPE ShaderType)
 
     UNSUPPORTED_METHOD      (IShaderResourceVariable*, GetStaticVariableByName,  SHADER_TYPE ShaderType, const Char* Name)
-    UNSUPPORTED_METHOD      (IShaderResourceVariable*, GetStaticVariableByIndex, SHADER_TYPE ShaderType, Uint32 Index)
+    UNSUPPORTED_METHOD      (IShaderResourceVariable*, GetStaticVariableByIndex, SHADER_TYPE ShaderType, UInt32 Index)
 
     UNSUPPORTED_METHOD      (void, CreateShaderResourceBinding,  IShaderResourceBinding** ppShaderResourceBinding, bool InitStaticResources)
     UNSUPPORTED_CONST_METHOD(void, InitializeStaticSRBResources, IShaderResourceBinding* pShaderResourceBinding)
     UNSUPPORTED_CONST_METHOD(void, CopyStaticResources,          IPipelineState* pPSO)
     UNSUPPORTED_CONST_METHOD(bool, IsCompatibleWith,             const IPipelineState* pPSO)
 
-    UNSUPPORTED_CONST_METHOD(Uint32,                      GetResourceSignatureCount)
-    UNSUPPORTED_CONST_METHOD(IPipelineResourceSignature*, GetResourceSignature, Uint32 Index)
+    UNSUPPORTED_CONST_METHOD(UInt32,                      GetResourceSignatureCount)
+    UNSUPPORTED_CONST_METHOD(IPipelineResourceSignature*, GetResourceSignature, UInt32 Index)
     // clang-format on
 
     virtual PIPELINE_STATE_STATUS DILIGENT_CALL_TYPE GetStatus(bool WaitForCompletion = false) override;
 
-    virtual Uint32 DILIGENT_CALL_TYPE GetPatchedShaderCount(ARCHIVE_DEVICE_DATA_FLAGS DeviceType) const override final;
+    virtual UInt32 DILIGENT_CALL_TYPE GetPatchedShaderCount(ARCHIVE_DEVICE_DATA_FLAGS DeviceType) const override final;
 
     virtual ShaderCreateInfo DILIGENT_CALL_TYPE GetPatchedShaderCreateInfo(
         ARCHIVE_DEVICE_DATA_FLAGS DataType,
-        Uint32                    ShaderIndex) const override final;
+        UInt32                    ShaderIndex) const override final;
 
     using SerializedPSOAuxData = DeviceObjectArchive::SerializedPSOAuxData;
     using DeviceType           = DeviceObjectArchive::DeviceType;
@@ -131,7 +131,7 @@ public:
         return m_Data.Common;
     }
 
-    using RayTracingShaderMapType = std::unordered_map<const IShader*, /*Index in TShaderIndices*/ Uint32>;
+    using RayTracingShaderMapType = std::unordered_map<const IShader*, /*Index in TShaderIndices*/ UInt32>;
 
     static void ExtractShadersD3D12(const RayTracingPipelineStateCreateInfo& CreateInfo, RayTracingShaderMapType& ShaderMap);
     static void ExtractShadersVk(const RayTracingPipelineStateCreateInfo& CreateInfo, RayTracingShaderMapType& ShaderMap);
@@ -139,7 +139,7 @@ public:
     template <typename ShaderStage>
     static void GetRayTracingShaderMap(const std::vector<ShaderStage>& ShaderStages, RayTracingShaderMapType& ShaderMap)
     {
-        Uint32 ShaderIndex = 0;
+        UInt32 ShaderIndex = 0;
         for (const ShaderStage& Stage : ShaderStages)
         {
             for (const auto* pShader : Stage.Serialized)

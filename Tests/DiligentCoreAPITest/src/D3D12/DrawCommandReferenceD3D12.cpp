@@ -94,7 +94,7 @@ public:
         VERIFY_EXPR(SUCCEEDED(hr));
     }
 
-    void Draw(ID3D12GraphicsCommandList* pCmdList, Uint32 ViewportWidth, Uint32 ViewportHeight, D3D12_GPU_DESCRIPTOR_HANDLE DescriptorTable = D3D12_GPU_DESCRIPTOR_HANDLE{})
+    void Draw(ID3D12GraphicsCommandList* pCmdList, UInt32 ViewportWidth, UInt32 ViewportHeight, D3D12_GPU_DESCRIPTOR_HANDLE DescriptorTable = D3D12_GPU_DESCRIPTOR_HANDLE{})
     {
         D3D12_VIEWPORT d3d12VP = {};
         d3d12VP.Width          = static_cast<float>(ViewportWidth);
@@ -187,7 +187,7 @@ void RenderPassMSResolveReferenceD3D12(ISwapChain* pSwapChain, const float* pCle
     D3D12_CLEAR_VALUE ClearColorValue = {};
 
     ClearColorValue.Format = TexDesc.Format;
-    for (Uint32 i = 0; i < 4; ++i)
+    for (UInt32 i = 0; i < 4; ++i)
         ClearColorValue.Color[i] = pClearColor[i];
 
     RefCntAutoPtr<ID3D12Resource> pd3d12MSTex;
@@ -223,7 +223,7 @@ void RenderPassMSResolveReferenceD3D12(ISwapChain* pSwapChain, const float* pCle
     RenderPassRT.cpuDescriptor                           = RTVDescriptorHandle;
     RenderPassRT.BeginningAccess.Type                    = D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR;
     RenderPassRT.BeginningAccess.Clear.ClearValue.Format = TexDesc.Format;
-    for (Uint32 i = 0; i < 4; ++i)
+    for (UInt32 i = 0; i < 4; ++i)
         RenderPassRT.BeginningAccess.Clear.ClearValue.Color[i] = pClearColor[i];
 
     RenderPassRT.EndingAccess.Type = D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_RESOLVE;
@@ -317,7 +317,7 @@ void RenderPassInputAttachmentReferenceD3D12(ISwapChain* pSwapChain, const float
     D3D12_CLEAR_VALUE ClearColorValue = {};
 
     ClearColorValue.Format = TexDesc.Format;
-    for (Uint32 i = 0; i < 4; ++i)
+    for (UInt32 i = 0; i < 4; ++i)
         ClearColorValue.Color[i] = 0;
 
     RefCntAutoPtr<ID3D12Resource> pd3d12Tex;
@@ -373,7 +373,7 @@ void RenderPassInputAttachmentReferenceD3D12(ISwapChain* pSwapChain, const float
         RenderPassRT.cpuDescriptor                           = RTVDescriptorHandle;
         RenderPassRT.BeginningAccess.Type                    = D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR;
         RenderPassRT.BeginningAccess.Clear.ClearValue.Format = TexDesc.Format;
-        for (Uint32 i = 0; i < 4; ++i)
+        for (UInt32 i = 0; i < 4; ++i)
             RenderPassRT.BeginningAccess.Clear.ClearValue.Color[i] = 0;
 
         RenderPassRT.EndingAccess.Type = D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_PRESERVE;
@@ -404,7 +404,7 @@ void RenderPassInputAttachmentReferenceD3D12(ISwapChain* pSwapChain, const float
         RenderPassRT.cpuDescriptor                           = pTestingSwapChainD3D12->GetRTVDescriptorHandle();
         RenderPassRT.BeginningAccess.Type                    = D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR;
         RenderPassRT.BeginningAccess.Clear.ClearValue.Format = TexDesc.Format;
-        for (Uint32 i = 0; i < 4; ++i)
+        for (UInt32 i = 0; i < 4; ++i)
             RenderPassRT.BeginningAccess.Clear.ClearValue.Color[i] = pClearColor[i];
 
         RenderPassRT.EndingAccess.Type = D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_PRESERVE;

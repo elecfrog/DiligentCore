@@ -69,7 +69,7 @@ void DrawWithNullResources(IShader* pVS, IShader* pPS, SHADER_RESOURCE_VARIABLE_
 
     RefCntAutoPtr<IBuffer> pIndexBuffer;
     {
-        Uint32 Indices[] = {0, 1, 2};
+        UInt32 Indices[] = {0, 1, 2};
 
         BufferDesc BuffDesc;
         BuffDesc.Name      = "Index buffer";
@@ -111,7 +111,7 @@ void DrawWithNullResources(IShader* pVS, IShader* pPS, SHADER_RESOURCE_VARIABLE_
 
     pContext->SetPipelineState(pPSO);
 
-    for (Uint32 IsIndexed = 0; IsIndexed < 2; ++IsIndexed)
+    for (UInt32 IsIndexed = 0; IsIndexed < 2; ++IsIndexed)
     {
         if (pDevice->GetDeviceInfo().IsWebGPUDevice())
         {

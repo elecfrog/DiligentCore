@@ -46,7 +46,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_BottomLevelAS =
 
 #define DILIGENT_INVALID_INDEX 0xFFFFFFFFU
 
-static DILIGENT_CONSTEXPR Uint32 INVALID_INDEX = DILIGENT_INVALID_INDEX;
+static DILIGENT_CONSTEXPR UInt32 INVALID_INDEX = DILIGENT_INVALID_INDEX;
 
 /// Defines bottom level acceleration structure triangles description.
 
@@ -61,7 +61,7 @@ struct BLASTriangleDesc
     /// The maximum vertex count in this geometry.
 
     /// Current number of vertices is defined in BLASBuildTriangleData::VertexCount.
-    Uint32                    MaxVertexCount        DEFAULT_INITIALIZER(0);
+    UInt32                    MaxVertexCount        DEFAULT_INITIALIZER(0);
 
     /// The type of vertices in this geometry, see Diligent::VALUE_TYPE.
 
@@ -72,12 +72,12 @@ struct BLASTriangleDesc
     /// The number of components in the vertex.
 
     /// \remarks Only 2 or 3 are allowed values. For 2-component formats, the third component is assumed 0.
-    Uint8                     VertexComponentCount  DEFAULT_INITIALIZER(0);
+    UInt8                     VertexComponentCount  DEFAULT_INITIALIZER(0);
 
     /// The maximum primitive count in this geometry.
 
     /// The current number of primitives is defined in BLASBuildTriangleData::PrimitiveCount.
-    Uint32                    MaxPrimitiveCount     DEFAULT_INITIALIZER(0);
+    UInt32                    MaxPrimitiveCount     DEFAULT_INITIALIZER(0);
 
     /// Index type of this geometry, see Diligent::VALUE_TYPE.
 
@@ -119,13 +119,13 @@ struct BLASBoundingBoxDesc
 
     /// The maximum AABB count.
     /// Current number of AABBs is defined in BLASBuildBoundingBoxData::BoxCount.
-    Uint32                    MaxBoxCount   DEFAULT_INITIALIZER(0);
+    UInt32                    MaxBoxCount   DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr BLASBoundingBoxDesc() noexcept {}
 
     constexpr BLASBoundingBoxDesc(const Char* _GeometryName,
-                                  Uint32      _MaxBoxCount) noexcept :
+                                  UInt32      _MaxBoxCount) noexcept :
         GeometryName{_GeometryName},
         MaxBoxCount {_MaxBoxCount }
     {}
@@ -144,7 +144,7 @@ typedef struct BLASBoundingBoxDesc BLASBoundingBoxDesc;
 
 
 /// Defines acceleration structures build flags.
-DILIGENT_TYPED_ENUM(RAYTRACING_BUILD_AS_FLAGS, Uint8)
+DILIGENT_TYPED_ENUM(RAYTRACING_BUILD_AS_FLAGS, UInt8)
 {
     RAYTRACING_BUILD_AS_NONE              = 0,
 
@@ -181,20 +181,20 @@ struct BottomLevelASDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     const BLASTriangleDesc*    pTriangles       DEFAULT_INITIALIZER(nullptr);
 
     /// The number of triangle geometries in pTriangles array.
-    Uint32                     TriangleCount    DEFAULT_INITIALIZER(0);
+    UInt32                     TriangleCount    DEFAULT_INITIALIZER(0);
 
     /// Array of AABB geometry descriptions.
     const BLASBoundingBoxDesc* pBoxes           DEFAULT_INITIALIZER(nullptr);
 
     /// The number of AABB geometries in pBoxes array.
-    Uint32                     BoxCount         DEFAULT_INITIALIZER(0);
+    UInt32                     BoxCount         DEFAULT_INITIALIZER(0);
 
     /// Ray tracing build flags, see Diligent::RAYTRACING_BUILD_AS_FLAGS.
     RAYTRACING_BUILD_AS_FLAGS  Flags            DEFAULT_INITIALIZER(RAYTRACING_BUILD_AS_NONE);
 
     /// Size from the result of IDeviceContext::WriteBLASCompactedSize() if this acceleration structure
     /// is going to be the target of a compacting copy (IDeviceContext::CopyBLAS() with COPY_AS_MODE_COMPACT).
-    Uint64                     CompactedSize    DEFAULT_INITIALIZER(0);
+    UInt64                     CompactedSize    DEFAULT_INITIALIZER(0);
 
     /// Defines which immediate contexts are allowed to execute commands that use this BLAS.
 
@@ -205,7 +205,7 @@ struct BottomLevelASDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     ///
     /// \remarks    Only specify these bits that will indicate those immediate contexts where the BLAS
     ///             will actually be used. Do not set unnecessary bits as this will result in extra overhead.
-    Uint64                     ImmediateContextMask    DEFAULT_INITIALIZER(1);
+    UInt64                     ImmediateContextMask    DEFAULT_INITIALIZER(1);
 
 #if DILIGENT_CPP_INTERFACE
     /// Tests if two BLAS descriptions are equal.
@@ -226,11 +226,11 @@ struct BottomLevelASDesc DILIGENT_DERIVE(DeviceObjectAttribs)
             ImmediateContextMask != rhs.ImmediateContextMask)
             return false;
 
-        for (Uint32 i = 0; i < TriangleCount; ++i)
+        for (UInt32 i = 0; i < TriangleCount; ++i)
             if (pTriangles[i] != rhs.pTriangles[i])
                 return false;
 
-        for (Uint32 i = 0; i < BoxCount; ++i)
+        for (UInt32 i = 0; i < BoxCount; ++i)
             if (pBoxes[i] != rhs.pBoxes[i])
                 return false;
 
@@ -251,19 +251,19 @@ struct ScratchBufferSizes
     /// Scratch buffer size for acceleration structure building,
     /// see IDeviceContext::BuildBLAS(), IDeviceContext::BuildTLAS().
     /// May be zero if the acceleration structure was created with non-zero CompactedSize.
-    Uint64 Build  DEFAULT_INITIALIZER(0);
+    UInt64 Build  DEFAULT_INITIALIZER(0);
 
     /// Scratch buffer size for acceleration structure updating,
     /// see IDeviceContext::BuildBLAS(), IDeviceContext::BuildTLAS().
     /// May be zero if acceleration structure was created without RAYTRACING_BUILD_AS_ALLOW_UPDATE flag.
     /// May be zero if acceleration structure was created with non-zero CompactedSize.
-    Uint64 Update DEFAULT_INITIALIZER(0);
+    UInt64 Update DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr ScratchBufferSizes() noexcept {}
 
-    constexpr ScratchBufferSizes(Uint64 _Build,
-                                 Uint64 _Update) noexcept :
+    constexpr ScratchBufferSizes(UInt64 _Build,
+                                 UInt64 _Update) noexcept :
         Build {_Build},
         Update{_Update}
     {}
@@ -295,7 +295,7 @@ DILIGENT_BEGIN_INTERFACE(IBottomLevelAS, IDeviceObject)
     /// \return Geometry index or INVALID_INDEX if geometry does not exist.
     ///
     /// \note Access to the BLAS must be externally synchronized.
-    VIRTUAL Uint32 METHOD(GetGeometryDescIndex)(THIS_
+    VIRTUAL UInt32 METHOD(GetGeometryDescIndex)(THIS_
                                                 const Char* Name) CONST PURE;
 
 
@@ -305,7 +305,7 @@ DILIGENT_BEGIN_INTERFACE(IBottomLevelAS, IDeviceObject)
     /// \return Geometry index or INVALID_INDEX if geometry does not exist.
     ///
     /// \note Access to the BLAS must be externally synchronized.
-    VIRTUAL Uint32 METHOD(GetGeometryIndex)(THIS_
+    VIRTUAL UInt32 METHOD(GetGeometryIndex)(THIS_
                                             const Char* Name) CONST PURE;
 
 
@@ -315,7 +315,7 @@ DILIGENT_BEGIN_INTERFACE(IBottomLevelAS, IDeviceObject)
     /// \return The number of geometries that was used to build AS.
     ///
     /// \note Access to the BLAS must be externally synchronized.
-    VIRTUAL Uint32 METHOD(GetActualGeometryCount)(THIS) CONST PURE;
+    VIRTUAL UInt32 METHOD(GetActualGeometryCount)(THIS) CONST PURE;
 
 
     /// Returns the scratch buffer info for the current acceleration structure.
@@ -328,7 +328,7 @@ DILIGENT_BEGIN_INTERFACE(IBottomLevelAS, IDeviceObject)
 
     /// \return pointer to ID3D12Resource interface, for D3D12 implementation\n
     ///         VkAccelerationStructure handle, for Vulkan implementation
-    VIRTUAL Uint64 METHOD(GetNativeHandle)(THIS) PURE;
+    VIRTUAL UInt64 METHOD(GetNativeHandle)(THIS) PURE;
 
 
     /// Sets the acceleration structure usage state.

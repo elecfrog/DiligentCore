@@ -81,7 +81,7 @@ public:
     virtual void DILIGENT_CALL_TYPE CreateRenderPass(const RenderPassDesc& Desc,
                                                      IRenderPass**         ppRenderPass) override final;
 
-    UNSUPPORTED_CONST_METHOD(SparseTextureFormatInfo, GetSparseTextureFormatInfo, TEXTURE_FORMAT TexFormat, RESOURCE_DIMENSION Dimension, Uint32 SampleCount)
+    UNSUPPORTED_CONST_METHOD(SparseTextureFormatInfo, GetSparseTextureFormatInfo, TEXTURE_FORMAT TexFormat, RESOURCE_DIMENSION Dimension, UInt32 SampleCount)
 
     /// Implementation of ISerializationDevice::CreateShader().
     virtual void DILIGENT_CALL_TYPE CreateShader(const ShaderCreateInfo&  ShaderCI,
@@ -125,7 +125,7 @@ public:
     void CreateSerializedResourceSignature(SerializedResourceSignatureImpl** ppSignature, const char* Name);
 
     virtual void DILIGENT_CALL_TYPE GetPipelineResourceBindings(const PipelineResourceBindingAttribs& Attribs,
-                                                                Uint32&                               NumBindings,
+                                                                UInt32&                               NumBindings,
                                                                 const PipelineResourceBinding*&       pBindings) override final;
 
     virtual ARCHIVE_DEVICE_DATA_FLAGS DILIGENT_CALL_TYPE GetSupportedDeviceFlags() const override final
@@ -135,7 +135,7 @@ public:
 
     struct D3D11Properties
     {
-        Uint32 FeatureLevel = 0;
+        UInt32 FeatureLevel = 0;
     };
 
     struct D3D12Properties
@@ -153,7 +153,7 @@ public:
     struct VkProperties
     {
         IDXCompiler* pDxCompiler     = nullptr;
-        Uint32       VkVersion       = 0;
+        UInt32       VkVersion       = 0;
         bool         SupportsSpirv14 = false;
     };
 
@@ -164,7 +164,7 @@ public:
         std::string MslPreprocessorCmd;
         std::string DumpFolder;
 
-        const Uint32 MaxBufferFunctionArgumets = 31;
+        const UInt32 MaxBufferFunctionArgumets = 31;
     };
 
     const D3D11Properties& GetD3D11Properties() const { return m_D3D11Props; }
@@ -179,7 +179,7 @@ public:
     }
 
 protected:
-    static PipelineResourceBinding ResDescToPipelineResBinding(const PipelineResourceDesc& ResDesc, SHADER_TYPE Stages, Uint32 Register, Uint32 Space);
+    static PipelineResourceBinding ResDescToPipelineResBinding(const PipelineResourceDesc& ResDesc, SHADER_TYPE Stages, UInt32 Register, UInt32 Space);
 
 private:
     static void GetPipelineResourceBindingsD3D11(const PipelineResourceBindingAttribs& Attribs,
@@ -192,7 +192,7 @@ private:
                                               std::vector<PipelineResourceBinding>& ResourceBindings);
     static void GetPipelineResourceBindingsMtl(const PipelineResourceBindingAttribs& Attribs,
                                                std::vector<PipelineResourceBinding>& ResourceBindings,
-                                               const Uint32                          MaxBufferArgs);
+                                               const UInt32                          MaxBufferArgs);
     static void GetPipelineResourceBindingsWebGPU(const PipelineResourceBindingAttribs& Attribs,
                                                   std::vector<PipelineResourceBinding>& ResourceBindings);
 

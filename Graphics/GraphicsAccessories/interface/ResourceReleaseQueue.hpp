@@ -253,7 +253,7 @@ public:
     /// \param [in] Resource              - Resource to be released
     /// \param [in] NextCommandListNumber - Number of the command list that will be submitted to the queue next
     template <typename ResourceType, typename = typename std::enable_if<std::is_object<ResourceType>::value>::type>
-    void SafeReleaseResource(ResourceType&& Resource, Uint64 NextCommandListNumber)
+    void SafeReleaseResource(ResourceType&& Resource, UInt64 NextCommandListNumber)
     {
         SafeReleaseResource(CreateWrapper(std::move(Resource), 1), NextCommandListNumber);
     }
@@ -262,7 +262,7 @@ public:
 
     /// \param [in] Wrapper               - Resource wrapper containing the resource to be released
     /// \param [in] NextCommandListNumber - Number of the command list that will be submitted to the queue next
-    void SafeReleaseResource(ResourceWrapperType&& Wrapper, Uint64 NextCommandListNumber)
+    void SafeReleaseResource(ResourceWrapperType&& Wrapper, UInt64 NextCommandListNumber)
     {
         std::lock_guard<std::mutex> LockGuard(m_StaleObjectsMutex);
         m_StaleResources.emplace_back(NextCommandListNumber, std::move(Wrapper));
@@ -272,7 +272,7 @@ public:
 
     /// \param [in] Wrapper               - Resource wrapper containing the resource to be released
     /// \param [in] NextCommandListNumber - Number of the command list that will be submitted to the queue next
-    void SafeReleaseResource(const ResourceWrapperType& Wrapper, Uint64 NextCommandListNumber)
+    void SafeReleaseResource(const ResourceWrapperType& Wrapper, UInt64 NextCommandListNumber)
     {
         std::lock_guard<std::mutex> LockGuard(m_StaleObjectsMutex);
         m_StaleResources.emplace_back(NextCommandListNumber, Wrapper);
@@ -283,7 +283,7 @@ public:
     /// \param [in] Resource    - Resource to be released.
     /// \param [in] FenceValue  - Fence value indicating when the resource was used last time.
     template <typename ResourceType, typename = typename std::enable_if<std::is_object<ResourceType>::value>::type>
-    void DiscardResource(ResourceType&& Resource, Uint64 FenceValue)
+    void DiscardResource(ResourceType&& Resource, UInt64 FenceValue)
     {
         DiscardResource(CreateWrapper(std::move(Resource), 1), FenceValue);
     }
@@ -292,7 +292,7 @@ public:
 
     /// \param [in] Wrapper     - Resource wrapper containing the resource to be released.
     /// \param [in] FenceValue  - Fence value indicating when the resource was used last time.
-    void DiscardResource(ResourceWrapperType&& Wrapper, Uint64 FenceValue)
+    void DiscardResource(ResourceWrapperType&& Wrapper, UInt64 FenceValue)
     {
         std::lock_guard<std::mutex> ReleaseQueueLock(m_ReleaseQueueMutex);
         m_ReleaseQueue.emplace_back(FenceValue, std::move(Wrapper));
@@ -302,7 +302,7 @@ public:
 
     /// \param [in] Wrapper     - Resource wrapper containing the resource to be released.
     /// \param [in] FenceValue  - Fence value indicating when the resource was used last time.
-    void DiscardResource(const ResourceWrapperType& Wrapper, Uint64 FenceValue)
+    void DiscardResource(const ResourceWrapperType& Wrapper, UInt64 FenceValue)
     {
         std::lock_guard<std::mutex> ReleaseQueueLock(m_ReleaseQueueMutex);
         m_ReleaseQueue.emplace_back(FenceValue, Wrapper);
@@ -313,7 +313,7 @@ public:
     /// \param [in] FenceValue  - Fence value indicating when the resource was used last time.
     /// \param [in] Iterator    - Iterator that returns resources to be released.
     template <typename ResourceType, typename IteratorType>
-    void DiscardResources(Uint64 FenceValue, IteratorType Iterator)
+    void DiscardResources(UInt64 FenceValue, IteratorType Iterator)
     {
         std::lock_guard<std::mutex> ReleaseQueueLock(m_ReleaseQueueMutex);
         ResourceType                Resource;
@@ -331,7 +331,7 @@ public:
     /// \param [in] FenceValue             - Fence value associated with the resources moved to the release queue.
     ///                                      A resource will be destroyed by Purge() method when completed fence value
     ///                                      is greater or equal to the fence value associated with the resource
-    void DiscardStaleResources(Uint64 SubmittedCmdBuffNumber, Uint64 FenceValue)
+    void DiscardStaleResources(UInt64 SubmittedCmdBuffNumber, UInt64 FenceValue)
     {
         // Only discard these stale objects that were released before CmdBuffNumber
         // was executed
@@ -355,7 +355,7 @@ public:
     /// less than or equal to CompletedFenceValue
 
     /// \param [in] CompletedFenceValue  -  Value of the fence that has been completed by the GPU
-    void Purge(Uint64 CompletedFenceValue)
+    void Purge(UInt64 CompletedFenceValue)
     {
         std::lock_guard<std::mutex> LockGuard(m_ReleaseQueueMutex);
 
@@ -385,7 +385,7 @@ public:
 
 private:
     std::mutex m_ReleaseQueueMutex;
-    using ReleaseQueueElemType = std::pair<Uint64, ResourceWrapperType>;
+    using ReleaseQueueElemType = std::pair<UInt64, ResourceWrapperType>;
     std::deque<ReleaseQueueElemType, STDAllocatorRawMem<ReleaseQueueElemType>> m_ReleaseQueue;
 
     std::mutex                                                                 m_StaleObjectsMutex;

@@ -36,11 +36,11 @@ namespace Diligent
 /// Upload buffer description
 struct UploadBufferDesc
 {
-    Uint32         Width     = 0;
-    Uint32         Height    = 0;
-    Uint32         Depth     = 1;
-    Uint32         MipLevels = 1;
-    Uint32         ArraySize = 1;
+    UInt32         Width     = 0;
+    UInt32         Height    = 0;
+    UInt32         Depth     = 1;
+    UInt32         MipLevels = 1;
+    UInt32         ArraySize = 1;
     TEXTURE_FORMAT Format    = TEX_FORMAT_UNKNOWN;
 
     bool operator==(const UploadBufferDesc& rhs) const
@@ -58,7 +58,7 @@ class IUploadBuffer : public IObject
 {
 public:
     virtual void                     WaitForCopyScheduled()                  = 0;
-    virtual MappedTextureSubresource GetMappedData(Uint32 Mip, Uint32 Slice) = 0;
+    virtual MappedTextureSubresource GetMappedData(UInt32 Mip, UInt32 Slice) = 0;
     virtual const UploadBufferDesc&  GetDesc() const                         = 0;
 };
 
@@ -66,7 +66,7 @@ public:
 // clang-format off
 
 /// Texture uploader mode
-DILIGENT_TYPED_ENUM(TEXTURE_UPLOADER_MODE, Uint8)
+DILIGENT_TYPED_ENUM(TEXTURE_UPLOADER_MODE, UInt8)
 {
     /// Use staging buffers for texture uploads.
 
@@ -100,7 +100,7 @@ struct TextureUploaderDesc
 /// Texture uploader statistics.
 struct TextureUploaderStats
 {
-    Uint32 NumPendingOperations = 0;
+    UInt32 NumPendingOperations = 0;
 };
 
 /// Asynchronous texture uploader
@@ -161,8 +161,8 @@ public:
     /// synchronization issues, which may result in an undefined behavior.
     virtual void ScheduleGPUCopy(IDeviceContext* pContext,
                                  ITexture*       pDstTexture,
-                                 Uint32          ArraySlice,
-                                 Uint32          MipLevel,
+                                 UInt32          ArraySlice,
+                                 UInt32          MipLevel,
                                  IUploadBuffer*  pUploadBuffer,
                                  bool            AutoRecycle DEFAULT_VALUE(false)) = 0;
     // clang-format on

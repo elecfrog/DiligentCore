@@ -43,8 +43,8 @@ namespace
 
 struct ShaderConstants
 {
-    Uint32 NumMipLevels;
-    Uint32 FirstArraySlice;
+    UInt32 NumMipLevels;
+    UInt32 FirstArraySlice;
     float  TexelSize[2];
 };
 
@@ -316,7 +316,7 @@ size_t GenerateMipsHelperWebGPU::ComputePipelineHashKey::GetHash() const
 
 size_t GenerateMipsHelperWebGPU::RenderPipelineHashKey::Hasher::operator()(const RenderPipelineHashKey& Key) const
 {
-    return ComputeHash(static_cast<Uint16>(Key.Format));
+    return ComputeHash(static_cast<UInt16>(Key.Format));
 }
 
 bool GenerateMipsHelperWebGPU::RenderPipelineHashKey::operator==(const RenderPipelineHashKey& rhs) const
@@ -389,7 +389,7 @@ void GenerateMipsHelperWebGPU::InitializePlaceholderTextures()
     if (m_PlaceholderTextureViews.empty())
     {
         m_PlaceholderTextureViews.resize(4);
-        for (Uint32 TextureIdx = 0; TextureIdx < 4; ++TextureIdx)
+        for (UInt32 TextureIdx = 0; TextureIdx < 4; ++TextureIdx)
         {
             TextureDesc TexDesc;
             TexDesc.Name      = "GenerateMipsHelperWebGPU::Placeholder texture";
@@ -433,7 +433,7 @@ WebGPUShaderModuleWrapper& GenerateMipsHelperWebGPU::GetShaderModule(const UAVFo
         case SHADER_TYPE_COMPUTE:
             WGSL = ShaderSourceCS;
             // Replace template formats
-            for (Uint32 UAVIndex = 0; UAVIndex < Formats.size(); UAVIndex++)
+            for (UInt32 UAVIndex = 0; UAVIndex < Formats.size(); UAVIndex++)
             {
                 WGPUTextureFormat wgpuTexFmt = TextureFormatToWGPUFormat(SRGBFormatToUnorm(Formats[UAVIndex]));
                 ReplaceTemplateInString(WGSL, "${UAV_FORMAT_" + std::to_string(UAVIndex) + "}", ConvertWebGPUFormatToString(wgpuTexFmt));
@@ -462,7 +462,7 @@ WebGPUShaderModuleWrapper& GenerateMipsHelperWebGPU::GetShaderModule(const UAVFo
     return Condition.first->second;
 }
 
-GenerateMipsHelperWebGPU::ComputePipelineGroupLayout& GenerateMipsHelperWebGPU::GetComputePipelineAndGroupLayout(const UAVFormats& Formats, Uint32 PowerOfTwo)
+GenerateMipsHelperWebGPU::ComputePipelineGroupLayout& GenerateMipsHelperWebGPU::GetComputePipelineAndGroupLayout(const UAVFormats& Formats, UInt32 PowerOfTwo)
 {
     auto Iter = m_ComputePipelineLayoutCache.find({Formats, PowerOfTwo});
     if (Iter != m_ComputePipelineLayoutCache.end())
@@ -606,21 +606,21 @@ void GenerateMipsHelperWebGPU::GenerateMips(WGPUComputePassEncoder wgpuCmdEncode
     const TextureDesc&     TexDesc      = pTextureImpl->GetDesc();
     const TextureViewDesc& ViewDesc     = pTexView->GetDesc();
 
-    Uint32 BottomMip = ViewDesc.NumMipLevels - 1u;
-    for (Uint32 TopMip = 0; TopMip < BottomMip;)
+    UInt32 BottomMip = ViewDesc.NumMipLevels - 1u;
+    for (UInt32 TopMip = 0; TopMip < BottomMip;)
     {
-        Uint32 SrcWidth  = std::max(TexDesc.Width >> (TopMip + ViewDesc.MostDetailedMip), 1u);
-        Uint32 SrcHeight = std::max(TexDesc.Height >> (TopMip + ViewDesc.MostDetailedMip), 1u);
-        Uint32 DstWidth  = std::max(SrcWidth >> 1, 1u);
-        Uint32 DstHeight = std::max(SrcHeight >> 1, 1u);
+        UInt32 SrcWidth  = std::max(TexDesc.Width >> (TopMip + ViewDesc.MostDetailedMip), 1u);
+        UInt32 SrcHeight = std::max(TexDesc.Height >> (TopMip + ViewDesc.MostDetailedMip), 1u);
+        UInt32 DstWidth  = std::max(SrcWidth >> 1, 1u);
+        UInt32 DstHeight = std::max(SrcHeight >> 1, 1u);
 
         // We can downsample up to four times, but if the ratio between levels is not
         // exactly 2:1, we have to shift our blend weights, which gets complicated or
         // expensive.  Maybe we can update the code later to compute sample weights for
         // each successive downsample.  We use _BitScanForward to count number of zeros
         // in the low bits.  Zeros indicate we can divide by two without truncating.
-        Uint32 AdditionalMips = PlatformMisc::GetLSB(DstWidth | DstHeight);
-        Uint32 NumMips        = 1 + (AdditionalMips > 3 ? 3 : AdditionalMips);
+        UInt32 AdditionalMips = PlatformMisc::GetLSB(DstWidth | DstHeight);
+        UInt32 NumMips        = 1 + (AdditionalMips > 3 ? 3 : AdditionalMips);
         if (TopMip + NumMips > BottomMip)
             NumMips = BottomMip - TopMip;
 
@@ -643,7 +643,7 @@ void GenerateMipsHelperWebGPU::GenerateMips(WGPUComputePassEncoder wgpuCmdEncode
         wgpuBindGroupEntries[0].size    = pBufferImpl->GetDesc().Size;
 
         UAVFormats PipelineFormats{};
-        for (Uint32 UAVIndex = 0; UAVIndex < 4; ++UAVIndex)
+        for (UInt32 UAVIndex = 0; UAVIndex < 4; ++UAVIndex)
         {
             const TextureViewWebGPUImpl* pTextureViewImpl  = ClassPtrCast<TextureViewWebGPUImpl>(m_PlaceholderTextureViews[UAVIndex].RawPtr());
             wgpuBindGroupEntries[UAVIndex + 1].binding     = UAVIndex + 1;
@@ -659,7 +659,7 @@ void GenerateMipsHelperWebGPU::GenerateMips(WGPUComputePassEncoder wgpuCmdEncode
 
         // Determine if the first downsample is more than 2:1.  This happens whenever
         // the source width or height is odd.
-        Uint32 NonPowerOfTwo          = (SrcWidth & 1) | (SrcHeight & 1) << 1;
+        UInt32 NonPowerOfTwo          = (SrcWidth & 1) | (SrcHeight & 1) << 1;
         auto& [Pipeline, LayoutGroup] = GetComputePipelineAndGroupLayout(PipelineFormats, NonPowerOfTwo);
 
         WGPUBindGroupDescriptor wgpuBindGroupDesc{};
@@ -685,9 +685,9 @@ void GenerateMipsHelperWebGPU::GenerateMips(WGPUCommandEncoder wgpuCmdEncoder, D
 
     const TextureViewDesc& ViewDesc = pTexView->GetDesc();
 
-    for (Uint32 TopSlice = 0; TopSlice < ViewDesc.NumArraySlices; ++TopSlice)
+    for (UInt32 TopSlice = 0; TopSlice < ViewDesc.NumArraySlices; ++TopSlice)
     {
-        for (Uint32 TopMip = 0; TopMip < ViewDesc.NumMipLevels - 1; ++TopMip)
+        for (UInt32 TopMip = 0; TopMip < ViewDesc.NumMipLevels - 1; ++TopMip)
         {
             WGPURenderPassColorAttachment wgpuColorAttachments[1]{};
             wgpuColorAttachments[0].view       = pTexView->GetMipLevelRTV(TopSlice, TopMip + 1);

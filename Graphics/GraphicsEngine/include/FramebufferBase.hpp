@@ -71,7 +71,7 @@ public:
 
         if (this->m_Desc.Width == 0 || this->m_Desc.Height == 0 || this->m_Desc.NumArraySlices == 0)
         {
-            for (Uint32 i = 0; i < this->m_Desc.AttachmentCount; ++i)
+            for (UInt32 i = 0; i < this->m_Desc.AttachmentCount; ++i)
             {
                 ITextureView* const pAttachment = Desc.ppAttachments[i];
                 if (pAttachment == nullptr)
@@ -112,7 +112,7 @@ public:
             m_ppAttachments =
                 ALLOCATE(GetRawAllocator(), "Memory for framebuffer attachment array", ITextureView*, this->m_Desc.AttachmentCount);
             this->m_Desc.ppAttachments = m_ppAttachments;
-            for (Uint32 i = 0; i < this->m_Desc.AttachmentCount; ++i)
+            for (UInt32 i = 0; i < this->m_Desc.AttachmentCount; ++i)
             {
                 if (Desc.ppAttachments[i] == nullptr)
                     continue;
@@ -126,7 +126,7 @@ public:
 
         // Create read-only depth views for read-write depth attachments, if needed
         const RenderPassDesc& RPDesc = this->m_Desc.pRenderPass->GetDesc();
-        for (Uint32 subpass = 0; subpass < RPDesc.SubpassCount; ++subpass)
+        for (UInt32 subpass = 0; subpass < RPDesc.SubpassCount; ++subpass)
         {
             const SubpassDesc& Subpass = RPDesc.pSubpasses[subpass];
             if (Subpass.pDepthStencilAttachment == nullptr)
@@ -170,7 +170,7 @@ public:
         if (this->m_Desc.AttachmentCount > 0)
         {
             VERIFY_EXPR(m_ppAttachments != nullptr);
-            for (Uint32 i = 0; i < this->m_Desc.AttachmentCount; ++i)
+            for (UInt32 i = 0; i < this->m_Desc.AttachmentCount; ++i)
             {
                 if (m_ppAttachments[i] != nullptr)
                     m_ppAttachments[i]->Release();
@@ -180,8 +180,8 @@ public:
 
         if (m_ppReadOnlyDSVs != nullptr)
         {
-            const Uint32 SubpassCount = this->m_Desc.pRenderPass->GetDesc().SubpassCount;
-            for (Uint32 i = 0; i < SubpassCount; ++i)
+            const UInt32 SubpassCount = this->m_Desc.pRenderPass->GetDesc().SubpassCount;
+            for (UInt32 i = 0; i < SubpassCount; ++i)
             {
                 if (m_ppReadOnlyDSVs[i] != nullptr)
                     m_ppReadOnlyDSVs[i]->Release();
@@ -194,7 +194,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_Framebuffer, TDeviceObjectBase)
 
-    ITextureView* GetReadOnlyDSV(Uint32 Subpass) const
+    ITextureView* GetReadOnlyDSV(UInt32 Subpass) const
     {
         VERIFY(Subpass < this->m_Desc.pRenderPass->GetDesc().SubpassCount, "Subpass index (", Subpass, ") is out of range.");
         return m_ppReadOnlyDSVs != nullptr ?

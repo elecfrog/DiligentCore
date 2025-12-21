@@ -178,7 +178,7 @@ TEST(SeparateTextureSampler, CreateSampler)
 
     auto VarCount = pSRB->GetVariableCount(SHADER_TYPE_PIXEL);
     EXPECT_EQ(VarCount, 4u);
-    for (Uint32 v = 0; v < VarCount; ++v)
+    for (UInt32 v = 0; v < VarCount; ++v)
     {
         auto* pVar = pSRB->GetVariableByIndex(SHADER_TYPE_PIXEL, v);
         EXPECT_EQ(pVar->GetIndex(), v);

@@ -52,8 +52,8 @@ public:
 
         size_t GetHash() const;
 
-        Uint32         NumRenderTargets = 0;
-        Uint8          SampleCount      = 1;
+        UInt32         NumRenderTargets = 0;
+        UInt8          SampleCount      = 1;
         TEXTURE_FORMAT DSVFormat        = TEX_FORMAT_UNKNOWN;
         RTVFormatArray RTVFormats       = {};
     };
@@ -71,7 +71,7 @@ public:
                     DeviceContextWebGPUImpl* pDeviceContext,
                     const RenderPassInfo&    RPInfo,
                     COLOR_MASK               ColorMask,
-                    Uint32                   RTIndex,
+                    UInt32                   RTIndex,
                     const float              Color[]);
 
     void ClearDepthStencil(WGPURenderPassEncoder     wgpuCmdEncoder,
@@ -79,7 +79,7 @@ public:
                            const RenderPassInfo&     RPInfo,
                            CLEAR_DEPTH_STENCIL_FLAGS Flags,
                            float                     Depth,
-                           Uint8                     Stencil);
+                           UInt8                     Stencil);
 
 private:
     struct ClearPSOHashKey

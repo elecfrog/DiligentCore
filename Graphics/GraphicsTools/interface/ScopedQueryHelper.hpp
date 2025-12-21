@@ -46,8 +46,8 @@ class ScopedQueryHelper
 public:
     ScopedQueryHelper(IRenderDevice*   pDevice,
                       const QueryDesc& queryDesc,
-                      Uint32           NumQueriesToReserve,
-                      Uint32           ExpectedQueryLimit = 5);
+                      UInt32           NumQueriesToReserve,
+                      UInt32           ExpectedQueryLimit = 5);
 
     // clang-format off
     ScopedQueryHelper           (const ScopedQueryHelper&) = delete;
@@ -75,12 +75,12 @@ public:
     ///
     /// \remarks    There must be exactly one matching End() for every Begin() call, otherwise
     ///             the behavior is undefined.
-    bool End(IDeviceContext* pCtx, void* pData, Uint32 DataSize);
+    bool End(IDeviceContext* pCtx, void* pData, UInt32 DataSize);
 
 private:
     RefCntAutoPtr<IRenderDevice> m_pDevice;
     const QueryDesc              m_QueryDesc;
-    const Uint32                 m_ExpectedQueryLimit;
+    const UInt32                 m_ExpectedQueryLimit;
 
     std::deque<RefCntAutoPtr<IQuery>>  m_PendingQueries;
     std::vector<RefCntAutoPtr<IQuery>> m_AvailableQueries;

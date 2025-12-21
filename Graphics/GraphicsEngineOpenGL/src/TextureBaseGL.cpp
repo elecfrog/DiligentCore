@@ -168,12 +168,12 @@ static TextureDesc GetTextureDescFromGLHandle(const RenderDeviceInfo& DeviceInfo
     }
     if (TexWidth > 0)
     {
-        if (TexDesc.Width != 0 && TexDesc.Width != static_cast<Uint32>(TexWidth))
+        if (TexDesc.Width != 0 && TexDesc.Width != static_cast<UInt32>(TexWidth))
         {
             LOG_WARNING_MESSAGE("The width (", TexDesc.Width, ") of texture '", TexDesc.Name,
                                 "' specified by TextureDesc struct does not match the actual width (", TexWidth, ")");
         }
-        TexDesc.Width = static_cast<Uint32>(TexWidth);
+        TexDesc.Width = static_cast<UInt32>(TexWidth);
     }
     else
     {
@@ -204,12 +204,12 @@ static TextureDesc GetTextureDescFromGLHandle(const RenderDeviceInfo& DeviceInfo
         }
         if (TexHeight > 0)
         {
-            if (TexDesc.Height != 0 && TexDesc.Height != static_cast<Uint32>(TexHeight))
+            if (TexDesc.Height != 0 && TexDesc.Height != static_cast<UInt32>(TexHeight))
             {
                 LOG_WARNING_MESSAGE("The height (", TexDesc.Height, ") of texture '", TexDesc.Name,
                                     "' specified by TextureDesc struct does not match the actual height (", TexHeight, ")");
             }
-            TexDesc.Height = static_cast<Uint32>(TexHeight);
+            TexDesc.Height = static_cast<UInt32>(TexHeight);
         }
         else
         {
@@ -243,12 +243,12 @@ static TextureDesc GetTextureDescFromGLHandle(const RenderDeviceInfo& DeviceInfo
         }
         if (TexDepth > 0)
         {
-            if (TexDesc.Depth != 0 && TexDesc.Depth != static_cast<Uint32>(TexDepth))
+            if (TexDesc.Depth != 0 && TexDesc.Depth != static_cast<UInt32>(TexDepth))
             {
                 LOG_WARNING_MESSAGE("The depth (", TexDesc.Depth, ") of texture '", TexDesc.Name,
                                     "' specified by TextureDesc struct does not match the actual depth (", TexDepth, ")");
             }
-            TexDesc.Depth = static_cast<Uint32>(TexDepth);
+            TexDesc.Depth = static_cast<UInt32>(TexDepth);
         }
         else
         {
@@ -312,13 +312,13 @@ static TextureDesc GetTextureDescFromGLHandle(const RenderDeviceInfo& DeviceInfo
     }
     if (MipLevels > 0)
     {
-        if (TexDesc.MipLevels != 0 && TexDesc.MipLevels != static_cast<Uint32>(MipLevels))
+        if (TexDesc.MipLevels != 0 && TexDesc.MipLevels != static_cast<UInt32>(MipLevels))
         {
             LOG_WARNING_MESSAGE("The number of mip levels (", TexDesc.MipLevels, ") of texture '", TexDesc.Name,
                                 "' specified by TextureDesc struct does not match the actual number of mip levels (", MipLevels, ")");
         }
 
-        TexDesc.MipLevels = static_cast<Uint32>(MipLevels);
+        TexDesc.MipLevels = static_cast<UInt32>(MipLevels);
     }
     else
     {
@@ -458,7 +458,7 @@ void TextureBaseGL::CreateViewInternal(const TextureViewDesc& OrigViewDesc, ITex
                     {
                         GLViewTarget = GL_TEXTURE_3D;
                         // If target is GL_TEXTURE_3D, NumLayers must equal 1.
-                        Uint32 MipDepth = std::max(m_Desc.Depth >> ViewDesc.MostDetailedMip, 1U);
+                        UInt32 MipDepth = std::max(m_Desc.Depth >> ViewDesc.MostDetailedMip, 1U);
                         if (ViewDesc.FirstDepthSlice != 0 || ViewDesc.NumDepthSlices != MipDepth)
                         {
                             DG_LOG_ERROR("3D texture view '", (ViewDesc.Name ? ViewDesc.Name : ""), "' (most detailed mip: ", ViewDesc.MostDetailedMip,
@@ -581,7 +581,7 @@ void TextureBaseGL::CreateViewInternal(const TextureViewDesc& OrigViewDesc, ITex
 }
 
 
-void TextureBaseGL::UpdateData(GLContextState& CtxState, Uint32 MipLevel, Uint32 Slice, const Box& DstBox, const TextureSubResData& SubresData)
+void TextureBaseGL::UpdateData(GLContextState& CtxState, UInt32 MipLevel, UInt32 Slice, const Box& DstBox, const TextureSubResData& SubresData)
 {
     // GL_TEXTURE_UPDATE_BARRIER_BIT:
     //      Writes to a texture via glTex( Sub )Image*, glCopyTex( Sub )Image*, glClearTex*Image,
@@ -592,7 +592,7 @@ void TextureBaseGL::UpdateData(GLContextState& CtxState, Uint32 MipLevel, Uint32
     TextureMemoryBarrier(MEMORY_BARRIER_TEXTURE_UPDATE, CtxState);
 }
 
-//void TextureBaseGL::UpdateData(Uint32 Offset, Uint32 Size, const void* pData)
+//void TextureBaseGL::UpdateData(UInt32 Offset, UInt32 Size, const void* pData)
 //{
 //    CTexture::UpdateData(Offset, Size, pData);
 //
@@ -618,14 +618,14 @@ inline GLbitfield GetFramebufferCopyMask(TEXTURE_FORMAT Format)
 
 void TextureBaseGL::CopyData(DeviceContextGLImpl* pDeviceCtxGL,
                              TextureBaseGL*       pSrcTextureGL,
-                             Uint32               SrcMipLevel,
-                             Uint32               SrcSlice,
+                             UInt32               SrcMipLevel,
+                             UInt32               SrcSlice,
                              const Box*           pSrcBox,
-                             Uint32               DstMipLevel,
-                             Uint32               DstSlice,
-                             Uint32               DstX,
-                             Uint32               DstY,
-                             Uint32               DstZ)
+                             UInt32               DstMipLevel,
+                             UInt32               DstSlice,
+                             UInt32               DstX,
+                             UInt32               DstY,
+                             UInt32               DstZ)
 {
     const TextureDesc& SrcTexDesc = pSrcTextureGL->GetDesc();
 
@@ -702,7 +702,7 @@ void TextureBaseGL::CopyData(DeviceContextGLImpl* pDeviceCtxGL,
         if (ScissorEnabled)
             GLState.EnableScissorTest(false);
 
-        for (Uint32 DepthSlice = 0; DepthSlice < pSrcBox->Depth(); ++DepthSlice)
+        for (UInt32 DepthSlice = 0; DepthSlice < pSrcBox->Depth(); ++DepthSlice)
         {
             GLuint SrcFboHandle = 0;
             if (pSrcTextureGL->GetGLHandle() != 0)
@@ -712,7 +712,7 @@ void TextureBaseGL::CopyData(DeviceContextGLImpl* pDeviceCtxGL,
                 FBOCache& FboCache = m_pDevice->GetFBOCache(GLState.GetCurrentGLContext());
                 VERIFY_EXPR(SrcSlice == 0 || SrcTexDesc.IsArray());
                 VERIFY_EXPR((pSrcBox->MinZ == 0 && DepthSlice == 0) || SrcTexDesc.Is3D());
-                const Uint32 SrcFramebufferSlice = SrcSlice + pSrcBox->MinZ + DepthSlice;
+                const UInt32 SrcFramebufferSlice = SrcSlice + pSrcBox->MinZ + DepthSlice;
                 // NOTE: GetFBO may bind a framebuffer, so we need to invalidate it in the GL context state.
                 const GLObjectWrappers::GLFrameBufferObj& ReadFBO = FboCache.GetFBO(pSrcTextureGL, SrcFramebufferSlice, SrcMipLevel, TextureBaseGL::FRAMEBUFFER_TARGET_FLAG_READ);
 
@@ -751,7 +751,7 @@ void TextureBaseGL::CopyData(DeviceContextGLImpl* pDeviceCtxGL,
                     FBOCache& FboCache = m_pDevice->GetFBOCache(GLState.GetCurrentGLContext());
                     VERIFY_EXPR(DstSlice == 0 || m_Desc.IsArray());
                     VERIFY_EXPR((DstZ == 0 && DepthSlice == 0) || m_Desc.Is3D());
-                    const Uint32 DstFramebufferSlice = DstSlice + DstZ + DepthSlice;
+                    const UInt32 DstFramebufferSlice = DstSlice + DstZ + DepthSlice;
                     // NOTE: GetFBO may bind a framebuffer, so we need to invalidate it in the GL context state.
                     const GLObjectWrappers::GLFrameBufferObj& DrawFBO = FboCache.GetFBO(this, DstFramebufferSlice, DstMipLevel, TextureBaseGL::FRAMEBUFFER_TARGET_FLAG_DRAW);
 

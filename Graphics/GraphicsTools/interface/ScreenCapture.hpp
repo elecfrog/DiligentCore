@@ -44,12 +44,12 @@ class ScreenCapture
 public:
     ScreenCapture(IRenderDevice* pDevice);
 
-    void Capture(ISwapChain* pSwapChain, IDeviceContext* pContext, Uint32 FrameId);
+    void Capture(ISwapChain* pSwapChain, IDeviceContext* pContext, UInt32 FrameId);
 
     struct CaptureInfo
     {
         RefCntAutoPtr<ITexture> pTexture;
-        Uint32                  Id = 0;
+        UInt32                  Id = 0;
 
         explicit operator bool() const
         {
@@ -78,7 +78,7 @@ private:
     std::mutex m_PendingTexturesMtx;
     struct PendingTextureInfo
     {
-        PendingTextureInfo(RefCntAutoPtr<ITexture>&& _pTex, Uint32 _Id, Uint64 _Fence) :
+        PendingTextureInfo(RefCntAutoPtr<ITexture>&& _pTex, UInt32 _Id, UInt64 _Fence) :
             // clang-format off
             pTex    {std::move(_pTex)},
             Id      {_Id             },
@@ -88,12 +88,12 @@ private:
         }
 
         RefCntAutoPtr<ITexture> pTex;
-        const Uint32            Id;
-        const Uint64            Fence;
+        const UInt32            Id;
+        const UInt64            Fence;
     };
     std::deque<PendingTextureInfo> m_PendingTextures;
 
-    Uint64 m_CurrentFenceValue = 1;
+    UInt64 m_CurrentFenceValue = 1;
 };
 
 } // namespace Diligent

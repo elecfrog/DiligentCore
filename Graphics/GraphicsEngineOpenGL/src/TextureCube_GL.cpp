@@ -86,12 +86,12 @@ TextureCube_GL::TextureCube_GL(IReferenceCounters*        pRefCounters,
 
     if (pInitData != nullptr && pInitData->pSubResources != nullptr)
     {
-        const Uint32 ExpectedSubresources = m_Desc.MipLevels * 6;
+        const UInt32 ExpectedSubresources = m_Desc.MipLevels * 6;
         if (m_Desc.MipLevels * 6 == pInitData->NumSubresources)
         {
-            for (Uint32 Face = 0; Face < 6; ++Face)
+            for (UInt32 Face = 0; Face < 6; ++Face)
             {
-                for (Uint32 Mip = 0; Mip < m_Desc.MipLevels; ++Mip)
+                for (UInt32 Mip = 0; Mip < m_Desc.MipLevels; ++Mip)
                 {
                     Box DstBox{0, std::max(m_Desc.Width >> Mip, 1U),
                                0, std::max(m_Desc.Height >> Mip, 1U)};
@@ -144,8 +144,8 @@ TextureCube_GL::~TextureCube_GL()
 }
 
 void TextureCube_GL::UpdateData(GLContextState&          ContextState,
-                                Uint32                   MipLevel,
-                                Uint32                   Slice,
+                                UInt32                   MipLevel,
+                                UInt32                   Slice,
                                 const Box&               DstBox,
                                 const TextureSubResData& SubresData)
 {
@@ -178,8 +178,8 @@ void TextureCube_GL::UpdateData(GLContextState&          ContextState,
 
     if (TransferAttribs.IsCompressed)
     {
-        Uint32 MipWidth  = std::max(m_Desc.Width >> MipLevel, 1U);
-        Uint32 MipHeight = std::max(m_Desc.Height >> MipLevel, 1U);
+        UInt32 MipWidth  = std::max(m_Desc.Width >> MipLevel, 1U);
+        UInt32 MipHeight = std::max(m_Desc.Height >> MipLevel, 1U);
         // clang-format off
         VERIFY((DstBox.MinX % 4) == 0 && (DstBox.MinY % 4) == 0 &&
                ((DstBox.MaxX % 4) == 0 || DstBox.MaxX == MipWidth) &&
@@ -189,7 +189,7 @@ void TextureCube_GL::UpdateData(GLContextState&          ContextState,
 #ifdef DILIGENT_DEBUG
         {
             const TextureFormatAttribs& FmtAttribs      = GetTextureFormatAttribs(m_Desc.Format);
-            Uint32                      BlockBytesInRow = ((DstBox.Width() + 3) / 4) * Uint32{FmtAttribs.ComponentSize};
+            UInt32                      BlockBytesInRow = ((DstBox.Width() + 3) / 4) * UInt32{FmtAttribs.ComponentSize};
             VERIFY(SubresData.Stride == BlockBytesInRow,
                    "Compressed data stride (", SubresData.Stride, " must match the size of a row of compressed blocks (", BlockBytesInRow, ")");
         }
@@ -200,8 +200,8 @@ void TextureCube_GL::UpdateData(GLContextState&          ContextState,
 
         // Texture must be bound as GL_TEXTURE_CUBE_MAP, but glCompressedTexSubImage2D()
         // takes one of GL_TEXTURE_CUBE_MAP_POSITIVE_X ... GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
-        Uint32 UpdateRegionWidth  = DstBox.Width();
-        Uint32 UpdateRegionHeight = DstBox.Height();
+        UInt32 UpdateRegionWidth  = DstBox.Width();
+        UInt32 UpdateRegionHeight = DstBox.Height();
         UpdateRegionWidth         = std::min(UpdateRegionWidth, MipWidth - DstBox.MinX);
         UpdateRegionHeight        = std::min(UpdateRegionHeight, MipHeight - DstBox.MinY);
         glCompressedTexSubImage2D(CubeMapFaceBindTarget, MipLevel,
@@ -226,7 +226,7 @@ void TextureCube_GL::UpdateData(GLContextState&          ContextState,
     else
     {
         const TextureFormatAttribs& TexFmtInfo = GetTextureFormatAttribs(m_Desc.Format);
-        const Uint32                PixelSize  = Uint32{TexFmtInfo.NumComponents} * Uint32{TexFmtInfo.ComponentSize};
+        const UInt32                PixelSize  = UInt32{TexFmtInfo.NumComponents} * UInt32{TexFmtInfo.ComponentSize};
         VERIFY((SubresData.Stride % PixelSize) == 0, "Data stride is not multiple of pixel size");
         glPixelStorei(GL_UNPACK_ROW_LENGTH, StaticCast<GLint>(SubresData.Stride / PixelSize));
 

@@ -93,10 +93,10 @@ public:
     VkShaderModule CreateShaderModule(const SHADER_TYPE ShaderType, const std::string& ShaderSource);
 
     static VkRenderPassCreateInfo GetRenderPassCreateInfo(
-        Uint32                                                       NumRenderTargets,
+        UInt32                                                       NumRenderTargets,
         const VkFormat                                               RTVFormats[],
         VkFormat                                                     DSVFormat,
-        Uint32                                                       SampleCount,
+        UInt32                                                       SampleCount,
         VkAttachmentLoadOp                                           DepthAttachmentLoadOp,
         VkAttachmentLoadOp                                           ColorAttachmentLoadOp,
         std::array<VkAttachmentDescription, MAX_RENDER_TARGETS + 1>& Attachments,

@@ -102,8 +102,8 @@ DILIGENT_BEGIN_INTERFACE(ICommandQueueD3D12, ICommandQueue)
     ///                               lists to submit.
     ///
     /// \return Fence value associated with the executed command lists.
-    VIRTUAL Uint64 METHOD(Submit)(THIS_
-                                  Uint32                    NumCommandLists,
+    VIRTUAL UInt64 METHOD(Submit)(THIS_
+                                  UInt32                    NumCommandLists,
                                   ID3D12CommandList* const* ppCommandLists) PURE;
 
     /// Returns D3D12 command queue. May return null if queue is unavailable
@@ -112,17 +112,17 @@ DILIGENT_BEGIN_INTERFACE(ICommandQueueD3D12, ICommandQueue)
     /// Signals the given fence
     VIRTUAL void METHOD(EnqueueSignal)(THIS_
                                        ID3D12Fence* pFence,
-                                       Uint64       Value) PURE;
+                                       UInt64       Value) PURE;
 
     /// Instructs the GPU to wait until the fence reaches the specified value
     VIRTUAL void METHOD(WaitFence)(THIS_
                                    ID3D12Fence* pFence,
-                                   Uint64       Value) PURE;
+                                   UInt64       Value) PURE;
 
     /// Updates mappings of tile locations in reserved resources to memory locations in a resource heap.
     VIRTUAL void METHOD(UpdateTileMappings)(THIS_
                                             ResourceTileMappingsD3D12* pMappings,
-                                            Uint32                     Count) PURE;
+                                            UInt32                     Count) PURE;
 
     /// Returns the Direct3D12 command queue description
     VIRTUAL const D3D12_COMMAND_QUEUE_DESC REF METHOD(GetD3D12CommandQueueDesc)(THIS) CONST PURE;

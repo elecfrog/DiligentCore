@@ -657,7 +657,7 @@ VkResult SwapChainVkImpl::AcquireNextImage(DeviceContextVkImpl* pDeviceCtxVk)
     return res;
 }
 
-void SwapChainVkImpl::Present(Uint32 SyncInterval)
+void SwapChainVkImpl::Present(UInt32 SyncInterval)
 {
     if (SyncInterval != 0 && SyncInterval != 1)
         LOG_WARNING_MESSAGE_ONCE("Vulkan only supports 0 and 1 present intervals");
@@ -783,7 +783,7 @@ void SwapChainVkImpl::ReleaseSwapChainResources(DeviceContextVkImpl* pImmediateC
         pImmediateCtxVk->Flush();
 
         bool RenderTargetsReset = false;
-        for (Uint32 i = 0; i < m_pBackBufferRTV.size() && !RenderTargetsReset; ++i)
+        for (UInt32 i = 0; i < m_pBackBufferRTV.size() && !RenderTargetsReset; ++i)
         {
             TextureVkImpl* pCurrentBackBuffer = ClassPtrCast<TextureVkImpl>(m_pBackBufferRTV[i]->GetTexture());
             RenderTargetsReset                = pImmediateCtxVk->UnbindTextureFromFramebuffer(pCurrentBackBuffer, false);
@@ -858,7 +858,7 @@ void SwapChainVkImpl::RecreateVulkanSwapchain(DeviceContextVkImpl* pImmediateCtx
     InitBuffersAndViews();
 }
 
-void SwapChainVkImpl::Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewPreTransform)
+void SwapChainVkImpl::Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform)
 {
     bool RecreateSwapChain = false;
 

@@ -35,7 +35,7 @@
 namespace Diligent
 {
 
-Uint32 GetGeometryPrimitiveVertexSize(GEOMETRY_PRIMITIVE_VERTEX_FLAGS VertexFlags)
+UInt32 GetGeometryPrimitiveVertexSize(GEOMETRY_PRIMITIVE_VERTEX_FLAGS VertexFlags)
 {
     return (((VertexFlags & GEOMETRY_PRIMITIVE_VERTEX_FLAG_POSITION) ? sizeof(Vector3f) : 0) +
             ((VertexFlags & GEOMETRY_PRIMITIVE_VERTEX_FLAG_NORMAL) ? sizeof(Vector3f) : 0) +
@@ -43,7 +43,7 @@ Uint32 GetGeometryPrimitiveVertexSize(GEOMETRY_PRIMITIVE_VERTEX_FLAGS VertexFlag
 }
 
 template <typename VertexHandlerType>
-void CreateCubeGeometryInternal(Uint32                          NumSubdivisions,
+void CreateCubeGeometryInternal(UInt32                          NumSubdivisions,
                                 GEOMETRY_PRIMITIVE_VERTEX_FLAGS VertexFlags,
                                 IDataBlob**                     ppVertices,
                                 IDataBlob**                     ppIndices,
@@ -69,13 +69,13 @@ void CreateCubeGeometryInternal(Uint32                          NumSubdivisions,
     //  |  .'  |  .'  |
     //  |.'____|.'____|
     //
-    const Uint32 NumFaceVertices  = (NumSubdivisions + 1) * (NumSubdivisions + 1);
-    const Uint32 NumFaceTriangles = NumSubdivisions * NumSubdivisions * 2;
-    const Uint32 NumFaceIndices   = NumFaceTriangles * 3;
-    const Uint32 VertexSize       = GetGeometryPrimitiveVertexSize(VertexFlags);
-    const Uint32 NumFaces         = 6;
-    const Uint32 VertexDataSize   = NumFaceVertices * NumFaces * VertexSize;
-    const Uint32 IndexDataSize    = NumFaceIndices * NumFaces * sizeof(Uint32);
+    const UInt32 NumFaceVertices  = (NumSubdivisions + 1) * (NumSubdivisions + 1);
+    const UInt32 NumFaceTriangles = NumSubdivisions * NumSubdivisions * 2;
+    const UInt32 NumFaceIndices   = NumFaceTriangles * 3;
+    const UInt32 VertexSize       = GetGeometryPrimitiveVertexSize(VertexFlags);
+    const UInt32 NumFaces         = 6;
+    const UInt32 VertexDataSize   = NumFaceVertices * NumFaces * VertexSize;
+    const UInt32 IndexDataSize    = NumFaceIndices * NumFaces * sizeof(UInt32);
 
     if (pInfo != nullptr)
     {
@@ -85,23 +85,23 @@ void CreateCubeGeometryInternal(Uint32                          NumSubdivisions,
     }
 
     RefCntAutoPtr<DataBlobImpl> pVertexData;
-    Uint8*                      pVert = nullptr;
+    UInt8*                      pVert = nullptr;
     if (ppVertices != nullptr && VertexFlags != GEOMETRY_PRIMITIVE_VERTEX_FLAG_NONE)
     {
         pVertexData = DataBlobImpl::Create(VertexDataSize);
         DEV_CHECK_ERR(*ppVertices == nullptr, "*ppVertices is not null, which may cause memory leak");
         pVertexData->QueryInterface(IID_DataBlob, ppVertices);
-        pVert = pVertexData->GetDataPtr<Uint8>();
+        pVert = pVertexData->GetDataPtr<UInt8>();
     }
 
     RefCntAutoPtr<DataBlobImpl> pIndexData;
-    Uint32*                     pIdx = nullptr;
+    UInt32*                     pIdx = nullptr;
     if (ppIndices != nullptr)
     {
         pIndexData = DataBlobImpl::Create(IndexDataSize);
         DEV_CHECK_ERR(*ppIndices == nullptr, "*ppIndices is not null, which may cause memory leak");
         pIndexData->QueryInterface(IID_DataBlob, ppIndices);
-        pIdx = pIndexData->GetDataPtr<Uint32>();
+        pIdx = pIndexData->GetDataPtr<UInt32>();
     }
 
     static constexpr std::array<Vector3f, NumFaces> FaceNormals{
@@ -113,7 +113,7 @@ void CreateCubeGeometryInternal(Uint32                          NumSubdivisions,
         Vector3f{0, 0, -1},
     };
 
-    for (Uint32 FaceIndex = 0; FaceIndex < NumFaces; ++FaceIndex)
+    for (UInt32 FaceIndex = 0; FaceIndex < NumFaces; ++FaceIndex)
     {
         if (pVert != nullptr)
         {
@@ -126,9 +126,9 @@ void CreateCubeGeometryInternal(Uint32                          NumSubdivisions,
             //  |.'____|.'____|
             // 0       1      2
 
-            for (Uint32 y = 0; y <= NumSubdivisions; ++y)
+            for (UInt32 y = 0; y <= NumSubdivisions; ++y)
             {
-                for (Uint32 x = 0; x <= NumSubdivisions; ++x)
+                for (UInt32 x = 0; x <= NumSubdivisions; ++x)
                 {
                     Vector2f UV{
                         static_cast<float>(x) / NumSubdivisions,
@@ -177,10 +177,10 @@ void CreateCubeGeometryInternal(Uint32                          NumSubdivisions,
 
         if (pIdx != nullptr)
         {
-            Uint32 FaceBaseVertex = FaceIndex * NumFaceVertices;
-            for (Uint32 y = 0; y < NumSubdivisions; ++y)
+            UInt32 FaceBaseVertex = FaceIndex * NumFaceVertices;
+            for (UInt32 y = 0; y < NumSubdivisions; ++y)
             {
-                for (Uint32 x = 0; x < NumSubdivisions; ++x)
+                for (UInt32 x = 0; x < NumSubdivisions; ++x)
                 {
                     //  01     11
                     //   *-----*
@@ -188,10 +188,10 @@ void CreateCubeGeometryInternal(Uint32                          NumSubdivisions,
                     //   | .'  |
                     //   *'----*
                     //  00     10
-                    Uint32 v00 = FaceBaseVertex + y * (NumSubdivisions + 1) + x;
-                    Uint32 v10 = v00 + 1;
-                    Uint32 v01 = v00 + NumSubdivisions + 1;
-                    Uint32 v11 = v01 + 1;
+                    UInt32 v00 = FaceBaseVertex + y * (NumSubdivisions + 1) + x;
+                    UInt32 v10 = v00 + 1;
+                    UInt32 v01 = v00 + NumSubdivisions + 1;
+                    UInt32 v11 = v01 + 1;
 
                     *pIdx++ = v00;
                     *pIdx++ = v10;
@@ -205,8 +205,8 @@ void CreateCubeGeometryInternal(Uint32                          NumSubdivisions,
         }
     }
 
-    VERIFY_EXPR(pVert == nullptr || pVert == pVertexData->GetConstDataPtr<Uint8>() + VertexDataSize);
-    VERIFY_EXPR(pIdx == nullptr || pIdx == pIndexData->GetConstDataPtr<Uint32>() + IndexDataSize / sizeof(Uint32));
+    VERIFY_EXPR(pVert == nullptr || pVert == pVertexData->GetConstDataPtr<UInt8>() + VertexDataSize);
+    VERIFY_EXPR(pIdx == nullptr || pIdx == pIndexData->GetConstDataPtr<UInt32>() + IndexDataSize / sizeof(UInt32));
 }
 
 void CreateCubeGeometry(const CubeGeometryPrimitiveAttributes& Attribs,
@@ -289,7 +289,7 @@ void CreateGeometryPrimitive(const GeometryPrimitiveAttributes& Attribs,
 
 extern "C"
 {
-    Diligent::Uint32 Diligent_GetGeometryPrimitiveVertexSize(Diligent::GEOMETRY_PRIMITIVE_VERTEX_FLAGS VertexFlags)
+    UInt32 Diligent_GetGeometryPrimitiveVertexSize(Diligent::GEOMETRY_PRIMITIVE_VERTEX_FLAGS VertexFlags)
     {
         return Diligent::GetGeometryPrimitiveVertexSize(VertexFlags);
     }

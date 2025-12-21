@@ -49,7 +49,7 @@ GLProgramCache::ProgramCacheKey::ProgramCacheKey(const GetProgramAttribs& Attrib
     Hash = ComputeHash(Attribs.IsSeparableProgram, Attribs.NumShaders, Attribs.NumSignatures);
 
     ShaderUIDs.reserve(Attribs.NumShaders);
-    for (Uint32 i = 0; i < Attribs.NumShaders; ++i)
+    for (UInt32 i = 0; i < Attribs.NumShaders; ++i)
     {
         Int32 ShaderUID = Attribs.ppShaders[i]->GetUniqueID();
         HashCombine(Hash, ShaderUID);
@@ -59,7 +59,7 @@ GLProgramCache::ProgramCacheKey::ProgramCacheKey(const GetProgramAttribs& Attrib
     if (Attribs.NumSignatures != 0)
     {
         SignatureUIDs.reserve(Attribs.NumSignatures);
-        for (Uint32 i = 0; i < Attribs.NumSignatures; ++i)
+        for (UInt32 i = 0; i < Attribs.NumSignatures; ++i)
         {
             if (PipelineResourceSignatureGLImpl* pSignature = ClassPtrCast<PipelineResourceSignatureGLImpl>(Attribs.ppSignatures[i]))
             {

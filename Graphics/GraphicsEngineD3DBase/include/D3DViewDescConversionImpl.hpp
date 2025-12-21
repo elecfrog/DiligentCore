@@ -39,7 +39,7 @@ namespace Diligent
 {
 
 template <typename D3D_SHADER_RESOURCE_VIEW_DESC>
-void TextureViewDesc_to_D3D_SRV_DESC(const TextureViewDesc& SRVDesc, D3D_SHADER_RESOURCE_VIEW_DESC& d3dSRVDesc, Uint32 SampleCount)
+void TextureViewDesc_to_D3D_SRV_DESC(const TextureViewDesc& SRVDesc, D3D_SHADER_RESOURCE_VIEW_DESC& d3dSRVDesc, UInt32 SampleCount)
 {
     memset(&d3dSRVDesc, 0, sizeof(d3dSRVDesc));
     d3dSRVDesc.Format = TexFormatToDXGI_Format(SRVDesc.Format, BIND_SHADER_RESOURCE);
@@ -117,7 +117,7 @@ void TextureViewDesc_to_D3D_SRV_DESC(const TextureViewDesc& SRVDesc, D3D_SHADER_
 }
 
 template <typename D3D_RENDER_TARGET_VIEW_DESC>
-void TextureViewDesc_to_D3D_RTV_DESC(const TextureViewDesc& RTVDesc, D3D_RENDER_TARGET_VIEW_DESC& d3dRTVDesc, Uint32 SampleCount)
+void TextureViewDesc_to_D3D_RTV_DESC(const TextureViewDesc& RTVDesc, D3D_RENDER_TARGET_VIEW_DESC& d3dRTVDesc, UInt32 SampleCount)
 {
     memset(&d3dRTVDesc, 0, sizeof(d3dRTVDesc));
     d3dRTVDesc.Format = TexFormatToDXGI_Format(RTVDesc.Format, BIND_RENDER_TARGET);
@@ -179,7 +179,7 @@ void TextureViewDesc_to_D3D_RTV_DESC(const TextureViewDesc& RTVDesc, D3D_RENDER_
 }
 
 template <typename D3D_DEPTH_STENCIL_VIEW_DESC>
-void TextureViewDesc_to_D3D_DSV_DESC(const TextureViewDesc& DSVDesc, D3D_DEPTH_STENCIL_VIEW_DESC& d3dDSVDesc, Uint32 SampleCount)
+void TextureViewDesc_to_D3D_DSV_DESC(const TextureViewDesc& DSVDesc, D3D_DEPTH_STENCIL_VIEW_DESC& d3dDSVDesc, UInt32 SampleCount)
 {
     memset(&d3dDSVDesc, 0, sizeof(d3dDSVDesc));
     d3dDSVDesc.Format = TexFormatToDXGI_Format(DSVDesc.Format, BIND_DEPTH_STENCIL);
@@ -300,7 +300,7 @@ void BufferViewDesc_to_D3D_SRV_DESC(const BufferDesc& BuffDesc, const BufferView
     if (BuffDesc.Mode == BUFFER_MODE_FORMATTED || (BuffDesc.Mode == BUFFER_MODE_RAW && BuffFmt.ValueType != VT_UNDEFINED))
         d3dSRVDesc.Format = TypeToDXGI_Format(BuffFmt.ValueType, BuffFmt.NumComponents, BuffFmt.IsNormalized);
 
-    Uint32 ElementByteStride = 0;
+    UInt32 ElementByteStride = 0;
     if (BuffDesc.Mode == BUFFER_MODE_FORMATTED || BuffDesc.Mode == BUFFER_MODE_STRUCTURED || (BuffDesc.Mode == BUFFER_MODE_RAW && BuffFmt.ValueType != VT_UNDEFINED))
         ElementByteStride = BuffDesc.ElementByteStride;
     else if (BuffDesc.Mode == BUFFER_MODE_RAW && BuffFmt.ValueType == VT_UNDEFINED)
@@ -326,7 +326,7 @@ void BufferViewDesc_to_D3D_UAV_DESC(const BufferDesc& BuffDesc, const BufferView
     if (BuffDesc.Mode == BUFFER_MODE_FORMATTED || (BuffDesc.Mode == BUFFER_MODE_RAW && BuffFmt.ValueType != VT_UNDEFINED))
         d3dUAVDesc.Format = TypeToDXGI_Format(BuffFmt.ValueType, BuffFmt.NumComponents, BuffFmt.IsNormalized);
 
-    Uint32 ElementByteStride = 0;
+    UInt32 ElementByteStride = 0;
     if (BuffDesc.Mode == BUFFER_MODE_FORMATTED || BuffDesc.Mode == BUFFER_MODE_STRUCTURED || (BuffDesc.Mode == BUFFER_MODE_RAW && BuffFmt.ValueType != VT_UNDEFINED))
         ElementByteStride = BuffDesc.ElementByteStride;
     else if (BuffDesc.Mode == BUFFER_MODE_RAW && BuffFmt.ValueType == VT_UNDEFINED)

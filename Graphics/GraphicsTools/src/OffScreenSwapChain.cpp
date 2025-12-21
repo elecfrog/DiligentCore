@@ -73,7 +73,7 @@ public:
         Resize(m_SwapChainDesc.Width, m_SwapChainDesc.Height, m_SwapChainDesc.PreTransform);
     }
 
-    virtual void DILIGENT_CALL_TYPE Present(Uint32 SyncInterval) override
+    virtual void DILIGENT_CALL_TYPE Present(UInt32 SyncInterval) override
     {
         RefCntAutoPtr<IDeviceContext> pDeviceContext = m_wpDeviceContext.Lock();
         if (!pDeviceContext)
@@ -102,7 +102,7 @@ public:
         }
     }
 
-    virtual void DILIGENT_CALL_TYPE Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final
+    virtual void DILIGENT_CALL_TYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final
     {
         if (TSwapChainBase::Resize(NewWidth, NewHeight, NewPreTransform))
         {
@@ -161,7 +161,7 @@ public:
         UNEXPECTED("Off-screen swap chain can't switch between windowed and full screen modes");
     }
 
-    virtual void DILIGENT_CALL_TYPE SetMaximumFrameLatency(Uint32 MaxLatency) override final
+    virtual void DILIGENT_CALL_TYPE SetMaximumFrameLatency(UInt32 MaxLatency) override final
     {
         UNEXPECTED("Off-screen swap chain can't set the maximum frame latency");
     }
@@ -182,7 +182,7 @@ protected:
     RefCntAutoPtr<ITextureView> m_pRTV;
     RefCntAutoPtr<ITextureView> m_pDSV;
     RefCntAutoPtr<IFence>       m_FrameCompleteFence;
-    Uint64                      m_FrameNumber = 1;
+    UInt64                      m_FrameNumber = 1;
 };
 
 

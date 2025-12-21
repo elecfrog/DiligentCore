@@ -56,8 +56,8 @@ public:
     {
         RENDER_DEVICE_TYPE deviceType             = RENDER_DEVICE_TYPE_UNDEFINED;
         ADAPTER_TYPE       AdapterType            = ADAPTER_TYPE_UNKNOWN;
-        Uint32             AdapterId              = DEFAULT_ADAPTER_ID;
-        Uint32             NumDeferredContexts    = 4;
+        UInt32             AdapterId              = DEFAULT_ADAPTER_ID;
+        UInt32             NumDeferredContexts    = 4;
         bool               EnableDeviceSimulation = false;
 
         DeviceFeatures   Features{DEVICE_FEATURE_STATE_OPTIONAL};
@@ -135,7 +135,7 @@ public:
     static GPUTestingEnvironment* GetInstance() { return ClassPtrCast<GPUTestingEnvironment>(m_pTheEnvironment); }
 
     RefCntAutoPtr<ITexture> CreateTexture(const TextureDesc& Desc, const TextureData* pData = nullptr);
-    RefCntAutoPtr<ITexture> CreateTexture(const char* Name, TEXTURE_FORMAT Fmt, BIND_FLAGS BindFlags, Uint32 Width, Uint32 Height, const void* pInitData = nullptr);
+    RefCntAutoPtr<ITexture> CreateTexture(const char* Name, TEXTURE_FORMAT Fmt, BIND_FLAGS BindFlags, UInt32 Width, UInt32 Height, const void* pInitData = nullptr);
 
     RefCntAutoPtr<IBuffer> CreateBuffer(const BufferDesc& Desc, const void* pInitData = nullptr);
 
@@ -154,9 +154,9 @@ public:
 protected:
     NativeWindow CreateNativeWindow();
 
-    Uint32 FindAdapter(const std::vector<GraphicsAdapterInfo>& Adapters,
+    UInt32 FindAdapter(const std::vector<GraphicsAdapterInfo>& Adapters,
                        ADAPTER_TYPE                            AdapterType,
-                       Uint32                                  AdapterId);
+                       UInt32                                  AdapterId);
 
     const RENDER_DEVICE_TYPE m_DeviceType;
 
@@ -172,7 +172,7 @@ protected:
 
     RefCntAutoPtr<IRenderDevice>               m_pDevice;
     std::vector<RefCntAutoPtr<IDeviceContext>> m_pDeviceContexts;
-    Uint32                                     m_NumImmediateContexts = 1;
+    UInt32                                     m_NumImmediateContexts = 1;
     RefCntAutoPtr<ISwapChain>                  m_pSwapChain;
     SHADER_COMPILER                            m_ShaderCompiler = SHADER_COMPILER_DEFAULT;
 

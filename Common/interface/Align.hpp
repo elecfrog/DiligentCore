@@ -104,7 +104,7 @@ inline typename std::conditional<sizeof(T1) >= sizeof(T2), T1, T2>::type AlignUp
 template <typename T>
 inline typename std::enable_if<std::is_unsigned<T>::value, T>::type AlignUpToPowerOfTwo(T Val)
 {
-    using MSBType = typename std::conditional<std::is_same<T, Uint64>::value, Uint64, Uint32>::type;
+    using MSBType = typename std::conditional<std::is_same<T, UInt64>::value, UInt64, UInt32>::type;
 
     return Val == 0 || IsPowerOfTwo(Val) ?
         Val :
@@ -113,7 +113,7 @@ inline typename std::enable_if<std::is_unsigned<T>::value, T>::type AlignUpToPow
 template <typename T>
 inline typename std::enable_if<std::is_unsigned<T>::value, T>::type AlignDownToPowerOfTwo(T Val)
 {
-    using MSBType = typename std::conditional<std::is_same<T, Uint64>::value, Uint64, Uint32>::type;
+    using MSBType = typename std::conditional<std::is_same<T, UInt64>::value, UInt64, UInt32>::type;
 
     return Val == 0 || IsPowerOfTwo(Val) ?
         Val :

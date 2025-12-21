@@ -49,13 +49,13 @@ namespace
 template <typename HandlerType>
 void ProcessSignatureResources(const PipelineResourceSignatureD3D11Impl& Signature,
                                const SHADER_RESOURCE_VARIABLE_TYPE*      AllowedVarTypes,
-                               Uint32                                    NumAllowedTypes,
+                               UInt32                                    NumAllowedTypes,
                                SHADER_TYPE                               ShaderStages,
                                HandlerType&&                             Handler)
 {
     const bool UsingCombinedSamplers = Signature.IsUsingCombinedSamplers();
     Signature.ProcessResources(AllowedVarTypes, NumAllowedTypes, ShaderStages,
-                               [&](const PipelineResourceDesc& ResDesc, Uint32 Index) //
+                               [&](const PipelineResourceDesc& ResDesc, UInt32 Index) //
                                {
                                    const PipelineResourceSignatureD3D11Impl::ResourceAttribs& ResAttr = Signature.GetResourceAttribs(Index);
 
@@ -97,13 +97,13 @@ void ShaderVariableManagerD3D11::Destroy(IMemoryAllocator& Allocator)
     TBase::Destroy(Allocator);
 }
 
-const PipelineResourceDesc& ShaderVariableManagerD3D11::GetResourceDesc(Uint32 Index) const
+const PipelineResourceDesc& ShaderVariableManagerD3D11::GetResourceDesc(UInt32 Index) const
 {
     VERIFY_EXPR(m_pSignature);
     return m_pSignature->GetResourceDesc(Index);
 }
 
-const PipelineResourceAttribsD3D11& ShaderVariableManagerD3D11::GetResourceAttribs(Uint32 Index) const
+const PipelineResourceAttribsD3D11& ShaderVariableManagerD3D11::GetResourceAttribs(UInt32 Index) const
 {
     VERIFY_EXPR(m_pSignature);
     return m_pSignature->GetResourceAttribs(Index);
@@ -112,13 +112,13 @@ const PipelineResourceAttribsD3D11& ShaderVariableManagerD3D11::GetResourceAttri
 D3DShaderResourceCounters ShaderVariableManagerD3D11::CountResources(
     const PipelineResourceSignatureD3D11Impl& Signature,
     const SHADER_RESOURCE_VARIABLE_TYPE*      AllowedVarTypes,
-    Uint32                                    NumAllowedTypes,
+    UInt32                                    NumAllowedTypes,
     const SHADER_TYPE                         ShaderType)
 {
     D3DShaderResourceCounters Counters;
     ProcessSignatureResources(
         Signature, AllowedVarTypes, NumAllowedTypes, ShaderType,
-        [&](Uint32 Index) //
+        [&](UInt32 Index) //
         {
             const PipelineResourceDesc& ResDesc = Signature.GetResourceDesc(Index);
             static_assert(SHADER_RESOURCE_TYPE_LAST == 8, "Please update the switch below to handle the new shader resource range");
@@ -142,7 +142,7 @@ D3DShaderResourceCounters ShaderVariableManagerD3D11::CountResources(
 
 size_t ShaderVariableManagerD3D11::GetRequiredMemorySize(const PipelineResourceSignatureD3D11Impl& Signature,
                                                          const SHADER_RESOURCE_VARIABLE_TYPE*      AllowedVarTypes,
-                                                         Uint32                                    NumAllowedTypes,
+                                                         UInt32                                    NumAllowedTypes,
                                                          SHADER_TYPE                               ShaderType)
 {
     const D3DShaderResourceCounters ResCounters = CountResources(Signature, AllowedVarTypes, NumAllowedTypes, ShaderType);
@@ -161,12 +161,12 @@ size_t ShaderVariableManagerD3D11::GetRequiredMemorySize(const PipelineResourceS
 void ShaderVariableManagerD3D11::Initialize(const PipelineResourceSignatureD3D11Impl& Signature,
                                             IMemoryAllocator&                         Allocator,
                                             const SHADER_RESOURCE_VARIABLE_TYPE*      AllowedVarTypes,
-                                            Uint32                                    NumAllowedTypes,
+                                            UInt32                                    NumAllowedTypes,
                                             SHADER_TYPE                               ShaderType)
 {
     const D3DShaderResourceCounters ResCounters = CountResources(Signature, AllowedVarTypes, NumAllowedTypes, ShaderType);
 
-    m_ShaderTypeIndex = static_cast<Uint8>(GetShaderTypeIndex(ShaderType));
+    m_ShaderTypeIndex = static_cast<UInt8>(GetShaderTypeIndex(ShaderType));
 
     // Initialize offsets
     size_t CurrentOffset = 0;
@@ -203,16 +203,16 @@ void ShaderVariableManagerD3D11::Initialize(const PipelineResourceSignatureD3D11
     // clang-format on
 
     // Current resource index for every resource type
-    Uint32 cb     = 0;
-    Uint32 texSrv = 0;
-    Uint32 texUav = 0;
-    Uint32 bufSrv = 0;
-    Uint32 bufUav = 0;
-    Uint32 sam    = 0;
+    UInt32 cb     = 0;
+    UInt32 texSrv = 0;
+    UInt32 texUav = 0;
+    UInt32 bufSrv = 0;
+    UInt32 bufUav = 0;
+    UInt32 sam    = 0;
 
     ProcessSignatureResources(
         Signature, AllowedVarTypes, NumAllowedTypes, ShaderType,
-        [&](Uint32 Index) //
+        [&](UInt32 Index) //
         {
             const PipelineResourceDesc& ResDesc = Signature.GetResourceDesc(Index);
             static_assert(SHADER_RESOURCE_TYPE_LAST == 8, "Please update the switch below to handle the new shader resource range");
@@ -286,7 +286,7 @@ void ShaderVariableManagerD3D11::ConstBuffBindInfo::BindResource(const BindResou
     ResourceCache.SetResource<D3D11_RESOURCE_RANGE_CBV>(Attr.BindPoints + BindInfo.ArrayIndex, std::move(pBuffD3D11Impl), BindInfo.BufferBaseOffset, BindInfo.BufferRangeSize);
 }
 
-void ShaderVariableManagerD3D11::ConstBuffBindInfo::SetDynamicOffset(Uint32 ArrayIndex, Uint32 Offset)
+void ShaderVariableManagerD3D11::ConstBuffBindInfo::SetDynamicOffset(UInt32 ArrayIndex, UInt32 Offset)
 {
     const PipelineResourceAttribsD3D11& Attr = GetAttribs();
     const PipelineResourceDesc&         Desc = GetDesc();
@@ -331,7 +331,7 @@ void ShaderVariableManagerD3D11::TexSRVBindInfo::BindResource(const BindResource
                "PipelineResourceSignatureD3D11Impl::CreateLayout(). This mismatch is a bug.");
         VERIFY_EXPR((Desc.ShaderStages & SampDesc.ShaderStages) == Desc.ShaderStages);
         VERIFY_EXPR(SampDesc.ArraySize == Desc.ArraySize || SampDesc.ArraySize == 1);
-        const Uint32 SampArrayIndex = (SampDesc.ArraySize != 1 ? BindInfo.ArrayIndex : 0);
+        const UInt32 SampArrayIndex = (SampDesc.ArraySize != 1 ? BindInfo.ArrayIndex : 0);
 
         if (pViewD3D11)
         {
@@ -527,8 +527,8 @@ void ShaderVariableManagerD3D11::BindResources(IResourceMapping* pResourceMappin
 template <typename ResourceType>
 IShaderResourceVariable* ShaderVariableManagerD3D11::GetResourceByName(const Char* Name) const
 {
-    Uint32 NumResources = GetNumResources<ResourceType>();
-    for (Uint32 res = 0; res < NumResources; ++res)
+    UInt32 NumResources = GetNumResources<ResourceType>();
+    for (UInt32 res = 0; res < NumResources; ++res)
     {
         auto& Resource = GetResource<ResourceType>(res);
         if (strcmp(Resource.GetDesc().Name, Name) == 0)
@@ -571,7 +571,7 @@ public:
     ShaderVariableIndexLocator(const ShaderVariableManagerD3D11& _Mgr, const IShaderResourceVariable& Variable) :
         // clang-format off
         Mgr      {_Mgr},
-        VarOffset(reinterpret_cast<const Uint8*>(&Variable) - reinterpret_cast<const Uint8*>(_Mgr.m_pVariables))
+        VarOffset(reinterpret_cast<const UInt8*>(&Variable) - reinterpret_cast<const UInt8*>(_Mgr.m_pVariables))
     // clang-format on
     {}
 
@@ -589,7 +589,7 @@ public:
         {
             size_t RelativeOffset = VarOffset - Mgr.GetResourceOffset<ResourceType>();
             DEV_CHECK_ERR(RelativeOffset % sizeof(ResourceType) == 0, "Offset is not multiple of resource type (", sizeof(ResourceType), ")");
-            Index += static_cast<Uint32>(RelativeOffset / sizeof(ResourceType));
+            Index += static_cast<UInt32>(RelativeOffset / sizeof(ResourceType));
             return true;
         }
         else
@@ -599,18 +599,18 @@ public:
         }
     }
 
-    Uint32 GetIndex() const { return Index; }
+    UInt32 GetIndex() const { return Index; }
 
 private:
     const ShaderVariableManagerD3D11& Mgr;
     const size_t                      VarOffset;
-    Uint32                            Index = 0;
+    UInt32                            Index = 0;
 #ifdef DILIGENT_DEBUG
-    Uint32 dbgPreviousResourceOffset = 0;
+    UInt32 dbgPreviousResourceOffset = 0;
 #endif
 };
 
-Uint32 ShaderVariableManagerD3D11::GetVariableIndex(const IShaderResourceVariable& Variable) const
+UInt32 ShaderVariableManagerD3D11::GetVariableIndex(const IShaderResourceVariable& Variable) const
 {
     if (m_pVariables == nullptr)
     {
@@ -647,7 +647,7 @@ Uint32 ShaderVariableManagerD3D11::GetVariableIndex(const IShaderResourceVariabl
 class ShaderVariableLocator
 {
 public:
-    ShaderVariableLocator(const ShaderVariableManagerD3D11& _Mgr, Uint32 _Index) :
+    ShaderVariableLocator(const ShaderVariableManagerD3D11& _Mgr, UInt32 _Index) :
         // clang-format off
         Mgr   {_Mgr},
         Index {_Index }
@@ -664,7 +664,7 @@ public:
             dbgPreviousResourceOffset = Mgr.GetResourceOffset<ResourceType>();
         }
 #endif
-        Uint32 NumResources = Mgr.GetNumResources<ResourceType>();
+        UInt32 NumResources = Mgr.GetNumResources<ResourceType>();
         if (Index < NumResources)
             return &Mgr.GetResource<ResourceType>(Index);
         else
@@ -676,13 +676,13 @@ public:
 
 private:
     ShaderVariableManagerD3D11 const& Mgr;
-    Uint32                            Index = 0;
+    UInt32                            Index = 0;
 #ifdef DILIGENT_DEBUG
-    Uint32 dbgPreviousResourceOffset = 0;
+    UInt32 dbgPreviousResourceOffset = 0;
 #endif
 };
 
-IShaderResourceVariable* ShaderVariableManagerD3D11::GetVariable(Uint32 Index) const
+IShaderResourceVariable* ShaderVariableManagerD3D11::GetVariable(UInt32 Index) const
 {
     ShaderVariableLocator VarLocator(*this, Index);
 
@@ -711,7 +711,7 @@ IShaderResourceVariable* ShaderVariableManagerD3D11::GetVariable(Uint32 Index) c
     return nullptr;
 }
 
-Uint32 ShaderVariableManagerD3D11::GetVariableCount() const
+UInt32 ShaderVariableManagerD3D11::GetVariableCount() const
 {
     return GetNumCBs() + GetNumTexSRVs() + GetNumTexUAVs() + GetNumBufSRVs() + GetNumBufUAVs() + GetNumSamplers();
 }

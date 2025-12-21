@@ -58,20 +58,20 @@ CommandQueueD3D12Impl::~CommandQueueD3D12Impl()
     CloseHandle(m_WaitForGPUEventHandle);
 }
 
-Uint64 CommandQueueD3D12Impl::Submit(Uint32                    NumCommandLists,
+UInt64 CommandQueueD3D12Impl::Submit(UInt32                    NumCommandLists,
                                      ID3D12CommandList* const* ppCommandLists)
 {
     std::lock_guard<std::mutex> Lock{m_QueueMtx};
 
     // Increment the value before submitting the list
-    Uint64 FenceValue = m_NextFenceValue.fetch_add(1);
+    UInt64 FenceValue = m_NextFenceValue.fetch_add(1);
 
     // Render device submits null command list to signal the fence and
     // discard all resources.
     if (NumCommandLists != 0 && ppCommandLists != nullptr)
     {
 #ifdef DILIGENT_DEBUG
-        for (Uint32 i = 0; i < NumCommandLists; ++i)
+        for (UInt32 i = 0; i < NumCommandLists; ++i)
         {
             VERIFY(ppCommandLists[i] != nullptr, "Command list must not be null");
         }
@@ -85,11 +85,11 @@ Uint64 CommandQueueD3D12Impl::Submit(Uint32                    NumCommandLists,
     return FenceValue;
 }
 
-Uint64 CommandQueueD3D12Impl::WaitForIdle()
+UInt64 CommandQueueD3D12Impl::WaitForIdle()
 {
     std::lock_guard<std::mutex> Lock{m_QueueMtx};
 
-    Uint64 LastSignaledFenceValue = m_NextFenceValue.fetch_add(1);
+    UInt64 LastSignaledFenceValue = m_NextFenceValue.fetch_add(1);
 
     m_pd3d12CmdQueue->Signal(m_d3d12Fence, LastSignaledFenceValue);
 
@@ -102,12 +102,12 @@ Uint64 CommandQueueD3D12Impl::WaitForIdle()
     return LastSignaledFenceValue;
 }
 
-Uint64 CommandQueueD3D12Impl::GetCompletedFenceValue()
+UInt64 CommandQueueD3D12Impl::GetCompletedFenceValue()
 {
-    Uint64 CompletedFenceValue = m_d3d12Fence->GetCompletedValue();
+    UInt64 CompletedFenceValue = m_d3d12Fence->GetCompletedValue();
     VERIFY(CompletedFenceValue != UINT64_MAX, "If the device has been removed, the return value will be UINT64_MAX");
 
-    Uint64 CurrValue = m_LastCompletedFenceValue.load();
+    UInt64 CurrValue = m_LastCompletedFenceValue.load();
     while (!m_LastCompletedFenceValue.compare_exchange_weak(CurrValue, std::max(CurrValue, CompletedFenceValue)))
     {
         // If exchange fails, CurrValue will hold the actual value of m_LastCompletedFenceValue
@@ -116,7 +116,7 @@ Uint64 CommandQueueD3D12Impl::GetCompletedFenceValue()
     return m_LastCompletedFenceValue.load();
 }
 
-void CommandQueueD3D12Impl::EnqueueSignal(ID3D12Fence* pFence, Uint64 Value)
+void CommandQueueD3D12Impl::EnqueueSignal(ID3D12Fence* pFence, UInt64 Value)
 {
     DEV_CHECK_ERR(pFence, "Fence must not be null");
 
@@ -124,7 +124,7 @@ void CommandQueueD3D12Impl::EnqueueSignal(ID3D12Fence* pFence, Uint64 Value)
     m_pd3d12CmdQueue->Signal(pFence, Value);
 }
 
-void CommandQueueD3D12Impl::WaitFence(ID3D12Fence* pFence, Uint64 Value)
+void CommandQueueD3D12Impl::WaitFence(ID3D12Fence* pFence, UInt64 Value)
 {
     DEV_CHECK_ERR(pFence, "Fence must not be null");
 
@@ -132,13 +132,13 @@ void CommandQueueD3D12Impl::WaitFence(ID3D12Fence* pFence, Uint64 Value)
     m_pd3d12CmdQueue->Wait(pFence, Value);
 }
 
-void CommandQueueD3D12Impl::UpdateTileMappings(ResourceTileMappingsD3D12* pMappings, Uint32 Count)
+void CommandQueueD3D12Impl::UpdateTileMappings(ResourceTileMappingsD3D12* pMappings, UInt32 Count)
 {
     DEV_CHECK_ERR(pMappings != nullptr, "Tile mappings must not be null");
 
     std::lock_guard<std::mutex> Lock{m_QueueMtx};
 
-    for (Uint32 i = 0; i < Count; ++i)
+    for (UInt32 i = 0; i < Count; ++i)
     {
         const ResourceTileMappingsD3D12& Mapping = pMappings[i];
         if (Mapping.UseNVApi)

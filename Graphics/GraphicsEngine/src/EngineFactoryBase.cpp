@@ -57,8 +57,8 @@ void VerifyEngineCreateInfo(const EngineCreateInfo& EngineCI, const GraphicsAdap
         LOG_ERROR_AND_THROW("NumImmediateContexts (", EngineCI.NumImmediateContexts, ") must be less than ", MaxImmediateContexts, "");
     }
 
-    std::array<Uint32, DILIGENT_MAX_ADAPTER_QUEUES> QueueCount = {};
-    for (Uint32 CtxInd = 0; CtxInd < EngineCI.NumImmediateContexts; ++CtxInd)
+    std::array<UInt32, DILIGENT_MAX_ADAPTER_QUEUES> QueueCount = {};
+    for (UInt32 CtxInd = 0; CtxInd < EngineCI.NumImmediateContexts; ++CtxInd)
     {
         const ImmediateContextCreateInfo& ContextInfo = EngineCI.pImmediateContextInfo[CtxInd];
 

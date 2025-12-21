@@ -35,56 +35,56 @@ namespace Diligent
 
 struct LinuxMisc : public BasicPlatformMisc
 {
-    static Uint32 GetMSB(Uint32 Val)
+    static UInt32 GetMSB(UInt32 Val)
     {
         if (Val == 0) return 32;
 
         // Returns the number of leading 0-bits in x, starting at the
         // most significant bit position. If x is 0, the result is undefined.
         int LeadingZeros = __builtin_clz(Val);
-        return static_cast<Uint32>(31 - LeadingZeros);
+        return static_cast<UInt32>(31 - LeadingZeros);
     }
 
-    static Uint32 GetLSB(Uint32 Val)
+    static UInt32 GetLSB(UInt32 Val)
     {
         if (Val == 0) return 32;
 
         // Returns the number of trailing 0-bits in x, starting at the
         // least significant bit position. If x is 0, the result is undefined.
         auto TrailingZeros = __builtin_ctz(Val);
-        return static_cast<Uint32>(TrailingZeros);
+        return static_cast<UInt32>(TrailingZeros);
     }
 
-    static Uint32 GetMSB(Uint64 Val)
+    static UInt32 GetMSB(UInt64 Val)
     {
         if (Val == 0) return 64;
 
         // Returns the number of leading 0-bits in x, starting at the
         // most significant bit position. If x is 0, the result is undefined.
         int LeadingZeros = __builtin_clzll(Val);
-        return static_cast<Uint32>(63 - LeadingZeros);
+        return static_cast<UInt32>(63 - LeadingZeros);
     }
 
-    static Uint32 GetLSB(Uint64 Val)
+    static UInt32 GetLSB(UInt64 Val)
     {
         if (Val == 0) return 64;
 
         // Returns the number of trailing 0-bits in x, starting at the
         // least significant bit position. If x is 0, the result is undefined.
         auto TrailingZeros = __builtin_ctzll(Val);
-        return static_cast<Uint32>(TrailingZeros);
+        return static_cast<UInt32>(TrailingZeros);
     }
 
-    static Uint32 CountOneBits(Uint32 Val)
+    static UInt32 CountOneBits(UInt32 Val)
     {
         // Returns the number of 1-bits in x.
-        return static_cast<Uint32>(__builtin_popcount(Val));
+        return static_cast<UInt32>(__builtin_popcount(Val));
     }
 
-    static Uint32 CountOneBits(Uint64 Val)
+    static UInt32 CountOneBits(UInt64 Val)
     {
         // Returns the number of 1-bits in x.
-        return static_cast<Uint32>(__builtin_popcountll(Val));
+        return static_cast<UInt32>(__builtin_popcountll(Val));
     }
 
     template <typename Type>
@@ -110,7 +110,7 @@ struct LinuxMisc : public BasicPlatformMisc
 
     /// Sets the current thread affinity mask and on success returns the previous mask.
     /// On failure, returns 0.
-    static Uint64 SetCurrentThreadAffinity(Uint64 Mask);
+    static UInt64 SetCurrentThreadAffinity(UInt64 Mask);
 };
 
 } // namespace Diligent

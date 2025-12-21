@@ -50,7 +50,7 @@ void ValidateBufferDesc(const BufferDesc& Desc, const IRenderDevice* pDevice) no
 
     static_assert(BIND_FLAG_LAST == 0x800L, "Please update this function to handle the new bind flags");
 
-    constexpr Uint32 AllowedBindFlags =
+    constexpr UInt32 AllowedBindFlags =
         BIND_VERTEX_BUFFER |
         BIND_INDEX_BUFFER |
         BIND_UNIFORM_BUFFER |
@@ -199,11 +199,11 @@ void ValidateBufferInitData(const BufferDesc& Desc, const BufferData* pBuffData)
         const DeviceContextDesc& CtxDesc = pBuffData->pContext->GetDesc();
         if (CtxDesc.IsDeferred)
             LOG_BUFFER_ERROR_AND_THROW("Deferred contexts can't be used to initialize resources");
-        if ((Desc.ImmediateContextMask & (Uint64{1} << CtxDesc.ContextId)) == 0)
+        if ((Desc.ImmediateContextMask & (UInt64{1} << CtxDesc.ContextId)) == 0)
         {
             LOG_BUFFER_ERROR_AND_THROW("Can not initialize the buffer in device context '", CtxDesc.Name,
                                        "' as ImmediateContextMask (", std::hex, Desc.ImmediateContextMask, ") does not contain ",
-                                       std::hex, (Uint64{1} << CtxDesc.ContextId), " bit.");
+                                       std::hex, (UInt64{1} << CtxDesc.ContextId), " bit.");
         }
     }
 
@@ -219,7 +219,7 @@ void ValidateBufferInitData(const BufferDesc& Desc, const BufferData* pBuffData)
 
 void ValidateAndCorrectBufferViewDesc(const BufferDesc& BuffDesc,
                                       BufferViewDesc&   ViewDesc,
-                                      Uint32            StructuredBufferOffsetAlignment) noexcept(false)
+                                      UInt32            StructuredBufferOffsetAlignment) noexcept(false)
 {
     if (ViewDesc.ByteWidth == 0)
     {
@@ -248,10 +248,10 @@ void ValidateAndCorrectBufferViewDesc(const BufferDesc& BuffDesc,
         if (BuffDesc.Mode == BUFFER_MODE_FORMATTED || (BuffDesc.Mode == BUFFER_MODE_RAW && ViewDesc.Format.ValueType != VT_UNDEFINED))
         {
             if (ViewDesc.Format.NumComponents <= 0 || ViewDesc.Format.NumComponents > 4)
-                LOG_ERROR_AND_THROW("Incorrect number of components (", Uint32{ViewDesc.Format.NumComponents}, "). 1, 2, 3, or 4 are allowed values");
+                LOG_ERROR_AND_THROW("Incorrect number of components (", UInt32{ViewDesc.Format.NumComponents}, "). 1, 2, 3, or 4 are allowed values");
             if (ViewDesc.Format.ValueType == VT_FLOAT32 || ViewDesc.Format.ValueType == VT_FLOAT16)
                 ViewDesc.Format.IsNormalized = false;
-            Uint32 ViewElementStride = GetValueSize(ViewDesc.Format.ValueType) * Uint32{ViewDesc.Format.NumComponents};
+            UInt32 ViewElementStride = GetValueSize(ViewDesc.Format.ValueType) * UInt32{ViewDesc.Format.NumComponents};
             if (BuffDesc.Mode == BUFFER_MODE_RAW && BuffDesc.ElementByteStride == 0)
                 LOG_ERROR_AND_THROW("To enable formatted views of a raw buffer, element byte must be specified during buffer initialization");
             if (ViewElementStride != BuffDesc.ElementByteStride)

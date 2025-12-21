@@ -269,8 +269,8 @@ TEST(MeshShaderTest, DrawTriangleIndirect)
     struct IndirectAndCountBuffData
     {
         char   Unused[16];
-        Uint32 IndirectData[3] = {1, 1, 1};
-        Uint32 End;
+        UInt32 IndirectData[3] = {1, 1, 1};
+        UInt32 End;
     };
     IndirectAndCountBuffData Data;
 
@@ -401,8 +401,8 @@ TEST(MeshShaderTest, DrawTriangleIndirectCount)
     struct IndirectAndCountBuffData
     {
         char   Unused[16];
-        Uint32 Count           = 1;
-        Uint32 IndirectData[3] = {1, 1, 1};
+        UInt32 Count           = 1;
+        UInt32 IndirectData[3] = {1, 1, 1};
     };
     IndirectAndCountBuffData Data;
 

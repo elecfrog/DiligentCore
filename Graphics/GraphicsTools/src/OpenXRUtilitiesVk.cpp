@@ -76,11 +76,11 @@ void GetOpenXRGraphicsBindingVk(IRenderDevice*  pDevice,
     *ppGraphicsBinding = pDataBlob.Detach();
 }
 
-void AllocateOpenXRSwapchainImageDataVk(Uint32      ImageCount,
+void AllocateOpenXRSwapchainImageDataVk(UInt32      ImageCount,
                                         IDataBlob** ppSwapchainImageData)
 {
     RefCntAutoPtr<DataBlobImpl> pDataBlob{DataBlobImpl::Create(sizeof(XrSwapchainImageVulkanKHR) * ImageCount)};
-    for (Uint32 i = 0; i < ImageCount; ++i)
+    for (UInt32 i = 0; i < ImageCount; ++i)
     {
         XrSwapchainImageVulkanKHR& Image{pDataBlob->GetDataPtr<XrSwapchainImageVulkanKHR>()[i]};
         Image.type = XR_TYPE_SWAPCHAIN_IMAGE_VULKAN_KHR;
@@ -92,7 +92,7 @@ void AllocateOpenXRSwapchainImageDataVk(Uint32      ImageCount,
 
 void GetOpenXRSwapchainImageVk(IRenderDevice*                    pDevice,
                                const XrSwapchainImageBaseHeader* ImageData,
-                               Uint32                            ImageIndex,
+                               UInt32                            ImageIndex,
                                const TextureDesc&                TexDesc,
                                ITexture**                        ppImage)
 {

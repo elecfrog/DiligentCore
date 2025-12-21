@@ -54,7 +54,7 @@ PipelineStateCacheD3D12Impl::PipelineStateCacheD3D12Impl(IReferenceCounters*    
 PipelineStateCacheD3D12Impl::~PipelineStateCacheD3D12Impl()
 {
     // D3D12 object can only be destroyed when it is no longer used by the GPU
-    GetDevice()->SafeReleaseDeviceObject(std::move(m_pLibrary), ~Uint64{0});
+    GetDevice()->SafeReleaseDeviceObject(std::move(m_pLibrary), ~UInt64{0});
 }
 
 CComPtr<ID3D12DeviceChild> PipelineStateCacheD3D12Impl::LoadComputePipeline(const wchar_t* Name, const D3D12_COMPUTE_PIPELINE_STATE_DESC& Desc)

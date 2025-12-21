@@ -48,8 +48,8 @@ class DurationQueryHelper
 {
 public:
     DurationQueryHelper(IRenderDevice* pDevice,
-                        Uint32         NumQueriesToReserve,
-                        Uint32         ExpectedQueryLimit = 5);
+                        UInt32         NumQueriesToReserve,
+                        UInt32         ExpectedQueryLimit = 5);
 
     // clang-format off
     DurationQueryHelper           (const DurationQueryHelper&) = delete;
@@ -81,7 +81,7 @@ public:
 private:
     RefCntAutoPtr<IRenderDevice> m_pDevice;
 
-    const Uint32 m_ExpectedQueryLimit;
+    const UInt32 m_ExpectedQueryLimit;
 
     struct DurationQuery
     {

@@ -58,7 +58,7 @@ struct SubpassDescX
     SubpassDescX(const SubpassDesc& _Desc) :
         Desc{_Desc}
     {
-        auto CopyAttachments = [](auto*& pAttachments, Uint32 Count, auto& Attachments) {
+        auto CopyAttachments = [](auto*& pAttachments, UInt32 Count, auto& Attachments) {
             if (Count != 0)
             {
                 VERIFY_EXPR(pAttachments != nullptr);
@@ -106,7 +106,7 @@ struct SubpassDescX
     {
         RenderTargets.push_back(RenderTarget);
         Desc.pRenderTargetAttachments    = RenderTargets.data();
-        Desc.RenderTargetAttachmentCount = static_cast<Uint32>(RenderTargets.size());
+        Desc.RenderTargetAttachmentCount = static_cast<UInt32>(RenderTargets.size());
 
         if (pResolve != nullptr)
         {
@@ -125,15 +125,15 @@ struct SubpassDescX
     {
         Inputs.push_back(Input);
         Desc.pInputAttachments    = Inputs.data();
-        Desc.InputAttachmentCount = static_cast<Uint32>(Inputs.size());
+        Desc.InputAttachmentCount = static_cast<UInt32>(Inputs.size());
         return *this;
     }
 
-    SubpassDescX& AddPreserve(Uint32 Preserve)
+    SubpassDescX& AddPreserve(UInt32 Preserve)
     {
         Preserves.push_back(Preserve);
         Desc.pPreserveAttachments    = Preserves.data();
-        Desc.PreserveAttachmentCount = static_cast<Uint32>(Preserves.size());
+        Desc.PreserveAttachmentCount = static_cast<UInt32>(Preserves.size());
         return *this;
     }
 
@@ -246,7 +246,7 @@ private:
     std::vector<AttachmentReference> Inputs;
     std::vector<AttachmentReference> RenderTargets;
     std::vector<AttachmentReference> Resolves;
-    std::vector<Uint32>              Preserves;
+    std::vector<UInt32>              Preserves;
 
     AttachmentReference   DepthStencil;
     ShadingRateAttachment ShadingRate;
@@ -376,13 +376,13 @@ struct RenderPassDescX
 private:
     void SyncDesc()
     {
-        Desc.AttachmentCount = static_cast<Uint32>(Attachments.size());
+        Desc.AttachmentCount = static_cast<UInt32>(Attachments.size());
         Desc.pAttachments    = Desc.AttachmentCount > 0 ? Attachments.data() : nullptr;
 
-        Desc.SubpassCount = static_cast<Uint32>(Subpasses.size());
+        Desc.SubpassCount = static_cast<UInt32>(Subpasses.size());
         Desc.pSubpasses   = Desc.SubpassCount > 0 ? Subpasses.data() : nullptr;
 
-        Desc.DependencyCount = static_cast<Uint32>(Dependencies.size());
+        Desc.DependencyCount = static_cast<UInt32>(Dependencies.size());
         Desc.pDependencies   = Desc.DependencyCount > 0 ? Dependencies.data() : nullptr;
     }
 
@@ -446,7 +446,7 @@ struct InputLayoutDescX
         return Add(Elem);
     }
 
-    InputLayoutDescX& Remove(Uint32 ElemIndex)
+    InputLayoutDescX& Remove(UInt32 ElemIndex)
     {
         VERIFY_EXPR(ElemIndex < Desc.NumElements);
         Elements.erase(Elements.begin() + ElemIndex);
@@ -465,7 +465,7 @@ struct InputLayoutDescX
         return Desc;
     }
 
-    Uint32 GetNumElements() const noexcept
+    UInt32 GetNumElements() const noexcept
     {
         return Desc.NumElements;
     }
@@ -503,7 +503,7 @@ struct InputLayoutDescX
         return Elements[Index];
     }
 
-    std::vector<Uint32> ResolveAutoOffsetsAndStrides()
+    std::vector<UInt32> ResolveAutoOffsetsAndStrides()
     {
         VERIFY_EXPR(Desc.NumElements == Elements.size());
         return ResolveInputLayoutAutoOffsetsAndStrides(Elements.data(), Desc.NumElements);
@@ -512,7 +512,7 @@ struct InputLayoutDescX
 private:
     void SyncDesc(bool CopyStrings = false)
     {
-        Desc.NumElements    = static_cast<Uint32>(Elements.size());
+        Desc.NumElements    = static_cast<UInt32>(Elements.size());
         Desc.LayoutElements = Desc.NumElements > 0 ? Elements.data() : nullptr;
 
         if (CopyStrings)
@@ -649,24 +649,24 @@ struct FramebufferDescX : DeviceObjectAttribsX<FramebufferDescX, FramebufferDesc
     FramebufferDescX& AddAttachment(ITextureView* pView)
     {
         Attachments.push_back(pView);
-        AttachmentCount = static_cast<Uint32>(Attachments.size());
+        AttachmentCount = static_cast<UInt32>(Attachments.size());
         ppAttachments   = Attachments.data();
         return *this;
     }
 
-    FramebufferDescX& SetWidth(Uint32 _Width) noexcept
+    FramebufferDescX& SetWidth(UInt32 _Width) noexcept
     {
         Width = _Width;
         return *this;
     }
 
-    FramebufferDescX& SetHeight(Uint32 _Height) noexcept
+    FramebufferDescX& SetHeight(UInt32 _Height) noexcept
     {
         Height = _Height;
         return *this;
     }
 
-    FramebufferDescX& SetNumArraySlices(Uint32 _NumArraySlices) noexcept
+    FramebufferDescX& SetNumArraySlices(UInt32 _NumArraySlices) noexcept
     {
         NumArraySlices = _NumArraySlices;
         return *this;
@@ -820,7 +820,7 @@ struct PipelineResourceSignatureDescX : DeviceObjectAttribsX<PipelineResourceSig
         return SyncDesc();
     }
 
-    PipelineResourceSignatureDescX& SetBindingIndex(Uint8 _BindingIndex) noexcept
+    PipelineResourceSignatureDescX& SetBindingIndex(UInt8 _BindingIndex) noexcept
     {
         BindingIndex = _BindingIndex;
         return *this;
@@ -860,10 +860,10 @@ struct PipelineResourceSignatureDescX : DeviceObjectAttribsX<PipelineResourceSig
 private:
     PipelineResourceSignatureDescX& SyncDesc(bool UpdateStrings = false)
     {
-        NumResources = static_cast<Uint32>(ResCopy.size());
+        NumResources = static_cast<UInt32>(ResCopy.size());
         Resources    = NumResources > 0 ? ResCopy.data() : nullptr;
 
-        NumImmutableSamplers = static_cast<Uint32>(ImtblSamCopy.size());
+        NumImmutableSamplers = static_cast<UInt32>(ImtblSamCopy.size());
         ImmutableSamplers    = NumImmutableSamplers > 0 ? ImtblSamCopy.data() : nullptr;
 
         if (UpdateStrings)
@@ -1017,10 +1017,10 @@ struct PipelineResourceLayoutDescX : PipelineResourceLayoutDesc
 private:
     PipelineResourceLayoutDescX& SyncDesc(bool UpdateStrings = false)
     {
-        NumVariables = static_cast<Uint32>(VarCopy.size());
+        NumVariables = static_cast<UInt32>(VarCopy.size());
         Variables    = NumVariables > 0 ? VarCopy.data() : nullptr;
 
-        NumImmutableSamplers = static_cast<Uint32>(ImtblSamCopy.size());
+        NumImmutableSamplers = static_cast<UInt32>(ImtblSamCopy.size());
         ImmutableSamplers    = NumImmutableSamplers > 0 ? ImtblSamCopy.data() : nullptr;
 
         if (UpdateStrings)
@@ -1134,13 +1134,13 @@ struct BottomLevelASDescX : DeviceObjectAttribsX<BottomLevelASDescX, BottomLevel
         return *this;
     }
 
-    BottomLevelASDescX& SetCompactedSize(Uint64 _CompactedSize) noexcept
+    BottomLevelASDescX& SetCompactedSize(UInt64 _CompactedSize) noexcept
     {
         CompactedSize = _CompactedSize;
         return *this;
     }
 
-    BottomLevelASDescX& SetImmediateContextMask(Uint64 _ImmediateContextMask) noexcept
+    BottomLevelASDescX& SetImmediateContextMask(UInt64 _ImmediateContextMask) noexcept
     {
         ImmediateContextMask = _ImmediateContextMask;
         return *this;
@@ -1167,10 +1167,10 @@ struct BottomLevelASDescX : DeviceObjectAttribsX<BottomLevelASDescX, BottomLevel
 private:
     BottomLevelASDescX& SyncDesc(bool UpdateStrings = false)
     {
-        TriangleCount = static_cast<Uint32>(Triangles.size());
+        TriangleCount = static_cast<UInt32>(Triangles.size());
         pTriangles    = TriangleCount > 0 ? Triangles.data() : nullptr;
 
-        BoxCount = static_cast<Uint32>(Boxes.size());
+        BoxCount = static_cast<UInt32>(Boxes.size());
         pBoxes   = BoxCount > 0 ? Boxes.data() : nullptr;
 
         if (UpdateStrings)
@@ -1210,7 +1210,7 @@ private:
     std::unordered_set<std::string>  StringPool;
 };
 
-std::unique_ptr<Uint8[]> CopyPSOCreateInternalInfo(void* pData);
+std::unique_ptr<UInt8[]> CopyPSOCreateInternalInfo(void* pData);
 
 /// C++ wrapper over PipelineStateCreateInfo
 
@@ -1271,13 +1271,13 @@ struct PipelineStateCreateInfoX : CreateInfoType
         return SetResourceLayout(Layout);
     }
 
-    DerivedType& SetImmediateContextMask(Uint64 ImmediateContextMask) noexcept
+    DerivedType& SetImmediateContextMask(UInt64 ImmediateContextMask) noexcept
     {
         this->PSODesc.ImmediateContextMask = ImmediateContextMask;
         return static_cast<DerivedType&>(*this);
     }
 
-    DerivedType& SetSRBAllocationGranularity(Uint32 SRBAllocationGranularity) noexcept
+    DerivedType& SetSRBAllocationGranularity(UInt32 SRBAllocationGranularity) noexcept
     {
         this->PSODesc.SRBAllocationGranularity = SRBAllocationGranularity;
         return static_cast<DerivedType&>(*this);
@@ -1299,7 +1299,7 @@ struct PipelineStateCreateInfoX : CreateInfoType
 
         Signatures.emplace_back(pSignature);
         this->ppResourceSignatures    = Signatures.data();
-        this->ResourceSignaturesCount = static_cast<Uint32>(Signatures.size());
+        this->ResourceSignaturesCount = static_cast<UInt32>(Signatures.size());
         VERIFY_EXPR(this->ResourceSignaturesCount <= MAX_RESOURCE_SIGNATURES);
         Objects.emplace_back(pSignature);
 
@@ -1324,7 +1324,7 @@ struct PipelineStateCreateInfoX : CreateInfoType
         }
 
         this->ppResourceSignatures    = Signatures.data();
-        this->ResourceSignaturesCount = static_cast<Uint32>(Signatures.size());
+        this->ResourceSignaturesCount = static_cast<UInt32>(Signatures.size());
 
         return RemoveObject(pSignature);
     }
@@ -1382,7 +1382,7 @@ protected:
     std::unordered_set<std::string>           StringPool;
     std::vector<RefCntAutoPtr<IDeviceObject>> Objects;
     std::vector<IPipelineResourceSignature*>  Signatures;
-    std::unique_ptr<Uint8[]>                  InternalData;
+    std::unique_ptr<UInt8[]>                  InternalData;
 };
 
 
@@ -1487,7 +1487,7 @@ struct GraphicsPipelineStateCreateInfoX : PipelineStateCreateInfoX<GraphicsPipel
         return SetBlendDesc(BSDesc);
     }
 
-    GraphicsPipelineStateCreateInfoX& SetSampleMask(Uint32 SampleMask) noexcept
+    GraphicsPipelineStateCreateInfoX& SetSampleMask(UInt32 SampleMask) noexcept
     {
         GraphicsPipeline.SampleMask = SampleMask;
         return *this;
@@ -1526,7 +1526,7 @@ struct GraphicsPipelineStateCreateInfoX : PipelineStateCreateInfoX<GraphicsPipel
         return *this;
     }
 
-    GraphicsPipelineStateCreateInfoX& SetNumViewports(Uint8 NumViewports) noexcept
+    GraphicsPipelineStateCreateInfoX& SetNumViewports(UInt8 NumViewports) noexcept
     {
         GraphicsPipeline.NumViewports = NumViewports;
         return *this;
@@ -1538,7 +1538,7 @@ struct GraphicsPipelineStateCreateInfoX : PipelineStateCreateInfoX<GraphicsPipel
         return *this;
     }
 
-    GraphicsPipelineStateCreateInfoX& SetSubpassIndex(Uint8 SubpassIndex) noexcept
+    GraphicsPipelineStateCreateInfoX& SetSubpassIndex(UInt8 SubpassIndex) noexcept
     {
         GraphicsPipeline.SubpassIndex = SubpassIndex;
         return *this;
@@ -1587,7 +1587,7 @@ struct GraphicsPipelineStateCreateInfoX : PipelineStateCreateInfoX<GraphicsPipel
         return *this;
     }
 
-    GraphicsPipelineStateCreateInfoX& SetNodeMask(Uint32 NodeMask) noexcept
+    GraphicsPipelineStateCreateInfoX& SetNodeMask(UInt32 NodeMask) noexcept
     {
         GraphicsPipeline.NodeMask = NodeMask;
         return *this;
@@ -1711,7 +1711,7 @@ struct TilePipelineStateCreateInfoX : PipelineStateCreateInfoX<TilePipelineState
     TilePipelineStateCreateInfoX(TilePipelineStateCreateInfoX&&) noexcept = default;
     TilePipelineStateCreateInfoX& operator=(TilePipelineStateCreateInfoX&&) noexcept = default;
 
-    TilePipelineStateCreateInfoX& SetSampleCount(Uint8 SampleCount) noexcept
+    TilePipelineStateCreateInfoX& SetSampleCount(UInt8 SampleCount) noexcept
     {
         TilePipeline.SampleCount = SampleCount;
         return *this;
@@ -1912,7 +1912,7 @@ struct RayTracingPipelineStateCreateInfoX : PipelineStateCreateInfoX<RayTracingP
     }
 
 private:
-    enum SYNC_FLAGS : Uint32
+    enum SYNC_FLAGS : UInt32
     {
         SYNC_FLAG_NONE           = 0u,
         SYNC_FLAG_UPDATE_STRINGS = 1u << 0u,
@@ -1921,13 +1921,13 @@ private:
     };
     RayTracingPipelineStateCreateInfoX& SyncDesc(SYNC_FLAGS UpdateFlags)
     {
-        GeneralShaderCount = static_cast<Uint32>(GeneralShaders.size());
+        GeneralShaderCount = static_cast<UInt32>(GeneralShaders.size());
         pGeneralShaders    = GeneralShaderCount > 0 ? GeneralShaders.data() : nullptr;
 
-        TriangleHitShaderCount = static_cast<Uint32>(TriangleHitShaders.size());
+        TriangleHitShaderCount = static_cast<UInt32>(TriangleHitShaders.size());
         pTriangleHitShaders    = TriangleHitShaderCount > 0 ? TriangleHitShaders.data() : nullptr;
 
-        ProceduralHitShaderCount = static_cast<Uint32>(ProceduralHitShaders.size());
+        ProceduralHitShaderCount = static_cast<UInt32>(ProceduralHitShaders.size());
         pProceduralHitShaders    = ProceduralHitShaderCount > 0 ? ProceduralHitShaders.data() : nullptr;
 
         if ((UpdateFlags & SYNC_FLAG_UPDATE_STRINGS) != 0)
@@ -2067,7 +2067,7 @@ public:
     }
 
     RefCntAutoPtr<IBuffer> CreateBuffer(const Char*      Name,
-                                        Uint64           Size,
+                                        UInt64           Size,
                                         USAGE            Usage          = USAGE_DYNAMIC,
                                         BIND_FLAGS       BindFlags      = BIND_UNIFORM_BUFFER,
                                         CPU_ACCESS_FLAGS CPUAccessFlags = CPU_ACCESS_NONE,
@@ -2244,7 +2244,7 @@ public:
 
     SparseTextureFormatInfo GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                        RESOURCE_DIMENSION Dimension,
-                                                       Uint32             SampleCount) const noexcept
+                                                       UInt32             SampleCount) const noexcept
     {
         return m_pDevice->GetSparseTextureFormatInfo(TexFormat, Dimension, SampleCount);
     }
@@ -2363,8 +2363,8 @@ public:
     }
 
     bool SetArray(IDeviceObject* const*     ppObjects,
-                  Uint32                    FirstElement,
-                  Uint32                    NumElements,
+                  UInt32                    FirstElement,
+                  UInt32                    NumElements,
                   SET_SHADER_RESOURCE_FLAGS Flags = SET_SHADER_RESOURCE_FLAG_NONE)
     {
         if (m_pVar)
@@ -2376,9 +2376,9 @@ public:
     }
 
     bool SetBufferRange(IDeviceObject*            pObject,
-                        Uint64                    Offset,
-                        Uint64                    Size,
-                        Uint32                    ArrayIndex = 0,
+                        UInt64                    Offset,
+                        UInt64                    Size,
+                        UInt32                    ArrayIndex = 0,
                         SET_SHADER_RESOURCE_FLAGS Flags      = SET_SHADER_RESOURCE_FLAG_NONE)
     {
         if (m_pVar)
@@ -2389,8 +2389,8 @@ public:
         return false;
     }
 
-    bool SetBufferOffset(Uint32 Offset,
-                         Uint32 ArrayIndex = 0)
+    bool SetBufferOffset(UInt32 Offset,
+                         UInt32 ArrayIndex = 0)
     {
         if (m_pVar)
         {
@@ -2400,7 +2400,7 @@ public:
         return false;
     }
 
-    IDeviceObject* Get(Uint32 ArrayIndex = 0) const
+    IDeviceObject* Get(UInt32 ArrayIndex = 0) const
     {
         return m_pVar ? m_pVar->Get(ArrayIndex) : nullptr;
     }
@@ -2425,8 +2425,8 @@ public:
 
     MultiDrawAttribsX(const std::initializer_list<MultiDrawItem>& DrawItems,
                       DRAW_FLAGS                                  Flags,
-                      Uint32                                      NumInstances          = 1,
-                      Uint32                                      FirstInstanceLocation = 0) :
+                      UInt32                                      NumInstances          = 1,
+                      UInt32                                      FirstInstanceLocation = 0) :
         m_Attribs{0, nullptr, Flags, NumInstances, FirstInstanceLocation},
         m_DrawItems{DrawItems}
     {
@@ -2471,13 +2471,13 @@ public:
         return *this;
     }
 
-    MultiDrawAttribsX& SetNumInstances(Uint32 NumInstances) noexcept
+    MultiDrawAttribsX& SetNumInstances(UInt32 NumInstances) noexcept
     {
         m_Attribs.NumInstances = NumInstances;
         return *this;
     }
 
-    MultiDrawAttribsX& SetFirstInstanceLocation(Uint32 FirstInstanceLocation) noexcept
+    MultiDrawAttribsX& SetFirstInstanceLocation(UInt32 FirstInstanceLocation) noexcept
     {
         m_Attribs.FirstInstanceLocation = FirstInstanceLocation;
         return *this;
@@ -2502,12 +2502,12 @@ public:
         return SyncDrawItems();
     }
 
-    MultiDrawItem& GetDrawItem(Uint32 Index)
+    MultiDrawItem& GetDrawItem(UInt32 Index)
     {
         return m_DrawItems[Index];
     }
 
-    const MultiDrawItem& GetDrawItem(Uint32 Index) const
+    const MultiDrawItem& GetDrawItem(UInt32 Index) const
     {
         return m_DrawItems[Index];
     }
@@ -2521,7 +2521,7 @@ private:
     MultiDrawAttribsX& SyncDrawItems()
     {
         m_Attribs.pDrawItems = m_DrawItems.data();
-        m_Attribs.DrawCount  = static_cast<Uint32>(m_DrawItems.size());
+        m_Attribs.DrawCount  = static_cast<UInt32>(m_DrawItems.size());
         return *this;
     }
 
@@ -2547,8 +2547,8 @@ public:
     MultiDrawIndexedAttribsX(const std::initializer_list<MultiDrawIndexedItem>& DrawItems,
                              VALUE_TYPE                                         IndexType,
                              DRAW_FLAGS                                         Flags,
-                             Uint32                                             NumInstances          = 1,
-                             Uint32                                             FirstInstanceLocation = 0) :
+                             UInt32                                             NumInstances          = 1,
+                             UInt32                                             FirstInstanceLocation = 0) :
         m_Attribs{0, nullptr, IndexType, Flags, NumInstances, FirstInstanceLocation},
         m_DrawItems{DrawItems}
     {
@@ -2593,13 +2593,13 @@ public:
         return *this;
     }
 
-    MultiDrawIndexedAttribsX& SetNumInstances(Uint32 NumInstances) noexcept
+    MultiDrawIndexedAttribsX& SetNumInstances(UInt32 NumInstances) noexcept
     {
         m_Attribs.NumInstances = NumInstances;
         return *this;
     }
 
-    MultiDrawIndexedAttribsX& SetFirstInstanceLocation(Uint32 FirstInstanceLocation) noexcept
+    MultiDrawIndexedAttribsX& SetFirstInstanceLocation(UInt32 FirstInstanceLocation) noexcept
     {
         m_Attribs.FirstInstanceLocation = FirstInstanceLocation;
         return *this;
@@ -2625,12 +2625,12 @@ public:
         return SyncDrawItems();
     }
 
-    MultiDrawIndexedItem& GetDrawItem(Uint32 Index)
+    MultiDrawIndexedItem& GetDrawItem(UInt32 Index)
     {
         return m_DrawItems[Index];
     }
 
-    const MultiDrawIndexedItem& GetDrawItem(Uint32 Index) const
+    const MultiDrawIndexedItem& GetDrawItem(UInt32 Index) const
     {
         return m_DrawItems[Index];
     }
@@ -2644,7 +2644,7 @@ private:
     MultiDrawIndexedAttribsX& SyncDrawItems()
     {
         m_Attribs.pDrawItems = m_DrawItems.data();
-        m_Attribs.DrawCount  = static_cast<Uint32>(m_DrawItems.size());
+        m_Attribs.DrawCount  = static_cast<UInt32>(m_DrawItems.size());
         return *this;
     }
 

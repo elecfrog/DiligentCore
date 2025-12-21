@@ -99,12 +99,12 @@ TEST(CopyTexture, Texture2D)
         Diligent::RefCntAutoPtr<ITexture> pSrcTex, pDstTex;
 
         TextureFormatInfo    FmtAttribs = pDevice->GetTextureFormatInfo(Format);
-        Uint32               TexelSize  = Uint32{FmtAttribs.ComponentSize} * Uint32{FmtAttribs.NumComponents};
+        UInt32               TexelSize  = UInt32{FmtAttribs.ComponentSize} * UInt32{FmtAttribs.NumComponents};
         std::vector<uint8_t> DummyData(size_t{TexDesc.Width} * size_t{TexDesc.Height} * size_t{TexelSize});
         TextureData          InitData;
         InitData.NumSubresources = TexDesc.MipLevels;
         std::vector<TextureSubResData> SubResData(InitData.NumSubresources);
-        for (Uint32 mip = 0; mip < TexDesc.MipLevels; ++mip)
+        for (UInt32 mip = 0; mip < TexDesc.MipLevels; ++mip)
         {
             SubResData[mip] = TextureSubResData{DummyData.data(), (TexDesc.Width >> mip) * TexelSize, 0};
         }
@@ -163,15 +163,15 @@ TEST(CopyTexture, Texture2DArray)
 
         Diligent::RefCntAutoPtr<ITexture> pSrcTex, pDstTex;
         TextureFormatInfo                 FmtAttribs = pDevice->GetTextureFormatInfo(Format);
-        Uint32                            TexelSize  = Uint32{FmtAttribs.ComponentSize} * Uint32{FmtAttribs.NumComponents};
+        UInt32                            TexelSize  = UInt32{FmtAttribs.ComponentSize} * UInt32{FmtAttribs.NumComponents};
         std::vector<uint8_t>              DummyData(size_t{TexDesc.Width} * size_t{TexDesc.Height} * size_t{TexelSize});
         TextureData                       InitData;
         InitData.NumSubresources = TexDesc.MipLevels * TexDesc.ArraySize;
         std::vector<TextureSubResData> SubResData(InitData.NumSubresources);
-        Uint32                         subres = 0;
-        for (Uint32 slice = 0; slice < TexDesc.ArraySize; ++slice)
+        UInt32                         subres = 0;
+        for (UInt32 slice = 0; slice < TexDesc.ArraySize; ++slice)
         {
-            for (Uint32 mip = 0; mip < TexDesc.MipLevels; ++mip)
+            for (UInt32 mip = 0; mip < TexDesc.MipLevels; ++mip)
             {
                 SubResData[subres++] = TextureSubResData{DummyData.data(), (TexDesc.Width >> mip) * TexelSize, 0};
             }
@@ -237,12 +237,12 @@ TEST(CopyTexture, Texture3D)
         Diligent::RefCntAutoPtr<ITexture> pSrcTex, pDstTex;
 
         TextureFormatInfo    FmtAttribs = pDevice->GetTextureFormatInfo(Format);
-        Uint32               TexelSize  = Uint32{FmtAttribs.ComponentSize} * Uint32{FmtAttribs.NumComponents};
+        UInt32               TexelSize  = UInt32{FmtAttribs.ComponentSize} * UInt32{FmtAttribs.NumComponents};
         std::vector<uint8_t> DummyData(size_t{TexDesc.Width} * size_t{TexDesc.Height} * size_t{TexDesc.Depth} * size_t{TexelSize});
         TextureData          InitData;
         InitData.NumSubresources = TexDesc.MipLevels;
         std::vector<TextureSubResData> SubResData(InitData.NumSubresources);
-        for (Uint32 mip = 0; mip < TexDesc.MipLevels; ++mip)
+        for (UInt32 mip = 0; mip < TexDesc.MipLevels; ++mip)
         {
             SubResData[mip] = TextureSubResData{DummyData.data(), (TexDesc.Width >> mip) * TexelSize, (TexDesc.Width >> mip) * (TexDesc.Height >> mip) * TexelSize};
         }

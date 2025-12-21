@@ -54,10 +54,10 @@ class DeviceContextWebGPUImpl;
 struct ImmutableSamplerAttribsWebGPU
 {
 public:
-    Uint32 BindGroup    = ~0u;
-    Uint32 BindingIndex = ~0u;
-    Uint32 CacheOffset  = 0; // Offset in the SRB resource cache
-    Uint32 ArraySize    = 1;
+    UInt32 BindGroup    = ~0u;
+    UInt32 BindingIndex = ~0u;
+    UInt32 CacheOffset  = 0; // Offset in the SRB resource cache
+    UInt32 ArraySize    = 1;
 
     ImmutableSamplerAttribsWebGPU() noexcept {}
 
@@ -95,7 +95,7 @@ public:
     };
 
     // Static/mutable and dynamic bind groups
-    static constexpr Uint32 MAX_BIND_GROUPS = BIND_GROUP_ID_NUM_GROUPS;
+    static constexpr UInt32 MAX_BIND_GROUPS = BIND_GROUP_ID_NUM_GROUPS;
 
     static_assert(ResourceAttribs::MaxBindGroups >= MAX_BIND_GROUPS, "Not enough bits to store bind group index");
 
@@ -112,7 +112,7 @@ public:
 
     ~PipelineResourceSignatureWebGPUImpl();
 
-    Uint32 GetNumBindGroups() const
+    UInt32 GetNumBindGroups() const
     {
         static_assert(BIND_GROUP_ID_NUM_GROUPS == 2, "Please update this method with new bind group id");
         return (HasBindGroup(BIND_GROUP_ID_STATIC_MUTABLE) ? 1 : 0) + (HasBindGroup(BIND_GROUP_ID_DYNAMIC) ? 1 : 0);
@@ -121,10 +121,10 @@ public:
     WGPUBindGroupLayout GetWGPUBindGroupLayout(BIND_GROUP_ID GroupId);
 
     bool   HasBindGroup(BIND_GROUP_ID GroupId) const { return m_BindGroupSizes[GroupId] != ~0u && m_BindGroupSizes[GroupId] > 0; }
-    Uint32 GetBindGroupSize(BIND_GROUP_ID GroupId) const { return m_BindGroupSizes[GroupId]; }
-    Uint32 GetDynamicOffsetCount(BIND_GROUP_ID GroupId) const { return m_DynamicOffsetCounts[GroupId]; }
-    Uint32 GetDynamicUniformBufferCount() const { return m_DynamicUniformBufferCount; }
-    Uint32 GetDynamicStorageBufferCount() const { return m_DynamicStorageBufferCount; }
+    UInt32 GetBindGroupSize(BIND_GROUP_ID GroupId) const { return m_BindGroupSizes[GroupId]; }
+    UInt32 GetDynamicOffsetCount(BIND_GROUP_ID GroupId) const { return m_DynamicOffsetCounts[GroupId]; }
+    UInt32 GetDynamicUniformBufferCount() const { return m_DynamicUniformBufferCount; }
+    UInt32 GetDynamicStorageBufferCount() const { return m_DynamicStorageBufferCount; }
 
     void InitSRBResourceCache(ShaderResourceCacheWebGPU& ResourceCache);
 
@@ -134,18 +134,18 @@ public:
 
     // Returns the bind group index in the resource cache
     template <BIND_GROUP_ID GroupId>
-    Uint32 GetBindGroupIndex() const;
+    UInt32 GetBindGroupIndex() const;
 
 #ifdef DILIGENT_DEVELOPMENT
     /// Verifies committed resource using the WGSL resource attributes from the PSO.
     bool DvpValidateCommittedResource(const DeviceContextWebGPUImpl*   pDeviceCtx,
                                       const WGSLShaderResourceAttribs& WGSLAttribs,
-                                      Uint32                           ResIndex,
+                                      UInt32                           ResIndex,
                                       const ShaderResourceCacheWebGPU& ResourceCache,
                                       const char*                      ShaderName,
                                       const char*                      PSOName) const;
     bool DvpValidateImmutableSampler(const WGSLShaderResourceAttribs& WGSLAttribs,
-                                     Uint32                           ImtblSamIndex,
+                                     UInt32                           ImtblSamIndex,
                                      const ShaderResourceCacheWebGPU& ResourceCache,
                                      const char*                      ShaderName,
                                      const char*                      PSOName) const;
@@ -174,8 +174,8 @@ private:
     };
     static_assert(CACHE_GROUP_COUNT == CACHE_GROUP_COUNT_PER_VAR_TYPE * MAX_BIND_GROUPS, "Inconsistent cache group count");
 
-    using CacheOffsetsType = std::array<Uint32, CACHE_GROUP_COUNT>; // [Dynamic UBs, Dynamic SBs, Other] x [bind group]
-    using BindingCountType = std::array<Uint32, CACHE_GROUP_COUNT>; // [Dynamic UBs, Dynamic SBs, Other] x [bind group]
+    using CacheOffsetsType = std::array<UInt32, CACHE_GROUP_COUNT>; // [Dynamic UBs, Dynamic SBs, Other] x [bind group]
+    using BindingCountType = std::array<UInt32, CACHE_GROUP_COUNT>; // [Dynamic UBs, Dynamic SBs, Other] x [bind group]
 
     static inline CACHE_GROUP   GetResourceCacheGroup(const PipelineResourceDesc& Res);
     static inline BIND_GROUP_ID VarTypeToBindGroupId(SHADER_RESOURCE_VARIABLE_TYPE VarType);
@@ -187,20 +187,20 @@ private:
     std::array<WebGPUBindGroupLayoutWrapper, BIND_GROUP_ID_NUM_GROUPS> m_wgpuBindGroupLayouts;
 
     // Bind group sizes indexed by the group index in the layout (not BIND_GROUP_ID!)
-    std::array<Uint32, MAX_BIND_GROUPS> m_BindGroupSizes = {~0U, ~0U};
+    std::array<UInt32, MAX_BIND_GROUPS> m_BindGroupSizes = {~0U, ~0U};
 
     // The total number of uniform and storage buffers with dynamic offsets in each bind group.
-    std::array<Uint32, MAX_BIND_GROUPS> m_DynamicOffsetCounts = {0, 0};
+    std::array<UInt32, MAX_BIND_GROUPS> m_DynamicOffsetCounts = {0, 0};
 
     // The total number of uniform buffers with dynamic offsets in both bind groups,
     // accounting for array size.
-    Uint16 m_DynamicUniformBufferCount = 0;
+    UInt16 m_DynamicUniformBufferCount = 0;
     // The total number storage buffers with dynamic offsets in both bind groups,
     // accounting for array size.
-    Uint16 m_DynamicStorageBufferCount = 0;
+    UInt16 m_DynamicStorageBufferCount = 0;
 };
 
-template <> Uint32 PipelineResourceSignatureWebGPUImpl::GetBindGroupIndex<PipelineResourceSignatureWebGPUImpl::BIND_GROUP_ID_STATIC_MUTABLE>() const;
-template <> Uint32 PipelineResourceSignatureWebGPUImpl::GetBindGroupIndex<PipelineResourceSignatureWebGPUImpl::BIND_GROUP_ID_DYNAMIC>() const;
+template <> UInt32 PipelineResourceSignatureWebGPUImpl::GetBindGroupIndex<PipelineResourceSignatureWebGPUImpl::BIND_GROUP_ID_STATIC_MUTABLE>() const;
+template <> UInt32 PipelineResourceSignatureWebGPUImpl::GetBindGroupIndex<PipelineResourceSignatureWebGPUImpl::BIND_GROUP_ID_DYNAMIC>() const;
 
 } // namespace Diligent

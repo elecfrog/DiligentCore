@@ -382,7 +382,7 @@ SwapChainWebGPUImpl::SwapChainWebGPUImpl(IReferenceCounters*      pRefCounters,
 
 SwapChainWebGPUImpl::~SwapChainWebGPUImpl() = default;
 
-void SwapChainWebGPUImpl::Present(Uint32 SyncInterval)
+void SwapChainWebGPUImpl::Present(UInt32 SyncInterval)
 {
     if (SyncInterval != 0 && SyncInterval != 1)
         LOG_WARNING_MESSAGE_ONCE("WebGPU only supports 0 and 1 present intervals");
@@ -416,8 +416,8 @@ void SwapChainWebGPUImpl::Present(Uint32 SyncInterval)
     }
 }
 
-void SwapChainWebGPUImpl::Resize(Uint32            NewWidth,
-                                 Uint32            NewHeight,
+void SwapChainWebGPUImpl::Resize(UInt32            NewWidth,
+                                 UInt32            NewHeight,
                                  SURFACE_TRANSFORM NewPreTransform)
 {
     if (TSwapChainBase::Resize(NewWidth, NewHeight, NewPreTransform))
@@ -534,8 +534,8 @@ void SwapChainWebGPUImpl::ConfigureSurface()
         int32_t CanvasHeight = 0;
         emscripten_get_canvas_element_size(m_NativeWindow.pCanvasId, &CanvasWidth, &CanvasHeight);
 
-        m_SwapChainDesc.Width = static_cast<Uint32>(CanvasWidth);
-        m_SwapChainDesc.Height = static_cast<Uint32>(CanvasHeight);
+        m_SwapChainDesc.Width = static_cast<UInt32>(CanvasWidth);
+        m_SwapChainDesc.Height = static_cast<UInt32>(CanvasHeight);
 #endif
 
         m_SwapChainDesc.Width  = (std::max)(m_SwapChainDesc.Width, 1u);

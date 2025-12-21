@@ -80,9 +80,9 @@ public:
         {
             m_ActiveShaderStageIndex.fill(-1);
 
-            const Uint32        NumShaders   = GetNumShaders();
+            const UInt32        NumShaders   = GetNumShaders();
             const PIPELINE_TYPE PipelineType = GetPipelineType();
-            for (Uint32 s = 0; s < NumShaders; ++s)
+            for (UInt32 s = 0; s < NumShaders; ++s)
             {
                 const SHADER_TYPE ShaderType = pPRS->GetActiveShaderStageType(s);
                 const Int32       ShaderInd  = GetShaderTypePipelineIndex(ShaderType, PipelineType);
@@ -109,7 +109,7 @@ public:
             pPRS->InitSRBResourceCache(m_ShaderResourceCache);
 
             SRBMemoryAllocator& SRBMemAllocator = pPRS->GetSRBMemoryAllocator();
-            for (Uint32 s = 0; s < NumShaders; ++s)
+            for (UInt32 s = 0; s < NumShaders; ++s)
             {
                 const SHADER_TYPE ShaderType = pPRS->GetActiveShaderStageType(s);
                 const Int32       ShaderInd  = GetShaderTypePipelineIndex(ShaderType, pPRS->GetPipelineType());
@@ -139,7 +139,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_ShaderResourceBinding, TObjectBase)
 
-    Uint32 GetBindingIndex() const
+    UInt32 GetBindingIndex() const
     {
         return m_pPRS->GetDesc().BindingIndex;
     }
@@ -149,7 +149,7 @@ public:
         return m_pPRS->GetPipelineType();
     }
 
-    Uint32 GetNumShaders() const
+    UInt32 GetNumShaders() const
     {
         return m_pPRS->GetNumActiveShaderStages();
     }
@@ -192,12 +192,12 @@ public:
         if (MgrInd < 0)
             return nullptr;
 
-        VERIFY_EXPR(static_cast<Uint32>(MgrInd) < GetNumShaders());
+        VERIFY_EXPR(static_cast<UInt32>(MgrInd) < GetNumShaders());
         return m_pShaderVarMgrs[MgrInd].GetVariable(Name);
     }
 
     /// Implementation of IShaderResourceBinding::GetVariableCount().
-    virtual Uint32 DILIGENT_CALL_TYPE GetVariableCount(SHADER_TYPE ShaderType) const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetVariableCount(SHADER_TYPE ShaderType) const override final
     {
         const PIPELINE_TYPE PipelineType = GetPipelineType();
         if (!IsConsistentShaderType(ShaderType, PipelineType))
@@ -212,12 +212,12 @@ public:
         if (MgrInd < 0)
             return 0;
 
-        VERIFY_EXPR(static_cast<Uint32>(MgrInd) < GetNumShaders());
+        VERIFY_EXPR(static_cast<UInt32>(MgrInd) < GetNumShaders());
         return m_pShaderVarMgrs[MgrInd].GetVariableCount();
     }
 
     /// Implementation of IShaderResourceBinding::GetVariableByIndex().
-    virtual IShaderResourceVariable* DILIGENT_CALL_TYPE GetVariableByIndex(SHADER_TYPE ShaderType, Uint32 Index) override final
+    virtual IShaderResourceVariable* DILIGENT_CALL_TYPE GetVariableByIndex(SHADER_TYPE ShaderType, UInt32 Index) override final
     {
         const PIPELINE_TYPE PipelineType = GetPipelineType();
         if (!IsConsistentShaderType(ShaderType, PipelineType))
@@ -232,7 +232,7 @@ public:
         if (MgrInd < 0)
             return nullptr;
 
-        VERIFY_EXPR(static_cast<Uint32>(MgrInd) < GetNumShaders());
+        VERIFY_EXPR(static_cast<UInt32>(MgrInd) < GetNumShaders());
         return m_pShaderVarMgrs[MgrInd].GetVariable(Index);
     }
 
@@ -275,7 +275,7 @@ private:
         if (m_pShaderVarMgrs != nullptr)
         {
             SRBMemoryAllocator& SRBMemAllocator = GetSignature()->GetSRBMemoryAllocator();
-            for (Uint32 s = 0; s < GetNumShaders(); ++s)
+            for (UInt32 s = 0; s < GetNumShaders(); ++s)
             {
                 IMemoryAllocator& VarDataAllocator = SRBMemAllocator.GetShaderVariableDataAllocator(s);
                 m_pShaderVarMgrs[s].Destroy(VarDataAllocator);

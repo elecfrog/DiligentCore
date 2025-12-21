@@ -47,7 +47,7 @@ void QueryManagerVk::QueryPoolInfo::Init(const VulkanUtilities::LogicalDevice& L
     m_vkQueryPool = LogicalDevice.CreateQueryPool(QueryPoolCI, "QueryManagerVk: query pool");
 
     m_StaleQueries.resize(m_QueryCount);
-    for (Uint32 i = 0; i < m_QueryCount; ++i)
+    for (UInt32 i = 0; i < m_QueryCount; ++i)
         m_StaleQueries[i] = i;
 }
 
@@ -66,22 +66,22 @@ QueryManagerVk::QueryPoolInfo::~QueryPoolInfo()
     }
 }
 
-Uint32 QueryManagerVk::QueryPoolInfo::Allocate()
+UInt32 QueryManagerVk::QueryPoolInfo::Allocate()
 {
-    Uint32 Index = InvalidIndex;
+    UInt32 Index = InvalidIndex;
 
     std::lock_guard<std::mutex> Lock{m_QueriesMtx};
     if (!m_AvailableQueries.empty())
     {
         Index = m_AvailableQueries.back();
         m_AvailableQueries.pop_back();
-        m_MaxAllocatedQueries = std::max(m_MaxAllocatedQueries, m_QueryCount - static_cast<Uint32>(m_AvailableQueries.size()));
+        m_MaxAllocatedQueries = std::max(m_MaxAllocatedQueries, m_QueryCount - static_cast<UInt32>(m_AvailableQueries.size()));
     }
 
     return Index;
 }
 
-void QueryManagerVk::QueryPoolInfo::Discard(Uint32 Index)
+void QueryManagerVk::QueryPoolInfo::Discard(UInt32 Index)
 {
     std::lock_guard<std::mutex> Lock{m_QueriesMtx};
 
@@ -95,7 +95,7 @@ void QueryManagerVk::QueryPoolInfo::Discard(Uint32 Index)
     m_StaleQueries.push_back(Index);
 }
 
-Uint32 QueryManagerVk::QueryPoolInfo::ResetStaleQueries(const VulkanUtilities::LogicalDevice& LogicalDevice,
+UInt32 QueryManagerVk::QueryPoolInfo::ResetStaleQueries(const VulkanUtilities::LogicalDevice& LogicalDevice,
                                                         VulkanUtilities::CommandBuffer&       CmdBuff)
 {
     if (m_StaleQueries.empty())
@@ -122,23 +122,23 @@ Uint32 QueryManagerVk::QueryPoolInfo::ResetStaleQueries(const VulkanUtilities::L
 
     // After query pool creation, each query must be reset before it is used.
     // Queries must also be reset between uses (17.2).
-    Uint32 NumCommands = 0;
+    UInt32 NumCommands = 0;
     if (m_StaleQueries.size() == m_QueryCount)
     {
         ResetQueries(0, m_QueryCount);
         m_AvailableQueries.resize(m_QueryCount);
-        for (Uint32 i = 0; i < m_QueryCount; ++i)
+        for (UInt32 i = 0; i < m_QueryCount; ++i)
             m_AvailableQueries[i] = i;
         NumCommands = 1;
     }
     else
     {
-        for (Uint32& StaleQuery : m_StaleQueries)
+        for (UInt32& StaleQuery : m_StaleQueries)
         {
             ResetQueries(StaleQuery, 1);
             m_AvailableQueries.push_back(StaleQuery);
         }
-        NumCommands = static_cast<Uint32>(m_StaleQueries.size());
+        NumCommands = static_cast<UInt32>(m_StaleQueries.size());
     }
     m_StaleQueries.clear();
 
@@ -146,7 +146,7 @@ Uint32 QueryManagerVk::QueryPoolInfo::ResetStaleQueries(const VulkanUtilities::L
 }
 
 QueryManagerVk::QueryManagerVk(RenderDeviceVkImpl* pRenderDeviceVk,
-                               const Uint32        QueryHeapSizes[],
+                               const UInt32        QueryHeapSizes[],
                                SoftwareQueueIndex  CmdQueueInd) :
     m_CommandQueueId{CmdQueueInd}
 {
@@ -154,7 +154,7 @@ QueryManagerVk::QueryManagerVk(RenderDeviceVkImpl* pRenderDeviceVk,
     const VulkanUtilities::PhysicalDevice& PhysicalDevice = pRenderDeviceVk->GetPhysicalDevice();
 
     float timestampPeriod = PhysicalDevice.GetProperties().limits.timestampPeriod;
-    m_CounterFrequency    = static_cast<Uint64>(1000000000.0 / timestampPeriod);
+    m_CounterFrequency    = static_cast<UInt64>(1000000000.0 / timestampPeriod);
 
     const HardwareQueueIndex        QueueFamilyIndex{pRenderDeviceVk->GetCommandQueue(CmdQueueInd).GetQueueFamilyIndex()};
     const VkPhysicalDeviceFeatures& EnabledFeatures        = LogicalDevice.GetEnabledFeatures();
@@ -164,7 +164,7 @@ QueryManagerVk::QueryManagerVk(RenderDeviceVkImpl* pRenderDeviceVk,
     const bool                      IsTransferQueue        = (QueueFlags & (VK_QUEUE_COMPUTE_BIT | VK_QUEUE_GRAPHICS_BIT)) == 0;
     const bool                      QueueSupportsTimestamp = PhysicalDevice.GetQueueProperties()[QueueFamilyIndex].timestampValidBits > 0;
 
-    for (Uint32 query_type = QUERY_TYPE_UNDEFINED + 1; query_type < QUERY_TYPE_NUM_TYPES; ++query_type)
+    for (UInt32 query_type = QUERY_TYPE_UNDEFINED + 1; query_type < QUERY_TYPE_NUM_TYPES; ++query_type)
     {
         const QUERY_TYPE QueryType = static_cast<QUERY_TYPE>(query_type);
         if ((QueryType == QUERY_TYPE_OCCLUSION && !EnabledFeatures.occlusionQueryPrecise) ||
@@ -255,7 +255,7 @@ QueryManagerVk::~QueryManagerVk()
 {
     std::stringstream QueryUsageSS;
     QueryUsageSS << "Vulkan query manager peak usage:";
-    for (Uint32 QueryType = QUERY_TYPE_UNDEFINED + 1; QueryType < QUERY_TYPE_NUM_TYPES; ++QueryType)
+    for (UInt32 QueryType = QUERY_TYPE_UNDEFINED + 1; QueryType < QUERY_TYPE_NUM_TYPES; ++QueryType)
     {
         QueryPoolInfo& PoolInfo = m_Pools[QueryType];
         if (PoolInfo.IsNull())
@@ -269,19 +269,19 @@ QueryManagerVk::~QueryManagerVk()
     LOG_INFO_MESSAGE(QueryUsageSS.str());
 }
 
-Uint32 QueryManagerVk::AllocateQuery(QUERY_TYPE Type)
+UInt32 QueryManagerVk::AllocateQuery(QUERY_TYPE Type)
 {
     return m_Pools[Type].Allocate();
 }
 
-void QueryManagerVk::DiscardQuery(QUERY_TYPE Type, Uint32 Index)
+void QueryManagerVk::DiscardQuery(QUERY_TYPE Type, UInt32 Index)
 {
     m_Pools[Type].Discard(Index);
 }
 
-Uint32 QueryManagerVk::ResetStaleQueries(const VulkanUtilities::LogicalDevice& LogicalDevice, VulkanUtilities::CommandBuffer& CmdBuff)
+UInt32 QueryManagerVk::ResetStaleQueries(const VulkanUtilities::LogicalDevice& LogicalDevice, VulkanUtilities::CommandBuffer& CmdBuff)
 {
-    Uint32 NumQueriesReset = 0;
+    UInt32 NumQueriesReset = 0;
     for (QueryPoolInfo& PoolInfo : m_Pools)
     {
         NumQueriesReset += PoolInfo.ResetStaleQueries(LogicalDevice, CmdBuff);

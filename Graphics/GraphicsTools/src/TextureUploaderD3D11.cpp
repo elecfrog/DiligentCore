@@ -125,9 +125,9 @@ struct TextureUploaderD3D11::InternalData
         } OpType;
         RefCntAutoPtr<UploadBufferD3D11> pUploadBuffer;
         CComPtr<ID3D11Resource>          pd3d11NativeDstTexture;
-        Uint32                           DstMip       = 0;
-        Uint32                           DstSlice     = 0;
-        Uint32                           DstMipLevels = 0;
+        UInt32                           DstMip       = 0;
+        UInt32                           DstSlice     = 0;
+        UInt32                           DstMipLevels = 0;
         bool                             AutoRecycle  = false;
 
         // clang-format off
@@ -142,9 +142,9 @@ struct TextureUploaderD3D11::InternalData
         PendingBufferOperation(Type               Op, 
                                UploadBufferD3D11* pBuff,
                                ID3D11Resource*    pd3d11DstTex,
-                               Uint32             Mip,
-                               Uint32             Slice,
-                               Uint32             MipLevels,
+                               UInt32             Mip,
+                               UInt32             Slice,
+                               UInt32             MipLevels,
                                bool               Recycle) :
             OpType                {Op          },
             pUploadBuffer         {pBuff       },
@@ -173,7 +173,7 @@ struct TextureUploaderD3D11::InternalData
         m_PendingOperations.swap(m_InWorkOperations);
     }
 
-    void EnqueueCopy(UploadBufferD3D11* pUploadBuffer, ID3D11Resource* pd3d11DstTex, Uint32 Mip, Uint32 Slice, Uint32 MipLevels, bool RecycleBuffer)
+    void EnqueueCopy(UploadBufferD3D11* pUploadBuffer, ID3D11Resource* pd3d11DstTex, UInt32 Mip, UInt32 Slice, UInt32 MipLevels, bool RecycleBuffer)
     {
         std::lock_guard<std::mutex> QueueLock(m_PendingOperationsMtx);
         m_PendingOperations.emplace_back(PendingBufferOperation::Type::Copy, pUploadBuffer, pd3d11DstTex, Mip, Slice, MipLevels, RecycleBuffer);
@@ -286,9 +286,9 @@ void TextureUploaderD3D11::InternalData::Execute(ID3D11DeviceContext*    pd3d11N
         {
             VERIFY_EXPR(pStagingTex != nullptr);
             bool AllMapped = true;
-            for (Uint32 Slice = 0; Slice < UploadBuffDesc.ArraySize; ++Slice)
+            for (UInt32 Slice = 0; Slice < UploadBuffDesc.ArraySize; ++Slice)
             {
-                for (Uint32 Mip = 0; Mip < UploadBuffDesc.MipLevels; ++Mip)
+                for (UInt32 Mip = 0; Mip < UploadBuffDesc.MipLevels; ++Mip)
                 {
                     if (!pBuffer->IsMapped(Mip, Slice))
                     {
@@ -337,15 +337,15 @@ void TextureUploaderD3D11::InternalData::Execute(ID3D11DeviceContext*    pd3d11N
             if (pStagingTex != nullptr)
             {
                 // Unmap all subresources first to avoid D3D11 warnings
-                for (Uint32 Subres = 0; Subres < UploadBuffDesc.MipLevels * UploadBuffDesc.ArraySize; ++Subres)
+                for (UInt32 Subres = 0; Subres < UploadBuffDesc.MipLevels * UploadBuffDesc.ArraySize; ++Subres)
                 {
                     pd3d11NativeCtx->Unmap(pBuffer->GetStagingTex(), Subres);
                 }
             }
 
-            for (Uint32 Slice = 0; Slice < UploadBuffDesc.ArraySize; ++Slice)
+            for (UInt32 Slice = 0; Slice < UploadBuffDesc.ArraySize; ++Slice)
             {
-                for (Uint32 Mip = 0; Mip < UploadBuffDesc.MipLevels; ++Mip)
+                for (UInt32 Mip = 0; Mip < UploadBuffDesc.MipLevels; ++Mip)
                 {
                     UINT SrcSubres = D3D11CalcSubresource(
                         static_cast<UINT>(Mip),
@@ -478,8 +478,8 @@ void TextureUploaderD3D11::AllocateUploadBuffer(IDeviceContext*         pContext
 
 void TextureUploaderD3D11::ScheduleGPUCopy(IDeviceContext* pContext,
                                            ITexture*       pDstTexture,
-                                           Uint32          ArraySlice,
-                                           Uint32          MipLevel,
+                                           UInt32          ArraySlice,
+                                           UInt32          MipLevel,
                                            IUploadBuffer*  pUploadBuffer,
                                            bool            RecycleBuffer)
 {
@@ -518,7 +518,7 @@ TextureUploaderStats TextureUploaderD3D11::GetStats()
 {
     TextureUploaderStats        Stats;
     std::lock_guard<std::mutex> QueueLock(m_pInternalData->m_PendingOperationsMtx);
-    Stats.NumPendingOperations = static_cast<Uint32>(m_pInternalData->m_PendingOperations.size());
+    Stats.NumPendingOperations = static_cast<UInt32>(m_pInternalData->m_PendingOperations.size());
 
     return Stats;
 }

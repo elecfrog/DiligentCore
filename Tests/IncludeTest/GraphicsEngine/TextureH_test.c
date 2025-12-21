@@ -34,7 +34,7 @@ void TestTexture_CInterface(ITexture* pTexture)
     ITexture_CreateView(pTexture, (const TextureViewDesc*)NULL, (ITextureView**)NULL);
     ITextureView* pView = ITexture_GetDefaultView(pTexture, TEXTURE_VIEW_UNDEFINED);
     (void)pView;
-    Uint64 Handle = ITexture_GetNativeHandle(pTexture);
+    UInt64 Handle = ITexture_GetNativeHandle(pTexture);
     (void)Handle;
     ITexture_SetState(pTexture, RESOURCE_STATE_UNKNOWN);
     RESOURCE_STATE State = ITexture_GetState(pTexture);

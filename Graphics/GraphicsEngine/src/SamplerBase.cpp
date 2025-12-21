@@ -64,8 +64,8 @@ void ValidateSamplerDesc(const SamplerDesc& Desc, const IRenderDevice* pDevice)
     {
         if (Desc.MaxAnisotropy > AdapterInfo.Sampler.MaxAnisotropy)
         {
-            LOG_WARNING_MESSAGE("MaxAnisotropy (", Uint32{Desc.MaxAnisotropy}, ") requested for sampler '", Desc.Name,
-                                "' exceeds the maximum supported anisotropy (", Uint32{AdapterInfo.Sampler.MaxAnisotropy},
+            LOG_WARNING_MESSAGE("MaxAnisotropy (", UInt32{Desc.MaxAnisotropy}, ") requested for sampler '", Desc.Name,
+                                "' exceeds the maximum supported anisotropy (", UInt32{AdapterInfo.Sampler.MaxAnisotropy},
                                 "). Check the value of AdapterInfo.Sampler.MaxAnisotropy.");
         }
     }

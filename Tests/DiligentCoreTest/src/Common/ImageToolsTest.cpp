@@ -38,11 +38,11 @@ namespace
 
 TEST(Common_ImageTools, ComputeImageDifference)
 {
-    constexpr Uint32 Width   = 3;
-    constexpr Uint32 Height  = 2;
-    constexpr Uint32 Stride1 = 11;
-    constexpr Uint32 Stride2 = 12;
-    constexpr Uint32 Stride3 = 9;
+    constexpr UInt32 Width   = 3;
+    constexpr UInt32 Height  = 2;
+    constexpr UInt32 Stride1 = 11;
+    constexpr UInt32 Stride2 = 12;
+    constexpr UInt32 Stride3 = 9;
 
     // clang-format off
 	constexpr char Image1[Stride1 * Height] = {
@@ -86,9 +86,9 @@ TEST(Common_ImageTools, ComputeImageDifference)
         EXPECT_EQ(Diff.AvgDiff, 0.f);
         EXPECT_EQ(Diff.RmsDiff, 0.f);
 
-        constexpr std::array<Uint8, Width * Height * 3> RefDiffImage{};
+        constexpr std::array<UInt8, Width * Height * 3> RefDiffImage{};
 
-        std::array<Uint8, Width * Height * 3> DiffImage{};
+        std::array<UInt8, Width * Height * 3> DiffImage{};
 
         Attribs.pDiffImage = DiffImage.data();
         Attribs.DiffStride = Width * 3;
@@ -118,13 +118,13 @@ TEST(Common_ImageTools, ComputeImageDifference)
 
 
         // clang-format off
-        constexpr std::array<Uint8, Width * Height * 3> RefDiffImage = {
+        constexpr std::array<UInt8, Width * Height * 3> RefDiffImage = {
             0, 0, 0,   1, 3, 2,   0, 0, 0,
             3, 4, 5,   0, 0, 0,   4, 4, 0,
         };
         // clang-format on
 
-        std::array<Uint8, Width * Height * 3> DiffImage{};
+        std::array<UInt8, Width * Height * 3> DiffImage{};
 
         Attribs.pDiffImage = DiffImage.data();
         Attribs.DiffStride = Width * 3;
@@ -156,13 +156,13 @@ TEST(Common_ImageTools, ComputeImageDifference)
     // 3 channels -> 4 channels
     {
         // clang-format off
-        constexpr std::array<Uint8, Width * Height * 4> RefDiffImage = {
+        constexpr std::array<UInt8, Width * Height * 4> RefDiffImage = {
             0, 0, 0, 255,  1, 3, 2, 255,   0, 0, 0,  255,
             3, 4, 5, 255,  0, 0, 0, 255,   4, 4, 0,  255,
         };
         // clang-format on
 
-        std::array<Uint8, Width * Height * 4> DiffImage{};
+        std::array<UInt8, Width * Height * 4> DiffImage{};
 
         ComputeImageDifferenceAttribs Attribs;
         Attribs.Width           = Width;
@@ -185,13 +185,13 @@ TEST(Common_ImageTools, ComputeImageDifference)
     // 3 channels -> 4 channels + scale
     {
         // clang-format off
-        constexpr std::array<Uint8, Width * Height * 4> RefDiffImage = {
+        constexpr std::array<UInt8, Width * Height * 4> RefDiffImage = {
             0, 0,  0, 255,  2, 6, 4, 255,   0, 0, 0, 255,
             6, 8, 10, 255,  0, 0, 0, 255,   8, 8, 0, 255,
         };
         // clang-format on
 
-        std::array<Uint8, Width * Height * 4> DiffImage{};
+        std::array<UInt8, Width * Height * 4> DiffImage{};
 
         ComputeImageDifferenceAttribs Attribs;
         Attribs.Width           = Width;
@@ -215,13 +215,13 @@ TEST(Common_ImageTools, ComputeImageDifference)
     // 3 vs 2 channels -> 4 channels + scale
     {
         // clang-format off
-        constexpr std::array<Uint8, Width * Height * 4> RefDiffImage = {
+        constexpr std::array<UInt8, Width * Height * 4> RefDiffImage = {
             0, 0,  0, 255,  2, 6, 0, 255,    0, 0, 0, 255,
             6, 8,  0, 255,  0, 0, 0, 255,   10, 8, 0, 255,
         };
         // clang-format on
 
-        std::array<Uint8, Width * Height * 4> DiffImage{};
+        std::array<UInt8, Width * Height * 4> DiffImage{};
 
         ComputeImageDifferenceAttribs Attribs;
         Attribs.Width           = Width;

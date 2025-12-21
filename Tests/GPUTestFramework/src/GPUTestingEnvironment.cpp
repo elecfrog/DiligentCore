@@ -96,9 +96,9 @@ GPUTestingEnvironment* CreateTestingEnvironmentMtl(const GPUTestingEnvironment::
 GPUTestingEnvironment* CreateTestingEnvironmentWebGPU(const GPUTestingEnvironment::CreateInfo& CI, const SwapChainDesc& SCDesc);
 #endif
 
-Uint32 GPUTestingEnvironment::FindAdapter(const std::vector<GraphicsAdapterInfo>& Adapters,
+UInt32 GPUTestingEnvironment::FindAdapter(const std::vector<GraphicsAdapterInfo>& Adapters,
                                           ADAPTER_TYPE                            AdapterType,
-                                          Uint32                                  AdapterId)
+                                          UInt32                                  AdapterId)
 {
     if (AdapterId != DEFAULT_ADAPTER_ID && AdapterId >= Adapters.size())
     {
@@ -108,7 +108,7 @@ Uint32 GPUTestingEnvironment::FindAdapter(const std::vector<GraphicsAdapterInfo>
 
     if (AdapterId == DEFAULT_ADAPTER_ID && AdapterType != ADAPTER_TYPE_UNKNOWN)
     {
-        for (Uint32 i = 0; i < Adapters.size(); ++i)
+        for (UInt32 i = 0; i < Adapters.size(); ++i)
         {
             if (Adapters[i].Type == AdapterType)
             {
@@ -130,7 +130,7 @@ Uint32 GPUTestingEnvironment::FindAdapter(const std::vector<GraphicsAdapterInfo>
 GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const SwapChainDesc& SCDesc) :
     m_DeviceType{EnvCI.deviceType}
 {
-    Uint32 NumDeferredCtx = 0;
+    UInt32 NumDeferredCtx = 0;
 
     std::vector<IDeviceContext*>            ppContexts;
     std::vector<GraphicsAdapterInfo>        Adapters;
@@ -138,7 +138,7 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
 
     auto EnumerateAdapters = [&Adapters](IEngineFactory* pFactory, Version MinVersion, auto EnumerateDisplayModes) //
     {
-        Uint32 NumAdapters = 0;
+        UInt32 NumAdapters = 0;
         pFactory->EnumerateAdapters(MinVersion, NumAdapters, 0);
         if (NumAdapters > 0)
         {
@@ -153,7 +153,7 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
         }
 
         LOG_INFO_MESSAGE("Found ", Adapters.size(), " compatible ", (Adapters.size() == 1 ? "adapter" : "adapters"));
-        for (Uint32 i = 0; i < Adapters.size(); ++i)
+        for (UInt32 i = 0; i < Adapters.size(); ++i)
         {
             const GraphicsAdapterInfo&            AdapterInfo  = Adapters[i];
             const std::vector<DisplayModeAttribs> DisplayModes = EnumerateDisplayModes(AdapterInfo, i);
@@ -180,14 +180,14 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
     };
 
 #if D3D12_SUPPORTED || VULKAN_SUPPORTED || METAL_SUPPORTED
-    auto AddContext = [&ContextCI, &Adapters](COMMAND_QUEUE_TYPE Type, const char* Name, Uint32 AdapterId) //
+    auto AddContext = [&ContextCI, &Adapters](COMMAND_QUEUE_TYPE Type, const char* Name, UInt32 AdapterId) //
     {
         if (AdapterId >= Adapters.size())
             AdapterId = 0;
 
         constexpr COMMAND_QUEUE_TYPE QueueMask = COMMAND_QUEUE_TYPE_PRIMARY_MASK;
         CommandQueueInfo*            Queues    = Adapters[AdapterId].Queues;
-        for (Uint32 q = 0, Count = Adapters[AdapterId].NumQueues; q < Count; ++q)
+        for (UInt32 q = 0, Count = Adapters[AdapterId].NumQueues; q < Count; ++q)
         {
             CommandQueueInfo& CurQueue = Queues[q];
             if (CurQueue.MaxDeviceContexts == 0)
@@ -198,7 +198,7 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
                 CurQueue.MaxDeviceContexts -= 1;
 
                 ImmediateContextCreateInfo Ctx{};
-                Ctx.QueueId  = static_cast<Uint8>(q);
+                Ctx.QueueId  = static_cast<UInt8>(q);
                 Ctx.Name     = Name;
                 Ctx.Priority = QUEUE_PRIORITY_MEDIUM;
                 ContextCI.push_back(Ctx);
@@ -248,11 +248,11 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
             EngineCI.SetValidationLevel(VALIDATION_LEVEL_2);
 #    endif
             EnumerateAdapters(pFactoryD3D11, EngineCI.GraphicsAPIVersion,
-                              [pFactoryD3D11, &EngineCI](const GraphicsAdapterInfo& AdapterInfo, Uint32 AdapterId) {
+                              [pFactoryD3D11, &EngineCI](const GraphicsAdapterInfo& AdapterInfo, UInt32 AdapterId) {
                                   std::vector<DisplayModeAttribs> DisplayModes;
                                   if (AdapterInfo.NumOutputs > 0)
                                   {
-                                      Uint32 NumDisplayModes = 0;
+                                      UInt32 NumDisplayModes = 0;
                                       pFactoryD3D11->EnumerateDisplayModes(EngineCI.GraphicsAPIVersion, AdapterId, 0, TEX_FORMAT_RGBA8_UNORM, NumDisplayModes, nullptr);
                                       DisplayModes.resize(NumDisplayModes);
                                       pFactoryD3D11->EnumerateDisplayModes(EngineCI.GraphicsAPIVersion, AdapterId, 0, TEX_FORMAT_RGBA8_UNORM, NumDisplayModes, DisplayModes.data());
@@ -289,11 +289,11 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
             EngineCI.GraphicsAPIVersion = Version{11, 0};
 
             EnumerateAdapters(pFactoryD3D12, EngineCI.GraphicsAPIVersion,
-                              [pFactoryD3D12, &EngineCI](const GraphicsAdapterInfo& AdapterInfo, Uint32 AdapterId) {
+                              [pFactoryD3D12, &EngineCI](const GraphicsAdapterInfo& AdapterInfo, UInt32 AdapterId) {
                                   std::vector<DisplayModeAttribs> DisplayModes;
                                   if (AdapterInfo.NumOutputs > 0)
                                   {
-                                      Uint32 NumDisplayModes = 0;
+                                      UInt32 NumDisplayModes = 0;
                                       pFactoryD3D12->EnumerateDisplayModes(EngineCI.GraphicsAPIVersion, AdapterId, 0, TEX_FORMAT_RGBA8_UNORM, NumDisplayModes, nullptr);
                                       DisplayModes.resize(NumDisplayModes);
                                       pFactoryD3D12->EnumerateDisplayModes(EngineCI.GraphicsAPIVersion, AdapterId, 0, TEX_FORMAT_RGBA8_UNORM, NumDisplayModes, DisplayModes.data());
@@ -310,7 +310,7 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
             AddContext(COMMAND_QUEUE_TYPE_COMPUTE, "Compute", EngineCI.AdapterId);
             AddContext(COMMAND_QUEUE_TYPE_TRANSFER, "Transfer", EngineCI.AdapterId);
             AddContext(COMMAND_QUEUE_TYPE_GRAPHICS, "Graphics 2", EngineCI.AdapterId);
-            EngineCI.NumImmediateContexts  = static_cast<Uint32>(ContextCI.size());
+            EngineCI.NumImmediateContexts  = static_cast<UInt32>(ContextCI.size());
             EngineCI.pImmediateContextInfo = EngineCI.NumImmediateContexts > 0 ? ContextCI.data() : nullptr;
 
             //EngineCI.EnableGPUBasedValidation                = true;
@@ -342,7 +342,7 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
             pFactoryOpenGL->SetBreakOnError(false);
 
             EnumerateAdapters(pFactoryOpenGL, Version{},
-                              [](const GraphicsAdapterInfo& AdapterInfo, Uint32 AdapterId) {
+                              [](const GraphicsAdapterInfo& AdapterInfo, UInt32 AdapterId) {
                                   return std::vector<DisplayModeAttribs>{};
                               });
             NativeWindow Window = CreateNativeWindow();
@@ -381,7 +381,7 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
                 pFactoryVk->EnableDeviceSimulation();
 
             EnumerateAdapters(pFactoryVk, Version{},
-                              [](const GraphicsAdapterInfo& AdapterInfo, Uint32 AdapterId) {
+                              [](const GraphicsAdapterInfo& AdapterInfo, UInt32 AdapterId) {
                                   return std::vector<DisplayModeAttribs>{};
                               });
 
@@ -402,7 +402,7 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
             // Always enable validation
             EngineCI.SetValidationLevel(VALIDATION_LEVEL_1);
 
-            EngineCI.NumImmediateContexts      = static_cast<Uint32>(ContextCI.size());
+            EngineCI.NumImmediateContexts      = static_cast<UInt32>(ContextCI.size());
             EngineCI.pImmediateContextInfo     = EngineCI.NumImmediateContexts > 0 ? ContextCI.data() : nullptr;
             EngineCI.MainDescriptorPoolSize    = VulkanDescriptorPoolSize{64, 64, 256, 256, 64, 32, 32, 32, 32, 16, 16};
             EngineCI.DynamicDescriptorPoolSize = VulkanDescriptorPoolSize{64, 64, 256, 256, 64, 32, 32, 32, 32, 16, 16};
@@ -411,7 +411,7 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
             //EngineCI.HostVisibleMemoryReserveSize = 48 << 20;
             EngineCI.Features                  = EnvCI.Features;
             EngineCI.FeaturesVk                = EnvCI.FeaturesVk;
-            EngineCI.IgnoreDebugMessageCount   = static_cast<Uint32>(IgnoreDebugMessages.size());
+            EngineCI.IgnoreDebugMessageCount   = static_cast<UInt32>(IgnoreDebugMessages.size());
             EngineCI.ppIgnoreDebugMessageNames = IgnoreDebugMessages.data();
 
             NumDeferredCtx               = EnvCI.NumDeferredContexts;
@@ -430,7 +430,7 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
             pFactoryMtl->SetBreakOnError(false);
 
             EnumerateAdapters(pFactoryMtl, Version{},
-                              [](const GraphicsAdapterInfo& AdapterInfo, Uint32 AdapterId) {
+                              [](const GraphicsAdapterInfo& AdapterInfo, UInt32 AdapterId) {
                                   return std::vector<DisplayModeAttribs>{};
                               });
 
@@ -441,7 +441,7 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
             AddContext(COMMAND_QUEUE_TYPE_TRANSFER, "Transfer", EngineCI.AdapterId);
             AddContext(COMMAND_QUEUE_TYPE_GRAPHICS, "Graphics 2", EngineCI.AdapterId);
 
-            EngineCI.NumImmediateContexts  = static_cast<Uint32>(ContextCI.size());
+            EngineCI.NumImmediateContexts  = static_cast<UInt32>(ContextCI.size());
             EngineCI.pImmediateContextInfo = EngineCI.NumImmediateContexts ? ContextCI.data() : nullptr;
             EngineCI.Features              = EnvCI.Features;
 
@@ -478,7 +478,7 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
             break;
     }
 
-    for (Uint32 ctx = NumDeferredCtx / 2; ctx < NumDeferredCtx; ++ctx)
+    for (UInt32 ctx = NumDeferredCtx / 2; ctx < NumDeferredCtx; ++ctx)
     {
         m_pDevice->CreateDeferredContext(&ppContexts[std::max(ContextCI.size(), size_t{1}) + ctx]);
     }
@@ -498,8 +498,8 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
 #undef CHECK_FEATURE_STATE
     }
 
-    constexpr Uint8 InvalidQueueId = 64; // MAX_COMMAND_QUEUES
-    m_NumImmediateContexts         = std::max(1u, static_cast<Uint32>(ContextCI.size()));
+    constexpr UInt8 InvalidQueueId = 64; // MAX_COMMAND_QUEUES
+    m_NumImmediateContexts         = std::max(1u, static_cast<UInt32>(ContextCI.size()));
     m_pDeviceContexts.resize(ppContexts.size());
     for (size_t i = 0; i < ppContexts.size(); ++i)
     {
@@ -507,7 +507,7 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
             LOG_ERROR_AND_THROW("Context must not be null");
 
         const DeviceContextDesc CtxDesc = ppContexts[i]->GetDesc();
-        VERIFY(CtxDesc.ContextId == static_cast<Uint8>(i), "Invalid context index");
+        VERIFY(CtxDesc.ContextId == static_cast<UInt8>(i), "Invalid context index");
         if (i < m_NumImmediateContexts)
         {
             VERIFY(!CtxDesc.IsDeferred, "Immediate context expected");
@@ -594,7 +594,7 @@ GPUTestingEnvironment::GPUTestingEnvironment(const CreateInfo& EnvCI, const Swap
 
 GPUTestingEnvironment::~GPUTestingEnvironment()
 {
-    for (Uint32 i = 0; i < GetNumImmediateContexts(); ++i)
+    for (UInt32 i = 0; i < GetNumImmediateContexts(); ++i)
     {
         IDeviceContext* pCtx = GetDeviceContext(i);
         pCtx->Flush();
@@ -674,7 +674,7 @@ void GPUTestingEnvironment::ReleaseResources()
     // It is necessary to call Flush() to force the driver to release resources.
     // Without flushing the command buffer, the memory may not be released until sometimes
     // later causing out-of-memory error.
-    for (Uint32 i = 0; i < GetNumImmediateContexts(); ++i)
+    for (UInt32 i = 0; i < GetNumImmediateContexts(); ++i)
     {
         IDeviceContext* pCtx = GetDeviceContext(i);
         pCtx->Flush();
@@ -686,7 +686,7 @@ void GPUTestingEnvironment::ReleaseResources()
 
 void GPUTestingEnvironment::Reset()
 {
-    for (Uint32 i = 0; i < GetNumImmediateContexts(); ++i)
+    for (UInt32 i = 0; i < GetNumImmediateContexts(); ++i)
     {
         IDeviceContext* pCtx = GetDeviceContext(i);
         pCtx->Flush();
@@ -698,7 +698,7 @@ void GPUTestingEnvironment::Reset()
     m_NumAllowedErrors = 0;
 }
 
-RefCntAutoPtr<ITexture> GPUTestingEnvironment::CreateTexture(const char* Name, TEXTURE_FORMAT Fmt, BIND_FLAGS BindFlags, Uint32 Width, Uint32 Height, const void* pInitData)
+RefCntAutoPtr<ITexture> GPUTestingEnvironment::CreateTexture(const char* Name, TEXTURE_FORMAT Fmt, BIND_FLAGS BindFlags, UInt32 Width, UInt32 Height, const void* pInitData)
 {
     TextureDesc TexDesc;
 
@@ -965,7 +965,7 @@ GPUTestingEnvironment* GPUTestingEnvironment::Initialize(int argc, char** argv)
             if (strcmp(AdapterStr, "sw") == 0)
                 TestEnvCI.AdapterType = ADAPTER_TYPE_SOFTWARE;
             else
-                TestEnvCI.AdapterId = static_cast<Uint32>(atoi(AdapterStr));
+                TestEnvCI.AdapterId = static_cast<UInt32>(atoi(AdapterStr));
         }
         else if (strcmp(arg, "--shader_compiler=dxc") == 0)
         {

@@ -68,11 +68,11 @@ BufferD3D11Impl::BufferD3D11Impl(IReferenceCounters*        pRefCounters,
     {
         // Note that Direct3D11 does not allow partial updates of constant buffers with UpdateSubresource().
         // Only the entire buffer may be updated.
-        static constexpr Uint32 Alignment{16};
+        static constexpr UInt32 Alignment{16};
         m_Desc.Size = AlignUp(m_Desc.Size, Alignment);
     }
 
-    VERIFY_EXPR(m_Desc.Size <= std::numeric_limits<Uint32>::max()); // duplicates check in ValidateBufferDesc()
+    VERIFY_EXPR(m_Desc.Size <= std::numeric_limits<UInt32>::max()); // duplicates check in ValidateBufferDesc()
 
     D3D11_BUFFER_DESC D3D11BuffDesc{};
     D3D11BuffDesc.BindFlags = BindFlagsToD3D11BindFlags(m_Desc.BindFlags);
@@ -143,7 +143,7 @@ static BufferDesc BuffDescFromD3D11Buffer(ID3D11Buffer* pd3d11Buffer, BufferDesc
     VERIFY(BuffDesc.Size == 0 || BuffDesc.Size == D3D11BuffDesc.ByteWidth,
            "The buffer size specified by the BufferDesc (", BuffDesc.Size,
            ") does not match the d3d11 buffer size (", D3D11BuffDesc.ByteWidth, ")");
-    BuffDesc.Size = Uint32{D3D11BuffDesc.ByteWidth};
+    BuffDesc.Size = UInt32{D3D11BuffDesc.ByteWidth};
 
     BIND_FLAGS BindFlags = D3D11BindFlagsToBindFlags(D3D11BuffDesc.BindFlags);
     if (D3D11BuffDesc.MiscFlags & D3D11_RESOURCE_MISC_DRAWINDIRECT_ARGS)
@@ -180,7 +180,7 @@ static BufferDesc BuffDescFromD3D11Buffer(ID3D11Buffer* pd3d11Buffer, BufferDesc
             VERIFY(BuffDesc.ElementByteStride == 0 || BuffDesc.ElementByteStride == D3D11BuffDesc.StructureByteStride,
                    "Element byte stride specified by the BufferDesc (", BuffDesc.ElementByteStride,
                    ") does not match the structured byte stride recovered from d3d11 buffer desc (", D3D11BuffDesc.StructureByteStride, ")");
-            BuffDesc.ElementByteStride = Uint32{D3D11BuffDesc.StructureByteStride};
+            BuffDesc.ElementByteStride = UInt32{D3D11BuffDesc.StructureByteStride};
         }
         if (D3D11BuffDesc.MiscFlags & D3D11_RESOURCE_MISC_BUFFER_STRUCTURED)
         {
@@ -320,7 +320,7 @@ SparseBufferProperties BufferD3D11Impl::GetSparseProperties() const
            "Expected to be a standard block size");
 
     SparseBufferProperties Props;
-    Props.AddressSpaceSize = Uint64{NumTilesForEntireResource} * StandardTileShapeForNonPackedMips.WidthInTexels;
+    Props.AddressSpaceSize = UInt64{NumTilesForEntireResource} * StandardTileShapeForNonPackedMips.WidthInTexels;
     Props.BlockSize        = StandardTileShapeForNonPackedMips.WidthInTexels;
     return Props;
 }

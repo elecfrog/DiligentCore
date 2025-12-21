@@ -34,5 +34,5 @@ void TestSerializationDevice_CInterface(ISerializationDevice* pSerializationDevi
     ISerializationDevice_CreateComputePipelineState(pSerializationDevice, (const ComputePipelineStateCreateInfo*)NULL, (const PipelineStateArchiveInfo*)NULL, (IPipelineState**)NULL);
     ISerializationDevice_CreateRayTracingPipelineState(pSerializationDevice, (const RayTracingPipelineStateCreateInfo*)NULL, (const PipelineStateArchiveInfo*)NULL, (IPipelineState**)NULL);
     ISerializationDevice_CreateTilePipelineState(pSerializationDevice, (const TilePipelineStateCreateInfo*)NULL, (const PipelineStateArchiveInfo*)NULL, (IPipelineState**)NULL);
-    ISerializationDevice_GetPipelineResourceBindings(pSerializationDevice, (const PipelineResourceBindingAttribs*)NULL, (Uint32*)NULL, (const PipelineResourceBinding**)NULL);
+    ISerializationDevice_GetPipelineResourceBindings(pSerializationDevice, (const PipelineResourceBindingAttribs*)NULL, (UInt32*)NULL, (const PipelineResourceBinding**)NULL);
 }

@@ -50,8 +50,8 @@ public:
     using TBase = ObjectBase<IBufferSuballocation>;
     BufferSuballocationImpl(IReferenceCounters*                          pRefCounters,
                             BufferSuballocatorImpl*                      pParentAllocator,
-                            Uint32                                       Offset,
-                            Uint32                                       Size,
+                            UInt32                                       Offset,
+                            UInt32                                       Size,
                             VariableSizeAllocationsManager::Allocation&& Subregion) :
         // clang-format off
         TBase             {pRefCounters},
@@ -81,12 +81,12 @@ public:
             });
     }
 
-    virtual Uint32 GetOffset() const override final
+    virtual UInt32 GetOffset() const override final
     {
         return m_Offset;
     }
 
-    virtual Uint32 GetSize() const override final
+    virtual UInt32 GetSize() const override final
     {
         return m_Size;
     }
@@ -112,8 +112,8 @@ private:
 
     VariableSizeAllocationsManager::Allocation m_Subregion;
 
-    const Uint32 m_Offset;
-    const Uint32 m_Size;
+    const UInt32 m_Offset;
+    const UInt32 m_Size;
 
     RefCntAutoPtr<IObject> m_pUserData;
 };
@@ -130,7 +130,7 @@ public:
                            const BufferSuballocatorCreateInfo& CreateInfo) :
         TBase{pRefCounters},
         m_MaxSize{
-            [](Uint64 Size, Uint64 MaxSize) {
+            [](UInt64 Size, UInt64 MaxSize) {
                 if (MaxSize == 0)
                     MaxSize = Size;
 
@@ -155,7 +155,7 @@ public:
             pDevice,
             DynamicBufferCreateInfo{
                 CreateInfo.Desc,
-                CreateInfo.ExpansionSize != 0 ? CreateInfo.ExpansionSize : static_cast<Uint32>(CreateInfo.Desc.Size), // MemoryPageSize
+                CreateInfo.ExpansionSize != 0 ? CreateInfo.ExpansionSize : static_cast<UInt32>(CreateInfo.Desc.Size), // MemoryPageSize
                 m_MaxSize,
             },
         },
@@ -163,7 +163,7 @@ public:
         m_SuballocationsAllocator{
             DefaultRawMemoryAllocator::GetAllocator(),
             sizeof(BufferSuballocationImpl),
-            1024u / Uint32{sizeof(BufferSuballocationImpl)} // Use 1 Kb pages.
+            1024u / UInt32{sizeof(BufferSuballocationImpl)} // Use 1 Kb pages.
         }
     {
     }
@@ -193,8 +193,8 @@ public:
         return m_Buffer.GetBuffer();
     }
 
-    virtual void Allocate(Uint32                 Size,
-                          Uint32                 Alignment,
+    virtual void Allocate(UInt32                 Size,
+                          UInt32                 Alignment,
                           IBufferSuballocation** ppSuballocation) override final
     {
         if (Size == 0)
@@ -224,7 +224,7 @@ public:
             {
                 // After the resize, the actual buffer size may be larger due to alignment
                 // requirements (for sparse buffers, the size is aligned by the memory page size).
-                const Uint64     BufferSize = m_BufferSize.load();
+                const UInt64     BufferSize = m_BufferSize.load();
                 const OffsetType MgrSize    = m_Mgr.GetMaxSize();
                 if (BufferSize > MgrSize)
                 {
@@ -261,7 +261,7 @@ public:
                 NEW_RC_OBJ(m_SuballocationsAllocator, "BufferSuballocationImpl instance", BufferSuballocationImpl)
                 (
                     this,
-                    AlignUp(static_cast<Uint32>(Subregion.UnalignedOffset), Alignment),
+                    AlignUp(static_cast<UInt32>(Subregion.UnalignedOffset), Alignment),
                     Size,
                     std::move(Subregion)
                 )
@@ -281,7 +281,7 @@ public:
         UpdateUsageStats();
     }
 
-    virtual Uint32 GetVersion() const override final
+    virtual UInt32 GetVersion() const override final
     {
         return m_Buffer.GetVersion();
     }
@@ -303,8 +303,8 @@ private:
     }
 
 private:
-    const Uint64 m_MaxSize;
-    const Uint32 m_ExpansionSize;
+    const UInt64 m_MaxSize;
+    const UInt32 m_ExpansionSize;
 
     std::mutex                     m_MgrMtx;
     VariableSizeAllocationsManager m_Mgr;
@@ -313,11 +313,11 @@ private:
     std::atomic<OffsetType> m_MgrSize{0};
 
     DynamicBuffer       m_Buffer;
-    std::atomic<Uint64> m_BufferSize{0};
+    std::atomic<UInt64> m_BufferSize{0};
 
     std::atomic<Int32>  m_AllocationCount{0};
-    std::atomic<Uint64> m_UsedSize{0};
-    std::atomic<Uint64> m_MaxFreeBlockSize{0};
+    std::atomic<UInt64> m_UsedSize{0};
+    std::atomic<UInt64> m_MaxFreeBlockSize{0};
 
     FixedBlockMemoryAllocator m_SuballocationsAllocator;
 };

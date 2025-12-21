@@ -118,7 +118,7 @@ TEST(FilterTypeTest, AnisotropicFilter)
     auto* pEnv    = GPUTestingEnvironment::GetInstance();
     auto* pDevice = pEnv->GetDevice();
 
-    const Uint32 MaxAnisotropy = pDevice->GetAdapterInfo().Sampler.MaxAnisotropy;
+    const UInt32 MaxAnisotropy = pDevice->GetAdapterInfo().Sampler.MaxAnisotropy;
     if (MaxAnisotropy <= 1)
         GTEST_SKIP() << "Anisotropic filtering is not supported by this device";
 
@@ -341,7 +341,7 @@ void TestSamplerCorrectness(IShader*                      pVS,
         ImtblSamplers.emplace_back(SHADER_TYPE_VERTEX | SHADER_TYPE_PIXEL, "g_Tex2DWrap", WrapSamDesc);
         ImtblSamplers.emplace_back(SHADER_TYPE_VERTEX | SHADER_TYPE_PIXEL, "g_Tex2DMirror", MirrorSamDesc);
         PSODesc.ResourceLayout.ImmutableSamplers    = ImtblSamplers.data();
-        PSODesc.ResourceLayout.NumImmutableSamplers = static_cast<Uint32>(ImtblSamplers.size());
+        PSODesc.ResourceLayout.NumImmutableSamplers = static_cast<UInt32>(ImtblSamplers.size());
     }
 
     PSOCreateInfo.pVS = pVS;
@@ -412,18 +412,18 @@ TEST(SamplerTest, Correctness)
         ASSERT_NE(pPS, nullptr);
     }
 
-    constexpr Uint32 TexDim = 128;
+    constexpr UInt32 TexDim = 128;
 
-    std::vector<Uint32> TexData(TexDim * TexDim);
-    for (Uint32 x = 0; x < TexDim; ++x)
+    std::vector<UInt32> TexData(TexDim * TexDim);
+    for (UInt32 x = 0; x < TexDim; ++x)
     {
-        for (Uint32 y = 0; y < TexDim; ++y)
+        for (UInt32 y = 0; y < TexDim; ++y)
         {
             // clang-format off
-            Uint32 r = (x <  TexDim / 2 && y <  TexDim / 2) ? 255 : 0;
-            Uint32 g = (x >= TexDim / 2 && y <  TexDim / 2) ? 255 : 0;
-            Uint32 b = (x <  TexDim / 2 && y >= TexDim / 2) ? 255 : 0;
-            Uint32 a = (x >= TexDim / 2 && y >= TexDim / 2) ? 255 : 0;
+            UInt32 r = (x <  TexDim / 2 && y <  TexDim / 2) ? 255 : 0;
+            UInt32 g = (x >= TexDim / 2 && y <  TexDim / 2) ? 255 : 0;
+            UInt32 b = (x <  TexDim / 2 && y >= TexDim / 2) ? 255 : 0;
+            UInt32 a = (x >= TexDim / 2 && y >= TexDim / 2) ? 255 : 0;
             // clang-format on
             TexData[x + y * TexDim] = r | (g << 8) | (b << 16) | (a << 24);
         }
@@ -462,9 +462,9 @@ TEST(SamplerTest, Correctness)
     auto pWrapSRV   = CreateSamplerView(TEXTURE_ADDRESS_WRAP, "Wrap sampler", "Wrap view");
     auto pMirrorSRV = CreateSamplerView(TEXTURE_ADDRESS_MIRROR, "Mirror sampler", "Mirror view");
 
-    for (Uint32 IsImmutable = 0; IsImmutable < 2; ++IsImmutable)
+    for (UInt32 IsImmutable = 0; IsImmutable < 2; ++IsImmutable)
     {
-        for (Uint32 var_type = 0; var_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++var_type)
+        for (UInt32 var_type = 0; var_type < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++var_type)
         {
             const auto VarType = static_cast<SHADER_RESOURCE_VARIABLE_TYPE>(var_type);
             TestSamplerCorrectness(pVS,

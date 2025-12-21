@@ -72,7 +72,7 @@ public:
         return SyncElements();
     }
 
-    VertexPoolDescWrapper& SetVertexCount(Uint32 VertexCount)
+    VertexPoolDescWrapper& SetVertexCount(UInt32 VertexCount)
     {
         m_Desc.VertexCount = VertexCount;
         return *this;
@@ -91,7 +91,7 @@ public:
 private:
     VertexPoolDescWrapper& SyncElements()
     {
-        m_Desc.NumElements = static_cast<Uint32>(m_Elements.size());
+        m_Desc.NumElements = static_cast<UInt32>(m_Elements.size());
         m_Desc.pElements   = m_Elements.data();
         return *this;
     }
@@ -170,13 +170,13 @@ struct VertexPoolCreateInfoX : private _VertexPoolCreateInfo, public VertexPoolD
         VertexPoolDescWrapper{m_PrivateCI.Desc}
     {}
 
-    VertexPoolCreateInfoX& SetExtraVertexCount(Uint32 _ExtraVertexCount)
+    VertexPoolCreateInfoX& SetExtraVertexCount(UInt32 _ExtraVertexCount)
     {
         m_PrivateCI.ExtraVertexCount = _ExtraVertexCount;
         return *this;
     }
 
-    VertexPoolCreateInfoX& SetMaxVertexCount(Uint32 _MaxVertexCount)
+    VertexPoolCreateInfoX& SetMaxVertexCount(UInt32 _MaxVertexCount)
     {
         m_PrivateCI.MaxVertexCount = _MaxVertexCount;
         return *this;

@@ -59,13 +59,13 @@ public:
     /// Implementation of ITextureViewWebGPU::GetWebGPUTextureView() in WebGPU backend.
     WGPUTextureView DILIGENT_CALL_TYPE GetWebGPUTextureView() const override;
 
-    WGPUTextureView GetMipLevelUAV(Uint32 Mip);
+    WGPUTextureView GetMipLevelUAV(UInt32 Mip);
 
-    WGPUTextureView GetMipLevelSRV(Uint32 Mip);
+    WGPUTextureView GetMipLevelSRV(UInt32 Mip);
 
-    WGPUTextureView GetMipLevelRTV(Uint32 Slice, Uint32 Mip);
+    WGPUTextureView GetMipLevelRTV(UInt32 Slice, UInt32 Mip);
 
-    WGPUTextureView GetMipLevelSRV(Uint32 Slice, Uint32 Mip);
+    WGPUTextureView GetMipLevelSRV(UInt32 Slice, UInt32 Mip);
 
 private:
     WebGPUTextureViewWrapper              m_wgpuTextureView;

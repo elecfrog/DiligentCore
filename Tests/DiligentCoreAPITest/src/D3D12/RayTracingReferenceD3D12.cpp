@@ -75,8 +75,8 @@ struct RTContext
     size_t                               MaxMappedOffset = 0;
     ID3D12Resource*                      pRenderTarget   = nullptr;
     CComPtr<ID3D12DescriptorHeap>        pDescHeap;
-    Uint32                               DescHeapCount  = 0;
-    Uint32                               DescHandleSize = 0;
+    UInt32                               DescHeapCount  = 0;
+    UInt32                               DescHandleSize = 0;
 
     RTContext()
     {}
@@ -112,7 +112,7 @@ struct RTSubobjectsHelper
     std::vector<D3D12_HIT_GROUP_DESC>    HitGroups;
     std::vector<CComPtr<ID3DBlob>>       ShadersByteCode;
 
-    void SetShaderCount(Uint32 NumShaders, Uint32 NumHitGroups)
+    void SetShaderCount(UInt32 NumShaders, UInt32 NumHitGroups)
     {
         ShadersByteCode.resize(NumShaders);
         ExportDescs.resize(NumShaders);
@@ -120,7 +120,7 @@ struct RTSubobjectsHelper
         HitGroups.resize(NumHitGroups);
     }
 
-    void SetDxilLibrary(Uint32 Index, const String& Source, const wchar_t* ExportName)
+    void SetDxilLibrary(UInt32 Index, const String& Source, const wchar_t* ExportName)
     {
         static constexpr DxcDefine Defines[]{
             {L"VK_IMAGE_FORMAT(x)", L""},
@@ -141,7 +141,7 @@ struct RTSubobjectsHelper
         Subobjects.push_back({D3D12_STATE_SUBOBJECT_TYPE_DXIL_LIBRARY, &RGLibDesc});
     }
 
-    void SetTriangleHitGroup(Uint32 Index, const wchar_t* GroupName, const wchar_t* ClosestHitShaderImport, const wchar_t* AnyHitShaderImport = nullptr)
+    void SetTriangleHitGroup(UInt32 Index, const wchar_t* GroupName, const wchar_t* ClosestHitShaderImport, const wchar_t* AnyHitShaderImport = nullptr)
     {
         D3D12_HIT_GROUP_DESC& HitGroupDesc    = HitGroups[Index];
         HitGroupDesc.HitGroupExport           = GroupName;
@@ -152,7 +152,7 @@ struct RTSubobjectsHelper
         Subobjects.push_back({D3D12_STATE_SUBOBJECT_TYPE_HIT_GROUP, &HitGroupDesc});
     }
 
-    void SetProceduralHitGroup(Uint32 Index, const wchar_t* GroupName, const wchar_t* IntersectionShaderImport, const wchar_t* ClosestHitShaderImport, const wchar_t* AnyHitShaderImport = nullptr)
+    void SetProceduralHitGroup(UInt32 Index, const wchar_t* GroupName, const wchar_t* IntersectionShaderImport, const wchar_t* ClosestHitShaderImport, const wchar_t* AnyHitShaderImport = nullptr)
     {
         D3D12_HIT_GROUP_DESC& HitGroupDesc    = HitGroups[Index];
         HitGroupDesc.HitGroupExport           = GroupName;
@@ -165,7 +165,7 @@ struct RTSubobjectsHelper
 };
 
 template <typename PSOCtorType, typename RootSigCtorType>
-void InitializeRTContext(RTContext& Ctx, ISwapChain* pSwapChain, Uint32 ShaderRecordSize, PSOCtorType&& PSOCtor, RootSigCtorType&& RootSigCtor)
+void InitializeRTContext(RTContext& Ctx, ISwapChain* pSwapChain, UInt32 ShaderRecordSize, PSOCtorType&& PSOCtor, RootSigCtorType&& RootSigCtor)
 {
     TestingEnvironmentD3D12* pEnv                   = TestingEnvironmentD3D12::GetInstance();
     TestingSwapChainD3D12*   pTestingSwapChainD3D12 = ClassPtrCast<TestingSwapChainD3D12>(pSwapChain);
@@ -226,7 +226,7 @@ void InitializeRTContext(RTContext& Ctx, ISwapChain* pSwapChain, Uint32 ShaderRe
 
         Param.ParameterType                       = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
         Param.ShaderVisibility                    = D3D12_SHADER_VISIBILITY_ALL;
-        Param.DescriptorTable.NumDescriptorRanges = static_cast<Uint32>(DescriptorRanges.size());
+        Param.DescriptorTable.NumDescriptorRanges = static_cast<UInt32>(DescriptorRanges.size());
         Param.DescriptorTable.pDescriptorRanges   = DescriptorRanges.data();
 
         RootSignatureDesc.Flags         = D3D12_ROOT_SIGNATURE_FLAG_NONE;
@@ -302,7 +302,7 @@ void InitializeRTContext(RTContext& Ctx, ISwapChain* pSwapChain, Uint32 ShaderRe
 }
 
 template <typename PSOCtorType>
-void InitializeRTContext(RTContext& Ctx, ISwapChain* pSwapChain, Uint32 ShaderRecordSize, PSOCtorType&& PSOCtor)
+void InitializeRTContext(RTContext& Ctx, ISwapChain* pSwapChain, UInt32 ShaderRecordSize, PSOCtorType&& PSOCtor)
 {
     InitializeRTContext(Ctx, pSwapChain, ShaderRecordSize, PSOCtor, [](std::vector<D3D12_DESCRIPTOR_RANGE>&) {});
 }
@@ -401,7 +401,7 @@ void CreateTLAS(RTContext& Ctx, D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_IN
     Ctx.pDevice->CreateShaderResourceView(nullptr, &SRVDesc, DescHandle);
 }
 
-void CreateRTBuffers(RTContext& Ctx, Uint32 VBSize, Uint32 IBSize, Uint32 InstanceCount, Uint32 NumMissShaders, Uint32 NumHitShaders, Uint32 ShaderRecordSize = 0, UINT64 UploadSize = 0)
+void CreateRTBuffers(RTContext& Ctx, UInt32 VBSize, UInt32 IBSize, UInt32 InstanceCount, UInt32 NumMissShaders, UInt32 NumHitShaders, UInt32 ShaderRecordSize = 0, UINT64 UploadSize = 0)
 {
     D3D12_RESOURCE_DESC BuffDesc = {};
     BuffDesc.Dimension           = D3D12_RESOURCE_DIMENSION_BUFFER;
@@ -968,9 +968,9 @@ void RayTracingProceduralIntersectionReferenceD3D12(ISwapChain* pSwapChain)
 
 void RayTracingMultiGeometryReferenceD3D12(ISwapChain* pSwapChain)
 {
-    static constexpr Uint32 InstanceCount = TestingConstants::MultiGeometry::InstanceCount;
-    static constexpr Uint32 GeometryCount = 3;
-    static constexpr Uint32 HitGroupCount = InstanceCount * GeometryCount;
+    static constexpr UInt32 InstanceCount = TestingConstants::MultiGeometry::InstanceCount;
+    static constexpr UInt32 GeometryCount = 3;
+    static constexpr UInt32 HitGroupCount = InstanceCount * GeometryCount;
 
     TestingEnvironmentD3D12* pEnv                   = TestingEnvironmentD3D12::GetInstance();
     TestingSwapChainD3D12*   pTestingSwapChainD3D12 = ClassPtrCast<TestingSwapChainD3D12>(pSwapChain);
@@ -1259,7 +1259,7 @@ void RayTracingMultiGeometryReferenceD3D12(ISwapChain* pSwapChain)
         UpdateBuffer(Ctx, Ctx.pSBTBuffer, RayGenOffset, Ctx.pStateObjectProperties->GetShaderIdentifier(L"Main"), handleSize);
         UpdateBuffer(Ctx, Ctx.pSBTBuffer, RayMissOffset, Ctx.pStateObjectProperties->GetShaderIdentifier(L"Miss"), handleSize);
 
-        const auto SetHitGroup = [&](Uint32 Index, const wchar_t* GroupName, const void* ShaderRecord) {
+        const auto SetHitGroup = [&](UInt32 Index, const wchar_t* GroupName, const void* ShaderRecord) {
             VERIFY_EXPR(Index < HitGroupCount);
             UINT64 Offset = HitGroupOffset + Index * ShaderRecordSize;
             UpdateBuffer(Ctx, Ctx.pSBTBuffer, Offset, Ctx.pStateObjectProperties->GetShaderIdentifier(GroupName), handleSize);

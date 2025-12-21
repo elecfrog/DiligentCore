@@ -33,7 +33,7 @@
 #include <vector>
 #include <cstring>
 
-#include "../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "../../Primitives/interface/MemoryAllocator.h"
 #include "../../Platforms/Basic/interface/DebugUtilities.hpp"
 #include "CompilerDefinitions.h"
@@ -53,7 +53,7 @@ public:
     DynamicLinearAllocator& operator=(DynamicLinearAllocator&&)      = delete;
     // clang-format on
 
-    explicit DynamicLinearAllocator(IMemoryAllocator& Allocator, Uint32 BlockSize = 4 << 10) :
+    explicit DynamicLinearAllocator(IMemoryAllocator& Allocator, UInt32 BlockSize = 4 << 10) :
         m_BlockSize{BlockSize},
         m_pAllocator{&Allocator}
     {
@@ -217,7 +217,7 @@ private:
     };
 
     std::vector<Block> m_Blocks;
-    const Uint32       m_BlockSize  = 4 << 10;
+    const UInt32       m_BlockSize  = 4 << 10;
     IMemoryAllocator*  m_pAllocator = nullptr;
 };
 

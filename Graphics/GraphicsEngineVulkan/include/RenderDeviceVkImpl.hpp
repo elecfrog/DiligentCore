@@ -173,7 +173,7 @@ public:
     virtual VkInstance DILIGENT_CALL_TYPE GetVkInstance() override final { return m_Instance->GetVkInstance(); }
 
     /// Implementation of IRenderDeviceVk::GetVkVersion().
-    virtual Uint32 DILIGENT_CALL_TYPE GetVkVersion() override final { return m_PhysicalDevice->GetVkVersion(); }
+    virtual UInt32 DILIGENT_CALL_TYPE GetVkVersion() override final { return m_PhysicalDevice->GetVkVersion(); }
 
     /// Implementation of IRenderDeviceVk::CreateTextureFromVulkanImage().
     virtual void DILIGENT_CALL_TYPE CreateTextureFromVulkanImage(VkImage            vkImage,
@@ -209,7 +209,7 @@ public:
 
     // pImmediateCtx parameter is only used to make sure the command buffer is submitted from the immediate context
     // The method returns fence value associated with the submitted command buffer
-    Uint64 ExecuteCommandBuffer(SoftwareQueueIndex CommandQueueId, const VkSubmitInfo& SubmitInfo, std::vector<std::pair<Uint64, RefCntAutoPtr<FenceVkImpl>>>* pSignalFences);
+    UInt64 ExecuteCommandBuffer(SoftwareQueueIndex CommandQueueId, const VkSubmitInfo& SubmitInfo, std::vector<std::pair<UInt64, RefCntAutoPtr<FenceVkImpl>>>* pSignalFences);
 
     void AllocateTransientCmdPool(SoftwareQueueIndex                   CommandQueueId,
                                   VulkanUtilities::CommandPoolWrapper& CmdPool,
@@ -223,7 +223,7 @@ public:
     /// Implementation of IRenderDevice::GetSparseTextureFormatInfo() in Vulkan backend.
     virtual SparseTextureFormatInfo DILIGENT_CALL_TYPE GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                                   RESOURCE_DIMENSION Dimension,
-                                                                                  Uint32             SampleCount) const override final;
+                                                                                  UInt32             SampleCount) const override final;
 
     /// Implementation of IRenderDeviceVk::GetDeviceFeaturesVk().
     virtual void DILIGENT_CALL_TYPE GetDeviceFeaturesVk(DeviceFeaturesVk& FeaturesVk) const override final;
@@ -234,7 +234,7 @@ public:
         return m_pDxCompiler.get();
     }
 
-    DescriptorSetAllocation AllocateDescriptorSet(Uint64 CommandQueueMask, VkDescriptorSetLayout SetLayout, const char* DebugName = "")
+    DescriptorSetAllocation AllocateDescriptorSet(UInt64 CommandQueueMask, VkDescriptorSetLayout SetLayout, const char* DebugName = "")
     {
         return m_DescriptorSetAllocator.Allocate(CommandQueueMask, SetLayout, DebugName);
     }
@@ -269,14 +269,14 @@ public:
 
     struct Properties
     {
-        Uint32 UploadHeapPageSize  = 0;
-        Uint32 DynamicHeapPageSize = 0;
+        UInt32 UploadHeapPageSize  = 0;
+        UInt32 DynamicHeapPageSize = 0;
     };
 
     const Properties& GetProperties() const { return m_Properties; }
 
     // TODO: use small_vector
-    std::vector<uint32_t> ConvertCmdQueueIdsToQueueFamilies(Uint64 CommandQueueMask) const;
+    std::vector<uint32_t> ConvertCmdQueueIdsToQueueFamilies(UInt64 CommandQueueMask) const;
 
     HardwareQueueIndex GetQueueFamilyIndex(SoftwareQueueIndex CmdQueueInd) const;
 
@@ -297,9 +297,9 @@ private:
     //      * SubmittedFenceValue    - fence value associated with the submitted command buffer
     void SubmitCommandBuffer(SoftwareQueueIndex                                          CommandQueueId,
                              const VkSubmitInfo&                                         SubmitInfo,
-                             Uint64&                                                     SubmittedCmdBuffNumber,
-                             Uint64&                                                     SubmittedFenceValue,
-                             std::vector<std::pair<Uint64, RefCntAutoPtr<FenceVkImpl>>>* pFences);
+                             UInt64&                                                     SubmittedCmdBuffNumber,
+                             UInt64&                                                     SubmittedFenceValue,
+                             std::vector<std::pair<UInt64, RefCntAutoPtr<FenceVkImpl>>>* pFences);
 
 private:
     const Properties m_Properties;

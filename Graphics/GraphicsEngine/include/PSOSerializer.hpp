@@ -75,7 +75,7 @@ struct PSOSerializer
                                     ConstQual<RayTracingPipelineStateCreateInfo>&             CreateInfo,
                                     ConstQual<TPRSNames>&                                     PRSNames,
                                     DynamicLinearAllocator*                                   Allocator,
-                                    const std::function<void(Uint32&, ConstQual<IShader*>&)>& ShaderToIndex);
+                                    const std::function<void(UInt32&, ConstQual<IShader*>&)>& ShaderToIndex);
 
     static bool SerializeShaderIndices(Serializer<Mode>&            Ser,
                                        ConstQual<ShaderIndexArray>& Shaders,

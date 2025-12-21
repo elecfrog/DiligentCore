@@ -149,7 +149,7 @@ void TextureBaseD3D11::CreateViewInternal(const TextureViewDesc& ViewDesc, IText
 }
 
 void TextureBaseD3D11::PrepareD3D11InitData(const TextureData*                                                               pInitData,
-                                            Uint32                                                                           NumSubresources,
+                                            UInt32                                                                           NumSubresources,
                                             std::vector<D3D11_SUBRESOURCE_DATA, STDAllocatorRawMem<D3D11_SUBRESOURCE_DATA>>& D3D11InitData)
 {
     if (pInitData != nullptr && pInitData->pSubResources != nullptr)
@@ -204,10 +204,10 @@ void TextureBaseD3D11::InitSparseProperties()
                                          nullptr);
 
         SparseTextureProperties& Props{*m_pSparseProps};
-        Props.AddressSpaceSize = Uint64{NumTilesForEntireResource} * D3D11_2_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
+        Props.AddressSpaceSize = UInt64{NumTilesForEntireResource} * D3D11_2_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
         Props.BlockSize        = D3D11_2_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
-        Props.MipTailOffset    = Uint64{PackedMipDesc.StartTileIndexInOverallResource} * D3D11_2_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
-        Props.MipTailSize      = Uint64{PackedMipDesc.NumTilesForPackedMips} * D3D11_2_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
+        Props.MipTailOffset    = UInt64{PackedMipDesc.StartTileIndexInOverallResource} * D3D11_2_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
+        Props.MipTailSize      = UInt64{PackedMipDesc.NumTilesForPackedMips} * D3D11_2_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
         Props.FirstMipInTail   = PackedMipDesc.NumStandardMips;
         Props.TileSize[0]      = StandardTileShapeForNonPackedMips.WidthInTexels;
         Props.TileSize[1]      = StandardTileShapeForNonPackedMips.HeightInTexels;

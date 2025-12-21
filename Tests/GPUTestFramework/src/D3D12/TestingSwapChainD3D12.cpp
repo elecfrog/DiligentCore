@@ -248,10 +248,10 @@ void TestingSwapChainD3D12::TakeSnapshot(ITexture* pCopyFrom)
     m_pd3d12StagingBuffer->Map(0, &InvalidateRange, &pStagingDataPtr);
     m_ReferenceDataPitch = m_SwapChainDesc.Width * 4;
     m_ReferenceData.resize(m_SwapChainDesc.Height * m_ReferenceDataPitch);
-    for (Uint32 row = 0; row < m_SwapChainDesc.Height; ++row)
+    for (UInt32 row = 0; row < m_SwapChainDesc.Height; ++row)
     {
         memcpy(&m_ReferenceData[row * m_ReferenceDataPitch],
-               reinterpret_cast<const Uint8*>(pStagingDataPtr) + m_StagingBufferFootprint.Footprint.RowPitch * row,
+               reinterpret_cast<const UInt8*>(pStagingDataPtr) + m_StagingBufferFootprint.Footprint.RowPitch * row,
                m_ReferenceDataPitch);
     }
     m_pd3d12StagingBuffer->Unmap(0, nullptr);

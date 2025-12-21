@@ -26,7 +26,8 @@
 
 #include "XXH128Hasher.hpp"
 
-#include "xxhash.h"
+#include <xxhash.h>
+// #include "xxhash.h"
 
 #include "DebugUtilities.hpp"
 #include "Cast.hpp"
@@ -64,7 +65,7 @@ void XXH128State::Update(const ShaderCreateInfo& ShaderCI) noexcept
 {
     ASSERT_SIZEOF64(ShaderCI, 152, "Did you add new members to ShaderCreateInfo? Please handle them here.");
 
-    Update(static_cast<Uint32>(ShaderCI.SourceLength), // Aka ByteCodeSize
+    Update(static_cast<UInt32>(ShaderCI.SourceLength), // Aka ByteCodeSize
            ShaderCI.EntryPoint,
            ShaderCI.Desc,
            ShaderCI.SourceLanguage,

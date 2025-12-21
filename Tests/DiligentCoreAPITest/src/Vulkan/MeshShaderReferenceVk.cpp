@@ -348,7 +348,7 @@ void MeshShaderIndirectDrawReferenceVk(ISwapChain* pSwapChain)
 
     VkCommandBuffer vkCmdBuffer = pEnv->AllocateCommandBuffer();
 
-    Uint32 taskData[3] = {1, 1, 1};
+    UInt32 taskData[3] = {1, 1, 1};
     vkCmdUpdateBuffer(vkCmdBuffer, vkIndirectBuffer, 0, sizeof(taskData), &taskData);
 
     VkBufferMemoryBarrier barrier = {};

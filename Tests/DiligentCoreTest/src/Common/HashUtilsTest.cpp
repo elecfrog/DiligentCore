@@ -153,8 +153,8 @@ TEST(Common_HashUtils, HashMapStringKey)
 TEST(Common_HashUtils, ComputeHashRaw)
 {
     {
-        std::array<Uint8, 16> Data{};
-        for (Uint8 i = 0; i < Data.size(); ++i)
+        std::array<UInt8, 16> Data{};
+        for (UInt8 i = 0; i < Data.size(); ++i)
             Data[i] = 1u + i * 3u;
 
         std::unordered_set<size_t> Hashes;
@@ -171,13 +171,13 @@ TEST(Common_HashUtils, ComputeHashRaw)
     }
 
     {
-        std::array<Uint8, 16> RefData = {1, 3, 5, 7, 11, 13, 21, 35, 2, 4, 8, 10, 22, 40, 60, 82};
+        std::array<UInt8, 16> RefData = {1, 3, 5, 7, 11, 13, 21, 35, 2, 4, 8, 10, 22, 40, 60, 82};
         for (size_t size = 1; size <= RefData.size(); ++size)
         {
             auto RefHash = ComputeHashRaw(RefData.data(), size);
             for (size_t offset = 0; offset < RefData.size() - size; ++offset)
             {
-                std::array<Uint8, RefData.size()> Data{};
+                std::array<UInt8, RefData.size()> Data{};
                 std::copy(RefData.begin(), RefData.begin() + size, Data.begin() + offset);
                 auto Hash = ComputeHashRaw(&Data[offset], size);
                 EXPECT_EQ(RefHash, Hash) << offset << " " << size;
@@ -251,7 +251,7 @@ public:
     template <typename MemberType>
     void AddFlags(MemberType& Member, const char* MemberName, MemberType StartValue, MemberType EndValue)
     {
-        for (Uint64 i = StartValue; i <= EndValue; i *= 2)
+        for (UInt64 i = StartValue; i <= EndValue; i *= 2)
         {
             Add(Member, MemberName, static_cast<MemberType>(i));
             if (i == EndValue)
@@ -346,7 +346,7 @@ public:
     template <typename MemberType>
     void AddFlags(MemberType& Member, const char* MemberName, MemberType StartValue, MemberType EndValue)
     {
-        for (Uint64 i = StartValue; i <= EndValue; i *= 2)
+        for (UInt64 i = StartValue; i <= EndValue; i *= 2)
         {
             Add(Member, MemberName, static_cast<MemberType>(i));
             if (i == EndValue)
@@ -460,8 +460,8 @@ void TestDepthStencilStateDescHasher()
     TEST_BOOL(DepthWriteEnable);
     TEST_RANGE(DepthFunc, static_cast<COMPARISON_FUNCTION>(1), COMPARISON_FUNC_NUM_FUNCTIONS);
     TEST_BOOL(StencilEnable);
-    TEST_RANGE(StencilReadMask, Uint8{1u}, Uint8{255u});
-    TEST_RANGE(StencilWriteMask, Uint8{1u}, Uint8{255u});
+    TEST_RANGE(StencilReadMask, UInt8{1u}, UInt8{255u});
+    TEST_RANGE(StencilWriteMask, UInt8{1u}, UInt8{255u});
 }
 
 TEST(Common_HashUtils, DepthStencilStateDescStdHash)
@@ -512,7 +512,7 @@ void TestBlendStateDescHasher()
     TEST_BOOL(AlphaToCoverageEnable);
     TEST_BOOL(IndependentBlendEnable);
 
-    for (Uint32 rt = 0; rt < DILIGENT_MAX_RENDER_TARGETS; ++rt)
+    for (UInt32 rt = 0; rt < DILIGENT_MAX_RENDER_TARGETS; ++rt)
     {
         TEST_BOOL(RenderTargets[rt].BlendEnable);
         TEST_BOOL(RenderTargets[rt].LogicOperationEnable);
@@ -576,8 +576,8 @@ void TestSampleDescHasher()
     ASSERT_SIZEOF(SampleDesc, 2, "Did you add new members to SampleDesc? Please update the tests.");
     DEFINE_HELPER(SampleDesc);
 
-    TEST_RANGE(Count, Uint8{2u}, Uint8{255u});
-    TEST_RANGE(Quality, Uint8{1u}, Uint8{255u});
+    TEST_RANGE(Count, UInt8{2u}, UInt8{255u});
+    TEST_RANGE(Quality, UInt8{1u}, UInt8{255u});
 }
 
 TEST(Common_HashUtils, SampleDescStdHash)
@@ -707,7 +707,7 @@ void TestRenderPassAttachmentDescHasher()
     DEFINE_HELPER(RenderPassAttachmentDesc);
 
     TEST_RANGE(Format, static_cast<TEXTURE_FORMAT>(1), TEX_FORMAT_NUM_FORMATS);
-    TEST_RANGE(SampleCount, Uint8{2u}, Uint8{32u});
+    TEST_RANGE(SampleCount, UInt8{2u}, UInt8{32u});
     TEST_RANGE(LoadOp, static_cast<ATTACHMENT_LOAD_OP>(1), ATTACHMENT_LOAD_OP_COUNT);
     TEST_RANGE(StoreOp, static_cast<ATTACHMENT_STORE_OP>(1), ATTACHMENT_STORE_OP_COUNT);
     TEST_RANGE(StencilLoadOp, static_cast<ATTACHMENT_LOAD_OP>(1), ATTACHMENT_LOAD_OP_COUNT);
@@ -814,7 +814,7 @@ void TestSubpassDescHasher()
     constexpr AttachmentReference DepthStencil{10, RESOURCE_STATE_DEPTH_WRITE};
     TEST_VALUE(pDepthStencilAttachment, &DepthStencil);
 
-    constexpr Uint32 Preserves[]      = {3, 4, 7};
+    constexpr UInt32 Preserves[]      = {3, 4, 7};
     Helper.Get().pPreserveAttachments = Preserves;
     TEST_VALUE(PreserveAttachmentCount, 1u);
     TEST_VALUE(PreserveAttachmentCount, 2u);
@@ -942,7 +942,7 @@ void TestInputLayoutDescHasher()
             LayoutElement{4, 5, 1, VT_INT8, True, INPUT_ELEMENT_FREQUENCY_PER_VERTEX},
         };
     Helper.Get().LayoutElements = LayoutElems;
-    TEST_RANGE(NumElements, 1u, Uint32{_countof(LayoutElems)}, 1u);
+    TEST_RANGE(NumElements, 1u, UInt32{_countof(LayoutElems)}, 1u);
 }
 
 TEST(Common_HashUtils, InputLayoutDescStdHash)
@@ -978,12 +978,12 @@ void TestGraphicsPipelineDescHasher()
     Helper.Add("InputLayout");
 
     TEST_RANGE(PrimitiveTopology, static_cast<PRIMITIVE_TOPOLOGY>(1), PRIMITIVE_TOPOLOGY_NUM_TOPOLOGIES);
-    TEST_RANGE(NumRenderTargets, Uint8{1u}, Uint8{8u});
-    TEST_RANGE(NumViewports, Uint8{2u}, Uint8{32u});
-    TEST_RANGE(SubpassIndex, Uint8{1u}, Uint8{8u});
+    TEST_RANGE(NumRenderTargets, UInt8{1u}, UInt8{8u});
+    TEST_RANGE(NumViewports, UInt8{2u}, UInt8{32u});
+    TEST_RANGE(SubpassIndex, UInt8{1u}, UInt8{8u});
     TEST_FLAGS(ShadingRateFlags, static_cast<PIPELINE_SHADING_RATE_FLAGS>(1), PIPELINE_SHADING_RATE_FLAG_LAST);
 
-    for (Uint8 i = 1; i < MAX_RENDER_TARGETS; ++i)
+    for (UInt8 i = 1; i < MAX_RENDER_TARGETS; ++i)
     {
         Helper.Get().NumRenderTargets = i;
         TEST_RANGE(RTVFormats[i - 1], TEX_FORMAT_UNKNOWN, TEX_FORMAT_NUM_FORMATS);
@@ -1015,8 +1015,8 @@ void TestRayTracingPipelineDescHasher()
 {
     DEFINE_HELPER(RayTracingPipelineDesc);
 
-    TEST_RANGE(ShaderRecordSize, Uint16{32u}, Uint16{48000u}, Uint16{1024u});
-    TEST_RANGE(MaxRecursionDepth, Uint8{1u}, Uint8{32u});
+    TEST_RANGE(ShaderRecordSize, UInt16{32u}, UInt16{48000u}, UInt16{1024u});
+    TEST_RANGE(MaxRecursionDepth, UInt8{1u}, UInt8{32u});
 }
 
 TEST(Common_HashUtils, RayTracingPipelineDescStdHash)
@@ -1037,7 +1037,7 @@ void TestPipelineStateDescHasher()
 
     TEST_RANGE(PipelineType, static_cast<PIPELINE_TYPE>(1), PIPELINE_TYPE_COUNT);
     TEST_RANGE(SRBAllocationGranularity, 2u, 64u);
-    TEST_FLAGS(ImmediateContextMask, Uint64{2u}, Uint64{1u} << Uint64{63u});
+    TEST_FLAGS(ImmediateContextMask, UInt64{2u}, UInt64{1u} << UInt64{63u});
 
     Helper.Get().ResourceLayout.DefaultVariableType = SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC;
     Helper.Add("ResourceLayout");
@@ -1080,7 +1080,7 @@ void TestPipelineResourceSignatureDescHasher()
     TEST_VALUE(NumImmutableSamplers, 1u);
     TEST_VALUE(NumImmutableSamplers, 2u);
 
-    TEST_RANGE(BindingIndex, Uint8{1u}, Uint8{8u});
+    TEST_RANGE(BindingIndex, UInt8{1u}, UInt8{8u});
     TEST_BOOL(UseCombinedTextureSamplers);
 
     Helper.Get().UseCombinedTextureSamplers = true;
@@ -1263,7 +1263,7 @@ void TestRTPipelineStateCIHasher()
     DEFINE_HELPER(RayTracingPipelineStateCreateInfo);
 
     TEST_FLAGS(Flags, static_cast<PSO_CREATE_FLAGS>(1), PSO_CREATE_FLAG_LAST);
-    TEST_RANGE(RayTracingPipeline.ShaderRecordSize, Uint16{32u}, Uint16{48000u}, Uint16{1024u});
+    TEST_RANGE(RayTracingPipeline.ShaderRecordSize, UInt16{32u}, UInt16{48000u}, UInt16{1024u});
 
     std::array<RayTracingGeneralShaderGroup, 8>       pGeneralShaders{};
     std::array<RayTracingTriangleHitShaderGroup, 8>   pTriangleHitShaders{};
@@ -1273,9 +1273,9 @@ void TestRTPipelineStateCIHasher()
     Helper.Get().pTriangleHitShaders   = pTriangleHitShaders.data();
     Helper.Get().pProceduralHitShaders = pProceduralHitShaders.data();
 
-    TEST_RANGE(GeneralShaderCount, 1u, static_cast<Uint32>(pGeneralShaders.size()));
-    TEST_RANGE(TriangleHitShaderCount, 1u, static_cast<Uint32>(pTriangleHitShaders.size()));
-    TEST_RANGE(ProceduralHitShaderCount, 1u, static_cast<Uint32>(pProceduralHitShaders.size()));
+    TEST_RANGE(GeneralShaderCount, 1u, static_cast<UInt32>(pGeneralShaders.size()));
+    TEST_RANGE(TriangleHitShaderCount, 1u, static_cast<UInt32>(pTriangleHitShaders.size()));
+    TEST_RANGE(ProceduralHitShaderCount, 1u, static_cast<UInt32>(pProceduralHitShaders.size()));
     TEST_STRINGS(pShaderRecordName, "Name1", "Name2", "Name3");
     TEST_RANGE(MaxAttributeSize, 1u, 128u);
     TEST_RANGE(MaxPayloadSize, 1u, 128u);
@@ -1297,9 +1297,9 @@ void TestTilePipelineDescHasher()
 {
     DEFINE_HELPER(TilePipelineDesc);
 
-    TEST_RANGE(NumRenderTargets, Uint8{1u}, Uint8{8u});
-    TEST_RANGE(SampleCount, Uint8{2u}, Uint8{32u});
-    for (Uint8 i = 1; i < MAX_RENDER_TARGETS; ++i)
+    TEST_RANGE(NumRenderTargets, UInt8{1u}, UInt8{8u});
+    TEST_RANGE(SampleCount, UInt8{2u}, UInt8{32u});
+    for (UInt8 i = 1; i < MAX_RENDER_TARGETS; ++i)
     {
         Helper.Get().NumRenderTargets = i;
         TEST_RANGE(RTVFormats[i - 1], TEX_FORMAT_UNKNOWN, TEX_FORMAT_NUM_FORMATS);
@@ -1323,7 +1323,7 @@ void TestTilePipelineStateCIHasher()
     DEFINE_HELPER(TilePipelineStateCreateInfo);
 
     TEST_FLAGS(Flags, static_cast<PSO_CREATE_FLAGS>(1), PSO_CREATE_FLAG_LAST);
-    TEST_RANGE(TilePipeline.SampleCount, Uint8{2u}, Uint8{32u});
+    TEST_RANGE(TilePipeline.SampleCount, UInt8{2u}, UInt8{32u});
 }
 
 TEST(Common_HashUtils, TilePipelineStateCIStdHash)

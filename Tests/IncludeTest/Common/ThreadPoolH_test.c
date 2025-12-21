@@ -49,9 +49,9 @@ void TestThreadPool()
     IThreadPool_ReprioritizeAllTasks((IThreadPool*)NULL);
     IThreadPool_RemoveTask((IThreadPool*)NULL, (IAsyncTask*)NULL);
     IThreadPool_WaitForAllTasks((IThreadPool*)NULL);
-    Uint32 QueueSize = IThreadPool_GetQueueSize((IThreadPool*)NULL);
+    UInt32 QueueSize = IThreadPool_GetQueueSize((IThreadPool*)NULL);
     (void)QueueSize;
-    Uint32 TaskCount = IThreadPool_GetRunningTaskCount((IThreadPool*)NULL);
+    UInt32 TaskCount = IThreadPool_GetRunningTaskCount((IThreadPool*)NULL);
     (void)TaskCount;
     IThreadPool_StopThreads((IThreadPool*)NULL);
     bool MoreTasks = IThreadPool_ProcessTask((IThreadPool*)NULL, 1, true);

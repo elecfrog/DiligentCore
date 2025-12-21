@@ -62,7 +62,7 @@ SwapChainGLIOS::SwapChainGLIOS(IReferenceCounters*          pRefCounters,
     CreateDummyBuffers(m_pRenderDevice.RawPtr<RenderDeviceGLImpl>());
 }
 
-void SwapChainGLIOS::Present(Uint32 SyncInterval)
+void SwapChainGLIOS::Present(UInt32 SyncInterval)
 {
     EAGLContext* context = [EAGLContext currentContext];
     glBindRenderbuffer(GL_RENDERBUFFER, m_ColorRenderBuffer);
@@ -71,7 +71,7 @@ void SwapChainGLIOS::Present(Uint32 SyncInterval)
     //pDeviceGL->m_GLContext.SwapBuffers();
 }
 
-void SwapChainGLIOS::InitRenderBuffers(bool InitFromDrawable, Uint32 &Width, Uint32 &Height)
+void SwapChainGLIOS::InitRenderBuffers(bool InitFromDrawable, UInt32 &Width, UInt32 &Height)
 {
     EAGLContext* context = [EAGLContext currentContext];
 
@@ -121,7 +121,7 @@ void SwapChainGLIOS::InitRenderBuffers(bool InitFromDrawable, Uint32 &Width, Uin
     }
 }
 
-void SwapChainGLIOS::Resize( Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewTransform )
+void SwapChainGLIOS::Resize( UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewTransform )
 {
     InitRenderBuffers(false, NewWidth, NewHeight);
     TSwapChainGLBase::Resize(NewWidth, NewHeight, NewTransform, 0);

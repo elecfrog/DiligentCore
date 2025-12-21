@@ -48,7 +48,7 @@ struct ResourceMappingEntry
     IDeviceObject* pObject DEFAULT_INITIALIZER(nullptr);
 
     /// For array resources, index in the array
-    Uint32 ArrayIndex DEFAULT_INITIALIZER(0);
+    UInt32 ArrayIndex DEFAULT_INITIALIZER(0);
 
 
 #if DILIGENT_CPP_INTERFACE
@@ -60,7 +60,7 @@ struct ResourceMappingEntry
     /// \param [in] _Name       - Object name.
     /// \param [in] _pObject    - Pointer to the object.
     /// \param [in] _ArrayIndex - For array resources, index in the array
-    constexpr ResourceMappingEntry(const Char* _Name, IDeviceObject* _pObject, Uint32 _ArrayIndex = 0) noexcept :
+    constexpr ResourceMappingEntry(const Char* _Name, IDeviceObject* _pObject, UInt32 _ArrayIndex = 0) noexcept :
         Name{_Name},
         pObject{_pObject},
         ArrayIndex{_ArrayIndex}
@@ -77,14 +77,14 @@ struct ResourceMappingCreateInfo
     const ResourceMappingEntry* pEntries DEFAULT_INITIALIZER(nullptr);
 
     /// The number of entries in pEntries array.
-    Uint32 NumEntries DEFAULT_INITIALIZER(0);
+    UInt32 NumEntries DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr ResourceMappingCreateInfo() noexcept
     {}
 
     constexpr ResourceMappingCreateInfo(const ResourceMappingEntry* _pEntries,
-                                        Uint32                      _NumEntries) noexcept :
+                                        UInt32                      _NumEntries) noexcept :
         pEntries{_pEntries},
         NumEntries{_NumEntries}
     {}
@@ -138,9 +138,9 @@ DILIGENT_BEGIN_INTERFACE(IResourceMapping, IObject)
     ///          object will not be released as long as it is in the resource mapping.
     VIRTUAL void METHOD(AddResourceArray)(THIS_
                                           const Char*           Name,
-                                          Uint32                StartIndex,
+                                          UInt32                StartIndex,
                                           IDeviceObject* const* ppObjects,
-                                          Uint32                NumElements,
+                                          UInt32                NumElements,
                                           Bool                  bIsUnique) PURE;
 
 
@@ -150,7 +150,7 @@ DILIGENT_BEGIN_INTERFACE(IResourceMapping, IObject)
     /// \param [in] ArrayIndex - For array resources, index in the array
     VIRTUAL void METHOD(RemoveResourceByName)(THIS_
                                               const Char* Name,
-                                              Uint32      ArrayIndex DEFAULT_VALUE(0)) PURE;
+                                              UInt32      ArrayIndex DEFAULT_VALUE(0)) PURE;
 
     /// Finds a resource in the mapping.
 
@@ -165,7 +165,7 @@ DILIGENT_BEGIN_INTERFACE(IResourceMapping, IObject)
     ///          from the resource mapping, or the mapping is destroyed.
     VIRTUAL IDeviceObject* METHOD(GetResource)(THIS_
                                                const Char* Name,
-                                               Uint32      ArrayIndex DEFAULT_VALUE(0)) PURE;
+                                               UInt32      ArrayIndex DEFAULT_VALUE(0)) PURE;
 
     /// Returns the size of the resource mapping, i.e. the number of objects.
     VIRTUAL size_t METHOD(GetSize)(THIS) PURE;

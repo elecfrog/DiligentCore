@@ -253,7 +253,7 @@ TextureD3D12Impl::TextureD3D12Impl(IReferenceCounters*        pRefCounters,
 
         if (bInitializeTexture)
         {
-            Uint32 ExpectedNumSubresources = Uint32{d3d12TexDesc.MipLevels} * (d3d12TexDesc.Dimension == D3D12_RESOURCE_DIMENSION_TEXTURE3D ? 1 : Uint32{d3d12TexDesc.DepthOrArraySize});
+            UInt32 ExpectedNumSubresources = UInt32{d3d12TexDesc.MipLevels} * (d3d12TexDesc.Dimension == D3D12_RESOURCE_DIMENSION_TEXTURE3D ? 1 : UInt32{d3d12TexDesc.DepthOrArraySize});
             if (pInitData->NumSubresources != ExpectedNumSubresources)
                 LOG_ERROR_AND_THROW("Incorrect number of subresources in init data. ", ExpectedNumSubresources, " expected, while ", pInitData->NumSubresources, " provided");
 
@@ -332,7 +332,7 @@ TextureD3D12Impl::TextureD3D12Impl(IReferenceCounters*        pRefCounters,
             // Add reference to the object to the release queue to keep it alive
             // until copy operation is complete.  This must be done after
             // submitting command list for execution!
-            pRenderDeviceD3D12->SafeReleaseDeviceObject(std::move(UploadBuffer), Uint64{1} << CmdQueueInd);
+            pRenderDeviceD3D12->SafeReleaseDeviceObject(std::move(UploadBuffer), UInt64{1} << CmdQueueInd);
         }
     }
     else if (m_Desc.Usage == USAGE_STAGING)
@@ -367,7 +367,7 @@ TextureD3D12Impl::TextureD3D12Impl(IReferenceCounters*        pRefCounters,
         StaginHeapProps.VisibleNodeMask      = 1;
 
         UINT64 stagingBufferSize = 0;
-        Uint32 NumSubresources   = Uint32{d3d12TexDesc.MipLevels} * (d3d12TexDesc.Dimension == D3D12_RESOURCE_DIMENSION_TEXTURE3D ? 1 : Uint32{d3d12TexDesc.DepthOrArraySize});
+        UInt32 NumSubresources   = UInt32{d3d12TexDesc.MipLevels} * (d3d12TexDesc.Dimension == D3D12_RESOURCE_DIMENSION_TEXTURE3D ? 1 : UInt32{d3d12TexDesc.DepthOrArraySize});
         m_StagingFootprints      = ALLOCATE(GetRawAllocator(), "Memory for staging footprints", D3D12_PLACED_SUBRESOURCE_FOOTPRINT, size_t{NumSubresources} + 1);
         pd3d12Device->GetCopyableFootprints(&d3d12TexDesc, 0, NumSubresources, 0, m_StagingFootprints, nullptr, nullptr, &stagingBufferSize);
         m_StagingFootprints[NumSubresources] = D3D12_PLACED_SUBRESOURCE_FOOTPRINT{stagingBufferSize, {}};
@@ -405,9 +405,9 @@ TextureD3D12Impl::TextureD3D12Impl(IReferenceCounters*        pRefCounters,
             DEV_CHECK_ERR(pStagingData != nullptr, "Failed to map staging buffer");
             if (pStagingData != nullptr)
             {
-                for (Uint32 Subres = 0; Subres < NumSubresources; ++Subres)
+                for (UInt32 Subres = 0; Subres < NumSubresources; ++Subres)
                 {
-                    const Uint32             Mip      = Subres % m_Desc.MipLevels;
+                    const UInt32             Mip      = Subres % m_Desc.MipLevels;
                     const MipLevelProperties MipProps = GetMipLevelProperties(m_Desc, Mip);
 
                     const TextureSubResData&                  SrcSubresData = pInitData->pSubResources[Subres];
@@ -421,7 +421,7 @@ TextureD3D12Impl::TextureD3D12Impl(IReferenceCounters*        pRefCounters,
                                            MipProps.StorageHeight / FmtAttribs.BlockHeight, // NumRows
                                            MipProps.Depth,
                                            MipProps.RowSize,
-                                           reinterpret_cast<Uint8*>(pStagingData) + DstFootprint.Offset,
+                                           reinterpret_cast<UInt8*>(pStagingData) + DstFootprint.Offset,
                                            DstFootprint.Footprint.RowPitch,
                                            DstFootprint.Footprint.RowPitch * DstFootprint.Footprint.Height / FmtAttribs.BlockHeight // DstDepthStride
                     );
@@ -454,10 +454,10 @@ static TextureDesc InitTexDescFromD3D12Resource(ID3D12Resource* pTexture, const 
         (void)RefFormat;
     }
 
-    TexDesc.Width     = StaticCast<Uint32>(d3d12Desc.Width);
-    TexDesc.Height    = Uint32{d3d12Desc.Height};
-    TexDesc.ArraySize = Uint32{d3d12Desc.DepthOrArraySize};
-    TexDesc.MipLevels = Uint32{d3d12Desc.MipLevels};
+    TexDesc.Width     = StaticCast<UInt32>(d3d12Desc.Width);
+    TexDesc.Height    = UInt32{d3d12Desc.Height};
+    TexDesc.ArraySize = UInt32{d3d12Desc.DepthOrArraySize};
+    TexDesc.MipLevels = UInt32{d3d12Desc.MipLevels};
     switch (d3d12Desc.Dimension)
     {
         case D3D12_RESOURCE_DIMENSION_TEXTURE1D: TexDesc.Type = TexDesc.ArraySize == 1 ? RESOURCE_DIM_TEX_1D : RESOURCE_DIM_TEX_1D_ARRAY; break;
@@ -602,7 +602,7 @@ void TextureD3D12Impl::CreateViewInternal(const TextureViewDesc& ViewDesc, IText
             }
 
             MipUAVDescriptors = pDeviceD3D12Impl->AllocateDescriptors(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, m_Desc.MipLevels);
-            for (Uint32 MipLevel = 0; MipLevel < m_Desc.MipLevels; ++MipLevel)
+            for (UInt32 MipLevel = 0; MipLevel < m_Desc.MipLevels; ++MipLevel)
             {
                 TextureViewDesc UAVDesc = UpdatedViewDesc;
                 // Always create texture array UAV
@@ -729,10 +729,10 @@ void TextureD3D12Impl::InitSparseProperties()
                                         nullptr);
 
         SparseTextureProperties& Props{*m_pSparseProps};
-        Props.AddressSpaceSize = Uint64{NumTilesForEntireResource} * D3D12_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
+        Props.AddressSpaceSize = UInt64{NumTilesForEntireResource} * D3D12_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
         Props.BlockSize        = D3D12_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
-        Props.MipTailOffset    = Uint64{PackedMipDesc.StartTileIndexInOverallResource} * D3D12_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
-        Props.MipTailSize      = Uint64{PackedMipDesc.NumTilesForPackedMips} * D3D12_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
+        Props.MipTailOffset    = UInt64{PackedMipDesc.StartTileIndexInOverallResource} * D3D12_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
+        Props.MipTailSize      = UInt64{PackedMipDesc.NumTilesForPackedMips} * D3D12_TILED_RESOURCE_TILE_SIZE_IN_BYTES;
         Props.FirstMipInTail   = PackedMipDesc.NumStandardMips;
         Props.TileSize[0]      = StandardTileShapeForNonPackedMips.WidthInTexels;
         Props.TileSize[1]      = StandardTileShapeForNonPackedMips.HeightInTexels;

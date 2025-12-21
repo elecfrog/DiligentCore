@@ -53,17 +53,17 @@ void ValidateTextureDesc(const TextureDesc& TexDesc, const IRenderDevice* pDevic
 void ValidatedAndCorrectTextureViewDesc(const TextureDesc& TexDesc, TextureViewDesc& ViewDesc) noexcept(false);
 
 /// Validates update texture command parameters.
-void ValidateUpdateTextureParams(const TextureDesc& TexDesc, Uint32 MipLevel, Uint32 Slice, const Box& DstBox, const TextureSubResData& SubresData);
+void ValidateUpdateTextureParams(const TextureDesc& TexDesc, UInt32 MipLevel, UInt32 Slice, const Box& DstBox, const TextureSubResData& SubresData);
 
 /// Validates copy texture command parameters.
 void ValidateCopyTextureParams(const CopyTextureAttribs& CopyAttribs);
 
 /// Validates map texture command parameters.
 void ValidateMapTextureParams(const TextureDesc& TexDesc,
-                              Uint32             MipLevel,
-                              Uint32             ArraySlice,
+                              UInt32             MipLevel,
+                              UInt32             ArraySlice,
                               MAP_TYPE           MapType,
-                              Uint32             MapFlags,
+                              UInt32             MapFlags,
                               const Box*         pMapRegion);
 
 /// Base implementation of the ITexture interface
@@ -106,7 +106,7 @@ public:
 #endif
     // clang-format on
     {
-        m_ViewIndices.fill(Uint8{InvalidViewIndex});
+        m_ViewIndices.fill(UInt8{InvalidViewIndex});
 
         if (this->m_Desc.MipLevels == 0)
         {
@@ -129,7 +129,7 @@ public:
             }
         }
 
-        Uint64 DeviceQueuesMask = this->GetDevice()->GetCommandQueueMask();
+        UInt64 DeviceQueuesMask = this->GetDevice()->GetCommandQueueMask();
         DEV_CHECK_ERR((this->m_Desc.ImmediateContextMask & DeviceQueuesMask) != 0,
                       "No bits in the immediate context mask (0x", std::hex, this->m_Desc.ImmediateContextMask,
                       ") correspond to one of ", this->GetDevice()->GetCommandQueueCount(), " available software command queues");
@@ -189,7 +189,7 @@ public:
             return;
         }
 
-        const Uint32 NumDefaultViews = GetNumDefaultViews();
+        const UInt32 NumDefaultViews = GetNumDefaultViews();
         if (NumDefaultViews == 0)
             return;
 
@@ -202,7 +202,7 @@ public:
 
         const TextureFormatAttribs& TexFmtAttribs = GetTextureFormatAttribs(this->m_Desc.Format);
 
-        Uint8 ViewIdx = 0;
+        UInt8 ViewIdx = 0;
 
         auto CreateDefaultView = [&](TEXTURE_VIEW_TYPE ViewType) //
         {
@@ -322,7 +322,7 @@ public:
     /// Implementation of ITexture::GetDefaultView().
     virtual ITextureView* DILIGENT_CALL_TYPE GetDefaultView(TEXTURE_VIEW_TYPE ViewType) override
     {
-        Uint8 ViewIdx = m_ViewIndices[ViewType];
+        UInt8 ViewIdx = m_ViewIndices[ViewType];
         if (ViewIdx == InvalidViewIndex)
             return nullptr;
 
@@ -346,13 +346,13 @@ protected:
         if (m_pDefaultViews == nullptr)
             return;
 
-        const Uint32          NumViews       = GetNumDefaultViews();
+        const UInt32          NumViews       = GetNumDefaultViews();
         TextureViewImplType** ppDefaultViews = GetDefaultViewsArrayPtr();
 
         TexViewObjAllocatorType& TexViewAllocator = this->GetDevice()->GetTexViewObjAllocator();
         VERIFY(&TexViewAllocator == &m_dbgTexViewObjAllocator, "Texture view allocator does not match allocator provided during texture initialization");
 
-        for (Uint32 i = 0; i < NumViews; ++i)
+        for (UInt32 i = 0; i < NumViews; ++i)
         {
             if (TextureViewImplType* pView = ppDefaultViews[i])
             {
@@ -372,7 +372,7 @@ protected:
     /// Pure virtual function that is implemented in every backend.
     virtual void CreateViewInternal(const struct TextureViewDesc& ViewDesc, ITextureView** ppView, bool bIsDefaultView) = 0;
 
-    Uint32 GetNumDefaultViews() const
+    UInt32 GetNumDefaultViews() const
     {
         constexpr BIND_FLAGS BindFlagsWithViews =
             BIND_SHADER_RESOURCE |
@@ -380,12 +380,12 @@ protected:
             BIND_DEPTH_STENCIL |
             BIND_UNORDERED_ACCESS |
             BIND_SHADING_RATE;
-        return PlatformMisc::CountOneBits(Uint32{this->m_Desc.BindFlags & BindFlagsWithViews});
+        return PlatformMisc::CountOneBits(UInt32{this->m_Desc.BindFlags & BindFlagsWithViews});
     }
 
     TextureViewImplType** GetDefaultViewsArrayPtr()
     {
-        const Uint32 NumDefaultViews = GetNumDefaultViews();
+        const UInt32 NumDefaultViews = GetNumDefaultViews();
         return NumDefaultViews > 1 ?
             reinterpret_cast<TextureViewImplType**>(m_pDefaultViews) :
             reinterpret_cast<TextureViewImplType**>(&m_pDefaultViews);
@@ -400,13 +400,13 @@ protected:
     TexViewObjAllocatorType& m_dbgTexViewObjAllocator;
 #endif
 
-    static constexpr Uint8                    InvalidViewIndex = 0xFFu;
-    std::array<Uint8, TEXTURE_VIEW_NUM_VIEWS> m_ViewIndices{};
+    static constexpr UInt8                    InvalidViewIndex = 0xFFu;
+    std::array<UInt8, TEXTURE_VIEW_NUM_VIEWS> m_ViewIndices{};
 
     // The number of planes in the format. For majority of formats, this is 1.
     // Depth-stencil formats may have 2 planes (depth and stencil).
     // YUV formats may have 3 planes (Y, U, V).
-    Uint8 m_FormatPlaneCount = 1;
+    UInt8 m_FormatPlaneCount = 1;
 
     RESOURCE_STATE m_State = RESOURCE_STATE_UNKNOWN;
 

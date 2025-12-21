@@ -68,7 +68,7 @@ public:
     virtual ID3D12Resource* DILIGENT_CALL_TYPE GetD3D12Texture() const override final { return GetD3D12Resource(); }
 
     /// Implementation of ITexture::GetNativeHandle() in Direct3D12 backend.
-    virtual Uint64 DILIGENT_CALL_TYPE GetNativeHandle() override final { return BitCast<Uint64>(GetD3D12Texture()); }
+    virtual UInt64 DILIGENT_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetD3D12Texture()); }
 
     /// Implementation of ITextureD3D12::SetD3D12ResourceState().
     virtual void DILIGENT_CALL_TYPE SetD3D12ResourceState(D3D12_RESOURCE_STATES state) override final;
@@ -78,7 +78,7 @@ public:
 
     D3D12_RESOURCE_DESC GetD3D12TextureDesc() const;
 
-    const D3D12_PLACED_SUBRESOURCE_FOOTPRINT& GetStagingFootprint(Uint32 Subresource)
+    const D3D12_PLACED_SUBRESOURCE_FOOTPRINT& GetStagingFootprint(UInt32 Subresource)
     {
         VERIFY_EXPR(m_StagingFootprints != nullptr);
         VERIFY_EXPR(Subresource <= (m_Desc.MipLevels * m_Desc.GetArraySize()));
@@ -90,7 +90,7 @@ public:
         return m_Desc.Usage == USAGE_SPARSE && m_Desc.Type == RESOURCE_DIM_TEX_2D_ARRAY && m_pDevice->GetDummyNVApiHeap() != nullptr;
     }
 
-    Uint8 GetFormatPlaneCount() const
+    UInt8 GetFormatPlaneCount() const
     {
         return m_FormatPlaneCount;
     }

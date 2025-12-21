@@ -70,7 +70,7 @@ void SetComputeThreadgroupMemoryLengthReferenceMtl(ISwapChain* pSwapChain)
         auto* cmdEncoder       = [mtlCommandBuffer computeCommandEncoder]; // Autoreleased
         ASSERT_TRUE(cmdEncoder != nil);
 
-        const Uint32 LocalSize = 8;
+        const UInt32 LocalSize = 8;
 
         [cmdEncoder setComputePipelineState: computePipeline];
         [cmdEncoder setTexture: mtlTexture

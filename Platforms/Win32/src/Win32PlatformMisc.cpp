@@ -37,7 +37,7 @@
 namespace Diligent
 {
 
-Uint64 WindowsMisc::SetCurrentThreadAffinity(Uint64 Mask)
+UInt64 WindowsMisc::SetCurrentThreadAffinity(UInt64 Mask)
 {
     const HANDLE hCurrThread = GetCurrentThread();
     return SetThreadAffinityMask(hCurrThread, static_cast<DWORD_PTR>(Mask));

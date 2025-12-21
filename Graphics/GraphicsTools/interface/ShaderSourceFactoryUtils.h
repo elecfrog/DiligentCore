@@ -64,22 +64,22 @@ struct CompoundShaderSourceFactoryCreateInfo
     IShaderSourceInputStreamFactory** ppFactories DEFAULT_INITIALIZER(nullptr);
 
     /// The number of factories in ppFactories array.
-    Uint32 NumFactories DEFAULT_INITIALIZER(0);
+    UInt32 NumFactories DEFAULT_INITIALIZER(0);
 
     /// An array of shader source file substitutes.
     const ShaderSourceFileSubstitueInfo* pFileSubstitutes DEFAULT_INITIALIZER(nullptr);
 
     /// The number of file substitutes in pFileSubstitutes array.
-    Uint32 NumFileSubstitutes DEFAULT_INITIALIZER(0);
+    UInt32 NumFileSubstitutes DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr CompoundShaderSourceFactoryCreateInfo() noexcept
     {}
 
     constexpr CompoundShaderSourceFactoryCreateInfo(IShaderSourceInputStreamFactory**    _ppFactories,
-                                                    Uint32                               _NumFactories,
+                                                    UInt32                               _NumFactories,
                                                     const ShaderSourceFileSubstitueInfo* _pFileSubstitutes   = nullptr,
-                                                    Uint32                               _NumFileSubstitutes = 0) noexcept :
+                                                    UInt32                               _NumFileSubstitutes = 0) noexcept :
         ppFactories{_ppFactories},
         NumFactories{_NumFactories},
         pFileSubstitutes{_pFileSubstitutes},
@@ -117,7 +117,7 @@ struct MemoryShaderSourceFileInfo
 
     /// Shader source length. If 0, the length will be calculated automatically
     /// assuming that the source is null-terminated.
-    Uint32 Length DEFAULT_INITIALIZER(0);
+    UInt32 Length DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr MemoryShaderSourceFileInfo() noexcept
@@ -125,7 +125,7 @@ struct MemoryShaderSourceFileInfo
 
     constexpr MemoryShaderSourceFileInfo(const Char* _Name,
                                          const Char* _pData,
-                                         Uint32      _Length = 0) noexcept :
+                                         UInt32      _Length = 0) noexcept :
         Name{_Name},
         pData{_pData},
         Length{_Length}
@@ -135,7 +135,7 @@ struct MemoryShaderSourceFileInfo
                                const String& Data) noexcept :
         Name{_Name},
         pData{Data.c_str()},
-        Length{static_cast<Uint32>(Data.length())}
+        Length{static_cast<UInt32>(Data.length())}
     {}
 
 #endif
@@ -150,7 +150,7 @@ struct MemoryShaderSourceFactoryCreateInfo
     const MemoryShaderSourceFileInfo* pSources DEFAULT_INITIALIZER(nullptr);
 
     /// The number of files in pSources array.
-    Uint32 NumSources DEFAULT_INITIALIZER(0);
+    UInt32 NumSources DEFAULT_INITIALIZER(0);
 
     /// Whether to copy shader sources. If false, the factory will assume that
     /// the source data will remain valid for the lifetime of the factory.
@@ -161,7 +161,7 @@ struct MemoryShaderSourceFactoryCreateInfo
     {}
 
     constexpr MemoryShaderSourceFactoryCreateInfo(const MemoryShaderSourceFileInfo* _pSources,
-                                                  Uint32                            _NumSources,
+                                                  UInt32                            _NumSources,
                                                   bool                              _CopySources = false) noexcept :
         pSources{_pSources},
         NumSources{_NumSources},

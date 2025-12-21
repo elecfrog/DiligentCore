@@ -138,9 +138,9 @@ public:
 
     struct MemoryRequirements
     {
-        Uint32 NumTables                = 0;
-        Uint32 TotalResources           = 0;
-        Uint32 NumDescriptorAllocations = 0;
+        UInt32 NumTables                = 0;
+        UInt32 TotalResources           = 0;
+        UInt32 NumDescriptorAllocations = 0;
         size_t TotalSize                = 0;
     };
     static MemoryRequirements GetMemoryRequirements(const RootParamsManager& RootParams);
@@ -148,8 +148,8 @@ public:
     // Initializes resource cache to hold the given number of root tables, no descriptor space
     // is allocated (this is used to initialize the cache for a pipeline resource signature).
     void Initialize(IMemoryAllocator& MemAllocator,
-                    Uint32            NumTables,
-                    const Uint32      TableSizes[]);
+                    UInt32            NumTables,
+                    const UInt32      TableSizes[]);
 
     // Initializes resource cache to hold the resources of a root parameters manager
     // (this is used to initialize the cache for an SRB).
@@ -157,7 +157,7 @@ public:
                     RenderDeviceD3D12Impl*   pDevice,
                     const RootParamsManager& RootParams);
 
-    static constexpr Uint32 InvalidDescriptorOffset = ~0u;
+    static constexpr UInt32 InvalidDescriptorOffset = ~0u;
 
     struct Resource
     {
@@ -166,8 +166,8 @@ public:
         Resource(SHADER_RESOURCE_TYPE           _Type,
                  D3D12_CPU_DESCRIPTOR_HANDLE    _CPUDescriptorHandle,
                  RefCntAutoPtr<IDeviceObject>&& _pObject,
-                 Uint64                         _BufferBaseOffset = 0,
-                 Uint64                         _BufferRangeSize  = 0) :
+                 UInt64                         _BufferBaseOffset = 0,
+                 UInt64                         _BufferRangeSize  = 0) :
             // clang-format off
             Type{_Type},
             CPUDescriptorHandle{_CPUDescriptorHandle},
@@ -188,15 +188,15 @@ public:
 
         SHADER_RESOURCE_TYPE Type = SHADER_RESOURCE_TYPE_UNKNOWN;
 
-        Uint64 BufferDynamicOffset = 0;
+        UInt64 BufferDynamicOffset = 0;
 
         // CPU descriptor handle of a cached resource in CPU-only descriptor heap.
         // This handle may be null for CBVs that address the buffer range.
         D3D12_CPU_DESCRIPTOR_HANDLE  CPUDescriptorHandle = {};
         RefCntAutoPtr<IDeviceObject> pObject;
 
-        Uint64 BufferBaseOffset = 0;
-        Uint64 BufferRangeSize  = 0;
+        UInt64 BufferBaseOffset = 0;
+        UInt64 BufferRangeSize  = 0;
 
         bool IsNull() const { return pObject == nullptr; }
 
@@ -212,10 +212,10 @@ public:
     class RootTable
     {
     public:
-        RootTable(Uint32    _NumResources,
+        RootTable(UInt32    _NumResources,
                   Resource* _pResources,
                   bool      _IsRootView,
-                  Uint32    _TableStartOffset = InvalidDescriptorOffset) noexcept :
+                  UInt32    _TableStartOffset = InvalidDescriptorOffset) noexcept :
             // clang-format off
             m_TableStartOffset{_TableStartOffset    },
             m_NumResources    {_NumResources        },
@@ -228,19 +228,19 @@ public:
             VERIFY(!IsRootView() || GetSize() == 1, "Root views may only contain one resource");
         }
 
-        const Resource& GetResource(Uint32 OffsetFromTableStart) const
+        const Resource& GetResource(UInt32 OffsetFromTableStart) const
         {
             VERIFY(OffsetFromTableStart < m_NumResources, "Root table is not large enough to store descriptor at offset ", OffsetFromTableStart);
             return m_pResources[OffsetFromTableStart];
         }
 
-        Uint32 GetSize() const { return m_NumResources; }
-        Uint32 GetStartOffset() const { return m_TableStartOffset; }
+        UInt32 GetSize() const { return m_NumResources; }
+        UInt32 GetStartOffset() const { return m_TableStartOffset; }
         bool   IsRootView() const { return m_IsRootView != 0; }
 
     private:
         friend class ShaderResourceCacheD3D12;
-        Resource& GetResource(Uint32 OffsetFromTableStart)
+        Resource& GetResource(UInt32 OffsetFromTableStart)
         {
             VERIFY(OffsetFromTableStart < m_NumResources, "Root table is not large enough to store descriptor at offset ", OffsetFromTableStart);
             return m_pResources[OffsetFromTableStart];
@@ -248,46 +248,46 @@ public:
 
     private:
         // Offset from the start of the descriptor heap allocation to the start of the table
-        const Uint32 m_TableStartOffset;
+        const UInt32 m_TableStartOffset;
 
         // The total number of resources in the table, accounting for array sizes
-        const Uint32 m_NumResources : 31;
+        const UInt32 m_NumResources : 31;
 
         // Flag indicating if this table stores the resource of a root view
-        const Uint32 m_IsRootView : 1;
+        const UInt32 m_IsRootView : 1;
 
         Resource* const m_pResources;
     };
 
     // Sets the resource at the given root index and offset from the table start
-    const Resource& SetResource(Uint32     RootIndex,
-                                Uint32     OffsetFromTableStart,
+    const Resource& SetResource(UInt32     RootIndex,
+                                UInt32     OffsetFromTableStart,
                                 Resource&& SrcRes);
 
     // Copies the resource to the given root index and offset from the table start
     const Resource& CopyResource(ID3D12Device*   pd3d12Device,
-                                 Uint32          RootIndex,
-                                 Uint32          OffsetFromTableStart,
+                                 UInt32          RootIndex,
+                                 UInt32          OffsetFromTableStart,
                                  const Resource& SrcRes);
 
     // Resets the resource at the given root index and offset from the table start to default state
-    const Resource& ResetResource(Uint32 RootIndex,
-                                  Uint32 OffsetFromTableStart)
+    const Resource& ResetResource(UInt32 RootIndex,
+                                  UInt32 OffsetFromTableStart)
     {
         return SetResource(RootIndex, OffsetFromTableStart, {});
     }
 
-    void SetBufferDynamicOffset(Uint32 RootIndex,
-                                Uint32 OffsetFromTableStart,
-                                Uint32 BufferDynamicOffset);
+    void SetBufferDynamicOffset(UInt32 RootIndex,
+                                UInt32 OffsetFromTableStart,
+                                UInt32 BufferDynamicOffset);
 
-    const RootTable& GetRootTable(Uint32 RootIndex) const
+    const RootTable& GetRootTable(UInt32 RootIndex) const
     {
         VERIFY_EXPR(RootIndex < m_NumTables);
         return reinterpret_cast<const RootTable*>(m_pMemory.get())[RootIndex];
     }
 
-    Uint32 GetNumRootTables() const { return m_NumTables; }
+    UInt32 GetNumRootTables() const { return m_NumTables; }
 
     ID3D12DescriptorHeap* GetDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE HeapType, ROOT_PARAMETER_GROUP Group) const
     {
@@ -300,8 +300,8 @@ public:
     HandleType GetDescriptorTableHandle(
         D3D12_DESCRIPTOR_HEAP_TYPE HeapType,
         ROOT_PARAMETER_GROUP       Group,
-        Uint32                     RootParamInd,
-        Uint32                     OffsetFromTableStart = 0) const
+        UInt32                     RootParamInd,
+        UInt32                     OffsetFromTableStart = 0) const
     {
         const RootTable& RootParam = GetRootTable(RootParamInd);
         VERIFY(RootParam.GetStartOffset() != InvalidDescriptorOffset, "This root parameter is not assigned a valid descriptor table offset");
@@ -334,10 +334,10 @@ public:
     ResourceCacheContentType GetContentType() const { return m_ContentType; }
 
     // Returns the bitmask indicating root views with bound dynamic buffers (including buffer ranges)
-    Uint64 GetDynamicRootBuffersMask() const { return m_DynamicRootBuffersMask; }
+    UInt64 GetDynamicRootBuffersMask() const { return m_DynamicRootBuffersMask; }
 
     // Returns the bitmask indicating root views with bound non-dynamic buffers
-    Uint64 GetNonDynamicRootBuffersMask() const { return m_NonDynamicRootBuffersMask; }
+    UInt64 GetNonDynamicRootBuffersMask() const { return m_NonDynamicRootBuffersMask; }
 
     // Returns true if the cache contains at least one dynamic resource, i.e.
     // dynamic buffer or a buffer range.
@@ -348,13 +348,13 @@ public:
 #endif
 
 private:
-    RootTable& GetRootTable(Uint32 RootIndex)
+    RootTable& GetRootTable(UInt32 RootIndex)
     {
         VERIFY_EXPR(RootIndex < m_NumTables);
         return reinterpret_cast<RootTable*>(m_pMemory.get())[RootIndex];
     }
 
-    Resource& GetResource(Uint32 Idx)
+    Resource& GetResource(UInt32 Idx)
     {
         VERIFY_EXPR(Idx < m_TotalResourceCount);
         return reinterpret_cast<Resource*>(reinterpret_cast<RootTable*>(m_pMemory.get()) + m_NumTables)[Idx];
@@ -363,7 +363,7 @@ private:
     size_t AllocateMemory(IMemoryAllocator& MemAllocator);
 
 private:
-    static constexpr Uint32 MaxRootTables = 64;
+    static constexpr UInt32 MaxRootTables = 64;
 
     std::unique_ptr<void, STDDeleter<void, IMemoryAllocator>> m_pMemory;
 
@@ -371,13 +371,13 @@ private:
     DescriptorHeapAllocation* m_DescriptorAllocations = nullptr;
 
     // The total number of resources in all descriptor tables
-    Uint32 m_TotalResourceCount = 0;
+    UInt32 m_TotalResourceCount = 0;
 
     // The number of descriptor tables in the cache
-    Uint16 m_NumTables = 0;
+    UInt16 m_NumTables = 0;
 
     // The number of descriptor heap allocations
-    Uint8 m_NumDescriptorAllocations = 0;
+    UInt8 m_NumDescriptorAllocations = 0;
 
     // Indicates what types of resources are stored in the cache
     const ResourceCacheContentType m_ContentType;
@@ -388,10 +388,10 @@ private:
     std::array<std::array<Int8, ROOT_PARAMETER_GROUP_COUNT>, D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER + 1> m_AllocationIndex{};
 
     // The bitmask indicating root views with bound dynamic buffers (including buffer ranges)
-    Uint64 m_DynamicRootBuffersMask = Uint64{0};
+    UInt64 m_DynamicRootBuffersMask = UInt64{0};
 
     // The bitmask indicating root views with bound non-dynamic buffers
-    Uint64 m_NonDynamicRootBuffersMask = Uint64{0};
+    UInt64 m_NonDynamicRootBuffersMask = UInt64{0};
 };
 
 } // namespace Diligent

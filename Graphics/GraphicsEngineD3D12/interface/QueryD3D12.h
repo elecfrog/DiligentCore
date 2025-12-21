@@ -59,8 +59,8 @@ DILIGENT_BEGIN_INTERFACE(IQueryD3D12, IQuery)
     ///                       Diligent::QUERY_TYPE_DURATION, in which case allowed values are 0 for the
     ///                       beginning timestamp query, and 1 for the ending query.
     /// \return the index of a query object in Direct3D12 query heap
-    VIRTUAL Uint32 METHOD(GetQueryHeapIndex)(THIS_
-                                             Uint32 QueryId) CONST PURE;
+    VIRTUAL UInt32 METHOD(GetQueryHeapIndex)(THIS_
+                                             UInt32 QueryId) CONST PURE;
 };
 DILIGENT_END_INTERFACE
 

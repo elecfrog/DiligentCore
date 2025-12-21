@@ -30,7 +30,7 @@
 namespace Diligent
 {
 
-bool FileWrapper::ReadWholeFile(const char* FilePath, std::vector<Uint8>& Data, bool Silent)
+bool FileWrapper::ReadWholeFile(const char* FilePath, std::vector<UInt8>& Data, bool Silent)
 {
     if (FilePath == nullptr)
     {

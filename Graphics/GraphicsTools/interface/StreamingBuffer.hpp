@@ -45,7 +45,7 @@ struct StreamingBufferCreateInfo
     IRenderDevice*                pDevice = nullptr;
     BufferDesc                    BuffDesc;
     std::function<void(IBuffer*)> OnBufferResizeCallback = nullptr;
-    Uint32                        NumContexts            = 1;
+    UInt32                        NumContexts            = 1;
     bool                          AllowPersistentMapping = false;
 };
 
@@ -84,7 +84,7 @@ public:
     }
 
     // Returns offset of the allocated region
-    Uint32 Map(IDeviceContext* pCtx, IRenderDevice* pDevice, Uint32 Size, size_t CtxNum = 0)
+    UInt32 Map(IDeviceContext* pCtx, IRenderDevice* pDevice, UInt32 Size, size_t CtxNum = 0)
     {
         VERIFY_EXPR(Size > 0);
 
@@ -135,11 +135,11 @@ public:
         return Offset;
     }
 
-    Uint32 Update(IDeviceContext* pCtx, IRenderDevice* pDevice, const void* pData, Uint32 Size, size_t CtxNum = 0)
+    UInt32 Update(IDeviceContext* pCtx, IRenderDevice* pDevice, const void* pData, UInt32 Size, size_t CtxNum = 0)
     {
         VERIFY_EXPR(pData != nullptr);
         auto  Offset      = Map(pCtx, pDevice, Size, CtxNum);
-        auto* pCPUAddress = reinterpret_cast<Uint8*>(GetMappedCPUAddress(CtxNum)) + Offset;
+        auto* pCPUAddress = reinterpret_cast<UInt8*>(GetMappedCPUAddress(CtxNum)) + Offset;
         memcpy(pCPUAddress, pData, Size);
         Unmap(CtxNum);
 
@@ -162,7 +162,7 @@ public:
 
     void Reset()
     {
-        for (Uint32 ctx = 0; ctx < m_MapInfo.size(); ++ctx)
+        for (UInt32 ctx = 0; ctx < m_MapInfo.size(); ++ctx)
             Flush(ctx);
     }
 
@@ -176,7 +176,7 @@ public:
 private:
     bool m_UsePersistentMap = false;
 
-    Uint64 m_BufferSize = 0;
+    UInt64 m_BufferSize = 0;
 
     RefCntAutoPtr<IBuffer> m_pBuffer;
 
@@ -184,8 +184,8 @@ private:
 
     struct MapInfo
     {
-        MapHelper<Uint8> m_MappedData;
-        Uint32           m_CurrOffset = 0;
+        MapHelper<UInt8> m_MappedData;
+        UInt32           m_CurrOffset = 0;
     };
     // We need to keep track of mapped data for every context
     std::vector<MapInfo> m_MapInfo;

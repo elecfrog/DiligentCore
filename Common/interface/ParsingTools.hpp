@@ -35,7 +35,7 @@
 #include <vector>
 #include <algorithm>
 
-#include "../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "../../Primitives/interface/FlagEnum.h"
 #include "../../Platforms/Basic/interface/DebugUtilities.hpp"
 #include "StringTools.h"
@@ -108,7 +108,7 @@ InteratorType SkipLine(const InteratorType& Start, const InteratorType& End, boo
 
 
 /// Flags controlling what kind of comments the SkipComment function should skip.
-enum SKIP_COMMENT_FLAGS : Uint32
+enum SKIP_COMMENT_FLAGS : UInt32
 {
     /// Skip no comments
     SKIP_COMMENT_FLAG_NONE = 0u,

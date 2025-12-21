@@ -29,7 +29,7 @@
 
 #include <atomic>
 
-#include "../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 
 namespace Diligent
 {

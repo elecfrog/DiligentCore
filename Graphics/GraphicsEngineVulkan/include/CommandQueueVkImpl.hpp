@@ -51,14 +51,14 @@ class SyncPointVk final : public std::enable_shared_from_this<SyncPointVk>
 private:
     friend class CommandQueueVkImpl;
     SyncPointVk(SoftwareQueueIndex                  CommandQueueId,
-                Uint32                              NumContexts,
+                UInt32                              NumContexts,
                 VulkanUtilities::SyncObjectManager& SyncObjectMngr,
                 VkDevice                            vkDevice,
-                Uint64                              dbgValue);
+                UInt64                              dbgValue);
 
     void GetSemaphores(std::vector<VkSemaphore>& Semaphores);
 
-    static constexpr size_t SizeOf(Uint32 NumContexts)
+    static constexpr size_t SizeOf(UInt32 NumContexts)
     {
         return sizeof(SyncPointVk) + sizeof(VulkanUtilities::RecycledSemaphore) * (NumContexts - _countof(SyncPointVk::m_Semaphores));
     }
@@ -68,7 +68,7 @@ public:
 
     // Returns semaphore which is in signaled state.
     // Access to semaphore in CommandQueueId index must be thread safe.
-    VulkanUtilities::RecycledSemaphore ExtractSemaphore(Uint32 CommandQueueId)
+    VulkanUtilities::RecycledSemaphore ExtractSemaphore(UInt32 CommandQueueId)
     {
         return std::move(m_Semaphores[CommandQueueId]);
     }
@@ -87,7 +87,7 @@ public:
 
 private:
     const SoftwareQueueIndex           m_CommandQueueId;
-    const Uint8                        m_NumSemaphores; // same as NumContexts
+    const UInt8                        m_NumSemaphores; // same as NumContexts
     VulkanUtilities::RecycledFence     m_Fence;
     VulkanUtilities::RecycledSemaphore m_Semaphores[1]; // [m_NumSemaphores]
 };
@@ -102,33 +102,33 @@ public:
     CommandQueueVkImpl(IReferenceCounters*                             pRefCounters,
                        std::shared_ptr<VulkanUtilities::LogicalDevice> LogicalDevice,
                        SoftwareQueueIndex                              CommandQueueId,
-                       Uint32                                          NumCommandQueues,
-                       Uint32                                          vkQueueIndex,
+                       UInt32                                          NumCommandQueues,
+                       UInt32                                          vkQueueIndex,
                        const ImmediateContextCreateInfo&               CreateInfo);
     ~CommandQueueVkImpl();
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_CommandQueueVk, TBase)
 
     /// Implementation of ICommandQueue::GetNextFenceValue().
-    virtual Uint64 DILIGENT_CALL_TYPE GetNextFenceValue() const override final { return m_NextFenceValue.load(); }
+    virtual UInt64 DILIGENT_CALL_TYPE GetNextFenceValue() const override final { return m_NextFenceValue.load(); }
 
     /// Implementation of ICommandQueue::GetCompletedFenceValue().
-    virtual Uint64 DILIGENT_CALL_TYPE GetCompletedFenceValue() override final;
+    virtual UInt64 DILIGENT_CALL_TYPE GetCompletedFenceValue() override final;
 
     /// Implementation of ICommandQueue::WaitForIdle().
-    virtual Uint64 DILIGENT_CALL_TYPE WaitForIdle() override final;
+    virtual UInt64 DILIGENT_CALL_TYPE WaitForIdle() override final;
 
     /// Implementation of ICommandQueueVk::SubmitCmdBuffer().
-    virtual Uint64 DILIGENT_CALL_TYPE SubmitCmdBuffer(VkCommandBuffer cmdBuffer) override final;
+    virtual UInt64 DILIGENT_CALL_TYPE SubmitCmdBuffer(VkCommandBuffer cmdBuffer) override final;
 
     /// Implementation of ICommandQueueVk::Submit().
-    virtual Uint64 DILIGENT_CALL_TYPE Submit(const VkSubmitInfo& SubmitInfo) override final;
+    virtual UInt64 DILIGENT_CALL_TYPE Submit(const VkSubmitInfo& SubmitInfo) override final;
 
     /// Implementation of ICommandQueueVk::Present().
     virtual VkResult DILIGENT_CALL_TYPE Present(const VkPresentInfoKHR& PresentInfo) override final;
 
     /// Implementation of ICommandQueueVk::BindSparse().
-    virtual Uint64 DILIGENT_CALL_TYPE BindSparse(const VkBindSparseInfo& InBindInfo) override final;
+    virtual UInt64 DILIGENT_CALL_TYPE BindSparse(const VkBindSparseInfo& InBindInfo) override final;
 
     /// Implementation of ICommandQueueVk::GetVkQueue().
     virtual VkQueue DILIGENT_CALL_TYPE GetVkQueue() override final { return m_VkQueue; }
@@ -140,7 +140,7 @@ public:
     virtual void DILIGENT_CALL_TYPE EnqueueSignalFence(VkFence vkFence) override final;
 
     /// Implementation of ICommandQueueVk::EnqueueSignal().
-    virtual void DILIGENT_CALL_TYPE EnqueueSignal(VkSemaphore vkTimelineSemaphore, Uint64 Value) override final;
+    virtual void DILIGENT_CALL_TYPE EnqueueSignal(VkSemaphore vkTimelineSemaphore, UInt64 Value) override final;
 
     void SetFence(RefCntAutoPtr<FenceVkImpl> pFence)
     {
@@ -156,9 +156,9 @@ public:
     }
 
 private:
-    SyncPointVkPtr CreateSyncPoint(Uint64 dbgValue);
+    SyncPointVkPtr CreateSyncPoint(UInt64 dbgValue);
 
-    void InternalSignalSemaphore(VkSemaphore vkTimelineSemaphore, Uint64 Value);
+    void InternalSignalSemaphore(VkSemaphore vkTimelineSemaphore, UInt64 Value);
 
     std::shared_ptr<VulkanUtilities::LogicalDevice> m_LogicalDevice;
 
@@ -166,7 +166,7 @@ private:
     const HardwareQueueIndex m_QueueFamilyIndex;
     const SoftwareQueueIndex m_CommandQueueId;
     const bool               m_SupportedTimelineSemaphore;
-    const Uint8              m_NumCommandQueues;
+    const UInt8              m_NumCommandQueues;
 
     // Fence is signaled right after a command buffer has been
     // submitted to the command queue for execution.
@@ -175,7 +175,7 @@ private:
     RefCntAutoPtr<FenceVkImpl> m_pFence;
 
     // A value that will be signaled by the command queue next
-    std::atomic<Uint64> m_NextFenceValue{1};
+    std::atomic<UInt64> m_NextFenceValue{1};
 
     // Protects access to the m_VkQueue internal data.
     std::mutex m_QueueMutex;

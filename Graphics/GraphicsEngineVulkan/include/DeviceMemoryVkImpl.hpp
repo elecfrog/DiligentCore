@@ -52,16 +52,16 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DeviceMemoryVk, TDeviceMemoryBase)
 
     /// Implementation of IDeviceMemory::Resize().
-    virtual Bool DILIGENT_CALL_TYPE Resize(Uint64 NewSize) override final;
+    virtual Bool DILIGENT_CALL_TYPE Resize(UInt64 NewSize) override final;
 
     /// Implementation of IDeviceMemory::GetCapacity().
-    virtual Uint64 DILIGENT_CALL_TYPE GetCapacity() const override final;
+    virtual UInt64 DILIGENT_CALL_TYPE GetCapacity() const override final;
 
     /// Implementation of IDeviceMemory::IsCompatible().
     virtual Bool DILIGENT_CALL_TYPE IsCompatible(IDeviceObject* pResource) const override final;
 
     /// Implementation of IDeviceMemoryVk::GetRange().
-    virtual DeviceMemoryRangeVk DILIGENT_CALL_TYPE GetRange(Uint64 Offset, Uint64 Size) const override final;
+    virtual DeviceMemoryRangeVk DILIGENT_CALL_TYPE GetRange(UInt64 Offset, UInt64 Size) const override final;
 
 private:
     std::vector<VulkanUtilities::DeviceMemoryWrapper> m_Pages;

@@ -51,7 +51,7 @@ PipelineLayoutVk::~PipelineLayoutVk()
     VERIFY(!m_VkPipelineLayout, "Pipeline layout have not been released!");
 }
 
-void PipelineLayoutVk::Release(RenderDeviceVkImpl* pDeviceVk, Uint64 CommandQueueMask)
+void PipelineLayoutVk::Release(RenderDeviceVkImpl* pDeviceVk, UInt64 CommandQueueMask)
 {
     if (m_VkPipelineLayout)
     {
@@ -59,17 +59,17 @@ void PipelineLayoutVk::Release(RenderDeviceVkImpl* pDeviceVk, Uint64 CommandQueu
     }
 }
 
-void PipelineLayoutVk::Create(RenderDeviceVkImpl* pDeviceVk, RefCntAutoPtr<PipelineResourceSignatureVkImpl> ppSignatures[], Uint32 SignatureCount) noexcept(false)
+void PipelineLayoutVk::Create(RenderDeviceVkImpl* pDeviceVk, RefCntAutoPtr<PipelineResourceSignatureVkImpl> ppSignatures[], UInt32 SignatureCount) noexcept(false)
 {
     VERIFY(m_DescrSetCount == 0 && !m_VkPipelineLayout, "This pipeline layout is already initialized");
 
     std::array<VkDescriptorSetLayout, MAX_RESOURCE_SIGNATURES * PipelineResourceSignatureVkImpl::MAX_DESCRIPTOR_SETS> DescSetLayouts;
 
-    Uint32 DescSetLayoutCount        = 0;
-    Uint32 DynamicUniformBufferCount = 0;
-    Uint32 DynamicStorageBufferCount = 0;
+    UInt32 DescSetLayoutCount        = 0;
+    UInt32 DynamicUniformBufferCount = 0;
+    UInt32 DynamicStorageBufferCount = 0;
 
-    for (Uint32 BindInd = 0; BindInd < SignatureCount; ++BindInd)
+    for (UInt32 BindInd = 0; BindInd < SignatureCount; ++BindInd)
     {
         // Signatures are arranged by binding index by PipelineStateBase::CopyResourceSignatures
         RefCntAutoPtr<PipelineResourceSignatureVkImpl>& pSignature = ppSignatures[BindInd];
@@ -90,7 +90,7 @@ void PipelineLayoutVk::Create(RenderDeviceVkImpl* pDeviceVk, RefCntAutoPtr<Pipel
         DynamicUniformBufferCount += pSignature->GetDynamicUniformBufferCount();
         DynamicStorageBufferCount += pSignature->GetDynamicStorageBufferCount();
 #ifdef DILIGENT_DEBUG
-        m_DbgMaxBindIndex = std::max(m_DbgMaxBindIndex, Uint32{pSignature->GetDesc().BindingIndex});
+        m_DbgMaxBindIndex = std::max(m_DbgMaxBindIndex, UInt32{pSignature->GetDesc().BindingIndex});
 #endif
     }
     VERIFY_EXPR(DescSetLayoutCount <= MAX_RESOURCE_SIGNATURES * 2);
@@ -128,7 +128,7 @@ void PipelineLayoutVk::Create(RenderDeviceVkImpl* pDeviceVk, RefCntAutoPtr<Pipel
     PipelineLayoutCI.pPushConstantRanges    = nullptr;
     m_VkPipelineLayout                      = pDeviceVk->GetLogicalDevice().CreatePipelineLayout(PipelineLayoutCI);
 
-    m_DescrSetCount = static_cast<Uint8>(DescSetLayoutCount);
+    m_DescrSetCount = static_cast<UInt8>(DescSetLayoutCount);
 }
 
 } // namespace Diligent

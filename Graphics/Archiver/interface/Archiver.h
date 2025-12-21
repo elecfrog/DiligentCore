@@ -49,7 +49,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_Archiver =
 // clang-format off
 
 /// Flags that indicate which device data will be serialized.
-DILIGENT_TYPED_ENUM(ARCHIVE_DEVICE_DATA_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(ARCHIVE_DEVICE_DATA_FLAGS, UInt32)
 {
     /// No data will be serialized.
     ARCHIVE_DEVICE_DATA_FLAG_NONE        = 0u,
@@ -96,7 +96,7 @@ DILIGENT_BEGIN_INTERFACE(IArchiver, IObject)
     /// \note
     ///     The method is *not* thread-safe and **must not** be called from multiple threads simultaneously.
     VIRTUAL Bool METHOD(SerializeToBlob)(THIS_
-                                         Uint32      ContentVersion,
+                                         UInt32      ContentVersion,
                                          IDataBlob** ppBlob) PURE;
 
     /// Writes archive to a file stream
@@ -107,7 +107,7 @@ DILIGENT_BEGIN_INTERFACE(IArchiver, IObject)
     /// \note
     ///     The method is *not* thread-safe and **must not** be called from multiple threads simultaneously.
     VIRTUAL Bool METHOD(SerializeToStream)(THIS_
-                                           Uint32       ContentVersion,
+                                           UInt32       ContentVersion,
                                            IFileStream* pStream) PURE;
 
     /// Adds a shader to the archive.

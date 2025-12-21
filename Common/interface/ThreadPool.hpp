@@ -56,11 +56,11 @@ struct ThreadPoolCreateInfo
     /// An optional function that will be called by the thread pool from
     /// the worker thread after the thread has just started, but before
     /// the first task is processed.
-    std::function<void(Uint32)> OnThreadStarted = nullptr;
+    std::function<void(UInt32)> OnThreadStarted = nullptr;
 
     /// An optional function that will be called by the thread pool from
     /// the worker thread before the worker thread exits.
-    std::function<void(Uint32)> OnThreadExiting = nullptr;
+    std::function<void(UInt32)> OnThreadExiting = nullptr;
 };
 
 RefCntAutoPtr<IThreadPool> CreateThreadPool(const ThreadPoolCreateInfo& ThreadPoolCI);
@@ -76,7 +76,7 @@ RefCntAutoPtr<IThreadPool> CreateThreadPool(const ThreadPoolCreateInfo& ThreadPo
 /// to cores 1, 3, 6, 1, 3, 6, etc.
 ///
 /// This function can be used as the OnThreadStarted callback in the ThreadPoolCreateInfo.
-Uint64 PinWorkerThread(Uint32 ThreadId, Uint64 AllowedCoresMask);
+UInt64 PinWorkerThread(UInt32 ThreadId, UInt64 AllowedCoresMask);
 
 /// Base implementation of the IAsyncTask interface.
 class AsyncTaskBase : public ObjectBase<IAsyncTask>
@@ -187,7 +187,7 @@ private:
 template <typename HanlderType>
 RefCntAutoPtr<IAsyncTask> EnqueueAsyncWork(IThreadPool* pThreadPool,
                                            IAsyncTask** ppPrerequisites,
-                                           Uint32       NumPrerequisites,
+                                           UInt32       NumPrerequisites,
                                            HanlderType  Handler,
                                            float        fPriority = 0)
 {
@@ -201,7 +201,7 @@ RefCntAutoPtr<IAsyncTask> EnqueueAsyncWork(IThreadPool* pThreadPool,
             m_Handler{std::move(Handler)}
         {}
 
-        virtual ASYNC_TASK_STATUS DILIGENT_CALL_TYPE Run(Uint32 ThreadId) override final
+        virtual ASYNC_TASK_STATUS DILIGENT_CALL_TYPE Run(UInt32 ThreadId) override final
         {
             return !m_bSafelyCancel.load() ?
                 m_Handler(ThreadId) :

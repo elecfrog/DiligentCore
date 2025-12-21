@@ -134,7 +134,7 @@ public:
 
     virtual Bool DILIGENT_CALL_TYPE MergeArchives(
         const IDataBlob* ppSrcArchives[],
-        Uint32           NumSrcArchives,
+        UInt32           NumSrcArchives,
         IDataBlob**      ppDstArchive) const override final;
 
     virtual Bool DILIGENT_CALL_TYPE PrintArchiveContent(const IDataBlob* pArchive) const override final;
@@ -296,7 +296,7 @@ Bool ArchiverFactoryImpl::AppendDeviceData(const IDataBlob*          pSrcArchive
 
 Bool ArchiverFactoryImpl::MergeArchives(
     const IDataBlob* ppSrcArchives[],
-    Uint32           NumSrcArchives,
+    UInt32           NumSrcArchives,
     IDataBlob**      ppDstArchive) const
 {
     if (NumSrcArchives == 0)
@@ -311,7 +311,7 @@ Bool ArchiverFactoryImpl::MergeArchives(
     try
     {
         DeviceObjectArchive MergedArchive{DeviceObjectArchive::CreateInfo{ppSrcArchives[0]}};
-        for (Uint32 i = 1; i < NumSrcArchives; ++i)
+        for (UInt32 i = 1; i < NumSrcArchives; ++i)
         {
             const DeviceObjectArchive Archive{DeviceObjectArchive::CreateInfo{ppSrcArchives[i]}};
             MergedArchive.Merge(Archive);

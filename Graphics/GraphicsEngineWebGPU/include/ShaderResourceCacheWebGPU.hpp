@@ -58,10 +58,10 @@ public:
 
     ~ShaderResourceCacheWebGPU();
 
-    static size_t GetRequiredMemorySize(Uint32 NumGroups, const Uint32* GroupSizes);
+    static size_t GetRequiredMemorySize(UInt32 NumGroups, const UInt32* GroupSizes);
 
-    void InitializeGroups(IMemoryAllocator& MemAllocator, Uint32 NumGroups, const Uint32* GroupSizes);
-    void InitializeResources(Uint32 GroupIdx, Uint32 Offset, Uint32 ArraySize, BindGroupEntryType Type, bool HasImmutableSampler);
+    void InitializeGroups(IMemoryAllocator& MemAllocator, UInt32 NumGroups, const UInt32* GroupSizes);
+    void InitializeResources(UInt32 GroupIdx, UInt32 Offset, UInt32 ArraySize, BindGroupEntryType Type, bool HasImmutableSampler);
 
     struct Resource
     {
@@ -82,19 +82,19 @@ public:
 /* 0 */ const BindGroupEntryType     Type;
 /* 1 */ const bool                   HasImmutableSampler;
 /*2-3*/ // Unused
-/* 4 */ Uint32                       BufferDynamicOffset = 0;
+/* 4 */ UInt32                       BufferDynamicOffset = 0;
 /* 8 */ RefCntAutoPtr<IDeviceObject> pObject;
 
         // For uniform and storage buffers only
-/*16 */ Uint64                       BufferBaseOffset = 0;
-/*24 */ Uint64                       BufferRangeSize  = 0;
+/*16 */ UInt64                       BufferBaseOffset = 0;
+/*24 */ UInt64                       BufferRangeSize  = 0;
         // clang-format on
 
-        void SetUniformBuffer(RefCntAutoPtr<IDeviceObject>&& _pBuffer, Uint64 _RangeOffset, Uint64 _RangeSize);
+        void SetUniformBuffer(RefCntAutoPtr<IDeviceObject>&& _pBuffer, UInt64 _RangeOffset, UInt64 _RangeSize);
         void SetStorageBuffer(RefCntAutoPtr<IDeviceObject>&& _pBufferView);
 
         template <typename ResType>
-        Uint32 GetDynamicBufferOffset(const DeviceContextWebGPUImpl* pCtx) const;
+        UInt32 GetDynamicBufferOffset(const DeviceContextWebGPUImpl* pCtx) const;
 
         explicit operator bool() const { return pObject != nullptr; }
     };
@@ -103,7 +103,7 @@ public:
     {
     public:
         // clang-format off
-        BindGroup(Uint32 NumResources, Resource* pResources, WGPUBindGroupEntry* pwgpuEntries) :
+        BindGroup(UInt32 NumResources, Resource* pResources, WGPUBindGroupEntry* pwgpuEntries) :
             m_NumResources{NumResources},
             m_pResources  {pResources  },
             m_wgpuEntries {pwgpuEntries}
@@ -115,13 +115,13 @@ public:
         BindGroup& operator=(      BindGroup&&) = delete;
         // clang-format on
 
-        const Resource& GetResource(Uint32 CacheOffset) const
+        const Resource& GetResource(UInt32 CacheOffset) const
         {
             VERIFY(CacheOffset < m_NumResources, "Offset ", CacheOffset, " is out of range");
             return m_pResources[CacheOffset];
         }
 
-        Uint32 GetSize() const { return m_NumResources; }
+        UInt32 GetSize() const { return m_NumResources; }
 
         WGPUBindGroup GetWGPUBindGroup() const
         {
@@ -129,7 +129,7 @@ public:
         }
 
     private:
-        /* 0 */ const Uint32              m_NumResources = 0;
+        /* 0 */ const UInt32              m_NumResources = 0;
         /* 5*/ bool                       m_IsDirty      = true;
         /* 8 */ Resource* const           m_pResources   = nullptr;
         /*16 */ WGPUBindGroupEntry* const m_wgpuEntries  = nullptr;
@@ -138,52 +138,52 @@ public:
 
     private:
         friend ShaderResourceCacheWebGPU;
-        Resource& GetResource(Uint32 CacheOffset)
+        Resource& GetResource(UInt32 CacheOffset)
         {
             VERIFY(CacheOffset < m_NumResources, "Offset ", CacheOffset, " is out of range");
             return m_pResources[CacheOffset];
         }
-        WGPUBindGroupEntry& GetWGPUEntry(Uint32 CacheOffset)
+        WGPUBindGroupEntry& GetWGPUEntry(UInt32 CacheOffset)
         {
             VERIFY(CacheOffset < m_NumResources, "Offset ", CacheOffset, " is out of range");
             return m_wgpuEntries[CacheOffset];
         }
     };
 
-    const BindGroup& GetBindGroup(Uint32 Index) const
+    const BindGroup& GetBindGroup(UInt32 Index) const
     {
         VERIFY_EXPR(Index < m_NumBindGroups);
         return reinterpret_cast<const BindGroup*>(m_pMemory.get())[Index];
     }
 
     // Sets the resource at the given descriptor set index and offset
-    const Resource& SetResource(Uint32                       BindGroupIdx,
-                                Uint32                       CacheOffset,
+    const Resource& SetResource(UInt32                       BindGroupIdx,
+                                UInt32                       CacheOffset,
                                 RefCntAutoPtr<IDeviceObject> pObject,
-                                Uint64                       BufferBaseOffset = 0,
-                                Uint64                       BufferRangeSize  = 0);
+                                UInt64                       BufferBaseOffset = 0,
+                                UInt64                       BufferRangeSize  = 0);
 
-    const Resource& ResetResource(Uint32 SetIndex,
-                                  Uint32 Offset)
+    const Resource& ResetResource(UInt32 SetIndex,
+                                  UInt32 Offset)
     {
         return SetResource(SetIndex, Offset, {});
     }
 
-    void SetDynamicBufferOffset(Uint32 DescrSetIndex,
-                                Uint32 CacheOffset,
-                                Uint32 DynamicBufferOffset);
+    void SetDynamicBufferOffset(UInt32 DescrSetIndex,
+                                UInt32 CacheOffset,
+                                UInt32 DynamicBufferOffset);
 
-    Uint32 GetNumBindGroups() const { return m_NumBindGroups; }
+    UInt32 GetNumBindGroups() const { return m_NumBindGroups; }
     bool   HasDynamicResources() const { return m_NumDynamicBuffers > 0; }
 
     ResourceCacheContentType GetContentType() const { return static_cast<ResourceCacheContentType>(m_ContentType); }
 
-    WGPUBindGroup UpdateBindGroup(WGPUDevice wgpuDevice, Uint32 GroupIndex, WGPUBindGroupLayout wgpuGroupLayout);
+    WGPUBindGroup UpdateBindGroup(WGPUDevice wgpuDevice, UInt32 GroupIndex, WGPUBindGroupLayout wgpuGroupLayout);
 
     // Returns true if any dynamic offset has changed
     bool GetDynamicBufferOffsets(const DeviceContextWebGPUImpl* pCtx,
                                  std::vector<uint32_t>&         Offsets,
-                                 Uint32                         GroupIdx) const;
+                                 UInt32                         GroupIdx) const;
 
 #ifdef DILIGENT_DEBUG
     // For debug purposes only
@@ -203,7 +203,7 @@ private:
         return reinterpret_cast<Resource*>(reinterpret_cast<BindGroup*>(m_pMemory.get()) + m_NumBindGroups);
     }
 
-    BindGroup& GetBindGroup(Uint32 Index)
+    BindGroup& GetBindGroup(UInt32 Index)
     {
         VERIFY_EXPR(Index < m_NumBindGroups);
         return reinterpret_cast<BindGroup*>(m_pMemory.get())[Index];
@@ -212,15 +212,15 @@ private:
 private:
     std::unique_ptr<void, STDDeleter<void, IMemoryAllocator>> m_pMemory;
 
-    Uint16 m_NumBindGroups = 0;
+    UInt16 m_NumBindGroups = 0;
 
     // The total actual number of dynamic buffers (that were created with USAGE_DYNAMIC) bound in the resource cache
     // regardless of the variable type.
-    Uint16 m_NumDynamicBuffers = 0;
-    Uint32 m_TotalResources : 31;
+    UInt16 m_NumDynamicBuffers = 0;
+    UInt32 m_TotalResources : 31;
 
     // Indicates what types of resources are stored in the cache
-    const Uint32 m_ContentType : 1;
+    const UInt32 m_ContentType : 1;
 
 #ifdef DILIGENT_DEBUG
     // Debug array that stores flags indicating if resources in the cache have been initialized

@@ -103,7 +103,7 @@ SamplerGLImpl::SamplerGLImpl(IReferenceCounters* pRefCounters, class RenderDevic
 
     if (bMinAnisotropic && SamPrpos.MaxAnisotropy > 1)
     {
-        float MaxAnisotropy = static_cast<float>(std::min(SamplerDesc.MaxAnisotropy, Uint32{SamPrpos.MaxAnisotropy}));
+        float MaxAnisotropy = static_cast<float>(std::min(SamplerDesc.MaxAnisotropy, UInt32{SamPrpos.MaxAnisotropy}));
         glSamplerParameterf(m_GlSampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, MaxAnisotropy);
     }
 

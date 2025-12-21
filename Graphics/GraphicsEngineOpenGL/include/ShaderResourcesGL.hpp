@@ -83,7 +83,7 @@ public:
 /* 12 */    const SHADER_RESOURCE_TYPE              ResourceType;
 /* 13 */    const PIPELINE_RESOURCE_FLAGS           ResourceFlags;
 /* 14 */
-/* 16 */          Uint32                            ArraySize;
+/* 16 */          UInt32                            ArraySize;
 /* 20 */
 /* 24 */    // End of data
         // clang-format on
@@ -92,7 +92,7 @@ public:
                           SHADER_TYPE             _ShaderStages,
                           SHADER_RESOURCE_TYPE    _ResourceType,
                           PIPELINE_RESOURCE_FLAGS _ResourceFlags,
-                          Uint32                  _ArraySize) noexcept :
+                          UInt32                  _ArraySize) noexcept :
             // clang-format off
             Name         {_Name         },
             ShaderStages {_ShaderStages },
@@ -146,7 +146,7 @@ public:
         UniformBufferInfo(const Char*           _Name,
                           SHADER_TYPE           _ShaderStages,
                           SHADER_RESOURCE_TYPE  _ResourceType,
-                          Uint32                _ArraySize,
+                          UInt32                _ArraySize,
                           GLuint                _UBIndex)noexcept :
             GLResourceAttribs{_Name, _ShaderStages, _ResourceType, PIPELINE_RESOURCE_FLAG_NONE, _ArraySize},
             UBIndex          {_UBIndex}
@@ -176,7 +176,7 @@ public:
                     SHADER_TYPE             _ShaderStages,
                     SHADER_RESOURCE_TYPE    _ResourceType,
                     PIPELINE_RESOURCE_FLAGS _ResourceFlags,
-                    Uint32                  _ArraySize,
+                    UInt32                  _ArraySize,
                     GLenum                  _TextureType,
                     RESOURCE_DIMENSION      _ResourceDim,
                     bool                    _IsMultisample) noexcept :
@@ -214,7 +214,7 @@ public:
                   SHADER_TYPE             _ShaderStages,
                   SHADER_RESOURCE_TYPE    _ResourceType,
                   PIPELINE_RESOURCE_FLAGS _ResourceFlags,
-                  Uint32                  _ArraySize,
+                  UInt32                  _ArraySize,
                   GLenum                  _ImageType,
                   RESOURCE_DIMENSION      _ResourceDim,
                   bool                    _IsMultisample) noexcept :
@@ -251,7 +251,7 @@ public:
         StorageBlockInfo(const Char*          _Name,
                          SHADER_TYPE          _ShaderStages,
                          SHADER_RESOURCE_TYPE _ResourceType,
-                         Uint32               _ArraySize,
+                         UInt32               _ArraySize,
                          GLint                _SBIndex)noexcept :
             GLResourceAttribs{_Name, _ShaderStages, _ResourceType, PIPELINE_RESOURCE_FLAG_NONE, _ArraySize},
             SBIndex          {_SBIndex}
@@ -270,69 +270,69 @@ public:
 
 
     // clang-format off
-    Uint32 GetNumUniformBuffers()const { return m_NumUniformBuffers; }
-    Uint32 GetNumTextures()      const { return m_NumTextures;       }
-    Uint32 GetNumImages()        const { return m_NumImages;         }
-    Uint32 GetNumStorageBlocks() const { return m_NumStorageBlocks;  }
+    UInt32 GetNumUniformBuffers()const { return m_NumUniformBuffers; }
+    UInt32 GetNumTextures()      const { return m_NumTextures;       }
+    UInt32 GetNumImages()        const { return m_NumImages;         }
+    UInt32 GetNumStorageBlocks() const { return m_NumStorageBlocks;  }
     // clang-format on
 
-    UniformBufferInfo& GetUniformBuffer(Uint32 Index)
+    UniformBufferInfo& GetUniformBuffer(UInt32 Index)
     {
         VERIFY(Index < m_NumUniformBuffers, "Uniform buffer index (", Index, ") is out of range");
         return m_UniformBuffers[Index];
     }
 
-    TextureInfo& GetTexture(Uint32 Index)
+    TextureInfo& GetTexture(UInt32 Index)
     {
         VERIFY(Index < m_NumTextures, "Texture index (", Index, ") is out of range");
         return m_Textures[Index];
     }
 
-    ImageInfo& GetImage(Uint32 Index)
+    ImageInfo& GetImage(UInt32 Index)
     {
         VERIFY(Index < m_NumImages, "Image index (", Index, ") is out of range");
         return m_Images[Index];
     }
 
-    StorageBlockInfo& GetStorageBlock(Uint32 Index)
+    StorageBlockInfo& GetStorageBlock(UInt32 Index)
     {
         VERIFY(Index < m_NumStorageBlocks, "Storage block index (", Index, ") is out of range");
         return m_StorageBlocks[Index];
     }
 
 
-    const UniformBufferInfo& GetUniformBuffer(Uint32 Index) const
+    const UniformBufferInfo& GetUniformBuffer(UInt32 Index) const
     {
         VERIFY(Index < m_NumUniformBuffers, "Uniform buffer index (", Index, ") is out of range");
         return m_UniformBuffers[Index];
     }
 
-    const TextureInfo& GetTexture(Uint32 Index) const
+    const TextureInfo& GetTexture(UInt32 Index) const
     {
         VERIFY(Index < m_NumTextures, "Texture index (", Index, ") is out of range");
         return m_Textures[Index];
     }
 
-    const ImageInfo& GetImage(Uint32 Index) const
+    const ImageInfo& GetImage(UInt32 Index) const
     {
         VERIFY(Index < m_NumImages, "Image index (", Index, ") is out of range");
         return m_Images[Index];
     }
 
-    const StorageBlockInfo& GetStorageBlock(Uint32 Index) const
+    const StorageBlockInfo& GetStorageBlock(UInt32 Index) const
     {
         VERIFY(Index < m_NumStorageBlocks, "Storage block index (", Index, ") is out of range");
         return m_StorageBlocks[Index];
     }
 
-    Uint32 GetVariableCount() const
+    UInt32 GetVariableCount() const
     {
         return m_NumUniformBuffers + m_NumTextures + m_NumImages + m_NumStorageBlocks;
     }
 
-    ShaderResourceDesc GetResourceDesc(Uint32 Index) const;
+    ShaderResourceDesc GetResourceDesc(UInt32 Index) const;
 
-    const ShaderCodeBufferDesc* GetUniformBufferDesc(Uint32 Index) const
+    const ShaderCodeBufferDesc* GetUniformBufferDesc(UInt32 Index) const
     {
         if (Index >= GetNumUniformBuffers())
         {
@@ -362,9 +362,9 @@ public:
                                THandleSB                            HandleSB,
                                const PipelineResourceLayoutDesc*    pResourceLayout = nullptr,
                                const SHADER_RESOURCE_VARIABLE_TYPE* AllowedVarTypes = nullptr,
-                               Uint32                               NumAllowedTypes = 0) const
+                               UInt32                               NumAllowedTypes = 0) const
     {
-        const Uint32 AllowedTypeBits = GetAllowedTypeBits(AllowedVarTypes, NumAllowedTypes);
+        const UInt32 AllowedTypeBits = GetAllowedTypeBits(AllowedVarTypes, NumAllowedTypes);
 
         auto CheckResourceType = [&](const char* Name) //
         {
@@ -377,28 +377,28 @@ public:
             }
         };
 
-        for (Uint32 ub = 0; ub < m_NumUniformBuffers; ++ub)
+        for (UInt32 ub = 0; ub < m_NumUniformBuffers; ++ub)
         {
             const UniformBufferInfo& UB = GetUniformBuffer(ub);
             if (CheckResourceType(UB.Name))
                 HandleUB(UB);
         }
 
-        for (Uint32 s = 0; s < m_NumTextures; ++s)
+        for (UInt32 s = 0; s < m_NumTextures; ++s)
         {
             const TextureInfo& Sam = GetTexture(s);
             if (CheckResourceType(Sam.Name))
                 HandleTexture(Sam);
         }
 
-        for (Uint32 img = 0; img < m_NumImages; ++img)
+        for (UInt32 img = 0; img < m_NumImages; ++img)
         {
             const ImageInfo& Img = GetImage(img);
             if (CheckResourceType(Img.Name))
                 HandleImg(Img);
         }
 
-        for (Uint32 sb = 0; sb < m_NumStorageBlocks; ++sb)
+        for (UInt32 sb = 0; sb < m_NumStorageBlocks; ++sb)
         {
             const StorageBlockInfo& SB = GetStorageBlock(sb);
             if (CheckResourceType(SB.Name))
@@ -415,16 +415,16 @@ public:
                           THandleImg     HandleImg,
                           THandleSB      HandleSB)
     {
-        for (Uint32 ub = 0; ub < m_NumUniformBuffers; ++ub)
+        for (UInt32 ub = 0; ub < m_NumUniformBuffers; ++ub)
             HandleUB(GetUniformBuffer(ub));
 
-        for (Uint32 s = 0; s < m_NumTextures; ++s)
+        for (UInt32 s = 0; s < m_NumTextures; ++s)
             HandleTexture(GetTexture(s));
 
-        for (Uint32 img = 0; img < m_NumImages; ++img)
+        for (UInt32 img = 0; img < m_NumImages; ++img)
             HandleImg(GetImage(img));
 
-        for (Uint32 sb = 0; sb < m_NumStorageBlocks; ++sb)
+        for (UInt32 sb = 0; sb < m_NumStorageBlocks; ++sb)
             HandleSB(GetStorageBlock(sb));
     }
 
@@ -448,10 +448,10 @@ private:
     ImageInfo*          m_Images         = nullptr;
     StorageBlockInfo*   m_StorageBlocks  = nullptr;
 
-    Uint32              m_NumUniformBuffers = 0;
-    Uint32              m_NumTextures       = 0;
-    Uint32              m_NumImages         = 0;
-    Uint32              m_NumStorageBlocks  = 0;
+    UInt32              m_NumUniformBuffers = 0;
+    UInt32              m_NumTextures       = 0;
+    UInt32              m_NumImages         = 0;
+    UInt32              m_NumStorageBlocks  = 0;
     // clang-format on
 
     std::unique_ptr<void, STDDeleterRawMem<void>> m_UBReflectionBuffer;

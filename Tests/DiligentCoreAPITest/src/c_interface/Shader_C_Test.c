@@ -39,7 +39,7 @@ int TestShaderCInterface(struct IShader* pShader)
     Int32               UniqueId = 0;
 
     ShaderDesc         ShaderDesc;
-    Uint32             ResourceCount = 0;
+    UInt32             ResourceCount = 0;
     ShaderResourceDesc ResourceDesc;
 
     int num_errors =

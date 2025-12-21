@@ -47,7 +47,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_Texture =
 /// Miscellaneous texture flags
 
 /// The enumeration is used by TextureDesc to describe misc texture flags
-DILIGENT_TYPED_ENUM(MISC_TEXTURE_FLAGS, Uint8)
+DILIGENT_TYPED_ENUM(MISC_TEXTURE_FLAGS, UInt8)
 {
     /// No special flags are set
     MISC_TEXTURE_FLAG_NONE             = 0u,
@@ -84,13 +84,13 @@ struct TextureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     RESOURCE_DIMENSION Type DEFAULT_INITIALIZER(RESOURCE_DIM_UNDEFINED);
 
     /// Texture width, in pixels.
-    Uint32 Width            DEFAULT_INITIALIZER(0);
+    UInt32 Width            DEFAULT_INITIALIZER(0);
 
     /// Texture height, in pixels.
-    Uint32 Height           DEFAULT_INITIALIZER(0);
+    UInt32 Height           DEFAULT_INITIALIZER(0);
 
 #if defined(DILIGENT_SHARP_GEN)
-    Uint32 ArraySizeOrDepth DEFAULT_INITIALIZER(1);
+    UInt32 ArraySizeOrDepth DEFAULT_INITIALIZER(1);
 #else
     union
     {
@@ -98,10 +98,10 @@ struct TextureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
         /// 
         /// For cube maps and cube map arrays, this value must be a multiple of 6.
         /// The number of cube maps in the texture is ArraySize / 6.
-        Uint32 ArraySize    DEFAULT_INITIALIZER(1);
+        UInt32 ArraySize    DEFAULT_INITIALIZER(1);
 
         /// For a 3D texture, number of depth slices
-        Uint32 Depth;
+        UInt32 Depth;
     };
 #endif
     /// Texture format, see Diligent::TEXTURE_FORMAT.
@@ -112,12 +112,12 @@ struct TextureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     /// Number of Mip levels in the texture. Multisampled textures can only have 1 Mip level.
 
     /// Specify 0 to create full mipmap chain.
-    Uint32          MipLevels   DEFAULT_INITIALIZER(1);
+    UInt32          MipLevels   DEFAULT_INITIALIZER(1);
 
     /// The number of samples.
 
     /// Only 2D textures or 2D texture arrays can be multisampled.
-    Uint32          SampleCount DEFAULT_INITIALIZER(1);
+    UInt32          SampleCount DEFAULT_INITIALIZER(1);
 
     /// Bind flags, see Diligent::BIND_FLAGS for details.
 
@@ -147,7 +147,7 @@ struct TextureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     ///
     /// \remarks    Only specify these bits that will indicate those immediate contexts where the texture
     ///             will actually be used. Do not set unnecessary bits as this will result in extra overhead.
-    Uint64 ImmediateContextMask         DEFAULT_INITIALIZER(1);
+    UInt64 ImmediateContextMask         DEFAULT_INITIALIZER(1);
 
 
 #if DILIGENT_CPP_INTERFACE && !defined(DILIGENT_SHARP_GEN)
@@ -155,18 +155,18 @@ struct TextureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
 
     constexpr TextureDesc(const Char*         _Name,
                           RESOURCE_DIMENSION  _Type,
-                          Uint32              _Width,
-                          Uint32              _Height,
-                          Uint32              _ArraySizeOrDepth,
+                          UInt32              _Width,
+                          UInt32              _Height,
+                          UInt32              _ArraySizeOrDepth,
                           TEXTURE_FORMAT      _Format,
-                          Uint32              _MipLevels            = TextureDesc{}.MipLevels,
-                          Uint32              _SampleCount          = TextureDesc{}.SampleCount,
+                          UInt32              _MipLevels            = TextureDesc{}.MipLevels,
+                          UInt32              _SampleCount          = TextureDesc{}.SampleCount,
                           USAGE               _Usage                = TextureDesc{}.Usage,
                           BIND_FLAGS          _BindFlags            = TextureDesc{}.BindFlags,
                           CPU_ACCESS_FLAGS    _CPUAccessFlags       = TextureDesc{}.CPUAccessFlags,
                           MISC_TEXTURE_FLAGS  _MiscFlags            = TextureDesc{}.MiscFlags,
                           OptimizedClearValue _ClearValue           = TextureDesc{}.ClearValue,
-                          Uint64              _ImmediateContextMask = TextureDesc{}.ImmediateContextMask) noexcept :
+                          UInt64              _ImmediateContextMask = TextureDesc{}.ImmediateContextMask) noexcept :
         DeviceObjectAttribs  {_Name            },
         Type                 {_Type            },
         Width                {_Width           },
@@ -183,7 +183,7 @@ struct TextureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
         ImmediateContextMask {_ImmediateContextMask}
     {}
 
-    constexpr Uint32 ArraySizeOrDepth() const { return ArraySize; }
+    constexpr UInt32 ArraySizeOrDepth() const { return ArraySize; }
 
     /// Tests if two texture descriptions are equal.
 
@@ -247,22 +247,22 @@ struct TextureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
                Type == RESOURCE_DIM_TEX_CUBE_ARRAY;
     }
 
-    constexpr Uint32 GetArraySize() const
+    constexpr UInt32 GetArraySize() const
     {
         return IsArray() ? ArraySize : 1u;
     }
 
-    constexpr Uint32 GetWidth() const
+    constexpr UInt32 GetWidth() const
     {
         return Width;
     }
 
-    constexpr Uint32 GetHeight() const
+    constexpr UInt32 GetHeight() const
     {
         return Is1D() ? 1u : Height;
     }
 
-    constexpr Uint32 GetDepth() const
+    constexpr UInt32 GetDepth() const
     {
         return Is3D() ? Depth : 1u;
     }
@@ -285,15 +285,15 @@ struct TextureSubResData
 
     /// When updating data from the buffer (pSrcBuffer is not null),
     /// offset from the beginning of the buffer to the data start
-    Uint64 SrcOffset            DEFAULT_INITIALIZER(0);
+    UInt64 SrcOffset            DEFAULT_INITIALIZER(0);
 
     /// For 2D and 3D textures, row stride in bytes
-    Uint64 Stride               DEFAULT_INITIALIZER(0);
+    UInt64 Stride               DEFAULT_INITIALIZER(0);
 
     /// For 3D textures, depth slice stride in bytes.
 
     /// On OpenGL, this must be a multiple of `Stride`
-    Uint64 DepthStride          DEFAULT_INITIALIZER(0);
+    UInt64 DepthStride          DEFAULT_INITIALIZER(0);
 
 
 #if DILIGENT_CPP_INTERFACE
@@ -309,7 +309,7 @@ struct TextureSubResData
     constexpr TextureSubResData() noexcept {}
 
     /// Initializes the structure members to perform copy from the CPU memory
-    constexpr TextureSubResData(const void* _pData, Uint64 _Stride, Uint64 _DepthStride = 0) noexcept :
+    constexpr TextureSubResData(const void* _pData, UInt64 _Stride, UInt64 _DepthStride = 0) noexcept :
         pData       (_pData),
         pSrcBuffer  (nullptr),
         SrcOffset   (0),
@@ -318,7 +318,7 @@ struct TextureSubResData
     {}
 
     /// Initializes the structure members to perform copy from the GPU buffer
-    constexpr TextureSubResData(IBuffer* _pBuffer, Uint64 _SrcOffset, Uint64 _Stride, Uint64 _DepthStride = 0) noexcept :
+    constexpr TextureSubResData(IBuffer* _pBuffer, UInt64 _SrcOffset, UInt64 _Stride, UInt64 _DepthStride = 0) noexcept :
         pData       {nullptr     },
         pSrcBuffer  {_pBuffer    },
         SrcOffset   {_SrcOffset  },
@@ -341,7 +341,7 @@ struct TextureData
     /// `NumSubresources` must exactly match the number
     /// of subresources in the texture. Otherwise an error
     /// occurs.
-    Uint32             NumSubresources  DEFAULT_INITIALIZER(0);
+    UInt32             NumSubresources  DEFAULT_INITIALIZER(0);
 
     /// Defines which device context will be used to initialize the texture.
 
@@ -356,7 +356,7 @@ struct TextureData
     constexpr TextureData() noexcept {}
 
     constexpr TextureData(TextureSubResData* _pSubResources,
-                          Uint32             _NumSubresources,
+                          UInt32             _NumSubresources,
                           IDeviceContext*    _pContext = nullptr) noexcept :
         pSubResources   {_pSubResources  },
         NumSubresources {_NumSubresources},
@@ -373,17 +373,17 @@ struct MappedTextureSubresource
     PVoid  pData       DEFAULT_INITIALIZER(nullptr);
 
     /// Row stride in bytes.
-    Uint64 Stride      DEFAULT_INITIALIZER(0);
+    UInt64 Stride      DEFAULT_INITIALIZER(0);
 
     /// Depth slice stride in bytes.
-    Uint64 DepthStride DEFAULT_INITIALIZER(0);
+    UInt64 DepthStride DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr MappedTextureSubresource() noexcept {}
 
     constexpr MappedTextureSubresource(PVoid  _pData,
-                                       Uint64 _Stride,
-                                       Uint64 _DepthStride = 0) noexcept :
+                                       UInt64 _Stride,
+                                       UInt64 _DepthStride = 0) noexcept :
         pData       {_pData      },
         Stride      {_Stride     },
         DepthStride {_DepthStride}
@@ -396,27 +396,27 @@ typedef struct MappedTextureSubresource MappedTextureSubresource;
 struct SparseTextureProperties
 {
     /// The size of the texture's virtual address space.
-    Uint64 AddressSpaceSize DEFAULT_INITIALIZER(0);
+    UInt64 AddressSpaceSize DEFAULT_INITIALIZER(0);
 
     /// Specifies where to bind the mip tail memory.
     /// Reserved for internal use.
-    Uint64 MipTailOffset    DEFAULT_INITIALIZER(0);
+    UInt64 MipTailOffset    DEFAULT_INITIALIZER(0);
 
     /// Specifies how to calculate the mip tail offset for 2D array texture.
     /// Reserved for internal use.
-    Uint64 MipTailStride    DEFAULT_INITIALIZER(0);
+    UInt64 MipTailStride    DEFAULT_INITIALIZER(0);
 
     /// Specifies the mip tail size in bytes.
 
     /// \note Single mip tail for a 2D array may exceed the 32-bit limit.
-    Uint64 MipTailSize      DEFAULT_INITIALIZER(0);
+    UInt64 MipTailSize      DEFAULT_INITIALIZER(0);
 
     /// The first mip level in the mip tail that is packed as a whole into one
     /// or multiple memory blocks.
-    Uint32 FirstMipInTail   DEFAULT_INITIALIZER(~0u);
+    UInt32 FirstMipInTail   DEFAULT_INITIALIZER(~0u);
 
     /// Specifies the dimension of a tile packed into a single memory block.
-    Uint32 TileSize[3]      DEFAULT_INITIALIZER({});
+    UInt32 TileSize[3]      DEFAULT_INITIALIZER({});
 
     /// Size of the sparse memory block, in bytes.
 
@@ -425,7 +425,7 @@ struct SparseTextureProperties
     ///
     /// If the Diligent::SPARSE_TEXTURE_FLAG_NONSTANDARD_BLOCK_SIZE flag is not set in the `Flags` member,
     /// the block size is equal to SparseResourceProperties::StandardBlockSize.
-    Uint32 BlockSize DEFAULT_INITIALIZER(0);
+    UInt32 BlockSize DEFAULT_INITIALIZER(0);
 
     /// Flags that describe additional packing modes.
     SPARSE_TEXTURE_FLAGS Flags DEFAULT_INITIALIZER(SPARSE_TEXTURE_FLAG_NONE);
@@ -495,7 +495,7 @@ DILIGENT_BEGIN_INTERFACE(ITexture, IDeviceObject)
     ///         GL texture name, for OpenGL implementation\n
     ///         `MtlTexture`, for Metal implementation\n
     ///         `WGPUTexture` for WebGPU implementation
-    VIRTUAL Uint64 METHOD(GetNativeHandle)(THIS) PURE;
+    VIRTUAL UInt64 METHOD(GetNativeHandle)(THIS) PURE;
 
     /// Sets the usage state for all texture subresources.
 

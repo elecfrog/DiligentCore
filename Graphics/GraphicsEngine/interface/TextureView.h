@@ -46,7 +46,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureView =
 // clang-format off
 
 /// Describes allowed unordered access view mode
-DILIGENT_TYPED_ENUM(UAV_ACCESS_FLAG, Uint8)
+DILIGENT_TYPED_ENUM(UAV_ACCESS_FLAG, UInt8)
 {
     /// Access mode is unspecified
     UAV_ACCESS_UNSPECIFIED = 0x00,
@@ -65,7 +65,7 @@ DILIGENT_TYPED_ENUM(UAV_ACCESS_FLAG, Uint8)
 DEFINE_FLAG_ENUM_OPERATORS(UAV_ACCESS_FLAG)
 
 /// Texture view flags
-DILIGENT_TYPED_ENUM(TEXTURE_VIEW_FLAGS, Uint8)
+DILIGENT_TYPED_ENUM(TEXTURE_VIEW_FLAGS, UInt8)
 {
     /// No flags
     TEXTURE_VIEW_FLAG_NONE                     = 0,
@@ -81,7 +81,7 @@ DEFINE_FLAG_ENUM_OPERATORS(TEXTURE_VIEW_FLAGS)
 
 
 /// Texture component swizzle
-DILIGENT_TYPED_ENUM(TEXTURE_COMPONENT_SWIZZLE, Uint8)
+DILIGENT_TYPED_ENUM(TEXTURE_COMPONENT_SWIZZLE, UInt8)
 {
     /// Identity swizzle (e.g. `R->R`, `G->G`, `B->B`, `A->A`).
     TEXTURE_COMPONENT_SWIZZLE_IDENTITY = 0,
@@ -136,12 +136,12 @@ struct TextureComponentMapping
         A{_A}
     {}
 
-    constexpr Uint32 AsUint32() const
+    constexpr UInt32 AsUint32() const
     {
-        return (static_cast<Uint32>(R) <<  0u) |
-               (static_cast<Uint32>(G) <<  8u) |
-               (static_cast<Uint32>(B) << 16u) |
-               (static_cast<Uint32>(A) << 24u);
+        return (static_cast<UInt32>(R) <<  0u) |
+               (static_cast<UInt32>(G) <<  8u) |
+               (static_cast<UInt32>(B) << 16u) |
+               (static_cast<UInt32>(A) << 24u);
     }
 
     constexpr bool operator==(const TextureComponentMapping& RHS) const
@@ -241,7 +241,7 @@ struct TextureViewDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     TEXTURE_FORMAT Format          DEFAULT_INITIALIZER(TEX_FORMAT_UNKNOWN);
 
     /// Most detailed mip level to use
-    Uint32 MostDetailedMip         DEFAULT_INITIALIZER(0);
+    UInt32 MostDetailedMip         DEFAULT_INITIALIZER(0);
 
     /// Total number of mip levels for the view of the texture.
 
@@ -249,35 +249,35 @@ struct TextureViewDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     /// If 0 is provided, then for a shader resource view all mip levels will be
     /// referenced, and for a render target or a depth stencil view, one mip level
     /// will be referenced.
-    Uint32 NumMipLevels            DEFAULT_INITIALIZER(0);
+    UInt32 NumMipLevels            DEFAULT_INITIALIZER(0);
 
 #if defined(DILIGENT_SHARP_GEN)
-    Uint32 FirstSlice DEFAULT_INITIALIZER(0);
+    UInt32 FirstSlice DEFAULT_INITIALIZER(0);
 #else
     union
     {
         /// For a texture array, first array slice to address in the view
-        Uint32 FirstArraySlice DEFAULT_INITIALIZER(0);
+        UInt32 FirstArraySlice DEFAULT_INITIALIZER(0);
 
         /// For a 3D texture, first depth slice to address the view
-        Uint32 FirstDepthSlice;
+        UInt32 FirstDepthSlice;
     };
 #endif
 
 #if defined(DILIGENT_SHARP_GEN)
-    Uint32 NumSlices DEFAULT_INITIALIZER(0);
+    UInt32 NumSlices DEFAULT_INITIALIZER(0);
 #else
     union
     {
         /// For a texture array, number of array slices to address in the view.
 
         /// Set to 0 to address all array slices.
-        Uint32 NumArraySlices DEFAULT_INITIALIZER(0);
+        UInt32 NumArraySlices DEFAULT_INITIALIZER(0);
 
         /// For a 3D texture, number of depth slices to address in the view
 
         /// Set to 0 to address all depth slices.
-        Uint32 NumDepthSlices;
+        UInt32 NumDepthSlices;
     };
 #endif
 
@@ -304,10 +304,10 @@ struct TextureViewDesc DILIGENT_DERIVE(DeviceObjectAttribs)
                               TEXTURE_VIEW_TYPE  _ViewType,
                               RESOURCE_DIMENSION _TextureDim,
                               TEXTURE_FORMAT     _Format                 = TextureViewDesc{}.Format,
-                              Uint32             _MostDetailedMip        = TextureViewDesc{}.MostDetailedMip,
-                              Uint32             _NumMipLevels           = TextureViewDesc{}.NumMipLevels,
-                              Uint32             _FirstArrayOrDepthSlice = TextureViewDesc{}.FirstArraySlice,
-                              Uint32             _NumArrayOrDepthSlices  = TextureViewDesc{}.NumArraySlices,
+                              UInt32             _MostDetailedMip        = TextureViewDesc{}.MostDetailedMip,
+                              UInt32             _NumMipLevels           = TextureViewDesc{}.NumMipLevels,
+                              UInt32             _FirstArrayOrDepthSlice = TextureViewDesc{}.FirstArraySlice,
+                              UInt32             _NumArrayOrDepthSlices  = TextureViewDesc{}.NumArraySlices,
                               UAV_ACCESS_FLAG    _AccessFlags            = TextureViewDesc{}.AccessFlags,
                               TEXTURE_VIEW_FLAGS _Flags                  = TextureViewDesc{}.Flags) noexcept :
         DeviceObjectAttribs{_Name                  },
@@ -322,8 +322,8 @@ struct TextureViewDesc DILIGENT_DERIVE(DeviceObjectAttribs)
         Flags              {_Flags                 }
     {}
 
-    constexpr Uint32 FirstArrayOrDepthSlice() const { return FirstArraySlice; }
-    constexpr Uint32 NumArrayOrDepthSlices()  const { return NumArraySlices; }
+    constexpr UInt32 FirstArrayOrDepthSlice() const { return FirstArraySlice; }
+    constexpr UInt32 NumArrayOrDepthSlices()  const { return NumArraySlices; }
 
     /// Tests if two texture view descriptions are equal.
 

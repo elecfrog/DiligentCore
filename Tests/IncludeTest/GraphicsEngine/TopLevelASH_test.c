@@ -41,7 +41,7 @@ void TestTopLevelAS_CInterface(ITopLevelAS* pTLAS)
     ScratchBufferSizes ScratchSizes = ITopLevelAS_GetScratchBufferSizes(pTLAS);
     (void)ScratchSizes;
 
-    Uint64 Handle = ITopLevelAS_GetNativeHandle(pTLAS);
+    UInt64 Handle = ITopLevelAS_GetNativeHandle(pTLAS);
     (void)Handle;
 
     ITopLevelAS_SetState(pTLAS, RESOURCE_STATE_UNDEFINED);

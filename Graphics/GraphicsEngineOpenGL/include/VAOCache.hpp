@@ -62,7 +62,7 @@ public:
         const PipelineStateGLImpl&            PSO;
         BufferGLImpl* const                   pIndexBuffer;
         VertexStreamInfo<BufferGLImpl>* const VertexStreams;
-        const Uint32                          NumVertexStreams;
+        const UInt32                          NumVertexStreams;
     };
     const GLObjectWrappers::GLVertexArrayObj& GetVAO(const VAOAttribs&     Attribs,
                                                      class GLContextState& GLContextState);
@@ -91,13 +91,13 @@ private:
         UniqueIdentifier PsoUId         = 0;
         UniqueIdentifier IndexBufferUId = 0;
 
-        Uint32 UsedSlotsMask = 0;
+        UInt32 UsedSlotsMask = 0;
         static_assert(MAX_BUFFER_SLOTS <= sizeof(UsedSlotsMask) * 8, "Use more bits for UsedSlotsMask");
 
         struct StreamAttribs
         {
             UniqueIdentifier BufferUId;
-            Uint64           Offset;
+            UInt64           Offset;
             // Note that buffer stride is defined by the PSO, so no need to keep it here as
             // it is already handled by the PsoUId
 

@@ -73,7 +73,7 @@ namespace
 struct TextureTestAttribs
 {
     TEXTURE_FORMAT Fmt;
-    Uint32         PixelSize;
+    UInt32         PixelSize;
     BIND_FLAGS     BindFlags;
     Bool           TestDataUpload;
 };
@@ -149,21 +149,21 @@ protected:
 
     static void PrepareSubresourceData(const TextureDesc&               TexDesc,
                                        const TextureFormatInfo&         FmtInfo,
-                                       std::vector<std::vector<Uint8>>& Data,
+                                       std::vector<std::vector<UInt8>>& Data,
                                        std::vector<TextureSubResData>&  SubResources,
                                        TextureData&                     InitData)
     {
-        Uint32 ArrSize = (TexDesc.Type == RESOURCE_DIM_TEX_3D) ? 1 : TexDesc.ArraySize;
+        UInt32 ArrSize = (TexDesc.Type == RESOURCE_DIM_TEX_3D) ? 1 : TexDesc.ArraySize;
 
         VERIFY(FmtInfo.ComponentType != COMPONENT_TYPE_COMPRESSED, "Uploading data to compressed formats is not yet being tested");
 
         InitData.NumSubresources = ArrSize * TexDesc.MipLevels;
         Data.resize(InitData.NumSubresources);
         SubResources.resize(InitData.NumSubresources);
-        Uint32 SubRes = 0;
-        for (Uint32 Slice = 0; Slice < ArrSize; ++Slice)
+        UInt32 SubRes = 0;
+        for (UInt32 Slice = 0; Slice < ArrSize; ++Slice)
         {
-            for (Uint32 Mip = 0; Mip < TexDesc.MipLevels; ++Mip)
+            for (UInt32 Mip = 0; Mip < TexDesc.MipLevels; ++Mip)
             {
                 auto MipLevelInfo = GetMipLevelProperties(TexDesc, Mip);
 
@@ -171,7 +171,7 @@ protected:
                 auto& SubResInfo     = SubResources[SubRes];
 
                 SubResInfo.Stride     = ((MipLevelInfo.RowSize + 3) & (-4)) + 192;
-                Uint64 SubresDataSize = 0;
+                UInt64 SubresDataSize = 0;
                 if (TexDesc.Type == RESOURCE_DIM_TEX_3D)
                 {
                     SubResInfo.DepthStride = (MipLevelInfo.StorageHeight + 32) * SubResInfo.Stride;
@@ -192,7 +192,7 @@ protected:
     static void CreateTestTexture(RESOURCE_DIMENSION Type,
                                   TEXTURE_FORMAT     TextureFormat,
                                   BIND_FLAGS         BindFlags,
-                                  Uint32             SampleCount,
+                                  UInt32             SampleCount,
                                   bool               UploadData)
     {
         GPUTestingEnvironment::ScopedReleaseResources AutoreleaseResources;
@@ -267,7 +267,7 @@ protected:
         TexDesc.MipLevels = pTestTex->GetDesc().MipLevels;
         if (SampleCount == 1 && UploadData)
         {
-            std::vector<std::vector<Uint8>> Data;
+            std::vector<std::vector<UInt8>> Data;
             std::vector<TextureSubResData>  SubResources;
             TextureData                     InitData;
 
@@ -456,7 +456,7 @@ protected:
 
         if (UploadData)
         {
-            std::vector<std::vector<Uint8>> Data;
+            std::vector<std::vector<UInt8>> Data;
             std::vector<TextureSubResData>  SubResources;
             TextureData                     InitData;
 
@@ -609,7 +609,7 @@ protected:
             TexDesc.ArraySize = 24;
             TexDesc.Type      = RESOURCE_DIM_TEX_CUBE_ARRAY;
 
-            std::vector<std::vector<Uint8>> Data;
+            std::vector<std::vector<UInt8>> Data;
             std::vector<TextureSubResData>  SubResources;
             TextureData                     InitData;
 
@@ -647,7 +647,7 @@ TEST_P(TextureCreationTest, CreateTexture)
         GTEST_SKIP() << "Texture format " << FmtInfo.Name << " is not supported";
     }
 
-    EXPECT_TRUE(TestInfo.PixelSize == Uint32{FmtInfo.ComponentSize} * Uint32{FmtInfo.NumComponents} ||
+    EXPECT_TRUE(TestInfo.PixelSize == UInt32{FmtInfo.ComponentSize} * UInt32{FmtInfo.NumComponents} ||
                 FmtInfo.ComponentType == COMPONENT_TYPE_COMPRESSED);
 
     const auto& TexProps = pDevice->GetAdapterInfo().Texture;

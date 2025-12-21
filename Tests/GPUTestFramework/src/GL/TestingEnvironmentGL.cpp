@@ -103,7 +103,7 @@ GLuint TestingEnvironmentGL::LinkProgram(GLuint Shaders[], GLuint NumShaders)
 {
     auto glProg = glCreateProgram();
 
-    for (Uint32 i = 0; i < NumShaders; ++i)
+    for (UInt32 i = 0; i < NumShaders; ++i)
     {
         glAttachShader(glProg, Shaders[i]);
         VERIFY_EXPR(glGetError() == GL_NO_ERROR);
@@ -128,7 +128,7 @@ GLuint TestingEnvironmentGL::LinkProgram(GLuint Shaders[], GLuint NumShaders)
         LOG_ERROR_MESSAGE("Failed to link shader program:\n", shaderProgramInfoLog.data(), '\n');
     }
 
-    for (Uint32 i = 0; i < NumShaders; ++i)
+    for (UInt32 i = 0; i < NumShaders; ++i)
     {
         glDetachShader(glProg, Shaders[i]);
     }

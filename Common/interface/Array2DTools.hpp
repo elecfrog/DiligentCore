@@ -29,7 +29,7 @@
 /// \file
 /// 2D array processing utilities.
 
-#include "../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 
 namespace Diligent
 {
@@ -44,8 +44,8 @@ namespace Diligent
 /// \param[out] MaxValue	   - Maximum value.
 void GetArray2DMinMaxValue(const float* pData,
                            size_t       StrideInFloats,
-                           Uint32       Width,
-                           Uint32       Height,
+                           UInt32       Width,
+                           UInt32       Height,
                            float&       MinValue,
                            float&       MaxValue);
 

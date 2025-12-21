@@ -53,7 +53,7 @@ public:
         TBase{pRefCounters}
     {
         m_WorkerThreads.reserve(PoolCI.NumThreads);
-        for (Uint32 i = 0; i < PoolCI.NumThreads; ++i)
+        for (UInt32 i = 0; i < PoolCI.NumThreads; ++i)
         {
             m_WorkerThreads.emplace_back(
                 [this, PoolCI, i] //
@@ -76,7 +76,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_ThreadPool, TBase)
 
-    virtual bool DILIGENT_CALL_TYPE ProcessTask(Uint32 ThreadId, bool WaitForTask) override final
+    virtual bool DILIGENT_CALL_TYPE ProcessTask(UInt32 ThreadId, bool WaitForTask) override final
     {
         QueuedTaskInfo TaskInfo;
         {
@@ -177,7 +177,7 @@ public:
 
     virtual void DILIGENT_CALL_TYPE EnqueueTask(IAsyncTask*  pTask,
                                                 IAsyncTask** ppPrerequisites,
-                                                Uint32       NumPrerequisites) override final
+                                                UInt32       NumPrerequisites) override final
     {
         VERIFY_EXPR(pTask != nullptr);
         if (pTask == nullptr)
@@ -193,7 +193,7 @@ public:
             {
                 TaskInfo.Prerequisites.reserve(NumPrerequisites);
                 float MinPrereqPriority = +FLT_MAX;
-                for (Uint32 i = 0; i < NumPrerequisites; ++i)
+                for (UInt32 i = 0; i < NumPrerequisites; ++i)
                 {
                     if (ppPrerequisites[i] != nullptr)
                     {
@@ -311,13 +311,13 @@ public:
         m_ReprioritizationList.clear();
     }
 
-    Uint32 DILIGENT_CALL_TYPE GetQueueSize() override final
+    UInt32 DILIGENT_CALL_TYPE GetQueueSize() override final
     {
         std::unique_lock<std::mutex> lock{m_TasksQueueMtx};
-        return StaticCast<Uint32>(m_TasksQueue.size());
+        return StaticCast<UInt32>(m_TasksQueue.size());
     }
 
-    virtual Uint32 DILIGENT_CALL_TYPE GetRunningTaskCount() const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetRunningTaskCount() const override final
     {
         return m_NumRunningTasks.load();
     }
@@ -355,20 +355,20 @@ RefCntAutoPtr<IThreadPool> CreateThreadPool(const ThreadPoolCreateInfo& ThreadPo
     return RefCntAutoPtr<ThreadPoolImpl>{MakeNewRCObj<ThreadPoolImpl>()(ThreadPoolCI)};
 }
 
-Uint64 PinWorkerThread(Uint32 ThreadId, Uint64 AllowedCoresMask)
+UInt64 PinWorkerThread(UInt32 ThreadId, UInt64 AllowedCoresMask)
 {
     if (AllowedCoresMask == 0)
     {
         return 0;
     }
 
-    Uint64 NumCores = std::thread::hardware_concurrency();
+    UInt64 NumCores = std::thread::hardware_concurrency();
     if (NumCores <= 1)
         return 0;
 
-    Uint64 AffinityMask = AllowedCoresMask;
+    UInt64 AffinityMask = AllowedCoresMask;
     if (NumCores < 64)
-        AffinityMask &= (Uint64{1} << NumCores) - Uint64{1};
+        AffinityMask &= (UInt64{1} << NumCores) - UInt64{1};
 
     if (AffinityMask == 0)
     {
@@ -376,20 +376,20 @@ Uint64 PinWorkerThread(Uint32 ThreadId, Uint64 AllowedCoresMask)
         return 0;
     }
 
-    const Uint32 NumAllowedCores = PlatformMisc::CountOneBits(AffinityMask);
-    const Uint32 CoreBitInd      = ThreadId % NumAllowedCores;
+    const UInt32 NumAllowedCores = PlatformMisc::CountOneBits(AffinityMask);
+    const UInt32 CoreBitInd      = ThreadId % NumAllowedCores;
 
-    for (Uint32 bit = 0; bit < CoreBitInd; ++bit)
+    for (UInt32 bit = 0; bit < CoreBitInd; ++bit)
     {
         VERIFY_EXPR(AffinityMask != 0);
-        Uint64 LSB = PlatformMisc::GetLSB(AffinityMask);
-        AffinityMask &= ~(Uint64{1} << LSB);
+        UInt64 LSB = PlatformMisc::GetLSB(AffinityMask);
+        AffinityMask &= ~(UInt64{1} << LSB);
     }
 
     VERIFY_EXPR(AffinityMask != 0);
-    Uint32 WorkerCore = PlatformMisc::GetLSB(AffinityMask);
+    UInt32 WorkerCore = PlatformMisc::GetLSB(AffinityMask);
     VERIFY_EXPR(WorkerCore < NumCores);
-    Uint64 PrevMask = PlatformMisc::SetCurrentThreadAffinity(Uint64{1} << WorkerCore) != 0;
+    UInt64 PrevMask = PlatformMisc::SetCurrentThreadAffinity(UInt64{1} << WorkerCore) != 0;
     if (PrevMask == 0)
     {
         LOG_WARNING_MESSAGE("Failed to pin worker thread ", ThreadId, " to core ", WorkerCore);

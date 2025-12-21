@@ -99,7 +99,7 @@ TEST(Shader, AsyncCompilation)
     }
 
     std::vector<RefCntAutoPtr<IShader>> Shaders;
-    for (Uint32 i = 0; i < 10; ++i)
+    for (UInt32 i = 0; i < 10; ++i)
     {
         RefCntAutoPtr<IShader> pShader = CreateShader("AsyncShaderCompilationTest.psh", "Async compilation test", SHADER_TYPE_PIXEL, SHADER_COMPILE_FLAG_ASYNCHRONOUS);
         ASSERT_NE(pShader, nullptr);
@@ -108,10 +108,10 @@ TEST(Shader, AsyncCompilation)
 
     Timer  T;
     double StartTime = T.GetElapsedTime();
-    Uint32 Iter      = 0;
+    UInt32 Iter      = 0;
     while (true)
     {
-        Uint32 NumShadersReady = 0;
+        UInt32 NumShadersReady = 0;
         for (RefCntAutoPtr<IShader>& pShader : Shaders)
         {
             if (pShader->GetStatus() == SHADER_STATUS_READY)
@@ -200,10 +200,10 @@ void TestAsyncPipeline(SHADER_COMPILE_FLAGS ShaderFlags, PSO_CREATE_FLAGS PSOFla
 
     Timer  T;
     double StartTime = T.GetElapsedTime();
-    Uint32 Iter      = 0;
+    UInt32 Iter      = 0;
     while (true)
     {
-        Uint32 NumPSOsReady = 0;
+        UInt32 NumPSOsReady = 0;
         for (RefCntAutoPtr<IPipelineState>& pPSO : pPSOs)
         {
             if (pPSO->GetStatus() == PIPELINE_STATE_STATUS_READY)

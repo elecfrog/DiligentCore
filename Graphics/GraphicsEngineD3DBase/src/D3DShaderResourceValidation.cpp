@@ -61,7 +61,7 @@ void ValidateShaderResourceBindings(const char*                  PSOName,
 {
     VERIFY_EXPR(PSOName != nullptr);
     Resources.ProcessResources(
-        [&](const D3DShaderResourceAttribs& Attribs, Uint32) //
+        [&](const D3DShaderResourceAttribs& Attribs, UInt32) //
         {
             auto it = BindingsMap.find(Attribs.Name);
             if (it == BindingsMap.end())

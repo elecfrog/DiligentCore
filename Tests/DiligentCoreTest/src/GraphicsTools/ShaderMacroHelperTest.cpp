@@ -73,9 +73,9 @@ TEST(ShaderMacroHelper, AddUint)
 {
     ShaderMacroHelper Macros;
     Macros
-        .Add("MACRO1", Uint8{128})
-        .Add("MACRO2", Uint16{32768})
-        .Add("MACRO3", Uint32{2147483648});
+        .Add("MACRO1", UInt8{128})
+        .Add("MACRO2", UInt16{32768})
+        .Add("MACRO3", UInt32{2147483648});
     VerifyMacros(Macros,
                  {
                      {"MACRO1", "128u"},

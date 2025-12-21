@@ -53,13 +53,13 @@ struct DeviceMemoryRangeD3D12
     ID3D12Heap* pHandle  DEFAULT_INITIALIZER(nullptr);
 
     /// Offset from the beginning of the heap to the start of the range, in bytes.
-    Uint64      Offset   DEFAULT_INITIALIZER(0);
+    UInt64      Offset   DEFAULT_INITIALIZER(0);
 
     /// Memory range size in bytes.
 
     /// When IDeviceMemoryD3D12::GetRange() succeeds, the size is equal to the Size argument
     /// that was given to the function, and zero otherwise.
-    Uint64      Size     DEFAULT_INITIALIZER(0);
+    UInt64      Size     DEFAULT_INITIALIZER(0);
 };
 typedef struct DeviceMemoryRangeD3D12 DeviceMemoryRangeD3D12;
 
@@ -69,8 +69,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceMemoryD3D12, IDeviceMemory)
     /// Returns a DeviceMemoryRangeD3D12 object with the information
     /// about ID3D12Heap associated with the specified memory range.
     VIRTUAL DeviceMemoryRangeD3D12 METHOD(GetRange)(THIS_
-                                                    Uint64 Offset,
-                                                    Uint64 Size) CONST PURE;
+                                                    UInt64 Offset,
+                                                    UInt64 Size) CONST PURE;
 
     /// Returns true if the heap was created using NVApi.
     VIRTUAL Bool METHOD(IsUsingNVApi)(THIS) CONST PURE;

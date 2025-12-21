@@ -49,7 +49,7 @@ struct BufferFormat
     /// Number of components. Allowed values: 1, 2, 3, 4.
 
     /// For a formatted buffer, this value cannot be 0
-    Uint8 NumComponents     DEFAULT_INITIALIZER(0);
+    UInt8 NumComponents     DEFAULT_INITIALIZER(0);
 
     /// For signed and unsigned integer value types
     /// (VT_INT8, VT_INT16, VT_INT32, VT_UINT8, VT_UINT16, VT_UINT32)
@@ -66,7 +66,7 @@ struct BufferFormat
     constexpr BufferFormat() noexcept {}
 
     constexpr BufferFormat(VALUE_TYPE _ValueType,
-                           Uint8      _NumComponents,
+                           UInt8      _NumComponents,
                            Bool       _IsNormalized   = BufferFormat{}.IsNormalized) noexcept :
         ValueType     {_ValueType    },
         NumComponents {_NumComponents},
@@ -98,10 +98,10 @@ struct BufferViewDesc DILIGENT_DERIVE(DeviceObjectAttribs)
 
     /// Offset in bytes from the beginning of the buffer to the start of the
     /// buffer region referenced by the view.
-    Uint64 ByteOffset       DEFAULT_INITIALIZER(0);
+    UInt64 ByteOffset       DEFAULT_INITIALIZER(0);
 
     /// Size in bytes of the referenced buffer region.
-    Uint64 ByteWidth        DEFAULT_INITIALIZER(0);
+    UInt64 ByteWidth        DEFAULT_INITIALIZER(0);
 
 
 #if DILIGENT_CPP_INTERFACE
@@ -111,8 +111,8 @@ struct BufferViewDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     BufferViewDesc(const Char*      _Name,
                    BUFFER_VIEW_TYPE _ViewType,
                    BufferFormat     _Format     = BufferViewDesc{}.Format,
-                   Uint64           _ByteOffset = BufferViewDesc{}.ByteOffset,
-                   Uint64           _ByteWidth  = BufferViewDesc{}.ByteWidth) noexcept :
+                   UInt64           _ByteOffset = BufferViewDesc{}.ByteOffset,
+                   UInt64           _ByteWidth  = BufferViewDesc{}.ByteWidth) noexcept :
         DeviceObjectAttribs {_Name      },
         ViewType            {_ViewType  },
         Format              {_Format    },

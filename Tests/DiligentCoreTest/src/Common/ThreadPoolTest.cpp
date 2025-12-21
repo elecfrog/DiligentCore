@@ -41,17 +41,17 @@ namespace
 
 TEST(Common_ThreadPool, EnqueueTask)
 {
-    constexpr Uint32     NumThreads = 4;
-    constexpr Uint32     NumTasks   = 32;
+    constexpr UInt32     NumThreads = 4;
+    constexpr UInt32     NumTasks   = 32;
     ThreadPoolCreateInfo PoolCI{NumThreads};
 
     std::array<std::atomic<bool>, NumThreads> ThreadStarted{};
 
     std::atomic<size_t> NumThreadsFinished{0};
-    PoolCI.OnThreadStarted = [&ThreadStarted](Uint32 ThreadId) {
+    PoolCI.OnThreadStarted = [&ThreadStarted](UInt32 ThreadId) {
         ThreadStarted[ThreadId].store(true);
     };
-    PoolCI.OnThreadExiting = [&NumThreadsFinished](Uint32 ThreadId) {
+    PoolCI.OnThreadExiting = [&NumThreadsFinished](UInt32 ThreadId) {
         NumThreadsFinished.fetch_add(1);
     };
 
@@ -65,7 +65,7 @@ TEST(Common_ThreadPool, EnqueueTask)
     {
         Tasks[i] =
             EnqueueAsyncWork(pThreadPool,
-                             [i, &Results, &ThreadStarted, &WorkComplete](Uint32 ThreadId) //
+                             [i, &Results, &ThreadStarted, &WorkComplete](UInt32 ThreadId) //
                              {
                                  constexpr size_t NumIterations = 4096;
 
@@ -103,14 +103,14 @@ TEST(Common_ThreadPool, EnqueueTask)
 
 TEST(Common_ThreadPool, ProcessTask)
 {
-    constexpr Uint32 NumThreads = 4;
-    constexpr Uint32 NumTasks   = 32;
+    constexpr UInt32 NumThreads = 4;
+    constexpr UInt32 NumTasks   = 32;
 
     auto pThreadPool = CreateThreadPool(ThreadPoolCreateInfo{0});
     ASSERT_NE(pThreadPool, nullptr);
 
     std::vector<std::thread> WorkerThreads(NumThreads);
-    for (Uint32 i = 0; i < NumThreads; ++i)
+    for (UInt32 i = 0; i < NumThreads; ++i)
     {
         WorkerThreads[i] = std::thread{
             [&ThreadPool = *pThreadPool, i] //
@@ -126,7 +126,7 @@ TEST(Common_ThreadPool, ProcessTask)
     for (size_t i = 0; i < Results.size(); ++i)
     {
         EnqueueAsyncWork(pThreadPool,
-                         [i, &Results, &WorkComplete](Uint32 ThreadId) //
+                         [i, &Results, &WorkComplete](UInt32 ThreadId) //
                          {
                              constexpr size_t NumIterations = 4096;
 
@@ -173,7 +173,7 @@ public:
         m_WaitSignal{WaitSignal}
     {}
 
-    virtual ASYNC_TASK_STATUS DILIGENT_CALL_TYPE Run(Uint32 ThreadId) override final
+    virtual ASYNC_TASK_STATUS DILIGENT_CALL_TYPE Run(UInt32 ThreadId) override final
     {
         m_WaitSignal.Wait();
         return ASYNC_TASK_STATUS_COMPLETE;
@@ -191,7 +191,7 @@ public:
         AsyncTaskBase{pRefCounters, fPriority}
     {}
 
-    virtual ASYNC_TASK_STATUS DILIGENT_CALL_TYPE Run(Uint32 ThreadId) override final
+    virtual ASYNC_TASK_STATUS DILIGENT_CALL_TYPE Run(UInt32 ThreadId) override final
     {
         return ASYNC_TASK_STATUS_COMPLETE;
     }
@@ -199,7 +199,7 @@ public:
 
 TEST(Common_ThreadPool, RemoveTask)
 {
-    constexpr Uint32 NumThreads = 4;
+    constexpr UInt32 NumThreads = 4;
 
     auto pThreadPool = CreateThreadPool(ThreadPoolCreateInfo{NumThreads});
     ASSERT_NE(pThreadPool, nullptr);
@@ -253,7 +253,7 @@ TEST(Common_ThreadPool, RemoveTask)
 
 TEST(Common_ThreadPool, Reprioritize)
 {
-    constexpr Uint32 NumThreads = 4;
+    constexpr UInt32 NumThreads = 4;
 
     auto pThreadPool = CreateThreadPool(ThreadPoolCreateInfo{NumThreads});
     ASSERT_NE(pThreadPool, nullptr);
@@ -301,11 +301,11 @@ TEST(Common_ThreadPool, Reprioritize)
 
 TEST(Common_ThreadPool, Priorities)
 {
-    constexpr Uint32 NumThreads  = 1;
-    constexpr Uint32 NumTasks    = 8;
-    constexpr Uint32 RepeatCount = 10;
+    constexpr UInt32 NumThreads  = 1;
+    constexpr UInt32 NumTasks    = 8;
+    constexpr UInt32 RepeatCount = 10;
 
-    for (Uint32 k = 0; k < RepeatCount; ++k)
+    for (UInt32 k = 0; k < RepeatCount; ++k)
     {
         auto pThreadPool = CreateThreadPool(ThreadPoolCreateInfo{NumThreads});
         ASSERT_NE(pThreadPool, nullptr);
@@ -323,11 +323,11 @@ TEST(Common_ThreadPool, Priorities)
         std::vector<int> CompletionOrder;
         CompletionOrder.reserve(NumTasks);
         std::array<RefCntAutoPtr<IAsyncTask>, NumTasks> Tasks;
-        for (Uint32 i = 0; i < NumTasks; ++i)
+        for (UInt32 i = 0; i < NumTasks; ++i)
         {
             Tasks[i] =
                 EnqueueAsyncWork(pThreadPool,
-                                 [&CompletionOrder, i](Uint32 ThreadId) //
+                                 [&CompletionOrder, i](UInt32 ThreadId) //
                                  {
                                      CompletionOrder.push_back(i);
                                      return ASYNC_TASK_STATUS_COMPLETE;
@@ -364,19 +364,19 @@ TEST(Common_ThreadPool, Priorities)
 
 TEST(Common_ThreadPool, Prerequisites)
 {
-    for (Uint32 NumThreads : {1, 8})
+    for (UInt32 NumThreads : {1, 8})
     {
         auto pThreadPool = CreateThreadPool(ThreadPoolCreateInfo{NumThreads});
         ASSERT_NE(pThreadPool, nullptr);
 
-        constexpr Uint32               NumTasks = 16;
+        constexpr UInt32               NumTasks = 16;
         std::vector<std::atomic<bool>> TaskComplete(NumTasks);
 
-        std::atomic<Uint32> NumTasksCorrectlyOrdered{0};
+        std::atomic<UInt32> NumTasksCorrectlyOrdered{0};
         {
             std::vector<IAsyncTask*>               Tasks(NumTasks);
             std::vector<RefCntAutoPtr<IAsyncTask>> spTasks(NumTasks);
-            for (Uint32 task = 0; task < NumTasks; ++task)
+            for (UInt32 task = 0; task < NumTasks; ++task)
             {
                 spTasks[task] =
                     EnqueueAsyncWork(
@@ -384,14 +384,14 @@ TEST(Common_ThreadPool, Prerequisites)
                         // Make the task dependent on all previous tasks
                         task > 0 ? Tasks.data() : nullptr,
                         task > 0 ? task - 1 : 0,
-                        [task, &TaskComplete, &NumTasksCorrectlyOrdered](Uint32 ThreadId) //
+                        [task, &TaskComplete, &NumTasksCorrectlyOrdered](UInt32 ThreadId) //
                         {
                             // Make earlier tasks longer to run
                             std::this_thread::sleep_for(std::chrono::milliseconds(TaskComplete.size() - task));
                             TaskComplete[task].store(true);
 
                             bool CorrectOrder = true;
-                            for (Uint32 i = 0; i + 1 < task; ++i)
+                            for (UInt32 i = 0; i + 1 < task; ++i)
                             {
                                 if (!TaskComplete[i].load())
                                 {
@@ -420,17 +420,17 @@ TEST(Common_ThreadPool, ReRunTasks)
     auto pThreadPool = CreateThreadPool(ThreadPoolCreateInfo{4});
     ASSERT_NE(pThreadPool, nullptr);
 
-    constexpr Uint32              NumTasks = 32;
+    constexpr UInt32              NumTasks = 32;
     std::vector<std::atomic<int>> ReRunCounters(NumTasks);
 
     for (int i = 0; i < static_cast<int>(ReRunCounters.size()); ++i)
         ReRunCounters[i] = 32 + i;
 
-    for (Uint32 task = 0; task < NumTasks; ++task)
+    for (UInt32 task = 0; task < NumTasks; ++task)
     {
         EnqueueAsyncWork(
             pThreadPool,
-            [task, &ReRunCounters](Uint32 ThreadId) //
+            [task, &ReRunCounters](UInt32 ThreadId) //
             {
                 int ReRunCounter = ReRunCounters[task].fetch_add(-1) - 1;
                 return ReRunCounter > 0 ? ASYNC_TASK_STATUS_NOT_STARTED : ASYNC_TASK_STATUS_COMPLETE;

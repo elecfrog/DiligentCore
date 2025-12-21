@@ -102,7 +102,7 @@ public:
                  ShaderModel,
                  pDXCompiler      = D3DShaderCI.pDXCompiler,
                  ppCompilerOutput = D3DShaderCI.ppCompilerOutput,
-                 InitResources](Uint32 ThreadId) mutable //
+                 InitResources](UInt32 ThreadId) mutable //
                 {
                     try
                     {
@@ -118,14 +118,14 @@ public:
     }
 
     /// Implementation of IShader::GetResourceCount() method.
-    virtual Uint32 DILIGENT_CALL_TYPE GetResourceCount() const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetResourceCount() const override final
     {
         DEV_CHECK_ERR(!this->IsCompiling(), "Shader resources are not available until compilation is complete. Use GetStatus() to check the shader status.");
         return m_pShaderResources ? m_pShaderResources->GetTotalResources() : 0;
     }
 
     /// Implementation of IShader::GetResource() method.
-    virtual void DILIGENT_CALL_TYPE GetResourceDesc(Uint32 Index, ShaderResourceDesc& ResourceDesc) const override final
+    virtual void DILIGENT_CALL_TYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final
     {
         DEV_CHECK_ERR(!this->IsCompiling(), "Shader resources are not available until compilation is complete. Use GetStatus() to check the shader status.");
         if (m_pShaderResources)
@@ -135,7 +135,7 @@ public:
     }
 
     /// Implementation of IShader::GetConstantBufferDesc() method.
-    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(Uint32 Index) const override final
+    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(UInt32 Index) const override final
     {
         DEV_CHECK_ERR(!this->IsCompiling(), "Shader resources are not available until compilation is complete. Use GetStatus() to check the shader status.");
         return m_pShaderResources ?
@@ -145,7 +145,7 @@ public:
     }
 
     /// Implementation of IShaderD3D::GetHLSLResource() method.
-    virtual void DILIGENT_CALL_TYPE GetHLSLResource(Uint32 Index, HLSLShaderResourceDesc& ResourceDesc) const override final
+    virtual void DILIGENT_CALL_TYPE GetHLSLResource(UInt32 Index, HLSLShaderResourceDesc& ResourceDesc) const override final
     {
         DEV_CHECK_ERR(!this->IsCompiling(), "Shader resources are not available until compilation is complete. Use GetStatus() to check the shader status.");
         if (m_pShaderResources)
@@ -155,7 +155,7 @@ public:
     }
 
     virtual void DILIGENT_CALL_TYPE GetBytecode(const void** ppBytecode,
-                                                Uint64&      Size) const override final
+                                                UInt64&      Size) const override final
     {
         DEV_CHECK_ERR(!this->IsCompiling(), "Shader resources are not available until compilation is complete. Use GetStatus() to check the shader status.");
         if (m_pShaderByteCode)

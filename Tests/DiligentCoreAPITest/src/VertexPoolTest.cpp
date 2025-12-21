@@ -140,7 +140,7 @@ TEST(VertexPoolTest, Allocate)
                         auto& Allocs = pAllocations[thread_id];
                         for (auto& Alloc : Allocs)
                         {
-                            Uint32 size = static_cast<Uint32>(rnd());
+                            UInt32 size = static_cast<UInt32>(rnd());
                             pVtxPool->Allocate(size, &Alloc);
                             ASSERT_TRUE(Alloc);
                             EXPECT_EQ(Alloc->GetVertexCount(), size);

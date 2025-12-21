@@ -51,7 +51,7 @@ void ValidateBufferInitData(const BufferDesc& Desc, const BufferData* pBuffData)
 /// Validates and corrects buffer view description; throws an exception in case of an error.
 void ValidateAndCorrectBufferViewDesc(const BufferDesc& BuffDesc,
                                       BufferViewDesc&   ViewDesc,
-                                      Uint32            StructuredBufferOffsetAlignment) noexcept(false);
+                                      UInt32            StructuredBufferOffsetAlignment) noexcept(false);
 
 
 /// Template class implementing base functionality of the buffer object
@@ -96,7 +96,7 @@ public:
     {
         ValidateBufferDesc(this->m_Desc, this->GetDevice()); // May throw
 
-        Uint64 DeviceQueuesMask = this->GetDevice()->GetCommandQueueMask();
+        UInt64 DeviceQueuesMask = this->GetDevice()->GetCommandQueueMask();
         DEV_CHECK_ERR((this->m_Desc.ImmediateContextMask & DeviceQueuesMask) != 0,
                       "No bits in the immediate context mask (0x", std::hex, this->m_Desc.ImmediateContextMask,
                       ") correspond to one of ", this->GetDevice()->GetCommandQueueCount(), " available software command queues");
@@ -216,14 +216,14 @@ public:
         return this->m_MemoryProperties;
     }
 
-    virtual void DILIGENT_CALL_TYPE FlushMappedRange(Uint64 StartOffset,
-                                                     Uint64 Size) override
+    virtual void DILIGENT_CALL_TYPE FlushMappedRange(UInt64 StartOffset,
+                                                     UInt64 Size) override
     {
         DvpVerifyFlushMappedRangeArguments(StartOffset, Size);
     }
 
-    virtual void DILIGENT_CALL_TYPE InvalidateMappedRange(Uint64 StartOffset,
-                                                          Uint64 Size) override
+    virtual void DILIGENT_CALL_TYPE InvalidateMappedRange(UInt64 StartOffset,
+                                                          UInt64 Size) override
     {
         DvpVerifyInvalidateMappedRangeArguments(StartOffset, Size);
     }
@@ -241,7 +241,7 @@ public:
         return (this->m_State & State) == State;
     }
 
-    Uint32 GetDynamicBufferId() const
+    UInt32 GetDynamicBufferId() const
     {
         return m_DynamicBufferId;
     }
@@ -250,8 +250,8 @@ protected:
     /// Pure virtual function that creates buffer view for the specific engine implementation.
     virtual void CreateViewInternal(const struct BufferViewDesc& ViewDesc, IBufferView** ppView, bool bIsDefaultView) = 0;
 
-    void DvpVerifyFlushMappedRangeArguments(Uint64 StartOffset,
-                                            Uint64 Size) const
+    void DvpVerifyFlushMappedRangeArguments(UInt64 StartOffset,
+                                            UInt64 Size) const
     {
 #ifdef DILIGENT_DEVELOPMENT
         DEV_CHECK_ERR((GetMemoryProperties() & MEMORY_PROPERTY_HOST_COHERENT) == 0, "Coherent memory does not need to be flushed.");
@@ -260,8 +260,8 @@ protected:
 #endif
     }
 
-    void DvpVerifyInvalidateMappedRangeArguments(Uint64 StartOffset,
-                                                 Uint64 Size) const
+    void DvpVerifyInvalidateMappedRangeArguments(UInt64 StartOffset,
+                                                 UInt64 Size) const
     {
 #ifdef DILIGENT_DEVELOPMENT
         DEV_CHECK_ERR((GetMemoryProperties() & MEMORY_PROPERTY_HOST_COHERENT) == 0, "Coherent memory does not need to be invalidated.");
@@ -280,7 +280,7 @@ protected:
     MEMORY_PROPERTIES m_MemoryProperties = MEMORY_PROPERTY_UNKNOWN;
 
     // Dynamic buffer Id is used by device contexts to index dynamic allocations
-    Uint32 m_DynamicBufferId = ~0u;
+    UInt32 m_DynamicBufferId = ~0u;
 
     /// Default UAV addressing the entire buffer
     std::unique_ptr<BufferViewImplType, STDDeleter<BufferViewImplType, TBuffViewObjAllocator>> m_pDefaultUAV;

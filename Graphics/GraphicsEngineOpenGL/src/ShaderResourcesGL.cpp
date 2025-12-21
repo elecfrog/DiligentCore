@@ -83,10 +83,10 @@ void ShaderResourcesGL::AllocateResources(std::vector<UniformBufferInfo>& Unifor
 {
     VERIFY(m_UniformBuffers == nullptr, "Resources have already been allocated!");
 
-    m_NumUniformBuffers = static_cast<Uint32>(UniformBlocks.size());
-    m_NumTextures       = static_cast<Uint32>(Textures.size());
-    m_NumImages         = static_cast<Uint32>(Images.size());
-    m_NumStorageBlocks  = static_cast<Uint32>(StorageBlocks.size());
+    m_NumUniformBuffers = static_cast<UInt32>(UniformBlocks.size());
+    m_NumTextures       = static_cast<UInt32>(Textures.size());
+    m_NumImages         = static_cast<UInt32>(Images.size());
+    m_NumStorageBlocks  = static_cast<UInt32>(StorageBlocks.size());
 
     size_t StringPoolDataSize = 0;
     for (const UniformBufferInfo& ub : UniformBlocks)
@@ -152,25 +152,25 @@ void ShaderResourcesGL::AllocateResources(std::vector<UniformBufferInfo>& Unifor
     StringPool TmpStringPool;
     TmpStringPool.AssignMemory(StringPoolData, StringPoolDataSize);
 
-    for (Uint32 ub = 0; ub < m_NumUniformBuffers; ++ub)
+    for (UInt32 ub = 0; ub < m_NumUniformBuffers; ++ub)
     {
         UniformBufferInfo& SrcUB = UniformBlocks[ub];
         new (m_UniformBuffers + ub) UniformBufferInfo{SrcUB, TmpStringPool};
     }
 
-    for (Uint32 s = 0; s < m_NumTextures; ++s)
+    for (UInt32 s = 0; s < m_NumTextures; ++s)
     {
         TextureInfo& SrcSam = Textures[s];
         new (m_Textures + s) TextureInfo{SrcSam, TmpStringPool};
     }
 
-    for (Uint32 img = 0; img < m_NumImages; ++img)
+    for (UInt32 img = 0; img < m_NumImages; ++img)
     {
         ImageInfo& SrcImg = Images[img];
         new (m_Images + img) ImageInfo{SrcImg, TmpStringPool};
     }
 
-    for (Uint32 sb = 0; sb < m_NumStorageBlocks; ++sb)
+    for (UInt32 sb = 0; sb < m_NumStorageBlocks; ++sb)
     {
         StorageBlockInfo& SrcSB = StorageBlocks[sb];
         new (m_StorageBlocks + sb) StorageBlockInfo{SrcSB, TmpStringPool};
@@ -285,7 +285,7 @@ static void AddUniformBufferVariable(GLuint                                     
     }
 }
 
-static void ProcessUBVariable(ShaderCodeVariableDescX& Var, Uint32 BaseOffset)
+static void ProcessUBVariable(ShaderCodeVariableDescX& Var, UInt32 BaseOffset)
 {
     // Re-sort by offset
     Var.ProcessMembers(
@@ -296,7 +296,7 @@ static void ProcessUBVariable(ShaderCodeVariableDescX& Var, Uint32 BaseOffset)
                       });
         });
 
-    for (Uint32 i = 0; i < Var.NumMembers; ++i)
+    for (UInt32 i = 0; i < Var.NumMembers; ++i)
     {
         ShaderCodeVariableDescX& Member = Var.GetMember(i);
         ProcessUBVariable(Member, Var.Offset);
@@ -307,7 +307,7 @@ static void ProcessUBVariable(ShaderCodeVariableDescX& Var, Uint32 BaseOffset)
 }
 
 // Recovers structures and arrays from the linear list of unrolled uniforms
-static ShaderCodeBufferDescX PrepareUBReflection(std::vector<ShaderCodeVariableDescX>&& Vars, Uint32 Size)
+static ShaderCodeBufferDescX PrepareUBReflection(std::vector<ShaderCodeVariableDescX>&& Vars, UInt32 Size)
 {
     // Sort variables by offset - they are reflected in some arbitrary order
     std::sort(Vars.begin(), Vars.end(),
@@ -362,7 +362,7 @@ static ShaderCodeBufferDescX PrepareUBReflection(std::vector<ShaderCodeVariableD
                 //  s2[1].f4           128
 
                 // Update the array size.
-                pVar->ArraySize = std::max(pVar->ArraySize, StaticCast<Uint32>(ArrayInd + 1));
+                pVar->ArraySize = std::max(pVar->ArraySize, StaticCast<UInt32>(ArrayInd + 1));
                 // The struct offset is the minimal offset of its members,
                 // which should always be the first variable in the list.
                 VERIFY_EXPR(Var.Offset >= pVar->Offset);
@@ -378,7 +378,7 @@ static ShaderCodeBufferDescX PrepareUBReflection(std::vector<ShaderCodeVariableD
 
                 size_t Idx        = pLevel->AddMember(StructVarDesc);
                 pLevel            = &pLevel->GetMember(Idx);
-                pLevel->ArraySize = std::max(pLevel->ArraySize, StaticCast<Uint32>(ArrayInd + 1));
+                pLevel->ArraySize = std::max(pLevel->ArraySize, StaticCast<UInt32>(ArrayInd + 1));
             }
 
             // s2[1].s1.f4[2]
@@ -410,7 +410,7 @@ static ShaderCodeBufferDescX PrepareUBReflection(std::vector<ShaderCodeVariableD
             // s2[0].s1.f4[0]
             // s2[1].s1.f4[0]
             //          ^
-            pArray->ArraySize = std::max(pArray->ArraySize, StaticCast<Uint32>(ArrayInd + 1));
+            pArray->ArraySize = std::max(pArray->ArraySize, StaticCast<UInt32>(ArrayInd + 1));
             VERIFY_EXPR(Var.Offset >= pArray->Offset);
         }
         else
@@ -431,7 +431,7 @@ static ShaderCodeBufferDescX PrepareUBReflection(std::vector<ShaderCodeVariableD
             //
             // only a single uniform is enumerated: s2.s1.f4[0]. The array size will be
             // determined by AddUniformBufferVariable() from the value of GL_UNIFORM_SIZE parameter.
-            Var.ArraySize = std::max(Var.ArraySize, StaticCast<Uint32>(ArrayInd + 1));
+            Var.ArraySize = std::max(Var.ArraySize, StaticCast<UInt32>(ArrayInd + 1));
             pLevel->AddMember(std::move(Var));
         }
     }
@@ -444,7 +444,7 @@ static ShaderCodeBufferDescX PrepareUBReflection(std::vector<ShaderCodeVariableD
             BuffDesc.AssignVariables(std::move(Members));
         });
 
-    for (Uint32 i = 0; i < BuffDesc.NumVariables; ++i)
+    for (UInt32 i = 0; i < BuffDesc.NumVariables; ++i)
         ProcessUBVariable(BuffDesc.GetVariable(i), 0);
 
     return BuffDesc;
@@ -618,7 +618,7 @@ void ShaderResourcesGL::LoadUniforms(const LoadUniformsAttribs& Attribs)
                     Attribs.ShaderStages,
                     ResourceType,
                     ResourceFlags,
-                    static_cast<Uint32>(size),
+                    static_cast<UInt32>(size),
                     dataType,
                     ResDim,
                     IsMS //
@@ -679,7 +679,7 @@ void ShaderResourcesGL::LoadUniforms(const LoadUniformsAttribs& Attribs)
                     Attribs.ShaderStages,
                     ResourceType,
                     ResourceFlags,
-                    static_cast<Uint32>(size),
+                    static_cast<UInt32>(size),
                     dataType,
                     ResDim,
                     IsMS //
@@ -758,7 +758,7 @@ void ShaderResourcesGL::LoadUniforms(const LoadUniformsAttribs& Attribs)
                 NamesPool.emplace(Name.data()).first->c_str(),
                 Attribs.ShaderStages,
                 SHADER_RESOURCE_TYPE_CONSTANT_BUFFER,
-                static_cast<Uint32>(ArraySize),
+                static_cast<UInt32>(ArraySize),
                 UniformBlockIndex //
             );
         }
@@ -810,7 +810,7 @@ void ShaderResourcesGL::LoadUniforms(const LoadUniformsAttribs& Attribs)
                 NamesPool.emplace(Name.data()).first->c_str(),
                 Attribs.ShaderStages,
                 SHADER_RESOURCE_TYPE_BUFFER_UAV,
-                static_cast<Uint32>(ArraySize),
+                static_cast<UInt32>(ArraySize),
                 SBIndex //
             );
         }
@@ -836,7 +836,7 @@ void ShaderResourcesGL::LoadUniforms(const LoadUniformsAttribs& Attribs)
                 glGetActiveUniformBlockiv(GLProgram, UB.UBIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &BufferSize);
                 DEV_CHECK_GL_ERROR("Failed to get the value of the GL_UNIFORM_BLOCK_DATA_SIZE parameter");
 
-                UBReflections.emplace_back(PrepareUBReflection(std::move(Vars), StaticCast<Uint32>(BufferSize)));
+                UBReflections.emplace_back(PrepareUBReflection(std::move(Vars), StaticCast<UInt32>(BufferSize)));
             }
             else
             {
@@ -848,7 +848,7 @@ void ShaderResourcesGL::LoadUniforms(const LoadUniformsAttribs& Attribs)
     }
 }
 
-ShaderResourceDesc ShaderResourcesGL::GetResourceDesc(Uint32 Index) const
+ShaderResourceDesc ShaderResourcesGL::GetResourceDesc(UInt32 Index) const
 {
     if (Index >= GetVariableCount())
     {

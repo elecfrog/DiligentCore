@@ -124,14 +124,14 @@ TEST(DXCompilerTest, Reflection)
         MaxSM = ShaderVersion{6, 6};
     }
 
-    for (Uint32 MinorVersion = 3; MinorVersion <= MaxSM.Minor; ++MinorVersion)
+    for (UInt32 MinorVersion = 3; MinorVersion <= MaxSM.Minor; ++MinorVersion)
     {
         std::wstring Profile = L"lib_6_" + std::to_wstring(MinorVersion);
         LOG_INFO_MESSAGE("Testing shader profile ", NarrowString(Profile));
 
         IDXCompiler::CompileAttribs CA;
         CA.Source       = ReflectionTest_RG.c_str();
-        CA.SourceLength = static_cast<Uint32>(ReflectionTest_RG.length());
+        CA.SourceLength = static_cast<UInt32>(ReflectionTest_RG.length());
         CA.EntryPoint   = L"main";
         CA.Profile      = Profile.c_str();
         CA.pArgs        = DXCArgs;
@@ -205,14 +205,14 @@ TEST(DXCompilerTest, RemapBindingsRG)
         MaxSM = ShaderVersion{6, 6};
     }
 
-    for (Uint32 MinorVersion = 3; MinorVersion <= MaxSM.Minor; ++MinorVersion)
+    for (UInt32 MinorVersion = 3; MinorVersion <= MaxSM.Minor; ++MinorVersion)
     {
         std::wstring Profile = L"lib_6_" + std::to_wstring(MinorVersion);
         LOG_INFO_MESSAGE("Testing shader profile ", NarrowString(Profile));
 
         IDXCompiler::CompileAttribs CA;
         CA.Source       = ReflectionTest_RG.c_str();
-        CA.SourceLength = static_cast<Uint32>(ReflectionTest_RG.length());
+        CA.SourceLength = static_cast<UInt32>(ReflectionTest_RG.length());
         CA.EntryPoint   = L"main";
         CA.Profile      = Profile.c_str();
         CA.pArgs        = DXCArgs;
@@ -343,14 +343,14 @@ float4 main() : SV_TARGET
         MaxSM = ShaderVersion{6, 6};
     }
 
-    for (Uint32 MinorVersion = 0; MinorVersion <= MaxSM.Minor; ++MinorVersion)
+    for (UInt32 MinorVersion = 0; MinorVersion <= MaxSM.Minor; ++MinorVersion)
     {
         std::wstring Profile = L"ps_6_" + std::to_wstring(MinorVersion);
         LOG_INFO_MESSAGE("Testing shader profile ", NarrowString(Profile));
 
         IDXCompiler::CompileAttribs CA;
         CA.Source       = ShaderSource.c_str();
-        CA.SourceLength = static_cast<Uint32>(ShaderSource.length());
+        CA.SourceLength = static_cast<UInt32>(ShaderSource.length());
         CA.EntryPoint   = L"main";
         CA.Profile      = Profile.c_str();
         CA.pArgs        = DXCArgs;
@@ -532,14 +532,14 @@ float4 main(in float4 f4Position : SV_Position) : SV_TARGET
         GTEST_SKIP() << "DXC version 1.3 or older does not support ConstantBuffer<...> syntax";
     }
 
-    for (Uint32 MinorVersion = 0; MinorVersion <= MaxSM.Minor; ++MinorVersion)
+    for (UInt32 MinorVersion = 0; MinorVersion <= MaxSM.Minor; ++MinorVersion)
     {
         std::wstring Profile = L"ps_6_" + std::to_wstring(MinorVersion);
         LOG_INFO_MESSAGE("Testing shader profile ", NarrowString(Profile));
 
         IDXCompiler::CompileAttribs CA;
         CA.Source       = ShaderSource.c_str();
-        CA.SourceLength = static_cast<Uint32>(ShaderSource.length());
+        CA.SourceLength = static_cast<UInt32>(ShaderSource.length());
         CA.EntryPoint   = L"main";
         CA.Profile      = Profile.c_str();
         CA.pArgs        = DXCArgs;

@@ -111,11 +111,11 @@ void GetOpenXRGraphicsBindingGL(IRenderDevice*  pDevice,
 #endif
 }
 
-void AllocateOpenXRSwapchainImageDataGL(Uint32      ImageCount,
+void AllocateOpenXRSwapchainImageDataGL(UInt32      ImageCount,
                                         IDataBlob** ppSwapchainImageData)
 {
     RefCntAutoPtr<DataBlobImpl> pDataBlob{DataBlobImpl::Create(sizeof(XrSwapchainImageGL) * ImageCount)};
-    for (Uint32 i = 0; i < ImageCount; ++i)
+    for (UInt32 i = 0; i < ImageCount; ++i)
     {
         XrSwapchainImageGL& Image{pDataBlob->GetDataPtr<XrSwapchainImageGL>()[i]};
         Image.type = XR_TYPE_SWAPCHAIN_IMAGE_GL;
@@ -128,7 +128,7 @@ void AllocateOpenXRSwapchainImageDataGL(Uint32      ImageCount,
 
 void GetOpenXRSwapchainImageGL(IRenderDevice*                    pDevice,
                                const XrSwapchainImageBaseHeader* ImageData,
-                               Uint32                            ImageIndex,
+                               UInt32                            ImageIndex,
                                const TextureDesc&                TexDesc,
                                ITexture**                        ppImage)
 {

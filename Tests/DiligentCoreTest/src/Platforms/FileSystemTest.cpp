@@ -699,7 +699,7 @@ void TestGetLocalAppDataDirectory(const char* AppName)
 {
     const auto AppDataDir = FileSystem::GetLocalAppDataDirectory(AppName);
     ASSERT_TRUE(FileSystem::PathExists(AppDataDir.c_str()));
-    const Uint32 TestData[] = {0, 1, 2, 3};
+    const UInt32 TestData[] = {0, 1, 2, 3};
 
     const auto TestFilePath = AppDataDir + FileSystem::SlashSymbol + "Test.bin";
 

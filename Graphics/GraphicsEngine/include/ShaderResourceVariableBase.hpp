@@ -47,10 +47,10 @@ template <typename TNameCompare>
 SHADER_RESOURCE_VARIABLE_TYPE GetShaderVariableType(SHADER_TYPE                       ShaderStage,
                                                     SHADER_RESOURCE_VARIABLE_TYPE     DefaultVariableType,
                                                     const ShaderResourceVariableDesc* Variables,
-                                                    Uint32                            NumVars,
+                                                    UInt32                            NumVars,
                                                     TNameCompare                      NameCompare)
 {
-    for (Uint32 v = 0; v < NumVars; ++v)
+    for (UInt32 v = 0; v < NumVars; ++v)
     {
         const ShaderResourceVariableDesc& CurrVarDesc = Variables[v];
         if (((CurrVarDesc.ShaderStages & ShaderStage) != 0) && NameCompare(CurrVarDesc.Name))
@@ -65,7 +65,7 @@ inline SHADER_RESOURCE_VARIABLE_TYPE GetShaderVariableType(SHADER_TYPE          
                                                            const Char*                       Name,
                                                            SHADER_RESOURCE_VARIABLE_TYPE     DefaultVariableType,
                                                            const ShaderResourceVariableDesc* Variables,
-                                                           Uint32                            NumVars)
+                                                           UInt32                            NumVars)
 {
     return GetShaderVariableType(ShaderStage, DefaultVariableType, Variables, NumVars,
                                  [&](const char* VarName) //
@@ -85,7 +85,7 @@ inline SHADER_RESOURCE_VARIABLE_TYPE GetShaderVariableType(SHADER_TYPE          
                                                            const String&                     Name,
                                                            SHADER_RESOURCE_VARIABLE_TYPE     DefaultVariableType,
                                                            const ShaderResourceVariableDesc* Variables,
-                                                           Uint32                            NumVars)
+                                                           UInt32                            NumVars)
 {
     return GetShaderVariableType(ShaderStage, DefaultVariableType, Variables, NumVars,
                                  [&](const char* VarName) //
@@ -101,23 +101,23 @@ inline SHADER_RESOURCE_VARIABLE_TYPE GetShaderVariableType(SHADER_TYPE          
     return GetShaderVariableType(ShaderStage, Name, LayoutDesc.DefaultVariableType, LayoutDesc.Variables, LayoutDesc.NumVariables);
 }
 
-inline bool IsAllowedType(SHADER_RESOURCE_VARIABLE_TYPE VarType, Uint32 AllowedTypeBits) noexcept
+inline bool IsAllowedType(SHADER_RESOURCE_VARIABLE_TYPE VarType, UInt32 AllowedTypeBits) noexcept
 {
     return ((1 << VarType) & AllowedTypeBits) != 0;
 }
 
-inline Uint32 GetAllowedTypeBit(SHADER_RESOURCE_VARIABLE_TYPE VarType)
+inline UInt32 GetAllowedTypeBit(SHADER_RESOURCE_VARIABLE_TYPE VarType)
 {
-    return 1 << static_cast<Uint32>(VarType);
+    return 1 << static_cast<UInt32>(VarType);
 }
 
-inline Uint32 GetAllowedTypeBits(const SHADER_RESOURCE_VARIABLE_TYPE* AllowedVarTypes, Uint32 NumAllowedTypes) noexcept
+inline UInt32 GetAllowedTypeBits(const SHADER_RESOURCE_VARIABLE_TYPE* AllowedVarTypes, UInt32 NumAllowedTypes) noexcept
 {
     if (AllowedVarTypes == nullptr)
         return 0xFFFFFFFF;
 
-    Uint32 AllowedTypeBits = 0;
-    for (Uint32 i = 0; i < NumAllowedTypes; ++i)
+    UInt32 AllowedTypeBits = 0;
+    for (UInt32 i = 0; i < NumAllowedTypes; ++i)
         AllowedTypeBits |= GetAllowedTypeBit(AllowedVarTypes[i]);
     return AllowedTypeBits;
 }
@@ -128,15 +128,15 @@ struct BindResourceInfo
 
     const SET_SHADER_RESOURCE_FLAGS Flags;
 
-    const Uint32 ArrayIndex;
-    const Uint64 BufferBaseOffset;
-    const Uint64 BufferRangeSize;
+    const UInt32 ArrayIndex;
+    const UInt64 BufferBaseOffset;
+    const UInt64 BufferRangeSize;
 
-    BindResourceInfo(Uint32                    _ArrayIndex,
+    BindResourceInfo(UInt32                    _ArrayIndex,
                      IDeviceObject*            _pObject,
                      SET_SHADER_RESOURCE_FLAGS _Flags,
-                     Uint64                    _BufferBaseOffset = 0,
-                     Uint64                    _BufferRangeSize  = 0) noexcept :
+                     UInt64                    _BufferBaseOffset = 0,
+                     UInt64                    _BufferRangeSize  = 0) noexcept :
         // clang-format off
         pObject         {_pObject},
         Flags           {_Flags},
@@ -227,8 +227,8 @@ bool VerifyConstantBufferBinding(const PipelineResourceDesc& ResDesc,
                                  const BindResourceInfo&     BindInfo,
                                  const BufferImplType*       pBufferImpl,
                                  const IDeviceObject*        pCachedBuffer,
-                                 Uint64                      CachedBaseOffset,
-                                 Uint64                      CachedRangeSize,
+                                 UInt64                      CachedBaseOffset,
+                                 UInt64                      CachedRangeSize,
                                  const char*                 SignatureName)
 {
     bool BindingOK = VerifyResourceBinding("buffer", ResDesc, BindInfo, pBufferImpl, pCachedBuffer, SignatureName);
@@ -273,7 +273,7 @@ bool VerifyConstantBufferBinding(const PipelineResourceDesc& ResDesc,
             RangeIsOutOfBounds = true;
         }
 
-        const Uint32 OffsetAlignment = pBufferImpl->GetDevice()->GetAdapterInfo().Buffer.ConstantBufferOffsetAlignment;
+        const UInt32 OffsetAlignment = pBufferImpl->GetDevice()->GetAdapterInfo().Buffer.ConstantBufferOffsetAlignment;
         VERIFY_EXPR(OffsetAlignment != 0);
         if ((BindInfo.BufferBaseOffset % OffsetAlignment) != 0)
         {
@@ -286,7 +286,7 @@ bool VerifyConstantBufferBinding(const PipelineResourceDesc& ResDesc,
         {
             if (CachedRangeSize == 0)
                 CachedRangeSize = BuffDesc.Size - CachedBaseOffset;
-            Uint64 NewBufferRangeSize = BindInfo.BufferRangeSize;
+            UInt64 NewBufferRangeSize = BindInfo.BufferRangeSize;
             if (NewBufferRangeSize == 0)
                 NewBufferRangeSize = BuffDesc.Size - BindInfo.BufferBaseOffset;
 
@@ -342,13 +342,13 @@ inline RESOURCE_DIMENSION GetResourceViewDimension(const IBufferView* /*pBuffVie
     return RESOURCE_DIM_BUFFER;
 }
 
-inline Uint32 GetResourceSampleCount(const ITextureView* pTexView)
+inline UInt32 GetResourceSampleCount(const ITextureView* pTexView)
 {
     VERIFY_EXPR(pTexView != nullptr);
     return const_cast<ITextureView*>(pTexView)->GetTexture()->GetDesc().SampleCount;
 }
 
-inline Uint32 GetResourceSampleCount(const IBufferView* /*pBuffView*/)
+inline UInt32 GetResourceSampleCount(const IBufferView* /*pBuffView*/)
 {
     return 0;
 }
@@ -357,8 +357,8 @@ inline Uint32 GetResourceSampleCount(const IBufferView* /*pBuffView*/)
 
 template <typename TextureViewImplType>
 bool ValidateResourceViewDimension(const char*                ResName,
-                                   Uint32                     ArraySize,
-                                   Uint32                     ArrayInd,
+                                   UInt32                     ArraySize,
+                                   UInt32                     ArrayInd,
                                    const TextureViewImplType* pViewImpl,
                                    RESOURCE_DIMENSION         ExpectedResourceDim,
                                    bool                       IsMultisample)
@@ -378,7 +378,7 @@ bool ValidateResourceViewDimension(const char*                ResName,
 
         if (ResourceDim == RESOURCE_DIM_TEX_2D || ResourceDim == RESOURCE_DIM_TEX_2D_ARRAY)
         {
-            Uint32 SampleCount = GetResourceSampleCount(pViewImpl);
+            UInt32 SampleCount = GetResourceSampleCount(pViewImpl);
             if (IsMultisample && SampleCount == 1)
             {
                 RESOURCE_VALIDATION_FAILURE("Texture view '", pViewImpl->GetDesc().Name, "' bound to variable '",
@@ -466,7 +466,7 @@ bool VerifyResourceViewBinding(const PipelineResourceDesc&             ResDesc,
 
 template <typename BufferViewImplType>
 bool ValidateBufferMode(const PipelineResourceDesc& ResDesc,
-                        Uint32                      ArrayIndex,
+                        UInt32                      ArrayIndex,
                         const BufferViewImplType*   pBufferView)
 {
     bool BindingOK = true;
@@ -534,9 +534,9 @@ bool VerifyTLASResourceBinding(const PipelineResourceDesc& ResDesc,
 template <typename BufferImplType, typename BufferViewImplType>
 bool VerifyDynamicBufferOffset(const PipelineResourceDesc& ResDesc,
                                const IDeviceObject*        pObject,
-                               Uint64                      BufferBaseOffset,
-                               Uint64                      BufferRangeSize,
-                               Uint64                      BufferDynamicOffset)
+                               UInt64                      BufferBaseOffset,
+                               UInt64                      BufferRangeSize,
+                               UInt64                      BufferDynamicOffset)
 {
     bool BindingOK = true;
 
@@ -585,7 +585,7 @@ bool VerifyDynamicBufferOffset(const PipelineResourceDesc& ResDesc,
 
         const BufferProperties& BufferProps = pBuffer->GetDevice()->GetAdapterInfo().Buffer;
 
-        const Uint32 OffsetAlignment = (ResDesc.ResourceType == SHADER_RESOURCE_TYPE_CONSTANT_BUFFER) ?
+        const UInt32 OffsetAlignment = (ResDesc.ResourceType == SHADER_RESOURCE_TYPE_CONSTANT_BUFFER) ?
             BufferProps.ConstantBufferOffsetAlignment :
             BufferProps.StructuredBufferOffsetAlignment;
         VERIFY_EXPR(OffsetAlignment != 0);
@@ -632,7 +632,7 @@ template <typename ThisImplType,
           typename ResourceVariableBaseInterface = IShaderResourceVariable>
 struct ShaderVariableBase : public ResourceVariableBaseInterface
 {
-    ShaderVariableBase(VarManagerType& ParentManager, Uint32 ResIndex) :
+    ShaderVariableBase(VarManagerType& ParentManager, UInt32 ResIndex) :
         m_ParentManager{ParentManager},
         m_ResIndex{ResIndex}
     {
@@ -672,8 +672,8 @@ struct ShaderVariableBase : public ResourceVariableBaseInterface
     }
 
     virtual void DILIGENT_CALL_TYPE SetArray(IDeviceObject* const*     ppObjects,
-                                             Uint32                    FirstElement,
-                                             Uint32                    NumElements,
+                                             UInt32                    FirstElement,
+                                             UInt32                    NumElements,
                                              SET_SHADER_RESOURCE_FLAGS Flags) override final
     {
         const PipelineResourceDesc& Desc = GetDesc();
@@ -682,22 +682,22 @@ struct ShaderVariableBase : public ResourceVariableBaseInterface
                       "SetArray arguments are invalid for '", Desc.Name, "' variable: specified element range (", FirstElement, " .. ",
                       FirstElement + NumElements - 1, ") is out of array bounds 0 .. ", Desc.ArraySize - 1);
 
-        for (Uint32 elem = 0; elem < NumElements; ++elem)
+        for (UInt32 elem = 0; elem < NumElements; ++elem)
             static_cast<ThisImplType*>(this)->BindResource(BindResourceInfo{FirstElement + elem, ppObjects[elem], Flags});
     }
 
     virtual void DILIGENT_CALL_TYPE SetBufferRange(IDeviceObject*            pObject,
-                                                   Uint64                    Offset,
-                                                   Uint64                    Size,
-                                                   Uint32                    ArrayIndex,
+                                                   UInt64                    Offset,
+                                                   UInt64                    Size,
+                                                   UInt32                    ArrayIndex,
                                                    SET_SHADER_RESOURCE_FLAGS Flags) override
     {
         DEV_CHECK_ERR(GetDesc().ResourceType == SHADER_RESOURCE_TYPE_CONSTANT_BUFFER, "SetBufferRange() is only allowed for constant buffers.");
         static_cast<ThisImplType*>(this)->BindResource(BindResourceInfo{ArrayIndex, pObject, Flags, Offset, Size});
     }
 
-    virtual void DILIGENT_CALL_TYPE SetBufferOffset(Uint32 Offset,
-                                                    Uint32 ArrayIndex) override final
+    virtual void DILIGENT_CALL_TYPE SetBufferOffset(UInt32 Offset,
+                                                    UInt32 ArrayIndex) override final
     {
 #ifdef DILIGENT_DEVELOPMENT
         {
@@ -727,7 +727,7 @@ struct ShaderVariableBase : public ResourceVariableBaseInterface
         ResourceDesc.ArraySize = Desc.ArraySize;
     }
 
-    virtual Uint32 DILIGENT_CALL_TYPE GetIndex() const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetIndex() const override final
     {
         return m_ParentManager.GetVariableIndex(*static_cast<const ThisImplType*>(this));
     }
@@ -740,7 +740,7 @@ struct ShaderVariableBase : public ResourceVariableBaseInterface
         if ((Flags & (1u << ResDesc.VarType)) == 0)
             return;
 
-        for (Uint32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
+        for (UInt32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
         {
             if ((Flags & BIND_SHADER_RESOURCES_KEEP_EXISTING) != 0 && pThis->Get(ArrInd) != nullptr)
                 continue;
@@ -777,7 +777,7 @@ struct ShaderVariableBase : public ResourceVariableBaseInterface
         if ((StaleVarTypes & VarTypeFlag) != 0)
             return; // This variable type is already stale
 
-        for (Uint32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
+        for (UInt32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
         {
             const IDeviceObject* const pBoundObj = pThis->Get(ArrInd);
             if ((pBoundObj != nullptr) && (Flags & BIND_SHADER_RESOURCES_KEEP_EXISTING) != 0)
@@ -810,7 +810,7 @@ protected:
     VarManagerType& m_ParentManager;
 
     // Resource index in pipeline resource signature m_Desc.Resources[]
-    const Uint32 m_ResIndex;
+    const UInt32 m_ResIndex;
 };
 
 template <class EngineImplTraits, typename VariableType>
@@ -868,7 +868,7 @@ protected:
         if ((Flags & BIND_SHADER_RESOURCES_UPDATE_ALL) == 0)
             Flags |= BIND_SHADER_RESOURCES_UPDATE_ALL;
 
-        for (Uint32 v = 0; v < static_cast<ThisImplType*>(this)->m_NumVariables; ++v)
+        for (UInt32 v = 0; v < static_cast<ThisImplType*>(this)->m_NumVariables; ++v)
         {
             m_pVariables[v].BindResources(pResourceMapping, Flags);
         }
@@ -885,7 +885,7 @@ protected:
         const SHADER_RESOURCE_VARIABLE_TYPE_FLAGS AllowedTypes = m_ResourceCache.GetContentType() == ResourceCacheContentType::SRB ?
             SHADER_RESOURCE_VARIABLE_TYPE_FLAG_MUT_DYN :
             SHADER_RESOURCE_VARIABLE_TYPE_FLAG_STATIC;
-        for (Uint32 v = 0; (v < pThis->m_NumVariables) && (StaleVarTypes & AllowedTypes) != AllowedTypes; ++v)
+        for (UInt32 v = 0; (v < pThis->m_NumVariables) && (StaleVarTypes & AllowedTypes) != AllowedTypes; ++v)
         {
             m_pVariables[v].CheckResources(pResourceMapping, Flags, StaleVarTypes);
         }

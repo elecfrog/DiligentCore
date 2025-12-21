@@ -67,16 +67,16 @@ public:
     IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_ShaderWebGPU, IID_InternalImpl, TShaderBase)
 
     /// Implementation of IShader::GetResourceCount() in WebGPU backend.
-    Uint32 DILIGENT_CALL_TYPE GetResourceCount() const override final;
+    UInt32 DILIGENT_CALL_TYPE GetResourceCount() const override final;
 
     /// Implementation of IShader::GetResourceDesc() in WebGPU backend.
-    void DILIGENT_CALL_TYPE GetResourceDesc(Uint32 Index, ShaderResourceDesc& ResourceDesc) const override final;
+    void DILIGENT_CALL_TYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final;
 
     /// Implementation of IShader::GetConstantBufferDesc() in WebGPU backend.
-    const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(Uint32 Index) const override final;
+    const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(UInt32 Index) const override final;
 
     /// Implementation of IShader::GetBytecode() in WebGPU backend.
-    void DILIGENT_CALL_TYPE GetBytecode(const void** ppBytecode, Uint64& Size) const override final;
+    void DILIGENT_CALL_TYPE GetBytecode(const void** ppBytecode, UInt64& Size) const override final;
 
     /// Implementation of IShaderWebGPU::GetWGSL().
     const std::string& DILIGENT_CALL_TYPE GetWGSL() const override final;

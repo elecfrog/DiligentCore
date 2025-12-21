@@ -34,7 +34,7 @@ namespace Diligent
 {
 
 #ifdef DILIGENT_DEBUG
-inline void FillWithDebugPattern(void* ptr, Uint8 Pattern, size_t NumBytes)
+inline void FillWithDebugPattern(void* ptr, UInt8 Pattern, size_t NumBytes)
 {
     memset(ptr, Pattern, NumBytes);
 }
@@ -51,7 +51,7 @@ FixedBlockMemoryAllocator::MemoryPage::MemoryPage(FixedBlockMemoryAllocator& Own
 {
     const size_t PageSize = OwnerAllocator.m_BlockSize * OwnerAllocator.m_NumBlocksInPage;
     VERIFY_EXPR(PageSize > 0);
-    m_pPageStart = reinterpret_cast<Uint8*>(
+    m_pPageStart = reinterpret_cast<UInt8*>(
         OwnerAllocator.m_RawMemoryAllocator.Allocate(PageSize, "FixedBlockMemoryAllocator page", __FILE__, __LINE__));
     m_pNextFreeBlock = m_pPageStart;
     FillWithDebugPattern(m_pPageStart, NewPageMemPattern, PageSize);
@@ -79,19 +79,19 @@ FixedBlockMemoryAllocator::MemoryPage::~MemoryPage()
         m_pOwnerAllocator->m_RawMemoryAllocator.Free(m_pPageStart);
 }
 
-void* FixedBlockMemoryAllocator::MemoryPage::GetBlockStartAddress(Uint32 BlockIndex) const
+void* FixedBlockMemoryAllocator::MemoryPage::GetBlockStartAddress(UInt32 BlockIndex) const
 {
     VERIFY_EXPR(m_pOwnerAllocator != nullptr);
     VERIFY(BlockIndex < m_pOwnerAllocator->m_NumBlocksInPage, "Invalid block index");
-    return reinterpret_cast<Uint8*>(m_pPageStart) + BlockIndex * m_pOwnerAllocator->m_BlockSize;
+    return reinterpret_cast<UInt8*>(m_pPageStart) + BlockIndex * m_pOwnerAllocator->m_BlockSize;
 }
 
 #ifdef DILIGENT_DEBUG
 void FixedBlockMemoryAllocator::MemoryPage::dbgVerifyAddress(const void* pBlockAddr) const
 {
-    size_t Delta = reinterpret_cast<const Uint8*>(pBlockAddr) - reinterpret_cast<Uint8*>(m_pPageStart);
+    size_t Delta = reinterpret_cast<const UInt8*>(pBlockAddr) - reinterpret_cast<UInt8*>(m_pPageStart);
     VERIFY(Delta % m_pOwnerAllocator->m_BlockSize == 0, "Invalid address");
-    Uint32 BlockIndex = static_cast<Uint32>(Delta / m_pOwnerAllocator->m_BlockSize);
+    UInt32 BlockIndex = static_cast<UInt32>(Delta / m_pOwnerAllocator->m_BlockSize);
     VERIFY(BlockIndex < m_pOwnerAllocator->m_NumBlocksInPage, "Invalid block index");
 }
 #else
@@ -171,7 +171,7 @@ static size_t AdjustBlockSize(size_t BlockSize)
 
 FixedBlockMemoryAllocator::FixedBlockMemoryAllocator(IMemoryAllocator& RawMemoryAllocator,
                                                      size_t            BlockSize,
-                                                     Uint32            NumBlocksInPage) :
+                                                     UInt32            NumBlocksInPage) :
     // clang-format off
     m_PagePool          (STD_ALLOCATOR_RAW_MEM(MemoryPage, RawMemoryAllocator, "Allocator for vector<MemoryPage>")),
     m_AvailablePages    (STD_ALLOCATOR_RAW_MEM(size_t, RawMemoryAllocator, "Allocator for unordered_set<size_t>") ),

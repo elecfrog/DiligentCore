@@ -54,9 +54,9 @@ public:
     void BindTexture       (Int32 Index, GLenum BindTarget, const GLObjectWrappers::GLTextureObj& Tex);
     void BindUniformBuffer (Int32 Index,       const GLObjectWrappers::GLBufferObj& Buff, GLintptr Offset, GLsizeiptr Size);
     void BindBuffer        (GLenum BindTarget, const GLObjectWrappers::GLBufferObj& Buff, bool ResetVAO);
-    void BindSampler       (Uint32 Index,      const GLObjectWrappers::GLSamplerObj& GLSampler);
-    void BindImage         (Uint32 Index, class TextureViewGLImpl* pTexView, GLint MipLevel, GLboolean IsLayered, GLint Layer, GLenum Access, GLenum Format);
-    void BindImage         (Uint32 Index, class BufferViewGLImpl* pBuffView, GLenum Access, GLenum Format);
+    void BindSampler       (UInt32 Index,      const GLObjectWrappers::GLSamplerObj& GLSampler);
+    void BindImage         (UInt32 Index, class TextureViewGLImpl* pTexView, GLint MipLevel, GLboolean IsLayered, GLint Layer, GLenum Access, GLenum Format);
+    void BindImage         (UInt32 Index, class BufferViewGLImpl* pBuffView, GLenum Access, GLenum Format);
     void BindStorageBlock  (Int32 Index, const GLObjectWrappers::GLBufferObj& Buff, GLintptr Offset, GLsizeiptr Size);
 
     void EnsureMemoryBarrier(MEMORY_BARRIER RequiredBarriers, class AsyncWritableResource *pRes = nullptr);
@@ -66,9 +66,9 @@ public:
     void EnableDepthWrites      (bool bEnable);
     void SetDepthFunc           (COMPARISON_FUNCTION CmpFunc);
     void EnableStencilTest      (bool bEnable);
-    void SetStencilWriteMask    (Uint8 StencilWriteMask);
+    void SetStencilWriteMask    (UInt8 StencilWriteMask);
     void SetStencilRef          (GLenum Face, Int32 Ref);
-    void SetStencilFunc         (GLenum Face, COMPARISON_FUNCTION Func, Int32 Ref, Uint32 Mask);
+    void SetStencilFunc         (GLenum Face, COMPARISON_FUNCTION Func, Int32 Ref, UInt32 Mask);
     void SetStencilOp           (GLenum Face, STENCIL_OP StencilFailOp, STENCIL_OP StencilDepthFailOp, STENCIL_OP StencilPassOp);
     void SetFillMode            (FILL_MODE FillMode);
     void SetCullMode            (CULL_MODE CullMode);
@@ -78,18 +78,18 @@ public:
     void EnableScissorTest      (bool bEnableScissorTest);
 
     void SetBlendFactors(const float* BlendFactors);
-    void SetBlendState(const BlendStateDesc& BSDsc, Uint32 RenderTargetMask, Uint32 SampleMask);
+    void SetBlendState(const BlendStateDesc& BSDsc, UInt32 RenderTargetMask, UInt32 SampleMask);
 
     Bool GetDepthWritesEnabled() const { return m_DSState.m_DepthWritesEnableState; }
     Bool GetScissorTestEnabled() const { return m_RSState.ScissorTestEnable; }
-    void GetColorWriteMask(Uint32 RTIndex, Uint32& WriteMask, Bool& bIsIndexed);
-    void SetColorWriteMask(Uint32 WriteMask);
-    void SetColorWriteMaskIndexed(Uint32 RTIndex, Uint32 WriteMask);
+    void GetColorWriteMask(UInt32 RTIndex, UInt32& WriteMask, Bool& bIsIndexed);
+    void SetColorWriteMask(UInt32 WriteMask);
+    void SetColorWriteMaskIndexed(UInt32 RTIndex, UInt32 WriteMask);
     void EnableFramebufferSRGB(Bool bEnable);
 
-    Uint8 GetStencilWriteMask() const { return static_cast<Uint8>(m_DSState.m_StencilWriteMask); }
+    UInt8 GetStencilWriteMask() const { return static_cast<UInt8>(m_DSState.m_StencilWriteMask); }
 
-    void GetBoundImage(Uint32 Index, GLuint& GLHandle, GLint& MipLevel, GLboolean& IsLayered, GLint& Layer, GLenum& Access, GLenum& Format) const;
+    void GetBoundImage(UInt32 Index, GLuint& GLHandle, GLint& MipLevel, GLboolean& IsLayered, GLint& Layer, GLenum& Access, GLenum& Format) const;
 
     // clang-format on
 
@@ -284,8 +284,8 @@ private:
         EnableStateHelper   m_DepthWritesEnableState;
         COMPARISON_FUNCTION m_DepthCmpFunc = COMPARISON_FUNC_UNKNOWN;
         EnableStateHelper   m_StencilTestEnableState;
-        Uint16              m_StencilReadMask  = 0xFFFF;
-        Uint16              m_StencilWriteMask = 0xFFFF;
+        UInt16              m_StencilReadMask  = 0xFFFF;
+        UInt16              m_StencilWriteMask = 0xFFFF;
         struct StencilOpState
         {
             COMPARISON_FUNCTION Func               = COMPARISON_FUNC_UNKNOWN;
@@ -293,7 +293,7 @@ private:
             STENCIL_OP          StencilDepthFailOp = STENCIL_OP_UNDEFINED;
             STENCIL_OP          StencilPassOp      = STENCIL_OP_UNDEFINED;
             Int32               Ref                = std::numeric_limits<Int32>::min();
-            Uint32              Mask               = static_cast<Uint32>(-1);
+            UInt32              Mask               = static_cast<UInt32>(-1);
         } m_StencilOpState[2];
     } m_DSState;
 
@@ -310,7 +310,7 @@ private:
 
     ContextCaps m_Caps;
 
-    Uint32            m_ColorWriteMasks[MAX_RENDER_TARGETS] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+    UInt32            m_ColorWriteMasks[MAX_RENDER_TARGETS] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
     EnableStateHelper m_bIndexedWriteMasks;
     EnableStateHelper m_bFramebufferSRGB;
     Int32             m_iActiveTexture   = -1;

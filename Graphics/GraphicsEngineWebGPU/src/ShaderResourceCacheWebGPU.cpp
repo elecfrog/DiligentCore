@@ -37,10 +37,10 @@
 namespace Diligent
 {
 
-size_t ShaderResourceCacheWebGPU::GetRequiredMemorySize(Uint32 NumGroups, const Uint32* GroupSizes)
+size_t ShaderResourceCacheWebGPU::GetRequiredMemorySize(UInt32 NumGroups, const UInt32* GroupSizes)
 {
-    Uint32 TotalResources = 0;
-    for (Uint32 t = 0; t < NumGroups; ++t)
+    UInt32 TotalResources = 0;
+    for (UInt32 t = 0; t < NumGroups; ++t)
     {
         TotalResources += GroupSizes[t];
     }
@@ -52,7 +52,7 @@ size_t ShaderResourceCacheWebGPU::GetRequiredMemorySize(Uint32 NumGroups, const 
 }
 
 ShaderResourceCacheWebGPU::ShaderResourceCacheWebGPU(ResourceCacheContentType ContentType) noexcept :
-    m_ContentType{static_cast<Uint32>(ContentType)}
+    m_ContentType{static_cast<UInt32>(ContentType)}
 {
 }
 
@@ -61,14 +61,14 @@ ShaderResourceCacheWebGPU::~ShaderResourceCacheWebGPU()
     if (m_pMemory)
     {
         Resource* pResources = GetFirstResourcePtr();
-        for (Uint32 res = 0; res < m_TotalResources; ++res)
+        for (UInt32 res = 0; res < m_TotalResources; ++res)
             pResources[res].~Resource();
-        for (Uint32 t = 0; t < m_NumBindGroups; ++t)
+        for (UInt32 t = 0; t < m_NumBindGroups; ++t)
             GetBindGroup(t).~BindGroup();
     }
 }
 
-void ShaderResourceCacheWebGPU::InitializeGroups(IMemoryAllocator& MemAllocator, Uint32 NumGroups, const Uint32* GroupSizes)
+void ShaderResourceCacheWebGPU::InitializeGroups(IMemoryAllocator& MemAllocator, UInt32 NumGroups, const UInt32* GroupSizes)
 {
     VERIFY(!m_pMemory, "Memory has already been allocated");
 
@@ -82,11 +82,11 @@ void ShaderResourceCacheWebGPU::InitializeGroups(IMemoryAllocator& MemAllocator,
     //
     //  Ng = m_NumBindGroups
 
-    m_NumBindGroups = static_cast<Uint16>(NumGroups);
+    m_NumBindGroups = static_cast<UInt16>(NumGroups);
     VERIFY(m_NumBindGroups == NumGroups, "NumGroups (", NumGroups, ") exceeds maximum representable value");
 
     m_TotalResources = 0;
-    for (Uint32 t = 0; t < NumGroups; ++t)
+    for (UInt32 t = 0; t < NumGroups; ++t)
     {
         VERIFY_EXPR(GroupSizes[t] > 0);
         m_TotalResources += GroupSizes[t];
@@ -112,10 +112,10 @@ void ShaderResourceCacheWebGPU::InitializeGroups(IMemoryAllocator& MemAllocator,
         BindGroup*          pGroups           = reinterpret_cast<BindGroup*>(m_pMemory.get());
         Resource*           pCurrResPtr       = reinterpret_cast<Resource*>(pGroups + m_NumBindGroups);
         WGPUBindGroupEntry* pCurrWGPUEntryPtr = reinterpret_cast<WGPUBindGroupEntry*>(pCurrResPtr + m_TotalResources);
-        for (Uint32 t = 0; t < NumGroups; ++t)
+        for (UInt32 t = 0; t < NumGroups; ++t)
         {
-            const Uint32 GroupSize = GroupSizes[t];
-            for (Uint32 Entry = 0; Entry < GroupSize; ++Entry)
+            const UInt32 GroupSize = GroupSizes[t];
+            for (UInt32 Entry = 0; Entry < GroupSize; ++Entry)
             {
                 pCurrWGPUEntryPtr[Entry]         = {};
                 pCurrWGPUEntryPtr[Entry].binding = Entry;
@@ -137,7 +137,7 @@ void ShaderResourceCacheWebGPU::InitializeGroups(IMemoryAllocator& MemAllocator,
     }
 }
 
-void ShaderResourceCacheWebGPU::Resource::SetUniformBuffer(RefCntAutoPtr<IDeviceObject>&& _pBuffer, Uint64 _BaseOffset, Uint64 _RangeSize)
+void ShaderResourceCacheWebGPU::Resource::SetUniformBuffer(RefCntAutoPtr<IDeviceObject>&& _pBuffer, UInt64 _BaseOffset, UInt64 _RangeSize)
 {
     VERIFY_EXPR(Type == BindGroupEntryType::UniformBuffer ||
                 Type == BindGroupEntryType::UniformBufferDynamic);
@@ -222,23 +222,23 @@ void ShaderResourceCacheWebGPU::Resource::SetStorageBuffer(RefCntAutoPtr<IDevice
 }
 
 template <>
-Uint32 ShaderResourceCacheWebGPU::Resource::GetDynamicBufferOffset<BufferWebGPUImpl>(const DeviceContextWebGPUImpl* pCtx) const
+UInt32 ShaderResourceCacheWebGPU::Resource::GetDynamicBufferOffset<BufferWebGPUImpl>(const DeviceContextWebGPUImpl* pCtx) const
 {
-    Uint32 Offset = BufferDynamicOffset;
+    UInt32 Offset = BufferDynamicOffset;
     if (const BufferWebGPUImpl* pBufferWGPU = pObject.ConstPtr<BufferWebGPUImpl>())
     {
         // Do not verify dynamic allocation here as there may be some buffers that are not used by the PSO.
         // The allocations of the buffers that are actually used will be verified by
         // PipelineResourceSignatureWebGPUImpl::DvpValidateCommittedResource().
-        Offset += StaticCast<Uint32>(pCtx->GetDynamicBufferOffset(pBufferWGPU, false /* Do not verify allocation*/));
+        Offset += StaticCast<UInt32>(pCtx->GetDynamicBufferOffset(pBufferWGPU, false /* Do not verify allocation*/));
     }
     return Offset;
 }
 
 template <>
-Uint32 ShaderResourceCacheWebGPU::Resource::GetDynamicBufferOffset<BufferViewWebGPUImpl>(const DeviceContextWebGPUImpl* pCtx) const
+UInt32 ShaderResourceCacheWebGPU::Resource::GetDynamicBufferOffset<BufferViewWebGPUImpl>(const DeviceContextWebGPUImpl* pCtx) const
 {
-    Uint32 Offset = BufferDynamicOffset;
+    UInt32 Offset = BufferDynamicOffset;
     if (const BufferViewWebGPUImpl* pBufferWGPUView = pObject.ConstPtr<BufferViewWebGPUImpl>())
     {
         if (const BufferWebGPUImpl* pBufferWGPU = pBufferWGPUView->GetBuffer<const BufferWebGPUImpl>())
@@ -246,16 +246,16 @@ Uint32 ShaderResourceCacheWebGPU::Resource::GetDynamicBufferOffset<BufferViewWeb
             // Do not verify dynamic allocation here as there may be some buffers that are not used by the PSO.
             // The allocations of the buffers that are actually used will be verified by
             // PipelineResourceSignatureWebGPUImpl::DvpValidateCommittedResource().
-            Offset += StaticCast<Uint32>(pCtx->GetDynamicBufferOffset(pBufferWGPU, false /* Do not verify allocation*/));
+            Offset += StaticCast<UInt32>(pCtx->GetDynamicBufferOffset(pBufferWGPU, false /* Do not verify allocation*/));
         }
     }
     return Offset;
 }
 
-void ShaderResourceCacheWebGPU::InitializeResources(Uint32 GroupIdx, Uint32 Offset, Uint32 ArraySize, BindGroupEntryType Type, bool HasImmutableSampler)
+void ShaderResourceCacheWebGPU::InitializeResources(UInt32 GroupIdx, UInt32 Offset, UInt32 ArraySize, BindGroupEntryType Type, bool HasImmutableSampler)
 {
     BindGroup& Group = GetBindGroup(GroupIdx);
-    for (Uint32 res = 0; res < ArraySize; ++res)
+    for (UInt32 res = 0; res < ArraySize; ++res)
     {
         new (&Group.GetResource(Offset + res)) Resource{Type, HasImmutableSampler};
 #ifdef DILIGENT_DEBUG
@@ -278,7 +278,7 @@ static bool IsDynamicBuffer(const ShaderResourceCacheWebGPU::Resource& Res)
         return false;
 
     const BufferWebGPUImpl* pBuffer = nullptr;
-    static_assert(static_cast<Uint32>(BindGroupEntryType::Count) == 12, "Please update the switch below to handle the new bind group entry type");
+    static_assert(static_cast<UInt32>(BindGroupEntryType::Count) == 12, "Please update the switch below to handle the new bind group entry type");
     switch (Res.Type)
     {
         case BindGroupEntryType::UniformBuffer:
@@ -316,11 +316,11 @@ static bool IsDynamicBuffer(const ShaderResourceCacheWebGPU::Resource& Res)
 }
 
 const ShaderResourceCacheWebGPU::Resource& ShaderResourceCacheWebGPU::SetResource(
-    Uint32                       BindGroupIdx,
-    Uint32                       CacheOffset,
+    UInt32                       BindGroupIdx,
+    UInt32                       CacheOffset,
     RefCntAutoPtr<IDeviceObject> pObject,
-    Uint64                       BufferBaseOffset,
-    Uint64                       BufferRangeSize)
+    UInt64                       BufferBaseOffset,
+    UInt64                       BufferRangeSize)
 {
     BindGroup& Group  = GetBindGroup(BindGroupIdx);
     Resource&  DstRes = Group.GetResource(CacheOffset);
@@ -334,7 +334,7 @@ const ShaderResourceCacheWebGPU::Resource& ShaderResourceCacheWebGPU::SetResourc
     if ((DstRes.pObject != nullptr ? DstRes.pObject->GetUniqueID() : 0) != (pObject != nullptr ? pObject->GetUniqueID() : 0))
         Group.m_IsDirty = true;
 
-    static_assert(static_cast<Uint32>(BindGroupEntryType::Count) == 12, "Please update the switch below to handle the new bind group entry type");
+    static_assert(static_cast<UInt32>(BindGroupEntryType::Count) == 12, "Please update the switch below to handle the new bind group entry type");
     switch (DstRes.Type)
     {
         case BindGroupEntryType::UniformBuffer:
@@ -364,7 +364,7 @@ const ShaderResourceCacheWebGPU::Resource& ShaderResourceCacheWebGPU::SetResourc
         WGPUBindGroupEntry& wgpuEntry = Group.GetWGPUEntry(CacheOffset);
         VERIFY_EXPR(wgpuEntry.binding == CacheOffset);
 
-        static_assert(static_cast<Uint32>(BindGroupEntryType::Count) == 12, "Please update the switch below to handle the new bind group entry type");
+        static_assert(static_cast<UInt32>(BindGroupEntryType::Count) == 12, "Please update the switch below to handle the new bind group entry type");
         switch (DstRes.Type)
         {
             case BindGroupEntryType::UniformBuffer:
@@ -439,9 +439,9 @@ const ShaderResourceCacheWebGPU::Resource& ShaderResourceCacheWebGPU::SetResourc
 }
 
 
-void ShaderResourceCacheWebGPU::SetDynamicBufferOffset(Uint32 BindGroupIndex,
-                                                       Uint32 CacheOffset,
-                                                       Uint32 DynamicBufferOffset)
+void ShaderResourceCacheWebGPU::SetDynamicBufferOffset(UInt32 BindGroupIndex,
+                                                       UInt32 CacheOffset,
+                                                       UInt32 DynamicBufferOffset)
 {
     BindGroup& Group  = GetBindGroup(BindGroupIndex);
     Resource&  DstRes = Group.GetResource(CacheOffset);
@@ -457,7 +457,7 @@ void ShaderResourceCacheWebGPU::SetDynamicBufferOffset(Uint32 BindGroupIndex,
     DstRes.BufferDynamicOffset = DynamicBufferOffset;
 }
 
-WGPUBindGroup ShaderResourceCacheWebGPU::UpdateBindGroup(WGPUDevice wgpuDevice, Uint32 GroupIndex, WGPUBindGroupLayout wgpuGroupLayout)
+WGPUBindGroup ShaderResourceCacheWebGPU::UpdateBindGroup(WGPUDevice wgpuDevice, UInt32 GroupIndex, WGPUBindGroupLayout wgpuGroupLayout)
 {
     BindGroup& Group = GetBindGroup(GroupIndex);
     if (!Group.m_wgpuBindGroup || Group.m_IsDirty)
@@ -478,7 +478,7 @@ WGPUBindGroup ShaderResourceCacheWebGPU::UpdateBindGroup(WGPUDevice wgpuDevice, 
 
 bool ShaderResourceCacheWebGPU::GetDynamicBufferOffsets(const DeviceContextWebGPUImpl* pCtx,
                                                         std::vector<uint32_t>&         Offsets,
-                                                        Uint32                         GroupIdx) const
+                                                        UInt32                         GroupIdx) const
 {
     // In each bind group, all uniform buffers with dynamic offsets (BindGroupEntryType::UniformBufferDynamic)
     // for every shader stage come first, followed by all storage buffers with dynamic offsets
@@ -486,18 +486,18 @@ bool ShaderResourceCacheWebGPU::GetDynamicBufferOffsets(const DeviceContextWebGP
     // followed by all other resources.
 
     const BindGroup& Group     = GetBindGroup(GroupIdx);
-    const Uint32     GroupSize = Group.GetSize();
+    const UInt32     GroupSize = Group.GetSize();
 
-    Uint32 res            = 0;
-    Uint32 OffsetInd      = 0;
+    UInt32 res            = 0;
+    UInt32 OffsetInd      = 0;
     bool   OffsetsChanged = false;
     while (res < GroupSize)
     {
         const Resource& Res = Group.GetResource(res);
         if (Res.Type == BindGroupEntryType::UniformBufferDynamic)
         {
-            const Uint32 Offset    = Res.GetDynamicBufferOffset<BufferWebGPUImpl>(pCtx);
-            Uint32&      DstOffset = Offsets[OffsetInd++];
+            const UInt32 Offset    = Res.GetDynamicBufferOffset<BufferWebGPUImpl>(pCtx);
+            UInt32&      DstOffset = Offsets[OffsetInd++];
             if (DstOffset != Offset)
                 OffsetsChanged = true;
             DstOffset = Offset;
@@ -513,8 +513,8 @@ bool ShaderResourceCacheWebGPU::GetDynamicBufferOffsets(const DeviceContextWebGP
         if (Res.Type == BindGroupEntryType::StorageBufferDynamic ||
             Res.Type == BindGroupEntryType::StorageBufferDynamic_ReadOnly)
         {
-            const Uint32 Offset    = Res.GetDynamicBufferOffset<BufferViewWebGPUImpl>(pCtx);
-            Uint32&      DstOffset = Offsets[OffsetInd++];
+            const UInt32 Offset    = Res.GetDynamicBufferOffset<BufferViewWebGPUImpl>(pCtx);
+            UInt32&      DstOffset = Offsets[OffsetInd++];
             if (DstOffset != Offset)
                 OffsetsChanged = true;
             DstOffset = Offset;
@@ -555,8 +555,8 @@ void ShaderResourceCacheWebGPU::DbgVerifyResourceInitialization() const
 void ShaderResourceCacheWebGPU::DbgVerifyDynamicBuffersCounter() const
 {
     const Resource* pResources        = GetFirstResourcePtr();
-    Uint32          NumDynamicBuffers = 0;
-    for (Uint32 res = 0; res < m_TotalResources; ++res)
+    UInt32          NumDynamicBuffers = 0;
+    for (UInt32 res = 0; res < m_TotalResources; ++res)
     {
         if (IsDynamicBuffer(pResources[res]))
             ++NumDynamicBuffers;

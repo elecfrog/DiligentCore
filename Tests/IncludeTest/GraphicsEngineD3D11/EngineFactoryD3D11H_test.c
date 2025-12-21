@@ -56,7 +56,7 @@ void TestEngineFactoryD3D11CInterface()
     void* pd3d11ImmediateContext = NULL;
     IEngineFactoryD3D11_AttachToD3D11Device(pFactory, pd3d11NativeDevice, pd3d11ImmediateContext, &EngineCI, &pDevice, &pCtx);
 
-    Uint32                     NumDisplayModes = 0;
+    UInt32                     NumDisplayModes = 0;
     struct DisplayModeAttribs* DisplayModes    = NULL;
     struct Version             FeatureLevel    = {11, 0};
     IEngineFactoryD3D11_EnumerateDisplayModes(pFactory, FeatureLevel, 0, 0, TEX_FORMAT_RGBA8_UNORM, &NumDisplayModes, DisplayModes);

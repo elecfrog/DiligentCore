@@ -34,8 +34,8 @@ SRBMemoryAllocator::~SRBMemoryAllocator()
 {
     if (m_DataAllocators != nullptr)
     {
-        Uint32 TotalAllocatorCount = m_ShaderVariableDataAllocatorCount + m_ResourceCacheDataAllocatorCount;
-        for (Uint32 s = 0; s < TotalAllocatorCount; ++s)
+        UInt32 TotalAllocatorCount = m_ShaderVariableDataAllocatorCount + m_ResourceCacheDataAllocatorCount;
+        for (UInt32 s = 0; s < TotalAllocatorCount; ++s)
         {
             m_DataAllocators[s].~FixedBlockMemoryAllocator();
         }
@@ -43,10 +43,10 @@ SRBMemoryAllocator::~SRBMemoryAllocator()
     }
 }
 
-void SRBMemoryAllocator::Initialize(Uint32              SRBAllocationGranularity,
-                                    Uint32              ShaderVariableDataAllocatorCount,
+void SRBMemoryAllocator::Initialize(UInt32              SRBAllocationGranularity,
+                                    UInt32              ShaderVariableDataAllocatorCount,
                                     const size_t* const ShaderVariableDataSizes,
-                                    Uint32              ResourceCacheDataAllocatorCount,
+                                    UInt32              ResourceCacheDataAllocatorCount,
                                     const size_t* const ResourceCacheDataSizes)
 {
     VERIFY_EXPR(SRBAllocationGranularity > 1);
@@ -54,7 +54,7 @@ void SRBMemoryAllocator::Initialize(Uint32              SRBAllocationGranularity
 
     m_ShaderVariableDataAllocatorCount = ShaderVariableDataAllocatorCount;
     m_ResourceCacheDataAllocatorCount  = ResourceCacheDataAllocatorCount;
-    Uint32 TotalAllocatorCount         = m_ShaderVariableDataAllocatorCount + m_ResourceCacheDataAllocatorCount;
+    UInt32 TotalAllocatorCount         = m_ShaderVariableDataAllocatorCount + m_ResourceCacheDataAllocatorCount;
 
     if (TotalAllocatorCount == 0)
         return;
@@ -65,7 +65,7 @@ void SRBMemoryAllocator::Initialize(Uint32              SRBAllocationGranularity
         __FILE__, __LINE__);
     m_DataAllocators = reinterpret_cast<FixedBlockMemoryAllocator*>(pAllocatorsRawMem);
 
-    for (Uint32 s = 0; s < TotalAllocatorCount; ++s)
+    for (UInt32 s = 0; s < TotalAllocatorCount; ++s)
     {
         size_t size = s < ShaderVariableDataAllocatorCount ? ShaderVariableDataSizes[s] : ResourceCacheDataSizes[s - ShaderVariableDataAllocatorCount];
         new (m_DataAllocators + s) FixedBlockMemoryAllocator(GetRawAllocator(), size, SRBAllocationGranularity);

@@ -133,7 +133,7 @@ std::vector<uint32_t> CompileShaderToSPIRV(const ShaderCreateInfo&             S
                     WebGPUDefine,
                 });
             SourceData.Source       = GLSLSourceString.c_str();
-            SourceData.SourceLength = StaticCast<Uint32>(GLSLSourceString.length());
+            SourceData.SourceLength = StaticCast<UInt32>(GLSLSourceString.length());
         }
 
         GLSLangUtils::GLSLtoSPIRVAttribs Attribs;
@@ -285,7 +285,7 @@ ShaderWebGPUImpl::ShaderWebGPUImpl(IReferenceCounters*     pRefCounters,
              ShaderCI         = ShaderCreateInfoWrapper{ShaderCI, GetRawAllocator()},
              DeviceInfo       = WebGPUShaderCI.DeviceInfo,
              AdapterInfo      = WebGPUShaderCI.AdapterInfo,
-             ppCompilerOutput = WebGPUShaderCI.ppCompilerOutput](Uint32 ThreadId) mutable //
+             ppCompilerOutput = WebGPUShaderCI.ppCompilerOutput](UInt32 ThreadId) mutable //
             {
                 try
                 {
@@ -311,17 +311,17 @@ ShaderWebGPUImpl::~ShaderWebGPUImpl()
     GetStatus(/*WaitForCompletion = */ true);
 }
 
-Uint32 ShaderWebGPUImpl::GetResourceCount() const
+UInt32 ShaderWebGPUImpl::GetResourceCount() const
 {
     DEV_CHECK_ERR(!IsCompiling(), "Shader resources are not available until the shader is compiled. Use GetStatus() to check the shader status.");
     return m_pShaderResources ? m_pShaderResources->GetTotalResources() : 0;
 }
 
-void ShaderWebGPUImpl::GetResourceDesc(Uint32 Index, ShaderResourceDesc& ResourceDesc) const
+void ShaderWebGPUImpl::GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const
 {
     DEV_CHECK_ERR(!IsCompiling(), "Shader resources are not available until the shader is compiled. Use GetStatus() to check the shader status.");
 
-    Uint32 ResCount = GetResourceCount();
+    UInt32 ResCount = GetResourceCount();
     DEV_CHECK_ERR(Index < ResCount, "Resource index (", Index, ") is out of range");
     if (Index < ResCount)
     {
@@ -330,11 +330,11 @@ void ShaderWebGPUImpl::GetResourceDesc(Uint32 Index, ShaderResourceDesc& Resourc
     }
 }
 
-const ShaderCodeBufferDesc* ShaderWebGPUImpl::GetConstantBufferDesc(Uint32 Index) const
+const ShaderCodeBufferDesc* ShaderWebGPUImpl::GetConstantBufferDesc(UInt32 Index) const
 {
     DEV_CHECK_ERR(!IsCompiling(), "Shader resources are not available until the shader is compiled. Use GetStatus() to check the shader status.");
 
-    Uint32 ResCount = GetResourceCount();
+    UInt32 ResCount = GetResourceCount();
     if (Index >= ResCount)
     {
         UNEXPECTED("Resource index (", Index, ") is out of range");
@@ -345,7 +345,7 @@ const ShaderCodeBufferDesc* ShaderWebGPUImpl::GetConstantBufferDesc(Uint32 Index
     return m_pShaderResources->GetUniformBufferDesc(Index);
 }
 
-void ShaderWebGPUImpl::GetBytecode(const void** ppBytecode, Uint64& Size) const
+void ShaderWebGPUImpl::GetBytecode(const void** ppBytecode, UInt64& Size) const
 {
     DEV_CHECK_ERR(!IsCompiling(), "WGSL is not available until the shader is compiled. Use GetStatus() to check the shader status.");
     *ppBytecode = m_WGSL.data();

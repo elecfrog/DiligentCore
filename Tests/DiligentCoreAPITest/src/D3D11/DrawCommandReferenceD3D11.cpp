@@ -39,8 +39,8 @@ namespace Testing
 static void DrawProceduralTriangles(ID3D11DeviceContext*    pd3d11Context,
                                     ISwapChain*             pSwapChain,
                                     ID3D11RenderTargetView* pRTV,
-                                    Uint32                  Width,
-                                    Uint32                  Height,
+                                    UInt32                  Width,
+                                    UInt32                  Height,
                                     const float             ClearColor[])
 {
     auto* pEnvD3D11 = TestingEnvironmentD3D11::GetInstance();

@@ -63,25 +63,25 @@ WGPUTextureView TextureViewWebGPUImpl::GetWebGPUTextureView() const
     return m_wgpuTextureView.Get();
 }
 
-WGPUTextureView TextureViewWebGPUImpl::GetMipLevelUAV(Uint32 Mip)
+WGPUTextureView TextureViewWebGPUImpl::GetMipLevelUAV(UInt32 Mip)
 {
     VERIFY_EXPR((m_Desc.Flags & TEXTURE_VIEW_FLAG_ALLOW_MIP_MAP_GENERATION) != 0 && !m_wgpuTextureMipUAVs.empty() && Mip < m_Desc.NumMipLevels);
     return m_wgpuTextureMipUAVs[Mip].Get();
 }
 
-WGPUTextureView TextureViewWebGPUImpl::GetMipLevelSRV(Uint32 Mip)
+WGPUTextureView TextureViewWebGPUImpl::GetMipLevelSRV(UInt32 Mip)
 {
     VERIFY_EXPR((m_Desc.Flags & TEXTURE_VIEW_FLAG_ALLOW_MIP_MAP_GENERATION) != 0 && !m_wgpuTextureMipSRVs.empty() && Mip < m_Desc.NumMipLevels);
     return m_wgpuTextureMipSRVs[Mip].Get();
 }
 
-WGPUTextureView TextureViewWebGPUImpl::GetMipLevelRTV(Uint32 Slice, Uint32 Mip)
+WGPUTextureView TextureViewWebGPUImpl::GetMipLevelRTV(UInt32 Slice, UInt32 Mip)
 {
     VERIFY_EXPR((m_Desc.Flags & TEXTURE_VIEW_FLAG_ALLOW_MIP_MAP_GENERATION) != 0 && !m_wgpuTextureMipUAVs.empty() && Mip < m_Desc.NumMipLevels && Slice < m_Desc.NumArraySlices);
     return m_wgpuTextureMipUAVs[Mip + Slice * m_Desc.NumMipLevels].Get();
 }
 
-WGPUTextureView TextureViewWebGPUImpl::GetMipLevelSRV(Uint32 Slice, Uint32 Mip)
+WGPUTextureView TextureViewWebGPUImpl::GetMipLevelSRV(UInt32 Slice, UInt32 Mip)
 {
     VERIFY_EXPR((m_Desc.Flags & TEXTURE_VIEW_FLAG_ALLOW_MIP_MAP_GENERATION) != 0 && !m_wgpuTextureMipSRVs.empty() && Mip < m_Desc.NumMipLevels && Slice < m_Desc.NumArraySlices);
     return m_wgpuTextureMipSRVs[Mip + Slice * m_Desc.NumMipLevels].Get();

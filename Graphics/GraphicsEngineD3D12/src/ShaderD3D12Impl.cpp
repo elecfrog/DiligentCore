@@ -48,9 +48,9 @@ static ShaderVersion GetD3D12ShaderModel(const ShaderCreateInfo& ShaderCI,
     ShaderVersion HLSLVersion = ShaderCI.HLSLVersion;
     if (HLSLVersion > DeviceSM)
     {
-        LOG_WARNING_MESSAGE("Requested shader model ", Uint32{HLSLVersion.Major}, '_', Uint32{HLSLVersion.Minor},
+        LOG_WARNING_MESSAGE("Requested shader model ", UInt32{HLSLVersion.Major}, '_', UInt32{HLSLVersion.Minor},
                             " exceeds maximum version supported by device (",
-                            Uint32{DeviceSM.Major}, '_', Uint32{DeviceSM.Minor}, ").");
+                            UInt32{DeviceSM.Major}, '_', UInt32{DeviceSM.Minor}, ").");
     }
 
     ShaderVersion MaxSupportedSM = DeviceSM;
@@ -79,9 +79,9 @@ static ShaderVersion GetD3D12ShaderModel(const ShaderCreateInfo& ShaderCI,
 
         if (HLSLVersion > CompilerSM)
         {
-            LOG_WARNING_MESSAGE("Requested shader model ", Uint32{HLSLVersion.Major}, '_', Uint32{HLSLVersion.Minor},
+            LOG_WARNING_MESSAGE("Requested shader model ", UInt32{HLSLVersion.Major}, '_', UInt32{HLSLVersion.Minor},
                                 " exceeds maximum version supported by compiler (",
-                                Uint32{CompilerSM.Major}, '_', Uint32{CompilerSM.Minor}, ").");
+                                UInt32{CompilerSM.Major}, '_', UInt32{CompilerSM.Minor}, ").");
         }
 
         MaxSupportedSM = ShaderVersion::Min(MaxSupportedSM, CompilerSM);

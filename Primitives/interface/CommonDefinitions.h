@@ -119,3 +119,5 @@
 #else
 #    define DILIGENT_CPP_INTERFACE 1
 #endif
+
+#include <types/base_types.hpp>

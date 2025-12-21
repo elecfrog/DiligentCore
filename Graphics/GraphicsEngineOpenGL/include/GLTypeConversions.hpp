@@ -187,7 +187,7 @@ inline void FilterTypeToGLFilterType(FILTER_TYPE Filter, GLenum& GLFilter, Bool&
     }
 }
 
-inline GLenum CorrectGLTexFormat(GLenum GLTexFormat, Uint32 BindFlags)
+inline GLenum CorrectGLTexFormat(GLenum GLTexFormat, UInt32 BindFlags)
 {
     if (BindFlags & BIND_DEPTH_STENCIL)
     {
@@ -261,7 +261,7 @@ struct NativePixelAttribs
     {}
 };
 
-inline Uint32 GetNumPixelFormatComponents(GLenum Format)
+inline UInt32 GetNumPixelFormatComponents(GLenum Format)
 {
     switch (Format)
     {
@@ -287,7 +287,7 @@ inline Uint32 GetNumPixelFormatComponents(GLenum Format)
     };
 }
 
-inline Uint32 GetPixelTypeSize(GLenum Type)
+inline UInt32 GetPixelTypeSize(GLenum Type)
 {
     switch (Type)
     {
@@ -407,11 +407,11 @@ inline GLenum BlendOperation2GLBlendOp(BLEND_OPERATION BlendOp)
 }
 
 
-GLenum         TexFormatToGLInternalTexFormat(TEXTURE_FORMAT TexFormat, Uint32 BindFlags = 0);
+GLenum         TexFormatToGLInternalTexFormat(TEXTURE_FORMAT TexFormat, UInt32 BindFlags = 0);
 TEXTURE_FORMAT GLInternalTexFormatToTexFormat(GLenum GlFormat);
 
 NativePixelAttribs GetNativePixelTransferAttribs(TEXTURE_FORMAT TexFormat);
-GLenum             TypeToGLTexFormat(VALUE_TYPE ValType, Uint32 NumComponents, Bool bIsNormalized);
+GLenum             TypeToGLTexFormat(VALUE_TYPE ValType, UInt32 NumComponents, Bool bIsNormalized);
 
 void GLTextureTypeToResourceDim(GLenum TextureType, RESOURCE_DIMENSION& ResDim, bool& IsMS);
 
@@ -457,7 +457,7 @@ GLint TextureComponentSwizzleToGLTextureSwizzle(TEXTURE_COMPONENT_SWIZZLE Swizzl
 
 const char* GetFramebufferStatusString(GLenum Status);
 
-inline GLenum GetCubeMapFaceBindTarget(Uint32 Slice)
+inline GLenum GetCubeMapFaceBindTarget(UInt32 Slice)
 {
     // clang-format off
     static constexpr std::array<GLenum, 6> CubeMapFaceTargets =

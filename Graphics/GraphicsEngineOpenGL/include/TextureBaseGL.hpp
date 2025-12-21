@@ -82,7 +82,7 @@ public:
 
     __forceinline void TextureMemoryBarrier(MEMORY_BARRIER RequiredBarriers, class GLContextState& GLContextState);
 
-    enum FRAMEBUFFER_TARGET_FLAGS : Uint32
+    enum FRAMEBUFFER_TARGET_FLAGS : UInt32
     {
         FRAMEBUFFER_TARGET_FLAG_NONE      = 0u,
         FRAMEBUFFER_TARGET_FLAG_READ      = 1u << 0u,
@@ -93,28 +93,28 @@ public:
 
     void CopyData(DeviceContextGLImpl* pDeviceCtxGL,
                   TextureBaseGL*       pSrcTextureGL,
-                  Uint32               SrcMipLevel,
-                  Uint32               SrcSlice,
+                  UInt32               SrcMipLevel,
+                  UInt32               SrcSlice,
                   const Box*           pSrcBox,
-                  Uint32               DstMipLevel,
-                  Uint32               DstSlice,
-                  Uint32               DstX,
-                  Uint32               DstY,
-                  Uint32               DstZ);
+                  UInt32               DstMipLevel,
+                  UInt32               DstSlice,
+                  UInt32               DstX,
+                  UInt32               DstY,
+                  UInt32               DstZ);
 
     /// Implementation of ITextureGL::GetGLTextureHandle().
     virtual GLuint DILIGENT_CALL_TYPE GetGLTextureHandle() const override final { return GetGLHandle(); }
 
     /// Implementation of ITexture::GetNativeHandle() in OpenGL backend.
-    virtual Uint64 DILIGENT_CALL_TYPE GetNativeHandle() override final { return BitCast<Uint64>(GetGLTextureHandle()); }
+    virtual UInt64 DILIGENT_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetGLTextureHandle()); }
 
     virtual void UpdateData(class GLContextState&    CtxState,
-                            Uint32                   MipLevel,
-                            Uint32                   Slice,
+                            UInt32                   MipLevel,
+                            UInt32                   Slice,
                             const Box&               DstBox,
                             const TextureSubResData& SubresData) = 0;
 
-    static constexpr Uint32 PBOOffsetAlignment = 4;
+    static constexpr UInt32 PBOOffsetAlignment = 4;
 
     IBuffer* GetPBO()
     {
@@ -145,7 +145,7 @@ protected:
     RefCntAutoPtr<IBuffer>         m_pPBO; // For staging textures
     const GLenum                   m_BindTarget;
     const GLenum                   m_GLTexFormat;
-    //Uint32 m_uiMapTarget;
+    //UInt32 m_uiMapTarget;
 };
 
 DEFINE_FLAG_ENUM_OPERATORS(TextureBaseGL::FRAMEBUFFER_TARGET_FLAGS);
@@ -155,7 +155,7 @@ void TextureBaseGL::TextureMemoryBarrier(MEMORY_BARRIER RequiredBarriers, GLCont
 #if GL_ARB_shader_image_load_store
 #    ifdef DILIGENT_DEBUG
     {
-        constexpr Uint32 TextureBarriers = MEMORY_BARRIER_ALL_TEXTURE_BARRIERS;
+        constexpr UInt32 TextureBarriers = MEMORY_BARRIER_ALL_TEXTURE_BARRIERS;
         VERIFY((RequiredBarriers & TextureBarriers) != 0, "At least one texture memory barrier flag should be set");
         VERIFY((RequiredBarriers & ~TextureBarriers) == 0, "Inappropriate texture memory barrier flag");
     }

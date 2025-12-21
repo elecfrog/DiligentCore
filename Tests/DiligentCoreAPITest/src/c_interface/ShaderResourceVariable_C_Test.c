@@ -36,7 +36,7 @@ int TestShaderResourceVariableCInterface(struct IShaderResourceVariable* pVar, s
 
     SHADER_RESOURCE_VARIABLE_TYPE VarType = SHADER_RESOURCE_VARIABLE_TYPE_STATIC;
     ShaderResourceDesc            ResDesc;
-    Uint32                        Index = 0;
+    UInt32                        Index = 0;
 
     int num_errors = TestObjectCInterface((struct IObject*)pVar);
 

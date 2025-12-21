@@ -47,7 +47,7 @@ namespace Diligent
 class FixedBlockMemoryAllocator final : public IMemoryAllocator
 {
 public:
-    FixedBlockMemoryAllocator(IMemoryAllocator& RawMemoryAllocator, size_t BlockSize, Uint32 NumBlocksInPage);
+    FixedBlockMemoryAllocator(IMemoryAllocator& RawMemoryAllocator, size_t BlockSize, UInt32 NumBlocksInPage);
     ~FixedBlockMemoryAllocator();
 
     /// Allocates block of memory
@@ -77,17 +77,17 @@ private:
     class MemoryPage
     {
     public:
-        static constexpr Uint8 NewPageMemPattern          = 0xAA;
-        static constexpr Uint8 AllocatedBlockMemPattern   = 0xAB;
-        static constexpr Uint8 DeallocatedBlockMemPattern = 0xDE;
-        static constexpr Uint8 InitializedBlockMemPattern = 0xCF;
+        static constexpr UInt8 NewPageMemPattern          = 0xAA;
+        static constexpr UInt8 AllocatedBlockMemPattern   = 0xAB;
+        static constexpr UInt8 DeallocatedBlockMemPattern = 0xDE;
+        static constexpr UInt8 InitializedBlockMemPattern = 0xCF;
 
         MemoryPage(FixedBlockMemoryAllocator& OwnerAllocator);
         MemoryPage(MemoryPage&& Page) noexcept;
 
         ~MemoryPage();
 
-        void* GetBlockStartAddress(Uint32 BlockIndex) const;
+        void* GetBlockStartAddress(UInt32 BlockIndex) const;
 
 #ifdef DILIGENT_DEBUG
         void dbgVerifyAddress(const void* pBlockAddr) const;
@@ -104,8 +104,8 @@ private:
         MemoryPage& operator=(const MemoryPage) = delete;
         MemoryPage& operator=(MemoryPage&&) = delete;
 
-        Uint32                     m_NumFreeBlocks        = 0;       // Num of remaining blocks
-        Uint32                     m_NumInitializedBlocks = 0;       // Num of initialized blocks
+        UInt32                     m_NumFreeBlocks        = 0;       // Num of remaining blocks
+        UInt32                     m_NumInitializedBlocks = 0;       // Num of initialized blocks
         void*                      m_pPageStart           = nullptr; // Beginning of memory pool
         void*                      m_pNextFreeBlock       = nullptr; // Num of next free block
         FixedBlockMemoryAllocator* m_pOwnerAllocator      = nullptr;
@@ -121,7 +121,7 @@ private:
 
     IMemoryAllocator& m_RawMemoryAllocator;
     const size_t      m_BlockSize;
-    const Uint32      m_NumBlocksInPage;
+    const UInt32      m_NumBlocksInPage;
 };
 
 IMemoryAllocator& GetRawAllocator();
@@ -140,7 +140,7 @@ public:
 #endif
         m_pRawAllocator = &Allocator;
     }
-    static void SetPageSize(Uint32 NumAllocationsInPage)
+    static void SetPageSize(UInt32 NumAllocationsInPage)
     {
 #ifdef DILIGENT_DEBUG
         if (m_bPoolInitialized && m_NumAllocationsInPage != NumAllocationsInPage)
@@ -184,7 +184,7 @@ public:
     }
 
 private:
-    static Uint32            m_NumAllocationsInPage;
+    static UInt32            m_NumAllocationsInPage;
     static IMemoryAllocator* m_pRawAllocator;
 
     ObjectPool() :
@@ -196,7 +196,7 @@ private:
     FixedBlockMemoryAllocator m_FixedBlockAllocator;
 };
 template <typename ObjectType>
-Uint32 ObjectPool<ObjectType>::m_NumAllocationsInPage = 64;
+UInt32 ObjectPool<ObjectType>::m_NumAllocationsInPage = 64;
 
 template <typename ObjectType>
 IMemoryAllocator* ObjectPool<ObjectType>::m_pRawAllocator = nullptr;

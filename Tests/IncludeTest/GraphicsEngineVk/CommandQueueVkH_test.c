@@ -30,7 +30,7 @@
 
 void TestCommandQueueVk_CInterface(ICommandQueueVk* pQueue)
 {
-    Uint64 FenceVal = ICommandQueueVk_SubmitCmdBuffer(pQueue, (VkCommandBuffer)NULL);
+    UInt64 FenceVal = ICommandQueueVk_SubmitCmdBuffer(pQueue, (VkCommandBuffer)NULL);
     (void)FenceVal;
 
     FenceVal = ICommandQueueVk_Submit(pQueue, (VkSubmitInfo*)NULL);
@@ -46,5 +46,5 @@ void TestCommandQueueVk_CInterface(ICommandQueueVk* pQueue)
 
     ICommandQueueVk_EnqueueSignalFence(pQueue, (VkFence)NULL);
 
-    ICommandQueueVk_EnqueueSignal(pQueue, (VkSemaphore)NULL, (Uint64)0);
+    ICommandQueueVk_EnqueueSignal(pQueue, (VkSemaphore)NULL, (UInt64)0);
 }

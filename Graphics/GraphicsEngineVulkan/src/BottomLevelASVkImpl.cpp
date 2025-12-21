@@ -41,7 +41,7 @@ BottomLevelASVkImpl::BottomLevelASVkImpl(IReferenceCounters*      pRefCounters,
     const VulkanUtilities::LogicalDevice&  LogicalDevice   = pRenderDeviceVk->GetLogicalDevice();
     const VulkanUtilities::PhysicalDevice& PhysicalDevice  = pRenderDeviceVk->GetPhysicalDevice();
     const RayTracingProperties&            RTProps         = pRenderDeviceVk->GetAdapterInfo().RayTracing;
-    Uint64                                 AccelStructSize = m_Desc.CompactedSize;
+    UInt64                                 AccelStructSize = m_Desc.CompactedSize;
 
     if (AccelStructSize == 0)
     {
@@ -56,7 +56,7 @@ BottomLevelASVkImpl::BottomLevelASVkImpl(IReferenceCounters*      pRefCounters,
 
         if (m_Desc.pTriangles != nullptr)
         {
-            Uint32 MaxPrimitiveCount = 0;
+            UInt32 MaxPrimitiveCount = 0;
             for (uint32_t i = 0; i < m_Desc.TriangleCount; ++i)
             {
                 const BLASTriangleDesc&                          src = m_Desc.pTriangles[i];
@@ -103,7 +103,7 @@ BottomLevelASVkImpl::BottomLevelASVkImpl(IReferenceCounters*      pRefCounters,
         }
         else if (m_Desc.pBoxes != nullptr)
         {
-            Uint32 MaxBoxCount = 0;
+            UInt32 MaxBoxCount = 0;
             for (uint32_t i = 0; i < m_Desc.BoxCount; ++i)
             {
                 const BLASBoundingBoxDesc&                   src = m_Desc.pBoxes[i];

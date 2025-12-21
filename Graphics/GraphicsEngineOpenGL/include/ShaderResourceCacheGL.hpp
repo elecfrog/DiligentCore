@@ -67,9 +67,9 @@ public:
         /// Strong reference to the buffer
         RefCntAutoPtr<BufferGLImpl> pBuffer;
 
-        Uint32 BaseOffset    = 0;
-        Uint32 RangeSize     = 0;
-        Uint32 DynamicOffset = 0;
+        UInt32 BaseOffset    = 0;
+        UInt32 RangeSize     = 0;
+        UInt32 DynamicOffset = 0;
 
         // In OpenGL dynamic buffers are only those that are not bound as a whole and
         // can use a dynamic offset, irrespective of the variable type or whether the
@@ -127,7 +127,7 @@ public:
         /// Strong reference to the buffer
         RefCntAutoPtr<BufferViewGLImpl> pBufferView;
 
-        Uint32 DynamicOffset = 0;
+        UInt32 DynamicOffset = 0;
 
         bool IsDynamic() const
         {
@@ -141,12 +141,12 @@ public:
         }
     };
 
-    using TResourceCount = std::array<Uint16, 4>; // same as PipelineResourceSignatureGLImpl::TBindings.
+    using TResourceCount = std::array<UInt16, 4>; // same as PipelineResourceSignatureGLImpl::TBindings.
     static size_t GetRequiredMemorySize(const TResourceCount& ResCount);
 
-    void Initialize(const TResourceCount& Count, IMemoryAllocator& MemAllocator, Uint64 DynamicUBOSlotMask, Uint64 DynamicSSBOSlotMask);
+    void Initialize(const TResourceCount& Count, IMemoryAllocator& MemAllocator, UInt64 DynamicUBOSlotMask, UInt64 DynamicSSBOSlotMask);
 
-    void SetUniformBuffer(Uint32 CacheOffset, RefCntAutoPtr<BufferGLImpl>&& pBuff, Uint64 BaseOffset, Uint64 RangeSize)
+    void SetUniformBuffer(UInt32 CacheOffset, RefCntAutoPtr<BufferGLImpl>&& pBuff, UInt64 BaseOffset, UInt64 RangeSize)
     {
         DEV_CHECK_ERR(BaseOffset + RangeSize <= (pBuff ? pBuff->GetDesc().Size : 0), "The range is out of buffer bounds");
         if (pBuff)
@@ -158,11 +158,11 @@ public:
         CachedUB& UB = GetUB(CacheOffset);
 
         UB.pBuffer       = std::move(pBuff);
-        UB.BaseOffset    = StaticCast<Uint32>(BaseOffset);
-        UB.RangeSize     = StaticCast<Uint32>(RangeSize);
+        UB.BaseOffset    = StaticCast<UInt32>(BaseOffset);
+        UB.RangeSize     = StaticCast<UInt32>(RangeSize);
         UB.DynamicOffset = 0;
 
-        Uint64 UBBit = Uint64{1} << Uint64{CacheOffset};
+        UInt64 UBBit = UInt64{1} << UInt64{CacheOffset};
         if (m_DynamicUBOSlotMask & UBBit)
         {
             // Only set the flag for those slots that allow dynamic buffers
@@ -179,50 +179,50 @@ public:
         UpdateRevision();
     }
 
-    void SetDynamicUBOffset(Uint32 CacheOffset, Uint32 DynamicOffset)
+    void SetDynamicUBOffset(UInt32 CacheOffset, UInt32 DynamicOffset)
     {
-        DEV_CHECK_ERR((m_DynamicUBOSlotMask & (Uint64{1} << Uint64{CacheOffset})) != 0, "Attempting to set dynamic offset for a non-dynamic UBO slot");
+        DEV_CHECK_ERR((m_DynamicUBOSlotMask & (UInt64{1} << UInt64{CacheOffset})) != 0, "Attempting to set dynamic offset for a non-dynamic UBO slot");
         GetUB(CacheOffset).DynamicOffset = DynamicOffset;
     }
 
-    void SetTexture(Uint32 CacheOffset, RefCntAutoPtr<TextureViewGLImpl>&& pTexView, bool SetSampler)
+    void SetTexture(UInt32 CacheOffset, RefCntAutoPtr<TextureViewGLImpl>&& pTexView, bool SetSampler)
     {
         GetTexture(CacheOffset).Set(std::move(pTexView), SetSampler);
         UpdateRevision();
     }
 
-    void SetSampler(Uint32 CacheOffset, ISampler* pSampler)
+    void SetSampler(UInt32 CacheOffset, ISampler* pSampler)
     {
         GetTexture(CacheOffset).pSampler = ClassPtrCast<SamplerGLImpl>(pSampler);
         UpdateRevision();
     }
 
-    void SetTexelBuffer(Uint32 CacheOffset, RefCntAutoPtr<BufferViewGLImpl>&& pBuffView)
+    void SetTexelBuffer(UInt32 CacheOffset, RefCntAutoPtr<BufferViewGLImpl>&& pBuffView)
     {
         GetTexture(CacheOffset).Set(std::move(pBuffView));
         UpdateRevision();
     }
 
-    void SetTexImage(Uint32 CacheOffset, RefCntAutoPtr<TextureViewGLImpl>&& pTexView)
+    void SetTexImage(UInt32 CacheOffset, RefCntAutoPtr<TextureViewGLImpl>&& pTexView)
     {
         GetImage(CacheOffset).Set(std::move(pTexView), false);
         UpdateRevision();
     }
 
-    void SetBufImage(Uint32 CacheOffset, RefCntAutoPtr<BufferViewGLImpl>&& pBuffView)
+    void SetBufImage(UInt32 CacheOffset, RefCntAutoPtr<BufferViewGLImpl>&& pBuffView)
     {
         GetImage(CacheOffset).Set(std::move(pBuffView));
         UpdateRevision();
     }
 
-    void SetSSBO(Uint32 CacheOffset, RefCntAutoPtr<BufferViewGLImpl>&& pBuffView)
+    void SetSSBO(UInt32 CacheOffset, RefCntAutoPtr<BufferViewGLImpl>&& pBuffView)
     {
         CachedSSBO& SSBO = GetSSBO(CacheOffset);
 
         SSBO.pBufferView   = std::move(pBuffView);
         SSBO.DynamicOffset = 0;
 
-        Uint64 SSBOBit = Uint64{1} << Uint64{CacheOffset};
+        UInt64 SSBOBit = UInt64{1} << UInt64{CacheOffset};
         if (m_DynamicSSBOSlotMask & SSBOBit)
         {
             // Only set the flag for those slots that allow dynamic buffers
@@ -239,14 +239,14 @@ public:
         UpdateRevision();
     }
 
-    void SetDynamicSSBOOffset(Uint32 CacheOffset, Uint32 DynamicOffset)
+    void SetDynamicSSBOOffset(UInt32 CacheOffset, UInt32 DynamicOffset)
     {
-        DEV_CHECK_ERR((m_DynamicSSBOSlotMask & (Uint64{1} << Uint64{CacheOffset})) != 0, "Attempting to set dynamic offset for a non-dynamic SSBO slot");
+        DEV_CHECK_ERR((m_DynamicSSBOSlotMask & (UInt64{1} << UInt64{CacheOffset})) != 0, "Attempting to set dynamic offset for a non-dynamic SSBO slot");
         GetSSBO(CacheOffset).DynamicOffset = DynamicOffset;
     }
 
 
-    bool IsUBBound(Uint32 CacheOffset) const
+    bool IsUBBound(UInt32 CacheOffset) const
     {
         if (CacheOffset >= GetUBCount())
             return false;
@@ -255,7 +255,7 @@ public:
         return UB.pBuffer;
     }
 
-    bool IsTextureBound(Uint32 CacheOffset, bool dbgIsTextureView) const
+    bool IsTextureBound(UInt32 CacheOffset, bool dbgIsTextureView) const
     {
         if (CacheOffset >= GetTextureCount())
             return false;
@@ -265,7 +265,7 @@ public:
         return Texture.pView;
     }
 
-    bool IsImageBound(Uint32 CacheOffset, bool dbgIsTextureView) const
+    bool IsImageBound(UInt32 CacheOffset, bool dbgIsTextureView) const
     {
         if (CacheOffset >= GetImageCount())
             return false;
@@ -275,7 +275,7 @@ public:
         return Image.pView;
     }
 
-    bool IsSSBOBound(Uint32 CacheOffset) const
+    bool IsSSBOBound(UInt32 CacheOffset) const
     {
         if (CacheOffset >= GetSSBOCount())
             return false;
@@ -285,31 +285,31 @@ public:
     }
 
     // clang-format off
-    Uint32 GetUBCount()      const { return (m_TexturesOffset  - m_UBsOffset)      / sizeof(CachedUB);            }
-    Uint32 GetTextureCount() const { return (m_ImagesOffset    - m_TexturesOffset) / sizeof(CachedResourceView);  }
-    Uint32 GetImageCount()   const { return (m_SSBOsOffset     - m_ImagesOffset)   / sizeof(CachedResourceView);  }
-    Uint32 GetSSBOCount()    const { return (m_MemoryEndOffset - m_SSBOsOffset)    / sizeof(CachedSSBO);          }
+    UInt32 GetUBCount()      const { return (m_TexturesOffset  - m_UBsOffset)      / sizeof(CachedUB);            }
+    UInt32 GetTextureCount() const { return (m_ImagesOffset    - m_TexturesOffset) / sizeof(CachedResourceView);  }
+    UInt32 GetImageCount()   const { return (m_SSBOsOffset     - m_ImagesOffset)   / sizeof(CachedResourceView);  }
+    UInt32 GetSSBOCount()    const { return (m_MemoryEndOffset - m_SSBOsOffset)    / sizeof(CachedSSBO);          }
     // clang-format on
 
-    const CachedUB& GetConstUB(Uint32 CacheOffset) const
+    const CachedUB& GetConstUB(UInt32 CacheOffset) const
     {
         VERIFY(CacheOffset < GetUBCount(), "Uniform buffer index (", CacheOffset, ") is out of range");
         return reinterpret_cast<CachedUB*>(m_pResourceData.get() + m_UBsOffset)[CacheOffset];
     }
 
-    const CachedResourceView& GetConstTexture(Uint32 CacheOffset) const
+    const CachedResourceView& GetConstTexture(UInt32 CacheOffset) const
     {
         VERIFY(CacheOffset < GetTextureCount(), "Texture index (", CacheOffset, ") is out of range");
         return reinterpret_cast<CachedResourceView*>(m_pResourceData.get() + m_TexturesOffset)[CacheOffset];
     }
 
-    const CachedResourceView& GetConstImage(Uint32 CacheOffset) const
+    const CachedResourceView& GetConstImage(UInt32 CacheOffset) const
     {
         VERIFY(CacheOffset < GetImageCount(), "Image buffer index (", CacheOffset, ") is out of range");
         return reinterpret_cast<CachedResourceView*>(m_pResourceData.get() + m_ImagesOffset)[CacheOffset];
     }
 
-    const CachedSSBO& GetConstSSBO(Uint32 CacheOffset) const
+    const CachedSSBO& GetConstSSBO(UInt32 CacheOffset) const
     {
         VERIFY(CacheOffset < GetSSBOCount(), "Shader storage block index (", CacheOffset, ") is out of range");
         return reinterpret_cast<CachedSSBO*>(m_pResourceData.get() + m_SSBOsOffset)[CacheOffset];
@@ -332,13 +332,13 @@ public:
 
     // Binds all resources
     void BindResources(GLContextState&              GLState,
-                       const std::array<Uint16, 4>& BaseBindings,
+                       const std::array<UInt16, 4>& BaseBindings,
                        std::vector<TextureBaseGL*>& WritableTextures,
                        std::vector<BufferGLImpl*>&  WritableBuffers) const;
 
     // Binds uniform and storage buffers with dynamic offsets only
     void BindDynamicBuffers(GLContextState&              GLState,
-                            const std::array<Uint16, 4>& BaseBindings) const;
+                            const std::array<UInt16, 4>& BaseBindings) const;
 
     bool HasDynamicResources() const
     {
@@ -350,44 +350,44 @@ public:
 #endif
 
 private:
-    CachedUB& GetUB(Uint32 CacheOffset)
+    CachedUB& GetUB(UInt32 CacheOffset)
     {
         return const_cast<CachedUB&>(const_cast<const ShaderResourceCacheGL*>(this)->GetConstUB(CacheOffset));
     }
 
-    CachedResourceView& GetTexture(Uint32 CacheOffset)
+    CachedResourceView& GetTexture(UInt32 CacheOffset)
     {
         return const_cast<CachedResourceView&>(const_cast<const ShaderResourceCacheGL*>(this)->GetConstTexture(CacheOffset));
     }
 
-    CachedResourceView& GetImage(Uint32 CacheOffset)
+    CachedResourceView& GetImage(UInt32 CacheOffset)
     {
         return const_cast<CachedResourceView&>(const_cast<const ShaderResourceCacheGL*>(this)->GetConstImage(CacheOffset));
     }
 
-    CachedSSBO& GetSSBO(Uint32 CacheOffset)
+    CachedSSBO& GetSSBO(UInt32 CacheOffset)
     {
         return const_cast<CachedSSBO&>(const_cast<const ShaderResourceCacheGL*>(this)->GetConstSSBO(CacheOffset));
     }
 
 private:
-    static constexpr const Uint16 InvalidResourceOffset = 0xFFFF;
-    static constexpr const Uint16 m_UBsOffset           = 0;
+    static constexpr const UInt16 InvalidResourceOffset = 0xFFFF;
+    static constexpr const UInt16 m_UBsOffset           = 0;
 
-    Uint16 m_TexturesOffset  = InvalidResourceOffset;
-    Uint16 m_ImagesOffset    = InvalidResourceOffset;
-    Uint16 m_SSBOsOffset     = InvalidResourceOffset;
-    Uint16 m_MemoryEndOffset = InvalidResourceOffset;
+    UInt16 m_TexturesOffset  = InvalidResourceOffset;
+    UInt16 m_ImagesOffset    = InvalidResourceOffset;
+    UInt16 m_SSBOsOffset     = InvalidResourceOffset;
+    UInt16 m_MemoryEndOffset = InvalidResourceOffset;
 
-    std::unique_ptr<Uint8, STDDeleter<Uint8, IMemoryAllocator>> m_pResourceData;
+    std::unique_ptr<UInt8, STDDeleter<UInt8, IMemoryAllocator>> m_pResourceData;
 
     // Indicates at which positions dynamic UBOs or SSBOs may be bound
-    Uint64 m_DynamicUBOSlotMask  = 0;
-    Uint64 m_DynamicSSBOSlotMask = 0;
+    UInt64 m_DynamicUBOSlotMask  = 0;
+    UInt64 m_DynamicSSBOSlotMask = 0;
 
     // Indicates slot at which dynamic buffers are actually bound
-    Uint64 m_DynamicUBOMask  = 0;
-    Uint64 m_DynamicSSBOMask = 0;
+    UInt64 m_DynamicUBOMask  = 0;
+    UInt64 m_DynamicSSBOMask = 0;
 
     // Indicates what types of resources are stored in the cache
     const ResourceCacheContentType m_ContentType;

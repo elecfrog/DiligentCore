@@ -182,7 +182,7 @@ TEST(ShaderResourceLayout, ResourceArray)
     SamplerDesc             SamDesc;
     pDevice->CreateSampler(SamDesc, &pSampler);
     RefCntAutoPtr<ITexture> pTextures[8];
-    for (Uint32 t = 0; t < _countof(pTextures); ++t)
+    for (UInt32 t = 0; t < _countof(pTextures); ++t)
     {
         TextureDesc TexDesc;
         TexDesc.Type      = RESOURCE_DIM_TEX_2D;
@@ -194,9 +194,9 @@ TEST(ShaderResourceLayout, ResourceArray)
         TexDesc.BindFlags = BIND_SHADER_RESOURCE;
         TexDesc.Name      = "Test Texture";
 
-        std::vector<Uint8>             Data(TexDesc.Width * TexDesc.Height * 4, 128);
+        std::vector<UInt8>             Data(TexDesc.Width * TexDesc.Height * 4, 128);
         std::vector<TextureSubResData> SubResources(TexDesc.MipLevels);
-        for (Uint32 i = 0; i < TexDesc.MipLevels; ++i)
+        for (UInt32 i = 0; i < TexDesc.MipLevels; ++i)
         {
             TextureSubResData& SubResData{SubResources[i]};
             SubResData.pData  = Data.data();
@@ -207,7 +207,7 @@ TEST(ShaderResourceLayout, ResourceArray)
         //TestTexturing::GenerateTextureData(pDevice, Data, SubResources, TexDesc, ColorOffset);
         TextureData TexData;
         TexData.pSubResources   = SubResources.data();
-        TexData.NumSubresources = (Uint32)SubResources.size();
+        TexData.NumSubresources = (UInt32)SubResources.size();
 
         pDevice->CreateTexture(TexDesc, &TexData, &pTextures[t]);
         ASSERT_NE(pTextures[t], nullptr);
@@ -386,8 +386,8 @@ TEST(ShaderResourceArrayTest, DynamicArrayIndexing)
     ASSERT_NE(pBuffer, nullptr);
     pSRB->GetVariableByName(SHADER_TYPE_PIXEL, "cbConstants")->Set(pBuffer);
 
-    std::vector<Uint32>     BlackTextData(64 * 64, 0);
-    std::vector<Uint32>     WhiteTextData(64 * 64, ~0u);
+    std::vector<UInt32>     BlackTextData(64 * 64, 0);
+    std::vector<UInt32>     WhiteTextData(64 * 64, ~0u);
     RefCntAutoPtr<ITexture> pBlackTex = pEnv->CreateTexture("Black texture", TEX_FORMAT_RGBA8_UNORM, BIND_SHADER_RESOURCE, 64, 64, BlackTextData.data());
     RefCntAutoPtr<ITexture> pWhiteTex = pEnv->CreateTexture("White texture", TEX_FORMAT_RGBA8_UNORM, BIND_SHADER_RESOURCE, 64, 64, WhiteTextData.data());
     ASSERT_NE(pBlackTex, nullptr);

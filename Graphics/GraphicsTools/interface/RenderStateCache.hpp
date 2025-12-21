@@ -149,7 +149,7 @@ public:
         VERIFY_EXPR(m_pCache);
     }
 
-    void LoadCacheFromFile(const char* FilePath, bool UpdateOnExit, Uint32 CacheContentVersion = ~0u)
+    void LoadCacheFromFile(const char* FilePath, bool UpdateOnExit, UInt32 CacheContentVersion = ~0u)
     {
         if (!m_pCache)
         {
@@ -253,7 +253,7 @@ private:
 private:
     RefCntAutoPtr<IRenderStateCache> m_pCache;
     std::string                      m_CacheFilePath;
-    Uint32                           m_CacheContentVersion = 0;
+    UInt32                           m_CacheContentVersion = 0;
 };
 
 // Throws an Exception if object creation failed

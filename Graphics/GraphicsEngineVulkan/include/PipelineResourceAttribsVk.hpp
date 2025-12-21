@@ -30,7 +30,7 @@
 /// \file
 /// Declaration of Diligent::PipelineResourceSignatureVkImpl struct
 
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "ShaderResourceCacheCommon.hpp"
 #include "PrivateConstants.h"
 #include "DebugUtilities.hpp"
@@ -39,7 +39,7 @@
 namespace Diligent
 {
 
-enum class DescriptorType : Uint8
+enum class DescriptorType : UInt8
 {
     Sampler,
     CombinedImageSampler,
@@ -66,50 +66,50 @@ enum class DescriptorType : Uint8
 struct PipelineResourceAttribsVk
 {
 private:
-    static constexpr Uint32 _BindingIndexBits    = 16;
-    static constexpr Uint32 _SamplerIndBits      = 16;
-    static constexpr Uint32 _ArraySizeBits       = 25;
-    static constexpr Uint32 _DescrTypeBits       = 5;
-    static constexpr Uint32 _DescrSetBits        = 1;
-    static constexpr Uint32 _SamplerAssignedBits = 1;
+    static constexpr UInt32 _BindingIndexBits    = 16;
+    static constexpr UInt32 _SamplerIndBits      = 16;
+    static constexpr UInt32 _ArraySizeBits       = 25;
+    static constexpr UInt32 _DescrTypeBits       = 5;
+    static constexpr UInt32 _DescrSetBits        = 1;
+    static constexpr UInt32 _SamplerAssignedBits = 1;
 
     static_assert((_BindingIndexBits + _ArraySizeBits + _SamplerIndBits + _DescrTypeBits + _DescrSetBits + _SamplerAssignedBits) % 32 == 0, "Bits are not optimally packed");
 
     // clang-format off
-    static_assert((1u << _DescrTypeBits)    >  static_cast<Uint32>(DescriptorType::Count), "Not enough bits to store DescriptorType values");
+    static_assert((1u << _DescrTypeBits)    >  static_cast<UInt32>(DescriptorType::Count), "Not enough bits to store DescriptorType values");
     static_assert((1u << _BindingIndexBits) >= MAX_RESOURCES_IN_SIGNATURE,                 "Not enough bits to store resource binding index");
     static_assert((1u << _SamplerIndBits)   >= MAX_RESOURCES_IN_SIGNATURE,                 "Not enough bits to store sampler resource index");
     // clang-format on
 
 public:
-    static constexpr Uint32 MaxDescriptorSets = (1u << _DescrSetBits);
-    static constexpr Uint32 InvalidSamplerInd = (1u << _SamplerIndBits) - 1;
+    static constexpr UInt32 MaxDescriptorSets = (1u << _DescrSetBits);
+    static constexpr UInt32 InvalidSamplerInd = (1u << _SamplerIndBits) - 1;
 
     // clang-format off
-    const Uint32  BindingIndex         : _BindingIndexBits;    // Binding in the descriptor set
-    const Uint32  SamplerInd           : _SamplerIndBits;      // Index of the assigned sampler in m_Desc.Resources and m_pPipelineResourceAttribsVk
-    const Uint32  ArraySize            : _ArraySizeBits;       // Array size
-    const Uint32  DescrType            : _DescrTypeBits;       // Descriptor type (DescriptorType)
-    const Uint32  DescrSet             : _DescrSetBits;        // Descriptor set (0 or 1)
-    const Uint32  ImtblSamplerAssigned : _SamplerAssignedBits; // Immutable sampler flag
+    const UInt32  BindingIndex         : _BindingIndexBits;    // Binding in the descriptor set
+    const UInt32  SamplerInd           : _SamplerIndBits;      // Index of the assigned sampler in m_Desc.Resources and m_pPipelineResourceAttribsVk
+    const UInt32  ArraySize            : _ArraySizeBits;       // Array size
+    const UInt32  DescrType            : _DescrTypeBits;       // Descriptor type (DescriptorType)
+    const UInt32  DescrSet             : _DescrSetBits;        // Descriptor set (0 or 1)
+    const UInt32  ImtblSamplerAssigned : _SamplerAssignedBits; // Immutable sampler flag
 
-    const Uint32  SRBCacheOffset;                              // Offset in the SRB resource cache
-    const Uint32  StaticCacheOffset;                           // Offset in the static resource cache
+    const UInt32  SRBCacheOffset;                              // Offset in the SRB resource cache
+    const UInt32  StaticCacheOffset;                           // Offset in the static resource cache
     // clang-format on
 
-    PipelineResourceAttribsVk(Uint32         _BindingIndex,
-                              Uint32         _SamplerInd,
-                              Uint32         _ArraySize,
+    PipelineResourceAttribsVk(UInt32         _BindingIndex,
+                              UInt32         _SamplerInd,
+                              UInt32         _ArraySize,
                               DescriptorType _DescrType,
-                              Uint32         _DescrSet,
+                              UInt32         _DescrSet,
                               bool           _ImtblSamplerAssigned,
-                              Uint32         _SRBCacheOffset,
-                              Uint32         _StaticCacheOffset) noexcept :
+                              UInt32         _SRBCacheOffset,
+                              UInt32         _StaticCacheOffset) noexcept :
         // clang-format off
         BindingIndex         {_BindingIndex                  },
         SamplerInd           {_SamplerInd                    },
         ArraySize            {_ArraySize                     },
-        DescrType            {static_cast<Uint32>(_DescrType)},
+        DescrType            {static_cast<UInt32>(_DescrType)},
         DescrSet             {_DescrSet                      },
         ImtblSamplerAssigned {_ImtblSamplerAssigned ? 1u : 0u},
         SRBCacheOffset       {_SRBCacheOffset                },
@@ -120,7 +120,7 @@ public:
         VERIFY(BindingIndex        == _BindingIndex, "Binding index (", _BindingIndex, ") exceeds maximum representable value");
         VERIFY(ArraySize           == _ArraySize,    "Array size (", _ArraySize, ") exceeds maximum representable value");
         VERIFY(SamplerInd          == _SamplerInd,   "Sampler index (", _SamplerInd, ") exceeds maximum representable value");
-        VERIFY(GetDescriptorType() == _DescrType,    "Descriptor type (", static_cast<Uint32>(_DescrType), ") exceeds maximum representable value");
+        VERIFY(GetDescriptorType() == _DescrType,    "Descriptor type (", static_cast<UInt32>(_DescrType), ") exceeds maximum representable value");
         VERIFY(DescrSet            == _DescrSet,     "Descriptor set (", _DescrSet, ") exceeds maximum representable value");
         // clang-format on
     }
@@ -131,7 +131,7 @@ public:
     {}
 
 
-    Uint32 CacheOffset(ResourceCacheContentType CacheType) const
+    UInt32 CacheOffset(ResourceCacheContentType CacheType) const
     {
         return CacheType == ResourceCacheContentType::SRB ? SRBCacheOffset : StaticCacheOffset;
     }
@@ -172,7 +172,7 @@ ASSERT_SIZEOF(PipelineResourceAttribsVk, 16, "The struct is used in serializatio
 
 inline VkDescriptorType DescriptorTypeToVkDescriptorType(DescriptorType Type)
 {
-    static_assert(static_cast<Uint32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
+    static_assert(static_cast<UInt32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
     switch (Type)
     {
         // clang-format off

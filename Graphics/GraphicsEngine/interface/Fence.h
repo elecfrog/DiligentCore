@@ -43,7 +43,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_Fence =
 /// Describes the fence type.
 
 /// This enumeration is used by FenceDesc structure.
-DILIGENT_TYPED_ENUM(FENCE_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(FENCE_TYPE, UInt8)
 {
     /// Basic fence that may be used for:
     ///  - signaling the fence from GPU
@@ -100,7 +100,7 @@ DILIGENT_BEGIN_INTERFACE(IFence, IDeviceObject)
     /// \remarks   In Direct3D11 backend, this method is not thread-safe (even if the fence
     ///            object is protected by a mutex) and must only be called by the same thread
     ///            that signals the fence via IDeviceContext::EnqueueSignal().
-    VIRTUAL Uint64 METHOD(GetCompletedValue)(THIS) PURE;
+    VIRTUAL UInt64 METHOD(GetCompletedValue)(THIS) PURE;
 
 
     /// Sets the fence to the specified value.
@@ -115,7 +115,7 @@ DILIGENT_BEGIN_INTERFACE(IFence, IDeviceObject)
     ///
     /// \note  The fence must have been created with type Diligent::FENCE_TYPE_GENERAL.
     VIRTUAL void METHOD(Signal)(THIS_
-                                Uint64 Value) PURE;
+                                UInt64 Value) PURE;
 
 
     /// Waits until the fence reaches or exceeds the specified value, on the host.
@@ -124,7 +124,7 @@ DILIGENT_BEGIN_INTERFACE(IFence, IDeviceObject)
     ///
     /// The method blocks the execution of the calling thread until the wait is complete.
     VIRTUAL void METHOD(Wait)(THIS_
-                              Uint64 Value) PURE;
+                              UInt64 Value) PURE;
 };
 DILIGENT_END_INTERFACE
 

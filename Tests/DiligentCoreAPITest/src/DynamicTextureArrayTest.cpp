@@ -174,7 +174,7 @@ TEST_P(DynamicTextureArrayResizeTest, Run)
     Desc.Format    = Format;
     Desc.ArraySize = 0;
 
-    constexpr Uint32 NumTestSlices = 6;
+    constexpr UInt32 NumTestSlices = 6;
 
     RefCntAutoPtr<ITexture> pStagingTex;
     {
@@ -190,10 +190,10 @@ TEST_P(DynamicTextureArrayResizeTest, Run)
 
     FastRandInt rnd{0, 0, 255};
 
-    std::vector<std::vector<Uint8>> RefData(NumTestSlices * Desc.MipLevels);
-    for (Uint32 slice = 0; slice < NumTestSlices; ++slice)
+    std::vector<std::vector<UInt8>> RefData(NumTestSlices * Desc.MipLevels);
+    for (UInt32 slice = 0; slice < NumTestSlices; ++slice)
     {
-        for (Uint32 mip = 0; mip < Desc.MipLevels; ++mip)
+        for (UInt32 mip = 0; mip < Desc.MipLevels; ++mip)
         {
             auto&      MipData    = RefData[slice * Desc.MipLevels + mip];
             const auto MipAttribs = GetMipLevelProperties(Desc, mip);
@@ -203,9 +203,9 @@ TEST_P(DynamicTextureArrayResizeTest, Run)
         }
     }
 
-    auto UpdateSlice = [&RefData, &Desc](IDeviceContext* pCtx, ITexture* pTex, Uint32 Slice) //
+    auto UpdateSlice = [&RefData, &Desc](IDeviceContext* pCtx, ITexture* pTex, UInt32 Slice) //
     {
-        for (Uint32 mip = 0; mip < Desc.MipLevels; ++mip)
+        for (UInt32 mip = 0; mip < Desc.MipLevels; ++mip)
         {
             const auto& MipData    = RefData[Slice * Desc.MipLevels + mip];
             const auto  MipAttribs = GetMipLevelProperties(Desc, mip);
@@ -216,7 +216,7 @@ TEST_P(DynamicTextureArrayResizeTest, Run)
         }
     };
 
-    auto VerifySlices = [&RefData, &Desc, &pStagingTex, IsGL = DeviceInfo.IsGLDevice()](IDeviceContext* pCtx, ITexture* pSrcTex, Uint32 FirstSlice, Uint32 NumSlices) //
+    auto VerifySlices = [&RefData, &Desc, &pStagingTex, IsGL = DeviceInfo.IsGLDevice()](IDeviceContext* pCtx, ITexture* pSrcTex, UInt32 FirstSlice, UInt32 NumSlices) //
     {
         const auto FmtAttribs = GetTextureFormatAttribs(Desc.Format);
         if (IsGL && FmtAttribs.ComponentType == COMPONENT_TYPE_COMPRESSED)
@@ -225,9 +225,9 @@ TEST_P(DynamicTextureArrayResizeTest, Run)
             return;
         }
 
-        for (Uint32 slice = FirstSlice; slice < FirstSlice + NumSlices; ++slice)
+        for (UInt32 slice = FirstSlice; slice < FirstSlice + NumSlices; ++slice)
         {
-            for (Uint32 mip = 0; mip < Desc.MipLevels; ++mip)
+            for (UInt32 mip = 0; mip < Desc.MipLevels; ++mip)
             {
                 CopyTextureAttribs CopyAttribs{pSrcTex, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, pStagingTex, RESOURCE_STATE_TRANSITION_MODE_TRANSITION};
                 CopyAttribs.SrcSlice    = slice;
@@ -240,9 +240,9 @@ TEST_P(DynamicTextureArrayResizeTest, Run)
 
         pCtx->WaitForIdle();
 
-        for (Uint32 slice = FirstSlice; slice < FirstSlice + NumSlices; ++slice)
+        for (UInt32 slice = FirstSlice; slice < FirstSlice + NumSlices; ++slice)
         {
-            for (Uint32 mip = 0; mip < Desc.MipLevels; ++mip)
+            for (UInt32 mip = 0; mip < Desc.MipLevels; ++mip)
             {
                 const auto& RefMipData = RefData[slice * Desc.MipLevels + mip];
 
@@ -251,9 +251,9 @@ TEST_P(DynamicTextureArrayResizeTest, Run)
 
                 bool       DataOK     = true;
                 const auto MipAttribs = GetMipLevelProperties(Desc, mip);
-                for (Uint32 row = 0; row < MipAttribs.StorageHeight / FmtAttribs.BlockHeight; ++row)
+                for (UInt32 row = 0; row < MipAttribs.StorageHeight / FmtAttribs.BlockHeight; ++row)
                 {
-                    const auto* pSrcRow = reinterpret_cast<const Uint8*>(MappedSubres.pData) + row * MappedSubres.Stride;
+                    const auto* pSrcRow = reinterpret_cast<const UInt8*>(MappedSubres.pData) + row * MappedSubres.Stride;
                     const auto* pRefRow = &RefMipData[static_cast<size_t>(row * MipAttribs.RowSize)];
 
                     if (memcmp(pSrcRow, pRefRow, static_cast<size_t>(MipAttribs.RowSize)) != 0)

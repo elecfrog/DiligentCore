@@ -28,7 +28,7 @@
 #pragma once
 
 #include <vector>
-#include "../../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "../../../Primitives/interface/FlagEnum.h"
 
 namespace Diligent
@@ -78,7 +78,7 @@ protected:
 };
 
 
-enum FILE_DIALOG_FLAGS : Uint32
+enum FILE_DIALOG_FLAGS : UInt32
 {
     FILE_DIALOG_FLAG_NONE = 0x000,
 
@@ -98,7 +98,7 @@ enum FILE_DIALOG_FLAGS : Uint32
 };
 DEFINE_FLAG_ENUM_OPERATORS(FILE_DIALOG_FLAGS);
 
-enum FILE_DIALOG_TYPE : Uint32
+enum FILE_DIALOG_TYPE : UInt32
 {
     FILE_DIALOG_TYPE_OPEN,
     FILE_DIALOG_TYPE_SAVE

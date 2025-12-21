@@ -29,6 +29,6 @@
 
 void TestDeviceMemoryVk_CInterface(IDeviceMemoryVk* pMem)
 {
-    DeviceMemoryRangeVk Range = IDeviceMemoryVk_GetRange(pMem, (Uint64)0, (Uint64)128);
+    DeviceMemoryRangeVk Range = IDeviceMemoryVk_GetRange(pMem, (UInt64)0, (UInt64)128);
     (void)Range;
 }

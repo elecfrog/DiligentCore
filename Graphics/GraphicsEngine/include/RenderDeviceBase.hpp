@@ -82,7 +82,7 @@ DeviceFeaturesVk EnableDeviceFeaturesVk(const DeviceFeaturesVk& SupportedFeature
 /// Checks sparse texture format support and returns the component type
 COMPONENT_TYPE CheckSparseTextureFormatSupport(TEXTURE_FORMAT                  TexFormat,
                                                RESOURCE_DIMENSION              Dimension,
-                                               Uint32                          SampleCount,
+                                               UInt32                          SampleCount,
                                                const SparseResourceProperties& SparseRes) noexcept;
 /// Base implementation of a render device
 
@@ -165,7 +165,7 @@ public:
     // clang-format on
     {
         // Initialize texture format info
-        for (Uint32 Fmt = TEX_FORMAT_UNKNOWN; Fmt < TEX_FORMAT_NUM_FORMATS; ++Fmt)
+        for (UInt32 Fmt = TEX_FORMAT_UNKNOWN; Fmt < TEX_FORMAT_NUM_FORMATS; ++Fmt)
             static_cast<TextureFormatAttribs&>(m_TextureFormatsInfo[Fmt]) = GetTextureFormatAttribs(static_cast<TEXTURE_FORMAT>(Fmt));
 
         // https://msdn.microsoft.com/en-us/library/windows/desktop/ff471325(v=vs.85).aspx
@@ -209,7 +209,7 @@ public:
                 TEX_FORMAT_BC5_UNORM,
                 TEX_FORMAT_BC5_SNORM,
                 TEX_FORMAT_B5G6R5_UNORM};
-        for (Uint32 fmt = 0; fmt < _countof(FilterableFormats); ++fmt)
+        for (UInt32 fmt = 0; fmt < _countof(FilterableFormats); ++fmt)
             m_TextureFormatsInfo[FilterableFormats[fmt]].Filterable = true;
     }
 
@@ -242,7 +242,7 @@ public:
         pResourceMapping->QueryInterface(IID_ResourceMapping, reinterpret_cast<IObject**>(ppMapping));
         if (ResMappingCI.pEntries != nullptr)
         {
-            for (Uint32 i = 0; i < ResMappingCI.NumEntries; ++i)
+            for (UInt32 i = 0; i < ResMappingCI.NumEntries; ++i)
             {
                 const ResourceMappingEntry& Entry = ResMappingCI.pEntries[i];
                 if (Entry.Name != nullptr && Entry.pObject != nullptr)
@@ -358,12 +358,12 @@ public:
         return m_pShaderCompilationThreadPool;
     }
 
-    Uint32 AllocateDynamicBufferId()
+    UInt32 AllocateDynamicBufferId()
     {
         Threading::SpinLockGuard Guard{m_RecycledDynamicBufferIdsLock};
         if (!m_RecycledDynamicBufferIds.empty())
         {
-            Uint32 Id = m_RecycledDynamicBufferIds.back();
+            UInt32 Id = m_RecycledDynamicBufferIds.back();
             m_RecycledDynamicBufferIds.pop_back();
 #ifdef DILIGENT_DEBUG
             m_DbgRecycledDynamicBufferIds.erase(Id);
@@ -376,7 +376,7 @@ public:
         }
     }
 
-    void RecycleDynamicBufferId(Uint32 Id)
+    void RecycleDynamicBufferId(UInt32 Id)
     {
         Threading::SpinLockGuard Guard{m_RecycledDynamicBufferIdsLock};
         m_RecycledDynamicBufferIds.push_back(Id);
@@ -388,7 +388,7 @@ public:
 protected:
     virtual void TestTextureFormat(TEXTURE_FORMAT TexFormat) = 0;
 
-    void InitShaderCompilationThreadPool(IThreadPool* pShaderCompilationThreadPool, Uint32 NumThreads)
+    void InitShaderCompilationThreadPool(IThreadPool* pShaderCompilationThreadPool, UInt32 NumThreads)
     {
         if (!m_DeviceInfo.Features.AsyncShaderCompilation)
             return;
@@ -399,7 +399,7 @@ protected:
         }
         else if (NumThreads != 0)
         {
-            const Uint32 NumCores = (std::max)(std::thread::hardware_concurrency(), 1u);
+            const UInt32 NumCores = (std::max)(std::thread::hardware_concurrency(), 1u);
 
             ThreadPoolCreateInfo ThreadPoolCI;
             if (NumThreads == ~0u)
@@ -643,11 +643,11 @@ protected:
     {
         std::lock_guard<std::mutex> Guard{m_DeferredCtxMtx};
 
-        Uint32 CtxIndex = 0;
+        UInt32 CtxIndex = 0;
         while (CtxIndex < m_wpDeferredContexts.size() && m_wpDeferredContexts[CtxIndex].IsValid())
             ++CtxIndex;
 
-        const Uint32      ContextId = static_cast<Uint32>(GetNumImmediateContexts()) + CtxIndex;
+        const UInt32      ContextId = static_cast<UInt32>(GetNumImmediateContexts()) + CtxIndex;
         const std::string CtxName   = std::string{"Deferred context "} + std::to_string(CtxIndex) + " (ContextId: " + std::to_string(ContextId) + ")";
         DeviceContextDesc Desc{
             CtxName.c_str(),
@@ -726,11 +726,11 @@ protected:
     std::atomic<UniqueIdentifier> m_UniqueId{0};
 
     // Dynamic buffer Ids are used by device contexts to index dynamic allocations
-    std::atomic<Uint32> m_NextDynamicBufferId{0};
+    std::atomic<UInt32> m_NextDynamicBufferId{0};
     Threading::SpinLock m_RecycledDynamicBufferIdsLock;
-    std::vector<Uint32> m_RecycledDynamicBufferIds;
+    std::vector<UInt32> m_RecycledDynamicBufferIds;
 #ifdef DILIGENT_DEBUG
-    std::unordered_set<Uint32> m_DbgRecycledDynamicBufferIds;
+    std::unordered_set<UInt32> m_DbgRecycledDynamicBufferIds;
 #endif
 };
 

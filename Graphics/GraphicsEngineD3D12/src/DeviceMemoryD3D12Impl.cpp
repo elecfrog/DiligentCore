@@ -44,7 +44,7 @@ namespace
 
 D3D12_HEAP_FLAGS GetD3D12HeapFlags(ID3D12Device*   pd3d12Device,
                                    IDeviceObject** ppResources,
-                                   Uint32          NumResources,
+                                   UInt32          NumResources,
                                    bool&           AllowMSAA,
                                    bool&           UseNVApi) noexcept(false)
 {
@@ -82,11 +82,11 @@ D3D12_HEAP_FLAGS GetD3D12HeapFlags(ID3D12Device*   pd3d12Device,
     if (NumResources == 0)
         return HeapFlags;
 
-    Uint32 UsingNVApiCount    = 0;
-    Uint32 NotUsingNVApiCount = 0;
+    UInt32 UsingNVApiCount    = 0;
+    UInt32 NotUsingNVApiCount = 0;
 
     static_assert(BIND_FLAG_LAST == 1u << 11u, "Did you add a new bind flag? You may need to update the logic below.");
-    for (Uint32 res = 0; res < NumResources; ++res)
+    for (UInt32 res = 0; res < NumResources; ++res)
     {
         IDeviceObject* pResource = ppResources[res];
         if (pResource == nullptr)
@@ -136,7 +136,7 @@ D3D12_HEAP_FLAGS GetD3D12HeapFlags(ID3D12Device*   pd3d12Device,
 
     if (d3d12Features.ResourceHeapTier == D3D12_RESOURCE_HEAP_TIER_1)
     {
-        const Uint32 NumDenyFlags = PlatformMisc::CountOneBits(static_cast<Uint32>(HeapFlags & D3D12_HEAP_FLAG_DENY_ALL));
+        const UInt32 NumDenyFlags = PlatformMisc::CountOneBits(static_cast<UInt32>(HeapFlags & D3D12_HEAP_FLAG_DENY_ALL));
         if (NumDenyFlags != 2)
         {
             LOG_ERROR_AND_THROW("On D3D12_RESOURCE_HEAP_TIER_1 hadrware, only single resource usage for the heap is allowed: "
@@ -200,7 +200,7 @@ DeviceMemoryD3D12Impl::~DeviceMemoryD3D12Impl()
     m_pDevice->SafeReleaseDeviceObject(std::move(m_Pages), m_Desc.ImmediateContextMask);
 }
 
-Bool DeviceMemoryD3D12Impl::Resize(Uint64 NewSize)
+Bool DeviceMemoryD3D12Impl::Resize(UInt64 NewSize)
 {
     DvpVerifyResize(NewSize);
 
@@ -239,7 +239,7 @@ Bool DeviceMemoryD3D12Impl::Resize(Uint64 NewSize)
     return true;
 }
 
-Uint64 DeviceMemoryD3D12Impl::GetCapacity() const
+UInt64 DeviceMemoryD3D12Impl::GetCapacity() const
 {
     return m_Desc.PageSize * m_Pages.size();
 }
@@ -259,7 +259,7 @@ Bool DeviceMemoryD3D12Impl::IsCompatible(IDeviceObject* pResource) const
     }
 }
 
-DeviceMemoryRangeD3D12 DeviceMemoryD3D12Impl::GetRange(Uint64 Offset, Uint64 Size) const
+DeviceMemoryRangeD3D12 DeviceMemoryD3D12Impl::GetRange(UInt64 Offset, UInt64 Size) const
 {
     const size_t PageIdx = static_cast<size_t>(Offset / m_Desc.PageSize);
 
@@ -270,7 +270,7 @@ DeviceMemoryRangeD3D12 DeviceMemoryD3D12Impl::GetRange(Uint64 Offset, Uint64 Siz
         return Range;
     }
 
-    const Uint64 OffsetInPage = Offset % m_Desc.PageSize;
+    const UInt64 OffsetInPage = Offset % m_Desc.PageSize;
     if (OffsetInPage + Size > m_Desc.PageSize)
     {
         DEV_ERROR("DeviceMemoryD3D12Impl::GetRange(): Offset and Size must be inside a single page");

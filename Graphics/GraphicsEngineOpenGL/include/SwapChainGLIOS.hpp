@@ -49,9 +49,9 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_SwapChainGL, TSwapChainBase)
 
-    virtual void Present(Uint32 SyncInterval) override final;
+    virtual void Present(UInt32 SyncInterval) override final;
 
-    virtual void Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewTransform) override final;
+    virtual void Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewTransform) override final;
 
     virtual void SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final;
 
@@ -60,7 +60,7 @@ public:
     virtual GLuint GetDefaultFBO() const override final;
 
 private:
-    void InitRenderBuffers(bool InitFromDrawable, Uint32& Width, Uint32& Height);
+    void InitRenderBuffers(bool InitFromDrawable, UInt32& Width, UInt32& Height);
 
     GLObjectWrappers::GLRenderBufferObj m_ColorRenderBuffer;
     GLObjectWrappers::GLRenderBufferObj m_DepthRenderBuffer;

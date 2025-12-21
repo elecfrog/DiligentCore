@@ -52,6 +52,6 @@ void TestRenderStateCacheCInterface()
     IRenderStateCache_WriteToStream(pCache, 1234, (IFileStream*)NULL);
     IRenderStateCache_Reset(pCache);
     IRenderStateCache_Reload(pCache, NULL, NULL);
-    Uint32 Ver = IRenderStateCache_GetContentVersion(pCache);
+    UInt32 Ver = IRenderStateCache_GetContentVersion(pCache);
     (void)Ver;
 }

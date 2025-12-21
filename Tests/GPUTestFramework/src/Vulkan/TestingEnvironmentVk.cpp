@@ -282,10 +282,10 @@ void TestingEnvironmentVk::CreateBuffer(VkDeviceSize          Size,
 
 
 VkRenderPassCreateInfo TestingEnvironmentVk::GetRenderPassCreateInfo(
-    Uint32                                                       NumRenderTargets,
+    UInt32                                                       NumRenderTargets,
     const VkFormat                                               RTVFormats[],
     VkFormat                                                     DSVFormat,
-    Uint32                                                       SampleCount,
+    UInt32                                                       SampleCount,
     VkAttachmentLoadOp                                           DepthAttachmentLoadOp,
     VkAttachmentLoadOp                                           ColorAttachmentLoadOp,
     std::array<VkAttachmentDescription, MAX_RENDER_TARGETS + 1>& Attachments,
@@ -329,7 +329,7 @@ VkRenderPassCreateInfo TestingEnvironmentVk::GetRenderPassCreateInfo(
     }
 
     VkAttachmentReference* pColorAttachmentsReference = NumRenderTargets > 0 ? &AttachmentReferences[AttachmentInd] : nullptr;
-    for (Uint32 rt = 0; rt < NumRenderTargets; ++rt, ++AttachmentInd)
+    for (UInt32 rt = 0; rt < NumRenderTargets; ++rt, ++AttachmentInd)
     {
         VkAttachmentDescription& ColorAttachment = Attachments[AttachmentInd];
 
@@ -386,7 +386,7 @@ VkShaderModule TestingEnvironmentVk::CreateShaderModule(const SHADER_TYPE Shader
     Attribs.Version        = (ShaderType >= SHADER_TYPE_AMPLIFICATION ? GLSLangUtils::SpirvVersion::Vk120 : GLSLangUtils::SpirvVersion::Vk100);
     Attribs.AssignBindings = false;
 
-    std::vector<Uint32> Bytecode = GLSLangUtils::GLSLtoSPIRV(Attribs);
+    std::vector<UInt32> Bytecode = GLSLangUtils::GLSLtoSPIRV(Attribs);
     VERIFY_EXPR(!Bytecode.empty());
     if (Bytecode.empty())
         return VK_NULL_HANDLE;

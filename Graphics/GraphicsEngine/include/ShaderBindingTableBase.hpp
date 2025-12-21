@@ -44,7 +44,7 @@ namespace Diligent
 {
 
 /// Validates SBT description and throws an exception in case of an error.
-void ValidateShaderBindingTableDesc(const ShaderBindingTableDesc& Desc, Uint32 ShaderGroupHandleSize, Uint32 MaxShaderRecordStride) noexcept(false);
+void ValidateShaderBindingTableDesc(const ShaderBindingTableDesc& Desc, UInt32 ShaderGroupHandleSize, UInt32 MaxShaderRecordStride) noexcept(false);
 
 /// Template class implementing base functionality of the shader binding table object.
 
@@ -139,29 +139,29 @@ public:
     }
 
 
-    void DILIGENT_CALL_TYPE BindRayGenShader(const char* pShaderGroupName, const void* pData, Uint32 DataSize) override final
+    void DILIGENT_CALL_TYPE BindRayGenShader(const char* pShaderGroupName, const void* pData, UInt32 DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
 
-        this->m_RayGenShaderRecord.resize(this->m_ShaderRecordStride, Uint8{EmptyElem});
+        this->m_RayGenShaderRecord.resize(this->m_ShaderRecordStride, UInt8{EmptyElem});
         this->m_pPSO->CopyShaderHandle(pShaderGroupName, this->m_RayGenShaderRecord.data(), this->m_ShaderRecordStride);
 
-        const Uint32 GroupSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
+        const UInt32 GroupSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
         std::memcpy(this->m_RayGenShaderRecord.data() + GroupSize, pData, DataSize);
         this->m_Changed = true;
     }
 
 
-    void DILIGENT_CALL_TYPE BindMissShader(const char* pShaderGroupName, Uint32 MissIndex, const void* pData, Uint32 DataSize) override final
+    void DILIGENT_CALL_TYPE BindMissShader(const char* pShaderGroupName, UInt32 MissIndex, const void* pData, UInt32 DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
 
-        const Uint32 GroupSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
+        const UInt32 GroupSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
         const size_t Stride    = this->m_ShaderRecordStride;
         const size_t Offset    = MissIndex * Stride;
-        this->m_MissShadersRecord.resize(std::max(this->m_MissShadersRecord.size(), Offset + Stride), Uint8{EmptyElem});
+        this->m_MissShadersRecord.resize(std::max(this->m_MissShadersRecord.size(), Offset + Stride), UInt8{EmptyElem});
 
         this->m_pPSO->CopyShaderHandle(pShaderGroupName, this->m_MissShadersRecord.data() + Offset, Stride);
         std::memcpy(this->m_MissShadersRecord.data() + Offset + GroupSize, pData, DataSize);
@@ -169,19 +169,19 @@ public:
     }
 
 
-    void DILIGENT_CALL_TYPE BindHitGroupByIndex(Uint32      BindingIndex,
+    void DILIGENT_CALL_TYPE BindHitGroupByIndex(UInt32      BindingIndex,
                                                 const char* pShaderGroupName,
                                                 const void* pData,
-                                                Uint32      DataSize) override final
+                                                UInt32      DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
 
         const size_t Stride    = this->m_ShaderRecordStride;
-        const Uint32 GroupSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
+        const UInt32 GroupSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
         const size_t Offset    = BindingIndex * Stride;
 
-        this->m_HitGroupsRecord.resize(std::max(this->m_HitGroupsRecord.size(), Offset + Stride), Uint8{EmptyElem});
+        this->m_HitGroupsRecord.resize(std::max(this->m_HitGroupsRecord.size(), Offset + Stride), UInt8{EmptyElem});
 
         this->m_pPSO->CopyShaderHandle(pShaderGroupName, this->m_HitGroupsRecord.data() + Offset, Stride);
         std::memcpy(this->m_HitGroupsRecord.data() + Offset + GroupSize, pData, DataSize);
@@ -196,10 +196,10 @@ public:
     void DILIGENT_CALL_TYPE BindHitGroupForGeometry(ITopLevelAS* pTLAS,
                                                     const char*  pInstanceName,
                                                     const char*  pGeometryName,
-                                                    Uint32       RayOffsetInHitGroupIndex,
+                                                    UInt32       RayOffsetInHitGroupIndex,
                                                     const char*  pShaderGroupName,
                                                     const void*  pData,
-                                                    Uint32       DataSize) override final
+                                                    UInt32       DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
@@ -214,16 +214,16 @@ public:
         VERIFY_EXPR(Desc.ContributionToHitGroupIndex != ~0u);
         VERIFY_EXPR(Desc.pBLAS != nullptr);
 
-        const Uint32 InstanceOffset = Desc.ContributionToHitGroupIndex;
-        const Uint32 GeometryIndex  = Desc.pBLAS->GetGeometryIndex(pGeometryName);
+        const UInt32 InstanceOffset = Desc.ContributionToHitGroupIndex;
+        const UInt32 GeometryIndex  = Desc.pBLAS->GetGeometryIndex(pGeometryName);
         VERIFY_EXPR(GeometryIndex != INVALID_INDEX);
 
-        const Uint32 Index     = InstanceOffset + GeometryIndex * Info.HitGroupStride + RayOffsetInHitGroupIndex;
+        const UInt32 Index     = InstanceOffset + GeometryIndex * Info.HitGroupStride + RayOffsetInHitGroupIndex;
         const size_t Stride    = this->m_ShaderRecordStride;
-        const Uint32 GroupSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
+        const UInt32 GroupSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
         const size_t Offset    = Index * Stride;
 
-        this->m_HitGroupsRecord.resize(std::max(this->m_HitGroupsRecord.size(), Offset + Stride), Uint8{EmptyElem});
+        this->m_HitGroupsRecord.resize(std::max(this->m_HitGroupsRecord.size(), Offset + Stride), UInt8{EmptyElem});
 
         this->m_pPSO->CopyShaderHandle(pShaderGroupName, this->m_HitGroupsRecord.data() + Offset, Stride);
         std::memcpy(this->m_HitGroupsRecord.data() + Offset + GroupSize, pData, DataSize);
@@ -238,10 +238,10 @@ public:
 
     void DILIGENT_CALL_TYPE BindHitGroupForInstance(ITopLevelAS* pTLAS,
                                                     const char*  pInstanceName,
-                                                    Uint32       RayOffsetInHitGroupIndex,
+                                                    UInt32       RayOffsetInHitGroupIndex,
                                                     const char*  pShaderGroupName,
                                                     const void*  pData,
-                                                    Uint32       DataSize) override final
+                                                    UInt32       DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
@@ -257,8 +257,8 @@ public:
         VERIFY_EXPR(Desc.ContributionToHitGroupIndex != INVALID_INDEX);
         VERIFY_EXPR(Desc.pBLAS != nullptr);
 
-        const Uint32 InstanceOffset = Desc.ContributionToHitGroupIndex;
-        Uint32       GeometryCount  = 0;
+        const UInt32 InstanceOffset = Desc.ContributionToHitGroupIndex;
+        UInt32       GeometryCount  = 0;
 
         switch (Info.BindingMode)
         {
@@ -269,17 +269,17 @@ public:
                 // clang-format on
         }
 
-        const Uint32 BeginIndex = InstanceOffset;
+        const UInt32 BeginIndex = InstanceOffset;
         const size_t EndIndex   = InstanceOffset + size_t{GeometryCount} * size_t{Info.HitGroupStride};
-        const Uint32 GroupSize  = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
+        const UInt32 GroupSize  = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
         const size_t Stride     = this->m_ShaderRecordStride;
 
-        this->m_HitGroupsRecord.resize(std::max(this->m_HitGroupsRecord.size(), EndIndex * Stride), Uint8{EmptyElem});
+        this->m_HitGroupsRecord.resize(std::max(this->m_HitGroupsRecord.size(), EndIndex * Stride), UInt8{EmptyElem});
         this->m_Changed = true;
 
-        for (Uint32 i = 0; i < GeometryCount; ++i)
+        for (UInt32 i = 0; i < GeometryCount; ++i)
         {
-            Uint32 Index  = BeginIndex + i * Info.HitGroupStride + RayOffsetInHitGroupIndex;
+            UInt32 Index  = BeginIndex + i * Info.HitGroupStride + RayOffsetInHitGroupIndex;
             size_t Offset = Index * Stride;
             this->m_pPSO->CopyShaderHandle(pShaderGroupName, this->m_HitGroupsRecord.data() + Offset, Stride);
 
@@ -294,10 +294,10 @@ public:
 
 
     void DILIGENT_CALL_TYPE BindHitGroupForTLAS(ITopLevelAS* pTLAS,
-                                                Uint32       RayOffsetInHitGroupIndex,
+                                                UInt32       RayOffsetInHitGroupIndex,
                                                 const char*  pShaderGroupName,
                                                 const void*  pData,
-                                                Uint32       DataSize) override final
+                                                UInt32       DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
@@ -310,12 +310,12 @@ public:
                     Info.BindingMode == HIT_GROUP_BINDING_MODE_PER_TLAS);
         VERIFY_EXPR(RayOffsetInHitGroupIndex < Info.HitGroupStride);
 
-        const Uint32 GroupSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
+        const UInt32 GroupSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
         const size_t Stride    = this->m_ShaderRecordStride;
-        this->m_HitGroupsRecord.resize(std::max(this->m_HitGroupsRecord.size(), (size_t{Info.LastContributionToHitGroupIndex} + 1) * Stride), Uint8{EmptyElem});
+        this->m_HitGroupsRecord.resize(std::max(this->m_HitGroupsRecord.size(), (size_t{Info.LastContributionToHitGroupIndex} + 1) * Stride), UInt8{EmptyElem});
         this->m_Changed = true;
 
-        for (Uint32 Index = RayOffsetInHitGroupIndex + Info.FirstContributionToHitGroupIndex;
+        for (UInt32 Index = RayOffsetInHitGroupIndex + Info.FirstContributionToHitGroupIndex;
              Index <= Info.LastContributionToHitGroupIndex;
              Index += Info.HitGroupStride)
         {
@@ -331,16 +331,16 @@ public:
 
 
     void DILIGENT_CALL_TYPE BindCallableShader(const char* pShaderGroupName,
-                                               Uint32      CallableIndex,
+                                               UInt32      CallableIndex,
                                                const void* pData,
-                                               Uint32      DataSize) override final
+                                               UInt32      DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
 
-        const Uint32 GroupSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
+        const UInt32 GroupSize = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
         const size_t Offset    = size_t{CallableIndex} * size_t{this->m_ShaderRecordStride};
-        this->m_CallableShadersRecord.resize(std::max(this->m_CallableShadersRecord.size(), Offset + this->m_ShaderRecordStride), Uint8{EmptyElem});
+        this->m_CallableShadersRecord.resize(std::max(this->m_CallableShadersRecord.size(), Offset + this->m_ShaderRecordStride), UInt8{EmptyElem});
 
         this->m_pPSO->CopyShaderHandle(pShaderGroupName, this->m_CallableShadersRecord.data() + Offset, this->m_ShaderRecordStride);
         std::memcpy(this->m_CallableShadersRecord.data() + Offset + GroupSize, pData, DataSize);
@@ -353,15 +353,15 @@ public:
 #ifdef DILIGENT_DEVELOPMENT
         static_assert(EmptyElem != 0, "must not be zero");
 
-        const Uint32 Stride      = this->m_ShaderRecordStride;
-        const Uint32 ShSize      = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
-        const auto   FindPattern = [&](const std::vector<Uint8>& Data, const char* GroupName) -> bool //
+        const UInt32 Stride      = this->m_ShaderRecordStride;
+        const UInt32 ShSize      = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupHandleSize;
+        const auto   FindPattern = [&](const std::vector<UInt8>& Data, const char* GroupName) -> bool //
         {
             for (size_t i = 0; i < Data.size(); i += Stride)
             {
                 if (Flags & VERIFY_SBT_FLAG_SHADER_ONLY)
                 {
-                    Uint32 Count = 0;
+                    UInt32 Count = 0;
                     for (size_t j = 0; j < ShSize; ++j)
                         Count += (Data[i + j] == EmptyElem);
 
@@ -374,7 +374,7 @@ public:
 
                 if ((Flags & VERIFY_SBT_FLAG_SHADER_RECORD) && this->m_ShaderRecordSize > 0)
                 {
-                    Uint32 Count = 0;
+                    UInt32 Count = 0;
                     for (size_t j = ShSize; j < Stride; ++j)
                         Count += (Data[i + j] == EmptyElem);
 
@@ -439,9 +439,9 @@ protected:
     struct BindingTable
     {
         const void* pData  = nullptr;
-        Uint32      Size   = 0;
-        Uint32      Offset = 0;
-        Uint32      Stride = 0;
+        UInt32      Size   = 0;
+        UInt32      Offset = 0;
+        UInt32      Stride = 0;
     };
     void GetData(BufferImplType*& pSBTBuffer,
                  BindingTable&    RaygenShaderBindingTable,
@@ -449,17 +449,17 @@ protected:
                  BindingTable&    HitShaderBindingTable,
                  BindingTable&    CallableShaderBindingTable)
     {
-        const Uint32 ShaderGroupBaseAlignment = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupBaseAlignment;
+        const UInt32 ShaderGroupBaseAlignment = this->GetDevice()->GetAdapterInfo().RayTracing.ShaderGroupBaseAlignment;
 
-        const auto AlignToLarger = [ShaderGroupBaseAlignment](size_t offset) -> Uint32 {
-            return AlignUp(static_cast<Uint32>(offset), ShaderGroupBaseAlignment);
+        const auto AlignToLarger = [ShaderGroupBaseAlignment](size_t offset) -> UInt32 {
+            return AlignUp(static_cast<UInt32>(offset), ShaderGroupBaseAlignment);
         };
 
-        const Uint32 RayGenOffset          = 0;
-        const Uint32 MissShaderOffset      = AlignToLarger(m_RayGenShaderRecord.size());
-        const Uint32 HitGroupOffset        = AlignToLarger(MissShaderOffset + m_MissShadersRecord.size());
-        const Uint32 CallableShadersOffset = AlignToLarger(HitGroupOffset + m_HitGroupsRecord.size());
-        const Uint32 BufSize               = AlignToLarger(CallableShadersOffset + m_CallableShadersRecord.size());
+        const UInt32 RayGenOffset          = 0;
+        const UInt32 MissShaderOffset      = AlignToLarger(m_RayGenShaderRecord.size());
+        const UInt32 HitGroupOffset        = AlignToLarger(MissShaderOffset + m_MissShadersRecord.size());
+        const UInt32 CallableShadersOffset = AlignToLarger(HitGroupOffset + m_HitGroupsRecord.size());
+        const UInt32 BufSize               = AlignToLarger(CallableShadersOffset + m_CallableShadersRecord.size());
 
         // Recreate buffer
         if (m_pBuffer == nullptr || m_pBuffer->GetDesc().Size < BufSize)
@@ -486,7 +486,7 @@ protected:
         {
             RaygenShaderBindingTable.pData  = m_Changed ? m_RayGenShaderRecord.data() : nullptr;
             RaygenShaderBindingTable.Offset = RayGenOffset;
-            RaygenShaderBindingTable.Size   = static_cast<Uint32>(m_RayGenShaderRecord.size());
+            RaygenShaderBindingTable.Size   = static_cast<UInt32>(m_RayGenShaderRecord.size());
             RaygenShaderBindingTable.Stride = this->m_ShaderRecordStride;
         }
 
@@ -494,7 +494,7 @@ protected:
         {
             MissShaderBindingTable.pData  = m_Changed ? m_MissShadersRecord.data() : nullptr;
             MissShaderBindingTable.Offset = MissShaderOffset;
-            MissShaderBindingTable.Size   = static_cast<Uint32>(m_MissShadersRecord.size());
+            MissShaderBindingTable.Size   = static_cast<UInt32>(m_MissShadersRecord.size());
             MissShaderBindingTable.Stride = this->m_ShaderRecordStride;
         }
 
@@ -502,7 +502,7 @@ protected:
         {
             HitShaderBindingTable.pData  = m_Changed ? m_HitGroupsRecord.data() : nullptr;
             HitShaderBindingTable.Offset = HitGroupOffset;
-            HitShaderBindingTable.Size   = static_cast<Uint32>(m_HitGroupsRecord.size());
+            HitShaderBindingTable.Size   = static_cast<UInt32>(m_HitGroupsRecord.size());
             HitShaderBindingTable.Stride = this->m_ShaderRecordStride;
         }
 
@@ -510,7 +510,7 @@ protected:
         {
             CallableShaderBindingTable.pData  = m_Changed ? m_CallableShadersRecord.data() : nullptr;
             CallableShaderBindingTable.Offset = CallableShadersOffset;
-            CallableShaderBindingTable.Size   = static_cast<Uint32>(m_CallableShadersRecord.size());
+            CallableShaderBindingTable.Size   = static_cast<UInt32>(m_CallableShadersRecord.size());
             CallableShaderBindingTable.Stride = this->m_ShaderRecordStride;
         }
 
@@ -518,24 +518,24 @@ protected:
     }
 
 protected:
-    std::vector<Uint8> m_RayGenShaderRecord;
-    std::vector<Uint8> m_MissShadersRecord;
-    std::vector<Uint8> m_CallableShadersRecord;
-    std::vector<Uint8> m_HitGroupsRecord;
+    std::vector<UInt8> m_RayGenShaderRecord;
+    std::vector<UInt8> m_MissShadersRecord;
+    std::vector<UInt8> m_CallableShadersRecord;
+    std::vector<UInt8> m_HitGroupsRecord;
 
     RefCntAutoPtr<PipelineStateImplType> m_pPSO;
     RefCntAutoPtr<BufferImplType>        m_pBuffer;
 
-    Uint32 m_ShaderRecordSize   = 0;
-    Uint32 m_ShaderRecordStride = 0;
+    UInt32 m_ShaderRecordSize   = 0;
+    UInt32 m_ShaderRecordStride = 0;
     bool   m_Changed            = true;
 
 #ifdef DILIGENT_DEVELOPMENT
-    static constexpr Uint8 EmptyElem = 0xA7;
+    static constexpr UInt8 EmptyElem = 0xA7;
 #else
     // In release mode clear uninitialized data by zeros.
     // This makes shader inactive, which hides errors but prevents crashes.
-    static constexpr Uint8 EmptyElem = 0;
+    static constexpr UInt8 EmptyElem = 0;
 #endif
 
 private:
@@ -543,7 +543,7 @@ private:
     struct HitGroupBinding
     {
         RefCntWeakPtr<TopLevelASImplType> pTLAS;
-        Uint32                            Version = ~0u;
+        UInt32                            Version = ~0u;
         bool                              IsBound = false;
     };
     mutable std::vector<HitGroupBinding> m_DbgHitGroupBindings;

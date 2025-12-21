@@ -31,8 +31,8 @@ void TestDeviceMemoryCInterface(struct IDeviceMemory* pMem)
     const DeviceMemoryDesc* pDesc = IDeviceMemory_GetDesc(pMem);
     (void)(pDesc);
 
-    Bool Res = IDeviceMemory_Resize(pMem, (Uint64)0);
+    Bool Res = IDeviceMemory_Resize(pMem, (UInt64)0);
     (void)Res;
-    Uint64 Cap = IDeviceMemory_GetCapacity(pMem);
+    UInt64 Cap = IDeviceMemory_GetCapacity(pMem);
     (void)Cap;
 }

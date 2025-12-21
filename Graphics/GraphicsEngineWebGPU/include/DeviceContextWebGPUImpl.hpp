@@ -62,7 +62,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DeviceContextWebGPU, TDeviceContextBase)
 
     /// Implementation of IDeviceContext::Begin() in WebGPU backend.
-    void DILIGENT_CALL_TYPE Begin(Uint32 ImmediateContextId) override final;
+    void DILIGENT_CALL_TYPE Begin(UInt32 ImmediateContextId) override final;
 
     /// Implementation of IDeviceContext::SetPipelineState() in WebGPU backend.
     void DILIGENT_CALL_TYPE SetPipelineState(IPipelineState* pPipelineState) override final;
@@ -75,16 +75,16 @@ public:
                                                   RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::SetStencilRef() in WebGPU backend.
-    void DILIGENT_CALL_TYPE SetStencilRef(Uint32 StencilRef) override final;
+    void DILIGENT_CALL_TYPE SetStencilRef(UInt32 StencilRef) override final;
 
     /// Implementation of IDeviceContext::SetBlendFactors() in WebGPU backend.
     void DILIGENT_CALL_TYPE SetBlendFactors(const float* pBlendFactors = nullptr) override final;
 
     /// Implementation of IDeviceContext::SetVertexBuffers() in WebGPU backend.
-    void DILIGENT_CALL_TYPE SetVertexBuffers(Uint32                         StartSlot,
-                                             Uint32                         NumBuffersSet,
+    void DILIGENT_CALL_TYPE SetVertexBuffers(UInt32                         StartSlot,
+                                             UInt32                         NumBuffersSet,
                                              IBuffer* const*                ppBuffers,
-                                             const Uint64*                  pOffsets,
+                                             const UInt64*                  pOffsets,
                                              RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
                                              SET_VERTEX_BUFFERS_FLAGS       Flags) override final;
 
@@ -93,20 +93,20 @@ public:
 
     /// Implementation of IDeviceContext::SetIndexBuffer() in WebGPU backend.
     void DILIGENT_CALL_TYPE SetIndexBuffer(IBuffer*                       pIndexBuffer,
-                                           Uint64                         ByteOffset,
+                                           UInt64                         ByteOffset,
                                            RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::SetViewports() in WebGPU backend.
-    void DILIGENT_CALL_TYPE SetViewports(Uint32          NumViewports,
+    void DILIGENT_CALL_TYPE SetViewports(UInt32          NumViewports,
                                          const Viewport* pViewports,
-                                         Uint32          RTWidth,
-                                         Uint32          RTHeight) override final;
+                                         UInt32          RTWidth,
+                                         UInt32          RTHeight) override final;
 
     /// Implementation of IDeviceContext::SetScissorRects() in WebGPU backend.
-    void DILIGENT_CALL_TYPE SetScissorRects(Uint32      NumRects,
+    void DILIGENT_CALL_TYPE SetScissorRects(UInt32      NumRects,
                                             const Rect* pRects,
-                                            Uint32      RTWidth,
-                                            Uint32      RTHeight) override final;
+                                            UInt32      RTWidth,
+                                            UInt32      RTHeight) override final;
 
     /// Implementation of IDeviceContext::SetRenderTargetsExt() in WebGPU backend.
     void DILIGENT_CALL_TYPE SetRenderTargetsExt(const SetRenderTargetsAttribs& Attribs) override final;
@@ -154,7 +154,7 @@ public:
     void DILIGENT_CALL_TYPE ClearDepthStencil(ITextureView*                  pView,
                                               CLEAR_DEPTH_STENCIL_FLAGS      ClearFlags,
                                               float                          fDepth,
-                                              Uint8                          Stencil,
+                                              UInt8                          Stencil,
                                               RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::ClearRenderTarget() in WebGPU backend.
@@ -164,18 +164,18 @@ public:
 
     /// Implementation of IDeviceContext::UpdateBuffer() in WebGPU backend.
     void DILIGENT_CALL_TYPE UpdateBuffer(IBuffer*                       pBuffer,
-                                         Uint64                         Offset,
-                                         Uint64                         Size,
+                                         UInt64                         Offset,
+                                         UInt64                         Size,
                                          const void*                    pData,
                                          RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::CopyBuffer() in WebGPU backend.
     void DILIGENT_CALL_TYPE CopyBuffer(IBuffer*                       pSrcBuffer,
-                                       Uint64                         SrcOffset,
+                                       UInt64                         SrcOffset,
                                        RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
                                        IBuffer*                       pDstBuffer,
-                                       Uint64                         DstOffset,
-                                       Uint64                         Size,
+                                       UInt64                         DstOffset,
+                                       UInt64                         Size,
                                        RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) override final;
 
     /// Implementation of IDeviceContext::MapBuffer() in WebGPU backend.
@@ -189,8 +189,8 @@ public:
 
     /// Implementation of IDeviceContext::UpdateTexture() in WebGPU backend.
     void DILIGENT_CALL_TYPE UpdateTexture(ITexture*                      pTexture,
-                                          Uint32                         MipLevel,
-                                          Uint32                         Slice,
+                                          UInt32                         MipLevel,
+                                          UInt32                         Slice,
                                           const Box&                     DstBox,
                                           const TextureSubResData&       SubresData,
                                           RESOURCE_STATE_TRANSITION_MODE SrcBufferStateTransitionMode,
@@ -201,28 +201,28 @@ public:
 
     /// Implementation of IDeviceContext::MapTextureSubresource() in WebGPU backend.
     void DILIGENT_CALL_TYPE MapTextureSubresource(ITexture*                 pTexture,
-                                                  Uint32                    MipLevel,
-                                                  Uint32                    ArraySlice,
+                                                  UInt32                    MipLevel,
+                                                  UInt32                    ArraySlice,
                                                   MAP_TYPE                  MapType,
                                                   MAP_FLAGS                 MapFlags,
                                                   const Box*                pMapRegion,
                                                   MappedTextureSubresource& MappedData) override final;
 
     /// Implementation of IDeviceContext::UnmapTextureSubresource() in WebGPU backend.
-    void DILIGENT_CALL_TYPE UnmapTextureSubresource(ITexture* pTexture, Uint32 MipLevel, Uint32 ArraySlice) override final;
+    void DILIGENT_CALL_TYPE UnmapTextureSubresource(ITexture* pTexture, UInt32 MipLevel, UInt32 ArraySlice) override final;
 
     /// Implementation of IDeviceContext::FinishCommandList() in WebGPU backend.
     void DILIGENT_CALL_TYPE FinishCommandList(ICommandList** ppCommandList) override final;
 
     /// Implementation of IDeviceContext::ExecuteCommandLists() in WebGPU backend.
-    void DILIGENT_CALL_TYPE ExecuteCommandLists(Uint32               NumCommandLists,
+    void DILIGENT_CALL_TYPE ExecuteCommandLists(UInt32               NumCommandLists,
                                                 ICommandList* const* ppCommandLists) override final;
 
     /// Implementation of IDeviceContext::EnqueueSignal() in WebGPU backend.
-    void DILIGENT_CALL_TYPE EnqueueSignal(IFence* pFence, Uint64 Value) override final;
+    void DILIGENT_CALL_TYPE EnqueueSignal(IFence* pFence, UInt64 Value) override final;
 
     /// Implementation of IDeviceContext::DeviceWaitForFence() in WebGPU backend.
-    void DILIGENT_CALL_TYPE DeviceWaitForFence(IFence* pFence, Uint64 Value) override final;
+    void DILIGENT_CALL_TYPE DeviceWaitForFence(IFence* pFence, UInt64 Value) override final;
 
     /// Implementation of IDeviceContext::WaitForIdle() in WebGPU backend.
     void DILIGENT_CALL_TYPE WaitForIdle() override final;
@@ -287,7 +287,7 @@ public:
     void DILIGENT_CALL_TYPE FinishFrame() override final;
 
     /// Implementation of IDeviceContext::TransitionResourceStates() in WebGPU backend.
-    void DILIGENT_CALL_TYPE TransitionResourceStates(Uint32 BarrierCount, const StateTransitionDesc* pResourceBarriers) override final;
+    void DILIGENT_CALL_TYPE TransitionResourceStates(UInt32 BarrierCount, const StateTransitionDesc* pResourceBarriers) override final;
 
     /// Implementation of IDeviceContext::LockCommandQueue() in WebGPU backend.
     ICommandQueue* DILIGENT_CALL_TYPE LockCommandQueue() override final;
@@ -305,19 +305,19 @@ public:
 
     QueryManagerWebGPU& GetQueryManager();
 
-    Uint64 GetNextFenceValue();
+    UInt64 GetNextFenceValue();
 
-    Uint64 GetCompletedFenceValue();
+    UInt64 GetCompletedFenceValue();
 
 #ifdef DILIGENT_DEVELOPMENT
     void DvpVerifyDynamicAllocation(const BufferWebGPUImpl* pBuffer) const;
 #endif
 
     const DynamicMemoryManagerWebGPU::Allocation& GetDynamicBufferAllocation(const BufferWebGPUImpl* pBuffer) const;
-    Uint64                                        GetDynamicBufferOffset(const BufferWebGPUImpl* pBuffer, bool VerifyAllocation = true) const;
+    UInt64                                        GetDynamicBufferOffset(const BufferWebGPUImpl* pBuffer, bool VerifyAllocation = true) const;
 
 private:
-    enum COMMAND_ENCODER_FLAGS : Uint32
+    enum COMMAND_ENCODER_FLAGS : UInt32
     {
         COMMAND_ENCODER_FLAG_NONE    = 0u,
         COMMAND_ENCODER_FLAG_RENDER  = 1u << 0,
@@ -328,7 +328,7 @@ private:
             COMMAND_ENCODER_FLAG_COMPUTE
     };
 
-    enum DEBUG_GROUP_TYPE : Uint32
+    enum DEBUG_GROUP_TYPE : UInt32
     {
         // Debug group was started within render pass encoder
         DEBUG_GROUP_TYPE_RENDER,
@@ -343,7 +343,7 @@ private:
         DEBUG_GROUP_TYPE_NULL
     };
 
-    enum OCCLUSION_QUERY_TYPE : Uint32
+    enum OCCLUSION_QUERY_TYPE : UInt32
     {
         // Occlusion query was started within render pass encoder
         OCCLUSION_QUERY_TYPE_INNER,
@@ -356,7 +356,7 @@ private:
     WGPURenderPassEncoder  GetRenderPassCommandEncoder();
     WGPUComputePassEncoder GetComputePassCommandEncoder();
 
-    void EndCommandEncoders(Uint32 EncoderFlags = COMMAND_ENCODER_FLAG_ALL);
+    void EndCommandEncoders(UInt32 EncoderFlags = COMMAND_ENCODER_FLAG_ALL);
 
     void CommitRenderTargets();
     void CommitSubpassRenderTargets();
@@ -366,12 +366,12 @@ private:
                          COLOR_MASK                ColorMask,
                          CLEAR_DEPTH_STENCIL_FLAGS DSFlags,
                          const float               ClearData[],
-                         Uint8                     Stencil);
+                         UInt8                     Stencil);
 
     WGPURenderPassEncoder  PrepareForDraw(DRAW_FLAGS Flags);
     WGPURenderPassEncoder  PrepareForIndexedDraw(DRAW_FLAGS Flags, VALUE_TYPE IndexType);
     WGPUComputePassEncoder PrepareForDispatchCompute();
-    WGPUBuffer             PrepareForIndirectCommand(IBuffer* pAttribsBuffer, Uint64& IdirectBufferOffset);
+    WGPUBuffer             PrepareForIndirectCommand(IBuffer* pAttribsBuffer, UInt64& IdirectBufferOffset);
 
     void CommitGraphicsPSO(WGPURenderPassEncoder CmdEncoder);
     void CommitComputePSO(WGPUComputePassEncoder CmdEncoder);
@@ -381,7 +381,7 @@ private:
     void CommitScissorRects(WGPURenderPassEncoder CmdEncoder);
 
     template <typename CmdEncoderType>
-    void CommitBindGroups(CmdEncoderType CmdEncoder, Uint32 CommitSRBMask);
+    void CommitBindGroups(CmdEncoderType CmdEncoder, UInt32 CommitSRBMask);
 
     UploadMemoryManagerWebGPU::Allocation  AllocateUploadMemory(size_t Size, size_t Alignment = 16);
     DynamicMemoryManagerWebGPU::Allocation AllocateDynamicMemory(size_t Size, size_t Alignment = 16);
@@ -396,7 +396,7 @@ private:
 
     struct WebGPUEncoderState
     {
-        enum CMD_ENCODER_STATE_FLAGS : Uint32
+        enum CMD_ENCODER_STATE_FLAGS : UInt32
         {
             CMD_ENCODER_STATE_NONE           = 0,
             CMD_ENCODER_STATE_PIPELINE_STATE = 1 << 0,
@@ -430,11 +430,11 @@ private:
             *this = WebGPUEncoderState{};
         }
 
-        Uint32 CmdEncoderUpToDateStates = CMD_ENCODER_STATE_NONE;
+        UInt32 CmdEncoderUpToDateStates = CMD_ENCODER_STATE_NONE;
         bool   HasDynamicVertexBuffers  = false;
 
-        std::array<Uint64, MAX_BUFFER_SLOTS> VertexBufferOffsets = []() {
-            std::array<Uint64, MAX_BUFFER_SLOTS> InvalidOffsets;
+        std::array<UInt64, MAX_BUFFER_SLOTS> VertexBufferOffsets = []() {
+            std::array<UInt64, MAX_BUFFER_SLOTS> InvalidOffsets;
             InvalidOffsets.fill(UINT64_MAX);
             return InvalidOffsets;
         }();
@@ -451,12 +451,12 @@ private:
             WGPUBindGroup wgpuBindGroup = nullptr;
 
             // Bind index to use with wgpuEncoderSetBindGroup
-            Uint32 BindIndex = ~0u;
+            UInt32 BindIndex = ~0u;
 
             // Memory to store dynamic buffer offsets for wgpuEncoderSetBindGroup.
             // The total number of resources with dynamic offsets is given by pSignature->GetDynamicOffsetCount().
             // Note that this is not the actual number of dynamic buffers in the resource cache.
-            std::vector<Uint32> DynamicBufferOffsets;
+            std::vector<UInt32> DynamicBufferOffsets;
 
             bool IsActive() const
             {
@@ -480,7 +480,7 @@ private:
     {
         using RenderTargetClearColors = std::array<float[4], MAX_RENDER_TARGETS>;
 
-        void SetColor(Uint32 RTIndex, const float Color[])
+        void SetColor(UInt32 RTIndex, const float Color[])
         {
             for (int i = 0; i < 4; ++i)
                 Colors[RTIndex][i] = Color[i];
@@ -491,13 +491,13 @@ private:
             Depth = _Depth;
             Flags |= DepthFlag;
         }
-        void SetStencil(Uint8 _Stencil)
+        void SetStencil(UInt8 _Stencil)
         {
             Stencil = _Stencil;
             Flags |= StencilFlag;
         }
 
-        bool ColorPending(Uint32 RTIndex) const
+        bool ColorPending(UInt32 RTIndex) const
         {
             return Flags & (RT0Flag << RTIndex);
         }
@@ -526,14 +526,14 @@ private:
 
         RenderTargetClearColors Colors  = {};
         float                   Depth   = 0;
-        Uint8                   Stencil = 0;
+        UInt8                   Stencil = 0;
 
     private:
-        static constexpr Uint32 RT0Flag     = 1U;
-        static constexpr Uint32 DepthFlag   = 1U << MAX_RENDER_TARGETS;
-        static constexpr Uint32 StencilFlag = 1U << (MAX_RENDER_TARGETS + 1);
+        static constexpr UInt32 RT0Flag     = 1U;
+        static constexpr UInt32 DepthFlag   = 1U << MAX_RENDER_TARGETS;
+        static constexpr UInt32 StencilFlag = 1U << (MAX_RENDER_TARGETS + 1);
 
-        Uint32 Flags = 0;
+        UInt32 Flags = 0;
     } m_PendingClears;
 
     struct PendingQuery
@@ -545,8 +545,8 @@ private:
     struct MappedTextureKey
     {
         const UniqueIdentifier TextureId;
-        const Uint32           MipLevel;
-        const Uint32           ArraySlice;
+        const UInt32           MipLevel;
+        const UInt32           ArraySlice;
 
         bool operator==(const MappedTextureKey& RHS) const
         {
@@ -579,7 +579,7 @@ private:
 #endif
     };
 
-    using PendingFenceList        = std::vector<std::pair<Uint64, RefCntAutoPtr<FenceWebGPUImpl>>>;
+    using PendingFenceList        = std::vector<std::pair<UInt64, RefCntAutoPtr<FenceWebGPUImpl>>>;
     using PendingQueryList        = std::vector<PendingQuery>;
     using AttachmentClearList     = std::vector<OptimizedClearValue>;
     using UploadMemoryPageList    = std::vector<UploadMemoryManagerWebGPU::Page>;
@@ -587,7 +587,7 @@ private:
     using MappedTexturesCache     = std::unordered_map<MappedTextureKey, MappedTexture, MappedTextureKey::Hasher>;
     using MappedBuffersCache      = std::vector<MappedBuffer>;
     using DebugGroupStack         = std::vector<DEBUG_GROUP_TYPE>;
-    using OcclusionQueryStack     = std::vector<std::pair<OCCLUSION_QUERY_TYPE, Uint32>>;
+    using OcclusionQueryStack     = std::vector<std::pair<OCCLUSION_QUERY_TYPE, UInt32>>;
     using PendingStagingResources = std::unordered_map<WebGPUResourceBase::StagingBufferInfo*, RefCntAutoPtr<IObject>>;
 
     WebGPUQueueWrapper              m_wgpuQueue;
@@ -609,7 +609,7 @@ private:
     PendingStagingResources m_PendingStagingWrites;
 
     RefCntAutoPtr<IFence> m_pFence;
-    Uint64                m_FenceValue = 0;
+    UInt64                m_FenceValue = 0;
 };
 
 } // namespace Diligent

@@ -37,13 +37,13 @@ namespace Diligent
 
 /// The maximum number of shader stages in a pipeline.
 /// (Vertex, Hull, Domain, Geometry, Pixel) or (Amplification, Mesh, Pixel), or (Compute) or (RayGen, Miss, ClosestHit, AnyHit, Intersection, Callable)
-static constexpr Uint32 MAX_SHADERS_IN_PIPELINE = 6;
+static constexpr UInt32 MAX_SHADERS_IN_PIPELINE = 6;
 
 // The maximum number of resources in pipeline resources signature.
-static constexpr Uint32 MAX_RESOURCES_IN_SIGNATURE = (1u << 16u) - 1u;
+static constexpr UInt32 MAX_RESOURCES_IN_SIGNATURE = (1u << 16u) - 1u;
 
-static constexpr Uint32 MAX_COMMAND_QUEUES = 64;
+static constexpr UInt32 MAX_COMMAND_QUEUES = 64;
 
-static constexpr Uint8 INVALID_CONTEXT_ID = 0xFFu;
+static constexpr UInt8 INVALID_CONTEXT_ID = 0xFFu;
 
 } // namespace Diligent

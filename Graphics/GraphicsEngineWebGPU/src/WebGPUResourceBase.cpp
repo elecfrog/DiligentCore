@@ -127,7 +127,7 @@ WebGPUResourceBase::StagingBufferInfo* WebGPUResourceBase::GetStagingBuffer(WGPU
         FindStagingWriteBuffer(wgpuDevice);
 }
 
-void* WebGPUResourceBase::Map(MAP_TYPE MapType, Uint64 Offset)
+void* WebGPUResourceBase::Map(MAP_TYPE MapType, UInt64 Offset)
 {
     VERIFY(m_MapState == MapState::None, "Resource is already mapped");
     VERIFY(Offset < m_MappedData.size(), "Offset (", Offset, ") exceeds the mapped data size (", m_MappedData.size(), ")");

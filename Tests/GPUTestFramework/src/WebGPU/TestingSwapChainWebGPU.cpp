@@ -200,7 +200,7 @@ void TestingSwapChainWebGPU::TakeSnapshot(ITexture* pCopyFrom)
                 pThis->m_ReferenceDataPitch = pThis->m_SwapChainDesc.Width * 4;
                 pThis->m_ReferenceData.resize(pThis->m_ReferenceDataPitch * pThis->m_SwapChainDesc.Height);
 
-                const auto* pMappedData = static_cast<const Uint8*>(wgpuBufferGetConstMappedRange(pThis->m_wgpuStagingBuffer, 0, pThis->m_ReferenceData.size()));
+                const auto* pMappedData = static_cast<const UInt8*>(wgpuBufferGetConstMappedRange(pThis->m_wgpuStagingBuffer, 0, pThis->m_ReferenceData.size()));
                 VERIFY_EXPR(pMappedData != nullptr);
 
                 memcpy(pThis->m_ReferenceData.data(), pMappedData, pThis->m_ReferenceData.size());

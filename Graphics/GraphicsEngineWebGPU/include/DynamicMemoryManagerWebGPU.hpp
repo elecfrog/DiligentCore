@@ -33,7 +33,7 @@
 #include <vector>
 
 #include "WebGPUObjectWrappers.hpp"
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 
 namespace Diligent
 {
@@ -55,9 +55,9 @@ public:
         WGPUBuffer wgpuBuffer = nullptr;
         size_t     Offset     = 0;
         size_t     Size       = 0;
-        Uint8*     pData      = nullptr;
+        UInt8*     pData      = nullptr;
 #ifdef DILIGENT_DEVELOPMENT
-        Uint64 dvpFrameNumber = 0;
+        UInt64 dvpFrameNumber = 0;
 #endif
     };
 
@@ -113,7 +113,7 @@ private:
 
     std::mutex         m_AvailablePagesMtx;
     std::vector<Page>  m_AvailablePages;
-    std::vector<Uint8> m_MappedData;
+    std::vector<UInt8> m_MappedData;
 };
 
 } // namespace Diligent

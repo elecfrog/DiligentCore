@@ -367,7 +367,7 @@ protected:
     RefCntAutoPtr<IShaderResourceBinding> m_pColorSRB;
 
 private:
-    void InitializeRenderPass(GraphicsPipelineDesc& GraphicsPipeline, IRenderPass* pRenderPass, Uint8 SubpassIndex)
+    void InitializeRenderPass(GraphicsPipelineDesc& GraphicsPipeline, IRenderPass* pRenderPass, UInt8 SubpassIndex)
     {
         GraphicsPipeline.pRenderPass  = pRenderPass;
         GraphicsPipeline.SubpassIndex = SubpassIndex;

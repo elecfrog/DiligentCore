@@ -51,7 +51,7 @@ namespace Diligent
 struct ImmutableSamplerAttribsD3D11
 {
 public:
-    Uint32                  ArraySize = 1;
+    UInt32                  ArraySize = 1;
     D3D11ResourceBindPoints BindPoints;
 
     ImmutableSamplerAttribsD3D11() noexcept {}
@@ -93,7 +93,7 @@ public:
     // Shifts resource bindings by the number of resources in each shader stage and resource range.
     __forceinline void ShiftBindings(D3D11ShaderResourceCounters& Bindings) const
     {
-        for (Uint32 r = 0; r < D3D11_RESOURCE_RANGE_COUNT; ++r)
+        for (UInt32 r = 0; r < D3D11_RESOURCE_RANGE_COUNT; ++r)
             Bindings[r] += m_ResourceCounters[r];
     }
 
@@ -109,7 +109,7 @@ public:
 #ifdef DILIGENT_DEVELOPMENT
     /// Verifies committed resource using the D3D resource attributes from the PSO.
     bool DvpValidateCommittedResource(const D3DShaderResourceAttribs& D3DAttribs,
-                                      Uint32                          ResIndex,
+                                      UInt32                          ResIndex,
                                       const ShaderResourceCacheD3D11& ResourceCache,
                                       const char*                     ShaderName,
                                       const char*                     PSOName) const;
@@ -126,7 +126,7 @@ private:
     static constexpr int NumShaderTypes = D3D11ResourceBindPoints::NumShaderTypes;
 
     // Indicates which constant buffer slots are allowed to contain buffers with dynamic offsets.
-    std::array<Uint16, NumShaderTypes> m_DynamicCBSlotsMask{};
+    std::array<UInt16, NumShaderTypes> m_DynamicCBSlotsMask{};
     static_assert(sizeof(m_DynamicCBSlotsMask[0]) * 8 >= D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT, "Not enough bits for all dynamic buffer slots");
 };
 

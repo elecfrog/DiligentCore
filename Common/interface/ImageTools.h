@@ -29,7 +29,7 @@
 /// \file
 /// Image processing tools
 
-#include "../../Primitives/interface/BasicTypes.h"
+#include "CommonDefinitions.h"
 
 
 DILIGENT_BEGIN_NAMESPACE(Diligent)
@@ -40,13 +40,13 @@ DILIGENT_BEGIN_NAMESPACE(Diligent)
 struct ImageDiffInfo
 {
     /// The number of pixels that differ
-    Uint32 NumDiffPixels DEFAULT_INITIALIZER(0);
+    UInt32 NumDiffPixels DEFAULT_INITIALIZER(0);
 
     /// The number of pixels that differ above the threshold
-    Uint32 NumDiffPixelsAboveThreshold DEFAULT_INITIALIZER(0);
+    UInt32 NumDiffPixelsAboveThreshold DEFAULT_INITIALIZER(0);
 
     /// The maximum difference between any two pixels
-    Uint32 MaxDiff DEFAULT_INITIALIZER(0);
+    UInt32 MaxDiff DEFAULT_INITIALIZER(0);
 
     /// The average difference between all pixels, not counting pixels that are equal
     float AvgDiff DEFAULT_INITIALIZER(0);
@@ -61,42 +61,42 @@ typedef struct ImageDiffInfo ImageDiffInfo;
 struct ComputeImageDifferenceAttribs
 {
     /// Image width
-    Uint32 Width DEFAULT_INITIALIZER(0);
+    UInt32 Width DEFAULT_INITIALIZER(0);
 
     /// Image height
-    Uint32 Height DEFAULT_INITIALIZER(0);
+    UInt32 Height DEFAULT_INITIALIZER(0);
 
     /// A pointer to the first image data
     const void* pImage1 DEFAULT_INITIALIZER(nullptr);
 
     /// Number of channels in the first image
-    Uint32 NumChannels1 DEFAULT_INITIALIZER(0);
+    UInt32 NumChannels1 DEFAULT_INITIALIZER(0);
 
     /// Row stride of the first image data, in bytes
-    Uint32 Stride1 DEFAULT_INITIALIZER(0);
+    UInt32 Stride1 DEFAULT_INITIALIZER(0);
 
     /// A pointer to the second image data
     const void* pImage2 DEFAULT_INITIALIZER(nullptr);
 
     /// Number of channels in the second image
-    Uint32 NumChannels2 DEFAULT_INITIALIZER(0);
+    UInt32 NumChannels2 DEFAULT_INITIALIZER(0);
 
     /// Row stride of the second image data, in bytes
-    Uint32 Stride2 DEFAULT_INITIALIZER(0);
+    UInt32 Stride2 DEFAULT_INITIALIZER(0);
 
     /// Difference threshold
-    Uint32 Threshold DEFAULT_INITIALIZER(0);
+    UInt32 Threshold DEFAULT_INITIALIZER(0);
 
     /// A pointer to the difference image data.
     /// If null, the difference image will not be computed.
     void* pDiffImage DEFAULT_INITIALIZER(nullptr);
 
     /// Row stride of the difference image data, in bytes
-    Uint32 DiffStride DEFAULT_INITIALIZER(0);
+    UInt32 DiffStride DEFAULT_INITIALIZER(0);
 
     /// Number of channels in the difference image.
     /// If 0, the number of channels will be the same as in the input images.
-    Uint32 NumDiffChannels DEFAULT_INITIALIZER(0);
+    UInt32 NumDiffChannels DEFAULT_INITIALIZER(0);
 
     /// Scale factor for the difference image
     float Scale DEFAULT_INITIALIZER(1.f);

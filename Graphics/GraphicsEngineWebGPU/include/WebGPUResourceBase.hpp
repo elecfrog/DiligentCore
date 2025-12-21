@@ -60,7 +60,7 @@ public:
     void ProcessAsyncReadback(StagingBufferInfo& Buffer);
 
 protected:
-    void* Map(MAP_TYPE MapType, Uint64 Offset);
+    void* Map(MAP_TYPE MapType, UInt64 Offset);
     void  Unmap();
 
 private:

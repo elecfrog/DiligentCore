@@ -219,7 +219,7 @@ void SerializationDeviceImpl::CreateTilePipelineState(const TilePipelineStateCre
 }
 
 void SerializationDeviceImpl::GetPipelineResourceBindings(const PipelineResourceBindingAttribs& Info,
-                                                          Uint32&                               NumBindings,
+                                                          UInt32&                               NumBindings,
                                                           const PipelineResourceBinding*&       pBindings)
 {
     NumBindings = 0;
@@ -260,20 +260,20 @@ void SerializationDeviceImpl::GetPipelineResourceBindings(const PipelineResource
             return;
     }
 
-    NumBindings = static_cast<Uint32>(m_ResourceBindings.size());
+    NumBindings = static_cast<UInt32>(m_ResourceBindings.size());
     pBindings   = m_ResourceBindings.data();
 }
 
 PipelineResourceBinding SerializationDeviceImpl::ResDescToPipelineResBinding(const PipelineResourceDesc& ResDesc,
                                                                              SHADER_TYPE                 Stages,
-                                                                             Uint32                      Register,
-                                                                             Uint32                      Space)
+                                                                             UInt32                      Register,
+                                                                             UInt32                      Space)
 {
     PipelineResourceBinding BindigDesc;
     BindigDesc.Name         = ResDesc.Name;
     BindigDesc.ResourceType = ResDesc.ResourceType;
     BindigDesc.Register     = Register;
-    BindigDesc.Space        = StaticCast<Uint16>(Space);
+    BindigDesc.Space        = StaticCast<UInt16>(Space);
     BindigDesc.ArraySize    = (ResDesc.Flags & PIPELINE_RESOURCE_FLAG_RUNTIME_ARRAY) == 0 ? ResDesc.ArraySize : 0;
     BindigDesc.ShaderStages = Stages;
     return BindigDesc;

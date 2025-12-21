@@ -50,13 +50,13 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_CommandQueue =
 DILIGENT_BEGIN_INTERFACE(ICommandQueue, IObject)
 {
     /// Returns the value of the internal fence that will be signaled next time
-    VIRTUAL Uint64 METHOD(GetNextFenceValue)(THIS) CONST PURE;
+    VIRTUAL UInt64 METHOD(GetNextFenceValue)(THIS) CONST PURE;
 
     /// Returns the last completed value of the internal fence
-    VIRTUAL Uint64 METHOD(GetCompletedFenceValue)(THIS) PURE;
+    VIRTUAL UInt64 METHOD(GetCompletedFenceValue)(THIS) PURE;
 
     /// Blocks execution until all pending GPU commands are complete
-    VIRTUAL Uint64 METHOD(WaitForIdle)(THIS) PURE;
+    VIRTUAL UInt64 METHOD(WaitForIdle)(THIS) PURE;
 };
 DILIGENT_END_INTERFACE
 

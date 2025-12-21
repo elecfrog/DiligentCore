@@ -63,7 +63,7 @@ GLContext::GLContext(const EngineGLCreateInfo& InitAttribs,
     LOG_INFO_MESSAGE(InitAttribs.Window.WindowId != 0 ? "Initialized OpenGL " : "Attached to OpenGL ", MajorVersion, '.', MinorVersion, " context (", GLVersionString, ", ", GLRenderer, ')');
 
     DevType    = RENDER_DEVICE_TYPE_GL;
-    APIVersion = Version{static_cast<Uint32>(MajorVersion), static_cast<Uint32>(MinorVersion)};
+    APIVersion = Version{static_cast<UInt32>(MajorVersion), static_cast<UInt32>(MinorVersion)};
 }
 
 GLContext::~GLContext()

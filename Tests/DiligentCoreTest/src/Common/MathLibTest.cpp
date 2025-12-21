@@ -2145,16 +2145,16 @@ TEST(Common_BasicMath, FastFrac)
 
 TEST(Common_BasicMath, BitInterleave16)
 {
-    for (Uint32 i = 0; i <= 16; ++i)
+    for (UInt32 i = 0; i <= 16; ++i)
     {
-        for (Uint32 j = 0; j <= 16; ++j)
+        for (UInt32 j = 0; j <= 16; ++j)
         {
-            Uint16 x = i < 16 ? (1u << i) : 0u;
-            Uint16 y = j < 16 ? (1u << j) : 0u;
+            UInt16 x = i < 16 ? (1u << i) : 0u;
+            UInt16 y = j < 16 ? (1u << j) : 0u;
 
-            Uint32 res = 0;
-            res |= x != 0 ? (Uint32{1} << (i * 2u)) : 0;
-            res |= y != 0 ? (Uint32{2} << (j * 2u)) : 0;
+            UInt32 res = 0;
+            res |= x != 0 ? (UInt32{1} << (i * 2u)) : 0;
+            res |= y != 0 ? (UInt32{2} << (j * 2u)) : 0;
             EXPECT_EQ(BitInterleave16(x, y), res);
         }
     }
@@ -2163,46 +2163,46 @@ TEST(Common_BasicMath, BitInterleave16)
 TEST(Common_BasicMath, ExtractLSB)
 {
     {
-        Uint32 Bits = 0;
+        UInt32 Bits = 0;
         EXPECT_EQ(ExtractLSB(Bits), 0U);
         EXPECT_EQ(Bits, 0U);
     }
 
-    for (Uint8 i = 0; i < 8; ++i)
+    for (UInt8 i = 0; i < 8; ++i)
     {
-        const Uint8 Bit = 1 << i;
+        const UInt8 Bit = 1 << i;
 
-        Uint8 Bits = Bit;
+        UInt8 Bits = Bit;
         EXPECT_EQ(ExtractLSB(Bits), Bit);
         EXPECT_EQ(Bits, 0U);
     }
 
-    for (Uint32 i = 0; i < 32; ++i)
+    for (UInt32 i = 0; i < 32; ++i)
     {
-        const Uint32 Bit = 1 << i;
+        const UInt32 Bit = 1 << i;
 
-        Uint32 Bits = Bit;
+        UInt32 Bits = Bit;
         EXPECT_EQ(ExtractLSB(Bits), Bit);
         EXPECT_EQ(Bits, 0U);
     }
 
-    for (Uint64 i = 0; i < 64; ++i)
+    for (UInt64 i = 0; i < 64; ++i)
     {
-        const Uint64 Bit = Uint64{1} << i;
+        const UInt64 Bit = UInt64{1} << i;
 
-        Uint64 Bits = Bit;
+        UInt64 Bits = Bit;
         EXPECT_EQ(ExtractLSB(Bits), Bit);
         EXPECT_EQ(Bits, 0U);
     }
 
-    for (Uint32 i = 0; i < 32; ++i)
+    for (UInt32 i = 0; i < 32; ++i)
     {
-        for (Uint32 j = i + 1; j < 32; ++j)
+        for (UInt32 j = i + 1; j < 32; ++j)
         {
-            const Uint32 LSB = 1 << i;
-            const Uint32 MSB = 1 << j;
+            const UInt32 LSB = 1 << i;
+            const UInt32 MSB = 1 << j;
 
-            Uint32 Bits = LSB | MSB;
+            UInt32 Bits = LSB | MSB;
             EXPECT_EQ(ExtractLSB(Bits), LSB);
             EXPECT_EQ(ExtractLSB(Bits), MSB);
             EXPECT_EQ(Bits, 0U);
@@ -2210,7 +2210,7 @@ TEST(Common_BasicMath, ExtractLSB)
     }
 
     {
-        enum FLAG_ENUM : Uint32
+        enum FLAG_ENUM : UInt32
         {
             FLAG_ENUM_00 = 0x00,
             FLAG_ENUM_01 = 0x01,
@@ -2967,14 +2967,14 @@ TEST(Common_AdvancedMath, GetPointToOrientedBoxDistance)
 
 TEST(Common_AdvancedMath, TriangulatePolygon2D)
 {
-    Polygon2DTriangulator<Uint32> Triangulator;
+    Polygon2DTriangulator<UInt32> Triangulator;
 
     {
         const std::vector<int2> Verts = {
             {0, 0},
             {1, 0},
             {0, 1}};
-        const std::vector<Uint32> RefTris = {0, 1, 2};
+        const std::vector<UInt32> RefTris = {0, 1, 2};
 
         const auto Tris = Triangulator.Triangulate(Verts);
         EXPECT_EQ(Triangulator.GetResult(), TRIANGULATE_POLYGON_RESULT_OK);
@@ -2999,7 +2999,7 @@ TEST(Common_AdvancedMath, TriangulatePolygon2D)
                 Verts.push_back(BaseVerts[(start_vert + i) % BaseVerts.size()]);
         }
 
-        const std::vector<Uint32> RefTris = {3, 0, 1, 1, 2, 3};
+        const std::vector<UInt32> RefTris = {3, 0, 1, 1, 2, 3};
 
         const auto Tris = Triangulator.Triangulate(Verts);
         EXPECT_EQ(Triangulator.GetResult(), TRIANGULATE_POLYGON_RESULT_OK);
@@ -3023,7 +3023,7 @@ TEST(Common_AdvancedMath, TriangulatePolygon2D)
             for (size_t i = 0; i < BaseVerts.size(); ++i)
                 Verts.push_back(BaseVerts[(start_vert + i) % BaseVerts.size()]);
         }
-        const std::vector<Uint32> RefTris = {3, 0, 1, 1, 2, 3};
+        const std::vector<UInt32> RefTris = {3, 0, 1, 1, 2, 3};
 
         const auto Tris = Triangulator.Triangulate(Verts);
         EXPECT_EQ(Triangulator.GetResult(), TRIANGULATE_POLYGON_RESULT_OK);
@@ -3052,7 +3052,7 @@ TEST(Common_AdvancedMath, TriangulatePolygon2D)
                 Verts.push_back(BaseVerts[(start_vert + i) % BaseVerts.size()]);
         }
 
-        std::vector<Uint32> RefTris;
+        std::vector<UInt32> RefTris;
         switch (start_vert)
         {
             //
@@ -3123,7 +3123,7 @@ TEST(Common_AdvancedMath, TriangulatePolygon2D)
                 Verts.push_back(BaseVerts[(start_vert + i) % BaseVerts.size()]);
         }
 
-        std::vector<Uint32> RefTris;
+        std::vector<UInt32> RefTris;
         switch (start_vert)
         {
             // Same as above
@@ -3159,7 +3159,7 @@ TEST(Common_AdvancedMath, TriangulatePolygon2D)
                 Verts.push_back(BaseVerts[(start_vert + i) % BaseVerts.size()]);
         }
 
-        const std::vector<Uint32> RefTris = {3, 0, 1, 1, 2, 3};
+        const std::vector<UInt32> RefTris = {3, 0, 1, 1, 2, 3};
 
         const auto Tris = Triangulator.Triangulate(Verts);
         EXPECT_EQ(Triangulator.GetResult(), TRIANGULATE_POLYGON_RESULT_OK);
@@ -3187,7 +3187,7 @@ TEST(Common_AdvancedMath, TriangulatePolygon2D)
                 Verts.push_back(BaseVerts[(start_vert + i) % BaseVerts.size()]);
         }
 
-        const std::vector<Uint32> RefTris = {3, 0, 1, 1, 2, 3};
+        const std::vector<UInt32> RefTris = {3, 0, 1, 1, 2, 3};
 
         const auto Tris = Triangulator.Triangulate(Verts);
         EXPECT_EQ(Triangulator.GetResult(), TRIANGULATE_POLYGON_RESULT_OK);
@@ -3217,7 +3217,7 @@ TEST(Common_AdvancedMath, TriangulatePolygon2D)
             for (size_t i = 0; i < BaseVerts.size(); ++i)
                 Verts.push_back(BaseVerts[(start_vert + i) % BaseVerts.size()]);
         }
-        std::vector<Uint32> RefTris;
+        std::vector<UInt32> RefTris;
         switch (start_vert)
         {
             case 0: RefTris = {0, 1, 2, 0, 2, 3, 5, 0, 3, 3, 4, 5}; break;
@@ -3296,7 +3296,7 @@ TEST(Common_AdvancedMath, TriangulatePolygon2D)
         const auto Tris = Triangulator.Triangulate(Verts);
         EXPECT_EQ(Triangulator.GetResult() & ~TRIANGULATE_POLYGON_RESULT_INVALID_EAR, TRIANGULATE_POLYGON_RESULT_OK);
 
-        const std::vector<Uint32> RefTris = {1, 2, 3, 1, 3, 4, 0, 1, 4, 0, 4, 5, 10, 0, 5, 5, 6, 7, 5, 7, 8, 5, 8, 9, 5, 9, 10};
+        const std::vector<UInt32> RefTris = {1, 2, 3, 1, 3, 4, 0, 1, 4, 0, 4, 5, 10, 0, 5, 5, 6, 7, 5, 7, 8, 5, 8, 9, 5, 9, 10};
         EXPECT_EQ(Tris, RefTris);
     }
 }
@@ -3335,9 +3335,9 @@ TEST(Common_AdvancedMath, TriangulatePolygon3D)
             }
         }
 
-        const std::vector<Uint32> RefTris = {0, 1, 2, 0, 2, 3, 5, 0, 3, 3, 4, 5};
+        const std::vector<UInt32> RefTris = {0, 1, 2, 0, 2, 3, 5, 0, 3, 3, 4, 5};
 
-        Polygon3DTriangulator<Uint32, float> Triangulator;
+        Polygon3DTriangulator<UInt32, float> Triangulator;
         const auto                           Tris = Triangulator.Triangulate(Verts);
         EXPECT_EQ(Triangulator.GetResult(), TRIANGULATE_POLYGON_RESULT_OK);
         EXPECT_EQ(Tris, RefTris);
@@ -3354,8 +3354,8 @@ TEST(Common_AdvancedMath, TriangulatePolygon3D)
             {0.129021034, 0.165564433, 0.119771279},
             {0.104520433, 0.182026073, 0.119771279},
         };
-        Polygon3DTriangulator<Uint32, double> Triangulator;
-        const std::vector<Uint32>             RefTris = {0, 1, 2, 7, 0, 2, 7, 2, 3, 7, 3, 4, 7, 4, 5, 5, 6, 7};
+        Polygon3DTriangulator<UInt32, double> Triangulator;
+        const std::vector<UInt32>             RefTris = {0, 1, 2, 7, 0, 2, 7, 2, 3, 7, 3, 4, 7, 4, 5, 5, 6, 7};
         const auto                            Tris    = Triangulator.Triangulate(Verts);
         EXPECT_EQ(Triangulator.GetResult(), TRIANGULATE_POLYGON_RESULT_OK);
         EXPECT_EQ(Tris, RefTris);

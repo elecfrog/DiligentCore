@@ -94,9 +94,9 @@ TEST(PipelineResourceSignatureBaseTest, Compatibility)
         VERIFY_EXPR(TestSam[0] != RefSam[0]);
         VERIFY_EXPR(TestSam[1] != RefSam[1]);
 
-        TestDesc.NumResources         = StaticCast<Uint32>(TestRes.size());
+        TestDesc.NumResources         = StaticCast<UInt32>(TestRes.size());
         TestDesc.Resources            = TestRes.data();
-        TestDesc.NumImmutableSamplers = StaticCast<Uint32>(TestSam.size());
+        TestDesc.NumImmutableSamplers = StaticCast<UInt32>(TestSam.size());
         TestDesc.ImmutableSamplers    = TestSam.data();
         VERIFY_EXPR(TestDesc.Resources != RefDesc.Resources);
         VERIFY_EXPR(TestDesc.ImmutableSamplers != RefDesc.ImmutableSamplers);
@@ -121,7 +121,7 @@ TEST(PipelineResourceSignatureBaseTest, Compatibility)
         Test([&TestSam, ShaderType]() { TestSam[1].ShaderStages = ShaderType; });
     }
 
-    for (Uint32 ArrSize = 0; ArrSize < 64; ++ArrSize)
+    for (UInt32 ArrSize = 0; ArrSize < 64; ++ArrSize)
     {
         Test([&TestRes, ArrSize]() { TestRes[0].ArraySize = (TestRes[0].ArraySize != ArrSize) ? ArrSize : 128; });
         Test([&TestRes, ArrSize]() { TestRes[1].ArraySize = (TestRes[1].ArraySize != ArrSize) ? ArrSize : 128; });

@@ -61,12 +61,12 @@ BufferD3D12Impl::BufferD3D12Impl(IReferenceCounters*        pRefCounters,
         LOG_ERROR_AND_THROW("Unified resources are not supported in Direct3D12");
     }
 
-    Uint32 BufferAlignment = 1;
+    UInt32 BufferAlignment = 1;
     if (m_Desc.BindFlags & BIND_UNIFORM_BUFFER)
         BufferAlignment = D3D12_CONSTANT_BUFFER_DATA_PLACEMENT_ALIGNMENT;
 
     if (m_Desc.Usage == USAGE_STAGING && m_Desc.CPUAccessFlags == CPU_ACCESS_WRITE)
-        BufferAlignment = std::max(BufferAlignment, Uint32{D3D12_TEXTURE_DATA_PITCH_ALIGNMENT});
+        BufferAlignment = std::max(BufferAlignment, UInt32{D3D12_TEXTURE_DATA_PITCH_ALIGNMENT});
 
     m_Desc.Size = AlignUp(m_Desc.Size, BufferAlignment);
 
@@ -136,7 +136,7 @@ BufferD3D12Impl::BufferD3D12Impl(IReferenceCounters*        pRefCounters,
             HeapProps.CreationNodeMask     = 1;
             HeapProps.VisibleNodeMask      = 1;
 
-            const Uint64 InitialDataSize = (pBuffData != nullptr && pBuffData->pData != nullptr) ?
+            const UInt64 InitialDataSize = (pBuffData != nullptr && pBuffData->pData != nullptr) ?
                 std::min(pBuffData->DataSize, d3d12BuffDesc.Width) :
                 0;
 
@@ -235,7 +235,7 @@ BufferD3D12Impl::BufferD3D12Impl(IReferenceCounters*        pRefCounters,
                 // Add reference to the object to the release queue to keep it alive
                 // until copy operation is complete. This must be done after
                 // submitting command list for execution!
-                pRenderDeviceD3D12->SafeReleaseDeviceObject(std::move(UploadBuffer), Uint64{1} << CmdQueueInd);
+                pRenderDeviceD3D12->SafeReleaseDeviceObject(std::move(UploadBuffer), UInt64{1} << CmdQueueInd);
             }
 
             if (m_Desc.BindFlags & BIND_UNIFORM_BUFFER)
@@ -257,7 +257,7 @@ static BufferDesc BufferDescFromD3D12Resource(BufferDesc BuffDesc, ID3D12Resourc
     DEV_CHECK_ERR(d3d12BuffDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER, "D3D12 resource is not a buffer");
 
     DEV_CHECK_ERR(BuffDesc.Size == 0 || BuffDesc.Size == d3d12BuffDesc.Width, "Buffer size specified by the BufferDesc (", BuffDesc.Size, ") does not match d3d12 resource size (", d3d12BuffDesc.Width, ")");
-    BuffDesc.Size = StaticCast<Uint32>(d3d12BuffDesc.Width);
+    BuffDesc.Size = StaticCast<UInt32>(d3d12BuffDesc.Width);
 
     if (d3d12BuffDesc.Flags & D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS)
     {
@@ -385,26 +385,26 @@ void BufferD3D12Impl::CreateSRV(struct BufferViewDesc& SRVDesc, D3D12_CPU_DESCRI
 }
 
 void BufferD3D12Impl::CreateCBV(D3D12_CPU_DESCRIPTOR_HANDLE CBVDescriptor,
-                                Uint64                      Offset,
-                                Uint64                      Size) const
+                                UInt64                      Offset,
+                                UInt64                      Size) const
 {
     VERIFY((Offset % D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) == 0, "Offset (", Offset, ") must be ", D3D12_TEXTURE_DATA_PITCH_ALIGNMENT, "-aligned");
     VERIFY(Offset + Size <= m_Desc.Size, "Range is out of bounds");
     if (Size == 0)
     {
         // CBV can be at most 65536 bytes (D3D12_REQ_CONSTANT_BUFFER_ELEMENT_COUNT * 16 bytes)
-        Size = std::min(m_Desc.Size - Offset, Uint64{D3D12_REQ_CONSTANT_BUFFER_ELEMENT_COUNT} * 16u);
+        Size = std::min(m_Desc.Size - Offset, UInt64{D3D12_REQ_CONSTANT_BUFFER_ELEMENT_COUNT} * 16u);
     }
 
     D3D12_CONSTANT_BUFFER_VIEW_DESC D3D12_CBVDesc;
     D3D12_CBVDesc.BufferLocation = m_pd3d12Resource->GetGPUVirtualAddress() + Offset;
-    D3D12_CBVDesc.SizeInBytes    = StaticCast<UINT>(AlignUp(Size, Uint32{D3D12_TEXTURE_DATA_PITCH_ALIGNMENT}));
+    D3D12_CBVDesc.SizeInBytes    = StaticCast<UINT>(AlignUp(Size, UInt32{D3D12_TEXTURE_DATA_PITCH_ALIGNMENT}));
 
     ID3D12Device* pd3d12Device = GetDevice()->GetD3D12Device();
     pd3d12Device->CreateConstantBufferView(&D3D12_CBVDesc, CBVDescriptor);
 }
 
-ID3D12Resource* BufferD3D12Impl::GetD3D12Buffer(Uint64& DataStartByteOffset, IDeviceContext* pContext)
+ID3D12Resource* BufferD3D12Impl::GetD3D12Buffer(UInt64& DataStartByteOffset, IDeviceContext* pContext)
 {
     ID3D12Resource* pd3d12Resource = GetD3D12Resource();
     if (pd3d12Resource != nullptr)
@@ -452,7 +452,7 @@ SparseBufferProperties BufferD3D12Impl::GetSparseProperties() const
            "Expected to be a standard block size");
 
     SparseBufferProperties Props;
-    Props.AddressSpaceSize = Uint64{NumTilesForEntireResource} * StandardTileShapeForNonPackedMips.WidthInTexels;
+    Props.AddressSpaceSize = UInt64{NumTilesForEntireResource} * StandardTileShapeForNonPackedMips.WidthInTexels;
     Props.BlockSize        = StandardTileShapeForNonPackedMips.WidthInTexels;
     return Props;
 }

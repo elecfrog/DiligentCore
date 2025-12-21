@@ -70,7 +70,7 @@ public:
     {}
 
     void DILIGENT_CALL_TYPE EnumerateAdapters(Version              MinVersion,
-                                              Uint32&              NumAdapters,
+                                              UInt32&              NumAdapters,
                                               GraphicsAdapterInfo* Adapters) const override final;
 
     void DILIGENT_CALL_TYPE CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
@@ -541,18 +541,18 @@ GraphicsAdapterInfo GetGraphicsAdapterInfo(WGPUAdapter wgpuAdapter, WGPUDevice w
 } // namespace
 
 void EngineFactoryWebGPUImpl::EnumerateAdapters(Version              MinVersion,
-                                                Uint32&              NumAdapters,
+                                                UInt32&              NumAdapters,
                                                 GraphicsAdapterInfo* Adapters) const
 {
     WebGPUInstanceWrapper             wgpuInstance = InitializeWebGPUInstance(true);
     std::vector<WebGPUAdapterWrapper> wgpuAdapters = FindCompatibleAdapters(wgpuInstance.Get(), MinVersion);
 
     if (Adapters == nullptr)
-        NumAdapters = static_cast<Uint32>(wgpuAdapters.size());
+        NumAdapters = static_cast<UInt32>(wgpuAdapters.size());
     else
     {
-        NumAdapters = (std::min)(NumAdapters, static_cast<Uint32>(wgpuAdapters.size()));
-        for (Uint32 AdapterId = 0; AdapterId < NumAdapters; ++AdapterId)
+        NumAdapters = (std::min)(NumAdapters, static_cast<UInt32>(wgpuAdapters.size()));
+        for (UInt32 AdapterId = 0; AdapterId < NumAdapters; ++AdapterId)
         {
             WebGPUAdapterWrapper& wgpuAdapter{wgpuAdapters[AdapterId]};
             Adapters[AdapterId] = GetGraphicsAdapterInfo(wgpuAdapter.Get());

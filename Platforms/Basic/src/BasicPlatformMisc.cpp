@@ -42,7 +42,7 @@ ThreadPriority BasicPlatformMisc::SetCurrentThreadPriority(ThreadPriority Priori
     return ThreadPriority::Unknown;
 }
 
-Uint64 BasicPlatformMisc::SetCurrentThreadAffinity(Uint64 Mask)
+UInt64 BasicPlatformMisc::SetCurrentThreadAffinity(UInt64 Mask)
 {
     LOG_WARNING_MESSAGE_ONCE("SetCurrentThreadAffinity is not implemented on this platform.");
     return 0;

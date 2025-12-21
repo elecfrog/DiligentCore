@@ -58,11 +58,11 @@ public:
     struct GetProgramAttribs
     {
         ShaderGLImpl* const*         ppShaders          = nullptr;
-        Uint32                       NumShaders         = 0;
+        UInt32                       NumShaders         = 0;
         bool                         IsSeparableProgram = false;
         PipelineResourceLayoutDesc*  pResourceLayout    = nullptr;
         IPipelineResourceSignature** ppSignatures       = nullptr;
-        Uint32                       NumSignatures      = 0;
+        UInt32                       NumSignatures      = 0;
     };
 
     SharedGLProgramObjPtr GetProgram(const GetProgramAttribs& Attribs);

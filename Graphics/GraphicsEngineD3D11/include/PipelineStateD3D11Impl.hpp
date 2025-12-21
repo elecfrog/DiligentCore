@@ -91,15 +91,15 @@ public:
     /// Implementation of IPipelineStateD3D11::GetD3D11ComputeShader() method.
     virtual ID3D11ComputeShader* DILIGENT_CALL_TYPE GetD3D11ComputeShader() override final { return GetD3D11Shader<ID3D11ComputeShader>(CSInd); }
 
-    Uint32 GetNumShaders() const { return m_NumShaders; }
+    UInt32 GetNumShaders() const { return m_NumShaders; }
 
-    const D3D11ShaderResourceCounters& GetBaseBindings(Uint32 Index) const
+    const D3D11ShaderResourceCounters& GetBaseBindings(UInt32 Index) const
     {
         VERIFY_EXPR(Index < GetResourceSignatureCount());
         return m_BaseBindings[Index];
     }
 
-    Uint8 GetNumPixelUAVs() const
+    UInt8 GetNumPixelUAVs() const
     {
         return m_NumPixelUAVs;
     }
@@ -118,7 +118,7 @@ public:
 
     static void RemapOrVerifyShaderResources(const TShaderStages&                                     Shaders,
                                              const RefCntAutoPtr<PipelineResourceSignatureD3D11Impl>* pSignatures,
-                                             Uint32                                                   SignatureCount,
+                                             UInt32                                                   SignatureCount,
                                              D3D11ShaderResourceCounters*                             pBaseBindings, // [SignatureCount]
                                              const THandleRemappedBytecodeFn&                         HandleRemappedBytecodeFn,
                                              const TValidateShaderResourcesFn&                        ValidateShaderResourcesFn = {},
@@ -128,7 +128,7 @@ public:
         const TShaderStages&              ShaderStages,
         const char*                       PSOName,
         const PipelineResourceLayoutDesc& ResourceLayout,
-        Uint32                            SRBAllocationGranularity) noexcept(false);
+        UInt32                            SRBAllocationGranularity) noexcept(false);
 
 private:
     template <typename PSOCreateInfoType>
@@ -150,7 +150,7 @@ private:
     void ValidateShaderResources(const ShaderD3D11Impl* pShader);
 
     template <typename D3D11ShaderType>
-    D3D11ShaderType* GetD3D11Shader(Uint32 ShaderInd)
+    D3D11ShaderType* GetD3D11Shader(UInt32 ShaderInd)
     {
         Int8 idx = m_ShaderIndices[ShaderInd];
         return idx >= 0 ? static_cast<D3D11ShaderType*>(m_ppd3d11Shaders[idx].p) : nullptr;
@@ -161,10 +161,10 @@ private:
     std::array<Int8, D3D11ResourceBindPoints::NumShaderTypes> m_ShaderIndices = {-1, -1, -1, -1, -1, -1};
 
     // The number of shader stages in this pipeline
-    Uint8 m_NumShaders = 0;
+    UInt8 m_NumShaders = 0;
 
     // The total number of pixel shader UAVs used by this pipeline, including render targets
-    Uint8 m_NumPixelUAVs = 0;
+    UInt8 m_NumPixelUAVs = 0;
 
     CComPtr<ID3D11BlendState>        m_pd3d11BlendState;
     CComPtr<ID3D11RasterizerState>   m_pd3d11RasterizerState;

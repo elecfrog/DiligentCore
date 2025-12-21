@@ -43,7 +43,7 @@ struct hash<Diligent::UploadBufferDesc>
 {
     size_t operator()(const Diligent::UploadBufferDesc& Desc) const
     {
-        return Diligent::ComputeHash(Desc.Width, Desc.Height, Desc.Depth, Desc.MipLevels, Desc.ArraySize, static_cast<Diligent::Int32>(Desc.Format));
+        return Diligent::ComputeHash(Desc.Width, Desc.Height, Desc.Depth, Desc.MipLevels, Desc.ArraySize, static_cast<Int32>(Desc.Format));
     }
 };
 
@@ -87,15 +87,15 @@ public:
             StagingTexDesc.MipLevels = Desc.MipLevels;
             StagingTexDesc.Format    = Desc.Format;
 
-            constexpr Uint32 Alignment              = 4;
-            const Uint64     StagingTextureDataSize = GetStagingTextureDataSize(StagingTexDesc, Alignment);
+            constexpr UInt32 Alignment              = 4;
+            const UInt64     StagingTextureDataSize = GetStagingTextureDataSize(StagingTexDesc, Alignment);
             m_StagingData.resize(static_cast<size_t>(StagingTextureDataSize));
 
-            for (Uint32 Slice = 0; Slice < Desc.ArraySize; ++Slice)
+            for (UInt32 Slice = 0; Slice < Desc.ArraySize; ++Slice)
             {
-                for (Uint32 Mip = 0; Mip < Desc.MipLevels; ++Mip)
+                for (UInt32 Mip = 0; Mip < Desc.MipLevels; ++Mip)
                 {
-                    const Uint64             SubresOffset = GetStagingTextureSubresourceOffset(StagingTexDesc, Slice, Mip, Alignment);
+                    const UInt64             SubresOffset = GetStagingTextureSubresourceOffset(StagingTexDesc, Slice, Mip, Alignment);
                     const MipLevelProperties MipProps     = GetMipLevelProperties(StagingTexDesc, Mip);
 
                     MappedTextureSubresource MappedData;
@@ -108,20 +108,20 @@ public:
         }
     }
 
-    virtual MappedTextureSubresource GetMappedData(Uint32 Mip, Uint32 Slice) override final
+    virtual MappedTextureSubresource GetMappedData(UInt32 Mip, UInt32 Slice) override final
     {
         VERIFY_EXPR(Mip < m_Desc.MipLevels && Slice < m_Desc.ArraySize);
         return m_MappedData[size_t{m_Desc.MipLevels} * size_t{Slice} + size_t{Mip}];
     }
     virtual const UploadBufferDesc& GetDesc() const override final { return m_Desc; }
 
-    void SetMappedData(Uint32 Mip, Uint32 Slice, const MappedTextureSubresource& MappedData)
+    void SetMappedData(UInt32 Mip, UInt32 Slice, const MappedTextureSubresource& MappedData)
     {
         VERIFY_EXPR(Mip < m_Desc.MipLevels && Slice < m_Desc.ArraySize);
         m_MappedData[size_t{m_Desc.MipLevels} * size_t{Slice} + size_t{Mip}] = MappedData;
     }
 
-    bool IsMapped(Uint32 Mip, Uint32 Slice) const
+    bool IsMapped(UInt32 Mip, UInt32 Slice) const
     {
         VERIFY_EXPR(Mip < m_Desc.MipLevels && Slice < m_Desc.ArraySize);
         return m_MappedData[size_t{m_Desc.MipLevels} * size_t{Slice} + size_t{Mip}].pData != nullptr;
@@ -141,7 +141,7 @@ public:
 protected:
     const UploadBufferDesc                m_Desc;
     std::vector<MappedTextureSubresource> m_MappedData;
-    std::vector<Uint8>                    m_StagingData;
+    std::vector<UInt8>                    m_StagingData;
 };
 
 class TextureUploaderBase : public ObjectBase<ITextureUploader>
@@ -167,8 +167,8 @@ public:
         RefCntAutoPtr<UploadBufferType> pUploadBuffer;
         RefCntAutoPtr<ITexture>         pDstTexture;
 
-        Uint32 DstSlice = 0;
-        Uint32 DstMip   = 0;
+        UInt32 DstSlice = 0;
+        UInt32 DstMip   = 0;
 
         PendingOperation(Type Op, UploadBufferType* pBuff) :
             OpType{Op},
@@ -180,8 +180,8 @@ public:
         PendingOperation(Type              Op,
                          UploadBufferType* pBuff,
                          ITexture*         pDstTex,
-                         Uint32            dstSlice,
-                         Uint32            dstMip,
+                         UInt32            dstSlice,
+                         UInt32            dstMip,
                          bool              Recycle) :
             OpType{Op},
             AutoRecycle{Recycle},

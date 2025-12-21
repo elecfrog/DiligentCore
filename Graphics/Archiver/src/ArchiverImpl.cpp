@@ -69,7 +69,7 @@ ArchiverImpl::~ArchiverImpl()
 {
 }
 
-Bool ArchiverImpl::SerializeToBlob(Uint32 ContentVersion, IDataBlob** ppBlob)
+Bool ArchiverImpl::SerializeToBlob(UInt32 ContentVersion, IDataBlob** ppBlob)
 {
     DEV_CHECK_ERR(ppBlob != nullptr, "ppBlob must not be null");
     if (ppBlob == nullptr)
@@ -78,7 +78,7 @@ Bool ArchiverImpl::SerializeToBlob(Uint32 ContentVersion, IDataBlob** ppBlob)
     DeviceObjectArchive Archive{ContentVersion};
 
     // A hash map that maps shader byte code to the index in the archive, for each device type
-    std::array<std::unordered_map<size_t, Uint32>, static_cast<size_t>(DeviceType::Count)> BytecodeHashToIdx;
+    std::array<std::unordered_map<size_t, UInt32>, static_cast<size_t>(DeviceType::Count)> BytecodeHashToIdx;
 
     // Add pipelines and patched shaders
     for (const auto& pso_it : m_Pipelines)
@@ -126,13 +126,13 @@ Bool ArchiverImpl::SerializeToBlob(Uint32 ContentVersion, IDataBlob** ppBlob)
 
             auto& DstShaders = Archive.GetDeviceShaders(static_cast<DeviceType>(device_type));
 
-            std::vector<Uint32> ShaderIndices;
+            std::vector<UInt32> ShaderIndices;
             ShaderIndices.reserve(SrcShaders.size());
             for (const SerializedPipelineStateImpl::Data::ShaderInfo& SrcShader : SrcShaders)
             {
                 VERIFY_EXPR(SrcShader.Data);
 
-                auto it_inserted = BytecodeHashToIdx[device_type].emplace(SrcShader.Hash, StaticCast<Uint32>(DstShaders.size()));
+                auto it_inserted = BytecodeHashToIdx[device_type].emplace(SrcShader.Hash, StaticCast<UInt32>(DstShaders.size()));
                 if (it_inserted.second)
                 {
                     // New byte code - add it
@@ -141,7 +141,7 @@ Bool ArchiverImpl::SerializeToBlob(Uint32 ContentVersion, IDataBlob** ppBlob)
                 ShaderIndices.emplace_back(it_inserted.first->second);
             }
 
-            DeviceObjectArchive::ShaderIndexArray Indices{ShaderIndices.data(), StaticCast<Uint32>(ShaderIndices.size())};
+            DeviceObjectArchive::ShaderIndexArray Indices{ShaderIndices.data(), StaticCast<UInt32>(ShaderIndices.size())};
 
             // For pipelines, device-specific data is the shader indices
             SerializedData& SerializedIndices = DstData.DeviceSpecific[device_type];
@@ -214,13 +214,13 @@ Bool ArchiverImpl::SerializeToBlob(Uint32 ContentVersion, IDataBlob** ppBlob)
                 continue;
 
             auto& DstShaders  = Archive.GetDeviceShaders(static_cast<DeviceType>(device_type));
-            auto  it_inserted = BytecodeHashToIdx[device_type].emplace(DeviceData.GetHash(), StaticCast<Uint32>(DstShaders.size()));
+            auto  it_inserted = BytecodeHashToIdx[device_type].emplace(DeviceData.GetHash(), StaticCast<UInt32>(DstShaders.size()));
             if (it_inserted.second)
             {
                 // New byte code
                 DstShaders.emplace_back(std::move(DeviceData));
             }
-            const Uint32 Index = it_inserted.first->second;
+            const UInt32 Index = it_inserted.first->second;
 
             // For shaders, device-specific data is the serialized shader bytecode index
             SerializedData& SerializedIndex = DstData.DeviceSpecific[device_type];
@@ -241,7 +241,7 @@ Bool ArchiverImpl::SerializeToBlob(Uint32 ContentVersion, IDataBlob** ppBlob)
 }
 
 
-Bool ArchiverImpl::SerializeToStream(Uint32 ContentVersion, IFileStream* pStream)
+Bool ArchiverImpl::SerializeToStream(UInt32 ContentVersion, IFileStream* pStream)
 {
     DEV_CHECK_ERR(pStream != nullptr, "pStream must not be null");
     if (pStream == nullptr)

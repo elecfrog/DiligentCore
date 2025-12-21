@@ -55,7 +55,7 @@ QueryGLImpl::~QueryGLImpl()
 {
 }
 
-bool QueryGLImpl::GetData(void* pData, Uint32 DataSize, bool AutoInvalidate)
+bool QueryGLImpl::GetData(void* pData, UInt32 DataSize, bool AutoInvalidate)
 {
     TQueryBase::CheckQueryDataPtr(pData, DataSize);
 

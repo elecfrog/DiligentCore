@@ -52,7 +52,7 @@ public:
 
     ~ManagedVulkanObject()
     {
-        m_pDevice->SafeReleaseDeviceObject(std::move(m_VkObject), ~Uint64{0});
+        m_pDevice->SafeReleaseDeviceObject(std::move(m_VkObject), ~UInt64{0});
     }
 
     static void Create(RenderDeviceVkImpl*   pDevice,

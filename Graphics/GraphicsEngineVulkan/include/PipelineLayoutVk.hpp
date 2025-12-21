@@ -47,13 +47,13 @@ public:
     PipelineLayoutVk();
     ~PipelineLayoutVk();
 
-    void Create(RenderDeviceVkImpl* pDeviceVk, RefCntAutoPtr<PipelineResourceSignatureVkImpl> ppSignatures[], Uint32 SignatureCount) noexcept(false);
-    void Release(RenderDeviceVkImpl* pDeviceVkImpl, Uint64 CommandQueueMask);
+    void Create(RenderDeviceVkImpl* pDeviceVk, RefCntAutoPtr<PipelineResourceSignatureVkImpl> ppSignatures[], UInt32 SignatureCount) noexcept(false);
+    void Release(RenderDeviceVkImpl* pDeviceVkImpl, UInt64 CommandQueueMask);
 
     VkPipelineLayout GetVkPipelineLayout() const { return m_VkPipelineLayout; }
 
     // Returns the index of the first descriptor set used by the resource signature at the given bind index
-    Uint32 GetFirstDescrSetIndex(Uint32 Index) const
+    UInt32 GetFirstDescrSetIndex(UInt32 Index) const
     {
         VERIFY_EXPR(Index <= m_DbgMaxBindIndex);
         return m_FirstDescrSetIndex[Index];
@@ -62,16 +62,16 @@ public:
 private:
     VulkanUtilities::PipelineLayoutWrapper m_VkPipelineLayout;
 
-    using FirstDescrSetIndexArrayType = std::array<Uint8, MAX_RESOURCE_SIGNATURES>;
+    using FirstDescrSetIndexArrayType = std::array<UInt8, MAX_RESOURCE_SIGNATURES>;
     // Index of the first descriptor set, for every resource signature.
     FirstDescrSetIndexArrayType m_FirstDescrSetIndex = {};
 
     // The total number of descriptor sets used by this pipeline layout
     // (Maximum is MAX_RESOURCE_SIGNATURES * 2)
-    Uint8 m_DescrSetCount = 0;
+    UInt8 m_DescrSetCount = 0;
 
 #ifdef DILIGENT_DEBUG
-    Uint32 m_DbgMaxBindIndex = 0;
+    UInt32 m_DbgMaxBindIndex = 0;
 #endif
 };
 

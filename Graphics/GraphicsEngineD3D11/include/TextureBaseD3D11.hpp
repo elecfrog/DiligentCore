@@ -61,7 +61,7 @@ public:
     virtual ID3D11Resource* DILIGENT_CALL_TYPE GetD3D11Texture() const override final { return m_pd3d11Texture; }
 
     /// Implementation of ITexture::GetNativeHandle().
-    virtual Uint64 DILIGENT_CALL_TYPE GetNativeHandle() override final { return BitCast<Uint64>(GetD3D11Texture()); }
+    virtual UInt64 DILIGENT_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetD3D11Texture()); }
 
     void AddState(RESOURCE_STATE State)
     {
@@ -85,7 +85,7 @@ public:
 protected:
     void CreateViewInternal(const struct TextureViewDesc& ViewDesc, ITextureView** ppView, bool bIsDefaultView) override final;
     void PrepareD3D11InitData(const TextureData*                                                               pInitData,
-                              Uint32                                                                           NumSubresources,
+                              UInt32                                                                           NumSubresources,
                               std::vector<D3D11_SUBRESOURCE_DATA, STDAllocatorRawMem<D3D11_SUBRESOURCE_DATA>>& D3D11InitData);
 
     void InitSparseProperties();

@@ -128,10 +128,10 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryD3D11, IEngineFactory)
     ///                                    the actual number of display modes written.
     VIRTUAL void METHOD(EnumerateDisplayModes)(THIS_
                                                Version                MinFeatureLevel,
-                                               Uint32                 AdapterId,
-                                               Uint32                 OutputId,
+                                               UInt32                 AdapterId,
+                                               UInt32                 OutputId,
                                                TEXTURE_FORMAT         Format,
-                                               Uint32 REF             NumDisplayModes,
+                                               UInt32 REF             NumDisplayModes,
                                                DisplayModeAttribs*    DisplayModes) PURE;
 };
 DILIGENT_END_INTERFACE

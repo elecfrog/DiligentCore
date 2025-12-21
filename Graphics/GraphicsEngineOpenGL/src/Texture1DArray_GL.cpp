@@ -80,9 +80,9 @@ Texture1DArray_GL::Texture1DArray_GL(IReferenceCounters*        pRefCounters,
     {
         if (m_Desc.MipLevels * m_Desc.ArraySize == pInitData->NumSubresources)
         {
-            for (Uint32 Slice = 0; Slice < m_Desc.ArraySize; ++Slice)
+            for (UInt32 Slice = 0; Slice < m_Desc.ArraySize; ++Slice)
             {
-                for (Uint32 Mip = 0; Mip < m_Desc.MipLevels; ++Mip)
+                for (UInt32 Mip = 0; Mip < m_Desc.MipLevels; ++Mip)
                 {
                     Box DstBox{0, std::max(m_Desc.Width >> Mip, 1U),
                                0, 1};
@@ -134,8 +134,8 @@ Texture1DArray_GL::~Texture1DArray_GL()
 }
 
 void Texture1DArray_GL::UpdateData(GLContextState&          ContextState,
-                                   Uint32                   MipLevel,
-                                   Uint32                   Slice,
+                                   UInt32                   MipLevel,
+                                   UInt32                   Slice,
                                    const Box&               DstBox,
                                    const TextureSubResData& SubresData)
 {

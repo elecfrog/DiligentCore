@@ -97,7 +97,7 @@ private:
     }
     std::vector<CComPtr<ID3D11Query>> m_AvailableQueries;
 
-    Uint32 m_NumQueriesCreated = 0;
+    UInt32 m_NumQueriesCreated = 0;
 };
 
 } // namespace Diligent

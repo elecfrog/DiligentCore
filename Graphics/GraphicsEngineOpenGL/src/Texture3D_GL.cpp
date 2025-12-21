@@ -83,7 +83,7 @@ Texture3D_GL::Texture3D_GL(IReferenceCounters*        pRefCounters,
     {
         if (m_Desc.MipLevels == pInitData->NumSubresources)
         {
-            for (Uint32 Mip = 0; Mip < m_Desc.MipLevels; ++Mip)
+            for (UInt32 Mip = 0; Mip < m_Desc.MipLevels; ++Mip)
             {
                 Box DstBox{0, std::max(m_Desc.Width >> Mip, 1U),
                            0, std::max(m_Desc.Height >> Mip, 1U),
@@ -136,8 +136,8 @@ Texture3D_GL::~Texture3D_GL()
 
 
 void Texture3D_GL::UpdateData(GLContextState&          ContextState,
-                              Uint32                   MipLevel,
-                              Uint32                   Slice,
+                              UInt32                   MipLevel,
+                              UInt32                   Slice,
                               const Box&               DstBox,
                               const TextureSubResData& SubresData)
 {
@@ -166,7 +166,7 @@ void Texture3D_GL::UpdateData(GLContextState&          ContextState,
     glPixelStorei(GL_UNPACK_SKIP_IMAGES, 0);
 
     const TextureFormatAttribs TexFmtInfo = GetTextureFormatAttribs(m_Desc.Format);
-    const Uint32               PixelSize  = Uint32{TexFmtInfo.NumComponents} * Uint32{TexFmtInfo.ComponentSize};
+    const UInt32               PixelSize  = UInt32{TexFmtInfo.NumComponents} * UInt32{TexFmtInfo.ComponentSize};
     VERIFY((SubresData.Stride % PixelSize) == 0, "Data stride is not multiple of pixel size");
     glPixelStorei(GL_UNPACK_ROW_LENGTH, StaticCast<GLint>(SubresData.Stride / PixelSize));
 
@@ -196,7 +196,7 @@ void Texture3D_GL::UpdateData(GLContextState&          ContextState,
 
 void Texture3D_GL::AttachToFramebuffer(const TextureViewDesc& ViewDesc, GLenum AttachmentPoint, FRAMEBUFFER_TARGET_FLAGS Targets)
 {
-    Uint32 NumDepthSlicesInMip = m_Desc.Depth >> ViewDesc.MostDetailedMip;
+    UInt32 NumDepthSlicesInMip = m_Desc.Depth >> ViewDesc.MostDetailedMip;
     if (ViewDesc.NumDepthSlices == 1)
     {
         // For glFramebufferTexture3D(), if texture name is not zero, then texture target must be GL_TEXTURE_3D

@@ -175,8 +175,8 @@ protected:
         pContext->Draw(drawAttrs);
     }
 
-    static constexpr Uint32 sm_NumTestQueries = 3;
-    static constexpr Uint32 sm_NumFrames      = 5;
+    static constexpr UInt32 sm_NumTestQueries = 3;
+    static constexpr UInt32 sm_NumFrames      = 5;
 
     void InitTestQueries(IDeviceContext* pContext, std::vector<RefCntAutoPtr<IQuery>>& Queries, const QueryDesc& queryDesc)
     {
@@ -195,10 +195,10 @@ protected:
         }
 
         // Nested queries are not supported by OpenGL and Vulkan
-        for (Uint32 i = 0; i < sm_NumTestQueries; ++i)
+        for (UInt32 i = 0; i < sm_NumTestQueries; ++i)
         {
             pContext->BeginQuery(Queries[i]);
-            for (Uint32 j = 0; j < i + 1; ++j)
+            for (UInt32 j = 0; j < i + 1; ++j)
                 DrawQuad(pContext);
             pContext->EndQuery(Queries[i]);
             Queries[i]->GetData(nullptr, 0);
@@ -222,7 +222,7 @@ protected:
         {
             // glFinish() is not a guarantee that queries will become available.
             // Even using glFenceSync + glClientWaitSync does not help.
-            for (Uint32 i = 0; i < sm_NumTestQueries; ++i)
+            for (UInt32 i = 0; i < sm_NumTestQueries; ++i)
             {
                 WaitForQuery(Queries[i]);
             }
@@ -235,7 +235,7 @@ protected:
             std::this_thread::sleep_for(std::chrono::microseconds{1});
     }
 
-    static constexpr Uint32 sm_TextureSize = 512;
+    static constexpr UInt32 sm_TextureSize = 512;
 
     static RefCntAutoPtr<ITextureView>   sm_pRTV;
     static RefCntAutoPtr<IPipelineState> sm_pPSO;
@@ -257,7 +257,7 @@ TEST_F(QueryTest, PipelineStats)
     GPUTestingEnvironment::ScopedReset EnvironmentAutoReset;
 
     auto* pEnv = GPUTestingEnvironment::GetInstance();
-    for (Uint32 q = 0; q < pEnv->GetNumImmediateContexts(); ++q)
+    for (UInt32 q = 0; q < pEnv->GetNumImmediateContexts(); ++q)
     {
         auto* pContext = pEnv->GetDeviceContext(q);
 
@@ -269,13 +269,13 @@ TEST_F(QueryTest, PipelineStats)
         queryDesc.Type = QUERY_TYPE_PIPELINE_STATISTICS;
 
         std::vector<RefCntAutoPtr<IQuery>> Queries;
-        for (Uint32 frame = 0; frame < sm_NumFrames; ++frame)
+        for (UInt32 frame = 0; frame < sm_NumFrames; ++frame)
         {
             InitTestQueries(pContext, Queries, queryDesc);
 
-            for (Uint32 i = 0; i < sm_NumTestQueries; ++i)
+            for (UInt32 i = 0; i < sm_NumTestQueries; ++i)
             {
-                Uint32 DrawCounter = 1 + i;
+                UInt32 DrawCounter = 1 + i;
 
                 QueryDataPipelineStatistics QueryData;
 
@@ -309,7 +309,7 @@ TEST_F(QueryTest, Occlusion)
     GPUTestingEnvironment::ScopedReset EnvironmentAutoReset;
 
     auto* pEnv = GPUTestingEnvironment::GetInstance();
-    for (Uint32 q = 0; q < pEnv->GetNumImmediateContexts(); ++q)
+    for (UInt32 q = 0; q < pEnv->GetNumImmediateContexts(); ++q)
     {
         auto* pContext = pEnv->GetDeviceContext(q);
 
@@ -321,13 +321,13 @@ TEST_F(QueryTest, Occlusion)
         queryDesc.Type = QUERY_TYPE_OCCLUSION;
 
         std::vector<RefCntAutoPtr<IQuery>> Queries;
-        for (Uint32 frame = 0; frame < sm_NumFrames; ++frame)
+        for (UInt32 frame = 0; frame < sm_NumFrames; ++frame)
         {
             InitTestQueries(pContext, Queries, queryDesc);
 
-            for (Uint32 i = 0; i < sm_NumTestQueries; ++i)
+            for (UInt32 i = 0; i < sm_NumTestQueries; ++i)
             {
-                Uint32 DrawCounter = 1 + i;
+                UInt32 DrawCounter = 1 + i;
 
                 QueryDataOcclusion QueryData;
 
@@ -358,7 +358,7 @@ TEST_F(QueryTest, BinaryOcclusion)
     GPUTestingEnvironment::ScopedReset EnvironmentAutoReset;
 
     auto* pEnv = GPUTestingEnvironment::GetInstance();
-    for (Uint32 q = 0; q < pEnv->GetNumImmediateContexts(); ++q)
+    for (UInt32 q = 0; q < pEnv->GetNumImmediateContexts(); ++q)
     {
         auto* pContext = pEnv->GetDeviceContext(q);
 
@@ -370,11 +370,11 @@ TEST_F(QueryTest, BinaryOcclusion)
         queryDesc.Type = QUERY_TYPE_BINARY_OCCLUSION;
 
         std::vector<RefCntAutoPtr<IQuery>> Queries;
-        for (Uint32 frame = 0; frame < sm_NumFrames; ++frame)
+        for (UInt32 frame = 0; frame < sm_NumFrames; ++frame)
         {
             InitTestQueries(pContext, Queries, queryDesc);
 
-            for (Uint32 i = 0; i < sm_NumTestQueries; ++i)
+            for (UInt32 i = 0; i < sm_NumTestQueries; ++i)
             {
                 QueryDataBinaryOcclusion QueryData;
 
@@ -401,7 +401,7 @@ TEST_F(QueryTest, Timestamp)
 
     GPUTestingEnvironment::ScopedReset EnvironmentAutoReset;
 
-    for (Uint32 q = 0; q < pEnv->GetNumImmediateContexts(); ++q)
+    for (UInt32 q = 0; q < pEnv->GetNumImmediateContexts(); ++q)
     {
         auto* pContext = pEnv->GetDeviceContext(q);
 
@@ -420,7 +420,7 @@ TEST_F(QueryTest, Timestamp)
         pDevice->CreateQuery(queryDesc, &pQueryEnd);
         ASSERT_NE(pQueryEnd, nullptr) << "Failed to create timestamp query";
 
-        for (Uint32 frame = 0; frame < sm_NumFrames; ++frame)
+        for (UInt32 frame = 0; frame < sm_NumFrames; ++frame)
         {
             pContext->EndQuery(pQueryStart);
             pQueryStart->GetData(nullptr, 0);
@@ -468,7 +468,7 @@ TEST_F(QueryTest, Duration)
     GPUTestingEnvironment::ScopedReset EnvironmentAutoReset;
 
     auto* pEnv = GPUTestingEnvironment::GetInstance();
-    for (Uint32 q = 0; q < pEnv->GetNumImmediateContexts(); ++q)
+    for (UInt32 q = 0; q < pEnv->GetNumImmediateContexts(); ++q)
     {
         auto* pContext = pEnv->GetDeviceContext(q);
 
@@ -480,11 +480,11 @@ TEST_F(QueryTest, Duration)
         queryDesc.Type = QUERY_TYPE_DURATION;
 
         std::vector<RefCntAutoPtr<IQuery>> Queries;
-        for (Uint32 frame = 0; frame < sm_NumFrames; ++frame)
+        for (UInt32 frame = 0; frame < sm_NumFrames; ++frame)
         {
             InitTestQueries(pContext, Queries, queryDesc);
 
-            for (Uint32 i = 0; i < sm_NumTestQueries; ++i)
+            for (UInt32 i = 0; i < sm_NumTestQueries; ++i)
             {
                 QueryDataDuration QueryData;
 
@@ -508,7 +508,7 @@ TEST_F(QueryTest, DeferredContexts)
         GTEST_SKIP() << "Time queries are not supported by this device";
     }
 
-    Uint32 NumDeferredCtx = static_cast<Uint32>(pEnv->GetNumDeferredContexts());
+    UInt32 NumDeferredCtx = static_cast<UInt32>(pEnv->GetNumDeferredContexts());
     if (NumDeferredCtx == 0)
     {
         GTEST_SKIP() << "Deferred contexts are not supported by this device";
@@ -528,7 +528,7 @@ TEST_F(QueryTest, DeferredContexts)
         queryDesc.Name = "Duration query";
         queryDesc.Type = QUERY_TYPE_DURATION;
         pDurations.resize(NumDeferredCtx);
-        for (Uint32 i = 0; i < NumDeferredCtx; ++i)
+        for (UInt32 i = 0; i < NumDeferredCtx; ++i)
         {
             pDevice->CreateQuery(queryDesc, &pDurations[i]);
             ASSERT_NE(pDurations[i], nullptr);
@@ -542,7 +542,7 @@ TEST_F(QueryTest, DeferredContexts)
         queryDesc.Type = QUERY_TYPE_TIMESTAMP;
         pStartTimestamps.resize(NumDeferredCtx);
         pEndTimestamps.resize(NumDeferredCtx);
-        for (Uint32 i = 0; i < NumDeferredCtx; ++i)
+        for (UInt32 i = 0; i < NumDeferredCtx; ++i)
         {
             queryDesc.Name = "Start timestamp query";
             pDevice->CreateQuery(queryDesc, &pStartTimestamps[i]);
@@ -555,7 +555,7 @@ TEST_F(QueryTest, DeferredContexts)
     }
 
     auto* pSwapChain = pEnv->GetSwapChain();
-    for (Uint32 q = 0; q < pEnv->GetNumImmediateContexts(); ++q)
+    for (UInt32 q = 0; q < pEnv->GetNumImmediateContexts(); ++q)
     {
         auto* pImmediateCtx = pEnv->GetDeviceContext(q);
 
@@ -572,13 +572,13 @@ TEST_F(QueryTest, DeferredContexts)
         std::vector<RefCntAutoPtr<ICommandList>> CmdLists(NumDeferredCtx);
         std::vector<ICommandList*>               CmdListPtrs(NumDeferredCtx);
 
-        std::atomic<Uint32> NumCmdListsReady{0};
+        std::atomic<UInt32> NumCmdListsReady{0};
         Threading::Signal   FinishFrameSignal;
         Threading::Signal   ExecuteCommandListsSignal;
-        for (Uint32 i = 0; i < NumDeferredCtx; ++i)
+        for (UInt32 i = 0; i < NumDeferredCtx; ++i)
         {
             WorkerThreads[i] = std::thread(
-                [&](Uint32 thread_id) //
+                [&](UInt32 thread_id) //
                 {
                     auto* pCtx = pEnv->GetDeferredContext(thread_id);
 
@@ -643,7 +643,7 @@ TEST_F(QueryTest, DeferredContexts)
 
         if (DeviceInfo.Features.TimestampQueries)
         {
-            for (Uint32 i = 0; i < NumDeferredCtx; ++i)
+            for (UInt32 i = 0; i < NumDeferredCtx; ++i)
             {
                 IQuery* pQueryStart = pStartTimestamps[i];
                 IQuery* pQueryEnd   = pEndTimestamps[i];

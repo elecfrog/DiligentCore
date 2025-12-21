@@ -40,7 +40,7 @@ namespace Diligent
 class ResourceRegistry
 {
 public:
-    using ResourceIdType = Uint32;
+    using ResourceIdType = UInt32;
 
     ResourceRegistry()  = default;
     ~ResourceRegistry() = default;

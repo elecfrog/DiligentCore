@@ -116,7 +116,7 @@ class ObjectsRegistry
 public:
     using WeakPtrType = typename _StrongPtrHelper<StrongPtrType>::WeakPtrType;
 
-    explicit ObjectsRegistry(Uint32 NumRequestsToPurge = 1024) noexcept :
+    explicit ObjectsRegistry(UInt32 NumRequestsToPurge = 1024) noexcept :
         m_NumRequestsToPurge{NumRequestsToPurge}
     {}
 
@@ -327,9 +327,9 @@ private:
 private:
     using CacheType = std::unordered_map<KeyType, std::shared_ptr<ObjectWrapper>, KeyHasher, KeyEqual>;
 
-    const Uint32 m_NumRequestsToPurge;
+    const UInt32 m_NumRequestsToPurge;
 
-    std::atomic<Uint32> m_NumRequestsSinceLastPurge{0};
+    std::atomic<UInt32> m_NumRequestsSinceLastPurge{0};
 
     std::mutex m_CacheMtx;
     CacheType  m_Cache;

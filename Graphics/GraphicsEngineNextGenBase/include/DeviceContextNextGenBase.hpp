@@ -29,7 +29,7 @@
 
 #include <atomic>
 
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "ReferenceCounters.h"
 #include "DeviceContextBase.hpp"
 #include "RefCntAutoPtr.hpp"
@@ -53,7 +53,7 @@ public:
                              const DeviceContextDesc& Desc) :
         // clang-format off
         TBase{pRefCounters, pRenderDevice, Desc},
-        m_SubmittedBuffersCmdQueueMask{Desc.IsDeferred ? 0 : Uint64{1} << Uint64{Desc.ContextId}}
+        m_SubmittedBuffersCmdQueueMask{Desc.IsDeferred ? 0 : UInt64{1} << UInt64{Desc.ContextId}}
     // clang-format on
     {
     }
@@ -81,7 +81,7 @@ public:
 
     HardwareQueueIndex GetHardwareQueueId() const { return HardwareQueueIndex{this->m_Desc.QueueId}; }
 
-    Uint64 GetSubmittedBuffersCmdQueueMask() const { return m_SubmittedBuffersCmdQueueMask.load(); }
+    UInt64 GetSubmittedBuffersCmdQueueMask() const { return m_SubmittedBuffersCmdQueueMask.load(); }
 
 protected:
     // Should be called at the end of FinishFrame()
@@ -99,9 +99,9 @@ protected:
         TBase::EndFrame();
     }
 
-    void UpdateSubmittedBuffersCmdQueueMask(Uint32 QueueId)
+    void UpdateSubmittedBuffersCmdQueueMask(UInt32 QueueId)
     {
-        m_SubmittedBuffersCmdQueueMask.fetch_or(Uint64{1} << Uint64{QueueId});
+        m_SubmittedBuffersCmdQueueMask.fetch_or(UInt64{1} << UInt64{QueueId});
     }
 
 private:
@@ -110,7 +110,7 @@ private:
     // For deferred contexts, this will accumulate bits of the queues to which command buffers
     // were submitted to before FinishFrame() was called. This mask is used to release resources
     // allocated by the context during the frame when FinishFrame() is called.
-    std::atomic<Uint64> m_SubmittedBuffersCmdQueueMask{0};
+    std::atomic<UInt64> m_SubmittedBuffersCmdQueueMask{0};
 };
 
 } // namespace Diligent

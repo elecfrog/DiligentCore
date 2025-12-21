@@ -112,7 +112,7 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactory, IObject)
     /// \note OpenGL backend only supports one device; features and properties will have limited information.
     VIRTUAL void METHOD(EnumerateAdapters)(THIS_
                                            Version              MinVersion,
-                                           Uint32 REF           NumAdapters,
+                                           UInt32 REF           NumAdapters,
                                            GraphicsAdapterInfo* Adapters) CONST PURE;
 
     /// Creates a dearchiver object.

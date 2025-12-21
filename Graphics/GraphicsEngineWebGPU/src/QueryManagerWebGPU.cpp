@@ -32,7 +32,7 @@
 namespace Diligent
 {
 
-QueryManagerWebGPU::QueryManagerWebGPU(RenderDeviceWebGPUImpl* pRenderDeviceWebGPU, const Uint32 QueryHeapSizes[])
+QueryManagerWebGPU::QueryManagerWebGPU(RenderDeviceWebGPUImpl* pRenderDeviceWebGPU, const UInt32 QueryHeapSizes[])
 {
     const RenderDeviceInfo& DevInfo = pRenderDeviceWebGPU->GetDeviceInfo();
 
@@ -45,7 +45,7 @@ QueryManagerWebGPU::QueryManagerWebGPU(RenderDeviceWebGPUImpl* pRenderDeviceWebG
     static_assert(QUERY_TYPE_NUM_TYPES           == 6, "Unexpected value of QUERY_TYPE_NUM_TYPES. EngineWebGPUCreateInfo::QueryPoolSizes must be updated");
     // clang-format on
 
-    for (Uint32 QueryTypeIdx = QUERY_TYPE_UNDEFINED + 1; QueryTypeIdx < QUERY_TYPE_NUM_TYPES; ++QueryTypeIdx)
+    for (UInt32 QueryTypeIdx = QUERY_TYPE_UNDEFINED + 1; QueryTypeIdx < QUERY_TYPE_NUM_TYPES; ++QueryTypeIdx)
     {
         const QUERY_TYPE QueryType = static_cast<QUERY_TYPE>(QueryTypeIdx);
 
@@ -68,7 +68,7 @@ QueryManagerWebGPU::~QueryManagerWebGPU()
 {
     std::stringstream QueryUsageSS;
     QueryUsageSS << "WebGPU query manager peak usage:";
-    for (Uint32 QueryType = QUERY_TYPE_UNDEFINED + 1; QueryType < QUERY_TYPE_NUM_TYPES; ++QueryType)
+    for (UInt32 QueryType = QUERY_TYPE_UNDEFINED + 1; QueryType < QUERY_TYPE_NUM_TYPES; ++QueryType)
     {
         auto& pQuerySetObject = m_QuerySets[QueryType];
         if (!pQuerySetObject)
@@ -82,12 +82,12 @@ QueryManagerWebGPU::~QueryManagerWebGPU()
     LOG_INFO_MESSAGE(QueryUsageSS.str());
 }
 
-Uint32 QueryManagerWebGPU::AllocateQuery(QUERY_TYPE Type)
+UInt32 QueryManagerWebGPU::AllocateQuery(QUERY_TYPE Type)
 {
     return m_QuerySets[Type]->Allocate();
 }
 
-void QueryManagerWebGPU::DiscardQuery(QUERY_TYPE Type, Uint32 Index)
+void QueryManagerWebGPU::DiscardQuery(QUERY_TYPE Type, UInt32 Index)
 {
     return m_QuerySets[Type]->Discard(Index);
 }
@@ -97,14 +97,14 @@ WGPUQuerySet QueryManagerWebGPU::GetQuerySet(QUERY_TYPE Type) const
     return m_QuerySets[Type]->GetWebGPUQuerySet();
 }
 
-Uint64 QueryManagerWebGPU::GetQueryResult(QUERY_TYPE Type, Uint32 Index) const
+UInt64 QueryManagerWebGPU::GetQueryResult(QUERY_TYPE Type, UInt32 Index) const
 {
     return m_QuerySets[Type]->GetQueryResult(Index);
 }
 
 void QueryManagerWebGPU::ResolveQuerySet(RenderDeviceWebGPUImpl* pDevice, DeviceContextWebGPUImpl* pDeviceContext)
 {
-    for (Uint32 QueryType = QUERY_TYPE_UNDEFINED + 1; QueryType < QUERY_TYPE_NUM_TYPES; ++QueryType)
+    for (UInt32 QueryType = QUERY_TYPE_UNDEFINED + 1; QueryType < QUERY_TYPE_NUM_TYPES; ++QueryType)
     {
         auto& pQuerySetObject = m_QuerySets[QueryType];
         if (pQuerySetObject)
@@ -114,7 +114,7 @@ void QueryManagerWebGPU::ResolveQuerySet(RenderDeviceWebGPUImpl* pDevice, Device
 
 QueryManagerWebGPU::QuerySetObject::QuerySetObject(IReferenceCounters*     pRefCounters,
                                                    RenderDeviceWebGPUImpl* pDevice,
-                                                   Uint32                  HeapSize,
+                                                   UInt32                  HeapSize,
                                                    QUERY_TYPE              QueryType) :
     ObjectBase<IDeviceObject>{pRefCounters},
     WebGPUResourceBase{*this, 16}
@@ -139,14 +139,14 @@ QueryManagerWebGPU::QuerySetObject::QuerySetObject(IReferenceCounters*     pRefC
 
     WGPUBufferDescriptor wgpuResolveBufferDesc{};
     wgpuResolveBufferDesc.usage = WGPUBufferUsage_QueryResolve | WGPUBufferUsage_CopySrc;
-    wgpuResolveBufferDesc.size  = static_cast<Uint64>(m_QueryCount) * sizeof(Uint64);
+    wgpuResolveBufferDesc.size  = static_cast<UInt64>(m_QueryCount) * sizeof(UInt64);
     wgpuResolveBufferDesc.label = GetWGPUStringView(QueryResolveBufferName);
     m_wgpuResolveBuffer.Reset(wgpuDeviceCreateBuffer(pDevice->GetWebGPUDevice(), &wgpuResolveBufferDesc));
     if (!m_wgpuResolveBuffer)
         LOG_ERROR_AND_THROW("Failed to create resolve buffer for '", QuerySetName, "'");
 
     m_AvailableQueries.resize(m_QueryCount);
-    for (Uint32 QueryIdx = 0; QueryIdx < m_QueryCount; ++QueryIdx)
+    for (UInt32 QueryIdx = 0; QueryIdx < m_QueryCount; ++QueryIdx)
         m_AvailableQueries[QueryIdx] = QueryIdx;
     m_MappedData.resize(static_cast<size_t>(wgpuResolveBufferDesc.size));
 
@@ -178,20 +178,20 @@ QueryManagerWebGPU::QuerySetObject::~QuerySetObject()
     }
 }
 
-Uint32 QueryManagerWebGPU::QuerySetObject::Allocate()
+UInt32 QueryManagerWebGPU::QuerySetObject::Allocate()
 {
-    Uint32 Index = InvalidIndex;
+    UInt32 Index = InvalidIndex;
 
     if (!m_AvailableQueries.empty())
     {
         Index = m_AvailableQueries.back();
         m_AvailableQueries.pop_back();
-        m_MaxAllocatedQueries = std::max(m_MaxAllocatedQueries, m_QueryCount - static_cast<Uint32>(m_AvailableQueries.size()));
+        m_MaxAllocatedQueries = std::max(m_MaxAllocatedQueries, m_QueryCount - static_cast<UInt32>(m_AvailableQueries.size()));
     }
     return Index;
 }
 
-void QueryManagerWebGPU::QuerySetObject::Discard(Uint32 Index)
+void QueryManagerWebGPU::QuerySetObject::Discard(UInt32 Index)
 {
     VERIFY(Index < m_QueryCount, "Query index ", Index, " is out of range");
     VERIFY(std::find(m_AvailableQueries.begin(), m_AvailableQueries.end(), Index) == m_AvailableQueries.end(),
@@ -204,14 +204,14 @@ QUERY_TYPE QueryManagerWebGPU::QuerySetObject::GetType() const
     return m_Type;
 }
 
-Uint32 QueryManagerWebGPU::QuerySetObject::GetQueryCount() const
+UInt32 QueryManagerWebGPU::QuerySetObject::GetQueryCount() const
 {
     return m_QueryCount;
 }
 
-Uint64 QueryManagerWebGPU::QuerySetObject::GetQueryResult(Uint32 Index) const
+UInt64 QueryManagerWebGPU::QuerySetObject::GetQueryResult(UInt32 Index) const
 {
-    return reinterpret_cast<const Uint64*>(m_MappedData.data())[Index];
+    return reinterpret_cast<const UInt64*>(m_MappedData.data())[Index];
 }
 
 WGPUQuerySet QueryManagerWebGPU::QuerySetObject::GetWebGPUQuerySet() const
@@ -219,7 +219,7 @@ WGPUQuerySet QueryManagerWebGPU::QuerySetObject::GetWebGPUQuerySet() const
     return m_wgpuQuerySet.Get();
 }
 
-Uint32 QueryManagerWebGPU::QuerySetObject::GetMaxAllocatedQueries() const
+UInt32 QueryManagerWebGPU::QuerySetObject::GetMaxAllocatedQueries() const
 {
     return m_MaxAllocatedQueries;
 }
@@ -230,7 +230,7 @@ void QueryManagerWebGPU::QuerySetObject::ResolveQueries(RenderDeviceWebGPUImpl* 
     {
         WebGPUResourceBase::StagingBufferInfo* pDstStagingBuffer = GetStagingBuffer(pDevice->GetWebGPUDevice(), CPU_ACCESS_READ);
         wgpuCommandEncoderResolveQuerySet(pDeviceContext->GetCommandEncoder(), m_wgpuQuerySet, 0, m_QueryCount, m_wgpuResolveBuffer, 0);
-        wgpuCommandEncoderCopyBufferToBuffer(pDeviceContext->GetCommandEncoder(), m_wgpuResolveBuffer, 0, pDstStagingBuffer->wgpuBuffer, 0, m_QueryCount * sizeof(Uint64));
+        wgpuCommandEncoderCopyBufferToBuffer(pDeviceContext->GetCommandEncoder(), m_wgpuResolveBuffer, 0, pDstStagingBuffer->wgpuBuffer, 0, m_QueryCount * sizeof(UInt64));
         pDeviceContext->m_PendingStagingReads.emplace(pDstStagingBuffer, RefCntAutoPtr<IObject>{this});
     }
 }

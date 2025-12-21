@@ -54,7 +54,7 @@ public:
         IDXCompiler* const         pDXCompiler;
         const RenderDeviceInfo&    DeviceInfo;
         const GraphicsAdapterInfo& AdapterInfo;
-        const Uint32               VkVersion;
+        const UInt32               VkVersion;
         const bool                 HasSpirv14;
         IDataBlob** const          ppCompilerOutput;
         IThreadPool* const         pCompilationThreadPool;
@@ -69,17 +69,17 @@ public:
     IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_ShaderVk, IID_InternalImpl, TShaderBase)
 
     /// Implementation of IShader::GetResourceCount() in Vulkan backend.
-    virtual Uint32 DILIGENT_CALL_TYPE GetResourceCount() const override final
+    virtual UInt32 DILIGENT_CALL_TYPE GetResourceCount() const override final
     {
         DEV_CHECK_ERR(!IsCompiling(), "Shader resources are not available until the shader is compiled. Use GetStatus() to check the shader status.");
         return m_pShaderResources ? m_pShaderResources->GetTotalResources() : 0;
     }
 
     /// Implementation of IShader::GetResource() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE GetResourceDesc(Uint32 Index, ShaderResourceDesc& ResourceDesc) const override final;
+    virtual void DILIGENT_CALL_TYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final;
 
     /// Implementation of IShader::GetConstantBufferDesc() in Vulkan backend.
-    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(Uint32 Index) const override final;
+    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(UInt32 Index) const override final;
 
     /// Implementation of IShaderVk::GetSPIRV().
     virtual const std::vector<uint32_t>& DILIGENT_CALL_TYPE GetSPIRV() const override final
@@ -103,7 +103,7 @@ public:
     }
 
     virtual void DILIGENT_CALL_TYPE GetBytecode(const void** ppBytecode,
-                                                Uint64&      Size) const override final
+                                                UInt64&      Size) const override final
     {
         DEV_CHECK_ERR(!IsCompiling(), "Shader byte code is not available until the shader is compiled. Use GetStatus() to check the shader status.");
         *ppBytecode = !m_SPIRV.empty() ? m_SPIRV.data() : nullptr;

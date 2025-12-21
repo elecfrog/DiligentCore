@@ -30,6 +30,6 @@
 
 void TestDeviceMemoryD3D12_CInterface(IDeviceMemoryD3D12* pMem)
 {
-    DeviceMemoryRangeD3D12 Range = IDeviceMemoryD3D12_GetRange(pMem, (Uint64)0, (Uint64)1);
+    DeviceMemoryRangeD3D12 Range = IDeviceMemoryD3D12_GetRange(pMem, (UInt64)0, (UInt64)1);
     (void)Range;
 }

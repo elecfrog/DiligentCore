@@ -28,7 +28,7 @@
 
 void TestCommandQueueCInterface(ICommandQueue* pQueue)
 {
-    Uint64 FenceVal = ICommandQueue_GetNextFenceValue(pQueue);
+    UInt64 FenceVal = ICommandQueue_GetNextFenceValue(pQueue);
     (void)FenceVal;
 
     FenceVal = ICommandQueue_GetCompletedFenceValue(pQueue);

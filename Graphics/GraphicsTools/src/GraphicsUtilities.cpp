@@ -74,7 +74,7 @@ TEXTURE_FORMAT GetTextureFormatFromNativeWebGPU(int64_t NativeFormat);
 #endif
 
 void CreateUniformBuffer(IRenderDevice*   pDevice,
-                         Uint64           Size,
+                         UInt64           Size,
                          const Char*      Name,
                          IBuffer**        ppBuffer,
                          USAGE            Usage,
@@ -102,12 +102,12 @@ void CreateUniformBuffer(IRenderDevice*   pDevice,
 }
 
 template <class TConverter>
-void GenerateCheckerBoardPatternInternal(Uint32 Width, Uint32 Height, TEXTURE_FORMAT Fmt, Uint32 HorzCells, Uint32 VertCells, Uint8* pData, Uint64 StrideInBytes, TConverter Converter)
+void GenerateCheckerBoardPatternInternal(UInt32 Width, UInt32 Height, TEXTURE_FORMAT Fmt, UInt32 HorzCells, UInt32 VertCells, UInt8* pData, UInt64 StrideInBytes, TConverter Converter)
 {
     const TextureFormatAttribs& FmtAttribs = GetTextureFormatAttribs(Fmt);
-    for (Uint32 y = 0; y < Height; ++y)
+    for (UInt32 y = 0; y < Height; ++y)
     {
-        for (Uint32 x = 0; x < Width; ++x)
+        for (UInt32 x = 0; x < Width; ++x)
         {
             float horzWave   = std::sin((static_cast<float>(x) + 0.5f) / static_cast<float>(Width) * PI_F * static_cast<float>(HorzCells));
             float vertWave   = std::sin((static_cast<float>(y) + 0.5f) / static_cast<float>(Height) * PI_F * static_cast<float>(VertCells));
@@ -115,13 +115,13 @@ void GenerateCheckerBoardPatternInternal(Uint32 Width, Uint32 Height, TEXTURE_FO
             val              = std::max(std::min(val * 20.f, +1.f), -1.f);
             val              = val * 0.5f + 1.f;
             val              = val * 0.5f + 0.25f;
-            Uint8* pDstTexel = pData + x * size_t{FmtAttribs.NumComponents} * size_t{FmtAttribs.ComponentSize} + y * StrideInBytes;
-            Converter(pDstTexel, Uint32{FmtAttribs.NumComponents}, val);
+            UInt8* pDstTexel = pData + x * size_t{FmtAttribs.NumComponents} * size_t{FmtAttribs.ComponentSize} + y * StrideInBytes;
+            Converter(pDstTexel, UInt32{FmtAttribs.NumComponents}, val);
         }
     }
 }
 
-void GenerateCheckerBoardPattern(Uint32 Width, Uint32 Height, TEXTURE_FORMAT Fmt, Uint32 HorzCells, Uint32 VertCells, Uint8* pData, Uint64 StrideInBytes)
+void GenerateCheckerBoardPattern(UInt32 Width, UInt32 Height, TEXTURE_FORMAT Fmt, UInt32 HorzCells, UInt32 VertCells, UInt8* pData, UInt64 StrideInBytes)
 {
     const TextureFormatAttribs& FmtAttribs = GetTextureFormatAttribs(Fmt);
     switch (FmtAttribs.ComponentType)
@@ -130,10 +130,10 @@ void GenerateCheckerBoardPattern(Uint32 Width, Uint32 Height, TEXTURE_FORMAT Fmt
         case COMPONENT_TYPE_UNORM:
             GenerateCheckerBoardPatternInternal(
                 Width, Height, Fmt, HorzCells, VertCells, pData, StrideInBytes,
-                [](Uint8* pDstTexel, Uint32 NumComponents, float fVal) //
+                [](UInt8* pDstTexel, UInt32 NumComponents, float fVal) //
                 {
-                    Uint8 uVal = static_cast<Uint8>(fVal * 255.f);
-                    for (Uint32 c = 0; c < NumComponents; ++c)
+                    UInt8 uVal = static_cast<UInt8>(fVal * 255.f);
+                    for (UInt32 c = 0; c < NumComponents; ++c)
                         pDstTexel[c] = uVal;
                 } //
             );
@@ -142,10 +142,10 @@ void GenerateCheckerBoardPattern(Uint32 Width, Uint32 Height, TEXTURE_FORMAT Fmt
         case COMPONENT_TYPE_UNORM_SRGB:
             GenerateCheckerBoardPatternInternal(
                 Width, Height, Fmt, HorzCells, VertCells, pData, StrideInBytes,
-                [](Uint8* pDstTexel, Uint32 NumComponents, float fVal) //
+                [](UInt8* pDstTexel, UInt32 NumComponents, float fVal) //
                 {
-                    Uint8 uVal = static_cast<Uint8>(FastLinearToGamma(fVal) * 255.f);
-                    for (Uint32 c = 0; c < NumComponents; ++c)
+                    UInt8 uVal = static_cast<UInt8>(FastLinearToGamma(fVal) * 255.f);
+                    for (UInt32 c = 0; c < NumComponents; ++c)
                         pDstTexel[c] = uVal;
                 } //
             );
@@ -154,9 +154,9 @@ void GenerateCheckerBoardPattern(Uint32 Width, Uint32 Height, TEXTURE_FORMAT Fmt
         case COMPONENT_TYPE_FLOAT:
             GenerateCheckerBoardPatternInternal(
                 Width, Height, Fmt, HorzCells, VertCells, pData, StrideInBytes,
-                [](Uint8* pDstTexel, Uint32 NumComponents, float fVal) //
+                [](UInt8* pDstTexel, UInt32 NumComponents, float fVal) //
                 {
-                    for (Uint32 c = 0; c < NumComponents; ++c)
+                    for (UInt32 c = 0; c < NumComponents; ++c)
                         (reinterpret_cast<float*>(pDstTexel))[c] = fVal;
                 } //
             );
@@ -171,7 +171,7 @@ void GenerateCheckerBoardPattern(Uint32 Width, Uint32 Height, TEXTURE_FORMAT Fmt
 
 
 template <typename ChannelType>
-ChannelType SRGBAverage(ChannelType c0, ChannelType c1, ChannelType c2, ChannelType c3, Uint32 /*col*/, Uint32 /*row*/)
+ChannelType SRGBAverage(ChannelType c0, ChannelType c1, ChannelType c2, ChannelType c3, UInt32 /*col*/, UInt32 /*row*/)
 {
     static_assert(std::numeric_limits<ChannelType>::is_integer && !std::numeric_limits<ChannelType>::is_signed, "Unsigned integers are expected");
 
@@ -194,53 +194,53 @@ ChannelType SRGBAverage(ChannelType c0, ChannelType c1, ChannelType c2, ChannelT
 }
 
 template <typename ChannelType>
-ChannelType LinearAverage(ChannelType c0, ChannelType c1, ChannelType c2, ChannelType c3, Uint32 /*col*/, Uint32 /*row*/);
+ChannelType LinearAverage(ChannelType c0, ChannelType c1, ChannelType c2, ChannelType c3, UInt32 /*col*/, UInt32 /*row*/);
 
 template <>
-Uint8 LinearAverage<Uint8>(Uint8 c0, Uint8 c1, Uint8 c2, Uint8 c3, Uint32 /*col*/, Uint32 /*row*/)
+UInt8 LinearAverage<UInt8>(UInt8 c0, UInt8 c1, UInt8 c2, UInt8 c3, UInt32 /*col*/, UInt32 /*row*/)
 {
-    return static_cast<Uint8>((Uint32{c0} + Uint32{c1} + Uint32{c2} + Uint32{c3}) >> 2);
+    return static_cast<UInt8>((UInt32{c0} + UInt32{c1} + UInt32{c2} + UInt32{c3}) >> 2);
 }
 
 template <>
-Uint16 LinearAverage<Uint16>(Uint16 c0, Uint16 c1, Uint16 c2, Uint16 c3, Uint32 /*col*/, Uint32 /*row*/)
+UInt16 LinearAverage<UInt16>(UInt16 c0, UInt16 c1, UInt16 c2, UInt16 c3, UInt32 /*col*/, UInt32 /*row*/)
 {
-    return static_cast<Uint16>((Uint32{c0} + Uint32{c1} + Uint32{c2} + Uint32{c3}) >> 2);
+    return static_cast<UInt16>((UInt32{c0} + UInt32{c1} + UInt32{c2} + UInt32{c3}) >> 2);
 }
 
 template <>
-Uint32 LinearAverage<Uint32>(Uint32 c0, Uint32 c1, Uint32 c2, Uint32 c3, Uint32 /*col*/, Uint32 /*row*/)
+UInt32 LinearAverage<UInt32>(UInt32 c0, UInt32 c1, UInt32 c2, UInt32 c3, UInt32 /*col*/, UInt32 /*row*/)
 {
     return (c0 + c1 + c2 + c3) >> 2;
 }
 
 template <>
-Int8 LinearAverage<Int8>(Int8 c0, Int8 c1, Int8 c2, Int8 c3, Uint32 /*col*/, Uint32 /*row*/)
+Int8 LinearAverage<Int8>(Int8 c0, Int8 c1, Int8 c2, Int8 c3, UInt32 /*col*/, UInt32 /*row*/)
 {
     return static_cast<Int8>((Int32{c0} + Int32{c1} + Int32{c2} + Int32{c3}) / 4);
 }
 
 template <>
-Int16 LinearAverage<Int16>(Int16 c0, Int16 c1, Int16 c2, Int16 c3, Uint32 /*col*/, Uint32 /*row*/)
+Int16 LinearAverage<Int16>(Int16 c0, Int16 c1, Int16 c2, Int16 c3, UInt32 /*col*/, UInt32 /*row*/)
 {
     return static_cast<Int16>((Int32{c0} + Int32{c1} + Int32{c2} + Int32{c3}) / 4);
 }
 
 template <>
-Int32 LinearAverage<Int32>(Int32 c0, Int32 c1, Int32 c2, Int32 c3, Uint32 /*col*/, Uint32 /*row*/)
+Int32 LinearAverage<Int32>(Int32 c0, Int32 c1, Int32 c2, Int32 c3, UInt32 /*col*/, UInt32 /*row*/)
 {
     return (c0 + c1 + c2 + c3) / 4;
 }
 
 template <>
-float LinearAverage<float>(float c0, float c1, float c2, float c3, Uint32 /*col*/, Uint32 /*row*/)
+float LinearAverage<float>(float c0, float c1, float c2, float c3, UInt32 /*col*/, UInt32 /*row*/)
 {
     return (c0 + c1 + c2 + c3) * 0.25f;
 }
 
 
 template <typename ChannelType>
-ChannelType MostFrequentSelector(ChannelType c0, ChannelType c1, ChannelType c2, ChannelType c3, Uint32 col, Uint32 row)
+ChannelType MostFrequentSelector(ChannelType c0, ChannelType c1, ChannelType c2, ChannelType c3, UInt32 col, UInt32 row)
 {
     //  c2      c3
     //   *      *
@@ -322,38 +322,38 @@ ChannelType MostFrequentSelector(ChannelType c0, ChannelType c1, ChannelType c2,
 template <typename ChannelType,
           typename FilterType>
 void FilterMipLevel(const ComputeMipLevelAttribs& Attribs,
-                    Uint32                        NumChannels,
+                    UInt32                        NumChannels,
                     FilterType                    Filter)
 {
     VERIFY_EXPR(Attribs.FineMipWidth > 0 && Attribs.FineMipHeight > 0);
     DEV_CHECK_ERR(Attribs.FineMipHeight == 1 || Attribs.FineMipStride >= Attribs.FineMipWidth * sizeof(ChannelType) * NumChannels, "Fine mip level stride is too small");
 
-    const Uint32 CoarseMipWidth  = std::max(Attribs.FineMipWidth / Uint32{2}, Uint32{1});
-    const Uint32 CoarseMipHeight = std::max(Attribs.FineMipHeight / Uint32{2}, Uint32{1});
+    const UInt32 CoarseMipWidth  = std::max(Attribs.FineMipWidth / UInt32{2}, UInt32{1});
+    const UInt32 CoarseMipHeight = std::max(Attribs.FineMipHeight / UInt32{2}, UInt32{1});
 
     VERIFY(CoarseMipHeight == 1 || Attribs.CoarseMipStride >= CoarseMipWidth * sizeof(ChannelType) * NumChannels, "Coarse mip level stride is too small");
 
-    for (Uint32 row = 0; row < CoarseMipHeight; ++row)
+    for (UInt32 row = 0; row < CoarseMipHeight; ++row)
     {
-        Uint32 src_row0 = row * 2;
-        Uint32 src_row1 = std::min(row * 2 + 1, Attribs.FineMipHeight - 1);
+        UInt32 src_row0 = row * 2;
+        UInt32 src_row1 = std::min(row * 2 + 1, Attribs.FineMipHeight - 1);
 
-        const ChannelType* pSrcRow0 = reinterpret_cast<const ChannelType*>(reinterpret_cast<const Uint8*>(Attribs.pFineMipData) + src_row0 * Attribs.FineMipStride);
-        const ChannelType* pSrcRow1 = reinterpret_cast<const ChannelType*>(reinterpret_cast<const Uint8*>(Attribs.pFineMipData) + src_row1 * Attribs.FineMipStride);
+        const ChannelType* pSrcRow0 = reinterpret_cast<const ChannelType*>(reinterpret_cast<const UInt8*>(Attribs.pFineMipData) + src_row0 * Attribs.FineMipStride);
+        const ChannelType* pSrcRow1 = reinterpret_cast<const ChannelType*>(reinterpret_cast<const UInt8*>(Attribs.pFineMipData) + src_row1 * Attribs.FineMipStride);
 
-        for (Uint32 col = 0; col < CoarseMipWidth; ++col)
+        for (UInt32 col = 0; col < CoarseMipWidth; ++col)
         {
-            Uint32 src_col0 = col * 2;
-            Uint32 src_col1 = std::min(col * 2 + 1, Attribs.FineMipWidth - 1);
+            UInt32 src_col0 = col * 2;
+            UInt32 src_col1 = std::min(col * 2 + 1, Attribs.FineMipWidth - 1);
 
-            for (Uint32 c = 0; c < NumChannels; ++c)
+            for (UInt32 c = 0; c < NumChannels; ++c)
             {
                 const ChannelType Chnl00 = pSrcRow0[src_col0 * NumChannels + c];
                 const ChannelType Chnl10 = pSrcRow0[src_col1 * NumChannels + c];
                 const ChannelType Chnl01 = pSrcRow1[src_col0 * NumChannels + c];
                 const ChannelType Chnl11 = pSrcRow1[src_col1 * NumChannels + c];
 
-                ChannelType& DstCol = reinterpret_cast<ChannelType*>(reinterpret_cast<Uint8*>(Attribs.pCoarseMipData) + row * Attribs.CoarseMipStride)[col * NumChannels + c];
+                ChannelType& DstCol = reinterpret_cast<ChannelType*>(reinterpret_cast<UInt8*>(Attribs.pCoarseMipData) + row * Attribs.CoarseMipStride)[col * NumChannels + c];
 
                 DstCol = Filter(Chnl00, Chnl10, Chnl01, Chnl11, col, row);
             }
@@ -362,16 +362,16 @@ void FilterMipLevel(const ComputeMipLevelAttribs& Attribs,
 }
 
 void RemapAlpha(const ComputeMipLevelAttribs& Attribs,
-                Uint32                        NumChannels,
-                Uint32                        AlphaChannelInd)
+                UInt32                        NumChannels,
+                UInt32                        AlphaChannelInd)
 {
-    const Uint32 CoarseMipWidth  = std::max(Attribs.FineMipWidth / Uint32{2}, Uint32{1});
-    const Uint32 CoarseMipHeight = std::max(Attribs.FineMipHeight / Uint32{2}, Uint32{1});
-    for (Uint32 row = 0; row < CoarseMipHeight; ++row)
+    const UInt32 CoarseMipWidth  = std::max(Attribs.FineMipWidth / UInt32{2}, UInt32{1});
+    const UInt32 CoarseMipHeight = std::max(Attribs.FineMipHeight / UInt32{2}, UInt32{1});
+    for (UInt32 row = 0; row < CoarseMipHeight; ++row)
     {
-        for (Uint32 col = 0; col < CoarseMipWidth; ++col)
+        for (UInt32 col = 0; col < CoarseMipWidth; ++col)
         {
-            Uint8& Alpha = (reinterpret_cast<Uint8*>(Attribs.pCoarseMipData) + row * Attribs.CoarseMipStride)[col * NumChannels + AlphaChannelInd];
+            UInt8& Alpha = (reinterpret_cast<UInt8*>(Attribs.pCoarseMipData) + row * Attribs.CoarseMipStride)[col * NumChannels + AlphaChannelInd];
 
             // Remap alpha channel using the following formula to improve mip maps:
             //
@@ -381,7 +381,7 @@ void RemapAlpha(const ComputeMipLevelAttribs& Attribs,
 
             float AlphaNew = std::min((static_cast<float>(Alpha) + 2.f * (Attribs.AlphaCutoff * 255.f)) / 3.f, 255.f);
 
-            Alpha = std::max(Alpha, static_cast<Uint8>(AlphaNew));
+            Alpha = std::max(Alpha, static_cast<UInt8>(AlphaNew));
         }
     }
 }
@@ -422,10 +422,10 @@ void ComputeMipLevel(const ComputeMipLevelAttribs& Attribs)
     {
         case COMPONENT_TYPE_UNORM_SRGB:
             VERIFY(FmtAttribs.ComponentSize == 1, "Only 8-bit sRGB formats are expected");
-            FilterMipLevel<Uint8>(Attribs, FmtAttribs.NumComponents,
+            FilterMipLevel<UInt8>(Attribs, FmtAttribs.NumComponents,
                                   Attribs.FilterType == MIP_FILTER_TYPE_MOST_FREQUENT ?
-                                      MostFrequentSelector<Uint8> :
-                                      SRGBAverage<Uint8>);
+                                      MostFrequentSelector<UInt8> :
+                                      SRGBAverage<UInt8>);
             if (Attribs.AlphaCutoff > 0)
             {
                 RemapAlpha(Attribs, FmtAttribs.NumComponents, FmtAttribs.NumComponents - 1);
@@ -437,7 +437,7 @@ void ComputeMipLevel(const ComputeMipLevelAttribs& Attribs)
             switch (FmtAttribs.ComponentSize)
             {
                 case 1:
-                    ComputeMipLevelInternal<Uint8>(Attribs, FmtAttribs);
+                    ComputeMipLevelInternal<UInt8>(Attribs, FmtAttribs);
                     if (Attribs.AlphaCutoff > 0)
                     {
                         RemapAlpha(Attribs, FmtAttribs.NumComponents, FmtAttribs.NumComponents - 1);
@@ -445,11 +445,11 @@ void ComputeMipLevel(const ComputeMipLevelAttribs& Attribs)
                     break;
 
                 case 2:
-                    ComputeMipLevelInternal<Uint16>(Attribs, FmtAttribs);
+                    ComputeMipLevelInternal<UInt16>(Attribs, FmtAttribs);
                     break;
 
                 case 4:
-                    ComputeMipLevelInternal<Uint32>(Attribs, FmtAttribs);
+                    ComputeMipLevelInternal<UInt32>(Attribs, FmtAttribs);
                     break;
 
                 default:
@@ -727,7 +727,7 @@ void CreateGeometryPrimitiveBuffers(IRenderDevice*                            pD
         IBDesc.Mode           = pBufferCI->IndexBufferMode;
         if (IBDesc.Mode != BUFFER_MODE_UNDEFINED)
         {
-            IBDesc.ElementByteStride = sizeof(Uint32);
+            IBDesc.ElementByteStride = sizeof(UInt32);
         }
 
         BufferData IBData{pIndexData->GetDataPtr(), pIndexData->GetSize()};
@@ -790,8 +790,8 @@ IDXCompiler* GetDeviceDXCompiler(IRenderDevice* pDevice)
 extern "C"
 {
     void Diligent_CreateUniformBuffer(Diligent::IRenderDevice*   pDevice,
-                                      Diligent::Uint64           Size,
-                                      const Diligent::Char*      Name,
+                                      UInt64           Size,
+                                      const Char*      Name,
                                       Diligent::IBuffer**        ppBuffer,
                                       Diligent::USAGE            Usage,
                                       Diligent::BIND_FLAGS       BindFlags,
@@ -801,13 +801,13 @@ extern "C"
         Diligent::CreateUniformBuffer(pDevice, Size, Name, ppBuffer, Usage, BindFlags, CPUAccessFlags, pInitialData);
     }
 
-    void Diligent_GenerateCheckerBoardPattern(Diligent::Uint32         Width,
-                                              Diligent::Uint32         Height,
+    void Diligent_GenerateCheckerBoardPattern(UInt32         Width,
+                                              UInt32         Height,
                                               Diligent::TEXTURE_FORMAT Fmt,
-                                              Diligent::Uint32         HorzCells,
-                                              Diligent::Uint32         VertCells,
-                                              Diligent::Uint8*         pData,
-                                              Diligent::Uint64         StrideInBytes)
+                                              UInt32         HorzCells,
+                                              UInt32         VertCells,
+                                              UInt8*         pData,
+                                              UInt64         StrideInBytes)
     {
         Diligent::GenerateCheckerBoardPattern(Width, Height, Fmt, HorzCells, VertCells, pData, StrideInBytes);
     }

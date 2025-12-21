@@ -95,7 +95,7 @@ struct ShaderStageInfoMtl
     // Needed only for ray tracing
     void Append(const SerializedShaderImpl*) {}
 
-    constexpr Uint32 Count() const { return 1; }
+    constexpr UInt32 Count() const { return 1; }
 
     SHADER_TYPE                 Type    = SHADER_TYPE_UNKNOWN;
     const SerializedShaderImpl* pShader = nullptr;
@@ -330,13 +330,13 @@ struct CompileMtlShaderAttribs
 
     const SerializedShaderImpl* pSerializedShader;
     const IRenderPass*          pRenderPass;
-    const Uint32                SubpassIndex;
+    const UInt32                SubpassIndex;
 
     const char*         PSOName;
     const std::string&  DumpFolder;
 
     const SignatureArray<PipelineResourceSignatureMtlImpl>& Signatures;
-    const Uint32                                            SignatureCount;
+    const UInt32                                            SignatureCount;
 
     const std::array<MtlResourceCounters, MAX_RESOURCE_SIGNATURES>& BaseBindings;
 };
@@ -481,12 +481,12 @@ SerializedData CompileMtlShader(const CompileMtlShaderAttribs& Attribs) noexcept
 } // namespace
 
 template <typename CreateInfoType>
-Uint32 GetSubpassIndex(const CreateInfoType&)
+UInt32 GetSubpassIndex(const CreateInfoType&)
 {
     return ~0u;
 }
 template <>
-Uint32 GetSubpassIndex(const GraphicsPipelineStateCreateInfo& CI)
+UInt32 GetSubpassIndex(const GraphicsPipelineStateCreateInfo& CI)
 {
     return CI.GraphicsPipeline.SubpassIndex;
 }
@@ -528,7 +528,7 @@ void SerializedPipelineStateImpl::PatchShadersMtl(const CreateInfoType& CreateIn
 
         std::array<MtlResourceCounters, MAX_RESOURCE_SIGNATURES> BaseBindings{};
         MtlResourceCounters                                      CurrBindings{};
-        for (Uint32 s = 0; s < SignaturesCount; ++s)
+        for (UInt32 s = 0; s < SignaturesCount; ++s)
         {
             BaseBindings[s] = CurrBindings;
             const auto& pSignature = Signatures[s];
@@ -606,33 +606,33 @@ void SerializedShaderImpl::CreateShaderMtl(IReferenceCounters*     pRefCounters,
 
 void SerializationDeviceImpl::GetPipelineResourceBindingsMtl(const PipelineResourceBindingAttribs& Info,
                                                              std::vector<PipelineResourceBinding>& ResourceBindings,
-                                                             const Uint32                          MaxBufferArgs)
+                                                             const UInt32                          MaxBufferArgs)
 {
     ResourceBindings.clear();
 
     std::array<RefCntAutoPtr<PipelineResourceSignatureMtlImpl>, MAX_RESOURCE_SIGNATURES> Signatures = {};
 
-    Uint32 SignaturesCount = 0;
-    for (Uint32 i = 0; i < Info.ResourceSignaturesCount; ++i)
+    UInt32 SignaturesCount = 0;
+    for (UInt32 i = 0; i < Info.ResourceSignaturesCount; ++i)
     {
         const auto* pSerPRS = ClassPtrCast<SerializedResourceSignatureImpl>(Info.ppResourceSignatures[i]);
         const auto& Desc    = pSerPRS->GetDesc();
 
         Signatures[Desc.BindingIndex] = pSerPRS->GetDeviceSignature<PipelineResourceSignatureMtlImpl>(DeviceObjectArchive::DeviceType::Metal_MacOS);
-        SignaturesCount               = std::max(SignaturesCount, static_cast<Uint32>(Desc.BindingIndex) + 1);
+        SignaturesCount               = std::max(SignaturesCount, static_cast<UInt32>(Desc.BindingIndex) + 1);
     }
 
     const auto          ShaderStages        = (Info.ShaderStages == SHADER_TYPE_UNKNOWN ? static_cast<SHADER_TYPE>(~0u) : Info.ShaderStages);
     constexpr auto      SupportedStagesMask = (SHADER_TYPE_VERTEX | SHADER_TYPE_PIXEL | SHADER_TYPE_COMPUTE | SHADER_TYPE_TILE);
     MtlResourceCounters BaseBindings{};
 
-    for (Uint32 sign = 0; sign < SignaturesCount; ++sign)
+    for (UInt32 sign = 0; sign < SignaturesCount; ++sign)
     {
         const auto& pSignature = Signatures[sign];
         if (pSignature == nullptr)
             continue;
 
-        for (Uint32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
+        for (UInt32 r = 0; r < pSignature->GetTotalResourceCount(); ++r)
         {
             const auto& ResDesc = pSignature->GetResourceDesc(r);
             const auto& ResAttr = pSignature->GetResourceAttribs(r);
@@ -661,7 +661,7 @@ void SerializationDeviceImpl::GetPipelineResourceBindingsMtl(const PipelineResou
         DEV_CHECK_ERR(Info.VertexBufferNames != nullptr, "VertexBufferNames must not be null");
 
         const auto BaseSlot = MaxBufferArgs - Info.NumVertexBuffers;
-        for (Uint32 i = 0; i < Info.NumVertexBuffers; ++i)
+        for (UInt32 i = 0; i < Info.NumVertexBuffers; ++i)
         {
             PipelineResourceBinding Dst{};
             Dst.Name         = Info.VertexBufferNames[i];

@@ -102,7 +102,7 @@ public:
                                                             IDeviceContext**          ppImmediateContext) override final;
 
     virtual void DILIGENT_CALL_TYPE EnumerateAdapters(Version              MinVersion,
-                                                      Uint32&              NumAdapters,
+                                                      UInt32&              NumAdapters,
                                                       GraphicsAdapterInfo* Adapters) const override final;
 
     virtual void DILIGENT_CALL_TYPE CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
@@ -143,8 +143,8 @@ static void SetPreferredAdapter(const EngineGLCreateInfo& EngineCI)
     {
 #if PLATFORM_WIN32
         const HMODULE ModuleHandle                         = GetModuleHandle(nullptr);
-        Uint64* const NvOptimusEnablement                  = reinterpret_cast<Uint64*>(GetProcAddress(ModuleHandle, "NvOptimusEnablement"));
-        Uint64* const AmdPowerXpressRequestHighPerformance = reinterpret_cast<Uint64*>(GetProcAddress(ModuleHandle, "AmdPowerXpressRequestHighPerformance"));
+        UInt64* const NvOptimusEnablement                  = reinterpret_cast<UInt64*>(GetProcAddress(ModuleHandle, "NvOptimusEnablement"));
+        UInt64* const AmdPowerXpressRequestHighPerformance = reinterpret_cast<UInt64*>(GetProcAddress(ModuleHandle, "AmdPowerXpressRequestHighPerformance"));
         if (!NvOptimusEnablement && !AmdPowerXpressRequestHighPerformance)
         {
             LOG_WARNING_MESSAGE("Neither NvOptimusEnablement nor AmdPowerXpressRequestHighPerformance symbols found. "
@@ -171,7 +171,7 @@ static void SetPreferredAdapter(const EngineGLCreateInfo& EngineCI)
 }
 
 void EngineFactoryOpenGLImpl::EnumerateAdapters(Version              MinVersion,
-                                                Uint32&              NumAdapters,
+                                                UInt32&              NumAdapters,
                                                 GraphicsAdapterInfo* Adapters) const
 {
     if (Adapters == nullptr)

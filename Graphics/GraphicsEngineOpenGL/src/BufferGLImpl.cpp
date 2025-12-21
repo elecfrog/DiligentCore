@@ -172,9 +172,9 @@ static BufferDesc GetBufferDescFromGLHandle(GLContextState& GLState, BufferDesc 
     DEV_CHECK_GL_ERROR("glGetBufferParameteriv() failed");
     VERIFY_EXPR(BufferSize > 0);
 
-    VERIFY(BuffDesc.Size == 0 || BuffDesc.Size == static_cast<Uint32>(BufferSize), "Buffer size specified by the BufferDesc (", BuffDesc.Size, ") does not match the size recovered from gl buffer object (", BufferSize, ")");
+    VERIFY(BuffDesc.Size == 0 || BuffDesc.Size == static_cast<UInt32>(BufferSize), "Buffer size specified by the BufferDesc (", BuffDesc.Size, ") does not match the size recovered from gl buffer object (", BufferSize, ")");
     if (BufferSize > 0)
-        BuffDesc.Size = static_cast<Uint32>(BufferSize);
+        BuffDesc.Size = static_cast<UInt32>(BufferSize);
 
     glBindBuffer(BindTarget, 0);
     DEV_CHECK_GL_ERROR("Failed to unbind GL buffer");
@@ -212,7 +212,7 @@ BufferGLImpl::~BufferGLImpl()
     GetDevice()->OnDestroyBuffer(*this);
 }
 
-void BufferGLImpl::UpdateData(GLContextState& CtxState, Uint64 Offset, Uint64 Size, const void* pData)
+void BufferGLImpl::UpdateData(GLContextState& CtxState, UInt64 Offset, UInt64 Size, const void* pData)
 {
     BufferMemoryBarrier(
         MEMORY_BARRIER_BUFFER_UPDATE, // Reads or writes to buffer objects via any OpenGL API functions that allow
@@ -232,7 +232,7 @@ void BufferGLImpl::UpdateData(GLContextState& CtxState, Uint64 Offset, Uint64 Si
 }
 
 
-void BufferGLImpl::CopyData(GLContextState& CtxState, BufferGLImpl& SrcBufferGL, Uint64 SrcOffset, Uint64 DstOffset, Uint64 Size)
+void BufferGLImpl::CopyData(GLContextState& CtxState, BufferGLImpl& SrcBufferGL, UInt64 SrcOffset, UInt64 DstOffset, UInt64 Size)
 {
     BufferMemoryBarrier(
         MEMORY_BARRIER_BUFFER_UPDATE, // Reads or writes to buffer objects via any OpenGL API functions that allow
@@ -258,14 +258,14 @@ void BufferGLImpl::CopyData(GLContextState& CtxState, BufferGLImpl& SrcBufferGL,
     CtxState.BindBuffer(GL_COPY_WRITE_BUFFER, GLObjectWrappers::GLBufferObj::Null(), ResetVAO);
 }
 
-void BufferGLImpl::Map(GLContextState& CtxState, MAP_TYPE MapType, Uint32 MapFlags, PVoid& pMappedData)
+void BufferGLImpl::Map(GLContextState& CtxState, MAP_TYPE MapType, UInt32 MapFlags, PVoid& pMappedData)
 {
     MapRange(CtxState, MapType, MapFlags, 0, m_Desc.Size, pMappedData);
 }
 
 #if PLATFORM_WEB
 
-void BufferGLImpl::MapRange(GLContextState& CtxState, MAP_TYPE MapType, Uint32 MapFlags, Uint64 Offset, Uint64 Length, PVoid& pMappedData)
+void BufferGLImpl::MapRange(GLContextState& CtxState, MAP_TYPE MapType, UInt32 MapFlags, UInt64 Offset, UInt64 Length, PVoid& pMappedData)
 {
     m_Mapped.Type   = MapType;
     m_Mapped.Offset = Offset;
@@ -312,7 +312,7 @@ void BufferGLImpl::Unmap(GLContextState& CtxState)
 
 #else
 
-void BufferGLImpl::MapRange(GLContextState& CtxState, MAP_TYPE MapType, Uint32 MapFlags, Uint64 Offset, Uint64 Length, PVoid& pMappedData)
+void BufferGLImpl::MapRange(GLContextState& CtxState, MAP_TYPE MapType, UInt32 MapFlags, UInt64 Offset, UInt64 Length, PVoid& pMappedData)
 {
     BufferMemoryBarrier(
         MEMORY_BARRIER_CLIENT_MAPPED_BUFFER, // Access by the client to persistent mapped regions of buffer

@@ -52,7 +52,7 @@ WGPUSamplerDescriptor SamplerDescToWGPUSamplerDescriptor(const SamplerDesc& Desc
     wgpuSamplerDesc.lodMinClamp   = Desc.MinLOD;
     wgpuSamplerDesc.lodMaxClamp   = Desc.MaxLOD;
     wgpuSamplerDesc.compare       = IsComparison ? ComparisonFuncToWGPUCompareFunction(Desc.ComparisonFunc) : WGPUCompareFunction_Undefined;
-    wgpuSamplerDesc.maxAnisotropy = static_cast<Uint16>(IsAnisotropicFilter(Desc.MinFilter) ? Desc.MaxAnisotropy : 1);
+    wgpuSamplerDesc.maxAnisotropy = static_cast<UInt16>(IsAnisotropicFilter(Desc.MinFilter) ? Desc.MaxAnisotropy : 1);
     return wgpuSamplerDesc;
 }
 

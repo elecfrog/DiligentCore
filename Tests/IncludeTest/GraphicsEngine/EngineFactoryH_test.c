@@ -39,7 +39,7 @@ void TestEngineFactortCInterface(struct IEngineFactory* pFactory)
     IEngineFactory_CreateDataBlob(pFactory, 1024, NULL, &pDataBlob);
 
     struct Version MinVersion = {0, 0};
-    IEngineFactory_EnumerateAdapters(pFactory, MinVersion, (Uint32*)NULL, (struct GraphicsAdapterInfo*)NULL);
+    IEngineFactory_EnumerateAdapters(pFactory, MinVersion, (UInt32*)NULL, (struct GraphicsAdapterInfo*)NULL);
 
     struct IDearchiver*  pDearchiver = NULL;
     DearchiverCreateInfo DearchiverCI;

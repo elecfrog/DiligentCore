@@ -98,7 +98,7 @@ bool VerifyDrawMeshAttribs(const MeshShaderProperties& MeshShaderProps, const Dr
                             "ThreadGroupCountZ (", Attribs.ThreadGroupCountZ, ") must not exceed MeshShaderProps.MaxThreadGroupCountZ (",
                             MeshShaderProps.MaxThreadGroupCountZ, ").");
 
-    const Uint64 TotalGroups = Uint64{Attribs.ThreadGroupCountX} * Uint64{Attribs.ThreadGroupCountY} * Uint64{Attribs.ThreadGroupCountZ};
+    const UInt64 TotalGroups = UInt64{Attribs.ThreadGroupCountX} * UInt64{Attribs.ThreadGroupCountY} * UInt64{Attribs.ThreadGroupCountZ};
     CHECK_DRAW_MESH_ATTRIBS(TotalGroups <= MeshShaderProps.MaxThreadGroupTotalCount,
                             "Total thread group count (", TotalGroups, ") must not exceed MeshShaderProps.MaxThreadGroupTotalCount (",
                             MeshShaderProps.MaxThreadGroupTotalCount, ").");
@@ -122,11 +122,11 @@ bool VerifyDrawIndirectAttribs(const DrawIndirectAttribs& Attribs)
 
     if (Attribs.DrawCount > 1)
     {
-        CHECK_DRAW_INDIRECT_ATTRIBS(Attribs.DrawArgsStride >= sizeof(Uint32) * 4, "stride must be greater than 16 bytes");
+        CHECK_DRAW_INDIRECT_ATTRIBS(Attribs.DrawArgsStride >= sizeof(UInt32) * 4, "stride must be greater than 16 bytes");
         CHECK_DRAW_INDIRECT_ATTRIBS(Attribs.DrawArgsStride % 4 == 0, "stride must be a multiple of 4");
     }
 
-    const Uint64 ReqAttrBufSize = Attribs.DrawArgsOffset + (Attribs.DrawCount > 1 ? Attribs.DrawCount * Attribs.DrawArgsStride : Uint32{sizeof(Uint32)} * 4);
+    const UInt64 ReqAttrBufSize = Attribs.DrawArgsOffset + (Attribs.DrawCount > 1 ? Attribs.DrawCount * Attribs.DrawArgsStride : UInt32{sizeof(UInt32)} * 4);
     CHECK_DRAW_INDIRECT_ATTRIBS(ReqAttrBufSize <= AttrBuffDesc.Size, "invalid DrawArgsOffset (", Attribs.DrawArgsOffset,
                                 ") or indirect draw arguments buffer '", AttrBuffDesc.Name, "' size must be at least ", ReqAttrBufSize, " bytes");
 
@@ -135,7 +135,7 @@ bool VerifyDrawIndirectAttribs(const DrawIndirectAttribs& Attribs)
         const BufferDesc& CntBuffDesc = pCounterBuffer->GetDesc();
         CHECK_DRAW_INDIRECT_ATTRIBS((CntBuffDesc.BindFlags & BIND_INDIRECT_DRAW_ARGS) != 0, "indirect counter buffer '",
                                     CntBuffDesc.Name, "' was not created with BIND_INDIRECT_DRAW_ARGS flag.");
-        const Uint64 ReqCountBufSize = Attribs.CounterOffset + sizeof(Uint32);
+        const UInt64 ReqCountBufSize = Attribs.CounterOffset + sizeof(UInt32);
         CHECK_DRAW_INDIRECT_ATTRIBS(ReqCountBufSize <= CntBuffDesc.Size, "invalid CounterOffset (", Attribs.CounterOffset,
                                     ") or counter buffer '", CntBuffDesc.Name, "' size must be at least ", ReqCountBufSize, " bytes");
     }
@@ -161,11 +161,11 @@ bool VerifyDrawIndexedIndirectAttribs(const DrawIndexedIndirectAttribs& Attribs)
 
     if (Attribs.DrawCount > 1)
     {
-        CHECK_DRAW_INDEXED_INDIRECT_ATTRIBS(Attribs.DrawArgsStride >= sizeof(Uint32) * 5, "stride must be greater than 20 bytes");
+        CHECK_DRAW_INDEXED_INDIRECT_ATTRIBS(Attribs.DrawArgsStride >= sizeof(UInt32) * 5, "stride must be greater than 20 bytes");
         CHECK_DRAW_INDEXED_INDIRECT_ATTRIBS(Attribs.DrawArgsStride % 4 == 0, "stride must be a multiple of 4");
     }
 
-    const Uint64 ReqAttrBufSize = Attribs.DrawArgsOffset + (Attribs.DrawCount > 1 ? Attribs.DrawCount * Attribs.DrawArgsStride : Uint32{sizeof(Uint32)} * 5);
+    const UInt64 ReqAttrBufSize = Attribs.DrawArgsOffset + (Attribs.DrawCount > 1 ? Attribs.DrawCount * Attribs.DrawArgsStride : UInt32{sizeof(UInt32)} * 5);
     CHECK_DRAW_INDEXED_INDIRECT_ATTRIBS(ReqAttrBufSize <= AttrBuffDesc.Size, "invalid DrawArgsOffset (", Attribs.DrawArgsOffset,
                                         ") or indirect draw arguments buffer '", AttrBuffDesc.Name, "' size must be at least ", ReqAttrBufSize, " bytes");
 
@@ -174,7 +174,7 @@ bool VerifyDrawIndexedIndirectAttribs(const DrawIndexedIndirectAttribs& Attribs)
         const BufferDesc& CntBuffDesc = pCounterBuffer->GetDesc();
         CHECK_DRAW_INDEXED_INDIRECT_ATTRIBS((CntBuffDesc.BindFlags & BIND_INDIRECT_DRAW_ARGS) != 0, "indirect counter buffer '",
                                             CntBuffDesc.Name, "' was not created with BIND_INDIRECT_DRAW_ARGS flag.");
-        const Uint64 ReqCountBufSize = Attribs.CounterOffset + sizeof(Uint32);
+        const UInt64 ReqCountBufSize = Attribs.CounterOffset + sizeof(UInt32);
         CHECK_DRAW_INDEXED_INDIRECT_ATTRIBS(ReqCountBufSize <= CntBuffDesc.Size, "invalid CounterOffset (", Attribs.CounterOffset,
                                             ") or counter buffer '", CntBuffDesc.Name, "' size must be at least ", ReqCountBufSize, " bytes");
     }
@@ -184,7 +184,7 @@ bool VerifyDrawIndexedIndirectAttribs(const DrawIndexedIndirectAttribs& Attribs)
     return true;
 }
 
-bool VerifyDrawMeshIndirectAttribs(const DrawMeshIndirectAttribs& Attribs, Uint32 IndirectCmdStride)
+bool VerifyDrawMeshIndirectAttribs(const DrawMeshIndirectAttribs& Attribs, UInt32 IndirectCmdStride)
 {
     const IBuffer* pAttribsBuffer = Attribs.pAttribsBuffer;
     const IBuffer* pCounterBuffer = Attribs.pCounterBuffer;
@@ -196,7 +196,7 @@ bool VerifyDrawMeshIndirectAttribs(const DrawMeshIndirectAttribs& Attribs, Uint3
     CHECK_DRAW_MESH_INDIRECT_ATTRIBS((ArgsBuffDesc.BindFlags & BIND_INDIRECT_DRAW_ARGS) != 0,
                                      "indirect draw arguments buffer '", ArgsBuffDesc.Name,
                                      "' was not created with BIND_INDIRECT_DRAW_ARGS flag.");
-    const Uint64 ReqAttrBufSize = Attribs.DrawArgsOffset + Uint64{IndirectCmdStride} * Uint64{Attribs.CommandCount};
+    const UInt64 ReqAttrBufSize = Attribs.DrawArgsOffset + UInt64{IndirectCmdStride} * UInt64{Attribs.CommandCount};
     CHECK_DRAW_MESH_INDIRECT_ATTRIBS(ReqAttrBufSize <= ArgsBuffDesc.Size, "invalid DrawArgsOffset (", Attribs.DrawArgsOffset,
                                      ") or indirect draw arguments buffer '", ArgsBuffDesc.Name, "' size must be at least ", ReqAttrBufSize, " bytes");
 
@@ -206,7 +206,7 @@ bool VerifyDrawMeshIndirectAttribs(const DrawMeshIndirectAttribs& Attribs, Uint3
         const BufferDesc& CntBuffDesc = pCounterBuffer->GetDesc();
         CHECK_DRAW_MESH_INDIRECT_ATTRIBS((CntBuffDesc.BindFlags & BIND_INDIRECT_DRAW_ARGS) != 0, "indirect counter buffer '",
                                          CntBuffDesc.Name, "' was not created with BIND_INDIRECT_DRAW_ARGS flag.");
-        const Uint64 ReqCountBufSize = Attribs.CounterOffset + sizeof(Uint32);
+        const UInt64 ReqCountBufSize = Attribs.CounterOffset + sizeof(UInt32);
         CHECK_DRAW_MESH_INDIRECT_ATTRIBS(ReqCountBufSize <= CntBuffDesc.Size, "invalid CounterOffset (", Attribs.CounterOffset,
                                          ") or counter buffer '", CntBuffDesc.Name, "' size must be at least ", ReqCountBufSize, " bytes");
     }
@@ -264,7 +264,7 @@ bool VerifyDispatchComputeIndirectAttribs(const DispatchComputeIndirectAttribs& 
     const BufferDesc& AttrBuffDesc = pAttribsBuffer->GetDesc();
     CHECK_DISPATCH_COMPUTE_INDIRECT_ATTRIBS((AttrBuffDesc.BindFlags & BIND_INDIRECT_DRAW_ARGS) != 0, "indirect dispatch arguments buffer '",
                                             AttrBuffDesc.Name, "' was not created with BIND_INDIRECT_DRAW_ARGS flag.");
-    const Uint64 ReqAttrBufSize = sizeof(Uint32) * 3 + Attribs.DispatchArgsByteOffset;
+    const UInt64 ReqAttrBufSize = sizeof(UInt32) * 3 + Attribs.DispatchArgsByteOffset;
     CHECK_DISPATCH_COMPUTE_INDIRECT_ATTRIBS(ReqAttrBufSize <= AttrBuffDesc.Size, "invalid DispatchArgsByteOffset (", Attribs.DispatchArgsByteOffset,
                                             ") or indirect dispatch arguments buffer '", AttrBuffDesc.Name, "' size must be at least ", ReqAttrBufSize, " bytes");
 
@@ -327,8 +327,8 @@ bool VerifyBeginRenderPassAttribs(const BeginRenderPassAttribs& Attribs)
 
     const RenderPassDesc& RPDesc = Attribs.pRenderPass->GetDesc();
 
-    Uint32 NumRequiredClearValues = 0;
-    for (Uint32 i = 0; i < RPDesc.AttachmentCount; ++i)
+    UInt32 NumRequiredClearValues = 0;
+    for (UInt32 i = 0; i < RPDesc.AttachmentCount; ++i)
     {
         const RenderPassAttachmentDesc& Attchmnt = RPDesc.pAttachments[i];
         if (Attchmnt.LoadOp == ATTACHMENT_LOAD_OP_CLEAR)
@@ -344,7 +344,7 @@ bool VerifyBeginRenderPassAttribs(const BeginRenderPassAttribs& Attribs)
 
     CHECK_BEGIN_RENDER_PASS_ATTRIBS(Attribs.ClearValueCount >= NumRequiredClearValues,
                                     "at least ", NumRequiredClearValues, " clear values are required, but only ",
-                                    Uint32{Attribs.ClearValueCount}, " are provided.");
+                                    UInt32{Attribs.ClearValueCount}, " are provided.");
     CHECK_BEGIN_RENDER_PASS_ATTRIBS(Attribs.ClearValueCount == 0 || Attribs.pClearValues != nullptr,
                                     "pClearValues must not be null when ClearValueCount (", Attribs.ClearValueCount, ") is not zero.");
 
@@ -493,7 +493,7 @@ bool VerifyStateTransitionDesc(const IRenderDevice*       pDevice,
     CHECK_STATE_TRANSITION_DESC(Barrier.pResource != nullptr, "pResource must not be null.");
 
     RESOURCE_STATE OldState             = RESOURCE_STATE_UNKNOWN;
-    Uint64         ImmediateContextMask = 0;
+    UInt64         ImmediateContextMask = 0;
 
     if (RefCntAutoPtr<ITexture> pTexture{Barrier.pResource, IID_Texture})
     {
@@ -566,7 +566,7 @@ bool VerifyStateTransitionDesc(const IRenderDevice*       pDevice,
         UNEXPECTED("unsupported resource type");
     }
 
-    CHECK_STATE_TRANSITION_DESC((ImmediateContextMask & (Uint64{1} << Uint64{ExecutionCtxId})) != 0,
+    CHECK_STATE_TRANSITION_DESC((ImmediateContextMask & (UInt64{1} << UInt64{ExecutionCtxId})) != 0,
                                 "resource was created with ImmediateContextMask 0x", std::hex, ImmediateContextMask, " and can not be used in device context '", CtxDesc.Name, "'.");
 
     if (OldState == RESOURCE_STATE_UNORDERED_ACCESS && Barrier.NewState == RESOURCE_STATE_UNORDERED_ACCESS)
@@ -624,34 +624,34 @@ bool VerifyBuildBLASAttribs(const BuildBLASAttribs& Attribs, const IRenderDevice
         CHECK_BUILD_BLAS_ATTRIBS((BLASDesc.Flags & RAYTRACING_BUILD_AS_ALLOW_UPDATE) == RAYTRACING_BUILD_AS_ALLOW_UPDATE,
                                  "Update is true, but BLAS was created without RAYTRACING_BUILD_AS_ALLOW_UPDATE flag.");
 
-        const Uint32 GeomCount = Attribs.pBLAS->GetActualGeometryCount();
+        const UInt32 GeomCount = Attribs.pBLAS->GetActualGeometryCount();
         CHECK_BUILD_BLAS_ATTRIBS(Attribs.BoxDataCount == 0 || Attribs.BoxDataCount == GeomCount,
                                  "Update is true, but BoxDataCount (", Attribs.BoxDataCount, ") does not match the previous value (", GeomCount, ").");
         CHECK_BUILD_BLAS_ATTRIBS(Attribs.TriangleDataCount == 0 || Attribs.TriangleDataCount == GeomCount,
                                  "Update is true, but TriangleDataCount (", Attribs.TriangleDataCount, ") does not match the previous value (", GeomCount, ").");
     }
 
-    for (Uint32 i = 0; i < Attribs.TriangleDataCount; ++i)
+    for (UInt32 i = 0; i < Attribs.TriangleDataCount; ++i)
     {
         const BLASBuildTriangleData& tri{Attribs.pTriangleData[i]};
-        const Uint32                 GeomIndex = Attribs.pBLAS->GetGeometryDescIndex(tri.GeometryName);
+        const UInt32                 GeomIndex = Attribs.pBLAS->GetGeometryDescIndex(tri.GeometryName);
 
         CHECK_BUILD_BLAS_ATTRIBS(GeomIndex != INVALID_INDEX,
                                  "pTriangleData[", i, "].GeometryName (", tri.GeometryName, ") is not found in BLAS description.");
 
         const BLASTriangleDesc& TriDesc{BLASDesc.pTriangles[GeomIndex]};
-        const Uint32            VertexValueSize = GetValueSize(TriDesc.VertexValueType);
-        const Uint32            VertexSize      = VertexValueSize * tri.VertexComponentCount;
-        const Uint32            VertexDataSize  = tri.VertexStride * tri.VertexCount;
-        const Uint32            VertStrideAlign = DeviceType == RENDER_DEVICE_TYPE_METAL ? RTProps.VertexBufferAlignment : VertexValueSize;
-        const Uint32            VertOffsetAlign = DeviceType == RENDER_DEVICE_TYPE_METAL ? tri.VertexStride : VertexValueSize;
+        const UInt32            VertexValueSize = GetValueSize(TriDesc.VertexValueType);
+        const UInt32            VertexSize      = VertexValueSize * tri.VertexComponentCount;
+        const UInt32            VertexDataSize  = tri.VertexStride * tri.VertexCount;
+        const UInt32            VertStrideAlign = DeviceType == RENDER_DEVICE_TYPE_METAL ? RTProps.VertexBufferAlignment : VertexValueSize;
+        const UInt32            VertOffsetAlign = DeviceType == RENDER_DEVICE_TYPE_METAL ? tri.VertexStride : VertexValueSize;
 
         CHECK_BUILD_BLAS_ATTRIBS(tri.VertexValueType == VT_UNDEFINED || tri.VertexValueType == TriDesc.VertexValueType,
                                  "pTriangleData[", i, "].VertexValueType must be undefined or match the VertexValueType in geometry description.");
 
         CHECK_BUILD_BLAS_ATTRIBS(tri.VertexComponentCount == 0 || tri.VertexComponentCount == TriDesc.VertexComponentCount,
-                                 "pTriangleData[", i, "].VertexComponentCount (", Uint32{tri.VertexComponentCount}, ") must be 0 or match the VertexComponentCount (",
-                                 Uint32{TriDesc.VertexComponentCount}, ") in geometry description.");
+                                 "pTriangleData[", i, "].VertexComponentCount (", UInt32{tri.VertexComponentCount}, ") must be 0 or match the VertexComponentCount (",
+                                 UInt32{TriDesc.VertexComponentCount}, ") in geometry description.");
 
         CHECK_BUILD_BLAS_ATTRIBS(tri.VertexCount <= TriDesc.MaxVertexCount,
                                  "pTriangleData[", i, "].VertexCount (", tri.VertexCount, ") must not be greater than MaxVertexCount(", TriDesc.MaxVertexCount, ").");
@@ -688,7 +688,7 @@ bool VerifyBuildBLASAttribs(const BuildBLASAttribs& Attribs, const IRenderDevice
             CHECK_BUILD_BLAS_ATTRIBS(tri.pIndexBuffer != nullptr, "pTriangleData[", i, "].pIndexBuffer must not be null.");
 
             const BufferDesc& InstBufDesc   = tri.pIndexBuffer->GetDesc();
-            const Uint32      IndexDataSize = tri.PrimitiveCount * 3 * GetValueSize(tri.IndexType);
+            const UInt32      IndexDataSize = tri.PrimitiveCount * 3 * GetValueSize(tri.IndexType);
 
             CHECK_BUILD_BLAS_ATTRIBS((InstBufDesc.BindFlags & BIND_RAY_TRACING) == BIND_RAY_TRACING,
                                      "pTriangleData[", i, "].pIndexBuffer was not created with BIND_RAY_TRACING flag.");
@@ -731,12 +731,12 @@ bool VerifyBuildBLASAttribs(const BuildBLASAttribs& Attribs, const IRenderDevice
         }
     }
 
-    for (Uint32 i = 0; i < Attribs.BoxDataCount; ++i)
+    for (UInt32 i = 0; i < Attribs.BoxDataCount; ++i)
     {
         const BLASBuildBoundingBoxData& box{Attribs.pBoxData[i]};
-        const Uint32                    BoxSize       = sizeof(float) * 6;
-        const Uint32                    BoxBufferSize = box.BoxCount * box.BoxStride;
-        const Uint32                    GeomIndex     = Attribs.pBLAS->GetGeometryDescIndex(box.GeometryName);
+        const UInt32                    BoxSize       = sizeof(float) * 6;
+        const UInt32                    BoxBufferSize = box.BoxCount * box.BoxStride;
+        const UInt32                    GeomIndex     = Attribs.pBLAS->GetGeometryDescIndex(box.GeometryName);
 
         CHECK_BUILD_BLAS_ATTRIBS(GeomIndex != INVALID_INDEX,
                                  "pBoxData[", i, "].GeometryName (", box.GeometryName, ") is not found in BLAS description.");
@@ -827,19 +827,19 @@ bool VerifyBuildTLASAttribs(const BuildTLASAttribs& Attribs, const RayTracingPro
         CHECK_BUILD_TLAS_ATTRIBS((TLASDesc.Flags & RAYTRACING_BUILD_AS_ALLOW_UPDATE) == RAYTRACING_BUILD_AS_ALLOW_UPDATE,
                                  "Update is true, but TLAS created without RAYTRACING_BUILD_AS_ALLOW_UPDATE flag.");
 
-        const Uint32 PrevInstanceCount = Attribs.pTLAS->GetBuildInfo().InstanceCount;
+        const UInt32 PrevInstanceCount = Attribs.pTLAS->GetBuildInfo().InstanceCount;
         CHECK_BUILD_TLAS_ATTRIBS(PrevInstanceCount == Attribs.InstanceCount,
                                  "Update is true, but InstanceCount (", Attribs.InstanceCount, ") does not match the previous value (", PrevInstanceCount, ").");
     }
 
     const BufferDesc& InstDesc          = Attribs.pInstanceBuffer->GetDesc();
     const size_t      InstDataSize      = size_t{Attribs.InstanceCount} * size_t{TLAS_INSTANCE_DATA_SIZE};
-    Uint32            AutoOffsetCounter = 0;
+    UInt32            AutoOffsetCounter = 0;
 
     // Calculate instance data size
-    for (Uint32 i = 0; i < Attribs.InstanceCount; ++i)
+    for (UInt32 i = 0; i < Attribs.InstanceCount; ++i)
     {
-        constexpr Uint32             BitMask = (1u << 24) - 1;
+        constexpr UInt32             BitMask = (1u << 24) - 1;
         const TLASBuildInstanceData& Inst    = Attribs.pInstances[i];
 
         VERIFY((Inst.CustomId & ~BitMask) == 0, "Only the lower 24 bits are used.");
@@ -934,10 +934,10 @@ bool VerifyCopyBLASAttribs(const IRenderDevice* pDevice, const CopyBLASAttribs& 
             CHECK_COPY_BLAS_ATTRIBS(SrcDesc.Flags == DstDesc.Flags,
                                     "Source and destination BLASes must have been created with the same flags.");
 
-            for (Uint32 i = 0; i < SrcDesc.TriangleCount; ++i)
+            for (UInt32 i = 0; i < SrcDesc.TriangleCount; ++i)
             {
                 const BLASTriangleDesc& SrcTri = SrcDesc.pTriangles[i];
-                const Uint32            Index  = Attribs.pDst->GetGeometryDescIndex(SrcTri.GeometryName);
+                const UInt32            Index  = Attribs.pDst->GetGeometryDescIndex(SrcTri.GeometryName);
                 CHECK_COPY_BLAS_ATTRIBS(Index != INVALID_INDEX,
                                         "Src GeometryName ('", SrcTri.GeometryName, "') at index ", i, " is not found in pDst.");
                 const BLASTriangleDesc& DstTri = DstDesc.pTriangles[Index];
@@ -949,8 +949,8 @@ bool VerifyCopyBLASAttribs(const IRenderDevice* pDevice, const CopyBLASAttribs& 
                                         "VertexValueType value (", GetValueTypeString(SrcTri.VertexValueType), ") in source triangle description at index ", i,
                                         " does not match VertexValueType value (", GetValueTypeString(DstTri.VertexValueType), ") in destination description.");
                 CHECK_COPY_BLAS_ATTRIBS(SrcTri.VertexComponentCount == DstTri.VertexComponentCount,
-                                        "VertexComponentCount value (", Uint32{SrcTri.VertexComponentCount}, ") in source triangle description at index ", i,
-                                        " does not match VertexComponentCount value (", Uint32{DstTri.VertexComponentCount}, ") in destination description.");
+                                        "VertexComponentCount value (", UInt32{SrcTri.VertexComponentCount}, ") in source triangle description at index ", i,
+                                        " does not match VertexComponentCount value (", UInt32{DstTri.VertexComponentCount}, ") in destination description.");
                 CHECK_COPY_BLAS_ATTRIBS(SrcTri.MaxPrimitiveCount == DstTri.MaxPrimitiveCount,
                                         "MaxPrimitiveCount value (", SrcTri.MaxPrimitiveCount, ") in source triangle description at index ", i,
                                         " does not match MaxPrimitiveCount value (", DstTri.MaxPrimitiveCount, ") in destination description.");
@@ -962,10 +962,10 @@ bool VerifyCopyBLASAttribs(const IRenderDevice* pDevice, const CopyBLASAttribs& 
                                         " does not match AllowsTransforms value (", (DstTri.AllowsTransforms ? "true" : "false"), ") in destination description.");
             }
 
-            for (Uint32 i = 0; i < SrcDesc.BoxCount; ++i)
+            for (UInt32 i = 0; i < SrcDesc.BoxCount; ++i)
             {
                 const BLASBoundingBoxDesc& SrcBox = SrcDesc.pBoxes[i];
-                const Uint32               Index  = Attribs.pDst->GetGeometryDescIndex(SrcBox.GeometryName);
+                const UInt32               Index  = Attribs.pDst->GetGeometryDescIndex(SrcBox.GeometryName);
                 if (Index == INVALID_INDEX)
                 {
                     LOG_ERROR_MESSAGE("Copy BLAS attribs are invalid: pSrc->GetDesc().pBoxes[", i, "].GeometryName ('", SrcBox.GeometryName, "') is not found in pDst.");
@@ -1043,7 +1043,7 @@ bool VerifyWriteBLASCompactedSizeAttribs(const IRenderDevice* pDevice, const Wri
     CHECK_WRITE_BLAS_SIZE_ATTRIBS(Attribs.pDestBuffer != nullptr, "pDestBuffer must not be null.");
 
     const BufferDesc& DstDesc = Attribs.pDestBuffer->GetDesc();
-    CHECK_WRITE_BLAS_SIZE_ATTRIBS(Attribs.DestBufferOffset + sizeof(Uint64) <= DstDesc.Size, "pDestBuffer is too small.");
+    CHECK_WRITE_BLAS_SIZE_ATTRIBS(Attribs.DestBufferOffset + sizeof(UInt64) <= DstDesc.Size, "pDestBuffer is too small.");
 
     if (pDevice->GetDeviceInfo().Type == RENDER_DEVICE_TYPE_D3D12)
     {
@@ -1067,7 +1067,7 @@ bool VerifyWriteTLASCompactedSizeAttribs(const IRenderDevice* pDevice, const Wri
     CHECK_WRITE_TLAS_SIZE_ATTRIBS(Attribs.pDestBuffer != nullptr, "pDestBuffer must not be null.");
 
     const BufferDesc& DstDesc = Attribs.pDestBuffer->GetDesc();
-    CHECK_WRITE_TLAS_SIZE_ATTRIBS(Attribs.DestBufferOffset + sizeof(Uint64) <= DstDesc.Size, "pDestBuffer is too small.");
+    CHECK_WRITE_TLAS_SIZE_ATTRIBS(Attribs.DestBufferOffset + sizeof(UInt64) <= DstDesc.Size, "pDestBuffer is too small.");
 
     if (pDevice->GetDeviceInfo().Type == RENDER_DEVICE_TYPE_D3D12)
     {
@@ -1099,7 +1099,7 @@ bool VerifyTraceRaysAttribs(const TraceRaysAttribs& Attribs)
     return true;
 }
 
-bool VerifyTraceRaysIndirectAttribs(const IRenderDevice* pDevice, const TraceRaysIndirectAttribs& Attribs, Uint32 SBTSize)
+bool VerifyTraceRaysIndirectAttribs(const IRenderDevice* pDevice, const TraceRaysIndirectAttribs& Attribs, UInt32 SBTSize)
 {
     const IBuffer* pAttribsBuffer = Attribs.pAttribsBuffer;
 
@@ -1148,7 +1148,7 @@ bool VerifyBindSparseResourceMemoryAttribs(const IRenderDevice* pDevice, const B
 #ifdef DILIGENT_DEVELOPMENT
     const bool IsMetal = pDevice->GetDeviceInfo().IsMetalDevice();
 
-    for (Uint32 i = 0; i < Attribs.NumBufferBinds; ++i)
+    for (UInt32 i = 0; i < Attribs.NumBufferBinds; ++i)
     {
         const SparseBufferMemoryBindInfo& Bind = Attribs.pBufferBinds[i];
         CHECK_BIND_SPARSE_ATTRIBS(Bind.pBuffer != nullptr, "pBufferBinds[", i, "].pBuffer must not be null");
@@ -1165,7 +1165,7 @@ bool VerifyBindSparseResourceMemoryAttribs(const IRenderDevice* pDevice, const B
             continue;
 
         const SparseBufferProperties& BuffSparseProps = Bind.pBuffer->GetSparseProperties();
-        for (Uint32 r = 0; r < Bind.NumRanges; ++r)
+        for (UInt32 r = 0; r < Bind.NumRanges; ++r)
         {
             const SparseBufferMemoryBindRange& Range = Bind.pRanges[r];
             CHECK_BIND_SPARSE_ATTRIBS(Range.BufferOffset + Range.MemorySize <= Desc.Size,
@@ -1185,14 +1185,14 @@ bool VerifyBindSparseResourceMemoryAttribs(const IRenderDevice* pDevice, const B
                 CHECK_BIND_SPARSE_ATTRIBS(Range.pMemory->IsCompatible(Bind.pBuffer),
                                           "pBufferBinds[", i, "].pRanges[", r, "].pMemory must be compatible with pBuffer");
 
-                const Uint64 Capacity = Range.pMemory->GetCapacity();
+                const UInt64 Capacity = Range.pMemory->GetCapacity();
                 CHECK_BIND_SPARSE_ATTRIBS(Range.MemoryOffset + Range.MemorySize <= Capacity,
                                           "pBufferBinds[", i, "].pRanges[", r, "] specifies a range with offset ", Range.MemoryOffset,
                                           " and size ", Range.MemorySize, " that exceeds the device memory size (", Capacity, ")");
                 // Can not check here because final memory offset depends on the device memory object implementation
                 //CHECK_BIND_SPARSE_ATTRIBS(Range.MemoryOffset % BuffSparseProps.BlockSize == 0)
 
-                const Uint64 PageSize = Range.pMemory->GetDesc().PageSize;
+                const UInt64 PageSize = Range.pMemory->GetDesc().PageSize;
                 CHECK_BIND_SPARSE_ATTRIBS((Range.MemoryOffset % PageSize) + Range.MemorySize <= PageSize,
                                           "pBufferBinds[", i, "].pRanges[", r, "] specifies a range with offset ", Range.MemoryOffset,
                                           " and size ", Range.MemorySize,
@@ -1206,7 +1206,7 @@ bool VerifyBindSparseResourceMemoryAttribs(const IRenderDevice* pDevice, const B
         }
     }
 
-    for (Uint32 i = 0; i < Attribs.NumTextureBinds; ++i)
+    for (UInt32 i = 0; i < Attribs.NumTextureBinds; ++i)
     {
         const SparseTextureMemoryBindInfo& Bind = Attribs.pTextureBinds[i];
         CHECK_BIND_SPARSE_ATTRIBS(Bind.pTexture != nullptr, "pTextureBinds[", i, "].pTexture must not be null");
@@ -1223,14 +1223,14 @@ bool VerifyBindSparseResourceMemoryAttribs(const IRenderDevice* pDevice, const B
             continue;
 
         const SparseTextureProperties& TexSparseProps = Bind.pTexture->GetSparseProperties();
-        for (Uint32 r = 0; r < Bind.NumRanges; ++r)
+        for (UInt32 r = 0; r < Bind.NumRanges; ++r)
         {
             const SparseTextureMemoryBindRange& Range     = Bind.pRanges[r];
             const Box&                          Region    = Range.Region;
             const MipLevelProperties            MipProps  = GetMipLevelProperties(Desc, Range.MipLevel);
-            const Uint32                        MipWidth  = MipProps.StorageWidth;
-            const Uint32                        MipHeight = MipProps.StorageHeight;
-            const Uint32                        MipDepth  = MipProps.Depth;
+            const UInt32                        MipWidth  = MipProps.StorageWidth;
+            const UInt32                        MipHeight = MipProps.StorageHeight;
+            const UInt32                        MipDepth  = MipProps.Depth;
 
             CHECK_BIND_SPARSE_ATTRIBS(Range.MipLevel < Desc.MipLevels,
                                       "pTextureBinds[", i, "].pRanges[", r, "].MipLevel (", Range.MipLevel,
@@ -1305,8 +1305,8 @@ bool VerifyBindSparseResourceMemoryAttribs(const IRenderDevice* pDevice, const B
                 if (Range.MemorySize != 0 && Range.MipLevel < TexSparseProps.FirstMipInTail)
                 {
                     const uint3  TilesInBox = GetNumSparseTilesInBox(Region, TexSparseProps.TileSize);
-                    const Uint32 NumBlocks  = TilesInBox.x * TilesInBox.y * TilesInBox.z;
-                    CHECK_BIND_SPARSE_ATTRIBS(Uint64{NumBlocks} * Uint64{TexSparseProps.BlockSize} == Range.MemorySize,
+                    const UInt32 NumBlocks  = TilesInBox.x * TilesInBox.y * TilesInBox.z;
+                    CHECK_BIND_SPARSE_ATTRIBS(UInt64{NumBlocks} * UInt64{TexSparseProps.BlockSize} == Range.MemorySize,
                                               "pTextureBinds[", i, "].pRanges[", r, "].MemorySize (", Range.MemorySize, ") does not match the sparse memory blocks count (",
                                               NumBlocks, ") in the specified region");
                 }
@@ -1324,14 +1324,14 @@ bool VerifyBindSparseResourceMemoryAttribs(const IRenderDevice* pDevice, const B
                     CHECK_BIND_SPARSE_ATTRIBS(Range.pMemory->IsCompatible(Bind.pTexture),
                                               "pTextureBinds[", i, "].pRanges[", r, "].pMemory must be compatible with pTexture");
 
-                    const Uint64 Capacity = Range.pMemory->GetCapacity();
+                    const UInt64 Capacity = Range.pMemory->GetCapacity();
                     CHECK_BIND_SPARSE_ATTRIBS(Range.MemoryOffset + Range.MemorySize <= Capacity,
                                               "pTextureBinds[", i, "].pRanges[", r, "] specifies MemoryOffset (", Range.MemoryOffset, ") and MemorySize (",
                                               Range.MemorySize, ") that exceed the memory capacity (", Capacity, ")");
                     // Can not check here because the final memory offset depends on the device memory object implementation
                     //CHECK_BIND_SPARSE_ATTRIBS(Range.MemoryOffset % BuffSparseProps.BlockSize == 0)
 
-                    const Uint64 PageSize = Range.pMemory->GetDesc().PageSize;
+                    const UInt64 PageSize = Range.pMemory->GetDesc().PageSize;
                     CHECK_BIND_SPARSE_ATTRIBS((Range.MemoryOffset % PageSize) + Range.MemorySize <= PageSize,
                                               "pTextureBinds[", i, "].pRanges[", r, "] specifies MemoryOffset (", Range.MemoryOffset, ") and MemorySize (", Range.MemorySize,
                                               ") that don't fit into a single page. In Direct3D12 and Vulkan this will be an error");
@@ -1354,7 +1354,7 @@ bool VerifyBindSparseResourceMemoryAttribs(const IRenderDevice* pDevice, const B
 
         if (Attribs.pWaitFenceValues != nullptr)
         {
-            for (Uint32 i = 0; i < Attribs.NumWaitFences; ++i)
+            for (UInt32 i = 0; i < Attribs.NumWaitFences; ++i)
             {
                 CHECK_BIND_SPARSE_ATTRIBS(Attribs.ppWaitFences[i] != nullptr, "ppWaitFences[", i, "] must not be null");
                 CHECK_BIND_SPARSE_ATTRIBS(Attribs.ppWaitFences[i]->GetDesc().Type == FENCE_TYPE_GENERAL, "ppWaitFences[", i, "] must be GENERAL type");
@@ -1369,7 +1369,7 @@ bool VerifyBindSparseResourceMemoryAttribs(const IRenderDevice* pDevice, const B
 
         if (Attribs.pSignalFenceValues != nullptr)
         {
-            for (Uint32 i = 0; i < Attribs.NumSignalFences; ++i)
+            for (UInt32 i = 0; i < Attribs.NumSignalFences; ++i)
             {
                 CHECK_BIND_SPARSE_ATTRIBS(Attribs.ppSignalFences[i] != nullptr, "ppSignalFences[", i, "] must not be null");
                 CHECK_BIND_SPARSE_ATTRIBS(Attribs.ppSignalFences[i]->GetDesc().Type == FENCE_TYPE_GENERAL, "ppSignalFences[", i, "] must be GENERAL type");

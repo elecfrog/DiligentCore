@@ -58,35 +58,35 @@ TEST(StreamingBufferTest, MapUnmap)
 
     {
         auto Offset = StreamBuff.Map(pContext, pDevice, 256);
-        EXPECT_EQ(Offset, Uint32{0});
+        EXPECT_EQ(Offset, UInt32{0});
         EXPECT_NE(StreamBuff.GetMappedCPUAddress(), nullptr);
         StreamBuff.Unmap();
         EXPECT_EQ(StreamBuff.GetMappedCPUAddress(), nullptr);
     }
 
     {
-        static constexpr Uint32 DataSize       = 512;
-        static constexpr Uint8  Data[DataSize] = {};
+        static constexpr UInt32 DataSize       = 512;
+        static constexpr UInt8  Data[DataSize] = {};
 
         auto Offset = StreamBuff.Update(pContext, pDevice, Data, DataSize);
-        EXPECT_EQ(Offset, Uint32{256});
+        EXPECT_EQ(Offset, UInt32{256});
     }
 
     {
         auto Offset = StreamBuff.Map(pContext, pDevice, 768);
-        EXPECT_EQ(Offset, Uint32{0});
+        EXPECT_EQ(Offset, UInt32{0});
         StreamBuff.Unmap();
     }
 
     {
         auto Offset = StreamBuff.Map(pContext, pDevice, 1536);
-        EXPECT_EQ(Offset, Uint32{0});
+        EXPECT_EQ(Offset, UInt32{0});
         StreamBuff.Unmap();
     }
 
     {
         auto Offset = StreamBuff.Map(pContext, pDevice, 256);
-        EXPECT_EQ(Offset, Uint32{1536});
+        EXPECT_EQ(Offset, UInt32{1536});
         StreamBuff.Unmap();
     }
 
@@ -94,7 +94,7 @@ TEST(StreamingBufferTest, MapUnmap)
 
     {
         auto Offset = StreamBuff.Map(pContext, pDevice, 64);
-        EXPECT_EQ(Offset, Uint32{0});
+        EXPECT_EQ(Offset, UInt32{0});
         StreamBuff.Unmap();
     }
 

@@ -42,14 +42,14 @@ namespace Diligent
 ShaderVariableManagerGL::ResourceCounters ShaderVariableManagerGL::CountResources(
     const PipelineResourceSignatureGLImpl& Signature,
     const SHADER_RESOURCE_VARIABLE_TYPE*   AllowedVarTypes,
-    Uint32                                 NumAllowedTypes,
+    UInt32                                 NumAllowedTypes,
     const SHADER_TYPE                      ShaderType)
 {
     ResourceCounters Counters;
 
     Signature.ProcessResources(
         AllowedVarTypes, NumAllowedTypes, ShaderType,
-        [&](const PipelineResourceDesc& ResDesc, Uint32) //
+        [&](const PipelineResourceDesc& ResDesc, UInt32) //
         {
             if (ResDesc.ResourceType == SHADER_RESOURCE_TYPE_SAMPLER)
                 return;
@@ -73,7 +73,7 @@ ShaderVariableManagerGL::ResourceCounters ShaderVariableManagerGL::CountResource
 
 size_t ShaderVariableManagerGL::GetRequiredMemorySize(const PipelineResourceSignatureGLImpl& Signature,
                                                       const SHADER_RESOURCE_VARIABLE_TYPE*   AllowedVarTypes,
-                                                      Uint32                                 NumAllowedTypes,
+                                                      UInt32                                 NumAllowedTypes,
                                                       SHADER_TYPE                            ShaderType)
 {
     ResourceCounters Counters = CountResources(Signature, AllowedVarTypes, NumAllowedTypes, ShaderType);
@@ -90,7 +90,7 @@ size_t ShaderVariableManagerGL::GetRequiredMemorySize(const PipelineResourceSign
 void ShaderVariableManagerGL::Initialize(const PipelineResourceSignatureGLImpl& Signature,
                                          IMemoryAllocator&                      Allocator,
                                          const SHADER_RESOURCE_VARIABLE_TYPE*   AllowedVarTypes,
-                                         Uint32                                 NumAllowedTypes,
+                                         UInt32                                 NumAllowedTypes,
                                          SHADER_TYPE                            ShaderType)
 {
     const ResourceCounters Counters = CountResources(Signature, AllowedVarTypes, NumAllowedTypes, ShaderType);
@@ -131,7 +131,7 @@ void ShaderVariableManagerGL::Initialize(const PipelineResourceSignatureGLImpl& 
 
     Signature.ProcessResources(
         AllowedVarTypes, NumAllowedTypes, ShaderType,
-        [&](const PipelineResourceDesc& ResDesc, Uint32 Index) //
+        [&](const PipelineResourceDesc& ResDesc, UInt32 Index) //
         {
             if (ResDesc.ResourceType == SHADER_RESOURCE_TYPE_SAMPLER)
                 return;
@@ -209,7 +209,7 @@ void ShaderVariableManagerGL::UniformBuffBindInfo::BindResource(const BindResour
                                    BindInfo.BufferBaseOffset, BindInfo.BufferRangeSize);
 }
 
-void ShaderVariableManagerGL::UniformBuffBindInfo::SetDynamicOffset(Uint32 ArrayIndex, Uint32 Offset)
+void ShaderVariableManagerGL::UniformBuffBindInfo::SetDynamicOffset(UInt32 ArrayIndex, UInt32 Offset)
 {
     const ResourceAttribs&      Attr = GetAttribs();
     const PipelineResourceDesc& Desc = GetDesc();
@@ -373,7 +373,7 @@ void ShaderVariableManagerGL::StorageBufferBindInfo::BindResource(const BindReso
     ResourceCache.SetSSBO(Attr.CacheOffset + BindInfo.ArrayIndex, std::move(pViewGL));
 }
 
-void ShaderVariableManagerGL::StorageBufferBindInfo::SetDynamicOffset(Uint32 ArrayIndex, Uint32 Offset)
+void ShaderVariableManagerGL::StorageBufferBindInfo::SetDynamicOffset(UInt32 ArrayIndex, UInt32 Offset)
 {
     const ResourceAttribs&      Attr = GetAttribs();
     const PipelineResourceDesc& Desc = GetDesc();
@@ -448,8 +448,8 @@ void ShaderVariableManagerGL::CheckResources(IResourceMapping*                  
 template <typename ResourceType>
 IShaderResourceVariable* ShaderVariableManagerGL::GetResourceByName(const Char* Name) const
 {
-    Uint32 NumResources = GetNumResources<ResourceType>();
-    for (Uint32 res = 0; res < NumResources; ++res)
+    UInt32 NumResources = GetNumResources<ResourceType>();
+    for (UInt32 res = 0; res < NumResources; ++res)
     {
         ResourceType&               Resource = GetResource<ResourceType>(res);
         const PipelineResourceDesc& ResDesc  = Resource.GetDesc();
@@ -482,7 +482,7 @@ class ShaderVariableLocator
 {
 public:
     ShaderVariableLocator(const ShaderVariableManagerGL& _Mgr,
-                          Uint32                         _Index) :
+                          UInt32                         _Index) :
         // clang-format off
         Mgr   {_Mgr},
         Index {_Index}
@@ -491,7 +491,7 @@ public:
     }
 
     template <typename ResourceType>
-    IShaderResourceVariable* TryResource(Uint32 NumResources)
+    IShaderResourceVariable* TryResource(UInt32 NumResources)
     {
         if (Index < NumResources)
             return &Mgr.GetResource<ResourceType>(Index);
@@ -504,11 +504,11 @@ public:
 
 private:
     ShaderVariableManagerGL const& Mgr;
-    Uint32                         Index;
+    UInt32                         Index;
 };
 
 
-IShaderResourceVariable* ShaderVariableManagerGL::GetVariable(Uint32 Index) const
+IShaderResourceVariable* ShaderVariableManagerGL::GetVariable(UInt32 Index) const
 {
     ShaderVariableLocator VarLocator(*this, Index);
 
@@ -536,12 +536,12 @@ public:
     ShaderVariableIndexLocator(const ShaderVariableManagerGL& _Mgr, const IShaderResourceVariable& Variable) :
         // clang-format off
         Mgr      {_Mgr},
-        VarOffset(reinterpret_cast<const Uint8*>(&Variable) - reinterpret_cast<const Uint8*>(_Mgr.m_pVariables))
+        VarOffset(reinterpret_cast<const UInt8*>(&Variable) - reinterpret_cast<const UInt8*>(_Mgr.m_pVariables))
     // clang-format on
     {}
 
     template <typename ResourceType>
-    bool TryResource(Uint32 NextResourceTypeOffset, Uint32 VarCount)
+    bool TryResource(UInt32 NextResourceTypeOffset, UInt32 VarCount)
     {
         if (VarOffset < NextResourceTypeOffset)
         {
@@ -551,7 +551,7 @@ public:
             VERIFY(RelativeOffset >= 0 && RelativeOffset < VarCount,
                    "Relative offset is out of bounds which either means the variable does not belong to this SRB or "
                    "there is a bug in variable offsets");
-            Index += static_cast<Uint32>(RelativeOffset);
+            Index += static_cast<UInt32>(RelativeOffset);
             return true;
         }
         else
@@ -561,16 +561,16 @@ public:
         }
     }
 
-    Uint32 GetIndex() const { return Index; }
+    UInt32 GetIndex() const { return Index; }
 
 private:
     const ShaderVariableManagerGL& Mgr;
     const size_t                   VarOffset;
-    Uint32                         Index = 0;
+    UInt32                         Index = 0;
 };
 
 
-Uint32 ShaderVariableManagerGL::GetVariableIndex(const IShaderResourceVariable& Var) const
+UInt32 ShaderVariableManagerGL::GetVariableIndex(const IShaderResourceVariable& Var) const
 {
     if (m_pVariables == nullptr)
     {
@@ -596,13 +596,13 @@ Uint32 ShaderVariableManagerGL::GetVariableIndex(const IShaderResourceVariable& 
     return ~0u;
 }
 
-const PipelineResourceDesc& ShaderVariableManagerGL::GetResourceDesc(Uint32 Index) const
+const PipelineResourceDesc& ShaderVariableManagerGL::GetResourceDesc(UInt32 Index) const
 {
     VERIFY_EXPR(m_pSignature);
     return m_pSignature->GetResourceDesc(Index);
 }
 
-const ShaderVariableManagerGL::ResourceAttribs& ShaderVariableManagerGL::GetResourceAttribs(Uint32 Index) const
+const ShaderVariableManagerGL::ResourceAttribs& ShaderVariableManagerGL::GetResourceAttribs(UInt32 Index) const
 {
     VERIFY_EXPR(m_pSignature);
     return m_pSignature->GetResourceAttribs(Index);

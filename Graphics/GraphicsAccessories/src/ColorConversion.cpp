@@ -38,7 +38,7 @@ namespace
 class LinearToGammaMap
 {
 public:
-    float operator[](Uint8 x) const
+    float operator[](UInt8 x) const
     {
         return m_ToGamma[x];
     }
@@ -47,7 +47,7 @@ private:
     const std::array<float, 256> m_ToGamma{
         []() {
             std::array<float, 256> ToGamma;
-            for (Uint32 i = 0; i < ToGamma.size(); ++i)
+            for (UInt32 i = 0; i < ToGamma.size(); ++i)
             {
                 ToGamma[i] = LinearToGamma(static_cast<float>(i) / 255.f);
             }
@@ -59,7 +59,7 @@ private:
 class GammaToLinearMap
 {
 public:
-    float operator[](Uint8 x) const
+    float operator[](UInt8 x) const
     {
         return m_ToLinear[x];
     }
@@ -68,7 +68,7 @@ private:
     const std::array<float, 256> m_ToLinear{
         []() {
             std::array<float, 256> ToLinear;
-            for (Uint32 i = 0; i < ToLinear.size(); ++i)
+            for (UInt32 i = 0; i < ToLinear.size(); ++i)
             {
                 ToLinear[i] = GammaToLinear(static_cast<float>(i) / 255.f);
             }
@@ -79,13 +79,13 @@ private:
 
 } // namespace
 
-float LinearToGamma(Uint8 x)
+float LinearToGamma(UInt8 x)
 {
     static const LinearToGammaMap map;
     return map[x];
 }
 
-float GammaToLinear(Uint8 x)
+float GammaToLinear(UInt8 x)
 {
     static const GammaToLinearMap map;
     return map[x];

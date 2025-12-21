@@ -105,7 +105,7 @@ public:
         }
     }
 
-    virtual Uint32 DILIGENT_CALL_TYPE GetStaticVariableCount(SHADER_TYPE ShaderType) const override
+    virtual UInt32 DILIGENT_CALL_TYPE GetStaticVariableCount(SHADER_TYPE ShaderType) const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         return m_pPipeline ? m_pPipeline->GetStaticVariableCount(ShaderType) : 0;
@@ -117,7 +117,7 @@ public:
         return m_pPipeline ? m_pPipeline->GetStaticVariableByName(ShaderType, Name) : nullptr;
     }
 
-    virtual IShaderResourceVariable* DILIGENT_CALL_TYPE GetStaticVariableByIndex(SHADER_TYPE ShaderType, Uint32 Index) override
+    virtual IShaderResourceVariable* DILIGENT_CALL_TYPE GetStaticVariableByIndex(SHADER_TYPE ShaderType, UInt32 Index) override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         return m_pPipeline ? m_pPipeline->GetStaticVariableByIndex(ShaderType, Index) : nullptr;
@@ -156,13 +156,13 @@ public:
         return m_pPipeline ? m_pPipeline->IsCompatibleWith(pPSO) : false;
     }
 
-    virtual Uint32 DILIGENT_CALL_TYPE GetResourceSignatureCount() const override
+    virtual UInt32 DILIGENT_CALL_TYPE GetResourceSignatureCount() const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         return m_pPipeline ? m_pPipeline->GetResourceSignatureCount() : 0;
     }
 
-    virtual IPipelineResourceSignature* DILIGENT_CALL_TYPE GetResourceSignature(Uint32 Index) const override
+    virtual IPipelineResourceSignature* DILIGENT_CALL_TYPE GetResourceSignature(UInt32 Index) const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         return m_pPipeline ? m_pPipeline->GetResourceSignature(Index) : nullptr;

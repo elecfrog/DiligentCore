@@ -45,12 +45,12 @@ DILIGENT_BEGIN_NAMESPACE(Diligent)
 /// Compute layout element stride automatically, see Diligen::LayoutElement::Stride for details.
 #define DILIGENT_LAYOUT_ELEMENT_AUTO_STRIDE 0xFFFFFFFFU
 
-static DILIGENT_CONSTEXPR Uint32 MAX_LAYOUT_ELEMENTS        = DILIGENT_MAX_LAYOUT_ELEMENTS;
-static DILIGENT_CONSTEXPR Uint32 LAYOUT_ELEMENT_AUTO_OFFSET = DILIGENT_LAYOUT_ELEMENT_AUTO_OFFSET;
-static DILIGENT_CONSTEXPR Uint32 LAYOUT_ELEMENT_AUTO_STRIDE = DILIGENT_LAYOUT_ELEMENT_AUTO_STRIDE;
+static DILIGENT_CONSTEXPR UInt32 MAX_LAYOUT_ELEMENTS        = DILIGENT_MAX_LAYOUT_ELEMENTS;
+static DILIGENT_CONSTEXPR UInt32 LAYOUT_ELEMENT_AUTO_OFFSET = DILIGENT_LAYOUT_ELEMENT_AUTO_OFFSET;
+static DILIGENT_CONSTEXPR UInt32 LAYOUT_ELEMENT_AUTO_STRIDE = DILIGENT_LAYOUT_ELEMENT_AUTO_STRIDE;
 
 /// Input frequency
-DILIGENT_TYPED_ENUM(INPUT_ELEMENT_FREQUENCY, Uint8)
+DILIGENT_TYPED_ENUM(INPUT_ELEMENT_FREQUENCY, UInt8)
 {
     /// Frequency is undefined.
     INPUT_ELEMENT_FREQUENCY_UNDEFINED = 0,
@@ -79,13 +79,13 @@ struct LayoutElement
     /// Input index of the element that is specified in the vertex shader.
 
     /// In Direct3D11 and Direct3D12 backends this is the semantic index.
-    Uint32 InputIndex        DEFAULT_INITIALIZER(0);
+    UInt32 InputIndex        DEFAULT_INITIALIZER(0);
 
     /// Buffer slot index that this element is read from.
-    Uint32 BufferSlot        DEFAULT_INITIALIZER(0);
+    UInt32 BufferSlot        DEFAULT_INITIALIZER(0);
 
     /// Number of components in the element. Allowed values are 1, 2, 3, and 4.
-    Uint32 NumComponents     DEFAULT_INITIALIZER(0);
+    UInt32 NumComponents     DEFAULT_INITIALIZER(0);
 
     /// Type of the element components, see Diligent::VALUE_TYPE for details.
     VALUE_TYPE ValueType     DEFAULT_INITIALIZER(VT_FLOAT32);
@@ -104,7 +104,7 @@ struct LayoutElement
 
     /// If this value is set to `LAYOUT_ELEMENT_AUTO_OFFSET` (default value), the offset will
     /// be computed automatically by placing the element right after the previous one.
-    Uint32 RelativeOffset    DEFAULT_INITIALIZER(LAYOUT_ELEMENT_AUTO_OFFSET);
+    UInt32 RelativeOffset    DEFAULT_INITIALIZER(LAYOUT_ELEMENT_AUTO_OFFSET);
 
     /// Stride, in bytes, between two elements, for this buffer slot.
 
@@ -112,14 +112,14 @@ struct LayoutElement
     /// computed automatically assuming that all elements in the same buffer slot are
     /// packed one after another. If the buffer slot contains multiple layout elements,
     /// they all must specify the same stride or use LAYOUT_ELEMENT_AUTO_STRIDE value.
-    Uint32 Stride            DEFAULT_INITIALIZER(LAYOUT_ELEMENT_AUTO_STRIDE);
+    UInt32 Stride            DEFAULT_INITIALIZER(LAYOUT_ELEMENT_AUTO_STRIDE);
 
     /// Frequency of the input data, see Diligent::INPUT_ELEMENT_FREQUENCY for details.
     INPUT_ELEMENT_FREQUENCY Frequency DEFAULT_INITIALIZER(INPUT_ELEMENT_FREQUENCY_PER_VERTEX);
 
     /// The number of instances to draw using the same per-instance data before advancing
     /// in the buffer by one element.
-    Uint32 InstanceDataStepRate DEFAULT_INITIALIZER(1);
+    UInt32 InstanceDataStepRate DEFAULT_INITIALIZER(1);
 
 
 #if DILIGENT_CPP_INTERFACE
@@ -127,15 +127,15 @@ struct LayoutElement
     constexpr LayoutElement() noexcept{}
 
     /// Initializes the structure
-    constexpr LayoutElement(Uint32                   _InputIndex,
-                            Uint32                   _BufferSlot,
-                            Uint32                   _NumComponents,
+    constexpr LayoutElement(UInt32                   _InputIndex,
+                            UInt32                   _BufferSlot,
+                            UInt32                   _NumComponents,
                             VALUE_TYPE               _ValueType,
                             Bool                     _IsNormalized         = LayoutElement{}.IsNormalized,
-                            Uint32                   _RelativeOffset       = LayoutElement{}.RelativeOffset,
-                            Uint32                   _Stride               = LayoutElement{}.Stride,
+                            UInt32                   _RelativeOffset       = LayoutElement{}.RelativeOffset,
+                            UInt32                   _Stride               = LayoutElement{}.Stride,
                             INPUT_ELEMENT_FREQUENCY  _Frequency            = LayoutElement{}.Frequency,
-                            Uint32                   _InstanceDataStepRate = LayoutElement{}.InstanceDataStepRate)noexcept :
+                            UInt32                   _InstanceDataStepRate = LayoutElement{}.InstanceDataStepRate)noexcept :
         InputIndex          {_InputIndex          },
         BufferSlot          {_BufferSlot          },
         NumComponents       {_NumComponents       },
@@ -149,15 +149,15 @@ struct LayoutElement
 
     /// Initializes the structure
     constexpr LayoutElement(const Char*               _HLSLSemantic,
-                            Uint32                    _InputIndex,
-                            Uint32                    _BufferSlot,
-                            Uint32                    _NumComponents,
+                            UInt32                    _InputIndex,
+                            UInt32                    _BufferSlot,
+                            UInt32                    _NumComponents,
                             VALUE_TYPE                _ValueType,
                             Bool                      _IsNormalized         = LayoutElement{}.IsNormalized,
-                            Uint32                    _RelativeOffset       = LayoutElement{}.RelativeOffset,
-                            Uint32                    _Stride               = LayoutElement{}.Stride,
+                            UInt32                    _RelativeOffset       = LayoutElement{}.RelativeOffset,
+                            UInt32                    _Stride               = LayoutElement{}.Stride,
                             INPUT_ELEMENT_FREQUENCY   _Frequency            = LayoutElement{}.Frequency,
-                            Uint32                    _InstanceDataStepRate = LayoutElement{}.InstanceDataStepRate)noexcept :
+                            UInt32                    _InstanceDataStepRate = LayoutElement{}.InstanceDataStepRate)noexcept :
         HLSLSemantic        {_HLSLSemantic        },
         InputIndex          {_InputIndex          },
         BufferSlot          {_BufferSlot          },
@@ -171,13 +171,13 @@ struct LayoutElement
     {}
 
     /// Initializes the structure
-    constexpr LayoutElement(Uint32                   _InputIndex,
-                            Uint32                   _BufferSlot,
-                            Uint32                   _NumComponents,
+    constexpr LayoutElement(UInt32                   _InputIndex,
+                            UInt32                   _BufferSlot,
+                            UInt32                   _NumComponents,
                             VALUE_TYPE               _ValueType,
                             Bool                     _IsNormalized,
                             INPUT_ELEMENT_FREQUENCY  _Frequency,
-                            Uint32                   _InstanceDataStepRate = LayoutElement{}.InstanceDataStepRate)noexcept :
+                            UInt32                   _InstanceDataStepRate = LayoutElement{}.InstanceDataStepRate)noexcept :
         InputIndex          {_InputIndex                   },
         BufferSlot          {_BufferSlot                   },
         NumComponents       {_NumComponents                },
@@ -221,13 +221,13 @@ struct InputLayoutDesc
     const LayoutElement* LayoutElements  DEFAULT_INITIALIZER(nullptr);
 
     /// The number of layout elements in `LayoutElements` array.
-    Uint32               NumElements     DEFAULT_INITIALIZER(0);
+    UInt32               NumElements     DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr InputLayoutDesc() noexcept {}
 
     constexpr InputLayoutDesc(const LayoutElement* _LayoutElements,
-                              Uint32               _NumElements)noexcept :
+                              UInt32               _NumElements)noexcept :
         LayoutElements{_LayoutElements},
         NumElements   {_NumElements   }
     {}
@@ -237,7 +237,7 @@ struct InputLayoutDesc
         if (NumElements != rhs.NumElements)
             return false;
 
-        for (Uint32 i=0; i < NumElements; ++i)
+        for (UInt32 i=0; i < NumElements; ++i)
         {
             if (LayoutElements[i] != rhs.LayoutElements[i])
                 return false;

@@ -64,7 +64,7 @@ DataBlobImpl::DataBlobImpl(IReferenceCounters* pRefCounters,
                            size_t              InitialSize,
                            const void*         pData) :
     TBase{pRefCounters},
-    m_DataBuff{InitialSize, Uint8{}, STD_ALLOCATOR_RAW_MEM(Uint8, Allocator, "Allocator for vector<Uint8>")}
+    m_DataBuff{InitialSize, UInt8{}, STD_ALLOCATOR_RAW_MEM(UInt8, Allocator, "Allocator for vector<UInt8>")}
 {
     if (!m_DataBuff.empty() && pData != nullptr)
     {

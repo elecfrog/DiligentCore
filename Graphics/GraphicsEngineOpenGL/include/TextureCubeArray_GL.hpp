@@ -56,8 +56,8 @@ public:
 
     /// Implementation of TextureBaseGL::UpdateData() for cube texture array.
     virtual void UpdateData(class GLContextState&    CtxState,
-                            Uint32                   MipLevel,
-                            Uint32                   Slice,
+                            UInt32                   MipLevel,
+                            UInt32                   Slice,
                             const Box&               DstBox,
                             const TextureSubResData& SubresData) override final;
 

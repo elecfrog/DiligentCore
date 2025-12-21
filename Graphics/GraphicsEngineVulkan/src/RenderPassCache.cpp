@@ -68,11 +68,11 @@ void RenderPassCache::Destroy()
 }
 
 static RenderPassDesc GetImplicitRenderPassDesc(
-    Uint32                                                        NumRenderTargets,
+    UInt32                                                        NumRenderTargets,
     const TEXTURE_FORMAT                                          RTVFormats[],
     TEXTURE_FORMAT                                                DSVFormat,
     bool                                                          ReadOnlyDepth,
-    Uint8                                                         SampleCount,
+    UInt8                                                         SampleCount,
     TEXTURE_FORMAT                                                ShadingRateTexFormat,
     uint2                                                         ShadingRateTileSize,
     std::array<RenderPassAttachmentDesc, MAX_RENDER_TARGETS + 2>& Attachments,
@@ -84,7 +84,7 @@ static RenderPassDesc GetImplicitRenderPassDesc(
 
     RenderPassDesc RPDesc;
 
-    Uint32& AttachmentInd{RPDesc.AttachmentCount};
+    UInt32& AttachmentInd{RPDesc.AttachmentCount};
 
     AttachmentReference* pDepthAttachmentReference = nullptr;
     if (DSVFormat != TEX_FORMAT_UNKNOWN)
@@ -114,7 +114,7 @@ static RenderPassDesc GetImplicitRenderPassDesc(
     }
 
     AttachmentReference* pColorAttachmentsReference = NumRenderTargets > 0 ? &AttachmentReferences[AttachmentInd] : nullptr;
-    for (Uint32 rt = 0; rt < NumRenderTargets; ++rt)
+    for (UInt32 rt = 0; rt < NumRenderTargets; ++rt)
     {
         AttachmentReference& ColorAttachmentRef = pColorAttachmentsReference[rt];
 
@@ -221,12 +221,12 @@ RenderPassVkImpl* RenderPassCache::GetRenderPass(const RenderPassCacheKey& Key)
                                                           SRFormat, SRTileSize, Attachments, AttachmentReferences, Subpass, ShadingRate);
 
         std::stringstream PassNameSS;
-        PassNameSS << "Implicit render pass: RT count: " << Uint32{Key.NumRenderTargets} << "; sample count: " << Uint32{Key.SampleCount}
+        PassNameSS << "Implicit render pass: RT count: " << UInt32{Key.NumRenderTargets} << "; sample count: " << UInt32{Key.SampleCount}
                    << "; DSV Format: " << GetTextureFormatAttribs(Key.DSVFormat).Name;
         if (Key.NumRenderTargets > 0)
         {
             PassNameSS << (Key.NumRenderTargets > 1 ? "; RTV Formats: " : "; RTV Format: ");
-            for (Uint32 rt = 0; rt < Key.NumRenderTargets; ++rt)
+            for (UInt32 rt = 0; rt < Key.NumRenderTargets; ++rt)
             {
                 PassNameSS << (rt > 0 ? ", " : "") << GetTextureFormatAttribs(Key.RTVFormats[rt]).Name;
             }

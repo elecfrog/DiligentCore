@@ -59,7 +59,7 @@ class ReferenceTriangleRenderer
 {
 public:
     ReferenceTriangleRenderer(ISwapChain*     pSwapChain,
-                              Uint32          SampleCount         = 1,
+                              UInt32          SampleCount         = 1,
                               WGPUTextureView InputAttachmentView = nullptr)
     {
         auto* pEnvWebGPU = TestingEnvironmentWebGPU::GetInstance();
@@ -182,8 +182,8 @@ void RenderDrawCommandReferenceWebGPU(ISwapChain* pSwapChain, const float* pClea
     wgpuRenderPassDesc.colorAttachments     = wgpuRenderPassColorAttachments;
     wgpuRenderPassDesc.colorAttachmentCount = _countof(wgpuRenderPassColorAttachments);
 
-    const Uint32 TextureWidth  = pSwapChain->GetDesc().Width;
-    const Uint32 TextureHeight = pSwapChain->GetDesc().Height;
+    const UInt32 TextureWidth  = pSwapChain->GetDesc().Width;
+    const UInt32 TextureHeight = pSwapChain->GetDesc().Height;
 
     WGPURenderPassEncoder wgpuRenderPassEncoder = wgpuCommandEncoderBeginRenderPass(wgpuCmdEncoder, &wgpuRenderPassDesc);
     wgpuRenderPassEncoderSetViewport(wgpuRenderPassEncoder, 0, 0, static_cast<float>(TextureWidth), static_cast<float>(TextureHeight), 0, 1.0);
@@ -201,7 +201,7 @@ void RenderPassMSResolveReferenceWebGPU(ISwapChain* pSwapChain, const float* pCl
     auto* pEnvWebGPU              = TestingEnvironmentWebGPU::GetInstance();
     auto* pTestingSwapChainWebGPU = ClassPtrCast<TestingSwapChainWebGPU>(pSwapChain);
 
-    constexpr Uint32 SampleCount = 4;
+    constexpr UInt32 SampleCount = 4;
 
     ReferenceTriangleRenderer TriRender{pSwapChain, SampleCount};
 
@@ -246,8 +246,8 @@ void RenderPassMSResolveReferenceWebGPU(ISwapChain* pSwapChain, const float* pCl
     wgpuRenderPassDesc.colorAttachments     = wgpuRenderPassColorAttachments;
     wgpuRenderPassDesc.colorAttachmentCount = _countof(wgpuRenderPassColorAttachments);
 
-    const Uint32 TextureWidth  = pSwapChain->GetDesc().Width;
-    const Uint32 TextureHeight = pSwapChain->GetDesc().Height;
+    const UInt32 TextureWidth  = pSwapChain->GetDesc().Width;
+    const UInt32 TextureHeight = pSwapChain->GetDesc().Height;
 
     WGPURenderPassEncoder wgpuRenderPassEncoder = wgpuCommandEncoderBeginRenderPass(wgpuCmdEncoder, &wgpuRenderPassDesc);
     wgpuRenderPassEncoderSetViewport(wgpuRenderPassEncoder, 0, 0, static_cast<float>(TextureWidth), static_cast<float>(TextureHeight), 0, 1.0);
@@ -294,8 +294,8 @@ void RenderPassInputAttachmentReferenceWebGPU(ISwapChain* pSwapChain, const floa
     WGPUTextureView wgpuInputTextureView = wgpuTextureCreateView(wgpuMSTexture, &wgpuInputTextureViewDesc);
     VERIFY_EXPR(wgpuInputTextureView != nullptr);
 
-    const Uint32 TextureWidth  = pSwapChain->GetDesc().Width;
-    const Uint32 TextureHeight = pSwapChain->GetDesc().Height;
+    const UInt32 TextureWidth  = pSwapChain->GetDesc().Width;
+    const UInt32 TextureHeight = pSwapChain->GetDesc().Height;
 
     WGPUCommandEncoder wgpuCmdEncoder = pEnvWebGPU->CreateCommandEncoder();
 

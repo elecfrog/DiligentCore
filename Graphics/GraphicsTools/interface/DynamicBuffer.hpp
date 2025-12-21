@@ -57,11 +57,11 @@ struct DynamicBufferCreateInfo
     /// Memory page size should be a multiple of SparseResources.StandardBlockSize.
     /// If it is not, the engine automatically aligns the value up to the closest
     /// multiple of the block size.
-    Uint32 MemoryPageSize = 64 << 10;
+    UInt32 MemoryPageSize = 64 << 10;
 
     /// When `Desc.Usage == USAGE_SPARSE`, the virtual size of the sparse buffer;
     /// ignored otherwise.
-    Uint64 VirtualSize = Uint64{1} << Uint64{30};
+    UInt64 VirtualSize = UInt64{1} << UInt64{30};
 };
 
 
@@ -117,7 +117,7 @@ public:
     /// If `NewSize` is zero, internal buffer will be released.
     IBuffer* Resize(IRenderDevice*  pDevice,
                     IDeviceContext* pContext,
-                    Uint64          NewSize,
+                    UInt64          NewSize,
                     bool            DiscardContent = false);
 
 
@@ -168,7 +168,7 @@ public:
     /// Returns the dynamic buffer version.
 
     /// The version is incremented every time a new internal buffer is created.
-    Uint32 GetVersion() const
+    UInt32 GetVersion() const
     {
         return m_Version.load();
     }
@@ -179,7 +179,7 @@ public:
     /// The actual size of the sparse buffer may be larger
     /// than the logical size due to alignment requirements.
     /// Use GetBuffer()->GetDesc().Size to get the actual size.
-    Uint64 GetVirtualSize() const
+    UInt64 GetVirtualSize() const
     {
         return m_VirtualSize;
     }
@@ -197,21 +197,21 @@ private:
     const std::string m_Name;
     BufferDesc        m_Desc;
 
-    std::atomic<Uint32> m_Version{0};
+    std::atomic<UInt32> m_Version{0};
 
     RefCntAutoPtr<IBuffer>       m_pBuffer;
     RefCntAutoPtr<IBuffer>       m_pStaleBuffer;
     RefCntAutoPtr<IDeviceMemory> m_pMemory;
 
-    Uint64 m_PendingSize = 0;
+    UInt64 m_PendingSize = 0;
 
-    const Uint64 m_VirtualSize;
+    const UInt64 m_VirtualSize;
 
-    Uint32 m_MemoryPageSize = 0;
+    UInt32 m_MemoryPageSize = 0;
 
-    Uint64 m_NextBeforeResizeFenceValue = 1;
-    Uint64 m_NextAfterResizeFenceValue  = 1;
-    Uint64 m_LastAfterResizeFenceValue  = 0;
+    UInt64 m_NextBeforeResizeFenceValue = 1;
+    UInt64 m_NextAfterResizeFenceValue  = 1;
+    UInt64 m_LastAfterResizeFenceValue  = 0;
 
     RefCntAutoPtr<IFence> m_pBeforeResizeFence;
     RefCntAutoPtr<IFence> m_pAfterResizeFence;

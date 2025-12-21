@@ -205,7 +205,7 @@ bool GLContext::InitEGLContext()
     }
 
 #if DILIGENT_USE_OPENXR
-    if (openxr_attribs_ && OpenXRRequiredGLESVersion > Version{static_cast<Uint32>(major_version_), static_cast<Uint32>(minor_version_)})
+    if (openxr_attribs_ && OpenXRRequiredGLESVersion > Version{static_cast<UInt32>(major_version_), static_cast<UInt32>(minor_version_)})
     {
         DG_LOG_ERROR("OpenGLES version ", major_version_, '.', minor_version_, " does not meet minimum required version for OpenXR: ",
                   OpenXRRequiredGLESVersion.Major, '.', OpenXRRequiredGLESVersion.Minor);
@@ -319,8 +319,8 @@ GLContext::GLContext(const EngineGLCreateInfo& InitAttribs,
     Init(NativeWindow);
 
     DevType          = RENDER_DEVICE_TYPE_GLES;
-    APIVersion.Major = static_cast<Uint32>(major_version_);
-    APIVersion.Minor = static_cast<Uint32>(minor_version_);
+    APIVersion.Major = static_cast<UInt32>(major_version_);
+    APIVersion.Minor = static_cast<UInt32>(minor_version_);
 }
 
 GLContext::~GLContext()

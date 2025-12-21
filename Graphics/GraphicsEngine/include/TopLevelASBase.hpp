@@ -64,11 +64,11 @@ private:
 
     struct InstanceDesc
     {
-        Uint32                               ContributionToHitGroupIndex = 0;
-        Uint32                               InstanceIndex               = 0;
+        UInt32                               ContributionToHitGroupIndex = 0;
+        UInt32                               InstanceIndex               = 0;
         RefCntAutoPtr<BottomLevelASImplType> pBLAS;
 #ifdef DILIGENT_DEVELOPMENT
-        Uint32 dvpVersion = 0;
+        UInt32 dvpVersion = 0;
 #endif
     };
 
@@ -99,9 +99,9 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_TopLevelAS, TDeviceObjectBase)
 
     bool SetInstanceData(const TLASBuildInstanceData* pInstances,
-                         const Uint32                 InstanceCount,
-                         const Uint32                 BaseContributionToHitGroupIndex,
-                         const Uint32                 HitGroupStride,
+                         const UInt32                 InstanceCount,
+                         const UInt32                 BaseContributionToHitGroupIndex,
+                         const UInt32                 HitGroupStride,
                          const HIT_GROUP_BINDING_MODE BindingMode) noexcept
     {
         try
@@ -109,7 +109,7 @@ public:
             ClearInstanceData();
 
             size_t StringPoolSize = 0;
-            for (Uint32 i = 0; i < InstanceCount; ++i)
+            for (UInt32 i = 0; i < InstanceCount; ++i)
             {
                 VERIFY_EXPR(pInstances[i].InstanceName != nullptr);
                 StringPoolSize += StringPool::GetRequiredReserveSize(pInstances[i].InstanceName);
@@ -117,9 +117,9 @@ public:
 
             this->m_StringPool.Reserve(StringPoolSize, GetRawAllocator());
 
-            Uint32 InstanceOffset = BaseContributionToHitGroupIndex;
+            UInt32 InstanceOffset = BaseContributionToHitGroupIndex;
 
-            for (Uint32 i = 0; i < InstanceCount; ++i)
+            for (UInt32 i = 0; i < InstanceCount; ++i)
             {
                 const TLASBuildInstanceData& Inst     = pInstances[i];
                 const char*                  NameCopy = this->m_StringPool.CopyString(Inst.InstanceName);
@@ -164,18 +164,18 @@ public:
     }
 
     bool UpdateInstances(const TLASBuildInstanceData* pInstances,
-                         const Uint32                 InstanceCount,
-                         const Uint32                 BaseContributionToHitGroupIndex,
-                         const Uint32                 HitGroupStride,
+                         const UInt32                 InstanceCount,
+                         const UInt32                 BaseContributionToHitGroupIndex,
+                         const UInt32                 HitGroupStride,
                          const HIT_GROUP_BINDING_MODE BindingMode) noexcept
     {
         VERIFY_EXPR(this->m_BuildInfo.InstanceCount == InstanceCount);
 #ifdef DILIGENT_DEVELOPMENT
         bool Changed = false;
 #endif
-        Uint32 InstanceOffset = BaseContributionToHitGroupIndex;
+        UInt32 InstanceOffset = BaseContributionToHitGroupIndex;
 
-        for (Uint32 i = 0; i < InstanceCount; ++i)
+        for (UInt32 i = 0; i < InstanceCount; ++i)
         {
             const TLASBuildInstanceData& Inst = pInstances[i];
             auto                         Iter = this->m_Instances.find(Inst.InstanceName);
@@ -187,7 +187,7 @@ public:
             }
 
             InstanceDesc&                        Desc      = Iter->second;
-            const Uint32                         PrevIndex = Desc.ContributionToHitGroupIndex;
+            const UInt32                         PrevIndex = Desc.ContributionToHitGroupIndex;
             RefCntAutoPtr<BottomLevelASImplType> pPrevBLAS = Desc.pBLAS;
 
             Desc.pBLAS                       = ClassPtrCast<BottomLevelASImplType>(Inst.pBLAS);
@@ -337,7 +337,7 @@ public:
         return result;
     }
 
-    Uint32 GetVersion() const
+    UInt32 GetVersion() const
     {
         return this->m_DvpVersion.load();
     }
@@ -355,7 +355,7 @@ private:
         this->m_BuildInfo.LastContributionToHitGroupIndex  = INVALID_INDEX;
     }
 
-    static void CalculateHitGroupIndex(InstanceDesc& Desc, Uint32& InstanceOffset, const Uint32 HitGroupStride, const HIT_GROUP_BINDING_MODE BindingMode)
+    static void CalculateHitGroupIndex(InstanceDesc& Desc, UInt32& InstanceOffset, const UInt32 HitGroupStride, const HIT_GROUP_BINDING_MODE BindingMode)
     {
         static_assert(HIT_GROUP_BINDING_MODE_LAST == HIT_GROUP_BINDING_MODE_USER_DEFINED, "Please update the switch below to handle the new shader binding mode");
 
@@ -378,7 +378,7 @@ private:
             VERIFY(BindingMode == HIT_GROUP_BINDING_MODE_USER_DEFINED, "BindingMode must be HIT_GROUP_BINDING_MODE_USER_DEFINED");
         }
 
-        constexpr Uint32 MaxIndex = (1u << 24);
+        constexpr UInt32 MaxIndex = (1u << 24);
         VERIFY(Desc.ContributionToHitGroupIndex < MaxIndex, "ContributionToHitGroupIndex must be less than ", MaxIndex);
     }
 
@@ -392,7 +392,7 @@ protected:
     StringPool m_StringPool;
 
 #ifdef DILIGENT_DEVELOPMENT
-    std::atomic<Uint32> m_DvpVersion{0};
+    std::atomic<UInt32> m_DvpVersion{0};
 #endif
 };
 

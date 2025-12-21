@@ -2497,7 +2497,7 @@ constexpr T SmoothStep(T Left, T Right, T w)
     return t * t * (static_cast<T>(3) - static_cast<T>(2) * t);
 }
 
-constexpr inline Vector4<float> RGBA8Unorm_To_F4Color(Uint32 RGBA8)
+constexpr inline Vector4<float> RGBA8Unorm_To_F4Color(UInt32 RGBA8)
 {
     // clang-format off
     return Vector4<float>
@@ -2510,13 +2510,13 @@ constexpr inline Vector4<float> RGBA8Unorm_To_F4Color(Uint32 RGBA8)
     // clang-format on
 }
 
-constexpr inline Uint32 F4Color_To_RGBA8Unorm(const Vector4<float>& f4Color)
+constexpr inline UInt32 F4Color_To_RGBA8Unorm(const Vector4<float>& f4Color)
 {
-    Uint32 RGBA8U = 0;
-    RGBA8U |= static_cast<Uint32>(clamp(f4Color.x, 0.f, 1.f) * 255.f) << 0u;
-    RGBA8U |= static_cast<Uint32>(clamp(f4Color.y, 0.f, 1.f) * 255.f) << 8u;
-    RGBA8U |= static_cast<Uint32>(clamp(f4Color.z, 0.f, 1.f) * 255.f) << 16u;
-    RGBA8U |= static_cast<Uint32>(clamp(f4Color.w, 0.f, 1.f) * 255.f) << 24u;
+    UInt32 RGBA8U = 0;
+    RGBA8U |= static_cast<UInt32>(clamp(f4Color.x, 0.f, 1.f) * 255.f) << 0u;
+    RGBA8U |= static_cast<UInt32>(clamp(f4Color.y, 0.f, 1.f) * 255.f) << 8u;
+    RGBA8U |= static_cast<UInt32>(clamp(f4Color.z, 0.f, 1.f) * 255.f) << 16u;
+    RGBA8U |= static_cast<UInt32>(clamp(f4Color.w, 0.f, 1.f) * 255.f) << 24u;
     return RGBA8U;
 }
 
@@ -2635,7 +2635,7 @@ constexpr Type FastFrac(const Type& val)
     return val - FastFloor(val);
 }
 
-constexpr inline Uint32 BitInterleave16(Uint16 _x, Uint16 _y)
+constexpr inline UInt32 BitInterleave16(UInt16 _x, UInt16 _y)
 {
     // https://graphics.stanford.edu/~seander/bithacks.html#InterleaveBMN
 
@@ -2643,8 +2643,8 @@ constexpr inline Uint32 BitInterleave16(Uint16 _x, Uint16 _y)
     // are in the even positions and bits from y in the odd;
     // x | (y << 1) gets the resulting 32-bit Morton Number.
     // x and y must initially be less than 65536.
-    Uint32 x = _x;
-    Uint32 y = _y;
+    UInt32 x = _x;
+    UInt32 y = _y;
 
     x = (x | (x << 8u)) & 0x00FF00FFu;
     x = (x | (x << 4u)) & 0x0F0F0F0Fu;
@@ -3045,9 +3045,9 @@ using Matrix4x4d = Diligent::Matrix4x4<double>;
 using double3x3  = Diligent::Matrix3x3<double>;
 using double2x2  = Diligent::Matrix2x2<double>;
 
-using int4x4 = Diligent::Matrix4x4<Diligent::Int32>;
-using int3x3 = Diligent::Matrix3x3<Diligent::Int32>;
-using int2x2 = Diligent::Matrix2x2<Diligent::Int32>;
+using int4x4 = Diligent::Matrix4x4<Int32>;
+using int3x3 = Diligent::Matrix3x3<Int32>;
+using int2x2 = Diligent::Matrix2x2<Int32>;
 
 using QuaternionF = Diligent::Quaternion<float>;
 using QuaternionD = Diligent::Quaternion<double>;

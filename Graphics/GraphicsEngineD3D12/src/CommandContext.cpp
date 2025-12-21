@@ -183,8 +183,8 @@ public:
 
     void DiscardIfAppropriate(const TextureDesc&    TexDesc,
                               D3D12_RESOURCE_STATES d3d12State,
-                              Uint32                EndMip   = REMAINING_MIP_LEVELS,
-                              Uint32                EndSlice = REMAINING_ARRAY_SLICES) const;
+                              UInt32                EndMip   = REMAINING_MIP_LEVELS,
+                              UInt32                EndSlice = REMAINING_ARRAY_SLICES) const;
 
 private:
     const StateTransitionDesc& m_Barrier;
@@ -227,8 +227,8 @@ void StateTransitionHelper::GetD3D12ResourceAndState<BufferD3D12Impl>(BufferD3D1
 
 void StateTransitionHelper::DiscardIfAppropriate(const TextureDesc&    TexDesc,
                                                  D3D12_RESOURCE_STATES d3d12State,
-                                                 Uint32                EndMip,
-                                                 Uint32                EndSlice) const
+                                                 UInt32                EndMip,
+                                                 UInt32                EndSlice) const
 {
     if ((m_Barrier.Flags & STATE_TRANSITION_FLAG_DISCARD_CONTENT) == 0)
         return;
@@ -283,7 +283,7 @@ void StateTransitionHelper::DiscardIfAppropriate(const TextureDesc&    TexDesc,
         {
             D3D12_DISCARD_REGION Region{};
             Region.NumSubresources = EndMip - m_Barrier.FirstMipLevel;
-            for (Uint32 slice = m_Barrier.FirstArraySlice; slice < EndSlice; ++slice)
+            for (UInt32 slice = m_Barrier.FirstArraySlice; slice < EndSlice; ++slice)
             {
                 Region.FirstSubresource = D3D12CalcSubresource(m_Barrier.FirstMipLevel, slice, 0, TexDesc.MipLevels, TexDesc.GetArraySize());
 #ifdef DILIGENT_DEBUG
@@ -321,12 +321,12 @@ void StateTransitionHelper::AddD3D12ResourceBarriers(TextureD3D12Impl& Tex, D3D1
         }
         else
         {
-            Uint32 EndMip   = m_Barrier.MipLevelsCount == REMAINING_MIP_LEVELS ? TexDesc.MipLevels : m_Barrier.FirstMipLevel + m_Barrier.MipLevelsCount;
-            Uint32 EndSlice = m_Barrier.ArraySliceCount == REMAINING_ARRAY_SLICES ? TexDesc.GetArraySize() : m_Barrier.FirstArraySlice + m_Barrier.ArraySliceCount;
+            UInt32 EndMip   = m_Barrier.MipLevelsCount == REMAINING_MIP_LEVELS ? TexDesc.MipLevels : m_Barrier.FirstMipLevel + m_Barrier.MipLevelsCount;
+            UInt32 EndSlice = m_Barrier.ArraySliceCount == REMAINING_ARRAY_SLICES ? TexDesc.GetArraySize() : m_Barrier.FirstArraySlice + m_Barrier.ArraySliceCount;
             DiscardIfAppropriate(TexDesc, d3d12Barrier.Transition.StateBefore, EndMip, EndSlice);
-            for (Uint32 mip = m_Barrier.FirstMipLevel; mip < EndMip; ++mip)
+            for (UInt32 mip = m_Barrier.FirstMipLevel; mip < EndMip; ++mip)
             {
-                for (Uint32 slice = m_Barrier.FirstArraySlice; slice < EndSlice; ++slice)
+                for (UInt32 slice = m_Barrier.FirstArraySlice; slice < EndSlice; ++slice)
                 {
                     d3d12Barrier.Transition.Subresource = D3D12CalcSubresource(mip, slice, 0, TexDesc.MipLevels, TexDesc.GetArraySize());
                     m_CmdCtx.ResourceBarrier(d3d12Barrier);

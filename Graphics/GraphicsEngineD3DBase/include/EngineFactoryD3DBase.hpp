@@ -60,17 +60,17 @@ public:
 
 
     virtual void DILIGENT_CALL_TYPE EnumerateAdapters(Version              MinVersion,
-                                                      Uint32&              NumAdapters,
+                                                      UInt32&              NumAdapters,
                                                       GraphicsAdapterInfo* Adapters) const override
     {
         auto DXGIAdapters = FindCompatibleAdapters(MinVersion);
 
         if (Adapters == nullptr)
-            NumAdapters = static_cast<Uint32>(DXGIAdapters.size());
+            NumAdapters = static_cast<UInt32>(DXGIAdapters.size());
         else
         {
-            NumAdapters = std::min(NumAdapters, static_cast<Uint32>(DXGIAdapters.size()));
-            for (Uint32 adapter = 0; adapter < NumAdapters; ++adapter)
+            NumAdapters = std::min(NumAdapters, static_cast<UInt32>(DXGIAdapters.size()));
+            for (UInt32 adapter = 0; adapter < NumAdapters; ++adapter)
             {
                 IDXGIAdapter1*       pDXIAdapter = DXGIAdapters[adapter];
                 GraphicsAdapterInfo& AdapterInfo = Adapters[adapter];
@@ -90,10 +90,10 @@ public:
 
 
     virtual void DILIGENT_CALL_TYPE EnumerateDisplayModes(Version             MinVersion,
-                                                          Uint32              AdapterId,
-                                                          Uint32              OutputId,
+                                                          UInt32              AdapterId,
+                                                          UInt32              OutputId,
                                                           TEXTURE_FORMAT      Format,
-                                                          Uint32&             NumDisplayModes,
+                                                          UInt32&             NumDisplayModes,
                                                           DisplayModeAttribs* DisplayModes) override
     {
         auto DXGIAdapters = FindCompatibleAdapters(MinVersion);
@@ -130,7 +130,7 @@ public:
             hr = pOutput->GetDisplayModeList(DXIGFormat, 0, &numModes, DXIDisplayModes.data());
             (void)hr; // Suppress warning
 
-            for (Uint32 m = 0; m < std::min(NumDisplayModes, numModes); ++m)
+            for (UInt32 m = 0; m < std::min(NumDisplayModes, numModes); ++m)
             {
                 const DXGI_MODE_DESC& SrcMode  = DXIDisplayModes[m];
                 DisplayModeAttribs&   DstMode  = DisplayModes[m];
@@ -282,7 +282,7 @@ public:
 protected:
     static D3D_FEATURE_LEVEL GetD3DFeatureLevel(Version MinVersion)
     {
-        const D3D_FEATURE_LEVEL FeatureLevel = static_cast<D3D_FEATURE_LEVEL>((Uint32{MinVersion.Major} << 12u) | (Uint32{MinVersion.Minor} << 8u));
+        const D3D_FEATURE_LEVEL FeatureLevel = static_cast<D3D_FEATURE_LEVEL>((UInt32{MinVersion.Major} << 12u) | (UInt32{MinVersion.Minor} << 8u));
 
 #ifdef DILIGENT_DEBUG
         switch (MinVersion.Major)
@@ -292,7 +292,7 @@ protected:
                 {
                     case 0: VERIFY_EXPR(FeatureLevel == D3D_FEATURE_LEVEL_10_0); break;
                     case 1: VERIFY_EXPR(FeatureLevel == D3D_FEATURE_LEVEL_10_1); break;
-                    default: UNEXPECTED("unknown feature level 10.", Uint32{MinVersion.Minor});
+                    default: UNEXPECTED("unknown feature level 10.", UInt32{MinVersion.Minor});
                 }
                 break;
             case 11:
@@ -300,7 +300,7 @@ protected:
                 {
                     case 0: VERIFY_EXPR(FeatureLevel == D3D_FEATURE_LEVEL_11_0); break;
                     case 1: VERIFY_EXPR(FeatureLevel == D3D_FEATURE_LEVEL_11_1); break;
-                    default: UNEXPECTED("unknown feature level 11.", Uint32{MinVersion.Minor});
+                    default: UNEXPECTED("unknown feature level 11.", UInt32{MinVersion.Minor});
                 }
                 break;
 #    if defined(_WIN32_WINNT_WIN10) && (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
@@ -310,7 +310,7 @@ protected:
                     case 0: VERIFY_EXPR(FeatureLevel == D3D_FEATURE_LEVEL_12_0); break;
                     case 1: VERIFY_EXPR(FeatureLevel == D3D_FEATURE_LEVEL_12_1); break;
                     case 2: VERIFY_EXPR(FeatureLevel == D3D_FEATURE_LEVEL_12_2); break;
-                    default: UNEXPECTED("unknown feature level 12.", Uint32{MinVersion.Minor});
+                    default: UNEXPECTED("unknown feature level 12.", UInt32{MinVersion.Minor});
                 }
                 break;
 #    endif

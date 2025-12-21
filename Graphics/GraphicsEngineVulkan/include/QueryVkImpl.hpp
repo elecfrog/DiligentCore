@@ -54,12 +54,12 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_QueryVk, TQueryBase)
 
     /// Implementation of IQuery::GetData().
-    virtual bool DILIGENT_CALL_TYPE GetData(void* pData, Uint32 DataSize, bool AutoInvalidate) override final;
+    virtual bool DILIGENT_CALL_TYPE GetData(void* pData, UInt32 DataSize, bool AutoInvalidate) override final;
 
     /// Implementation of IQuery::Invalidate().
     virtual void DILIGENT_CALL_TYPE Invalidate() override final;
 
-    Uint32 GetQueryPoolIndex(Uint32 QueryId) const
+    UInt32 GetQueryPoolIndex(UInt32 QueryId) const
     {
         VERIFY_EXPR(QueryId == 0 || m_Desc.Type == QUERY_TYPE_DURATION && QueryId == 1);
         return m_QueryPoolIndex[QueryId];
@@ -72,9 +72,9 @@ private:
     bool AllocateQueries();
     void DiscardQueries();
 
-    std::array<Uint32, 2> m_QueryPoolIndex = {QueryManagerVk::InvalidIndex, QueryManagerVk::InvalidIndex};
+    std::array<UInt32, 2> m_QueryPoolIndex = {QueryManagerVk::InvalidIndex, QueryManagerVk::InvalidIndex};
 
-    Uint64 m_QueryEndFenceValue = ~Uint64{0};
+    UInt64 m_QueryEndFenceValue = ~UInt64{0};
 
     QueryManagerVk* m_pQueryMgr = nullptr;
 };

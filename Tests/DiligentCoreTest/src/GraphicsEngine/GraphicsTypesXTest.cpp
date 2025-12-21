@@ -95,7 +95,7 @@ TEST(GraphicsTypesXTest, SubpassDescX)
     constexpr AttachmentReference   Resolves[]      = {{3, RESOURCE_STATE_RESOLVE_DEST}, {4, RESOURCE_STATE_RESOLVE_DEST}};
     constexpr AttachmentReference   Resolves2[]     = {{ATTACHMENT_UNUSED, RESOURCE_STATE_UNKNOWN}, {4, RESOURCE_STATE_RESOLVE_DEST}};
     constexpr AttachmentReference   DepthStencil    = {5, RESOURCE_STATE_DEPTH_WRITE};
-    constexpr Uint32                Preserves[]     = {1, 3, 5};
+    constexpr UInt32                Preserves[]     = {1, 3, 5};
     constexpr ShadingRateAttachment ShadingRate     = {{6, RESOURCE_STATE_SHADING_RATE}, 128, 256};
 
     SubpassDesc Ref;
@@ -367,7 +367,7 @@ TEST(GraphicsTypesXTest, InputLayoutDescX)
         EXPECT_EQ(DescX, Ref);
 
         EXPECT_EQ(DescX.GetNumElements(), 3u);
-        for (Uint32 i = 0; i < std::min(Ref.NumElements, DescX.GetNumElements()); ++i)
+        for (UInt32 i = 0; i < std::min(Ref.NumElements, DescX.GetNumElements()); ++i)
         {
             EXPECT_EQ(Ref.LayoutElements[i], DescX[i]);
         }
@@ -705,9 +705,9 @@ TEST(GraphicsTypesXTest, BottomLevelASDescX)
 {
     // clang-format off
 
-#define TRI1(POOL) POOL("Tri1"), 10u, VT_FLOAT32, Uint8{3}, 100u, VT_UINT16
-#define TRI2(POOL) POOL("Tri2"), 20u, VT_FLOAT16, Uint8{2}, 200u, VT_UINT32
-#define TRI3(POOL) POOL("Tri3"), 30u, VT_INT16,   Uint8{4}, 300u, VT_UINT32
+#define TRI1(POOL) POOL("Tri1"), 10u, VT_FLOAT32, UInt8{3}, 100u, VT_UINT16
+#define TRI2(POOL) POOL("Tri2"), 20u, VT_FLOAT16, UInt8{2}, 200u, VT_UINT32
+#define TRI3(POOL) POOL("Tri3"), 30u, VT_INT16,   UInt8{4}, 300u, VT_UINT32
 
 #define BOX1(POOL) POOL("Box1"), 16u
 #define BOX2(POOL) POOL("Box2"), 32u
@@ -837,13 +837,13 @@ struct DumyShader final : IShader
 
     virtual IObject* DILIGENT_CALL_TYPE GetUserData() const override final { return nullptr; }
 
-    virtual Uint32 DILIGENT_CALL_TYPE GetResourceCount() const override final { return 0; }
+    virtual UInt32 DILIGENT_CALL_TYPE GetResourceCount() const override final { return 0; }
 
-    virtual void DILIGENT_CALL_TYPE GetResourceDesc(Uint32 Index, ShaderResourceDesc& ResourceDesc) const override final {}
+    virtual void DILIGENT_CALL_TYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final {}
 
-    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(Uint32 Index) const override final { return nullptr; }
+    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(UInt32 Index) const override final { return nullptr; }
 
-    virtual void DILIGENT_CALL_TYPE GetBytecode(const void** ppBytecode, Uint64& Size) const override final {}
+    virtual void DILIGENT_CALL_TYPE GetBytecode(const void** ppBytecode, UInt64& Size) const override final {}
 
     virtual SHADER_STATUS DILIGENT_CALL_TYPE GetStatus(bool WaitForCompletion) override final { return SHADER_STATUS_UNINITIALIZED; }
 };
@@ -1042,8 +1042,8 @@ TEST(GraphicsTypesXTest, GraphicsPipelineStateCreateInfoX)
         .Add(0u, 0u, 3u, VT_FLOAT32)
         .Add(1u, 1u, 4u, VT_FLOAT32);
 
-    constexpr Uint64 ImmediateCtxMask         = 0x1234;
-    constexpr Uint32 SRBAllocationGranularity = 100;
+    constexpr UInt64 ImmediateCtxMask         = 0x1234;
+    constexpr UInt32 SRBAllocationGranularity = 100;
 
     DescX
         .SetName(std::string{"Test "} + std::string{"Name2"})

@@ -66,7 +66,7 @@ TextureViewD3D12Impl::~TextureViewD3D12Impl()
 {
     if (m_MipGenerationDescriptors != nullptr)
     {
-        for (Uint32 i = 0; i < 2; ++i)
+        for (UInt32 i = 0; i < 2; ++i)
         {
             m_MipGenerationDescriptors[i].~DescriptorHeapAllocation();
         }

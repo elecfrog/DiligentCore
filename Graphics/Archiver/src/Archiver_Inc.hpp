@@ -45,12 +45,12 @@ using SignatureArray = std::array<RefCntAutoPtr<SignatureType>, MAX_RESOURCE_SIG
 
 template <typename SignatureType>
 void SortResourceSignatures(IPipelineResourceSignature**                ppSrcSignatures,
-                            Uint32                                      SrcSignaturesCount,
+                            UInt32                                      SrcSignaturesCount,
                             SignatureArray<SignatureType>&              SortedSignatures,
-                            Uint32&                                     SortedSignaturesCount,
+                            UInt32&                                     SortedSignaturesCount,
                             SerializedResourceSignatureImpl::DeviceType Type)
 {
-    for (Uint32 i = 0; i < SrcSignaturesCount; ++i)
+    for (UInt32 i = 0; i < SrcSignaturesCount; ++i)
     {
         const auto* pSerPRS = ClassPtrCast<SerializedResourceSignatureImpl>(ppSrcSignatures[i]);
         VERIFY_EXPR(pSerPRS != nullptr);
@@ -60,15 +60,15 @@ void SortResourceSignatures(IPipelineResourceSignature**                ppSrcSig
         VERIFY(!SortedSignatures[Desc.BindingIndex], "Multiple signatures use the same binding index (", Desc.BindingIndex, ").");
         SortedSignatures[Desc.BindingIndex] = pSerPRS->template GetDeviceSignature<SignatureType>(Type);
 
-        SortedSignaturesCount = std::max(SortedSignaturesCount, Uint32{Desc.BindingIndex} + 1u);
+        SortedSignaturesCount = std::max(SortedSignaturesCount, UInt32{Desc.BindingIndex} + 1u);
     }
 }
 
 template <typename SignatureType>
 void SortResourceSignatures(IPipelineResourceSignature**   ppSrcSignatures,
-                            Uint32                         SrcSignaturesCount,
+                            UInt32                         SrcSignaturesCount,
                             SignatureArray<SignatureType>& SortedSignatures,
-                            Uint32&                        SortedSignaturesCount)
+                            UInt32&                        SortedSignaturesCount)
 {
     constexpr auto Type = SerializedResourceSignatureImpl::SignatureTraits<SignatureType>::Type;
     SortResourceSignatures<SignatureType>(ppSrcSignatures, SrcSignaturesCount,

@@ -133,7 +133,7 @@ std::vector<uint32_t> CompileShaderGLSLang(const ShaderCreateInfo&         Shade
                     VulkanDefine,
                 });
             SourceData.Source       = GLSLSourceString.c_str();
-            SourceData.SourceLength = StaticCast<Uint32>(GLSLSourceString.length());
+            SourceData.SourceLength = StaticCast<UInt32>(GLSLSourceString.length());
         }
 
         GLSLangUtils::GLSLtoSPIRVAttribs Attribs;
@@ -304,7 +304,7 @@ ShaderVkImpl::ShaderVkImpl(IReferenceCounters*     pRefCounters,
              AdapterInfo      = VkShaderCI.AdapterInfo,
              VkVersion        = VkShaderCI.VkVersion,
              HasSpirv14       = VkShaderCI.HasSpirv14,
-             ppCompilerOutput = VkShaderCI.ppCompilerOutput](Uint32 ThreadId) mutable //
+             ppCompilerOutput = VkShaderCI.ppCompilerOutput](UInt32 ThreadId) mutable //
             {
                 try
                 {
@@ -335,11 +335,11 @@ ShaderVkImpl::~ShaderVkImpl()
     GetStatus(/*WaitForCompletion = */ true);
 }
 
-void ShaderVkImpl::GetResourceDesc(Uint32 Index, ShaderResourceDesc& ResourceDesc) const
+void ShaderVkImpl::GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const
 {
     DEV_CHECK_ERR(!IsCompiling(), "Shader resources are not available until the shader is compiled. Use GetStatus() to check the shader status.");
 
-    const Uint32 ResCount = GetResourceCount();
+    const UInt32 ResCount = GetResourceCount();
     DEV_CHECK_ERR(Index < ResCount, "Resource index (", Index, ") is out of range");
     if (Index < ResCount)
     {
@@ -348,11 +348,11 @@ void ShaderVkImpl::GetResourceDesc(Uint32 Index, ShaderResourceDesc& ResourceDes
     }
 }
 
-const ShaderCodeBufferDesc* ShaderVkImpl::GetConstantBufferDesc(Uint32 Index) const
+const ShaderCodeBufferDesc* ShaderVkImpl::GetConstantBufferDesc(UInt32 Index) const
 {
     DEV_CHECK_ERR(!IsCompiling(), "Shader resources are not available until the shader is compiled. Use GetStatus() to check the shader status.");
 
-    const Uint32 ResCount = GetResourceCount();
+    const UInt32 ResCount = GetResourceCount();
     if (Index >= ResCount)
     {
         UNEXPECTED("Resource index (", Index, ") is out of range");

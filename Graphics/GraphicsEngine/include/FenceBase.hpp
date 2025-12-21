@@ -71,10 +71,10 @@ public:
 
 
     // Validate IFence::Signal() and IDeviceContext::EnqueueSignal()
-    void DvpSignal(Uint64 NewValue)
+    void DvpSignal(UInt64 NewValue)
     {
 #ifdef DILIGENT_DEVELOPMENT
-        Uint64 EnqueuedValue = m_EnqueuedFenceValue.load();
+        UInt64 EnqueuedValue = m_EnqueuedFenceValue.load();
         DEV_CHECK_ERR(NewValue >= EnqueuedValue,
                       "Fence '", this->m_Desc.Name, "' is being signaled or enqueued for signal with value ", NewValue,
                       ", but the previous value (", EnqueuedValue,
@@ -88,12 +88,12 @@ public:
     }
 
     // Validate IDeviceContext::DeviceWaitForFence()
-    void DvpDeviceWait(Uint64 Value)
+    void DvpDeviceWait(UInt64 Value)
     {
 #ifdef DILIGENT_DEVELOPMENT
         if (!this->GetDevice()->GetFeatures().NativeFence)
         {
-            Uint64 EnqueuedValue = m_EnqueuedFenceValue.load();
+            UInt64 EnqueuedValue = m_EnqueuedFenceValue.load();
             DEV_CHECK_ERR(Value <= EnqueuedValue,
                           "Can not wait for value ", Value, " that is greater than the last enqueued for signal value (", EnqueuedValue,
                           "). This is not supported when NativeFence feature is disabled.");
@@ -102,19 +102,19 @@ public:
     }
 
 protected:
-    void UpdateLastCompletedFenceValue(Uint64 NewValue)
+    void UpdateLastCompletedFenceValue(UInt64 NewValue)
     {
-        Uint64 LastCompletedValue = m_LastCompletedFenceValue.load();
+        UInt64 LastCompletedValue = m_LastCompletedFenceValue.load();
         while (!m_LastCompletedFenceValue.compare_exchange_weak(LastCompletedValue, std::max(LastCompletedValue, NewValue)))
         {
             // If exchange fails, LastCompletedValue will hold the actual value of m_LastCompletedFenceValue.
         }
     }
 
-    std::atomic<Uint64> m_LastCompletedFenceValue{0};
+    std::atomic<UInt64> m_LastCompletedFenceValue{0};
 
 #ifdef DILIGENT_DEVELOPMENT
-    std::atomic<Uint64> m_EnqueuedFenceValue{0};
+    std::atomic<UInt64> m_EnqueuedFenceValue{0};
 #endif
 };
 

@@ -73,14 +73,14 @@ FenceD3D12Impl::~FenceD3D12Impl()
     }
 }
 
-Uint64 FenceD3D12Impl::GetCompletedValue()
+UInt64 FenceD3D12Impl::GetCompletedValue()
 {
-    Uint64 Result = m_pd3d12Fence->GetCompletedValue();
+    UInt64 Result = m_pd3d12Fence->GetCompletedValue();
     VERIFY(Result != UINT64_MAX, "If the device has been removed, the return value will be UINT64_MAX");
     return Result;
 }
 
-void FenceD3D12Impl::Signal(Uint64 Value)
+void FenceD3D12Impl::Signal(UInt64 Value)
 {
     DEV_CHECK_ERR(m_Desc.Type == FENCE_TYPE_GENERAL, "Fence must be created with FENCE_TYPE_GENERAL");
     DEV_CHECK_ERR(GetDevice()->GetFeatures().NativeFence, "CPU side fence signal requires NativeFence feature");
@@ -89,7 +89,7 @@ void FenceD3D12Impl::Signal(Uint64 Value)
     m_pd3d12Fence->Signal(Value);
 }
 
-void FenceD3D12Impl::Wait(Uint64 Value)
+void FenceD3D12Impl::Wait(UInt64 Value)
 {
     if (GetCompletedValue() >= Value)
         return;

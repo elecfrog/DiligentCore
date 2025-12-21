@@ -57,7 +57,7 @@ public:
     virtual ITextureView* DILIGENT_CALL_TYPE GetDepthBufferDSV() override final { return m_pDepthStencilView; }
 
 protected:
-    bool Resize(Uint32 NewWidth, Uint32 NewHeight, SURFACE_TRANSFORM NewPreTransform, Int32 /*To be different from virtual function*/)
+    bool Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform, Int32 /*To be different from virtual function*/)
     {
         if (NewPreTransform != SURFACE_TRANSFORM_OPTIMAL &&
             NewPreTransform != SURFACE_TRANSFORM_IDENTITY)

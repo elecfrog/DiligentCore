@@ -32,13 +32,13 @@
 
 #include <atomic>
 
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 
 namespace Diligent
 {
 
 /// The type of the content that is stored in the shader resource cache.
-enum class ResourceCacheContentType : Uint8
+enum class ResourceCacheContentType : UInt8
 {
     /// Static resources of a pipeline resource signature.
     Signature,

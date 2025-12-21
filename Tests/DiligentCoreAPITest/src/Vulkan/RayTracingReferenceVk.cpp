@@ -146,14 +146,14 @@ struct RTGroupsHelper
     std::vector<VkPipelineShaderStageCreateInfo>      Stages;
     std::vector<VkRayTracingShaderGroupCreateInfoKHR> Groups;
 
-    void SetShaderCount(Uint32 NumShaders, Uint32 NumGroups)
+    void SetShaderCount(UInt32 NumShaders, UInt32 NumGroups)
     {
         Modules.resize(NumShaders);
         Stages.resize(NumShaders);
         Groups.resize(NumGroups);
     }
 
-    void SetStage(Uint32 StageIndex, SHADER_TYPE ShaderType, const String& Source)
+    void SetStage(UInt32 StageIndex, SHADER_TYPE ShaderType, const String& Source)
     {
         auto* pEnv                = TestingEnvironmentVk::GetInstance();
         Modules[StageIndex]       = pEnv->CreateShaderModule(ShaderType, Source);
@@ -176,7 +176,7 @@ struct RTGroupsHelper
         }
     }
 
-    void SetGeneralGroup(Uint32 GroupIndex, Uint32 StageIndex)
+    void SetGeneralGroup(UInt32 GroupIndex, UInt32 StageIndex)
     {
         Groups[GroupIndex].sType              = VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR;
         Groups[GroupIndex].type               = VK_RAY_TRACING_SHADER_GROUP_TYPE_GENERAL_KHR;
@@ -186,7 +186,7 @@ struct RTGroupsHelper
         Groups[GroupIndex].intersectionShader = VK_SHADER_UNUSED_KHR;
     }
 
-    void SetTriangleHitGroup(Uint32 GroupIndex, Uint32 ClosestHitShader, Uint32 AnyHitShader = VK_SHADER_UNUSED_KHR)
+    void SetTriangleHitGroup(UInt32 GroupIndex, UInt32 ClosestHitShader, UInt32 AnyHitShader = VK_SHADER_UNUSED_KHR)
     {
         Groups[GroupIndex].sType              = VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR;
         Groups[GroupIndex].type               = VK_RAY_TRACING_SHADER_GROUP_TYPE_TRIANGLES_HIT_GROUP_KHR;
@@ -196,7 +196,7 @@ struct RTGroupsHelper
         Groups[GroupIndex].intersectionShader = VK_SHADER_UNUSED_KHR;
     }
 
-    void SetProceduralHitGroup(Uint32 GroupIndex, Uint32 IntersectionShader, Uint32 ClosestHitShader, Uint32 AnyHitShader = VK_SHADER_UNUSED_KHR)
+    void SetProceduralHitGroup(UInt32 GroupIndex, UInt32 IntersectionShader, UInt32 ClosestHitShader, UInt32 AnyHitShader = VK_SHADER_UNUSED_KHR)
     {
         Groups[GroupIndex].sType              = VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR;
         Groups[GroupIndex].type               = VK_RAY_TRACING_SHADER_GROUP_TYPE_PROCEDURAL_HIT_GROUP_KHR;
@@ -255,7 +255,7 @@ void InitializeRTContext(RTContext& Ctx, ISwapChain* pSwapChain, PSOCtorType&& P
         Helper.AddBinding(1, VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1, VK_SHADER_STAGE_RAYGEN_BIT_KHR);
 
         DescriptorSetCI.sType        = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-        DescriptorSetCI.bindingCount = static_cast<Uint32>(Helper.Bindings.size());
+        DescriptorSetCI.bindingCount = static_cast<UInt32>(Helper.Bindings.size());
         DescriptorSetCI.pBindings    = Helper.Bindings.data();
 
         res = vkCreateDescriptorSetLayout(Ctx.vkDevice, &DescriptorSetCI, nullptr, &Ctx.vkSetLayout);
@@ -270,9 +270,9 @@ void InitializeRTContext(RTContext& Ctx, ISwapChain* pSwapChain, PSOCtorType&& P
         ASSERT_TRUE(Ctx.vkLayout != VK_NULL_HANDLE);
 
         PipelineCI.sType                        = VK_STRUCTURE_TYPE_RAY_TRACING_PIPELINE_CREATE_INFO_KHR;
-        PipelineCI.stageCount                   = static_cast<Uint32>(Helper.Stages.size());
+        PipelineCI.stageCount                   = static_cast<UInt32>(Helper.Stages.size());
         PipelineCI.pStages                      = Helper.Stages.data();
-        PipelineCI.groupCount                   = static_cast<Uint32>(Helper.Groups.size());
+        PipelineCI.groupCount                   = static_cast<UInt32>(Helper.Groups.size());
         PipelineCI.pGroups                      = Helper.Groups.data();
         PipelineCI.maxPipelineRayRecursionDepth = 1;
         PipelineCI.layout                       = Ctx.vkLayout;
@@ -358,7 +358,7 @@ void UpdateDescriptorSet(RTContext& Ctx)
 void CreateBLAS(const RTContext&                                Ctx,
                 const VkAccelerationStructureGeometryKHR*       pGeometries,
                 const VkAccelerationStructureBuildRangeInfoKHR* pRanges,
-                Uint32                                          GeometryCount,
+                UInt32                                          GeometryCount,
                 RTContext::AccelStruct&                         BLAS)
 {
     BLAS.vkDevice = Ctx.vkDevice;
@@ -372,7 +372,7 @@ void CreateBLAS(const RTContext&                                Ctx,
         vkSizeInfo.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_BUILD_SIZES_INFO_KHR;
 
         std::vector<uint32_t> MaxPrimitives(GeometryCount);
-        for (Uint32 i = 0; i < GeometryCount; ++i)
+        for (UInt32 i = 0; i < GeometryCount; ++i)
         {
             MaxPrimitives[i] = pRanges[i].primitiveCount;
         }
@@ -441,7 +441,7 @@ void CreateBLAS(const RTContext&                                Ctx,
     BLAS.vkAddress = vkGetAccelerationStructureDeviceAddressKHR(Ctx.vkDevice, &AddressInfo);
 }
 
-void CreateTLAS(const RTContext& Ctx, Uint32 InstanceCount, RTContext::AccelStruct& TLAS)
+void CreateTLAS(const RTContext& Ctx, UInt32 InstanceCount, RTContext::AccelStruct& TLAS)
 {
     TLAS.vkDevice = Ctx.vkDevice;
 
@@ -517,7 +517,7 @@ void CreateTLAS(const RTContext& Ctx, Uint32 InstanceCount, RTContext::AccelStru
     ASSERT_TRUE(TLAS.vkAS != VK_NULL_HANDLE);
 }
 
-void CreateRTBuffers(RTContext& Ctx, Uint32 VBSize, Uint32 IBSize, Uint32 InstanceCount, Uint32 NumMissShaders, Uint32 NumHitShaders, Uint32 ShaderRecordSize = 0)
+void CreateRTBuffers(RTContext& Ctx, UInt32 VBSize, UInt32 IBSize, UInt32 InstanceCount, UInt32 NumMissShaders, UInt32 NumHitShaders, UInt32 ShaderRecordSize = 0)
 {
     VkResult res = VK_SUCCESS;
 
@@ -529,7 +529,7 @@ void CreateRTBuffers(RTContext& Ctx, Uint32 VBSize, Uint32 IBSize, Uint32 Instan
 
     VkBufferCreateInfo              BuffCI      = {};
     VkBufferMemoryRequirementsInfo2 MemInfo     = {};
-    Uint32                          MemTypeBits = 0;
+    UInt32                          MemTypeBits = 0;
     VkBufferDeviceAddressInfoKHR    BufferInfo  = {};
     (void)MemTypeBits;
 
@@ -650,7 +650,7 @@ void CreateRTBuffers(RTContext& Ctx, Uint32 VBSize, Uint32 IBSize, Uint32 Instan
 
     // SBT
     {
-        const Uint32 GroupSize = Ctx.RayTracingProps.shaderGroupHandleSize + ShaderRecordSize;
+        const UInt32 GroupSize = Ctx.RayTracingProps.shaderGroupHandleSize + ShaderRecordSize;
 
         BuffCI.size = AlignUp(GroupSize, Ctx.RayTracingProps.shaderGroupBaseAlignment);
         BuffCI.size = AlignUp(BuffCI.size + GroupSize * NumMissShaders, Ctx.RayTracingProps.shaderGroupBaseAlignment);
@@ -860,7 +860,7 @@ void RayTracingTriangleClosestHitReferenceVk(ISwapChain* pSwapChain)
         VkStridedDeviceAddressRegionKHR MissShaderBindingTable     = {};
         VkStridedDeviceAddressRegionKHR HitShaderBindingTable      = {};
         VkStridedDeviceAddressRegionKHR CallableShaderBindingTable = {};
-        const Uint32                    ShaderGroupHandleSize      = Ctx.RayTracingProps.shaderGroupHandleSize;
+        const UInt32                    ShaderGroupHandleSize      = Ctx.RayTracingProps.shaderGroupHandleSize;
         VkDeviceSize                    Offset                     = 0;
 
         char ShaderHandle[64] = {};
@@ -1019,7 +1019,7 @@ void RayTracingTriangleAnyHitReferenceVk(ISwapChain* pSwapChain)
         VkStridedDeviceAddressRegionKHR MissShaderBindingTable     = {};
         VkStridedDeviceAddressRegionKHR HitShaderBindingTable      = {};
         VkStridedDeviceAddressRegionKHR CallableShaderBindingTable = {};
-        const Uint32                    ShaderGroupHandleSize      = Ctx.RayTracingProps.shaderGroupHandleSize;
+        const UInt32                    ShaderGroupHandleSize      = Ctx.RayTracingProps.shaderGroupHandleSize;
         VkDeviceSize                    Offset                     = 0;
 
         char ShaderHandle[64] = {};
@@ -1174,7 +1174,7 @@ void RayTracingProceduralIntersectionReferenceVk(ISwapChain* pSwapChain)
         VkStridedDeviceAddressRegionKHR MissShaderBindingTable     = {};
         VkStridedDeviceAddressRegionKHR HitShaderBindingTable      = {};
         VkStridedDeviceAddressRegionKHR CallableShaderBindingTable = {};
-        const Uint32                    ShaderGroupHandleSize      = Ctx.RayTracingProps.shaderGroupHandleSize;
+        const UInt32                    ShaderGroupHandleSize      = Ctx.RayTracingProps.shaderGroupHandleSize;
         VkDeviceSize                    Offset                     = 0;
 
         char ShaderHandle[64] = {};
@@ -1218,9 +1218,9 @@ void RayTracingProceduralIntersectionReferenceVk(ISwapChain* pSwapChain)
 
 void RayTracingMultiGeometryReferenceVk(ISwapChain* pSwapChain)
 {
-    static constexpr Uint32 InstanceCount = TestingConstants::MultiGeometry::InstanceCount;
-    static constexpr Uint32 GeometryCount = 3;
-    static constexpr Uint32 HitGroupCount = InstanceCount * GeometryCount;
+    static constexpr UInt32 InstanceCount = TestingConstants::MultiGeometry::InstanceCount;
+    static constexpr UInt32 GeometryCount = 3;
+    static constexpr UInt32 HitGroupCount = InstanceCount * GeometryCount;
 
     enum
     {
@@ -1428,8 +1428,8 @@ void RayTracingMultiGeometryReferenceVk(ISwapChain* pSwapChain)
         VkStridedDeviceAddressRegionKHR MissShaderBindingTable     = {};
         VkStridedDeviceAddressRegionKHR HitShaderBindingTable      = {};
         VkStridedDeviceAddressRegionKHR CallableShaderBindingTable = {};
-        const Uint32                    ShaderGroupHandleSize      = Ctx.RayTracingProps.shaderGroupHandleSize;
-        const Uint32                    ShaderRecordSize           = ShaderGroupHandleSize + TestingConstants::MultiGeometry::ShaderRecordSize;
+        const UInt32                    ShaderGroupHandleSize      = Ctx.RayTracingProps.shaderGroupHandleSize;
+        const UInt32                    ShaderRecordSize           = ShaderGroupHandleSize + TestingConstants::MultiGeometry::ShaderRecordSize;
         const auto&                     Weights                    = TestingConstants::MultiGeometry::Weights;
         VkDeviceSize                    Offset                     = 0;
 
@@ -1456,7 +1456,7 @@ void RayTracingMultiGeometryReferenceVk(ISwapChain* pSwapChain)
         HitShaderBindingTable.size          = ShaderRecordSize * HitGroupCount;
         HitShaderBindingTable.stride        = ShaderRecordSize;
 
-        const auto SetHitGroup = [&](Uint32 Index, Uint32 ShaderIndex, const void* ShaderRecord) {
+        const auto SetHitGroup = [&](UInt32 Index, UInt32 ShaderIndex, const void* ShaderRecord) {
             VERIFY_EXPR(Index < HitGroupCount);
             VkDeviceSize GroupOffset = Offset + Index * ShaderRecordSize;
             vkGetRayTracingShaderGroupHandlesKHR(Ctx.vkDevice, Ctx.vkPipeline, ShaderIndex, 1, ShaderGroupHandleSize, ShaderHandle);

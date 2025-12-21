@@ -30,7 +30,7 @@
 namespace Diligent
 {
 
-enum MEMORY_BARRIER : Uint32
+enum MEMORY_BARRIER : UInt32
 {
     MEMORY_BARRIER_NONE = 0,
     MEMORY_BARRIER_ALL  = GL_ALL_BARRIER_BITS,

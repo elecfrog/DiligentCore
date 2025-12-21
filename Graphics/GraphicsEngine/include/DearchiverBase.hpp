@@ -63,7 +63,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_Dearchiver, TObjectBase)
 
     /// Implementation of IDearchiver::LoadArchive().
-    virtual bool DILIGENT_CALL_TYPE LoadArchive(const IDataBlob* pArchiveData, Uint32 ContentVersion, bool MakeCopy) override final;
+    virtual bool DILIGENT_CALL_TYPE LoadArchive(const IDataBlob* pArchiveData, UInt32 ContentVersion, bool MakeCopy) override final;
 
     /// Implementation of IDearchiver::UnpackShader().
     virtual void DILIGENT_CALL_TYPE UnpackShader(const ShaderUnpackInfo& UnpackInfo,
@@ -88,7 +88,7 @@ public:
     virtual void DILIGENT_CALL_TYPE Reset() override final;
 
     /// Implementation of IDearchiver::GetContentVersion().
-    virtual Uint32 DILIGENT_CALL_TYPE GetContentVersion() const override final;
+    virtual UInt32 DILIGENT_CALL_TYPE GetContentVersion() const override final;
 
 protected:
     template <typename RenderDeviceImplType, typename PRSSerializerType>
@@ -147,7 +147,7 @@ protected:
 
         static constexpr ResourceType ArchiveResType = ResourceType::ResourceSignature;
 
-        explicit PRSData(IMemoryAllocator& Allocator, Uint32 BlockSize = 1 << 10) :
+        explicit PRSData(IMemoryAllocator& Allocator, UInt32 BlockSize = 1 << 10) :
             Allocator{Allocator, BlockSize}
         {}
 

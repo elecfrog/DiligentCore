@@ -31,7 +31,7 @@
 #include <string>
 #include <utility>
 
-#include "BasicTypes.h"
+#include "CommonDefinitions.h"
 #include "GraphicsTypes.h"
 #include "Shader.h"
 

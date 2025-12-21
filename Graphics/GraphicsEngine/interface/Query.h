@@ -49,7 +49,7 @@ struct QueryDataOcclusion
 
     /// The number of samples that passed the depth and stencil tests in between
     /// IDeviceContext::BeginQuery and IDeviceContext::EndQuery.
-    Uint64 NumSamples DEFAULT_INITIALIZER(0);
+    UInt64 NumSamples DEFAULT_INITIALIZER(0);
 };
 typedef struct QueryDataOcclusion QueryDataOcclusion;
 
@@ -76,11 +76,11 @@ struct QueryDataTimestamp
     const enum QUERY_TYPE Type DEFAULT_INITIALIZER(QUERY_TYPE_TIMESTAMP);
 
     /// The value of a high-frequency counter.
-    Uint64 Counter DEFAULT_INITIALIZER(0);
+    UInt64 Counter DEFAULT_INITIALIZER(0);
 
     /// The counter frequency, in Hz (ticks/second). If there was an error
     /// while getting the timestamp, this value will be 0.
-    Uint64 Frequency DEFAULT_INITIALIZER(0);
+    UInt64 Frequency DEFAULT_INITIALIZER(0);
 };
 typedef struct QueryDataTimestamp QueryDataTimestamp;
 
@@ -95,39 +95,39 @@ struct QueryDataPipelineStatistics
     const enum QUERY_TYPE Type DEFAULT_INITIALIZER(QUERY_TYPE_PIPELINE_STATISTICS);
 
     /// Number of vertices processed by the input assembler stage.
-    Uint64 InputVertices DEFAULT_INITIALIZER(0);
+    UInt64 InputVertices DEFAULT_INITIALIZER(0);
 
     /// Number of primitives processed by the input assembler stage.
-    Uint64 InputPrimitives DEFAULT_INITIALIZER(0);
+    UInt64 InputPrimitives DEFAULT_INITIALIZER(0);
 
     /// Number of primitives output by a geometry shader.
-    Uint64 GSPrimitives DEFAULT_INITIALIZER(0);
+    UInt64 GSPrimitives DEFAULT_INITIALIZER(0);
 
     /// Number of primitives that were sent to the clipping stage.
-    Uint64 ClippingInvocations DEFAULT_INITIALIZER(0);
+    UInt64 ClippingInvocations DEFAULT_INITIALIZER(0);
 
     /// Number of primitives that were output by the clipping stage and were rendered.
     /// This may be larger or smaller than ClippingInvocations because after a primitive is
     /// clipped sometimes it is either broken up into more than one primitive or completely culled.
-    Uint64 ClippingPrimitives DEFAULT_INITIALIZER(0);
+    UInt64 ClippingPrimitives DEFAULT_INITIALIZER(0);
 
     /// Number of times a vertex shader was invoked.
-    Uint64 VSInvocations DEFAULT_INITIALIZER(0);
+    UInt64 VSInvocations DEFAULT_INITIALIZER(0);
 
     /// Number of times a geometry shader was invoked.
-    Uint64 GSInvocations DEFAULT_INITIALIZER(0);
+    UInt64 GSInvocations DEFAULT_INITIALIZER(0);
 
     /// Number of times a pixel shader shader was invoked.
-    Uint64 PSInvocations DEFAULT_INITIALIZER(0);
+    UInt64 PSInvocations DEFAULT_INITIALIZER(0);
 
     /// Number of times a hull shader shader was invoked.
-    Uint64 HSInvocations DEFAULT_INITIALIZER(0);
+    UInt64 HSInvocations DEFAULT_INITIALIZER(0);
 
     /// Number of times a domain shader shader was invoked.
-    Uint64 DSInvocations DEFAULT_INITIALIZER(0);
+    UInt64 DSInvocations DEFAULT_INITIALIZER(0);
 
     /// Number of times a compute shader was invoked.
-    Uint64 CSInvocations DEFAULT_INITIALIZER(0);
+    UInt64 CSInvocations DEFAULT_INITIALIZER(0);
 };
 typedef struct QueryDataPipelineStatistics QueryDataPipelineStatistics;
 
@@ -141,11 +141,11 @@ struct QueryDataDuration
 
     /// The number of high-frequency counter ticks between
     /// BeginQuery and EndQuery calls.
-    Uint64 Duration DEFAULT_INITIALIZER(0);
+    UInt64 Duration DEFAULT_INITIALIZER(0);
 
     /// The counter frequency, in Hz (ticks/second). If there was an error
     /// while getting the timestamp, this value will be 0.
-    Uint64 Frequency DEFAULT_INITIALIZER(0);
+    UInt64 Frequency DEFAULT_INITIALIZER(0);
 };
 typedef struct QueryDataDuration QueryDataDuration;
 
@@ -208,7 +208,7 @@ DILIGENT_BEGIN_INTERFACE(IQuery, IDeviceObject)
     /// must not call GetData() until it begins and ends the query again.
     VIRTUAL Bool METHOD(GetData)(THIS_
                                  void*   pData,
-                                 Uint32  DataSize,
+                                 UInt32  DataSize,
                                  Bool    AutoInvalidate DEFAULT_VALUE(true)) PURE;
 
     /// Invalidates the query and releases associated resources.

@@ -57,7 +57,7 @@ FramebufferVkImpl::FramebufferVkImpl(IReferenceCounters*    pRefCounters,
     FramebufferCI.attachmentCount = m_Desc.AttachmentCount;
 
     std::vector<VkImageView> vkImgViews(m_Desc.AttachmentCount);
-    for (Uint32 i = 0; i < m_Desc.AttachmentCount; ++i)
+    for (UInt32 i = 0; i < m_Desc.AttachmentCount; ++i)
     {
         if (ITextureView* pView = m_Desc.ppAttachments[i])
         {
@@ -81,7 +81,7 @@ FramebufferVkImpl::FramebufferVkImpl(IReferenceCounters*    pRefCounters,
 
 FramebufferVkImpl::~FramebufferVkImpl()
 {
-    m_pDevice->SafeReleaseDeviceObject(std::move(m_VkFramebuffer), ~Uint64{0});
+    m_pDevice->SafeReleaseDeviceObject(std::move(m_VkFramebuffer), ~UInt64{0});
 }
 
 } // namespace Diligent

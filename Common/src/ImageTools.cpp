@@ -68,8 +68,8 @@ void ComputeImageDifference(const ComputeImageDifferenceAttribs& Attribs,
         return;
     }
 
-    const Uint32 NumSrcChannels  = std::min(Attribs.NumChannels1, Attribs.NumChannels2);
-    const Uint32 NumDiffChannels = Attribs.NumDiffChannels != 0 ? Attribs.NumDiffChannels : NumSrcChannels;
+    const UInt32 NumSrcChannels  = std::min(Attribs.NumChannels1, Attribs.NumChannels2);
+    const UInt32 NumDiffChannels = Attribs.NumDiffChannels != 0 ? Attribs.NumDiffChannels : NumSrcChannels;
     if (Attribs.pDiffImage != nullptr)
     {
         if (Attribs.DiffStride < Attribs.Width * NumDiffChannels)
@@ -79,31 +79,31 @@ void ComputeImageDifference(const ComputeImageDifferenceAttribs& Attribs,
         }
     }
 
-    for (Uint32 row = 0; row < Attribs.Height; ++row)
+    for (UInt32 row = 0; row < Attribs.Height; ++row)
     {
-        const Uint8* pRow1    = reinterpret_cast<const Uint8*>(Attribs.pImage1) + row * Attribs.Stride1;
-        const Uint8* pRow2    = reinterpret_cast<const Uint8*>(Attribs.pImage2) + row * Attribs.Stride2;
-        Uint8*       pDiffRow = Attribs.pDiffImage != nullptr ? reinterpret_cast<Uint8*>(Attribs.pDiffImage) + row * Attribs.DiffStride : nullptr;
+        const UInt8* pRow1    = reinterpret_cast<const UInt8*>(Attribs.pImage1) + row * Attribs.Stride1;
+        const UInt8* pRow2    = reinterpret_cast<const UInt8*>(Attribs.pImage2) + row * Attribs.Stride2;
+        UInt8*       pDiffRow = Attribs.pDiffImage != nullptr ? reinterpret_cast<UInt8*>(Attribs.pDiffImage) + row * Attribs.DiffStride : nullptr;
 
-        for (Uint32 col = 0; col < Attribs.Width; ++col)
+        for (UInt32 col = 0; col < Attribs.Width; ++col)
         {
-            Uint32 PixelDiff = 0;
-            for (Uint32 ch = 0; ch < NumSrcChannels; ++ch)
+            UInt32 PixelDiff = 0;
+            for (UInt32 ch = 0; ch < NumSrcChannels; ++ch)
             {
-                const Uint32 ChannelDiff = static_cast<Uint32>(
+                const UInt32 ChannelDiff = static_cast<UInt32>(
                     std::abs(static_cast<int>(pRow1[col * Attribs.NumChannels1 + ch]) -
                              static_cast<int>(pRow2[col * Attribs.NumChannels2 + ch])));
                 PixelDiff = std::max(PixelDiff, ChannelDiff);
 
                 if (pDiffRow != nullptr && ch < NumDiffChannels)
                 {
-                    pDiffRow[col * NumDiffChannels + ch] = static_cast<Uint8>(std::min(ChannelDiff * Attribs.Scale, 255.f));
+                    pDiffRow[col * NumDiffChannels + ch] = static_cast<UInt8>(std::min(ChannelDiff * Attribs.Scale, 255.f));
                 }
             }
 
             if (pDiffRow != nullptr)
             {
-                for (Uint32 ch = NumSrcChannels; ch < NumDiffChannels; ++ch)
+                for (UInt32 ch = NumSrcChannels; ch < NumDiffChannels; ++ch)
                 {
                     pDiffRow[col * NumDiffChannels + ch] = ch == 3 ? 255 : 0;
                 }

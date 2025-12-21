@@ -40,7 +40,7 @@
 namespace Diligent
 {
 
-static Uint32 GetQueryDataSize(QUERY_TYPE QueryType)
+static UInt32 GetQueryDataSize(QUERY_TYPE QueryType)
 {
     // clang-format off
     switch (QueryType)
@@ -49,7 +49,7 @@ static Uint32 GetQueryDataSize(QUERY_TYPE QueryType)
         case QUERY_TYPE_BINARY_OCCLUSION:
         case QUERY_TYPE_TIMESTAMP:
         case QUERY_TYPE_DURATION:
-            return sizeof(Uint64);
+            return sizeof(UInt64);
 
         case QUERY_TYPE_PIPELINE_STATISTICS:
             return sizeof(D3D12_QUERY_DATA_PIPELINE_STATISTICS);
@@ -66,7 +66,7 @@ static Uint32 GetQueryDataSize(QUERY_TYPE QueryType)
 void QueryManagerD3D12::QueryHeapInfo::Init(ID3D12Device*                pd3d12Device,
                                             const D3D12_QUERY_HEAP_DESC& d3d12HeapDesc,
                                             QUERY_TYPE                   QueryType,
-                                            Uint32&                      CurrResolveBufferOffset)
+                                            UInt32&                      CurrResolveBufferOffset)
 {
     VERIFY_EXPR(!m_pd3d12QueryHeap);
 
@@ -78,31 +78,31 @@ void QueryManagerD3D12::QueryHeapInfo::Init(ID3D12Device*                pd3d12D
 
     // AlignedDestinationBufferOffset must be a multiple of 8 bytes.
     // https://microsoft.github.io/DirectX-Specs/d3d/CountersAndQueries.html#resolvequerydata
-    m_AlignedQueryDataSize    = AlignUp(GetQueryDataSize(QueryType), Uint32{8});
+    m_AlignedQueryDataSize    = AlignUp(GetQueryDataSize(QueryType), UInt32{8});
     m_ResolveBufferBaseOffset = CurrResolveBufferOffset;
     CurrResolveBufferOffset += m_AlignedQueryDataSize * m_QueryCount;
 
     m_AvailableQueries.resize(m_QueryCount);
-    for (Uint32 i = 0; i < m_QueryCount; ++i)
+    for (UInt32 i = 0; i < m_QueryCount; ++i)
         m_AvailableQueries[i] = i;
 }
 
-Uint32 QueryManagerD3D12::QueryHeapInfo::Allocate()
+UInt32 QueryManagerD3D12::QueryHeapInfo::Allocate()
 {
-    Uint32 Index = InvalidIndex;
+    UInt32 Index = InvalidIndex;
 
     std::lock_guard<std::mutex> Lock{m_AvailableQueriesMtx};
     if (!m_AvailableQueries.empty())
     {
         Index = m_AvailableQueries.back();
         m_AvailableQueries.pop_back();
-        m_MaxAllocatedQueries = std::max(m_MaxAllocatedQueries, m_QueryCount - static_cast<Uint32>(m_AvailableQueries.size()));
+        m_MaxAllocatedQueries = std::max(m_MaxAllocatedQueries, m_QueryCount - static_cast<UInt32>(m_AvailableQueries.size()));
     }
 
     return Index;
 }
 
-void QueryManagerD3D12::QueryHeapInfo::Release(Uint32 Index)
+void QueryManagerD3D12::QueryHeapInfo::Release(UInt32 Index)
 {
     VERIFY(Index < m_QueryCount, "Query index ", Index, " is out of range");
 
@@ -131,7 +131,7 @@ QueryManagerD3D12::QueryHeapInfo::~QueryHeapInfo()
 }
 
 QueryManagerD3D12::QueryManagerD3D12(RenderDeviceD3D12Impl* pDeviceD3D12Impl,
-                                     const Uint32           QueryHeapSizes[],
+                                     const UInt32           QueryHeapSizes[],
                                      SoftwareQueueIndex     CommandQueueId,
                                      HardwareQueueIndex     HwQueueInd) :
     m_CommandQueueId{CommandQueueId}
@@ -139,8 +139,8 @@ QueryManagerD3D12::QueryManagerD3D12(RenderDeviceD3D12Impl* pDeviceD3D12Impl,
     const RenderDeviceInfo& DevInfo      = pDeviceD3D12Impl->GetDeviceInfo();
     ID3D12Device*           pd3d12Device = pDeviceD3D12Impl->GetD3D12Device();
 
-    Uint32 ResolveBufferOffset = 0;
-    for (Uint32 query_type = QUERY_TYPE_UNDEFINED + 1; query_type < QUERY_TYPE_NUM_TYPES; ++query_type)
+    UInt32 ResolveBufferOffset = 0;
+    for (UInt32 query_type = QUERY_TYPE_UNDEFINED + 1; query_type < QUERY_TYPE_NUM_TYPES; ++query_type)
     {
         const QUERY_TYPE QueryType = static_cast<QUERY_TYPE>(query_type);
 
@@ -215,7 +215,7 @@ QueryManagerD3D12::~QueryManagerD3D12()
     std::stringstream QueryUsageSS;
     QueryUsageSS << "D3D12 query manager peak usage:";
 
-    for (Uint32 query_type = QUERY_TYPE_UNDEFINED + 1; query_type < QUERY_TYPE_NUM_TYPES; ++query_type)
+    for (UInt32 query_type = QUERY_TYPE_UNDEFINED + 1; query_type < QUERY_TYPE_NUM_TYPES; ++query_type)
     {
         const QUERY_TYPE     QueryType = static_cast<QUERY_TYPE>(query_type);
         const QueryHeapInfo& HeapInfo  = m_Heaps[QueryType];
@@ -230,17 +230,17 @@ QueryManagerD3D12::~QueryManagerD3D12()
     LOG_INFO_MESSAGE(QueryUsageSS.str());
 }
 
-Uint32 QueryManagerD3D12::AllocateQuery(QUERY_TYPE Type)
+UInt32 QueryManagerD3D12::AllocateQuery(QUERY_TYPE Type)
 {
     return m_Heaps[Type].Allocate();
 }
 
-void QueryManagerD3D12::ReleaseQuery(QUERY_TYPE Type, Uint32 Index)
+void QueryManagerD3D12::ReleaseQuery(QUERY_TYPE Type, UInt32 Index)
 {
     m_Heaps[Type].Release(Index);
 }
 
-void QueryManagerD3D12::BeginQuery(CommandContext& Ctx, QUERY_TYPE Type, Uint32 Index) const
+void QueryManagerD3D12::BeginQuery(CommandContext& Ctx, QUERY_TYPE Type, UInt32 Index) const
 {
     const D3D12_QUERY_TYPE d3d12QueryType = QueryTypeToD3D12QueryType(Type);
     const QueryHeapInfo&   HeapInfo       = m_Heaps[Type];
@@ -250,7 +250,7 @@ void QueryManagerD3D12::BeginQuery(CommandContext& Ctx, QUERY_TYPE Type, Uint32 
     Ctx.BeginQuery(HeapInfo.GetD3D12QueryHeap(), d3d12QueryType, Index);
 }
 
-void QueryManagerD3D12::EndQuery(CommandContext& Ctx, QUERY_TYPE Type, Uint32 Index) const
+void QueryManagerD3D12::EndQuery(CommandContext& Ctx, QUERY_TYPE Type, UInt32 Index) const
 {
     const D3D12_QUERY_TYPE d3d12QueryType = QueryTypeToD3D12QueryType(Type);
     const QueryHeapInfo&   HeapInfo       = m_Heaps[Type];
@@ -263,13 +263,13 @@ void QueryManagerD3D12::EndQuery(CommandContext& Ctx, QUERY_TYPE Type, Uint32 In
     Ctx.ResolveQueryData(HeapInfo.GetD3D12QueryHeap(), d3d12QueryType, Index, 1, m_pd3d12ResolveBuffer, HeapInfo.GetResolveBufferOffset(Index));
 }
 
-void QueryManagerD3D12::ReadQueryData(QUERY_TYPE Type, Uint32 Index, void* pDataPtr, Uint32 DataSize) const
+void QueryManagerD3D12::ReadQueryData(QUERY_TYPE Type, UInt32 Index, void* pDataPtr, UInt32 DataSize) const
 {
     const QueryHeapInfo& HeapInfo = m_Heaps[Type];
     VERIFY_EXPR(HeapInfo.GetType() == Type);
-    const Uint32 QueryDataSize = GetQueryDataSize(Type);
+    const UInt32 QueryDataSize = GetQueryDataSize(Type);
     VERIFY_EXPR(QueryDataSize == DataSize);
-    const Uint32 Offset = HeapInfo.GetResolveBufferOffset(Index);
+    const UInt32 Offset = HeapInfo.GetResolveBufferOffset(Index);
     D3D12_RANGE  ReadRange;
     ReadRange.Begin = Offset;
     ReadRange.End   = SIZE_T{Offset} + SIZE_T{QueryDataSize};
@@ -277,7 +277,7 @@ void QueryManagerD3D12::ReadQueryData(QUERY_TYPE Type, Uint32 Index, void* pData
     void* pBufferData = nullptr;
     // The pointer returned by Map is never offset by any values in pReadRange.
     m_pd3d12ResolveBuffer->Map(0, &ReadRange, &pBufferData);
-    memcpy(pDataPtr, reinterpret_cast<const Uint8*>(pBufferData) + Offset, QueryDataSize);
+    memcpy(pDataPtr, reinterpret_cast<const UInt8*>(pBufferData) + Offset, QueryDataSize);
     m_pd3d12ResolveBuffer->Unmap(0, nullptr);
 }
 

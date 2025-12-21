@@ -491,7 +491,7 @@ WGPUStencilOperation StencilOpToWGPUStencilOperation(STENCIL_OP StencilOp)
     }
 }
 
-WGPUVertexFormat VertexFormatAttribsToWGPUVertexFormat(VALUE_TYPE ValueType, Uint32 NumComponents, bool IsNormalized)
+WGPUVertexFormat VertexFormatAttribsToWGPUVertexFormat(VALUE_TYPE ValueType, UInt32 NumComponents, bool IsNormalized)
 {
     switch (ValueType)
     {

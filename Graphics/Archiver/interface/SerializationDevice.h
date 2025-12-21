@@ -96,17 +96,17 @@ struct PipelineResourceBindingAttribs
     IPipelineResourceSignature** ppResourceSignatures      DEFAULT_INITIALIZER(nullptr);
 
     /// The number of elements in `ppResourceSignatures` array.
-    Uint32                       ResourceSignaturesCount   DEFAULT_INITIALIZER(0);
+    UInt32                       ResourceSignaturesCount   DEFAULT_INITIALIZER(0);
 
     /// The number of render targets, only for graphics pipeline.
 
     /// \note Required for Direct3D11 graphics pipelines that use UAVs.
-    Uint32                       NumRenderTargets  DEFAULT_INITIALIZER(0);
+    UInt32                       NumRenderTargets  DEFAULT_INITIALIZER(0);
 
     /// The number of vertex buffers, only for graphics pipeline.
 
     /// \note Required for Metal.
-    Uint32                       NumVertexBuffers  DEFAULT_INITIALIZER(0);
+    UInt32                       NumVertexBuffers  DEFAULT_INITIALIZER(0);
 
     /// Vertex buffer names.
 
@@ -134,13 +134,13 @@ struct PipelineResourceBinding
     SHADER_TYPE          ShaderStages   DEFAULT_INITIALIZER(SHADER_TYPE_UNKNOWN);
 
     /// Shader register space.
-    Uint16               Space          DEFAULT_INITIALIZER(0);
+    UInt16               Space          DEFAULT_INITIALIZER(0);
 
     /// Shader register.
-    Uint32               Register       DEFAULT_INITIALIZER(0);
+    UInt32               Register       DEFAULT_INITIALIZER(0);
 
     /// Array size
-    Uint32               ArraySize      DEFAULT_INITIALIZER(0);
+    UInt32               ArraySize      DEFAULT_INITIALIZER(0);
 };
 typedef struct PipelineResourceBinding PipelineResourceBinding;
 
@@ -252,7 +252,7 @@ DILIGENT_BEGIN_INTERFACE(ISerializationDevice, IRenderDevice)
     /// Populates an array of pipeline resource bindings.
     VIRTUAL void METHOD(GetPipelineResourceBindings)(THIS_
                                                      const PipelineResourceBindingAttribs REF Attribs,
-                                                     Uint32 REF                               NumBindings,
+                                                     UInt32 REF                               NumBindings,
                                                      const PipelineResourceBinding* REF       pBindings) PURE;
 
 

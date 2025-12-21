@@ -51,19 +51,19 @@ struct FramebufferDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     IRenderPass*         pRenderPass     DEFAULT_INITIALIZER(nullptr);
 
     /// The number of attachments.
-    Uint32               AttachmentCount DEFAULT_INITIALIZER(0);
+    UInt32               AttachmentCount DEFAULT_INITIALIZER(0);
 
     /// Pointer to the array of attachments.
     ITextureView* const* ppAttachments   DEFAULT_INITIALIZER(nullptr);
 
     /// Width of the framebuffer.
-    Uint32               Width           DEFAULT_INITIALIZER(0);
+    UInt32               Width           DEFAULT_INITIALIZER(0);
 
     /// Height of the framebuffer.
-    Uint32               Height          DEFAULT_INITIALIZER(0);
+    UInt32               Height          DEFAULT_INITIALIZER(0);
 
     /// The number of array slices in the framebuffer.
-    Uint32               NumArraySlices  DEFAULT_INITIALIZER(0);
+    UInt32               NumArraySlices  DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     /// Tests if two framebuffer descriptions are equal.

@@ -277,7 +277,7 @@ String BuildGLSLSourceString(const BuildGLSLSourceStringAttribs& Attribs) noexce
     String GLSLSource;
     {
         std::stringstream verss;
-        verss << "#version " << Uint32{GLSLVer.Major} << Uint32{GLSLVer.Minor} << (IsES ? "0 es\n" : "0 core\n");
+        verss << "#version " << UInt32{GLSLVer.Major} << UInt32{GLSLVer.Minor} << (IsES ? "0 es\n" : "0 core\n");
         GLSLSource = verss.str();
     }
 

@@ -29,7 +29,7 @@
 namespace Diligent
 {
 
-Uint64 AndroidMisc::SetCurrentThreadAffinity(Uint64 Mask)
+UInt64 AndroidMisc::SetCurrentThreadAffinity(UInt64 Mask)
 {
     return 0;
 }

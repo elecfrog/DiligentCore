@@ -45,7 +45,7 @@ public:
     NativeGLContextType GetCurrentNativeGLContext();
 
 private:
-    Uint32 m_WindowId = 0;
+    UInt32 m_WindowId = 0;
     void*  m_pDisplay = nullptr;
 };
 

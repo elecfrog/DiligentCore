@@ -57,7 +57,7 @@ DeviceMemoryD3D11Impl::~DeviceMemoryD3D11Impl()
 {
 }
 
-Bool DeviceMemoryD3D11Impl::Resize(Uint64 NewSize)
+Bool DeviceMemoryD3D11Impl::Resize(UInt64 NewSize)
 {
     D3D11_BUFFER_DESC d3d11Desc{};
     m_pd3d11Buffer->GetDesc(&d3d11Desc);
@@ -73,7 +73,7 @@ Bool DeviceMemoryD3D11Impl::Resize(Uint64 NewSize)
     return pImmediateCtx->ResizeTilePool(m_pd3d11Buffer, StaticCast<UINT>(NewSize));
 }
 
-Uint64 DeviceMemoryD3D11Impl::GetCapacity() const
+UInt64 DeviceMemoryD3D11Impl::GetCapacity() const
 {
     D3D11_BUFFER_DESC d3d11Desc{};
     m_pd3d11Buffer->GetDesc(&d3d11Desc);

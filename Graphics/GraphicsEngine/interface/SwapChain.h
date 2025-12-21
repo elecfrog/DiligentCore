@@ -57,7 +57,7 @@ DILIGENT_BEGIN_INTERFACE(ISwapChain, IObject)
 {
     /// Presents a rendered image to the user
     VIRTUAL void METHOD(Present)(THIS_
-                                 Uint32 SyncInterval DEFAULT_VALUE(1)) PURE;
+                                 UInt32 SyncInterval DEFAULT_VALUE(1)) PURE;
 
     /// Returns the swap chain description
     VIRTUAL const SwapChainDesc REF METHOD(GetDesc)(THIS) CONST PURE;
@@ -79,8 +79,8 @@ DILIGENT_BEGIN_INTERFACE(ISwapChain, IObject)
     /// the scenario above. After the swap chain has been resized, its actual width will be 1080,
     /// actual height will be 1920, and `PreTransform` will be Diligent::SURFACE_TRANSFORM_ROTATE_90.
     VIRTUAL void METHOD(Resize)(THIS_
-                                Uint32            NewWidth,
-                                Uint32            NewHeight,
+                                UInt32            NewWidth,
+                                UInt32            NewHeight,
                                 SURFACE_TRANSFORM NewTransform DEFAULT_VALUE(SURFACE_TRANSFORM_OPTIMAL)) PURE;
 
     /// Sets fullscreen mode (only supported on Win32 platform)
@@ -97,7 +97,7 @@ DILIGENT_BEGIN_INTERFACE(ISwapChain, IObject)
     /// will block until frame 0 is presented. If in the example above the maximum frame latency is set
     /// to 1, then Present command of frame 1 will block until Present of frame 0 is complete.
     VIRTUAL void METHOD(SetMaximumFrameLatency)(THIS_
-                                                Uint32 MaxLatency) PURE;
+                                                UInt32 MaxLatency) PURE;
 
     /// Returns render target view of the current back buffer in the swap chain
 

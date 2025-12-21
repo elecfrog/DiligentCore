@@ -51,7 +51,7 @@ public:
     using TBase = ObjectBase<IPipelineResourceSignature>;
 
     using DeviceType                    = DeviceObjectArchive::DeviceType;
-    static constexpr Uint32 DeviceCount = static_cast<Uint32>(DeviceType::Count);
+    static constexpr UInt32 DeviceCount = static_cast<UInt32>(DeviceType::Count);
 
     SerializedResourceSignatureImpl(IReferenceCounters*                  pRefCounters,
                                     SerializationDeviceImpl*             pDevice,
@@ -71,8 +71,8 @@ public:
     UNSUPPORTED_METHOD      (void, CreateShaderResourceBinding, IShaderResourceBinding** ppShaderResourceBinding, bool InitStaticResources)
     UNSUPPORTED_METHOD      (void, BindStaticResources,         SHADER_TYPE ShaderStages, IResourceMapping* pResourceMapping, BIND_SHADER_RESOURCES_FLAGS Flags)
     UNSUPPORTED_METHOD      (IShaderResourceVariable*, GetStaticVariableByName, SHADER_TYPE ShaderType, const Char* Name)
-    UNSUPPORTED_METHOD      (IShaderResourceVariable*, GetStaticVariableByIndex, SHADER_TYPE ShaderType, Uint32 Index)
-    UNSUPPORTED_CONST_METHOD(Uint32,   GetStaticVariableCount,       SHADER_TYPE ShaderType)
+    UNSUPPORTED_METHOD      (IShaderResourceVariable*, GetStaticVariableByIndex, SHADER_TYPE ShaderType, UInt32 Index)
+    UNSUPPORTED_CONST_METHOD(UInt32,   GetStaticVariableCount,       SHADER_TYPE ShaderType)
     UNSUPPORTED_CONST_METHOD(void,     InitializeStaticSRBResources, IShaderResourceBinding* pShaderResourceBinding)
     UNSUPPORTED_CONST_METHOD(void,     CopyStaticResources,          IPipelineResourceSignature* pPRS)
     UNSUPPORTED_CONST_METHOD(bool,     IsCompatibleWith,             const IPipelineResourceSignature* pPRS)
@@ -93,7 +93,7 @@ public:
 
     const SerializedData* GetDeviceData(DeviceType Type) const
     {
-        VERIFY_EXPR(static_cast<Uint32>(Type) < DeviceCount);
+        VERIFY_EXPR(static_cast<UInt32>(Type) < DeviceCount);
         const auto& Wrpr = m_pDeviceSignatures[static_cast<size_t>(Type)];
         return Wrpr ? &Wrpr->Data : nullptr;
     }
@@ -120,7 +120,7 @@ public:
 private:
     IPipelineResourceSignature* GetDeviceSignature(DeviceType Type) const
     {
-        VERIFY_EXPR(static_cast<Uint32>(Type) < DeviceCount);
+        VERIFY_EXPR(static_cast<UInt32>(Type) < DeviceCount);
         const auto& Wrpr = m_pDeviceSignatures[static_cast<size_t>(Type)];
         return Wrpr ? Wrpr->GetPRS() : nullptr;
     }

@@ -54,7 +54,7 @@ namespace
 
 using VRSTestingConstants::TextureBased::GenColRowFp32;
 
-constexpr Uint32 TileSize = 4;
+constexpr UInt32 TileSize = 4;
 
 void CreateRasterizationRateMap(RefCntAutoPtr<ITextureView>& pShadingRateMap,
                                 RefCntAutoPtr<IBuffer>&      pShadingRateParamBuffer,
@@ -79,8 +79,8 @@ void CreateRasterizationRateMap(RefCntAutoPtr<ITextureView>& pShadingRateMap,
         Vertical[i] = GenColRowFp32(i, Vertical.size());
 
     RasterizationRateLayerDesc Layer;
-    Layer.HorizontalCount   = static_cast<Uint32>(Horizontal.size());
-    Layer.VerticalCount     = static_cast<Uint32>(Vertical.size());
+    Layer.HorizontalCount   = static_cast<UInt32>(Horizontal.size());
+    Layer.VerticalCount     = static_cast<UInt32>(Vertical.size());
     Layer.pHorizontal       = Horizontal.data();
     Layer.pVertical         = Vertical.data();
     RasterRateMapCI.pLayers = &Layer;
@@ -91,8 +91,8 @@ void CreateRasterizationRateMap(RefCntAutoPtr<ITextureView>& pShadingRateMap,
     ASSERT_NE(pRasterizationRateMap, nullptr);
     pShadingRateMap = pRasterizationRateMap->GetView();
 
-    Uint64 BufferSize;
-    Uint32 BufferAlign;
+    UInt64 BufferSize;
+    UInt32 BufferAlign;
     pRasterizationRateMap->GetParameterBufferSizeAndAlign(BufferSize, BufferAlign);
 
     BufferDesc BuffDesc;
@@ -106,7 +106,7 @@ void CreateRasterizationRateMap(RefCntAutoPtr<ITextureView>& pShadingRateMap,
     pRasterizationRateMap->CopyParameterDataToBuffer(pShadingRateParamBuffer, 0);
     ASSERT_NE(pShadingRateParamBuffer, nullptr);
 
-    Uint32 Width, Height;
+    UInt32 Width, Height;
     pRasterizationRateMap->GetPhysicalSizeForLayer(0, Width, Height);
 
     TextureDesc TexDesc;
@@ -251,7 +251,7 @@ void CreatePass2PSO(RefCntAutoPtr<IPipelineState>&         pPSO,
 }
 
 
-void CreateVertexBuffer(RefCntAutoPtr<IBuffer>& pVB, Uint32& VertCount)
+void CreateVertexBuffer(RefCntAutoPtr<IBuffer>& pVB, UInt32& VertCount)
 {
     auto*       pDevice = GPUTestingEnvironment::GetInstance()->GetDevice();
     const auto& Verts   = VRSTestingConstants::PerPrimitive::Vertices;
@@ -314,7 +314,7 @@ TEST(VariableShadingRateTest, RasterRateMap)
         pSRBPass2->GetVariableByName(SHADER_TYPE_PIXEL, "g_RRMData")->Set(pShadingRateParamBuffer);
 
         RefCntAutoPtr<IBuffer> pVB;
-        Uint32                 VertCount = 0;
+        UInt32                 VertCount = 0;
         CreateVertexBuffer(pVB, VertCount);
 
         // Pass 1
@@ -335,7 +335,7 @@ TEST(VariableShadingRateTest, RasterRateMap)
             pContext->SetPipelineState(pPSOPass1);
 
             IBuffer*     VBuffers[] = {pVB};
-            const Uint64 Offsets[]  = {0};
+            const UInt64 Offsets[]  = {0};
             pContext->SetVertexBuffers(0, 1, VBuffers, Offsets, RESOURCE_STATE_TRANSITION_MODE_TRANSITION, SET_VERTEX_BUFFERS_FLAG_RESET);
 
             DrawAttribs drawAttrs{VertCount, DRAW_FLAG_VERIFY_ALL};
@@ -457,7 +457,7 @@ TEST(VariableShadingRateTest, RasterRateMapWithRenderPass)
         pSRBPass2->GetVariableByName(SHADER_TYPE_PIXEL, "g_RRMData")->Set(pShadingRateParamBuffer);
 
         RefCntAutoPtr<IBuffer> pVB;
-        Uint32                 VertCount = 0;
+        UInt32                 VertCount = 0;
         CreateVertexBuffer(pVB, VertCount);
 
         StateTransitionDesc Barriers[] = {

@@ -114,12 +114,12 @@ void RasterizationRateMapReferenceMtl(ISwapChain* pSwapChain)
             id<MTLTexture>              mtlIntermediateRT;
             id<MTLBuffer>               mtlParamBuffer;
             {
-                const Uint32 TileSize = 4;
+                const UInt32 TileSize = 4;
                 auto *layerDescriptor = [[MTLRasterizationRateLayerDescriptor alloc] initWithSampleCount:MTLSizeMake(SCDesc.Width / TileSize, SCDesc.Height / TileSize, 0)];
-                for (Uint32 i = 0; i < layerDescriptor.sampleCount.width; ++i)
+                for (UInt32 i = 0; i < layerDescriptor.sampleCount.width; ++i)
                     layerDescriptor.horizontalSampleStorage[i] = GenColRowFp32(i, layerDescriptor.sampleCount.width);
 
-                for (Uint32 i = 0; i < layerDescriptor.sampleCount.height; ++i)
+                for (UInt32 i = 0; i < layerDescriptor.sampleCount.height; ++i)
                     layerDescriptor.verticalSampleStorage[i] = GenColRowFp32(i, layerDescriptor.sampleCount.height);
 
                 auto *mtlRRMdesc = [MTLRasterizationRateMapDescriptor rasterizationRateMapDescriptorWithScreenSize: MTLSizeMake(SCDesc.Width, SCDesc.Height, 0)];

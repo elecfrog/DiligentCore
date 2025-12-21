@@ -246,7 +246,7 @@ std::string GetWGSLResourceAlternativeName(const tint::Program& Program, const t
 static WGSLResourceMapping::const_iterator FindResourceAsArrayElement(const WGSLResourceMapping& ResMapping,
                                                                       const std::string&         EmulatedArrayIndexSuffix,
                                                                       const std::string&         Name,
-                                                                      Uint32&                    ArrayIndex)
+                                                                      UInt32&                    ArrayIndex)
 {
     if (EmulatedArrayIndexSuffix.empty())
         return ResMapping.end();
@@ -259,7 +259,7 @@ static WGSLResourceMapping::const_iterator FindResourceAsArrayElement(const WGSL
 
         if (ArrayElem.Index < static_cast<int>(BindigIt->second.ArraySize))
         {
-            ArrayIndex = static_cast<Uint32>(ArrayElem.Index);
+            ArrayIndex = static_cast<UInt32>(ArrayElem.Index);
             return BindigIt;
         }
     }
@@ -287,7 +287,7 @@ std::string RemapWGSLResourceBindings(const std::string&         WGSL,
     {
         for (tint::inspector::ResourceBinding& Binding : Inspector.GetResourceBindings(EntryPoint.name))
         {
-            Uint32 ArrayIndex = 0;
+            UInt32 ArrayIndex = 0;
 
             auto DstBindigIt = ResMapping.find(Binding.variable_name);
             if (EmulatedArrayIndexSuffix != nullptr && DstBindigIt == ResMapping.end())

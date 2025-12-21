@@ -94,7 +94,7 @@ public:
     HRESULT CompileDXILShader(const std::string& Source,
                               LPCWSTR            strFunctionName,
                               const DxcDefine*   Defines,
-                              Uint32             DefinesCount,
+                              UInt32             DefinesCount,
                               LPCWSTR            profile,
                               ID3DBlob**         ppBlobOut);
 

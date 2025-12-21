@@ -57,15 +57,15 @@ DILIGENT_BEGIN_NAMESPACE(Diligent)
 struct SampleDesc
 {
     /// Sample count
-    Uint8 Count     DEFAULT_INITIALIZER(1);
+    UInt8 Count     DEFAULT_INITIALIZER(1);
 
     /// Quality
-    Uint8 Quality   DEFAULT_INITIALIZER(0);
+    UInt8 Quality   DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr SampleDesc() noexcept {}
 
-    constexpr SampleDesc(Uint8 _Count, Uint8 _Quality) noexcept :
+    constexpr SampleDesc(UInt8 _Count, UInt8 _Quality) noexcept :
         Count   {_Count  },
         Quality {_Quality}
     {}
@@ -90,7 +90,7 @@ typedef struct SampleDesc SampleDesc;
 
 
 /// Shader variable property flags.
-DILIGENT_TYPED_ENUM(SHADER_VARIABLE_FLAGS, Uint8)
+DILIGENT_TYPED_ENUM(SHADER_VARIABLE_FLAGS, UInt8)
 {
     /// Shader variable has no special properties.
     SHADER_VARIABLE_FLAG_NONE               = 0,
@@ -180,7 +180,7 @@ typedef struct ShaderResourceVariableDesc ShaderResourceVariableDesc;
 
 
 /// Pipeline state shading rate flags.
-DILIGENT_TYPED_ENUM(PIPELINE_SHADING_RATE_FLAGS, Uint8)
+DILIGENT_TYPED_ENUM(PIPELINE_SHADING_RATE_FLAGS, UInt8)
 {
     /// Shading rate is not used.
     PIPELINE_SHADING_RATE_FLAG_NONE          = 0,
@@ -221,7 +221,7 @@ struct PipelineResourceLayoutDesc
     SHADER_TYPE                         DefaultVariableMergeStages DEFAULT_INITIALIZER(SHADER_TYPE_UNKNOWN);
 
     /// Number of elements in Variables array
-    Uint32                              NumVariables         DEFAULT_INITIALIZER(0);
+    UInt32                              NumVariables         DEFAULT_INITIALIZER(0);
 
     /// Array of shader resource variable descriptions
 
@@ -230,7 +230,7 @@ struct PipelineResourceLayoutDesc
     const ShaderResourceVariableDesc*   Variables            DEFAULT_INITIALIZER(nullptr);
 
     /// Number of immutable samplers in ImmutableSamplers array
-    Uint32                              NumImmutableSamplers DEFAULT_INITIALIZER(0);
+    UInt32                              NumImmutableSamplers DEFAULT_INITIALIZER(0);
 
     /// Array of immutable sampler descriptions
     const ImmutableSamplerDesc*         ImmutableSamplers    DEFAULT_INITIALIZER(nullptr);
@@ -251,14 +251,14 @@ struct PipelineResourceLayoutDesc
 
         if (!IgnoreVariables)
         {
-            for (Uint32 i = 0; i < Desc1.NumVariables; ++i)
+            for (UInt32 i = 0; i < Desc1.NumVariables; ++i)
                 if (Desc1.Variables[i] != Desc2.Variables[i])
                     return false;
         }
 
         if (!IgnoreSamplers)
         {
-            for (Uint32 i = 0; i < Desc1.NumImmutableSamplers; ++i)
+            for (UInt32 i = 0; i < Desc1.NumImmutableSamplers; ++i)
                 if (Desc1.ImmutableSamplers[i] != Desc2.ImmutableSamplers[i])
                     return false;
         }
@@ -295,7 +295,7 @@ struct GraphicsPipelineDesc
     /// in all the active render targets. A sample mask is always applied;
     /// it is independent of whether multisampling is enabled, and does not
     /// depend on whether an application uses multisample render targets.
-    Uint32 SampleMask DEFAULT_INITIALIZER(0xFFFFFFFF);
+    UInt32 SampleMask DEFAULT_INITIALIZER(0xFFFFFFFF);
 
     /// Rasterizer state description.
     RasterizerStateDesc RasterizerDesc;
@@ -310,17 +310,17 @@ struct GraphicsPipelineDesc
     PRIMITIVE_TOPOLOGY PrimitiveTopology DEFAULT_INITIALIZER(PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 
     /// The number of viewports used by this pipeline
-    Uint8 NumViewports           DEFAULT_INITIALIZER(1);
+    UInt8 NumViewports           DEFAULT_INITIALIZER(1);
 
     /// The number of render targets in the RTVFormats array.
 
     /// Must be 0 when `pRenderPass` is not `null`.
-    Uint8 NumRenderTargets       DEFAULT_INITIALIZER(0);
+    UInt8 NumRenderTargets       DEFAULT_INITIALIZER(0);
 
     /// When `pRenderPass` is not `null`, the subpass
     /// index within the render pass.
     /// When `pRenderPass` is `null`, this member must be 0.
-    Uint8 SubpassIndex           DEFAULT_INITIALIZER(0);
+    UInt8 SubpassIndex           DEFAULT_INITIALIZER(0);
 
     /// Shading rate flags that specify which type of the shading rate will be used with this pipeline.
     PIPELINE_SHADING_RATE_FLAGS ShadingRateFlags DEFAULT_INITIALIZER(PIPELINE_SHADING_RATE_FLAG_NONE);
@@ -350,7 +350,7 @@ struct GraphicsPipelineDesc
     IRenderPass* pRenderPass     DEFAULT_INITIALIZER(nullptr);
 
     /// Node mask.
-    Uint32 NodeMask DEFAULT_INITIALIZER(0);
+    UInt32 NodeMask DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     bool operator==(const GraphicsPipelineDesc& Rhs) const noexcept
@@ -371,7 +371,7 @@ struct GraphicsPipelineDesc
               NodeMask          == Rhs.NodeMask))
             return false;
 
-        for (Uint32 i = 0; i < NumRenderTargets; ++i)
+        for (UInt32 i = 0; i < NumRenderTargets; ++i)
         {
             if (RTVFormats[i] != Rhs.RTVFormats[i])
                 return false;
@@ -529,7 +529,7 @@ struct RayTracingPipelineDesc
 
     /// Shader record size plus shader group size (32 bytes) must be aligned to 32 bytes.
     /// Shader record size plus shader group size (32 bytes) must not exceed 4096 bytes.
-    Uint16  ShaderRecordSize   DEFAULT_INITIALIZER(0);
+    UInt16  ShaderRecordSize   DEFAULT_INITIALIZER(0);
 
     /// Number of recursive calls of `TraceRay()` in HLSL or `traceRayEXT()` in GLSL.
 
@@ -538,7 +538,7 @@ struct RayTracingPipelineDesc
     /// the recursion depth of the shader which invoked it. Applications must not invoke a
     /// shader with a recursion depth greater than the value of `MaxRecursionDepth`.
     /// See DeviceProperties::MaxRayTracingRecursionDepth.
-    Uint8   MaxRecursionDepth  DEFAULT_INITIALIZER(0);
+    UInt8   MaxRecursionDepth  DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     /// Comparison operator tests if two structures are equivalent
@@ -557,7 +557,7 @@ struct RayTracingPipelineDesc
 typedef struct RayTracingPipelineDesc RayTracingPipelineDesc;
 
 /// Pipeline type
-DILIGENT_TYPED_ENUM(PIPELINE_TYPE, Uint8)
+DILIGENT_TYPED_ENUM(PIPELINE_TYPE, UInt8)
 {
     /// Graphics pipeline, which is used by IDeviceContext::Draw(), IDeviceContext::DrawIndexed(),
     /// IDeviceContext::DrawIndirect(), IDeviceContext::DrawIndexedIndirect().
@@ -597,7 +597,7 @@ struct PipelineStateDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     /// This member defines allocation granularity for internal resources required by the shader resource
     /// binding object instances.
     /// Has no effect if the PSO is created with explicit pipeline resource signature(s).
-    Uint32 SRBAllocationGranularity DEFAULT_INITIALIZER(1);
+    UInt32 SRBAllocationGranularity DEFAULT_INITIALIZER(1);
 
     /// Defines which immediate contexts are allowed to execute commands that use this pipeline state.
 
@@ -608,7 +608,7 @@ struct PipelineStateDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     ///
     /// \remarks    Only specify those bits that will indicate the immediate contexts where the PSO
     ///             will actually be used. Do not set unnecessary bits as this will result in extra overhead.
-    Uint64 ImmediateContextMask     DEFAULT_INITIALIZER(1);
+    UInt64 ImmediateContextMask     DEFAULT_INITIALIZER(1);
 
     /// Pipeline layout description
     PipelineResourceLayoutDesc ResourceLayout;
@@ -653,7 +653,7 @@ typedef struct PipelineStateDesc PipelineStateDesc;
 
 
 /// Pipeline state creation flags
-DILIGENT_TYPED_ENUM(PSO_CREATE_FLAGS, Uint32)
+DILIGENT_TYPED_ENUM(PSO_CREATE_FLAGS, UInt32)
 {
     /// Null flag.
     PSO_CREATE_FLAG_NONE                              = 0u,
@@ -705,7 +705,7 @@ struct PipelineStateCreateInfo
     PSO_CREATE_FLAGS  Flags      DEFAULT_INITIALIZER(PSO_CREATE_FLAG_NONE);
 
     /// The number of elements in `ppResourceSignatures` array.
-    Uint32 ResourceSignaturesCount DEFAULT_INITIALIZER(0);
+    UInt32 ResourceSignaturesCount DEFAULT_INITIALIZER(0);
 
     /// An array of `ResourceSignaturesCount` shader resource signatures that
     /// define the layout of shader resources in this pipeline state object.
@@ -729,7 +729,7 @@ struct PipelineStateCreateInfo
     void* pInternalData DEFAULT_INITIALIZER(nullptr);
 
 #ifdef DILIGENT_PLATFORM_32
-    Uint32 _Padding DEFAULT_INITIALIZER(0);
+    UInt32 _Padding DEFAULT_INITIALIZER(0);
 #endif
 
 #if DILIGENT_CPP_INTERFACE
@@ -751,7 +751,7 @@ struct PipelineStateCreateInfo
             if ((ppResourceSignatures == nullptr) != (RHS.ppResourceSignatures == nullptr))
                 return false;
 
-            for (Uint32 i = 0; i < ResourceSignaturesCount; ++i)
+            for (UInt32 i = 0; i < ResourceSignaturesCount; ++i)
             {
                 const auto* pSign0 = ppResourceSignatures[i];
                 const auto* pSign1 = RHS.ppResourceSignatures[i];
@@ -883,21 +883,21 @@ struct RayTracingPipelineStateCreateInfo DILIGENT_DERIVE(PipelineStateCreateInfo
     const RayTracingGeneralShaderGroup*       pGeneralShaders          DEFAULT_INITIALIZER(nullptr);
 
     /// The number of general shader groups.
-    Uint32                                    GeneralShaderCount       DEFAULT_INITIALIZER(0);
+    UInt32                                    GeneralShaderCount       DEFAULT_INITIALIZER(0);
 
     /// A pointer to an array of `TriangleHitShaderCount` `RayTracingTriangleHitShaderGroup` structures that contain shader group description.
     /// Can be null.
     const RayTracingTriangleHitShaderGroup*   pTriangleHitShaders      DEFAULT_INITIALIZER(nullptr);
 
     /// The number of triangle hit shader groups.
-    Uint32                                    TriangleHitShaderCount   DEFAULT_INITIALIZER(0);
+    UInt32                                    TriangleHitShaderCount   DEFAULT_INITIALIZER(0);
 
     /// A pointer to an array of `ProceduralHitShaderCount` `RayTracingProceduralHitShaderGroup` structures that contain shader group description.
     /// Can be null.
     const RayTracingProceduralHitShaderGroup* pProceduralHitShaders    DEFAULT_INITIALIZER(nullptr);
 
     /// The number of procedural shader groups.
-    Uint32                                    ProceduralHitShaderCount DEFAULT_INITIALIZER(0);
+    UInt32                                    ProceduralHitShaderCount DEFAULT_INITIALIZER(0);
 
     /// Shader record name.
 
@@ -910,12 +910,12 @@ struct RayTracingPipelineStateCreateInfo DILIGENT_DERIVE(PipelineStateCreateInfo
     /// Direct3D12 only: the maximum hit shader attribute size in bytes.
 
     /// If zero, the maximum allowed size will be used.
-    Uint32                                    MaxAttributeSize         DEFAULT_INITIALIZER(0);
+    UInt32                                    MaxAttributeSize         DEFAULT_INITIALIZER(0);
 
     /// Direct3D12 only: the maximum payload size in bytes.
 
     /// If zero, the maximum allowed size will be used.
-    Uint32                                    MaxPayloadSize           DEFAULT_INITIALIZER(0);
+    UInt32                                    MaxPayloadSize           DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     RayTracingPipelineStateCreateInfo() noexcept
@@ -943,17 +943,17 @@ struct RayTracingPipelineStateCreateInfo DILIGENT_DERIVE(PipelineStateCreateInfo
         if (!((IsNullOrEmptyStr(pShaderRecordName) && IsNullOrEmptyStr(RHS.pShaderRecordName)) || SafeStrEqual(pShaderRecordName, RHS.pShaderRecordName)))
             return false;
 
-        for (Uint32 i = 0; i < GeneralShaderCount; ++i)
+        for (UInt32 i = 0; i < GeneralShaderCount; ++i)
         {
             if (pGeneralShaders[i] != RHS.pGeneralShaders[i])
                 return false;
         }
-        for (Uint32 i = 0; i < TriangleHitShaderCount; ++i)
+        for (UInt32 i = 0; i < TriangleHitShaderCount; ++i)
         {
             if (pTriangleHitShaders[i] != RHS.pTriangleHitShaders[i])
                 return false;
         }
-        for (Uint32 i = 0; i < ProceduralHitShaderCount; ++i)
+        for (UInt32 i = 0; i < ProceduralHitShaderCount; ++i)
         {
             if (pProceduralHitShaders[i] != RHS.pProceduralHitShaders[i])
                 return false;
@@ -975,10 +975,10 @@ typedef struct RayTracingPipelineStateCreateInfo RayTracingPipelineStateCreateIn
 struct TilePipelineDesc
 {
     /// The number of render targets in the RTVFormats array.
-    Uint8 NumRenderTargets       DEFAULT_INITIALIZER(0);
+    UInt8 NumRenderTargets       DEFAULT_INITIALIZER(0);
 
     /// The number of samples in render targets.
-    Uint8 SampleCount            DEFAULT_INITIALIZER(1);
+    UInt8 SampleCount            DEFAULT_INITIALIZER(1);
 
     /// Render target formats.
     TEXTURE_FORMAT RTVFormats[DILIGENT_MAX_RENDER_TARGETS] DEFAULT_INITIALIZER({});
@@ -990,7 +990,7 @@ struct TilePipelineDesc
         if (!(NumRenderTargets == RHS.NumRenderTargets && SampleCount == RHS.SampleCount))
             return false;
 
-        for (Uint32 i = 0; i < NumRenderTargets; i++)
+        for (UInt32 i = 0; i < NumRenderTargets; i++)
             if (RTVFormats[i] != RHS.RTVFormats[i])
                 return false;
 
@@ -1044,7 +1044,7 @@ typedef struct TilePipelineStateCreateInfo TilePipelineStateCreateInfo;
 
 
 /// Pipeline state status
-DILIGENT_TYPED_ENUM(PIPELINE_STATE_STATUS, Uint32)
+DILIGENT_TYPED_ENUM(PIPELINE_STATE_STATUS, UInt32)
 {
     /// Initial state.
     PIPELINE_STATE_STATUS_UNINITIALIZED = 0,
@@ -1125,7 +1125,7 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::GetStaticVariableCount() method.
-    VIRTUAL Uint32 METHOD(GetStaticVariableCount)(THIS_
+    VIRTUAL UInt32 METHOD(GetStaticVariableCount)(THIS_
                                                   SHADER_TYPE ShaderType) CONST PURE;
 
 
@@ -1167,7 +1167,7 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     /// IPipelineResourceSignature::GetStaticVariableByIndex() method.
     VIRTUAL IShaderResourceVariable* METHOD(GetStaticVariableByIndex)(THIS_
                                                                       SHADER_TYPE ShaderType,
-                                                                      Uint32      Index) PURE;
+                                                                      UInt32      Index) PURE;
 
 
     /// Creates a shader resource binding object.
@@ -1259,14 +1259,14 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     /// After the PSO is created, pipeline resource signatures are arranged by their binding indices.
     /// The value returned by this function is given by the maximum signature binding index plus one,
     /// and thus may not be equal to PipelineStateCreateInfo::ResourceSignaturesCount.
-    VIRTUAL Uint32 METHOD(GetResourceSignatureCount)(THIS) CONST PURE;
+    VIRTUAL UInt32 METHOD(GetResourceSignatureCount)(THIS) CONST PURE;
 
     /// Returns pipeline resource signature at the give index.
 
     /// \param [in] Index - Index of the resource signature, same as BindingIndex in PipelineResourceSignatureDesc.
     /// \return     A pointer to the pipeline resource signature interface.
     VIRTUAL IPipelineResourceSignature* METHOD(GetResourceSignature)(THIS_
-                                                                     Uint32 Index) CONST PURE;
+                                                                     UInt32 Index) CONST PURE;
 
     /// Returns the pipeline state status, see Diligent::PIPELINE_STATE_STATUS.
 
