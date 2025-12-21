@@ -54,10 +54,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_QueryVk, TQueryBase)
 
     /// Implementation of IQuery::GetData().
-    virtual bool DILIGENT_CALL_TYPE GetData(void* pData, UInt32 DataSize, bool AutoInvalidate) override final;
+    virtual bool CALLTYPE GetData(void* pData, UInt32 DataSize, bool AutoInvalidate) override final;
 
     /// Implementation of IQuery::Invalidate().
-    virtual void DILIGENT_CALL_TYPE Invalidate() override final;
+    virtual void CALLTYPE Invalidate() override final;
 
     UInt32 GetQueryPoolIndex(UInt32 QueryId) const
     {

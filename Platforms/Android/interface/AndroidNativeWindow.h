@@ -29,11 +29,11 @@
 
 #include "../../../Primitives/interface/CommonDefinitions.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 struct AndroidNativeWindow
 {
     void* pAWindow DEFAULT_INITIALIZER(nullptr);
 };
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

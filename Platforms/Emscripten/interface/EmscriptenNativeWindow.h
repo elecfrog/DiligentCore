@@ -29,7 +29,7 @@
 #include "../../../Primitives/interface/CommonDefinitions.h"
 #include "CommonDefinitions.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 struct EmscriptenNativeWindow
 {
@@ -44,4 +44,4 @@ struct EmscriptenNativeWindow
 #endif
 };
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

@@ -1,30 +1,3 @@
-/*
- *  Copyright 2019-2025 Diligent Graphics LLC
- *  Copyright 2015-2019 Egor Yusov
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- *  In no event and under no legal theory, whether in tort (including negligence),
- *  contract, or otherwise, unless required by applicable law (such as deliberate
- *  and grossly negligent acts) or agreed to in writing, shall any Contributor be
- *  liable for any damages, including any direct, indirect, special, incidental,
- *  or consequential damages of any character arising as a result of this License or
- *  out of the use or inability to use the software (including but not limited to damages
- *  for loss of goodwill, work stoppage, computer failure or malfunction, or any and
- *  all other commercial damages or losses), even if such Contributor has been advised
- *  of the possibility of such damages.
- */
-
 #pragma once
 
 /// \file
@@ -33,26 +6,25 @@
 #include "../../../Primitives/interface/Object.h"
 #include "GraphicsTypes.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent
+{
 
 
 // {5B4CCA0B-5075-4230-9759-F48769EE5502}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_DeviceObject =
+static constexpr INTERFACE_ID IID_DeviceObject =
     {0x5b4cca0b, 0x5075, 0x4230, {0x97, 0x59, 0xf4, 0x87, 0x69, 0xee, 0x55, 0x2}};
 
-#define DILIGENT_INTERFACE_NAME IDeviceObject
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 #define IDeviceObjectInclusiveMethods \
     IObjectInclusiveMethods;          \
     IDeviceObjectMethods DeviceObject
 
-// clang-format off
 
 /// Base interface for all objects created by the render device Diligent::IRenderDevice
-DILIGENT_BEGIN_INTERFACE(IDeviceObject, IObject)
+struct IDeviceObject : public IObject
 {
     /// Returns the object description
-    VIRTUAL const DeviceObjectAttribs REF METHOD(GetDesc)(THIS) CONST PURE;
+    virtual const DeviceObjectAttribs& METHOD(GetDesc)() const = 0;
 
 
     /// Returns unique identifier assigned to an object
@@ -71,7 +43,7 @@ DILIGENT_BEGIN_INTERFACE(IDeviceObject, IObject)
     ///
     /// Valid identifiers are always positive values. Zero and negative values can never be
     /// assigned to an object and are always guaranteed to be invalid.
-    VIRTUAL Int32 METHOD(GetUniqueID)(THIS) CONST PURE;
+    virtual Int32 METHOD(GetUniqueID)() const = 0;
 
 
     /// Stores a pointer to the user-provided data object.
@@ -86,8 +58,7 @@ DILIGENT_BEGIN_INTERFACE(IDeviceObject, IObject)
     /// The method keeps strong reference to the user data object.
     /// If an application needs to release the object, it
     /// should call SetUserData(nullptr);
-    VIRTUAL void METHOD(SetUserData)(THIS_
-                                     IObject* pUserData) PURE;
+    virtual void CALLTYPE SetUserData(IObject* pUserData) = 0;
 
 
     /// Returns a pointer to the user data object previously set with SetUserData() method.
@@ -96,25 +67,10 @@ DILIGENT_BEGIN_INTERFACE(IDeviceObject, IObject)
     ///
     /// \remarks    The method does **NOT** call AddRef()
     ///             for the object being returned.
-    VIRTUAL IObject* METHOD(GetUserData)(THIS) CONST PURE;
+    virtual IObject* CALLTYPE GetUserData() const = 0;
 };
-DILIGENT_END_INTERFACE
 
-// clang-format on
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
 
-#if DILIGENT_C_INTERFACE
 
-// clang-format off
-
-#    define IDeviceObject_GetDesc(This)          CALL_IFACE_METHOD(DeviceObject, GetDesc,     This)
-#    define IDeviceObject_GetUniqueID(This)      CALL_IFACE_METHOD(DeviceObject, GetUniqueID, This)
-#    define IDeviceObject_SetUserData(This, ...) CALL_IFACE_METHOD(DeviceObject, SetUserData, This, __VA_ARGS__)
-#    define IDeviceObject_GetUserData(This)      CALL_IFACE_METHOD(DeviceObject, GetUserData, This)
-
-// clang-format on
-
-#endif
-
-DILIGENT_END_NAMESPACE // namespace Diligent
+} // namespace Diligent

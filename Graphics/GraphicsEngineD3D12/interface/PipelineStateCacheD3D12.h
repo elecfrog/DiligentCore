@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/PipelineStateCache.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {47B8CD9A-9156-4209-B133-D7D10D2DD218}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_PipelineStateCacheD3D12 =
+static constexpr INTERFACE_ID IID_PipelineStateCacheD3D12 =
     {0x47b8cd9a, 0x9156, 0x4209, {0xb1, 0x33, 0xd7, 0xd1, 0xd, 0x2d, 0xd2, 0x18}};
 
-#define DILIGENT_INTERFACE_NAME IPipelineStateCacheD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IPipelineStateCacheD3D12InclusiveMethods \
@@ -51,9 +50,9 @@ DILIGENT_BEGIN_INTERFACE(IPipelineStateCacheD3D12, IPipelineStateCache)
 {
     // AZ TODO
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -61,4 +60,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/PipelineState.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {22EC81D8-47C9-480F-8DC5-02D6133BDF3C}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_PipelineStateWebGPU =
+static constexpr INTERFACE_ID IID_PipelineStateWebGPU =
     {0x22EC81D8, 0x47C9, 0x480F, {0x8D, 0xC5, 0x02, 0xD6, 0x13, 0x3B, 0xDF, 0x3C}};
 
-#define DILIGENT_INTERFACE_NAME IPipelineStateWebGPU
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IPipelineStateWebGPUInclusiveMethods \
@@ -48,14 +47,14 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_PipelineStateWebGPU =
 DILIGENT_BEGIN_INTERFACE(IPipelineStateWebGPU, IPipelineState)
 {
     /// Returns a pointer to WebGPU render pipeline (`WGPURenderPipeline`)
-    VIRTUAL WGPURenderPipeline METHOD(GetWebGPURenderPipeline)(THIS) CONST PURE;
+    virtual WGPURenderPipeline METHOD(GetWebGPURenderPipeline)( ) const =0;
 
     /// Returns a pointer to WebGPU compute pipeline (`WGPUComputePipeline`)
-    VIRTUAL WGPUComputePipeline METHOD(GetWebGPUComputePipeline)(THIS) CONST PURE;
+    virtual WGPUComputePipeline METHOD(GetWebGPUComputePipeline)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -68,4 +67,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

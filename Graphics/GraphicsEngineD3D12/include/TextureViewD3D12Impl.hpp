@@ -56,7 +56,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_TextureViewD3D12, TTextureViewBase)
 
     /// Implementation of ITextureViewD3D12::GetCPUDescriptorHandle().
-    virtual D3D12_CPU_DESCRIPTOR_HANDLE DILIGENT_CALL_TYPE GetCPUDescriptorHandle() override final
+    virtual D3D12_CPU_DESCRIPTOR_HANDLE CALLTYPE GetCPUDescriptorHandle() override final
     {
         return m_Descriptor.GetCpuHandle();
     }

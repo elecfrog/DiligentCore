@@ -32,28 +32,27 @@
 
 #include "../../GraphicsEngine/interface/SwapChain.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {F457BD7C-E725-4D3E-8607-A1F9BAE329EB}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_SwapChainGL =
+static constexpr INTERFACE_ID IID_SwapChainGL =
     {0xf457bd7c, 0xe725, 0x4d3e, {0x86, 0x7, 0xa1, 0xf9, 0xba, 0xe3, 0x29, 0xeb}};
 
 #define ISwapChainGLInclusiveMethods \
     ISwapChainInclusiveMethods;      \
     ISwapChainGLMethods SwapChainGL
 
-#define DILIGENT_INTERFACE_NAME ISwapChainGL
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 /// Exposes OpenGL-specific functionality of a swap chain.
 DILIGENT_BEGIN_INTERFACE(ISwapChainGL, ISwapChain)
 {
     /// Returns the default framebuffer handle
-    VIRTUAL GLuint METHOD(GetDefaultFBO)(THIS) CONST PURE;
+    virtual GLuint METHOD(GetDefaultFBO)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -65,4 +64,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

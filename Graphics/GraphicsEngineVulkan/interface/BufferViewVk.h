@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/BufferView.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {CB67024A-1E23-4202-A49A-07B6BCEABC06}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferViewVk =
+static constexpr INTERFACE_ID IID_BufferViewVk =
     {0xcb67024a, 0x1e23, 0x4202, {0xa4, 0x9a, 0x7, 0xb6, 0xbc, 0xea, 0xbc, 0x6}};
 
-#define DILIGENT_INTERFACE_NAME IBufferViewVk
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBufferViewVkInclusiveMethods \
@@ -51,11 +50,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferViewVk =
 DILIGENT_BEGIN_INTERFACE(IBufferViewVk, IBufferView)
 {
     /// Returns a Vulkan handle of the internal buffer view object.
-    VIRTUAL VkBufferView METHOD(GetVkBufferView)(THIS) CONST PURE;
+    virtual VkBufferView METHOD(GetVkBufferView)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -67,4 +66,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

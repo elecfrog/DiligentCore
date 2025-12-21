@@ -31,13 +31,12 @@
 
 #include "../../../Primitives/interface/Object.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {0FF427F7-6284-409E-8161-A023CA07EF5D}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_CommandQueue =
+static constexpr INTERFACE_ID IID_CommandQueue =
     {0xff427f7, 0x6284, 0x409e, {0x81, 0x61, 0xa0, 0x23, 0xca, 0x7, 0xef, 0x5d}};
 
-#define DILIGENT_INTERFACE_NAME ICommandQueue
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ICommandQueueInclusiveMethods \
@@ -47,20 +46,20 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_CommandQueue =
 // clang-format off
 
 /// Command queue interface
-DILIGENT_BEGIN_INTERFACE(ICommandQueue, IObject)
+struct ICommandQueue : public IObject
 {
     /// Returns the value of the internal fence that will be signaled next time
-    VIRTUAL UInt64 METHOD(GetNextFenceValue)(THIS) CONST PURE;
+    virtual UInt64 METHOD(GetNextFenceValue)( ) const =0;
 
     /// Returns the last completed value of the internal fence
-    VIRTUAL UInt64 METHOD(GetCompletedFenceValue)(THIS) PURE;
+    virtual UInt64 METHOD(GetCompletedFenceValue)( ) =0;
 
     /// Blocks execution until all pending GPU commands are complete
-    VIRTUAL UInt64 METHOD(WaitForIdle)(THIS) PURE;
+    virtual UInt64 METHOD(WaitForIdle)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -74,4 +73,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

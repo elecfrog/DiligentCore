@@ -57,16 +57,16 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_SwapChainD3D12, TSwapChainBase)
 
     /// Implementation of ISwapChain::Present() in Direct3D12 backend.
-    virtual void DILIGENT_CALL_TYPE Present(UInt32 SyncInterval) override final;
+    virtual void CALLTYPE Present(UInt32 SyncInterval) override final;
 
     /// Implementation of ISwapChain::Resize() in Direct3D12 backend.
-    virtual void DILIGENT_CALL_TYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
+    virtual void CALLTYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
 
     /// Implementation of ISwapChainD3D12::GetDXGISwapChain().
-    virtual IDXGISwapChain* DILIGENT_CALL_TYPE GetDXGISwapChain() override final { return m_pSwapChain; }
+    virtual IDXGISwapChain* CALLTYPE GetDXGISwapChain() override final { return m_pSwapChain; }
 
     /// Implementation of ISwapChain::GetCurrentBackBufferRTV() in Direct3D12 backend.
-    virtual ITextureViewD3D12* DILIGENT_CALL_TYPE GetCurrentBackBufferRTV() override final
+    virtual ITextureViewD3D12* CALLTYPE GetCurrentBackBufferRTV() override final
     {
         auto CurrentBackBufferIndex = m_pSwapChain->GetCurrentBackBufferIndex();
         VERIFY_EXPR(CurrentBackBufferIndex >= 0 && CurrentBackBufferIndex < m_SwapChainDesc.BufferCount);
@@ -74,7 +74,7 @@ public:
     }
 
     /// Implementation of ISwapChain::GetDepthBufferDSV() in Direct3D12 backend.
-    virtual ITextureViewD3D12* DILIGENT_CALL_TYPE GetDepthBufferDSV() override final { return m_pDepthBufferDSV; }
+    virtual ITextureViewD3D12* CALLTYPE GetDepthBufferDSV() override final { return m_pDepthBufferDSV; }
 
 private:
     virtual void UpdateSwapChain(bool CreateNew) override final;

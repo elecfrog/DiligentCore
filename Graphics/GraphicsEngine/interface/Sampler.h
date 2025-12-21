@@ -1,30 +1,3 @@
-/*
- *  Copyright 2019-2025 Diligent Graphics LLC
- *  Copyright 2015-2019 Egor Yusov
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- *  In no event and under no legal theory, whether in tort (including negligence),
- *  contract, or otherwise, unless required by applicable law (such as deliberate
- *  and grossly negligent acts) or agreed to in writing, shall any Contributor be
- *  liable for any damages, including any direct, indirect, special, incidental,
- *  or consequential damages of any character arising as a result of this License or
- *  out of the use or inability to use the software (including but not limited to damages
- *  for loss of goodwill, work stoppage, computer failure or malfunction, or any and
- *  all other commercial damages or losses), even if such Contributor has been advised
- *  of the possibility of such damages.
- */
-
 #pragma once
 
 /// \file
@@ -32,18 +5,19 @@
 
 #include "DeviceObject.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent
+{
 
 
 // {595A59BF-FA81-4855-BC5E-C0E048745A95}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_Sampler =
+static constexpr INTERFACE_ID IID_Sampler =
     {0x595a59bf, 0xfa81, 0x4855, {0xbc, 0x5e, 0xc0, 0xe0, 0x48, 0x74, 0x5a, 0x95}};
 
 
 // clang-format off
 
 /// Sampler flags
-DILIGENT_TYPED_ENUM(SAMPLER_FLAGS, UInt8)
+enum SAMPLER_FLAGS : UInt8
 {
     /// No flags are set.
     SAMPLER_FLAG_NONE        = 0,
@@ -127,33 +101,33 @@ struct SamplerDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     /// mipmap level 3.5.
     ///
     /// Default value: 0.
-    Float32 MipLODBias                  DEFAULT_INITIALIZER(0);
+    Float32 MipLODBias                  = 0;
 
     /// Maximum anisotropy level for the anisotropic filter. Default value: 0.
-    UInt32 MaxAnisotropy                DEFAULT_INITIALIZER(0);
+    UInt32 MaxAnisotropy                = 0;
 
     /// A function that compares sampled data against existing sampled data when comparison filter is used.
 
     /// Default value: Diligent::COMPARISON_FUNC_NEVER.
-    COMPARISON_FUNCTION ComparisonFunc  DEFAULT_INITIALIZER(COMPARISON_FUNC_NEVER);
+    COMPARISON_FUNCTION ComparisonFunc  = COMPARISON_FUNC_NEVER;
 
     /// Border color to use if TEXTURE_ADDRESS_BORDER is specified for `AddressU`, `AddressV`, or `AddressW`.
 
     /// Default value: `{0, 0, 0, 0}`
-    Float32 BorderColor[4]              DEFAULT_INITIALIZER({});
+    Float32 BorderColor[4]              = {};
 
     /// Specifies the minimum value that LOD is clamped to before accessing the texture MIP levels.
 
     /// Must be less than or equal to `MaxLOD`.
     ///
     /// Default value: 0.
-    float MinLOD                        DEFAULT_INITIALIZER(0);
+    float MinLOD                        = 0;
 
     /// Specifies the maximum value that LOD is clamped to before accessing the texture MIP levels.
 
     /// Must be greater than or equal to `MinLOD`.
     /// Default value: `+FLT_MAX`.
-    float MaxLOD                        DEFAULT_INITIALIZER(+3.402823466e+38F);
+    float MaxLOD                        = +3.402823466e+38F;
 
     // 
     // NB: when adding new members, don't forget to update std::hash<Diligent::SamplerDesc>
@@ -231,7 +205,6 @@ struct SamplerDesc DILIGENT_DERIVE(DeviceObjectAttribs)
 };
 typedef struct SamplerDesc SamplerDesc;
 
-#define DILIGENT_INTERFACE_NAME ISampler
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 // clang-format off
@@ -240,43 +213,15 @@ typedef struct SamplerDesc SamplerDesc;
     /*ISamplerMethods Sampler*/
 // clang-format on
 
-#if DILIGENT_CPP_INTERFACE
-
-// clang-format off
-
 /// Texture sampler interface.
 
 /// The interface holds the sampler state that can be used to perform texture filtering.
 /// To create a sampler, call IRenderDevice::CreateSampler(). To use a sampler,
 /// call ITextureView::SetSampler().
-DILIGENT_BEGIN_INTERFACE(ISampler, IDeviceObject)
+struct ISampler : public IDeviceObject
 {
-#if DILIGENT_CPP_INTERFACE
     /// Returns the sampler description used to create the object
     virtual const SamplerDesc& METHOD(GetDesc)() const override = 0;
-#endif
 };
-DILIGENT_END_INTERFACE
 
-#endif
-
-
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
-
-#if DILIGENT_C_INTERFACE
-
-typedef struct ISamplerVtbl
-{
-    ISamplerInclusiveMethods;
-} ISamplerVtbl;
-
-typedef struct ISampler
-{
-    struct ISamplerVtbl* pVtbl;
-} ISampler;
-
-#    define ISampler_GetDesc(This) (const struct SamplerDesc*)IDeviceObject_GetDesc(This)
-
-#endif
-
-DILIGENT_END_NAMESPACE // namespace Diligent
+} // namespace Diligent

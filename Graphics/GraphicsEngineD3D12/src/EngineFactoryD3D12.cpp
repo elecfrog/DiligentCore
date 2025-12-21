@@ -117,36 +117,36 @@ public:
         TBase{IID_EngineFactoryD3D12}
     {}
 
-    bool DILIGENT_CALL_TYPE LoadD3D12(const char* DllName) override final;
+    bool CALLTYPE LoadD3D12(const char* DllName) override final;
 
-    virtual void DILIGENT_CALL_TYPE CreateDeviceAndContextsD3D12(const EngineD3D12CreateInfo& EngineCI,
+    virtual void CALLTYPE CreateDeviceAndContextsD3D12(const EngineD3D12CreateInfo& EngineCI,
                                                                  IRenderDevice**              ppDevice,
                                                                  IDeviceContext**             ppContexts) override final;
 
-    virtual void DILIGENT_CALL_TYPE CreateCommandQueueD3D12(void*                pd3d12NativeDevice,
+    virtual void CALLTYPE CreateCommandQueueD3D12(void*                pd3d12NativeDevice,
                                                             void*                pd3d12NativeCommandQueue,
                                                             IMemoryAllocator*    pRawMemAllocator,
                                                             ICommandQueueD3D12** ppCommandQueue) override final;
 
-    virtual void DILIGENT_CALL_TYPE AttachToD3D12Device(void*                        pd3d12NativeDevice,
+    virtual void CALLTYPE AttachToD3D12Device(void*                        pd3d12NativeDevice,
                                                         UInt32                       CommandQueueCount,
                                                         ICommandQueueD3D12**         ppCommandQueues,
                                                         const EngineD3D12CreateInfo& EngineCI,
                                                         IRenderDevice**              ppDevice,
                                                         IDeviceContext**             ppContexts) override final;
 
-    virtual void DILIGENT_CALL_TYPE CreateSwapChainD3D12(IRenderDevice*            pDevice,
+    virtual void CALLTYPE CreateSwapChainD3D12(IRenderDevice*            pDevice,
                                                          IDeviceContext*           pImmediateContext,
                                                          const SwapChainDesc&      SwapChainDesc,
                                                          const FullScreenModeDesc& FSDesc,
                                                          const NativeWindow&       Window,
                                                          ISwapChain**              ppSwapChain) override final;
 
-    virtual void DILIGENT_CALL_TYPE EnumerateAdapters(Version              MinFeatureLevel,
+    virtual void CALLTYPE EnumerateAdapters(Version              MinFeatureLevel,
                                                       UInt32&              NumAdapters,
                                                       GraphicsAdapterInfo* Adapters) const override final;
 
-    virtual void DILIGENT_CALL_TYPE EnumerateDisplayModes(Version             MinFeatureLevel,
+    virtual void CALLTYPE EnumerateDisplayModes(Version             MinFeatureLevel,
                                                           UInt32              AdapterId,
                                                           UInt32              OutputId,
                                                           TEXTURE_FORMAT      Format,
@@ -157,7 +157,7 @@ public:
                                                        IDXGIAdapter1* pDXIAdapter) const override final;
 
 
-    virtual void DILIGENT_CALL_TYPE CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
+    virtual void CALLTYPE CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
                                                      IDearchiver**               ppDearchiver) const override final
     {
         TBase::CreateDearchiver<DearchiverD3D12Impl>(CreateInfo, ppDearchiver);

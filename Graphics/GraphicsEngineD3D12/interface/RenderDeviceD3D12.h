@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/RenderDevice.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {C7987C98-87FE-4309-AE88-E98F044B00F6}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_RenderDeviceD3D12 =
+static constexpr INTERFACE_ID IID_RenderDeviceD3D12 =
     {0xc7987c98, 0x87fe, 0x4309, {0xae, 0x88, 0xe9, 0x8f, 0x4, 0x4b, 0x0, 0xf6}};
 
-#define DILIGENT_INTERFACE_NAME IRenderDeviceD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IRenderDeviceD3D12InclusiveMethods \
@@ -54,7 +53,7 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceD3D12, IRenderDevice)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D12Device* METHOD(GetD3D12Device)(THIS) CONST PURE;
+    virtual ID3D12Device* METHOD(GetD3D12Device)( ) const =0;
 
     /// Creates a texture object from native d3d12 resource
 
@@ -64,10 +63,10 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceD3D12, IRenderDevice)
     ///                              texture interface will be stored.
     ///                              The function calls AddRef(), so that the new object will contain
     ///                              one reference.
-    VIRTUAL void METHOD(CreateTextureFromD3DResource)(THIS_
+    virtual void METHOD(CreateTextureFromD3DResource)(
                                                       ID3D12Resource* pd3d12Texture,
                                                       RESOURCE_STATE  InitialState,
-                                                      ITexture**      ppTexture) PURE;
+                                                      ITexture**      ppTexture) =0;
 
     /// Creates a buffer object from native d3d12 resource
 
@@ -80,11 +79,11 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceD3D12, IRenderDevice)
     ///                             buffer interface will be stored.
     ///                             The function calls AddRef(), so that the new object will contain
     ///                             one reference.
-    VIRTUAL void METHOD(CreateBufferFromD3DResource)(THIS_
+    virtual void METHOD(CreateBufferFromD3DResource)(
                                                      ID3D12Resource*      pd3d12Buffer,
-                                                     const BufferDesc REF BuffDesc,
+                                                     const BufferDesc  & BuffDesc,
                                                      RESOURCE_STATE       InitialState,
-                                                     IBuffer**            ppBuffer) PURE;
+                                                     IBuffer**            ppBuffer) =0;
 
     /// Creates a bottom-level AS object from native d3d12 resource
 
@@ -97,11 +96,11 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceD3D12, IRenderDevice)
     ///                             bottom-level AS interface will be stored.
     ///                             The function calls AddRef(), so that the new object will contain
     ///                             one reference.
-    VIRTUAL void METHOD(CreateBLASFromD3DResource)(THIS_
+    virtual void METHOD(CreateBLASFromD3DResource)(
                                                    ID3D12Resource*             pd3d12BLAS,
-                                                   const BottomLevelASDesc REF Desc,
+                                                   const BottomLevelASDesc  & Desc,
                                                    RESOURCE_STATE              InitialState,
-                                                   IBottomLevelAS**            ppBLAS) PURE;
+                                                   IBottomLevelAS**            ppBLAS) =0;
 
     /// Creates a top-level AS object from native d3d12 resource
 
@@ -114,18 +113,18 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceD3D12, IRenderDevice)
     ///                             top-level AS interface will be stored.
     ///                             The function calls AddRef(), so that the new object will contain
     ///                             one reference.
-    VIRTUAL void METHOD(CreateTLASFromD3DResource)(THIS_
+    virtual void METHOD(CreateTLASFromD3DResource)(
                                                    ID3D12Resource*          pd3d12TLAS,
-                                                   const TopLevelASDesc REF Desc,
+                                                   const TopLevelASDesc  & Desc,
                                                    RESOURCE_STATE           InitialState,
-                                                   ITopLevelAS**            ppTLAS) PURE;
+                                                   ITopLevelAS**            ppTLAS) =0;
 
     /// Returns DX compiler interface, or null if the compiler is not loaded.
-    VIRTUAL struct IDXCompiler* METHOD(GetDXCompiler)(THIS) CONST PURE;
+    virtual struct IDXCompiler* METHOD(GetDXCompiler)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -141,4 +140,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

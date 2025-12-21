@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/CommandQueue.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {9FBF582F-3069-41B9-AC05-344D5AF5CE8C}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_CommandQueueVk =
+static constexpr INTERFACE_ID IID_CommandQueueVk =
     {0x9fbf582f, 0x3069, 0x41b9, {0xac, 0x5, 0x34, 0x4d, 0x5a, 0xf5, 0xce, 0x8c}};
 
-#define DILIGENT_INTERFACE_NAME ICommandQueueVk
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ICommandQueueVkInclusiveMethods \
@@ -48,54 +47,54 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_CommandQueueVk =
 // clang-format off
 
 /// Command queue interface
-DILIGENT_BEGIN_INTERFACE(ICommandQueueVk, ICommandQueue)
+struct ICommandQueueVk : public ICommandQueue
 {
     /// Submits a given command buffer to the command queue
 
     /// \return Fence value associated with the submitted command buffer
-    VIRTUAL UInt64 METHOD(SubmitCmdBuffer)(THIS_
-                                           VkCommandBuffer cmdBuffer) PURE;
+    virtual UInt64 METHOD(SubmitCmdBuffer)(
+                                           VkCommandBuffer cmdBuffer) =0;
 
     /// Submits a given work batch to the internal Vulkan command queue
 
     /// \return Fence value associated with the submitted command buffer
-    VIRTUAL UInt64 METHOD(Submit)(THIS_
-                                  const VkSubmitInfo REF SubmitInfo) PURE;
+    virtual UInt64 METHOD(Submit)(
+                                  const VkSubmitInfo  & SubmitInfo) =0;
 
     /// Presents the current swap chain image on the screen
-    VIRTUAL VkResult METHOD(Present)(THIS_
-                                     const VkPresentInfoKHR REF PresentInfo) PURE;
+    virtual VkResult METHOD(Present)(
+                                     const VkPresentInfoKHR  & PresentInfo) =0;
 
     /// Submits a sparse bind commands to the internal Vulkan command queue
 
     /// \return Fence value associated with the submitted sparse bind command
-    VIRTUAL UInt64 METHOD(BindSparse)(THIS_
-                                      const VkBindSparseInfo REF BindInfo) PURE;
+    virtual UInt64 METHOD(BindSparse)(
+                                      const VkBindSparseInfo  & BindInfo) =0;
 
     /// Returns Vulkan command queue handle. May return VK_NULL_HANDLE if queue is unavailable
     ///
     /// \warning  Access to the VkQueue must be externally synchronized.
     ///           Don't use this method to submit commands directly, use SubmitCmdBuffer() or Submit(),
     ///           which are thread-safe.
-    VIRTUAL VkQueue METHOD(GetVkQueue)(THIS) PURE;
+    virtual VkQueue METHOD(GetVkQueue)( ) =0;
 
     /// Returns vulkan command queue family index
-    VIRTUAL uint32_t METHOD(GetQueueFamilyIndex)(THIS) CONST PURE;
+    virtual uint32_t METHOD(GetQueueFamilyIndex)( ) const =0;
 
     /// Signals the given fence
-    VIRTUAL void METHOD(EnqueueSignalFence)(THIS_
-                                            VkFence vkFence) PURE;
+    virtual void METHOD(EnqueueSignalFence)(
+                                            VkFence vkFence) =0;
 
     /// Signals the given timeline semaphore.
     ///
     /// \note  Requires NativeFence feature, see Diligent::DeviceFeatures.
-    VIRTUAL void METHOD(EnqueueSignal)(THIS_
+    virtual void METHOD(EnqueueSignal)(
                                        VkSemaphore vkTimelineSemaphore,
-                                       UInt64      Value) PURE;
+                                       UInt64      Value) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -114,4 +113,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

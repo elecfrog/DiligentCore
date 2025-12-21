@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/DeviceContext.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {FC2A8031-0EDA-4115-B00E-DFB1FA8AD5C8}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_DeviceContextWebGPU =
+static constexpr INTERFACE_ID IID_DeviceContextWebGPU =
     {0xFC2A8031, 0x0EDA, 0x4115, {0xB0, 0x0E, 0xDF, 0xB1, 0xFA, 0x8A, 0xD5, 0xC8}};
 
-#define DILIGENT_INTERFACE_NAME IDeviceContextWebGPU
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IDeviceContextWebGPUInclusiveMethods \
@@ -46,19 +45,19 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_DeviceContextWebGPU =
 
 // clang-format off
 
-typedef void (*MapBufferAsyncCallback)(PVoid REF pMappedData, PVoid pUserData);
+typedef void (*MapBufferAsyncCallback)(PVoid  & pMappedData, PVoid pUserData);
 
-typedef void (*MapTextureSubresourceAsyncCallback)(MappedTextureSubresource REF MappedData, PVoid pUserData);
+typedef void (*MapTextureSubresourceAsyncCallback)(MappedTextureSubresource  & MappedData, PVoid pUserData);
 
 /// Exposes WebGPU-specific functionality of a device context.
 DILIGENT_BEGIN_INTERFACE(IDeviceContextWebGPU, IDeviceContext)
 {
     /// Returns a pointer to the WebGPU queue object associated with this device context.
-    VIRTUAL WGPUQueue METHOD(GetWebGPUQueue)(THIS) PURE;
+    virtual WGPUQueue METHOD(GetWebGPUQueue)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -70,4 +69,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

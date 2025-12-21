@@ -33,10 +33,10 @@
 #include "DeviceObject.h"
 #include "GraphicsTypes.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {70F2A88A-F8BE-4901-8F05-2F72FA695BA0}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_Query =
+static constexpr INTERFACE_ID IID_Query =
     {0x70f2a88a, 0xf8be, 0x4901, {0x8f, 0x5, 0x2f, 0x72, 0xfa, 0x69, 0x5b, 0xa0}};
 
 /// Occlusion query data.
@@ -167,7 +167,6 @@ struct QueryDesc DILIGENT_DERIVE(DeviceObjectAttribs)
 };
 typedef struct QueryDesc QueryDesc;
 
-#define DILIGENT_INTERFACE_NAME IQuery
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IQueryInclusiveMethods     \
@@ -179,7 +178,7 @@ typedef struct QueryDesc QueryDesc;
 /// Query interface.
 
 /// Defines the methods to manipulate a Query object
-DILIGENT_BEGIN_INTERFACE(IQuery, IDeviceObject)
+struct IQuery : public IDeviceObject
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the Query description used to create the object.
@@ -206,17 +205,17 @@ DILIGENT_BEGIN_INTERFACE(IQuery, IDeviceObject)
     ///
     /// If `AutoInvalidate` is set to true, and the data have been retrieved, an application
     /// must not call GetData() until it begins and ends the query again.
-    VIRTUAL Bool METHOD(GetData)(THIS_
+    virtual Bool METHOD(GetData)(
                                  void*   pData,
                                  UInt32  DataSize,
-                                 Bool    AutoInvalidate DEFAULT_VALUE(true)) PURE;
+                                 Bool    AutoInvalidate DEFAULT_VALUE(true)) =0;
 
     /// Invalidates the query and releases associated resources.
-    VIRTUAL void METHOD(Invalidate)(THIS) PURE;
+    virtual void METHOD(Invalidate)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -231,4 +230,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

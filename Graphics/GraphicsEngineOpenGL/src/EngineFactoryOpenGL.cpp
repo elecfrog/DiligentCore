@@ -89,23 +89,23 @@ public:
         TBase{IID_EngineFactoryOpenGL}
     {}
 
-    virtual void DILIGENT_CALL_TYPE CreateDeviceAndSwapChainGL(const EngineGLCreateInfo& EngineCI,
+    virtual void CALLTYPE CreateDeviceAndSwapChainGL(const EngineGLCreateInfo& EngineCI,
                                                                IRenderDevice**           ppDevice,
                                                                IDeviceContext**          ppImmediateContext,
                                                                const SwapChainDesc&      SCDesc,
                                                                ISwapChain**              ppSwapChain) override final;
 
-    virtual void DILIGENT_CALL_TYPE CreateHLSL2GLSLConverter(IHLSL2GLSLConverter** ppConverter) override final;
+    virtual void CALLTYPE CreateHLSL2GLSLConverter(IHLSL2GLSLConverter** ppConverter) override final;
 
-    virtual void DILIGENT_CALL_TYPE AttachToActiveGLContext(const EngineGLCreateInfo& EngineCI,
+    virtual void CALLTYPE AttachToActiveGLContext(const EngineGLCreateInfo& EngineCI,
                                                             IRenderDevice**           ppDevice,
                                                             IDeviceContext**          ppImmediateContext) override final;
 
-    virtual void DILIGENT_CALL_TYPE EnumerateAdapters(Version              MinVersion,
+    virtual void CALLTYPE EnumerateAdapters(Version              MinVersion,
                                                       UInt32&              NumAdapters,
                                                       GraphicsAdapterInfo* Adapters) const override final;
 
-    virtual void DILIGENT_CALL_TYPE CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
+    virtual void CALLTYPE CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
                                                      IDearchiver**               ppDearchiver) const override final
     {
         TBase::CreateDearchiver<DearchiverGLImpl>(CreateInfo, ppDearchiver);

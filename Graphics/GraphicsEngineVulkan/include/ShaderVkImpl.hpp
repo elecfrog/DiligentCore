@@ -69,20 +69,20 @@ public:
     IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_ShaderVk, IID_InternalImpl, TShaderBase)
 
     /// Implementation of IShader::GetResourceCount() in Vulkan backend.
-    virtual UInt32 DILIGENT_CALL_TYPE GetResourceCount() const override final
+    virtual UInt32 CALLTYPE GetResourceCount() const override final
     {
         DEV_CHECK_ERR(!IsCompiling(), "Shader resources are not available until the shader is compiled. Use GetStatus() to check the shader status.");
         return m_pShaderResources ? m_pShaderResources->GetTotalResources() : 0;
     }
 
     /// Implementation of IShader::GetResource() in Vulkan backend.
-    virtual void DILIGENT_CALL_TYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final;
+    virtual void CALLTYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final;
 
     /// Implementation of IShader::GetConstantBufferDesc() in Vulkan backend.
-    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(UInt32 Index) const override final;
+    virtual const ShaderCodeBufferDesc* CALLTYPE GetConstantBufferDesc(UInt32 Index) const override final;
 
     /// Implementation of IShaderVk::GetSPIRV().
-    virtual const std::vector<uint32_t>& DILIGENT_CALL_TYPE GetSPIRV() const override final
+    virtual const std::vector<uint32_t>& CALLTYPE GetSPIRV() const override final
     {
         static const std::vector<uint32_t> NullSPIRV;
         // NOTE: while shader is compiled asynchronously, m_SPIRV may be modified by
@@ -102,7 +102,7 @@ public:
         return m_EntryPoint.c_str();
     }
 
-    virtual void DILIGENT_CALL_TYPE GetBytecode(const void** ppBytecode,
+    virtual void CALLTYPE GetBytecode(const void** ppBytecode,
                                                 UInt64&      Size) const override final
     {
         DEV_CHECK_ERR(!IsCompiling(), "Shader byte code is not available until the shader is compiled. Use GetStatus() to check the shader status.");

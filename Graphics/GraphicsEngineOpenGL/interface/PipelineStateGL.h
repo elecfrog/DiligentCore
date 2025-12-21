@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/PipelineState.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {80666BE3-318A-4403-AEE1-6E61A5B7A0F9}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_PipelineStateGL =
+static constexpr INTERFACE_ID IID_PipelineStateGL =
     {0x80666be3, 0x318a, 0x4403, {0xae, 0xe1, 0x6e, 0x61, 0xa5, 0xb7, 0xa0, 0xf9}};
 
-#define DILIGENT_INTERFACE_NAME IPipelineStateGL
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IPipelineStateGLInclusiveMethods \
@@ -60,14 +59,14 @@ DILIGENT_BEGIN_INTERFACE(IPipelineStateGL, IPipelineState)
     /// shader stage. Otherwise, the function returns the handle
     /// of the program that contains all shaders, if Stage is
     /// one of the active shader stages, or zero otherwise.
-    VIRTUAL GLuint METHOD(GetGLProgramHandle)(THIS_
-                                              SHADER_TYPE Stage) CONST PURE;
+    virtual GLuint METHOD(GetGLProgramHandle)(
+                                              SHADER_TYPE Stage) const =0;
 
     // clang-format on
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -78,4 +77,4 @@ DILIGENT_END_INTERFACE
 // clang-format on
 
 #endif
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

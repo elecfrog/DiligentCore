@@ -48,13 +48,12 @@
 #    define DILIGENT_WEBGPU_EXPLICIT_LOAD 1
 #endif
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {CF7F4278-4EA7-491A-8575-161A5F3D95EC}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_EngineFactoryWebGPU =
+static constexpr INTERFACE_ID IID_EngineFactoryWebGPU =
     {0xCF7F4278, 0x4EA7, 0x491A, {0x85, 0x75, 0x16, 0x1A, 0x5F, 0x3D, 0x95, 0xEC}};
 
-#define DILIGENT_INTERFACE_NAME IEngineFactoryWebGPU
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IEngineFactoryWebGPUInclusiveMethods \
@@ -75,10 +74,10 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryWebGPU, IEngineFactory)
     ///                           the contexts will be written. Immediate context goes at
     ///                           position 0. If EngineCI.NumDeferredContexts > 0,
     ///                           pointers to deferred contexts are written afterwards.
-    VIRTUAL void METHOD(CreateDeviceAndContextsWebGPU)(THIS_
-                                                      const EngineWebGPUCreateInfo REF EngineCI,
+    virtual void METHOD(CreateDeviceAndContextsWebGPU)(
+                                                      const EngineWebGPUCreateInfo  & EngineCI,
                                                       IRenderDevice**                    ppDevice,
-                                                      IDeviceContext**                   ppContexts) PURE;
+                                                      IDeviceContext**                   ppContexts) =0;
 
     /// Creates a swap chain for WebGPU-based engine implementation.
 
@@ -93,12 +92,12 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryWebGPU, IEngineFactory)
     ///
     /// \param [out] ppSwapChain    - Address of the memory location where pointer to the new
     ///                               swap chain will be written.
-    VIRTUAL void METHOD(CreateSwapChainWebGPU)(THIS_
+    virtual void METHOD(CreateSwapChainWebGPU)(
                                               IRenderDevice*               pDevice,
                                               IDeviceContext*              pImmediateContext,
-                                              const SwapChainDesc REF      SCDesc,
-                                              const NativeWindow REF       Window,
-                                              ISwapChain**                 ppSwapChain) PURE;
+                                              const SwapChainDesc  &      SCDesc,
+                                              const NativeWindow  &       Window,
+                                              ISwapChain**                 ppSwapChain) =0;
 
     /// Attaches to existing WebGPU render device, adapter and instance.
 
@@ -112,20 +111,20 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryWebGPU, IEngineFactory)
     ///                           the contexts will be written. Immediate context goes at
     ///                           position 0. If EngineCI.NumDeferredContexts > 0,
     ///                           pointers to the deferred contexts are written afterwards.
-    VIRTUAL void METHOD(AttachToWebGPUDevice)(THIS_ 
+    virtual void METHOD(AttachToWebGPUDevice)(
                                               void*                            wgpuInstance,
                                               void*                            wgpuAdapter,
                                               void*                            wgpuDevice,
-                                              const EngineWebGPUCreateInfo REF EngineCI,
+                                              const EngineWebGPUCreateInfo  & EngineCI,
                                               IRenderDevice**                  ppDevice,
-                                              IDeviceContext**                 ppContexts) PURE;
+                                              IDeviceContext**                 ppContexts) =0;
 
     /// Return the pointer to DawnProcTable
-    VIRTUAL CONST void* METHOD(GetProcessTable)(THIS) CONST PURE;
+    virtual const void* METHOD(GetProcessTable)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -176,4 +175,4 @@ inline struct IEngineFactoryWebGPU* DILIGENT_GLOBAL_FUNCTION(LoadAndGetEngineFac
     return GetFactoryFunc();
 }
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

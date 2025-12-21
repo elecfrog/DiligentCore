@@ -29,13 +29,12 @@
 
 #include "../../GraphicsEngine/interface/Shader.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {07182C29-CC3B-43B2-99D8-A77F6FECBA82}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderMtl =
+static constexpr INTERFACE_ID IID_ShaderMtl =
     {0x7182c29, 0xcc3b, 0x43b2, {0x99, 0xd8, 0xa7, 0x7f, 0x6f, 0xec, 0xba, 0x82}};
 
-#define DILIGENT_INTERFACE_NAME IShaderMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IShaderMtlInclusiveMethods \
@@ -53,11 +52,11 @@ DILIGENT_BEGIN_INTERFACE(IShaderMtl, IShader)
     ///          match the signatures.
     ///          This method returns a pointer the shader function compiled before
     ///          any remapping has been applied.
-    VIRTUAL id<MTLFunction> METHOD(GetMtlShaderFunction)(THIS) CONST PURE;
+    virtual id<MTLFunction> METHOD(GetMtlShaderFunction)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -66,4 +65,4 @@ DILIGENT_END_INTERFACE
 #endif
 
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

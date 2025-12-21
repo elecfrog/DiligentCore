@@ -157,7 +157,7 @@ public:
     ShaderVariableD3D12Impl& operator= (      ShaderVariableD3D12Impl&&) = delete;
     // clang-format on
 
-    virtual void DILIGENT_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final
+    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final
     {
         if (ppInterface == nullptr)
             return;
@@ -172,12 +172,12 @@ public:
 
     using IObject::QueryInterface;
 
-    virtual IDeviceObject* DILIGENT_CALL_TYPE Get(UInt32 ArrayIndex) const override final
+    virtual IDeviceObject* CALLTYPE Get(UInt32 ArrayIndex) const override final
     {
         return m_ParentManager.Get(ArrayIndex, m_ResIndex);
     }
 
-    virtual void DILIGENT_CALL_TYPE GetHLSLResourceDesc(HLSLShaderResourceDesc& HLSLResDesc) const override final
+    virtual void CALLTYPE GetHLSLResourceDesc(HLSLShaderResourceDesc& HLSLResDesc) const override final
     {
         GetResourceDesc(HLSLResDesc);
         HLSLResDesc.ShaderRegister = GetAttribs().Register;

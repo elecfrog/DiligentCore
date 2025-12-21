@@ -58,16 +58,16 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DataBlob, TBase);
 
     /// Sets the size of the internal data buffer
-    virtual void DILIGENT_CALL_TYPE Resize(size_t NewSize) override;
+    virtual void CALLTYPE Resize(size_t NewSize) override;
 
     /// Returns the size of the internal data buffer
-    virtual size_t DILIGENT_CALL_TYPE GetSize() const override;
+    virtual size_t CALLTYPE GetSize() const override;
 
     /// Returns the pointer to the internal data buffer
-    virtual void* DILIGENT_CALL_TYPE GetDataPtr(size_t Offset = 0) override;
+    virtual void* CALLTYPE GetDataPtr(size_t Offset = 0) override;
 
     /// Returns const pointer to the internal data buffer
-    virtual const void* DILIGENT_CALL_TYPE GetConstDataPtr(size_t Offset = 0) const override;
+    virtual const void* CALLTYPE GetConstDataPtr(size_t Offset = 0) const override;
 
     template <typename T>
     T* GetDataPtr(size_t Offset = 0)

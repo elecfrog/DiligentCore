@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/BufferView.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {09643F2F-40D4-4076-B086-9E5CDC2CC4FC}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferViewD3D12 =
+static constexpr INTERFACE_ID IID_BufferViewD3D12 =
     {0x9643f2f, 0x40d4, 0x4076, {0xb0, 0x86, 0x9e, 0x5c, 0xdc, 0x2c, 0xc4, 0xfc}};
 
-#define DILIGENT_INTERFACE_NAME IBufferViewD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBufferViewD3D12InclusiveMethods \
@@ -49,11 +48,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferViewD3D12 =
 DILIGENT_BEGIN_INTERFACE(IBufferViewD3D12, IBufferView)
 {
     /// Returns CPU descriptor handle of the buffer view.
-    VIRTUAL D3D12_CPU_DESCRIPTOR_HANDLE METHOD(GetCPUDescriptorHandle)(THIS) PURE;
+    virtual D3D12_CPU_DESCRIPTOR_HANDLE METHOD(GetCPUDescriptorHandle)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -61,4 +60,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

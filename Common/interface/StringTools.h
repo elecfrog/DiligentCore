@@ -39,7 +39,7 @@ inline int strcpy_s(char* dest, size_t destsz, const char* src)
 }
 #endif
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 inline bool IsNum(char c)
 {
@@ -76,4 +76,4 @@ inline const char* GetOrdinalNumberSuffix(unsigned int Num)
     }
 }
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

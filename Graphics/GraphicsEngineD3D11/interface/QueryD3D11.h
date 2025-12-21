@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/Query.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {77D95EAA-D16E-43F4-B0EB-BEBCD2EC8C57}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_QueryD3D11 =
+static constexpr struct INTERFACE_ID IID_QueryD3D11 =
     {0x77d95eaa, 0xd16e, 0x43f4, {0xb0, 0xeb, 0xbe, 0xbc, 0xd2, 0xec, 0x8c, 0x57}};
 
-#define DILIGENT_INTERFACE_NAME IQueryD3D11
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IQueryD3D11InclusiveMethods \
@@ -56,14 +55,14 @@ DILIGENT_BEGIN_INTERFACE(IQueryD3D11, IQuery)
     ///                       Diligent::QUERY_TYPE_DURATION, in which case allowed values are 0 for the
     ///                       beginning timestamp query, and 1 for the ending query.
     /// \return               A pointer to the `ID3D11Query` object.
-    VIRTUAL ID3D11Query* METHOD(GetD3D11Query)(THIS_
-                                               UInt32 QueryId) PURE;
+    virtual ID3D11Query* METHOD(GetD3D11Query)(
+                                               UInt32 QueryId) =0;
 };
-DILIGENT_END_INTERFACE
+
 
 // clang-format on
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -71,4 +70,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

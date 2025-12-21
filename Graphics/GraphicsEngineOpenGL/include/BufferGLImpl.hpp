@@ -77,13 +77,13 @@ public:
     const GLObjectWrappers::GLBufferObj& GetGLHandle() const { return m_GlBuffer; }
 
     /// Implementation of IBufferGL::GetGLBufferHandle().
-    virtual GLuint DILIGENT_CALL_TYPE GetGLBufferHandle() const override final { return GetGLHandle(); }
+    virtual GLuint CALLTYPE GetGLBufferHandle() const override final { return GetGLHandle(); }
 
     /// Implementation of IBuffer::GetNativeHandle() in OpenGL backend.
-    virtual UInt64 DILIGENT_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetGLBufferHandle()); }
+    virtual UInt64 CALLTYPE GetNativeHandle() override final { return BitCast<UInt64>(GetGLBufferHandle()); }
 
     /// Implementation of IBuffer::GetSparseProperties().
-    virtual SparseBufferProperties DILIGENT_CALL_TYPE GetSparseProperties() const override final;
+    virtual SparseBufferProperties CALLTYPE GetSparseProperties() const override final;
 
 private:
     virtual void CreateViewInternal(const struct BufferViewDesc& ViewDesc, IBufferView** ppView, bool bIsDefaultView) override;

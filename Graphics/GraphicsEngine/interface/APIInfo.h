@@ -34,7 +34,7 @@
 
 #include "../../../Primitives/interface/CommonDefinitions.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 /// Diligent API Info. This structure can be used to verify API compatibility.
 struct APIInfo
@@ -105,4 +105,4 @@ struct APIInfo
 };
 typedef struct APIInfo APIInfo;
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

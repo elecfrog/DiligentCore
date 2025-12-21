@@ -52,7 +52,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_SamplerWebGPU, TSamplerBase)
 
     /// Implementation of ISamplerWebGPU::GetWebGPUSampler().
-    WGPUSampler DILIGENT_CALL_TYPE GetWebGPUSampler() const override final;
+    WGPUSampler CALLTYPE GetWebGPUSampler() const override final;
 
 private:
     mutable WebGPUSamplerWrapper m_wgpuSampler;

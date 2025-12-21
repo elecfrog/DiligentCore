@@ -34,14 +34,13 @@
 #include "TextureView.h"
 #include "GraphicsTypes.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 // {1C703B77-6607-4EEC-B1FE-15C82D3B4130}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_SwapChain =
+static constexpr INTERFACE_ID IID_SwapChain =
     {0x1c703b77, 0x6607, 0x4eec, {0xb1, 0xfe, 0x15, 0xc8, 0x2d, 0x3b, 0x41, 0x30}};
 
-#define DILIGENT_INTERFACE_NAME ISwapChain
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ISwapChainInclusiveMethods \
@@ -53,14 +52,14 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_SwapChain =
 /// Swap chain interface
 
 /// The swap chain is created by a platform-dependent function
-DILIGENT_BEGIN_INTERFACE(ISwapChain, IObject)
+struct ISwapChain : public IObject
 {
     /// Presents a rendered image to the user
-    VIRTUAL void METHOD(Present)(THIS_
-                                 UInt32 SyncInterval DEFAULT_VALUE(1)) PURE;
+    virtual void METHOD(Present)(
+                                 UInt32 SyncInterval DEFAULT_VALUE(1)) =0;
 
     /// Returns the swap chain description
-    VIRTUAL const SwapChainDesc REF METHOD(GetDesc)(THIS) CONST PURE;
+    virtual const SwapChainDesc  & METHOD(GetDesc)( ) const =0;
 
     /// Changes the swap chain size
 
@@ -78,16 +77,16 @@ DILIGENT_BEGIN_INTERFACE(ISwapChain, IObject)
     /// the most optimal pre-transform. However Diligent::SURFACE_TRANSFORM_ROTATE_90 will also work in
     /// the scenario above. After the swap chain has been resized, its actual width will be 1080,
     /// actual height will be 1920, and `PreTransform` will be Diligent::SURFACE_TRANSFORM_ROTATE_90.
-    VIRTUAL void METHOD(Resize)(THIS_
+    virtual void METHOD(Resize)(
                                 UInt32            NewWidth,
                                 UInt32            NewHeight,
-                                SURFACE_TRANSFORM NewTransform DEFAULT_VALUE(SURFACE_TRANSFORM_OPTIMAL)) PURE;
+                                SURFACE_TRANSFORM NewTransform DEFAULT_VALUE(SURFACE_TRANSFORM_OPTIMAL)) =0;
 
     /// Sets fullscreen mode (only supported on Win32 platform)
-    VIRTUAL void METHOD(SetFullscreenMode)(THIS_ const DisplayModeAttribs REF DisplayMode) PURE;
+    virtual void METHOD(SetFullscreenMode)(  const DisplayModeAttribs  & DisplayMode) =0;
 
     /// Sets windowed mode (only supported on Win32 platform)
-    VIRTUAL void METHOD(SetWindowedMode)(THIS) PURE;
+    virtual void METHOD(SetWindowedMode)( ) =0;
 
     /// Sets the maximum number of frames that the swap chain is allowed to queue for rendering.
 
@@ -96,8 +95,8 @@ DILIGENT_BEGIN_INTERFACE(ISwapChain, IObject)
     /// swap chain, the CPU can enqueue frames 0 and 1, but Present command of frame 2
     /// will block until frame 0 is presented. If in the example above the maximum frame latency is set
     /// to 1, then Present command of frame 1 will block until Present of frame 0 is complete.
-    VIRTUAL void METHOD(SetMaximumFrameLatency)(THIS_
-                                                UInt32 MaxLatency) PURE;
+    virtual void METHOD(SetMaximumFrameLatency)(
+                                                UInt32 MaxLatency) =0;
 
     /// Returns render target view of the current back buffer in the swap chain
 
@@ -109,17 +108,17 @@ DILIGENT_BEGIN_INTERFACE(ISwapChain, IObject)
     ///
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ITextureView* METHOD(GetCurrentBackBufferRTV)(THIS) PURE;
+    virtual ITextureView* METHOD(GetCurrentBackBufferRTV)( ) =0;
 
     /// Returns depth-stencil view of the depth buffer
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ITextureView* METHOD(GetDepthBufferDSV)(THIS) PURE;
+    virtual ITextureView* METHOD(GetDepthBufferDSV)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -138,4 +137,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

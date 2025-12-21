@@ -33,13 +33,12 @@
 #include "../../GraphicsEngine/interface/SwapChain.h"
 #include "TextureViewD3D11.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {4DAF2E76-9204-4DC4-A53A-B00097412D3A}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_SwapChainD3D11 =
+static constexpr struct INTERFACE_ID IID_SwapChainD3D11 =
     {0x4daf2e76, 0x9204, 0x4dc4, {0xa5, 0x3a, 0xb0, 0x0, 0x97, 0x41, 0x2d, 0x3a}};
 
-#define DILIGENT_INTERFACE_NAME ISwapChainD3D11
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ISwapChainD3D11InclusiveMethods \
@@ -50,20 +49,20 @@ static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_SwapChainD3D11 =
 DILIGENT_BEGIN_INTERFACE(ISwapChainD3D11, ISwapChain)
 {
     /// Returns render target view of the back buffer in the swap chain
-    VIRTUAL struct ITextureViewD3D11* METHOD(GetCurrentBackBufferRTV)(THIS) PURE;
+    virtual struct ITextureViewD3D11* METHOD(GetCurrentBackBufferRTV)( ) =0;
 
     /// Returns depth-stencil view of the depth buffer
-    VIRTUAL struct ITextureViewD3D11* METHOD(GetDepthBufferDSV)(THIS) PURE;
+    virtual struct ITextureViewD3D11* METHOD(GetDepthBufferDSV)( ) =0;
 
     /// Returns a pointer to the `IDXGISwapChain` interface of the internal DXGI object.
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL IDXGISwapChain* METHOD(GetDXGISwapChain)(THIS) PURE;
+    virtual IDXGISwapChain* METHOD(GetDXGISwapChain)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -77,4 +76,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

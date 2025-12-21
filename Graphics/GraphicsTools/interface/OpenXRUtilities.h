@@ -35,9 +35,9 @@
 
 #include <openxr/openxr.h>
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
-#include "../../../Primitives/interface/DefineRefMacro.h"
+
 
 /// Prepares OpenXR graphics binding for the specified device and context.
 
@@ -118,9 +118,9 @@ void DILIGENT_GLOBAL_FUNCTION(AllocateOpenXRSwapchainImageData)(RENDER_DEVICE_TY
 void DILIGENT_GLOBAL_FUNCTION(GetOpenXRSwapchainImage)(IRenderDevice*                    pDevice,
                                                        const XrSwapchainImageBaseHeader* ImageData,
                                                        UInt32                            ImageIndex,
-                                                       const TextureDesc REF             TexDesc,
+                                                       const TextureDesc  &             TexDesc,
                                                        ITexture**                        ppImage);
 
-#include "../../../Primitives/interface/UndefRefMacro.h"
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+
+ } // namespace Diligent

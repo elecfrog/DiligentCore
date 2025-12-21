@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/Shader.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {2FF3C191-285B-4E6C-BD0B-D084DDEA6FCC}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderGL =
+static constexpr INTERFACE_ID IID_ShaderGL =
     {0x2ff3c191, 0x285b, 0x4e6c, {0xbd, 0xb, 0xd0, 0x84, 0xdd, 0xea, 0x6f, 0xcc}};
 
-#define DILIGENT_INTERFACE_NAME IShaderGL
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IShaderGLInclusiveMethods \
@@ -49,11 +48,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderGL =
 DILIGENT_BEGIN_INTERFACE(IShaderGL, IShader)
 {
     /// Returns OpenGL shader object handle.
-    VIRTUAL GLuint METHOD(GetGLShaderHandle)(THIS) CONST PURE;
+    virtual GLuint METHOD(GetGLShaderHandle)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -65,4 +64,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

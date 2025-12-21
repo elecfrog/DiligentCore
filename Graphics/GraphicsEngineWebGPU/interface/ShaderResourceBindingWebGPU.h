@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/ShaderResourceBinding.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {64874700-91F7-4262-A71D-40EC495A1716}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderResourceBindingWebGPU =
+static constexpr INTERFACE_ID IID_ShaderResourceBindingWebGPU =
     {0x64874700, 0x91F7, 0x4262, {0xA7, 0x1D, 0x40, 0xEC, 0x49, 0x5A, 0x17, 0x16}};
 
-#define DILIGENT_INTERFACE_NAME IShaderResourceBindingWebGPU
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IShaderResourceBindingWebGPUInclusiveMethods \
@@ -48,11 +47,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderResourceBindingWebGPU =
 
 /// Exposes WebGPU-specific functionality of a shader resource binding object.
 DILIGENT_BEGIN_INTERFACE(IShaderResourceBindingWebGPU, IShaderResourceBinding){};
-DILIGENT_END_INTERFACE
+
 
 #endif
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -63,4 +62,4 @@ typedef struct IShaderResourceBindingWebGPUVtbl
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

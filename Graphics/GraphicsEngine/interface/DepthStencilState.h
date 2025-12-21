@@ -34,7 +34,7 @@
 
 #include "GraphicsTypes.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 /// Stencil operation
@@ -238,4 +238,4 @@ struct DepthStencilStateDesc
 };
 typedef struct DepthStencilStateDesc DepthStencilStateDesc;
 
-DILIGENT_END_NAMESPACE
+ }

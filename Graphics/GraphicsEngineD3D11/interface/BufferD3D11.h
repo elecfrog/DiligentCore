@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/Buffer.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {4A696D2E-44BB-4C4B-9DE2-3AF7C94DCFC0}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_BufferD3D11 =
+static constexpr struct INTERFACE_ID IID_BufferD3D11 =
     {0x4a696d2e, 0x44bb, 0x4c4b, {0x9d, 0xe2, 0x3a, 0xf7, 0xc9, 0x4d, 0xcf, 0xc0}};
 
-#define DILIGENT_INTERFACE_NAME IBufferD3D11
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBufferD3D11InclusiveMethods \
@@ -46,17 +45,17 @@ static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_BufferD3D11 =
     IBufferD3D11Methods BufferD3D11
 
 /// Exposes Direct3D11-specific functionality of a buffer object.
-DILIGENT_BEGIN_INTERFACE(IBufferD3D11, IBuffer)
+struct IBufferD3D11 : public IBuffer
 {
     /// Returns a pointer to the `ID3D11Buffer` interface of the internal Direct3D11 object.
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D11Buffer* METHOD(GetD3D11Buffer)(THIS) CONST PURE;
+    virtual ID3D11Buffer* METHOD(GetD3D11Buffer)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -64,4 +63,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

@@ -36,11 +36,11 @@
 #include "DeviceObject.h"
 #include "Shader.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 // {0D57DF3F-977D-4C8F-B64C-6675814BC80C}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderResourceVariable =
+static constexpr INTERFACE_ID IID_ShaderResourceVariable =
     {0xd57df3f, 0x977d, 0x4c8f, {0xb6, 0x4c, 0x66, 0x75, 0x81, 0x4b, 0xc8, 0xc}};
 
 // clang-format off
@@ -162,7 +162,6 @@ DEFINE_FLAG_ENUM_OPERATORS(SET_SHADER_RESOURCE_FLAGS);
 
 // clang-format on
 
-#define DILIGENT_INTERFACE_NAME IShaderResourceVariable
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IShaderResourceVariableInclusiveMethods \
@@ -172,16 +171,16 @@ DEFINE_FLAG_ENUM_OPERATORS(SET_SHADER_RESOURCE_FLAGS);
 // clang-format off
 
 /// Shader resource variable
-DILIGENT_BEGIN_INTERFACE(IShaderResourceVariable, IObject)
+struct IShaderResourceVariable : public IObject
 {
     /// Binds resource to the variable
 
     /// The method performs run-time correctness checks.
     /// For instance, shader resource view cannot
     /// be assigned to a constant buffer variable.
-    VIRTUAL void METHOD(Set)(THIS_
+    virtual void METHOD(Set)(
                              IDeviceObject*            pObject,
-                             SET_SHADER_RESOURCE_FLAGS Flags DEFAULT_VALUE(SET_SHADER_RESOURCE_FLAG_NONE)) PURE;
+                             SET_SHADER_RESOURCE_FLAGS Flags DEFAULT_VALUE(SET_SHADER_RESOURCE_FLAG_NONE)) =0;
 
     /// Binds resource array to the variable
 
@@ -193,11 +192,11 @@ DILIGENT_BEGIN_INTERFACE(IShaderResourceVariable, IObject)
     /// The method performs run-time correctness checks.
     /// For instance, shader resource view cannot
     /// be assigned to a constant buffer variable.
-    VIRTUAL void METHOD(SetArray)(THIS_
+    virtual void METHOD(SetArray)(
                                   IDeviceObject* const*     ppObjects,
                                   UInt32                    FirstElement,
                                   UInt32                    NumElements,
-                                  SET_SHADER_RESOURCE_FLAGS Flags DEFAULT_VALUE(SET_SHADER_RESOURCE_FLAG_NONE)) PURE;
+                                  SET_SHADER_RESOURCE_FLAGS Flags DEFAULT_VALUE(SET_SHADER_RESOURCE_FLAG_NONE)) =0;
 
     /// Binds the specified constant buffer range to the variable
 
@@ -214,12 +213,12 @@ DILIGENT_BEGIN_INTERFACE(IShaderResourceVariable, IObject)
     ///
     /// \warning The Offset must be an integer multiple of ConstantBufferOffsetAlignment member
     ///          specified by the device limits (see Diligent::DeviceLimits).
-    VIRTUAL void METHOD(SetBufferRange)(THIS_
+    virtual void METHOD(SetBufferRange)(
                                         IDeviceObject*            pObject,
                                         UInt64                    Offset,
                                         UInt64                    Size,
                                         UInt32                    ArrayIndex DEFAULT_VALUE(0),
-                                        SET_SHADER_RESOURCE_FLAGS Flags      DEFAULT_VALUE(SET_SHADER_RESOURCE_FLAG_NONE)) PURE;
+                                        SET_SHADER_RESOURCE_FLAGS Flags      DEFAULT_VALUE(SET_SHADER_RESOURCE_FLAG_NONE)) =0;
 
 
     /// Sets the constant or structured buffer dynamic offset
@@ -245,34 +244,34 @@ DILIGENT_BEGIN_INTERFACE(IShaderResourceVariable, IObject)
     /// Changing the buffer offset does not require committing the SRB.
     /// From the engine point of view, buffers with dynamic offsets are treated similar to dynamic
     /// buffers, and thus affected by Diligent::DRAW_FLAG_DYNAMIC_RESOURCE_BUFFERS_INTACT flag.
-    VIRTUAL void METHOD(SetBufferOffset)(THIS_
+    virtual void METHOD(SetBufferOffset)(
                                          UInt32 Offset,
-                                         UInt32 ArrayIndex DEFAULT_VALUE(0)) PURE;
+                                         UInt32 ArrayIndex DEFAULT_VALUE(0)) =0;
 
 
     /// Returns the shader resource variable type
-    VIRTUAL SHADER_RESOURCE_VARIABLE_TYPE METHOD(GetType)(THIS) CONST PURE;
+    virtual SHADER_RESOURCE_VARIABLE_TYPE METHOD(GetType)( ) const =0;
 
 
     /// Returns shader resource description. See Diligent::ShaderResourceDesc.
-    VIRTUAL void METHOD(GetResourceDesc)(THIS_
-                                         ShaderResourceDesc REF ResourceDesc) CONST PURE;
+    virtual void METHOD(GetResourceDesc)(
+                                         ShaderResourceDesc  & ResourceDesc) const =0;
 
 
     /// Returns the variable index that can be used to access the variable.
-    VIRTUAL UInt32 METHOD(GetIndex)(THIS) CONST PURE;
+    virtual UInt32 METHOD(GetIndex)( ) const =0;
 
 
     /// Returns a pointer to the resource that is bound to this variable.
 
     /// \param [in] ArrayIndex - Resource array index. Must be 0 for
     ///                          non-array variables.
-    VIRTUAL IDeviceObject* METHOD(Get)(THIS_
-                                       UInt32 ArrayIndex DEFAULT_VALUE(0)) CONST PURE;
+    virtual IDeviceObject* METHOD(Get)(
+                                       UInt32 ArrayIndex DEFAULT_VALUE(0)) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -291,4 +290,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

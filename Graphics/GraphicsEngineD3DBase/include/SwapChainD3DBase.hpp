@@ -305,7 +305,7 @@ protected:
         }
     }
 
-    virtual void DILIGENT_CALL_TYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final
+    virtual void CALLTYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final
     {
         if (m_pSwapChain)
         {
@@ -327,7 +327,7 @@ protected:
         }
     }
 
-    virtual void DILIGENT_CALL_TYPE SetWindowedMode() override final
+    virtual void CALLTYPE SetWindowedMode() override final
     {
         if (m_FSDesc.Fullscreen)
         {
@@ -336,7 +336,7 @@ protected:
         }
     }
 
-    virtual void DILIGENT_CALL_TYPE SetMaximumFrameLatency(UInt32 MaxLatency) override final
+    virtual void CALLTYPE SetMaximumFrameLatency(UInt32 MaxLatency) override final
     {
         if (m_MaxFrameLatency == MaxLatency)
             return;

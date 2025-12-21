@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/Texture.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {A362522B-F9F8-4A5A-967F-DAB2EE2F9C26}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureWebGPU =
+static constexpr INTERFACE_ID IID_TextureWebGPU =
     {0xA362522B, 0xF9F8, 0x4A5A, {0x96, 0x7F, 0xDA, 0xB2, 0xEE, 0x2F, 0x9C, 0x26}};
 
-#define DILIGENT_INTERFACE_NAME ITextureWebGPU
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITextureWebGPUInclusiveMethods \
@@ -52,12 +51,12 @@ DILIGENT_BEGIN_INTERFACE(ITextureWebGPU, ITexture)
     /// Returns WebGPU texture handle.
 
     /// The application must not destroy the returned texture
-    VIRTUAL WGPUTexture METHOD(GetWebGPUTexture)(THIS) CONST PURE;
+    virtual WGPUTexture METHOD(GetWebGPUTexture)( ) const =0;
 
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -69,4 +68,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

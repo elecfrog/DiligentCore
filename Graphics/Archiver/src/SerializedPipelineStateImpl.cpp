@@ -455,7 +455,7 @@ void SerializedPipelineStateImpl::SerializeShaderCreateInfo(DeviceType          
     m_Data.Shaders[static_cast<size_t>(Type)].emplace_back(std::move(ShaderData));
 }
 
-UInt32 DILIGENT_CALL_TYPE SerializedPipelineStateImpl::GetPatchedShaderCount(ARCHIVE_DEVICE_DATA_FLAGS DeviceType) const
+UInt32 CALLTYPE SerializedPipelineStateImpl::GetPatchedShaderCount(ARCHIVE_DEVICE_DATA_FLAGS DeviceType) const
 {
     DEV_CHECK_ERR(m_Status.load() == PIPELINE_STATE_STATUS_READY, "Pipeline state '", m_Desc.Name, "' is not ready. Use GetStatus() to check the pipeline state status.");
     DEV_CHECK_ERR(IsPowerOfTwo(DeviceType), "Only single device data flag is expected");
@@ -464,7 +464,7 @@ UInt32 DILIGENT_CALL_TYPE SerializedPipelineStateImpl::GetPatchedShaderCount(ARC
     return StaticCast<UInt32>(Shaders.size());
 }
 
-ShaderCreateInfo DILIGENT_CALL_TYPE SerializedPipelineStateImpl::GetPatchedShaderCreateInfo(
+ShaderCreateInfo CALLTYPE SerializedPipelineStateImpl::GetPatchedShaderCreateInfo(
     ARCHIVE_DEVICE_DATA_FLAGS DeviceType,
     UInt32                    ShaderIndex) const
 {

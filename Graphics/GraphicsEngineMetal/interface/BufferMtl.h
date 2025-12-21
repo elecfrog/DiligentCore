@@ -29,13 +29,12 @@
 
 #include "../../GraphicsEngine/interface/Buffer.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {F8A1A3AC-923A-419D-AB9D-FE9E35DC654B}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferMtl =
+static constexpr INTERFACE_ID IID_BufferMtl =
     {0xf8a1a3ac, 0x923a, 0x419d, {0xab, 0x9d, 0xfe, 0x9e, 0x35, 0xdc, 0x65, 0x4b}};
 
-#define DILIGENT_INTERFACE_NAME IBufferMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBufferMtlInclusiveMethods \
@@ -48,11 +47,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferMtl =
 DILIGENT_BEGIN_INTERFACE(IBufferMtl, IBuffer)
 {
     /// Returns a pointer to a Metal buffer object.
-    VIRTUAL id<MTLBuffer> METHOD(GetMtlResource)(THIS) CONST PURE;
+    virtual id<MTLBuffer> METHOD(GetMtlResource)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -60,4 +59,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

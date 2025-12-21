@@ -59,11 +59,11 @@
 #include "DeviceMemory.h"
 #include "CommandQueue.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 // {DC92711B-A1BE-4319-B2BD-C662D1CC19E4}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_DeviceContext =
+static constexpr INTERFACE_ID IID_DeviceContext =
     {0xdc92711b, 0xa1be, 0x4319, {0xb2, 0xbd, 0xc6, 0x62, 0xd1, 0xcc, 0x19, 0xe4}};
 
 /// Device context description.
@@ -1509,7 +1509,7 @@ typedef struct BuildBLASAttribs BuildBLASAttribs;
 
 #define DILIGENT_TLAS_INSTANCE_OFFSET_AUTO 0xFFFFFFFFU
 
-static DILIGENT_CONSTEXPR UInt32 TLAS_INSTANCE_OFFSET_AUTO = DILIGENT_TLAS_INSTANCE_OFFSET_AUTO;
+static constexpr UInt32 TLAS_INSTANCE_OFFSET_AUTO = DILIGENT_TLAS_INSTANCE_OFFSET_AUTO;
 
 
 /// Row-major 4x3 matrix
@@ -1614,7 +1614,7 @@ typedef struct TLASBuildInstanceData TLASBuildInstanceData;
 /// Used to calculate size of BuildTLASAttribs::pInstanceBuffer.
 #define DILIGENT_TLAS_INSTANCE_DATA_SIZE 64
 
-static DILIGENT_CONSTEXPR UInt32 TLAS_INSTANCE_DATA_SIZE = DILIGENT_TLAS_INSTANCE_DATA_SIZE;
+static constexpr UInt32 TLAS_INSTANCE_DATA_SIZE = DILIGENT_TLAS_INSTANCE_DATA_SIZE;
 
 
 /// This structure is used by IDeviceContext::BuildTLAS().
@@ -2180,8 +2180,8 @@ typedef struct BindSparseResourceMemoryAttribs BindSparseResourceMemoryAttribs;
 /// Special constant for all remaining array slices.
 #define DILIGENT_REMAINING_ARRAY_SLICES 0xFFFFFFFFU
 
-static DILIGENT_CONSTEXPR UInt32 REMAINING_MIP_LEVELS   = DILIGENT_REMAINING_MIP_LEVELS;
-static DILIGENT_CONSTEXPR UInt32 REMAINING_ARRAY_SLICES = DILIGENT_REMAINING_ARRAY_SLICES;
+static constexpr UInt32 REMAINING_MIP_LEVELS   = DILIGENT_REMAINING_MIP_LEVELS;
+static constexpr UInt32 REMAINING_ARRAY_SLICES = DILIGENT_REMAINING_ARRAY_SLICES;
 
 /// Resource state transition flags.
 DILIGENT_TYPED_ENUM(STATE_TRANSITION_FLAGS, UInt8)
@@ -2510,7 +2510,6 @@ struct DeviceContextStats
 typedef struct DeviceContextStats DeviceContextStats;
 
 
-#define DILIGENT_INTERFACE_NAME IDeviceContext
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IDeviceContextInclusiveMethods  \
@@ -2523,10 +2522,10 @@ typedef struct DeviceContextStats DeviceContextStats;
 ///          the pipeline: buffers, states, samplers, shaders, etc.
 ///          The context also keeps strong reference to the device and
 ///          the swap chain.
-DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
+struct IDeviceContext : public IObject
 {
     /// Returns the context description
-    VIRTUAL const DeviceContextDesc REF METHOD(GetDesc)(THIS) CONST PURE;
+    virtual const DeviceContextDesc  & METHOD(GetDesc)( ) const =0;
 
     /// Begins recording commands in the deferred context.
 
@@ -2538,8 +2537,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///
     /// \warning Command list recorded by the context must not be submitted to any other immediate context
     ///          other than one identified by ImmediateContextId.
-    VIRTUAL void METHOD(Begin)(THIS_
-                               UInt32 ImmediateContextId) PURE;
+    virtual void METHOD(Begin)(
+                               UInt32 ImmediateContextId) =0;
 
     /// Sets the pipeline state.
 
@@ -2548,8 +2547,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \remarks
     ///     * Supported contexts for graphics and mesh pipeline:        graphics.
     ///     * Supported contexts for compute and ray tracing pipeline:  graphics and compute.
-    VIRTUAL void METHOD(SetPipelineState)(THIS_
-                                          IPipelineState* pPipelineState) PURE;
+    virtual void METHOD(SetPipelineState)(
+                                          IPipelineState* pPipelineState) =0;
 
 
     /// Transitions shader resources to the states required by Draw or Dispatch command.
@@ -2566,8 +2565,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///          write these states.\n
     ///          If the application intends to use the same resources in other threads simultaneously, it needs to
     ///          explicitly manage the states using TransitionResourceStates() method.
-    VIRTUAL void METHOD(TransitionShaderResources)(THIS_
-                                                   IShaderResourceBinding* pShaderResourceBinding) PURE;
+    virtual void METHOD(TransitionShaderResources)(
+                                                   IShaderResourceBinding* pShaderResourceBinding) =0;
 
     /// Commits shader resources to the device context.
 
@@ -2601,17 +2600,17 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// If an application calls any method that changes the state of any resource after it has been committed, the
     /// application is responsible for transitioning the resource back to correct state using one of the available methods
     /// before issuing the next draw or dispatch command.
-    VIRTUAL void METHOD(CommitShaderResources)(THIS_
+    virtual void METHOD(CommitShaderResources)(
                                                IShaderResourceBinding*        pShaderResourceBinding,
-                                               RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) PURE;
+                                               RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) =0;
 
     /// Sets the stencil reference value.
 
     /// \param [in] StencilRef - Stencil reference value.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(SetStencilRef)(THIS_
-                                       UInt32 StencilRef) PURE;
+    virtual void METHOD(SetStencilRef)(
+                                       UInt32 StencilRef) =0;
 
 
     /// Sets the blend factors for alpha blending.
@@ -2624,8 +2623,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///                             default blend factors array `{1, 1, 1, 1}` will be used.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(SetBlendFactors)(THIS_
-                                         const float* pBlendFactors DEFAULT_VALUE(nullptr)) PURE;
+    virtual void METHOD(SetBlendFactors)(
+                                         const float* pBlendFactors DEFAULT_VALUE(nullptr)) =0;
 
 
     /// Binds vertex buffers to the pipeline.
@@ -2658,7 +2657,7 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// explicitly manage the states using TransitionResourceStates() method.
     ///
     /// \remarks Supported contexts: graphics.
-    virtual void DILIGENT_CALL_TYPE SetVertexBuffers(UInt32 StartSlot,
+    virtual void CALLTYPE SetVertexBuffers(UInt32 StartSlot,
                                                      UInt32                         NumBuffersSet,
                                                      IBuffer* const*                ppBuffers,
                                                      const UInt64*                  pOffsets,
@@ -2670,7 +2669,7 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
 
     /// This method should be called by an application to invalidate
     /// internal cached states.
-    VIRTUAL void METHOD(InvalidateState)(THIS) PURE;
+    virtual void METHOD(InvalidateState)( ) =0;
 
 
     /// Binds an index buffer to the pipeline.
@@ -2694,10 +2693,10 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// explicitly manage the states using TransitionResourceStates() method.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(SetIndexBuffer)(THIS_
+    virtual void METHOD(SetIndexBuffer)(
                                         IBuffer*                       pIndexBuffer,
                                         UInt64                         ByteOffset,
-                                        RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) PURE;
+                                        RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) =0;
 
 
     /// Sets an array of viewports.
@@ -2719,11 +2718,11 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///     pContext->SetViewports(1, nullptr, 0, 0);
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(SetViewports)(THIS_
+    virtual void METHOD(SetViewports)(
                                       UInt32          NumViewports,
                                       const Viewport* pViewports,
                                       UInt32          RTWidth,
-                                      UInt32          RTHeight) PURE;
+                                      UInt32          RTHeight) =0;
 
 
     /// Sets active scissor rects.
@@ -2743,11 +2742,11 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// defined by the call are disabled.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(SetScissorRects)(THIS_
+    virtual void METHOD(SetScissorRects)(
                                          UInt32      NumRects,
                                          const Rect* pRects,
                                          UInt32      RTWidth,
-                                         UInt32      RTHeight) PURE;
+                                         UInt32      RTHeight) =0;
 
 
     /// Binds one or more render targets and the depth-stencil buffer to the context. It also
@@ -2778,11 +2777,11 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// explicitly manage the states using TransitionResourceStates() method.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(SetRenderTargets)(THIS_
+    virtual void METHOD(SetRenderTargets)(
                                           UInt32                         NumRenderTargets,
                                           ITextureView*                  ppRenderTargets[],
                                           ITextureView*                  pDepthStencil,
-                                          RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) PURE;
+                                          RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) =0;
 
 
     /// Binds one or more render targets, the depth-stencil buffer and shading rate map to the context.
@@ -2798,8 +2797,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// Any render targets not defined by this call are set to nullptr.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(SetRenderTargetsExt)(THIS_
-                                             const SetRenderTargetsAttribs REF Attribs) PURE;
+    virtual void METHOD(SetRenderTargetsExt)(
+                                             const SetRenderTargetsAttribs  & Attribs) =0;
 
 
     /// Begins a new render pass.
@@ -2807,20 +2806,20 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \param [in] Attribs - The command attributes, see Diligent::BeginRenderPassAttribs for details.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(BeginRenderPass)(THIS_
-                                         const BeginRenderPassAttribs REF Attribs) PURE;
+    virtual void METHOD(BeginRenderPass)(
+                                         const BeginRenderPassAttribs  & Attribs) =0;
 
 
     /// Transitions to the next subpass in the render pass instance.
 
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(NextSubpass)(THIS) PURE;
+    virtual void METHOD(NextSubpass)( ) =0;
 
 
     /// Ends current render pass.
 
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(EndRenderPass)(THIS) PURE;
+    virtual void METHOD(EndRenderPass)( ) =0;
 
 
     /// Executes a draw command.
@@ -2835,8 +2834,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// explicitly manage the states using TransitionResourceStates() method.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(Draw)(THIS_
-                              const DrawAttribs REF Attribs) PURE;
+    virtual void METHOD(Draw)(
+                              const DrawAttribs  & Attribs) =0;
 
 
     /// Executes an indexed draw command.
@@ -2851,8 +2850,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// explicitly manage the states using TransitionResourceStates() method.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(DrawIndexed)(THIS_
-                                     const DrawIndexedAttribs REF Attribs) PURE;
+    virtual void METHOD(DrawIndexed)(
+                                     const DrawIndexedAttribs  & Attribs) =0;
 
 
     /// Executes an indirect draw command.
@@ -2884,8 +2883,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// explicitly manage the states using TransitionResourceStates() method.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(DrawIndirect)(THIS_
-                                      const DrawIndirectAttribs REF Attribs) PURE;
+    virtual void METHOD(DrawIndirect)(
+                                      const DrawIndirectAttribs  & Attribs) =0;
 
 
     /// Executes an indexed indirect draw command.
@@ -2920,8 +2919,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///           indirect draw command and must be zero.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(DrawIndexedIndirect)(THIS_
-                                             const DrawIndexedIndirectAttribs REF Attribs) PURE;
+    virtual void METHOD(DrawIndexedIndirect)(
+                                             const DrawIndexedIndirectAttribs  & Attribs) =0;
 
 
     /// Executes a mesh draw command.
@@ -2933,8 +2932,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// for example: `[numthreads(ThreadCount, 1, 1)]` or `layout(local_size_x = ThreadCount) in`.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(DrawMesh)(THIS_
-                                  const DrawMeshAttribs REF Attribs) PURE;
+    virtual void METHOD(DrawMesh)(
+                                  const DrawMeshAttribs  & Attribs) =0;
 
 
     /// Executes an indirect mesh draw command.
@@ -2954,8 +2953,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// explicitly manage the states using TransitionResourceStates() method.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(DrawMeshIndirect)(THIS_
-                                          const DrawMeshIndirectAttribs REF Attribs) PURE;
+    virtual void METHOD(DrawMeshIndirect)(
+                                          const DrawMeshIndirectAttribs  & Attribs) =0;
 
 
     /// Executes a multi-draw command.
@@ -2967,8 +2966,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// available in the shader when the NativeMultiDraw feature is supported.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(MultiDraw)(THIS_
-                                   const MultiDrawAttribs REF Attribs) PURE;
+    virtual void METHOD(MultiDraw)(
+                                   const MultiDrawAttribs  & Attribs) =0;
     
 
     /// Executes an indexed multi-draw command.
@@ -2980,8 +2979,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// available in the shader when the `NativeMultiDraw` feature is supported.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(MultiDrawIndexed)(THIS_
-                                          const MultiDrawIndexedAttribs REF Attribs) PURE;
+    virtual void METHOD(MultiDrawIndexed)(
+                                          const MultiDrawIndexedAttribs  & Attribs) =0;
 
 
     /// Executes a dispatch compute command.
@@ -2995,8 +2994,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// and `MtlThreadGroupSizeZ` members.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    VIRTUAL void METHOD(DispatchCompute)(THIS_
-                                         const DispatchComputeAttribs REF Attribs) PURE;
+    virtual void METHOD(DispatchCompute)(
+                                         const DispatchComputeAttribs  & Attribs) =0;
 
 
     /// Executes an indirect dispatch compute command.
@@ -3017,15 +3016,15 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// and `MtlThreadGroupSizeZ` members.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    VIRTUAL void METHOD(DispatchComputeIndirect)(THIS_
-                                                 const DispatchComputeIndirectAttribs REF Attribs) PURE;
+    virtual void METHOD(DispatchComputeIndirect)(
+                                                 const DispatchComputeIndirectAttribs  & Attribs) =0;
 
 
     /// Executes a dispatch tile command.
 
     /// \param [in] Attribs - The command attributes, see Diligent::DispatchTileAttribs for details.
-    VIRTUAL void METHOD(DispatchTile)(THIS_
-                                      const DispatchTileAttribs REF Attribs) PURE;
+    virtual void METHOD(DispatchTile)(
+                                      const DispatchTileAttribs  & Attribs) =0;
 
 
     /// Returns current render pass tile size.
@@ -3034,9 +3033,9 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \param [out] TileSizeY - Tile size in Y direction.
     ///
     /// \remarks Result will be zero if there are no active render pass or render targets.
-    VIRTUAL void METHOD(GetTileSize)(THIS_
-                                     UInt32 REF TileSizeX,
-                                     UInt32 REF TileSizeY) PURE;
+    virtual void METHOD(GetTileSize)(
+                                     UInt32  & TileSizeX,
+                                     UInt32  & TileSizeY) =0;
 
 
     /// Clears a depth-stencil view.
@@ -3061,12 +3060,12 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// the state of resources used by the command.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(ClearDepthStencil)(THIS_
+    virtual void METHOD(ClearDepthStencil)(
                                            ITextureView*                  pView,
                                            CLEAR_DEPTH_STENCIL_FLAGS      ClearFlags,
                                            float                          fDepth,
                                            UInt8                          Stencil,
-                                           RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) PURE;
+                                           RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) =0;
 
 
     /// Clears a render target view
@@ -3100,17 +3099,17 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// resource state transition, otherwise it is the responsibility of the application.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(ClearRenderTarget)(THIS_
+    virtual void METHOD(ClearRenderTarget)(
                                            ITextureView*                  pView,
                                            const void*                    RGBA,
-                                           RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) PURE;
+                                           RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) =0;
 
 
     /// Finishes recording commands and generates a command list.
 
     /// \param [out] ppCommandList - Memory location where pointer to the recorded command list will be written.
-    VIRTUAL void METHOD(FinishCommandList)(THIS_
-                                           ICommandList** ppCommandList) PURE;
+    virtual void METHOD(FinishCommandList)(
+                                           ICommandList** ppCommandList) =0;
 
 
     /// Submits an array of recorded command lists for execution.
@@ -3118,9 +3117,9 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \param [in] NumCommandLists - The number of command lists to execute.
     /// \param [in] ppCommandLists  - Pointer to the array of NumCommandLists command lists to execute.
     /// \remarks After a command list is executed, it is no longer valid and must be released.
-    VIRTUAL void METHOD(ExecuteCommandLists)(THIS_
+    virtual void METHOD(ExecuteCommandLists)(
                                              UInt32               NumCommandLists,
-                                             ICommandList* const* ppCommandLists) PURE;
+                                             ICommandList* const* ppCommandLists) =0;
 
 
     /// Tells the GPU to set a fence to a specified value after all previous work has completed.
@@ -3138,9 +3137,9 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// * In Direct3D11 backend, the access to the fence is not thread-safe and
     ///   must be externally synchronized.
     /// * In Direct3D12 and Vulkan backends, the access to the fence is thread-safe.
-    VIRTUAL void METHOD(EnqueueSignal)(THIS_
+    virtual void METHOD(EnqueueSignal)(
                                        IFence*    pFence,
-                                       UInt64     Value) PURE;
+                                       UInt64     Value) =0;
 
 
     /// Waits until the specified fence reaches or exceeds the specified value, on the device.
@@ -3159,9 +3158,9 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// In Direct3D12 and Vulkan backend, the access to the fence is thread-safe.
     ///
     /// \remarks  Wait is only allowed for immediate contexts.
-    VIRTUAL void METHOD(DeviceWaitForFence)(THIS_
+    virtual void METHOD(DeviceWaitForFence)(
                                             IFence*  pFence,
-                                            UInt64   Value) PURE;
+                                            UInt64   Value) =0;
 
     /// Submits all outstanding commands for execution to the GPU and waits until they are complete.
 
@@ -3172,7 +3171,7 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// The methods implicitly flushes the context (see Flush()), so an
     /// application must explicitly reset the PSO and bind all required shader resources after
     /// idling the context.
-    VIRTUAL void METHOD(WaitForIdle)(THIS) PURE;
+    virtual void METHOD(WaitForIdle)( ) =0;
 
 
     /// Marks the beginning of a query.
@@ -3200,8 +3199,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///
     /// \remarks Supported contexts for graphics queries: graphics.
     ///          Supported contexts for time queries:     graphics, compute.
-    VIRTUAL void METHOD(BeginQuery)(THIS_
-                                    IQuery* pQuery) PURE;
+    virtual void METHOD(BeginQuery)(
+                                    IQuery* pQuery) =0;
 
 
     /// Marks the end of a query.
@@ -3219,8 +3218,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// All queries must be ended when FinishFrame() is called.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    VIRTUAL void METHOD(EndQuery)(THIS_
-                                  IQuery* pQuery) PURE;
+    virtual void METHOD(EndQuery)(
+                                  IQuery* pQuery) =0;
 
 
     /// Submits all pending commands in the context for execution to the command queue.
@@ -3233,7 +3232,7 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// restore viewports and scissor rects, etc.) except for the pipeline state and shader resource
     /// bindings. An application must explicitly reset the PSO and bind all required shader
     /// resources after flushing the context.
-    VIRTUAL void METHOD(Flush)(THIS) PURE;
+    virtual void METHOD(Flush)( ) =0;
 
 
     /// Updates the data in the buffer.
@@ -3245,12 +3244,12 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \param [in] StateTransitionMode - Buffer state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE)
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
-    VIRTUAL void METHOD(UpdateBuffer)(THIS_
+    virtual void METHOD(UpdateBuffer)(
                                       IBuffer*                       pBuffer,
                                       UInt64                         Offset,
                                       UInt64                         Size,
                                       const void*                    pData,
-                                      RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) PURE;
+                                      RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) =0;
 
 
     /// Copies the data from one buffer to another.
@@ -3265,14 +3264,14 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \param [in] DstBufferTransitionMode - State transition mode of the destination buffer (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
-    VIRTUAL void METHOD(CopyBuffer)(THIS_
+    virtual void METHOD(CopyBuffer)(
                                     IBuffer*                       pSrcBuffer,
                                     UInt64                         SrcOffset,
                                     RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
                                     IBuffer*                       pDstBuffer,
                                     UInt64                         DstOffset,
                                     UInt64                         Size,
-                                    RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) PURE;
+                                    RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) =0;
 
 
     /// Maps the buffer.
@@ -3283,11 +3282,11 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \param [out] pMappedData - Reference to the void pointer to store the address of the mapped region.
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
-    VIRTUAL void METHOD(MapBuffer)(THIS_
+    virtual void METHOD(MapBuffer)(
                                    IBuffer*     pBuffer,
                                    MAP_TYPE     MapType,
                                    MAP_FLAGS    MapFlags,
-                                   PVoid REF    pMappedData) PURE;
+                                   PVoid  &    pMappedData) =0;
 
 
     /// Unmaps the previously mapped buffer.
@@ -3297,9 +3296,9 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///                       provided to the Map() method.
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
-    VIRTUAL void METHOD(UnmapBuffer)(THIS_
+    virtual void METHOD(UnmapBuffer)(
                                      IBuffer*   pBuffer,
-                                     MAP_TYPE   MapType) PURE;
+                                     MAP_TYPE   MapType) =0;
 
 
     /// Updates the data in the texture.
@@ -3315,14 +3314,14 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \param [in] TextureTransitionMode   - Texture state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE)
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
-    VIRTUAL void METHOD(UpdateTexture)(THIS_
+    virtual void METHOD(UpdateTexture)(
                                        ITexture*                        pTexture,
                                        UInt32                           MipLevel,
                                        UInt32                           Slice,
-                                       const Box REF                    DstBox,
-                                       const TextureSubResData REF      SubresData,
+                                       const Box  &                    DstBox,
+                                       const TextureSubResData  &      SubresData,
                                        RESOURCE_STATE_TRANSITION_MODE   SrcBufferTransitionMode,
-                                       RESOURCE_STATE_TRANSITION_MODE   TextureTransitionMode) PURE;
+                                       RESOURCE_STATE_TRANSITION_MODE   TextureTransitionMode) =0;
 
 
     /// Copies data from one texture to another.
@@ -3330,8 +3329,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \param [in] CopyAttribs - Structure describing copy command attributes, see Diligent::CopyTextureAttribs for details.
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
-    VIRTUAL void METHOD(CopyTexture)(THIS_
-                                     const CopyTextureAttribs REF CopyAttribs) PURE;
+    virtual void METHOD(CopyTexture)(
+                                     const CopyTextureAttribs  & CopyAttribs) =0;
 
 
     /// Maps the texture subresource.
@@ -3350,14 +3349,14 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// with MAP_FLAG_DISCARD has exactly the same behavior.
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
-    VIRTUAL void METHOD(MapTextureSubresource)(THIS_
+    virtual void METHOD(MapTextureSubresource)(
                                                ITexture*                    pTexture,
                                                UInt32                       MipLevel,
                                                UInt32                       ArraySlice,
                                                MAP_TYPE                     MapType,
                                                MAP_FLAGS                    MapFlags,
                                                const Box*                   pMapRegion,
-                                               MappedTextureSubresource REF MappedData) PURE;
+                                               MappedTextureSubresource  & MappedData) =0;
 
 
     /// Unmaps the texture subresource.
@@ -3367,10 +3366,10 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \param [in] ArraySlice  - Array slice to unmap. This parameter must be 0 for non-array textures.
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
-    VIRTUAL void METHOD(UnmapTextureSubresource)(THIS_
+    virtual void METHOD(UnmapTextureSubresource)(
                                                  ITexture* pTexture,
                                                  UInt32    MipLevel,
-                                                 UInt32    ArraySlice) PURE;
+                                                 UInt32    ArraySlice) =0;
 
 
     /// Generates a mipmap chain.
@@ -3380,8 +3379,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///          The texture must be created with Diligent::MISC_TEXTURE_FLAG_GENERATE_MIPS flag.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(GenerateMips)(THIS_
-                                      ITextureView* pTextureView) PURE;
+    virtual void METHOD(GenerateMips)(
+                                      ITextureView* pTextureView) =0;
 
 
     /// Finishes the current frame and releases dynamic resources allocated by the context.
@@ -3399,13 +3398,13 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// have been executed through immediate context.
     ///
     /// The method does not Flush() the context.
-    VIRTUAL void METHOD(FinishFrame)(THIS) PURE;
+    virtual void METHOD(FinishFrame)( ) =0;
 
 
     /// Returns the current frame number.
 
     /// \note The frame number is incremented every time FinishFrame() is called.
-    VIRTUAL UInt64 METHOD(GetFrameNumber)(THIS) CONST PURE;
+    virtual UInt64 METHOD(GetFrameNumber)( ) const =0;
 
 
     /// Transitions resource states.
@@ -3437,9 +3436,9 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///        application should call TransitionResourceStates() in graphics context.
     ///        Using TransitionResourceStates() with NewState = Diligent::RESOURCE_STATE_SHADER_RESOURCE will not invalidate cache in
     ///        graphics shaders and may cause undefined behaviour.
-    VIRTUAL void METHOD(TransitionResourceStates)(THIS_
+    virtual void METHOD(TransitionResourceStates)(
                                                   UInt32                     BarrierCount,
-                                                  const StateTransitionDesc* pResourceBarriers) PURE;
+                                                  const StateTransitionDesc* pResourceBarriers) =0;
 
 
     /// Resolves a multi-sampled texture subresource into a non-multi-sampled texture subresource.
@@ -3449,10 +3448,10 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \param [in] ResolveAttribs - Resolve command attributes, see Diligent::ResolveTextureSubresourceAttribs for details.
     ///
     /// \remarks Supported contexts: graphics.ResolveTextureSubresource
-    VIRTUAL void METHOD(ResolveTextureSubresource)(THIS_
+    virtual void METHOD(ResolveTextureSubresource)(
                                                    ITexture*                                  pSrcTexture,
                                                    ITexture*                                  pDstTexture,
-                                                   const ResolveTextureSubresourceAttribs REF ResolveAttribs) PURE;
+                                                   const ResolveTextureSubresourceAttribs  & ResolveAttribs) =0;
 
 
     /// Builds a bottom-level acceleration structure with the specified geometries.
@@ -3463,8 +3462,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///       that will not match with GPU-side, so shader binding were incorrect.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    VIRTUAL void METHOD(BuildBLAS)(THIS_
-                                   const BuildBLASAttribs REF Attribs) PURE;
+    virtual void METHOD(BuildBLAS)(
+                                   const BuildBLASAttribs  & Attribs) =0;
 
 
     /// Builds a top-level acceleration structure with the specified instances.
@@ -3475,8 +3474,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///       that will not match with GPU-side, so shader binding were incorrect.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    VIRTUAL void METHOD(BuildTLAS)(THIS_
-                                   const BuildTLASAttribs REF Attribs) PURE;
+    virtual void METHOD(BuildTLAS)(
+                                   const BuildTLASAttribs  & Attribs) =0;
 
 
     /// Copies data from one acceleration structure to another.
@@ -3487,8 +3486,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///       that will not match with GPU-side, so shader binding were incorrect.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    VIRTUAL void METHOD(CopyBLAS)(THIS_
-                                  const CopyBLASAttribs REF Attribs) PURE;
+    virtual void METHOD(CopyBLAS)(
+                                  const CopyBLASAttribs  & Attribs) =0;
 
 
     /// Copies data from one acceleration structure to another.
@@ -3499,8 +3498,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///       that will not match with GPU-side, so shader binding were incorrect.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    VIRTUAL void METHOD(CopyTLAS)(THIS_
-                                  const CopyTLASAttribs REF Attribs) PURE;
+    virtual void METHOD(CopyTLAS)(
+                                  const CopyTLASAttribs  & Attribs) =0;
 
 
     /// Writes a bottom-level acceleration structure memory size required for compacting operation to a buffer.
@@ -3508,8 +3507,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \param [in] Attribs - Structure describing write BLAS compacted size command attributes, see Diligent::WriteBLASCompactedSizeAttribs for details.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    VIRTUAL void METHOD(WriteBLASCompactedSize)(THIS_
-                                                const WriteBLASCompactedSizeAttribs REF Attribs) PURE;
+    virtual void METHOD(WriteBLASCompactedSize)(
+                                                const WriteBLASCompactedSizeAttribs  & Attribs) =0;
 
 
     /// Writes a top-level acceleration structure memory size required for compacting operation to a buffer.
@@ -3517,8 +3516,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \param [in] Attribs - Structure describing write TLAS compacted size command attributes, see Diligent::WriteTLASCompactedSizeAttribs for details.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    VIRTUAL void METHOD(WriteTLASCompactedSize)(THIS_
-                                                const WriteTLASCompactedSizeAttribs REF Attribs) PURE;
+    virtual void METHOD(WriteTLASCompactedSize)(
+                                                const WriteTLASCompactedSizeAttribs  & Attribs) =0;
 
 
     /// Executes a trace rays command.
@@ -3531,8 +3530,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///         functions that don't modify the SBT (e.g. TraceRaysIndirect).
     ///
     /// \remarks Supported contexts: graphics, compute.
-    VIRTUAL void METHOD(TraceRays)(THIS_
-                                   const TraceRaysAttribs REF Attribs) PURE;
+    virtual void METHOD(TraceRays)(
+                                   const TraceRaysAttribs  & Attribs) =0;
 
 
     /// Executes an indirect trace rays command.
@@ -3545,8 +3544,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///         functions that don't modify the SBT (e.g. TraceRays).
     ///
     /// \remarks Supported contexts: graphics, compute.
-    VIRTUAL void METHOD(TraceRaysIndirect)(THIS_
-                                           const TraceRaysIndirectAttribs REF Attribs) PURE;
+    virtual void METHOD(TraceRaysIndirect)(
+                                           const TraceRaysIndirectAttribs  & Attribs) =0;
 
 
     /// Updates SBT with the pending data that were recorded in IShaderBindingTable::Bind*** calls.
@@ -3568,9 +3567,9 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///           The function modifies the data in the SBT and must not run in parallel with any other command that uses the same SBT.
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
-    VIRTUAL void METHOD(UpdateSBT)(THIS_
+    virtual void METHOD(UpdateSBT)(
                                    IShaderBindingTable*                 pSBT,
-                                   const UpdateIndirectRTBufferAttribs* pUpdateIndirectBufferAttribs DEFAULT_INITIALIZER(nullptr)) PURE;
+                                   const UpdateIndirectRTBufferAttribs* pUpdateIndirectBufferAttribs DEFAULT_INITIALIZER(nullptr)) =0;
 
 
     /// Stores a pointer to the user-provided data object.
@@ -3585,8 +3584,8 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// The method keeps strong reference to the user data object.
     /// If an application needs to release the object, it
     /// should call SetUserData(nullptr);
-    VIRTUAL void METHOD(SetUserData)(THIS_
-                                     IObject* pUserData) PURE;
+    virtual void METHOD(SetUserData)(
+                                     IObject* pUserData) =0;
 
 
     /// Returns a pointer to the user data object previously
@@ -3597,7 +3596,7 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///
     /// \remarks    The method does *NOT* call AddRef()
     ///             for the object being returned.
-    VIRTUAL IObject* METHOD(GetUserData)(THIS) CONST PURE;
+    virtual IObject* METHOD(GetUserData)( ) const =0;
 
 
     /// Begins a debug group with name and color.
@@ -3608,12 +3607,12 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// \param [in] pColor - Region color.
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
-    VIRTUAL void METHOD(BeginDebugGroup)(THIS_
+    virtual void METHOD(BeginDebugGroup)(
                                         const Char*  Name,
-                                        const float* pColor DEFAULT_INITIALIZER(nullptr)) PURE;
+                                        const float* pColor DEFAULT_INITIALIZER(nullptr)) =0;
 
     /// Ends a debug group that was previously started with BeginDebugGroup().
-    VIRTUAL void METHOD(EndDebugGroup)(THIS) PURE;
+    virtual void METHOD(EndDebugGroup)( ) =0;
 
 
     /// Inserts a debug label with name and color.
@@ -3625,9 +3624,9 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
     ///          Not supported in Metal backend.
-    VIRTUAL void METHOD(InsertDebugLabel)(THIS_
+    virtual void METHOD(InsertDebugLabel)(
                                           const Char*  Label,
-                                          const float* pColor DEFAULT_INITIALIZER(nullptr)) PURE;
+                                          const float* pColor DEFAULT_INITIALIZER(nullptr)) =0;
 
     /// Locks the internal mutex and returns a pointer to the command queue that is associated with this device context.
 
@@ -3645,10 +3644,10 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     /// 
     /// The engine manages the lifetimes of command queues and all other device objects,
     /// so an application must not call AddRef/Release methods on the returned interface.
-    VIRTUAL ICommandQueue* METHOD(LockCommandQueue)(THIS) PURE;
+    virtual ICommandQueue* METHOD(LockCommandQueue)( ) =0;
 
     /// Unlocks the command queue that was previously locked by LockCommandQueue().
-    VIRTUAL void METHOD(UnlockCommandQueue)(THIS) PURE;
+    virtual void METHOD(UnlockCommandQueue)( ) =0;
 
 
     /// Sets the shading base rate and combiners.
@@ -3689,10 +3688,10 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///   BaseRate must be SHADING_RATE_1X1 or one of the supported rates in ShadingRateProperties::ShadingRates.
     ///
     /// \remarks Supported contexts: graphics.
-    VIRTUAL void METHOD(SetShadingRate)(THIS_
+    virtual void METHOD(SetShadingRate)(
                                         SHADING_RATE          BaseRate,
                                         SHADING_RATE_COMBINER PrimitiveCombiner,
-                                        SHADING_RATE_COMBINER TextureCombiner) PURE;
+                                        SHADING_RATE_COMBINER TextureCombiner) =0;
 
 
     /// Binds or unbinds memory objects to sparse buffer and sparse textures.
@@ -3713,18 +3712,18 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContext, IObject)
     ///
     /// \remarks This command may only be executed by immediate context whose
     ///          internal queue supports COMMAND_QUEUE_TYPE_SPARSE_BINDING.
-    VIRTUAL void METHOD(BindSparseResourceMemory)(THIS_
-                                                  const BindSparseResourceMemoryAttribs REF Attribs) PURE;
+    virtual void METHOD(BindSparseResourceMemory)(
+                                                  const BindSparseResourceMemoryAttribs  & Attribs) =0;
 
     /// Clears the device context statistics.
-    VIRTUAL void METHOD(ClearStats)(THIS) PURE;
+    virtual void METHOD(ClearStats)( ) =0;
 
     /// Returns the device context statistics, see Diligent::DeviceContextStats.
-    VIRTUAL const DeviceContextStats REF METHOD(GetStats)(THIS) CONST PURE;
+    virtual const DeviceContextStats  & METHOD(GetStats)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -3805,4 +3804,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

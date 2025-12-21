@@ -1,44 +1,14 @@
-/*
- *  Copyright 2024-2025 Diligent Graphics LLC
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- *  In no event and under no legal theory, whether in tort (including negligence),
- *  contract, or otherwise, unless required by applicable law (such as deliberate
- *  and grossly negligent acts) or agreed to in writing, shall any Contributor be
- *  liable for any damages, including any direct, indirect, special, incidental,
- *  or consequential damages of any character arising as a result of this License or
- *  out of the use or inability to use the software (including but not limited to damages
- *  for loss of goodwill, work stoppage, computer failure or malfunction, or any and
- *  all other commercial damages or losses), even if such Contributor has been advised
- *  of the possibility of such damages.
- */
-
 #pragma once
-
-/// \file
-/// Defines Diligent::IAsyncTask and Diligent::IThreadPool interfaces.
 
 #include "../../Primitives/interface/Object.h"
 #include "CommonDefinitions.h"
 
-// clang-format off
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent
+{
 
 /// Asynchronous task status
-DILIGENT_TYPED_ENUM(ASYNC_TASK_STATUS, UInt32)
-{
+DILIGENT_TYPED_ENUM(ASYNC_TASK_STATUS, UInt32){
     /// The asynchronous task status is unknown.
     ASYNC_TASK_STATUS_UNKNOWN,
 
@@ -52,16 +22,14 @@ DILIGENT_TYPED_ENUM(ASYNC_TASK_STATUS, UInt32)
     ASYNC_TASK_STATUS_CANCELLED,
 
     /// The asynchronous task is complete.
-    ASYNC_TASK_STATUS_COMPLETE
-};
+    ASYNC_TASK_STATUS_COMPLETE};
 
 
 // {B06D1DDA-AEA0-4CFD-969A-C8E2011DC294}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_AsyncTask =
+static constexpr INTERFACE_ID IID_AsyncTask =
     {0xb06d1dda, 0xaea0, 0x4cfd, {0x96, 0x9a, 0xc8, 0xe2, 0x1, 0x1d, 0xc2, 0x94}};
 
 
-#define DILIGENT_INTERFACE_NAME IAsyncTask
 #include "../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IAsyncTaskInclusiveMethods \
@@ -69,7 +37,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_AsyncTask =
     IAsyncTaskMethods AsyncTask
 
 /// Asynchronous task interface
-DILIGENT_BEGIN_INTERFACE(IAsyncTask, IObject)
+struct IAsyncTask : public IObject
 {
     /// Run the asynchronous task.
 
@@ -87,37 +55,36 @@ DILIGENT_BEGIN_INTERFACE(IAsyncTask, IObject)
     /// the Run() method completes. This way if the GetStatus() method returns
     /// any value other than Diligent::ASYNC_TASK_STATUS_RUNNING, it is guaranteed that the task
     /// is not executed by any thread.
-    VIRTUAL ASYNC_TASK_STATUS METHOD(Run)(THIS_
-                                     UInt32 ThreadId) PURE;
+    virtual ASYNC_TASK_STATUS CALLTYPE Run(UInt32 ThreadId) = 0;
 
     /// Cancel the task, if possible.
-    
+
     /// If the task is running, the task implementation should
     /// abort the task execution, if possible.
-    VIRTUAL void METHOD(Cancel)(THIS) PURE;
+    virtual void METHOD(Cancel)() = 0;
 
     /// Sets the task status, see Diligent::ASYNC_TASK_STATUS.
-    VIRTUAL void METHOD(SetStatus)(THIS_
-                                   ASYNC_TASK_STATUS TaskStatus) PURE;
+    virtual void METHOD(SetStatus)(
+        ASYNC_TASK_STATUS TaskStatus) = 0;
 
     /// Gets the task status, see Diligent::ASYNC_TASK_STATUS.
-    VIRTUAL ASYNC_TASK_STATUS METHOD(GetStatus)(THIS) CONST PURE;
+    virtual ASYNC_TASK_STATUS METHOD(GetStatus)() const = 0;
 
     /// Sets the task priorirty.
-    VIRTUAL void METHOD(SetPriority)(THIS_
-                                    float fPriority) PURE;
+    virtual void METHOD(SetPriority)(
+        float fPriority) = 0;
 
     /// Returns the task priorirty.
-    VIRTUAL float METHOD(GetPriority)(THIS) CONST PURE;
+    virtual float METHOD(GetPriority)() const = 0;
 
     /// Checks if the task is finished (i.e. cancelled or complete).
-    VIRTUAL bool METHOD(IsFinished)(THIS) CONST PURE;
+    virtual bool METHOD(IsFinished)() const = 0;
 
     /// Waits until the task is complete.
-    
+
     /// \note   This method must not be called from the same thread that is
     ///         running the task or a deadlock will occur.
-    VIRTUAL void METHOD(WaitForCompletion)(THIS) CONST PURE;
+    virtual void METHOD(WaitForCompletion)() const = 0;
 
     /// Waits until the tasks is running.
 
@@ -126,32 +93,13 @@ DILIGENT_BEGIN_INTERFACE(IAsyncTask, IObject)
     ///           allowing the task to start.
     ///
     /// This method must not be called from the worker thread.
-    VIRTUAL void METHOD(WaitUntilRunning)(THIS) CONST PURE;
+    virtual void METHOD(WaitUntilRunning)() const = 0;
 };
-DILIGENT_END_INTERFACE
-
-#include "../../Primitives/interface/UndefInterfaceHelperMacros.h"
-
-#if DILIGENT_C_INTERFACE
-
-#    define IAsyncTask_Run(This, ...)          CALL_IFACE_METHOD(AsyncTask, Run, This, __VA_ARGS__)
-#    define IAsyncTask_Cancel(This)            CALL_IFACE_METHOD(AsyncTask, Cancel, This)
-#    define IAsyncTask_SetStatus(This, ...)    CALL_IFACE_METHOD(AsyncTask, SetStatus, This, __VA_ARGS__)
-#    define IAsyncTask_GetStatus(This)         CALL_IFACE_METHOD(AsyncTask, GetStatus, This)
-#    define IAsyncTask_SetPriority(This, ...)  CALL_IFACE_METHOD(AsyncTask, SetPriority, This, __VA_ARGS__)
-#    define IAsyncTask_GetPriority(This)       CALL_IFACE_METHOD(AsyncTask, GetPriority, This)
-#    define IAsyncTask_IsFinished(This)        CALL_IFACE_METHOD(AsyncTask, IsFinished, This)
-#    define IAsyncTask_WaitForCompletion(This) CALL_IFACE_METHOD(AsyncTask, WaitForCompletion, This)
-#    define IAsyncTask_WaitUntilRunning(This)  CALL_IFACE_METHOD(AsyncTask, WaitUntilRunning, This)
-
-#endif
-
 
 // {8BB92B5E-3EAB-4CC3-9DA2-5470DBBA7120}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ThreadPool =
+static constexpr INTERFACE_ID IID_ThreadPool =
     {0x8bb92b5e, 0x3eab, 0x4cc3, {0x9d, 0xa2, 0x54, 0x70, 0xdb, 0xba, 0x71, 0x20}};
 
-#define DILIGENT_INTERFACE_NAME IThreadPool
 #include "../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IThreadPoolInclusiveMethods \
@@ -159,7 +107,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_ThreadPool =
     IThreadPoolMethods ThreadPool
 
 /// Thread pool interface
-DILIGENT_BEGIN_INTERFACE(IThreadPool, IObject)
+struct IThreadPool : public IObject
 {
     /// Enqueues asynchronous task for execution.
 
@@ -170,13 +118,13 @@ DILIGENT_BEGIN_INTERFACE(IThreadPool, IObject)
     ///
     /// Thread pool will keep a strong reference to the task,
     /// so an application is free to release it after enqueuing.
-    /// 
+    ///
     /// \note       An application must ensure that the task prerequisites are not circular
     ///             to avoid deadlocks.
-    VIRTUAL void METHOD(EnqueueTask)(THIS_
-                                     IAsyncTask*  pTask,
-                                     IAsyncTask** ppPrerequisites  DEFAULT_VALUE(nullptr),
-                                     UInt32       NumPrerequisites DEFAULT_VALUE(0)) PURE;
+    virtual void METHOD(EnqueueTask)(
+        IAsyncTask*                  pTask,
+        IAsyncTask** ppPrerequisites DEFAULT_VALUE(nullptr),
+        UInt32 NumPrerequisites      DEFAULT_VALUE(0)) = 0;
 
 
     /// Reprioritizes the task in the queue.
@@ -190,15 +138,15 @@ DILIGENT_BEGIN_INTERFACE(IThreadPool, IObject)
     /// place it in the priority queue. When an application changes
     /// the task priority, it should call this method to update the task
     /// position in the queue.
-    VIRTUAL bool METHOD(ReprioritizeTask)(THIS_
-                                          IAsyncTask* pTask) PURE;
+    virtual bool METHOD(ReprioritizeTask)(
+        IAsyncTask* pTask) = 0;
 
 
     /// Reprioritizes all tasks in the queue.
 
     /// This method should be called if task priorities have changed
     /// to update the positions of all tasks in the queue.
-    VIRTUAL void METHOD(ReprioritizeAllTasks)(THIS) PURE;
+    virtual void METHOD(ReprioritizeAllTasks)() = 0;
 
 
     /// Removes the task from the queue, if possible.
@@ -207,8 +155,8 @@ DILIGENT_BEGIN_INTERFACE(IThreadPool, IObject)
     ///
     /// \return    true if the task was successfully removed from the queue,
     ///            and false otherwise.
-    VIRTUAL bool METHOD(RemoveTask)(THIS_
-                                    IAsyncTask* pTask) PURE;
+    virtual bool METHOD(RemoveTask)(
+        IAsyncTask* pTask) = 0;
 
 
     /// Waits until all tasks in the queue are finished.
@@ -217,14 +165,14 @@ DILIGENT_BEGIN_INTERFACE(IThreadPool, IObject)
     /// tasks in the quque are finished and the queue is empty.
     /// An application is responsible to make sure that all tasks
     /// will finish eventually.
-    VIRTUAL void METHOD(WaitForAllTasks)(THIS) PURE;
+    virtual void METHOD(WaitForAllTasks)() = 0;
 
 
     /// Returns the current queue size.
-    VIRTUAL UInt32 METHOD(GetQueueSize)(THIS) PURE;
+    virtual UInt32 METHOD(GetQueueSize)() = 0;
 
     /// Returns the number of currently running tasks
-    VIRTUAL UInt32 METHOD(GetRunningTaskCount)(THIS) CONST PURE;
+    virtual UInt32 METHOD(GetRunningTaskCount)() const = 0;
 
 
     /// Stops all worker threads.
@@ -232,7 +180,7 @@ DILIGENT_BEGIN_INTERFACE(IThreadPool, IObject)
     /// his method makes all worker threads to exit.
     /// If an application enqueues tasks after calling this methods,
     /// this tasks will never run.
-    VIRTUAL void METHOD(StopThreads)(THIS) PURE;
+    virtual void METHOD(StopThreads)() = 0;
 
 
     /// Manually processes the next task from the queue.
@@ -261,7 +209,7 @@ DILIGENT_BEGIN_INTERFACE(IThreadPool, IObject)
     ///     auto pThreadPool = CreateThreadPool(ThreadPoolCreateInfo{0});
     ///
     ///     std::vector<std::thread> WorkerThreads(4);
-    ///     for (UInt32 i PURE; i < WorkerThreads.size(); ++i)
+    ///     for (UInt32 i =0; i < WorkerThreads.size(); ++i)
     ///     {
     ///         WorkerThreads[i] = std::thread{
     ///             [&ThreadPool = *pThreadPool, i] //
@@ -285,26 +233,7 @@ DILIGENT_BEGIN_INTERFACE(IThreadPool, IObject)
     ///         Thread.join();
     ///     }
     ///
-    VIRTUAL bool METHOD(ProcessTask)(THIS_
-                                     UInt32 ThreadId,
-                                     bool   WaitForTask) PURE;
+    virtual bool CALLTYPE ProcessTask(UInt32 ThreadId, bool WaitForTask) = 0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../Primitives/interface/UndefInterfaceHelperMacros.h"
-
-#if DILIGENT_C_INTERFACE
-
-#    define IThreadPool_EnqueueTask(This, ...)      CALL_IFACE_METHOD(ThreadPool, EnqueueTask, This, __VA_ARGS__)
-#    define IThreadPool_ReprioritizeTask(This, ...) CALL_IFACE_METHOD(ThreadPool, ReprioritizeTask, This, __VA_ARGS__)
-#    define IThreadPool_ReprioritizeAllTasks(This)  CALL_IFACE_METHOD(ThreadPool, ReprioritizeAllTasks, This)
-#    define IThreadPool_RemoveTask(This, ...)       CALL_IFACE_METHOD(ThreadPool, RemoveTask, This, __VA_ARGS__)
-#    define IThreadPool_WaitForAllTasks(This)       CALL_IFACE_METHOD(ThreadPool, WaitForAllTasks, This)
-#    define IThreadPool_GetQueueSize(This)          CALL_IFACE_METHOD(ThreadPool, GetQueueSize, This)
-#    define IThreadPool_GetRunningTaskCount(This)   CALL_IFACE_METHOD(ThreadPool, GetRunningTaskCount, This)
-#    define IThreadPool_StopThreads(This)           CALL_IFACE_METHOD(ThreadPool, StopThreads, This)
-#    define IThreadPool_ProcessTask(This, ...)      CALL_IFACE_METHOD(ThreadPool, ProcessTask, This, __VA_ARGS__)
-
-#endif
-
-DILIGENT_END_NAMESPACE // namespace Diligent
+} // namespace Diligent

@@ -66,10 +66,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_BufferD3D12, TBufferBase)
 
     /// Implementation of IBufferD3D12::GetD3D12Buffer().
-    virtual ID3D12Resource* DILIGENT_CALL_TYPE GetD3D12Buffer(UInt64& DataStartByteOffset, IDeviceContext* pContext) override final;
+    virtual ID3D12Resource* CALLTYPE GetD3D12Buffer(UInt64& DataStartByteOffset, IDeviceContext* pContext) override final;
 
     /// Implementation of IBuffer::GetNativeHandle().
-    virtual UInt64 DILIGENT_CALL_TYPE GetNativeHandle() override final
+    virtual UInt64 CALLTYPE GetNativeHandle() override final
     {
         VERIFY(GetD3D12Resource() != nullptr, "The buffer is dynamic and has no pointer to D3D12 resource");
         UInt64          DataStartByteOffset = 0;
@@ -79,13 +79,13 @@ public:
     }
 
     /// Implementation of IBufferD3D12::SetD3D12ResourceState().
-    virtual void DILIGENT_CALL_TYPE SetD3D12ResourceState(D3D12_RESOURCE_STATES state) override final;
+    virtual void CALLTYPE SetD3D12ResourceState(D3D12_RESOURCE_STATES state) override final;
 
     /// Implementation of IBufferD3D12::GetD3D12ResourceState().
-    virtual D3D12_RESOURCE_STATES DILIGENT_CALL_TYPE GetD3D12ResourceState() const override final;
+    virtual D3D12_RESOURCE_STATES CALLTYPE GetD3D12ResourceState() const override final;
 
     /// Implementation of IBuffer::GetSparseProperties().
-    virtual SparseBufferProperties DILIGENT_CALL_TYPE GetSparseProperties() const override final;
+    virtual SparseBufferProperties CALLTYPE GetSparseProperties() const override final;
 
     __forceinline D3D12_GPU_VIRTUAL_ADDRESS GetGPUAddress()
     {

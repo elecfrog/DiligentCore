@@ -63,7 +63,7 @@ public:
                     bool                    IsDeviceInternal = false);
     ~ShaderD3D12Impl();
 
-    virtual void DILIGENT_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
+    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
     using IObject::QueryInterface;
 
     const Char* GetEntryPoint() const { return m_EntryPoint.c_str(); }

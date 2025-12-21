@@ -32,15 +32,14 @@
 
 #include "../../GraphicsEngine/interface/DeviceContext.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 struct ISwapChainGL;
 
 // {3464FDF1-C548-4935-96C3-B454C9DF6F6A}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_DeviceContextGL =
+static constexpr INTERFACE_ID IID_DeviceContextGL =
     {0x3464fdf1, 0xc548, 0x4935, {0x96, 0xc3, 0xb4, 0x54, 0xc9, 0xdf, 0x6f, 0x6a}};
 
-#define DILIGENT_INTERFACE_NAME IDeviceContextGL
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IDeviceContextGLInclusiveMethods \
@@ -59,23 +58,23 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContextGL, IDeviceContext)
     /// is passed over from the main application.
     ///
     /// \return     false if there is no active GL context, and true otherwise.
-    VIRTUAL Bool METHOD(UpdateCurrentGLContext)(THIS) PURE;
+    virtual Bool METHOD(UpdateCurrentGLContext)( ) =0;
 
     /// Purges current OpenGL context caches (e.g. VAO, FBO).
 
     /// If an application uses multiple GL contexts, this method must be called
     /// before the current context is about to be released,
     /// to let the engine cleanup internal OpenGL object caches.
-    VIRTUAL void METHOD(PurgeCurrentGLContextCaches)(THIS) PURE;
+    virtual void METHOD(PurgeCurrentGLContextCaches)( ) =0;
 
     /// Sets the swap in the device context. The swap chain is used by the device context
     /// to obtain the default FBO handle.
-    VIRTUAL void METHOD(SetSwapChain)(THIS_
-                                      struct ISwapChainGL* pSwapChain) PURE;
+    virtual void METHOD(SetSwapChain)(
+                                      struct ISwapChainGL* pSwapChain) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -89,4 +88,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

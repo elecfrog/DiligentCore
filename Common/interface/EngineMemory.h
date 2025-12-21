@@ -32,7 +32,7 @@
 
 #include "../../Primitives/interface/MemoryAllocator.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 /// Sets raw memory allocator. This function must be called before any memory allocation/deallocation function
 /// is called.
@@ -47,7 +47,7 @@ IMemoryAllocator& GetStringAllocator();
 #define ALLOCATE(Allocator, Desc, Type, Count) reinterpret_cast<Type*>(ALLOCATE_RAW(Allocator, Desc, sizeof(Type) * (Count)))
 #define FREE(Allocator, Ptr)                   Allocator.Free(Ptr)
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent
 
 
 #if 0

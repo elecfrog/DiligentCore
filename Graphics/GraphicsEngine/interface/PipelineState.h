@@ -48,7 +48,7 @@
 #include "PipelineResourceSignature.h"
 #include "PipelineStateCache.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 /// Sample description
@@ -1062,10 +1062,9 @@ DILIGENT_TYPED_ENUM(PIPELINE_STATE_STATUS, UInt32)
 
 
 // {06084AE5-6A71-4FE8-84B9-395DD489A28C}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_PipelineState =
+static constexpr struct INTERFACE_ID IID_PipelineState =
     {0x6084ae5, 0x6a71, 0x4fe8, {0x84, 0xb9, 0x39, 0x5d, 0xd4, 0x89, 0xa2, 0x8c}};
 
-#define DILIGENT_INTERFACE_NAME IPipelineState
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IPipelineStateInclusiveMethods \
@@ -1075,7 +1074,7 @@ static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_PipelineState =
 // clang-format off
 
 /// Pipeline state interface
-DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
+struct IPipelineState : public IDeviceObject
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the pipeline description used to create the object
@@ -1085,17 +1084,17 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     /// Returns the graphics pipeline description used to create the object.
 
     /// This method must only be called for a graphics or mesh pipeline.
-    VIRTUAL const GraphicsPipelineDesc REF METHOD(GetGraphicsPipelineDesc)(THIS) CONST PURE;
+    virtual const GraphicsPipelineDesc  & METHOD(GetGraphicsPipelineDesc)( ) const =0;
 
     /// Returns the ray tracing pipeline description used to create the object.
 
     /// This method must only be called for a ray tracing pipeline.
-    VIRTUAL const RayTracingPipelineDesc REF METHOD(GetRayTracingPipelineDesc)(THIS) CONST PURE;
+    virtual const RayTracingPipelineDesc  & METHOD(GetRayTracingPipelineDesc)( ) const =0;
 
     /// Returns the tile pipeline description used to create the object.
 
     /// This method must only be called for a tile pipeline.
-    VIRTUAL const TilePipelineDesc REF METHOD(GetTilePipelineDesc)(THIS) CONST PURE;
+    virtual const TilePipelineDesc  & METHOD(GetTilePipelineDesc)( ) const =0;
 
     /// Binds resources for all shaders in the pipeline state.
 
@@ -1108,10 +1107,10 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::BindStaticResources() method.
-    VIRTUAL void METHOD(BindStaticResources)(THIS_
+    virtual void METHOD(BindStaticResources)(
                                              SHADER_TYPE                 ShaderStages,
                                              IResourceMapping*           pResourceMapping,
-                                             BIND_SHADER_RESOURCES_FLAGS Flags) PURE;
+                                             BIND_SHADER_RESOURCES_FLAGS Flags) =0;
 
 
     /// Returns the number of static shader resource variables.
@@ -1125,8 +1124,8 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::GetStaticVariableCount() method.
-    VIRTUAL UInt32 METHOD(GetStaticVariableCount)(THIS_
-                                                  SHADER_TYPE ShaderType) CONST PURE;
+    virtual UInt32 METHOD(GetStaticVariableCount)(
+                                                  SHADER_TYPE ShaderType) const =0;
 
 
     /// Returns static shader resource variable.
@@ -1144,9 +1143,9 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::GetStaticVariableByName() method.
-    VIRTUAL IShaderResourceVariable* METHOD(GetStaticVariableByName)(THIS_
+    virtual IShaderResourceVariable* METHOD(GetStaticVariableByName)(
                                                                      SHADER_TYPE ShaderType,
-                                                                     const Char* Name) PURE;
+                                                                     const Char* Name) =0;
 
 
     /// Returns static shader resource variable by its index.
@@ -1165,9 +1164,9 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::GetStaticVariableByIndex() method.
-    VIRTUAL IShaderResourceVariable* METHOD(GetStaticVariableByIndex)(THIS_
+    virtual IShaderResourceVariable* METHOD(GetStaticVariableByIndex)(
                                                                       SHADER_TYPE ShaderType,
-                                                                      UInt32      Index) PURE;
+                                                                      UInt32      Index) =0;
 
 
     /// Creates a shader resource binding object.
@@ -1182,9 +1181,9 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::CreateShaderResourceBinding() method.
-    VIRTUAL void METHOD(CreateShaderResourceBinding)(THIS_
+    virtual void METHOD(CreateShaderResourceBinding)(
                                                      IShaderResourceBinding** ppShaderResourceBinding,
-                                                     Bool                     InitStaticResources DEFAULT_VALUE(false)) PURE;
+                                                     Bool                     InitStaticResources DEFAULT_VALUE(false)) =0;
 
 
 
@@ -1206,8 +1205,8 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::InitializeStaticSRBResources() method.
-    VIRTUAL void METHOD(InitializeStaticSRBResources)(THIS_
-                                                      struct IShaderResourceBinding* pShaderResourceBinding) CONST PURE;
+    virtual void METHOD(InitializeStaticSRBResources)(
+                                                      struct IShaderResourceBinding* pShaderResourceBinding) const =0;
 
 
     /// Copies static resource bindings to the destination pipeline.
@@ -1220,8 +1219,8 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::CopyStaticResources() method.
-    VIRTUAL void METHOD(CopyStaticResources)(THIS_
-                                             IPipelineState* pDstPipeline) CONST PURE;
+    virtual void METHOD(CopyStaticResources)(
+                                             IPipelineState* pDstPipeline) const =0;
 
 
     /// Checks if this pipeline state object is compatible with another PSO
@@ -1250,8 +1249,8 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     /// while switching partially compatible PSOs still requires re-binding all resource bindings from all signatures.
     /// In other backends the behavior is emulated. Usually, the bindings from the first N compatible resource signatures
     /// may be preserved.
-    VIRTUAL bool METHOD(IsCompatibleWith)(THIS_
-                                          const struct IPipelineState* pPSO) CONST PURE;
+    virtual bool METHOD(IsCompatibleWith)(
+                                          const struct IPipelineState* pPSO) const =0;
 
 
     /// Returns the number of pipeline resource signatures used by this pipeline.
@@ -1259,14 +1258,14 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     /// After the PSO is created, pipeline resource signatures are arranged by their binding indices.
     /// The value returned by this function is given by the maximum signature binding index plus one,
     /// and thus may not be equal to PipelineStateCreateInfo::ResourceSignaturesCount.
-    VIRTUAL UInt32 METHOD(GetResourceSignatureCount)(THIS) CONST PURE;
+    virtual UInt32 METHOD(GetResourceSignatureCount)( ) const =0;
 
     /// Returns pipeline resource signature at the give index.
 
     /// \param [in] Index - Index of the resource signature, same as BindingIndex in PipelineResourceSignatureDesc.
     /// \return     A pointer to the pipeline resource signature interface.
-    VIRTUAL IPipelineResourceSignature* METHOD(GetResourceSignature)(THIS_
-                                                                     UInt32 Index) CONST PURE;
+    virtual IPipelineResourceSignature* METHOD(GetResourceSignature)(
+                                                                     UInt32 Index) const =0;
 
     /// Returns the pipeline state status, see Diligent::PIPELINE_STATE_STATUS.
 
@@ -1274,12 +1273,12 @@ DILIGENT_BEGIN_INTERFACE(IPipelineState, IDeviceObject)
     ///                                 If false, the method will return the pipeline state status without waiting.
     /// 							    This parameter is ignored if the pipeline state was compiled synchronously.
     /// \return     The pipeline state status.
-    VIRTUAL PIPELINE_STATE_STATUS METHOD(GetStatus)(THIS_
-                                                    bool WaitForCompletion DEFAULT_VALUE(false)) PURE;
+    virtual PIPELINE_STATE_STATUS METHOD(GetStatus)(
+                                                    bool WaitForCompletion DEFAULT_VALUE(false)) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -1306,4 +1305,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE
+ }

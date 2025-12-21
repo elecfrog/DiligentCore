@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/Texture.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {CF5522EF-8116-4D76-ADF1-5CC8FB31FF66}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureD3D12 =
+static constexpr INTERFACE_ID IID_TextureD3D12 =
     {0xcf5522ef, 0x8116, 0x4d76, {0xad, 0xf1, 0x5c, 0xc8, 0xfb, 0x31, 0xff, 0x66}};
 
-#define DILIGENT_INTERFACE_NAME ITextureD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITextureD3D12InclusiveMethods \
@@ -54,23 +53,23 @@ DILIGENT_BEGIN_INTERFACE(ITextureD3D12, ITexture)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D12Resource* METHOD(GetD3D12Texture)(THIS) CONST PURE;
+    virtual ID3D12Resource* METHOD(GetD3D12Texture)( ) const =0;
 
     /// Sets the texture usage state
 
     /// \param [in] state - D3D12 resource state to be set for this texture
-    VIRTUAL void METHOD(SetD3D12ResourceState)(THIS_
-                                               D3D12_RESOURCE_STATES state) PURE;
+    virtual void METHOD(SetD3D12ResourceState)(
+                                               D3D12_RESOURCE_STATES state) =0;
 
     /// Returns current D3D12 texture state.
 
     /// If the state is unknown to the engine (Diligent::RESOURCE_STATE_UNKNOWN),
     /// returns `D3D12_RESOURCE_STATE_COMMON` (0).
-    VIRTUAL D3D12_RESOURCE_STATES METHOD(GetD3D12ResourceState)(THIS) CONST PURE;
+    virtual D3D12_RESOURCE_STATES METHOD(GetD3D12ResourceState)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -84,4 +83,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

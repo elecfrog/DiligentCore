@@ -29,13 +29,12 @@
 
 #include "../../GraphicsEngine/interface/TopLevelAS.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {2156C051-350D-4FCE-84F3-295B536622D3}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TopLevelASMtl =
+static constexpr INTERFACE_ID IID_TopLevelASMtl =
     {0x2156c051, 0x350d, 0x4fce, {0x84, 0xf3, 0x29, 0x5b, 0x53, 0x66, 0x22, 0xd3}};
 
-#define DILIGENT_INTERFACE_NAME ITopLevelASMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITopLevelASMtlInclusiveMethods \
@@ -48,11 +47,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_TopLevelASMtl =
 DILIGENT_BEGIN_INTERFACE(ITopLevelASMtl, ITopLevelAS)
 {
     /// Returns a pointer to a Metal acceleration structure object.
-    VIRTUAL id<MTLAccelerationStructure> METHOD(GetMtlAccelerationStructure)(THIS) CONST API_AVAILABLE(ios(14), macosx(11.0)) API_UNAVAILABLE(tvos) PURE;
+    virtual id<MTLAccelerationStructure> METHOD(GetMtlAccelerationStructure)( ) const API_AVAILABLE(ios(14), macosx(11.0)) API_UNAVAILABLE(tvos) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -60,4 +59,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

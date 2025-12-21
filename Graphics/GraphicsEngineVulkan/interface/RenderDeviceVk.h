@@ -32,37 +32,35 @@
 
 #include "../../GraphicsEngine/interface/RenderDevice.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent
+{
 
 // {AB8CF3A6-D959-41C1-AE00-A58AE9820E6A}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_RenderDeviceVk =
+static constexpr INTERFACE_ID IID_RenderDeviceVk =
     {0xab8cf3a6, 0xd959, 0x41c1, {0xae, 0x0, 0xa5, 0x8a, 0xe9, 0x82, 0xe, 0x6a}};
 
-#define DILIGENT_INTERFACE_NAME IRenderDeviceVk
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IRenderDeviceVkInclusiveMethods \
     IRenderDeviceInclusiveMethods;      \
     IRenderDeviceVkMethods RenderDeviceVk
 
-// clang-format off
-
 /// Exposes Vulkan-specific functionality of a render device.
-DILIGENT_BEGIN_INTERFACE(IRenderDeviceVk, IRenderDevice)
+struct IRenderDeviceVk : public IRenderDevice
 {
     /// Returns a handle of the logical Vulkan device
-    VIRTUAL VkDevice METHOD(GetVkDevice)(THIS) PURE;
+    virtual VkDevice METHOD(GetVkDevice)() = 0;
 
     /// Returns a handle of the physical Vulkan device
-    VIRTUAL VkPhysicalDevice METHOD(GetVkPhysicalDevice)(THIS) PURE;
+    virtual VkPhysicalDevice METHOD(GetVkPhysicalDevice)() = 0;
 
     /// Returns Vulkan instance
-    VIRTUAL VkInstance METHOD(GetVkInstance)(THIS) PURE;
+    virtual VkInstance METHOD(GetVkInstance)() = 0;
 
     /// Returns Vulkan API version
 
     /// \note This version is the minimum of the instance version and what the physical device supports.
-    VIRTUAL UInt32 METHOD(GetVkVersion)(THIS) PURE;
+    virtual UInt32 METHOD(GetVkVersion)() = 0;
 
     /// Creates a texture object from native Vulkan image
 
@@ -79,11 +77,11 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceVk, IRenderDevice)
     /// \note  Created texture object does not take ownership of the Vulkan image and will not
     ///        destroy it once released. The application must not destroy the image while it is
     ///        in use by the engine.
-    VIRTUAL void METHOD(CreateTextureFromVulkanImage)(THIS_
-                                                      VkImage               vkImage,
-                                                      const TextureDesc REF TexDesc,
-                                                      RESOURCE_STATE        InitialState,
-                                                      ITexture**            ppTexture) PURE;
+    virtual void METHOD(CreateTextureFromVulkanImage)(
+        VkImage            vkImage,
+        const TextureDesc& TexDesc,
+        RESOURCE_STATE     InitialState,
+        ITexture**         ppTexture) = 0;
 
     /// Creates a buffer object from native Vulkan resource
 
@@ -100,11 +98,11 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceVk, IRenderDevice)
     /// \note  Created buffer object does not take ownership of the Vulkan buffer and will not
     ///        destroy it once released. The application must not destroy Vulkan buffer while it is
     ///        in use by the engine.
-    VIRTUAL void METHOD(CreateBufferFromVulkanResource)(THIS_
-                                                        VkBuffer             vkBuffer,
-                                                        const BufferDesc REF BuffDesc,
-                                                        RESOURCE_STATE       InitialState,
-                                                        IBuffer**            ppBuffer) PURE;
+    virtual void METHOD(CreateBufferFromVulkanResource)(
+        VkBuffer          vkBuffer,
+        const BufferDesc& BuffDesc,
+        RESOURCE_STATE    InitialState,
+        IBuffer**         ppBuffer) = 0;
 
     /// Creates a bottom-level AS object from native Vulkan resource
 
@@ -120,11 +118,11 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceVk, IRenderDevice)
     /// \note  Created bottom-level AS object does not take ownership of the Vulkan acceleration structure and will not
     ///        destroy it once released. The application must not destroy Vulkan acceleration structure while it is
     ///        in use by the engine.
-    VIRTUAL void METHOD(CreateBLASFromVulkanResource)(THIS_
-                                                      VkAccelerationStructureKHR  vkBLAS,
-                                                      const BottomLevelASDesc REF Desc,
-                                                      RESOURCE_STATE              InitialState,
-                                                      IBottomLevelAS**            ppBLAS) PURE;
+    virtual void METHOD(CreateBLASFromVulkanResource)(
+        VkAccelerationStructureKHR vkBLAS,
+        const BottomLevelASDesc&   Desc,
+        RESOURCE_STATE             InitialState,
+        IBottomLevelAS**           ppBLAS) = 0;
 
     /// Creates a top-level AS object from native Vulkan resource
 
@@ -140,11 +138,11 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceVk, IRenderDevice)
     /// \note  Created top-level AS object does not take ownership of the Vulkan acceleration structure and will not
     ///        destroy it once released. The application must not destroy Vulkan acceleration structure while it is
     ///        in use by the engine.
-    VIRTUAL void METHOD(CreateTLASFromVulkanResource)(THIS_
-                                                      VkAccelerationStructureKHR vkTLAS,
-                                                      const TopLevelASDesc REF   Desc,
-                                                      RESOURCE_STATE             InitialState,
-                                                      ITopLevelAS**              ppTLAS) PURE;
+    virtual void METHOD(CreateTLASFromVulkanResource)(
+        VkAccelerationStructureKHR vkTLAS,
+        const TopLevelASDesc&      Desc,
+        RESOURCE_STATE             InitialState,
+        ITopLevelAS**              ppTLAS) = 0;
 
     /// Creates a fence object from native Vulkan resource
 
@@ -158,39 +156,17 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceVk, IRenderDevice)
     /// \note  Created fence object does not take ownership of the Vulkan semaphore and will not
     ///        destroy it once released. The application must not destroy Vulkan semaphore while it is
     ///        in use by the engine.
-    VIRTUAL void METHOD(CreateFenceFromVulkanResource)(THIS_
-                                                       VkSemaphore         vkTimelineSemaphore,
-                                                       const FenceDesc REF Desc,
-                                                       IFence**            ppFence) PURE;
+    virtual void METHOD(CreateFenceFromVulkanResource)(
+        VkSemaphore      vkTimelineSemaphore,
+        const FenceDesc& Desc,
+        IFence**         ppFence) = 0;
 
     /// Returns Vulkan-specific device features, see Diligent::DeviceFeaturesVk.
-    VIRTUAL void METHOD(GetDeviceFeaturesVk)(THIS_
-                                             DeviceFeaturesVk REF FeaturesVk) CONST PURE;
+    virtual void METHOD(GetDeviceFeaturesVk)(
+        DeviceFeaturesVk& FeaturesVk) const = 0;
 
     /// Returns DX compiler interface, or null if the compiler is not loaded.
-    VIRTUAL struct IDXCompiler* METHOD(GetDXCompiler)(THIS) CONST PURE;
+    virtual struct IDXCompiler* METHOD(GetDXCompiler)() const = 0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
-
-#if DILIGENT_C_INTERFACE
-
-// clang-format off
-
-#    define IRenderDeviceVk_GetVkDevice(This)                         CALL_IFACE_METHOD(RenderDeviceVk, GetVkDevice,                    This)
-#    define IRenderDeviceVk_GetVkPhysicalDevice(This)                 CALL_IFACE_METHOD(RenderDeviceVk, GetVkPhysicalDevice,            This)
-#    define IRenderDeviceVk_GetVkInstance(This)                       CALL_IFACE_METHOD(RenderDeviceVk, GetVkInstance,                  This)
-#    define IRenderDeviceVk_CreateTextureFromVulkanImage(This, ...)   CALL_IFACE_METHOD(RenderDeviceVk, CreateTextureFromVulkanImage,   This, __VA_ARGS__)
-#    define IRenderDeviceVk_CreateBufferFromVulkanResource(This, ...) CALL_IFACE_METHOD(RenderDeviceVk, CreateBufferFromVulkanResource, This, __VA_ARGS__)
-#    define IRenderDeviceVk_CreateBLASFromVulkanResource(This, ...)   CALL_IFACE_METHOD(RenderDeviceVk, CreateBLASFromVulkanResource,   This, __VA_ARGS__)
-#    define IRenderDeviceVk_CreateTLASFromVulkanResource(This, ...)   CALL_IFACE_METHOD(RenderDeviceVk, CreateTLASFromVulkanResource,   This, __VA_ARGS__)
-#    define IRenderDeviceVk_CreateFenceFromVulkanResource(This, ...)  CALL_IFACE_METHOD(RenderDeviceVk, CreateFenceFromVulkanResource,  This, __VA_ARGS__)
-#    define IRenderDeviceVk_GetDeviceFeaturesVk(This, ...)            CALL_IFACE_METHOD(RenderDeviceVk, GetDeviceFeaturesVk,            This, __VA_ARGS__)
-#    define IRenderDeviceVk_GetDXCompiler(This)                       CALL_IFACE_METHOD(RenderDeviceVk, GetDXCompiler,                  This)
-
-// clang-format on
-
-#endif
-
-DILIGENT_END_NAMESPACE // namespace Diligent
+} // namespace Diligent

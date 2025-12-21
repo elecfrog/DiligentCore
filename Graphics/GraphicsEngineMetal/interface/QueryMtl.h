@@ -29,13 +29,12 @@
 
 #include "../../GraphicsEngine/interface/Query.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {514BAE55-C3E9-4D78-A013-63522FD595DA}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_QueryMtl =
+static constexpr INTERFACE_ID IID_QueryMtl =
     {0x514bae55, 0xc3e9, 0x4d78, {0xa0, 0x13, 0x63, 0x52, 0x2f, 0xd5, 0x95, 0xda}};
 
-#define DILIGENT_INTERFACE_NAME IQueryMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IQueryMtlInclusiveMethods \
@@ -46,11 +45,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_QueryMtl =
 
 /// Exposes Metal-specific functionality of a Query object.
 DILIGENT_BEGIN_INTERFACE(IQueryMtl, IQuery){};
-DILIGENT_END_INTERFACE
+
 
 #endif
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -66,4 +65,4 @@ typedef struct IQueryMtl
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

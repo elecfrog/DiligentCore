@@ -42,7 +42,7 @@
 #    define DILIGENT_ARCHIVER_EXPLICIT_LOAD 1
 #endif
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 typedef struct IArchiverFactory* (*GetArchiverFactoryType)();
 
@@ -81,4 +81,4 @@ inline struct IArchiverFactory* DILIGENT_GLOBAL_FUNCTION(LoadAndGetArchiverFacto
     return GetFactoryFunc();
 }
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

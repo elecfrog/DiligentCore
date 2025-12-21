@@ -51,35 +51,35 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_CommandQueueD3D12, TBase)
 
     // Implementation of ICommandQueue::GetNextFenceValue().
-    virtual UInt64 DILIGENT_CALL_TYPE GetNextFenceValue() const override final { return m_NextFenceValue.load(); }
+    virtual UInt64 CALLTYPE GetNextFenceValue() const override final { return m_NextFenceValue.load(); }
 
     // Implementation of ICommandQueue::WaitForIdle().
-    virtual UInt64 DILIGENT_CALL_TYPE WaitForIdle() override final;
+    virtual UInt64 CALLTYPE WaitForIdle() override final;
 
     // Implementation of ICommandQueue::GetCompletedFenceValue().
-    virtual UInt64 DILIGENT_CALL_TYPE GetCompletedFenceValue() override final;
+    virtual UInt64 CALLTYPE GetCompletedFenceValue() override final;
 
     // Implementation of ICommandQueueD3D12::Submit().
-    virtual UInt64 DILIGENT_CALL_TYPE Submit(UInt32                    NumCommandLists,
+    virtual UInt64 CALLTYPE Submit(UInt32                    NumCommandLists,
                                              ID3D12CommandList* const* ppCommandLists) override final;
 
     // Implementation of ICommandQueueD3D12::GetD3D12CommandQueue().
-    virtual ID3D12CommandQueue* DILIGENT_CALL_TYPE GetD3D12CommandQueue() override final { return m_pd3d12CmdQueue; }
+    virtual ID3D12CommandQueue* CALLTYPE GetD3D12CommandQueue() override final { return m_pd3d12CmdQueue; }
 
     // Implementation of ICommandQueueD3D12::EnqueueSignal().
-    virtual void DILIGENT_CALL_TYPE EnqueueSignal(ID3D12Fence* pFence, UInt64 Value) override final;
+    virtual void CALLTYPE EnqueueSignal(ID3D12Fence* pFence, UInt64 Value) override final;
 
     // Implementation of ICommandQueueD3D12::WaitFence().
-    virtual void DILIGENT_CALL_TYPE WaitFence(ID3D12Fence* pFence, UInt64 Value) override final;
+    virtual void CALLTYPE WaitFence(ID3D12Fence* pFence, UInt64 Value) override final;
 
     // Implementation of ICommandQueueD3D12::GetD3D12CommandQueueDesc().
-    virtual const D3D12_COMMAND_QUEUE_DESC& DILIGENT_CALL_TYPE GetD3D12CommandQueueDesc(THIS) const override final
+    virtual const D3D12_COMMAND_QUEUE_DESC& CALLTYPE GetD3D12CommandQueueDesc( ) const override final
     {
         return m_d3d12CmdQueueDesc;
     }
 
     // Implementation of ICommandQueueD3D12::UpdateTileMappings().
-    virtual void DILIGENT_CALL_TYPE UpdateTileMappings(ResourceTileMappingsD3D12* pMappings,
+    virtual void CALLTYPE UpdateTileMappings(ResourceTileMappingsD3D12* pMappings,
                                                        UInt32                     Count) override final;
 
 private:

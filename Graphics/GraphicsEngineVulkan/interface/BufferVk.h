@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/Buffer.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {12D8EC02-96F4-431E-9695-C5F572CC7587}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferVk =
+static constexpr INTERFACE_ID IID_BufferVk =
     {0x12d8ec02, 0x96f4, 0x431e, {0x96, 0x95, 0xc5, 0xf5, 0x72, 0xcc, 0x75, 0x87}};
 
-#define DILIGENT_INTERFACE_NAME IBufferVk
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBufferVkInclusiveMethods \
@@ -51,26 +50,26 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferVk =
 DILIGENT_BEGIN_INTERFACE(IBufferVk, IBuffer)
 {
     /// Returns a Vulkan handle of the internal buffer object.
-    VIRTUAL VkBuffer METHOD(GetVkBuffer)(THIS) CONST PURE;
+    virtual VkBuffer METHOD(GetVkBuffer)( ) const =0;
 
     /// Sets the Vulkan access flags.
 
     /// \param [in] AccessFlags - Vulkan access flags to be set for this buffer
-    VIRTUAL void METHOD(SetAccessFlags)(THIS_
-                                        VkAccessFlags AccessFlags) PURE;
+    virtual void METHOD(SetAccessFlags)(
+                                        VkAccessFlags AccessFlags) =0;
 
     /// Returns Vulkan access flags corresponding to the buffer state.
 
     /// If the buffer state is known to the engine (i.e. not Diligent::RESOURCE_STATE_UNKNOWN),
     /// returns Vulkan access flags corresponding to the state. If the state is unknown, returns 0.
-    VIRTUAL VkAccessFlags METHOD(GetAccessFlags)(THIS) CONST PURE;
+    virtual VkAccessFlags METHOD(GetAccessFlags)( ) const =0;
 
     /// Returns a Vulkan device address of the internal buffer object.
-    VIRTUAL VkDeviceAddress METHOD(GetVkDeviceAddress)(THIS) CONST PURE;
+    virtual VkDeviceAddress METHOD(GetVkDeviceAddress)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -81,4 +80,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

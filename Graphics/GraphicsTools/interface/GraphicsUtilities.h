@@ -35,9 +35,9 @@
 #include "../../GraphicsEngine/interface/RenderDevice.h"
 #include "../../../Common/interface/GeometryPrimitives.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
-#include "../../../Primitives/interface/DefineRefMacro.h"
+
 
 // clang-format off
 void DILIGENT_GLOBAL_FUNCTION(CreateUniformBuffer)(IRenderDevice*                  pDevice,
@@ -138,7 +138,7 @@ struct ComputeMipLevelAttribs
 typedef struct ComputeMipLevelAttribs ComputeMipLevelAttribs;
 // clang-format on
 
-void DILIGENT_GLOBAL_FUNCTION(ComputeMipLevel)(const ComputeMipLevelAttribs REF Attribs);
+void DILIGENT_GLOBAL_FUNCTION(ComputeMipLevel)(const ComputeMipLevelAttribs  & Attribs);
 
 
 /// Creates a sparse texture in Metal backend.
@@ -153,7 +153,7 @@ void DILIGENT_GLOBAL_FUNCTION(ComputeMipLevel)(const ComputeMipLevelAttribs REF 
 /// creates a sparse texture using IRenderDeviceMtl::CreateSparseTexture method.
 /// Otherwise, it does nothing.
 void DILIGENT_GLOBAL_FUNCTION(CreateSparseTextureMtl)(IRenderDevice*        pDevice,
-                                                      const TextureDesc REF TexDesc,
+                                                      const TextureDesc  & TexDesc,
                                                       IDeviceMemory*        pMemory,
                                                       ITexture**            ppTexture);
 
@@ -276,7 +276,7 @@ typedef struct GeometryPrimitiveBuffersCreateInfo GeometryPrimitiveBuffersCreate
 /// \param [out] pInfo      - A pointer to the structure that will receive information about the created geometry primitive.
 ///                           See Diligent::GeometryPrimitiveInfo.
 void DILIGENT_GLOBAL_FUNCTION(CreateGeometryPrimitiveBuffers)(IRenderDevice*                            pDevice,
-                                                              const GeometryPrimitiveAttributes REF     Attribs,
+                                                              const GeometryPrimitiveAttributes  &     Attribs,
                                                               const GeometryPrimitiveBuffersCreateInfo* pBufferCI,
                                                               IBuffer**                                 ppVertices,
                                                               IBuffer**                                 ppIndices,
@@ -291,6 +291,6 @@ void DILIGENT_GLOBAL_FUNCTION(CreateGeometryPrimitiveBuffers)(IRenderDevice*    
 ///             or if the compiler is not loaded, returns null.
 struct IDXCompiler* DILIGENT_GLOBAL_FUNCTION(GetDeviceDXCompiler)(IRenderDevice* pDevice);
 
-#include "../../../Primitives/interface/UndefRefMacro.h"
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+
+ } // namespace Diligent

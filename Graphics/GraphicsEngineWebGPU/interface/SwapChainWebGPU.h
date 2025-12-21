@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/SwapChain.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {C298E077-D10D-4704-A50E-3A1598B09595}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_SwapChainWebGPU =
+static constexpr INTERFACE_ID IID_SwapChainWebGPU =
     {0xC298E077, 0xD10D, 0x4704, {0xA5, 0x0E, 0x3A, 0x15, 0x98, 0xB0, 0x95, 0x95}};
 
-#define DILIGENT_INTERFACE_NAME ISwapChainWebGPU
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ISwapChainWebGPUInclusiveMethods \
@@ -48,11 +47,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_SwapChainWebGPU =
 DILIGENT_BEGIN_INTERFACE(ISwapChainWebGPU, ISwapChain)
 {
     /// Returns a WebGPU handle to the internal surface object.
-    VIRTUAL WGPUSurface METHOD(GetWebGPUSurface)(THIS) PURE;
+    virtual WGPUSurface METHOD(GetWebGPUSurface)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -64,4 +63,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/CommandQueue.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {D89693CE-F3F4-44B5-B7EF-24115AAD085E}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_CommandQueueD3D12 =
+static constexpr INTERFACE_ID IID_CommandQueueD3D12 =
     {0xd89693ce, 0xf3f4, 0x44b5, {0xb7, 0xef, 0x24, 0x11, 0x5a, 0xad, 0x8, 0x5e}};
 
-#define DILIGENT_INTERFACE_NAME ICommandQueueD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ICommandQueueD3D12InclusiveMethods \
@@ -102,34 +101,34 @@ DILIGENT_BEGIN_INTERFACE(ICommandQueueD3D12, ICommandQueue)
     ///                               lists to submit.
     ///
     /// \return Fence value associated with the executed command lists.
-    VIRTUAL UInt64 METHOD(Submit)(THIS_
+    virtual UInt64 METHOD(Submit)(
                                   UInt32                    NumCommandLists,
-                                  ID3D12CommandList* const* ppCommandLists) PURE;
+                                  ID3D12CommandList* const* ppCommandLists) =0;
 
     /// Returns D3D12 command queue. May return null if queue is unavailable
-    VIRTUAL ID3D12CommandQueue* METHOD(GetD3D12CommandQueue)(THIS) PURE;
+    virtual ID3D12CommandQueue* METHOD(GetD3D12CommandQueue)( ) =0;
 
     /// Signals the given fence
-    VIRTUAL void METHOD(EnqueueSignal)(THIS_
+    virtual void METHOD(EnqueueSignal)(
                                        ID3D12Fence* pFence,
-                                       UInt64       Value) PURE;
+                                       UInt64       Value) =0;
 
     /// Instructs the GPU to wait until the fence reaches the specified value
-    VIRTUAL void METHOD(WaitFence)(THIS_
+    virtual void METHOD(WaitFence)(
                                    ID3D12Fence* pFence,
-                                   UInt64       Value) PURE;
+                                   UInt64       Value) =0;
 
     /// Updates mappings of tile locations in reserved resources to memory locations in a resource heap.
-    VIRTUAL void METHOD(UpdateTileMappings)(THIS_
+    virtual void METHOD(UpdateTileMappings)(
                                             ResourceTileMappingsD3D12* pMappings,
-                                            UInt32                     Count) PURE;
+                                            UInt32                     Count) =0;
 
     /// Returns the Direct3D12 command queue description
-    VIRTUAL const D3D12_COMMAND_QUEUE_DESC REF METHOD(GetD3D12CommandQueueDesc)(THIS) CONST PURE;
+    virtual const D3D12_COMMAND_QUEUE_DESC  & METHOD(GetD3D12CommandQueueDesc)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -146,4 +145,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

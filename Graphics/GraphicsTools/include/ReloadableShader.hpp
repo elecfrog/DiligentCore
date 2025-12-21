@@ -55,53 +55,53 @@ public:
 
     ~ReloadableShader();
 
-    virtual void DILIGENT_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
+    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
 
     using IObject::QueryInterface;
 
     // Delegate all calls to the internal shader object
 
-    virtual const ShaderDesc& DILIGENT_CALL_TYPE GetDesc() const override final
+    virtual const ShaderDesc& CALLTYPE GetDesc() const override final
     {
         return m_pShader->GetDesc();
     }
 
-    virtual Int32 DILIGENT_CALL_TYPE GetUniqueID() const override final
+    virtual Int32 CALLTYPE GetUniqueID() const override final
     {
         return m_pShader->GetUniqueID();
     }
 
-    virtual void DILIGENT_CALL_TYPE SetUserData(IObject* pUserData) override final
+    virtual void CALLTYPE SetUserData(IObject* pUserData) override final
     {
         m_pShader->SetUserData(pUserData);
     }
 
-    virtual IObject* DILIGENT_CALL_TYPE GetUserData() const override final
+    virtual IObject* CALLTYPE GetUserData() const override final
     {
         return m_pShader->GetUserData();
     }
 
-    virtual UInt32 DILIGENT_CALL_TYPE GetResourceCount() const override final
+    virtual UInt32 CALLTYPE GetResourceCount() const override final
     {
         return m_pShader->GetResourceCount();
     }
 
-    virtual void DILIGENT_CALL_TYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final
+    virtual void CALLTYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final
     {
         m_pShader->GetResourceDesc(Index, ResourceDesc);
     }
 
-    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(UInt32 Index) const override final
+    virtual const ShaderCodeBufferDesc* CALLTYPE GetConstantBufferDesc(UInt32 Index) const override final
     {
         return m_pShader->GetConstantBufferDesc(Index);
     }
 
-    virtual void DILIGENT_CALL_TYPE GetBytecode(const void** ppBytecode, UInt64& Size) const override final
+    virtual void CALLTYPE GetBytecode(const void** ppBytecode, UInt64& Size) const override final
     {
         m_pShader->GetBytecode(ppBytecode, Size);
     }
 
-    virtual SHADER_STATUS DILIGENT_CALL_TYPE GetStatus(bool WaitForCompletion) override final
+    virtual SHADER_STATUS CALLTYPE GetStatus(bool WaitForCompletion) override final
     {
         return m_pShader->GetStatus(WaitForCompletion);
     }

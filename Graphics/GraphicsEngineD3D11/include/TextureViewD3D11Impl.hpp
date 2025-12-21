@@ -54,7 +54,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_TextureViewD3D11, TTextureViewBase)
 
     /// Implementation of ITextureViewD3D11::GetD3D11View().
-    virtual ID3D11View* DILIGENT_CALL_TYPE GetD3D11View() override final
+    virtual ID3D11View* CALLTYPE GetD3D11View() override final
     {
         return m_pD3D11View;
     }

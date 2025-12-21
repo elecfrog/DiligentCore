@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/Buffer.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {08DF7319-F425-4EC7-8D2B-1B3FC0BDDBB4}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferGL =
+static constexpr INTERFACE_ID IID_BufferGL =
     {0x8df7319, 0xf425, 0x4ec7, {0x8d, 0x2b, 0x1b, 0x3f, 0xc0, 0xbd, 0xdb, 0xb4}};
 
-#define DILIGENT_INTERFACE_NAME IBufferGL
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBufferGLInclusiveMethods \
@@ -49,11 +48,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferGL =
 DILIGENT_BEGIN_INTERFACE(IBufferGL, IBuffer)
 {
     /// Returns OpenGL buffer handle
-    VIRTUAL GLuint METHOD(GetGLBufferHandle)(THIS) CONST PURE;
+    virtual GLuint METHOD(GetGLBufferHandle)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -61,4 +60,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

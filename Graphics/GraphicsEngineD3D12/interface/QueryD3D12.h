@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/Query.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {72D109BE-7D70-4E54-84EF-C649DA190B2C}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_QueryD3D12 =
+static constexpr INTERFACE_ID IID_QueryD3D12 =
     {0x72d109be, 0x7d70, 0x4e54, {0x84, 0xef, 0xc6, 0x49, 0xda, 0x19, 0xb, 0x2c}};
 
-#define DILIGENT_INTERFACE_NAME IQueryD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IQueryD3D12InclusiveMethods \
@@ -51,7 +50,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_QueryD3D12 =
 DILIGENT_BEGIN_INTERFACE(IQueryD3D12, IQuery)
 {
     /// Returns the Direct3D12 query heap that internal query object resides in.
-    VIRTUAL ID3D12QueryHeap* METHOD(GetD3D12QueryHeap)(THIS) PURE;
+    virtual ID3D12QueryHeap* METHOD(GetD3D12QueryHeap)( ) =0;
 
     /// Returns the index of a query object in Direct3D12 query heap.
 
@@ -59,14 +58,14 @@ DILIGENT_BEGIN_INTERFACE(IQueryD3D12, IQuery)
     ///                       Diligent::QUERY_TYPE_DURATION, in which case allowed values are 0 for the
     ///                       beginning timestamp query, and 1 for the ending query.
     /// \return the index of a query object in Direct3D12 query heap
-    VIRTUAL UInt32 METHOD(GetQueryHeapIndex)(THIS_
-                                             UInt32 QueryId) CONST PURE;
+    virtual UInt32 METHOD(GetQueryHeapIndex)(
+                                             UInt32 QueryId) const =0;
 };
-DILIGENT_END_INTERFACE
+
 
 // clang-format on
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -75,4 +74,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

@@ -61,29 +61,29 @@ public:
     IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_ShaderGL, IID_InternalImpl, TShaderBase)
 
     /// Implementation of IShader::GetResourceCount() in OpenGL backend.
-    virtual UInt32 DILIGENT_CALL_TYPE GetResourceCount() const override final;
+    virtual UInt32 CALLTYPE GetResourceCount() const override final;
 
     /// Implementation of IShader::GetResource() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final;
+    virtual void CALLTYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final;
 
     /// Implementation of IShader::GetConstantBufferDesc() in OpenGL backend.
-    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(UInt32 Index) const override final;
+    virtual const ShaderCodeBufferDesc* CALLTYPE GetConstantBufferDesc(UInt32 Index) const override final;
 
     /// Implementation of IShaderGL::GetGLShaderHandle() in OpenGL backend.
-    virtual GLuint DILIGENT_CALL_TYPE GetGLShaderHandle() const override final { return m_GLShaderObj; }
+    virtual GLuint CALLTYPE GetGLShaderHandle() const override final { return m_GLShaderObj; }
 
     const std::shared_ptr<const ShaderResourcesGL>& GetShaderResources() const { return m_pShaderResources; }
 
     SHADER_SOURCE_LANGUAGE GetSourceLanguage() const { return m_SourceLanguage; }
 
-    virtual void DILIGENT_CALL_TYPE GetBytecode(const void** ppData,
+    virtual void CALLTYPE GetBytecode(const void** ppData,
                                                 UInt64&      DataSize) const override final
     {
         *ppData  = !m_GLSLSourceString.empty() ? m_GLSLSourceString.c_str() : nullptr;
         DataSize = m_GLSLSourceString.length();
     }
 
-    virtual SHADER_STATUS DILIGENT_CALL_TYPE GetStatus(bool WaitForCompletion) override final;
+    virtual SHADER_STATUS CALLTYPE GetStatus(bool WaitForCompletion) override final;
 
 private:
     void CompileShader() noexcept;

@@ -29,13 +29,12 @@
 
 #include "../../GraphicsEngine/interface/PipelineState.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {B6A17C51-CCA9-44E1-A2DC-5DE250CF85AD}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_PipelineStateMtl =
+static constexpr INTERFACE_ID IID_PipelineStateMtl =
     {0xb6a17c51, 0xcca9, 0x44e1, {0xa2, 0xdc, 0x5d, 0xe2, 0x50, 0xcf, 0x85, 0xad}};
 
-#define DILIGENT_INTERFACE_NAME IPipelineStateMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IPipelineStateMtlInclusiveMethods \
@@ -46,17 +45,17 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_PipelineStateMtl =
 DILIGENT_BEGIN_INTERFACE(IPipelineStateMtl, IPipelineState)
 {
     /// Returns a pointer to Metal render pipeline (MTLRenderPipelineState)
-    VIRTUAL id<MTLRenderPipelineState> METHOD(GetMtlRenderPipeline)(THIS) CONST PURE;
+    virtual id<MTLRenderPipelineState> METHOD(GetMtlRenderPipeline)( ) const =0;
 
     /// Returns a pointer to Metal compute pipeline (MTLComputePipelineState)
-    VIRTUAL id<MTLComputePipelineState> METHOD(GetMtlComputePipeline)(THIS) CONST PURE;
+    virtual id<MTLComputePipelineState> METHOD(GetMtlComputePipeline)( ) const =0;
 
     /// Returns a pointer to Metal depth-stencil state object (MTLDepthStencilState)
-    VIRTUAL id<MTLDepthStencilState> METHOD(GetMtlDepthStencilState)(THIS) CONST PURE;
+    virtual id<MTLDepthStencilState> METHOD(GetMtlDepthStencilState)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -70,4 +69,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

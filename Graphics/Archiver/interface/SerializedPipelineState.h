@@ -32,13 +32,12 @@
 #include "../../GraphicsEngine/interface/PipelineState.h"
 #include "Archiver.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {23DBAA36-B34E-438E-800C-D28C66237361}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_SerializedPipelineState =
+static constexpr INTERFACE_ID IID_SerializedPipelineState =
     {0x23dbaa36, 0xb34e, 0x438e, {0x80, 0xc, 0xd2, 0x8c, 0x66, 0x23, 0x73, 0x61}};
 
-#define DILIGENT_INTERFACE_NAME ISerializedPipelineState
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ISerializedPipelineStateInclusiveMethods \
@@ -48,15 +47,15 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_SerializedPipelineState =
 // clang-format off
 
 /// Serialized pipeline state interface
-DILIGENT_BEGIN_INTERFACE(ISerializedPipelineState, IPipelineState)
+struct ISerializedPipelineState : public IPipelineState
 {
     /// Returns the number of patched shaders for the given device type.
 
     /// \param [in] DeviceType  - Device type for which to get the shader count.
     /// \return     The number of patched shaders for this device type.
-    VIRTUAL UInt32 METHOD(GetPatchedShaderCount)(
-        THIS_
-        ARCHIVE_DEVICE_DATA_FLAGS DeviceType) CONST PURE;
+    virtual UInt32 METHOD(GetPatchedShaderCount)(
+
+        ARCHIVE_DEVICE_DATA_FLAGS DeviceType) const =0;
 
     /// Returns the patched shader create information for the given device type and shader index.
 
@@ -66,14 +65,14 @@ DILIGENT_BEGIN_INTERFACE(ISerializedPipelineState, IPipelineState)
     ///                           returned by the GetPatchedShaderCount() for this
     ///                           device type.
     /// \return Shader create information for the requested device type and shader index.
-    VIRTUAL ShaderCreateInfo METHOD(GetPatchedShaderCreateInfo)(
-        THIS_
-        ARCHIVE_DEVICE_DATA_FLAGS DeviceType,
-        UInt32                    ShaderIndex) CONST PURE;
-};
-DILIGENT_END_INTERFACE
+    virtual ShaderCreateInfo METHOD(GetPatchedShaderCreateInfo)(
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+        ARCHIVE_DEVICE_DATA_FLAGS DeviceType,
+        UInt32                    ShaderIndex) const =0;
+};
+
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -82,4 +81,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

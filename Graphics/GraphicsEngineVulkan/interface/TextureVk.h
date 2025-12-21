@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/Texture.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {3BB9155F-22C5-4365-927E-8C4049F9B949}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureVk =
+static constexpr INTERFACE_ID IID_TextureVk =
     {0x3bb9155f, 0x22c5, 0x4365, {0x92, 0x7e, 0x8c, 0x40, 0x49, 0xf9, 0xb9, 0x49}};
 
-#define DILIGENT_INTERFACE_NAME ITextureVk
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITextureVkInclusiveMethods \
@@ -53,7 +52,7 @@ DILIGENT_BEGIN_INTERFACE(ITextureVk, ITexture)
     /// Returns Vulkan image handle.
 
     /// The application must not release the returned image
-    VIRTUAL VkImage METHOD(GetVkImage)(THIS) CONST PURE;
+    virtual VkImage METHOD(GetVkImage)( ) const =0;
 
     /// Sets Vulkan image layout
 
@@ -61,15 +60,15 @@ DILIGENT_BEGIN_INTERFACE(ITextureVk, ITexture)
     ///
     /// \note This function does not perform layout transition, but sets the
     ///       internal texture state to match the given Vulkan layout.
-    VIRTUAL void METHOD(SetLayout)(THIS_
-                                   VkImageLayout Layout) PURE;
+    virtual void METHOD(SetLayout)(
+                                   VkImageLayout Layout) =0;
 
     /// Returns current Vulkan image layout. If the state is unknown to the engine, returns VK_IMAGE_LAYOUT_UNDEFINED
-    VIRTUAL VkImageLayout METHOD(GetLayout)(THIS) CONST PURE;
+    virtual VkImageLayout METHOD(GetLayout)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -83,4 +82,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

@@ -36,17 +36,17 @@
 #include "Constants.h"
 #include "Buffer.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {E56F5755-FE5E-496C-BFA7-BCD535360FF7}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_BottomLevelAS =
+static constexpr INTERFACE_ID IID_BottomLevelAS =
     {0xe56f5755, 0xfe5e, 0x496c, {0xbf, 0xa7, 0xbc, 0xd5, 0x35, 0x36, 0xf, 0xf7}};
 
 // clang-format off
 
 #define DILIGENT_INVALID_INDEX 0xFFFFFFFFU
 
-static DILIGENT_CONSTEXPR UInt32 INVALID_INDEX = DILIGENT_INVALID_INDEX;
+static constexpr UInt32 INVALID_INDEX = DILIGENT_INVALID_INDEX;
 
 /// Defines bottom level acceleration structure triangles description.
 
@@ -272,7 +272,6 @@ struct ScratchBufferSizes
 typedef struct ScratchBufferSizes ScratchBufferSizes;
 
 
-#define DILIGENT_INTERFACE_NAME IBottomLevelAS
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBottomLevelASInclusiveMethods     \
@@ -286,7 +285,7 @@ DILIGENT_BEGIN_INTERFACE(IBottomLevelAS, IDeviceObject)
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the bottom level AS description used to create the object
-    virtual const BottomLevelASDesc& DILIGENT_CALL_TYPE GetDesc() const override = 0;
+    virtual const BottomLevelASDesc& CALLTYPE GetDesc() const override = 0;
 #endif
 
     /// Returns the geometry description index in BottomLevelASDesc::pTriangles or BottomLevelASDesc::pBoxes.
@@ -295,8 +294,8 @@ DILIGENT_BEGIN_INTERFACE(IBottomLevelAS, IDeviceObject)
     /// \return Geometry index or INVALID_INDEX if geometry does not exist.
     ///
     /// \note Access to the BLAS must be externally synchronized.
-    VIRTUAL UInt32 METHOD(GetGeometryDescIndex)(THIS_
-                                                const Char* Name) CONST PURE;
+    virtual UInt32 METHOD(GetGeometryDescIndex)(
+                                                const Char* Name) const =0;
 
 
     /// Returns the geometry index that can be used in a shader binding table.
@@ -305,8 +304,8 @@ DILIGENT_BEGIN_INTERFACE(IBottomLevelAS, IDeviceObject)
     /// \return Geometry index or INVALID_INDEX if geometry does not exist.
     ///
     /// \note Access to the BLAS must be externally synchronized.
-    VIRTUAL UInt32 METHOD(GetGeometryIndex)(THIS_
-                                            const Char* Name) CONST PURE;
+    virtual UInt32 METHOD(GetGeometryIndex)(
+                                            const Char* Name) const =0;
 
 
     /// Returns the geometry count that was used to build AS.
@@ -315,20 +314,20 @@ DILIGENT_BEGIN_INTERFACE(IBottomLevelAS, IDeviceObject)
     /// \return The number of geometries that was used to build AS.
     ///
     /// \note Access to the BLAS must be externally synchronized.
-    VIRTUAL UInt32 METHOD(GetActualGeometryCount)(THIS) CONST PURE;
+    virtual UInt32 METHOD(GetActualGeometryCount)( ) const =0;
 
 
     /// Returns the scratch buffer info for the current acceleration structure.
 
     /// \return ScratchBufferSizes object, see Diligent::ScratchBufferSizes.
-    VIRTUAL ScratchBufferSizes METHOD(GetScratchBufferSizes)(THIS) CONST PURE;
+    virtual ScratchBufferSizes METHOD(GetScratchBufferSizes)( ) const =0;
 
 
     /// Returns the native acceleration structure handle specific to the underlying graphics API
 
     /// \return pointer to ID3D12Resource interface, for D3D12 implementation\n
     ///         VkAccelerationStructure handle, for Vulkan implementation
-    VIRTUAL UInt64 METHOD(GetNativeHandle)(THIS) PURE;
+    virtual UInt64 METHOD(GetNativeHandle)( ) =0;
 
 
     /// Sets the acceleration structure usage state.
@@ -338,16 +337,16 @@ DILIGENT_BEGIN_INTERFACE(IBottomLevelAS, IDeviceObject)
     ///       This method should be used after the application finished
     ///       manually managing the acceleration structure state and wants to hand over
     ///       state management back to the engine.
-    VIRTUAL void METHOD(SetState)(THIS_
-                                  RESOURCE_STATE State) PURE;
+    virtual void METHOD(SetState)(
+                                  RESOURCE_STATE State) =0;
 
 
     /// Returns the internal acceleration structure state
-    VIRTUAL RESOURCE_STATE METHOD(GetState)(THIS) CONST PURE;
+    virtual RESOURCE_STATE METHOD(GetState)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -367,4 +366,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

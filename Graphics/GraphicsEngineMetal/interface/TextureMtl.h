@@ -29,13 +29,12 @@
 
 #include "../../GraphicsEngine/interface/Texture.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {D3A85032-224D-45E5-9825-3AABD61A5EA5}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureMtl =
+static constexpr INTERFACE_ID IID_TextureMtl =
     {0xd3a85032, 0x224d, 0x45e5, {0x98, 0x25, 0x3a, 0xab, 0xd6, 0x1a, 0x5e, 0xa5}};
 
-#define DILIGENT_INTERFACE_NAME ITextureMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITextureMtlInclusiveMethods \
@@ -50,14 +49,14 @@ DILIGENT_BEGIN_INTERFACE(ITextureMtl, ITexture)
     /// Returns a pointer to a Metal resource.
     /// For a staging texture, this will be a pointer to a MTLStorageModeShared buffer (MTLBuffer).
     /// For all other texture types, this will be a pointer to Metal texture object (MTLTexture).
-    VIRTUAL id<MTLResource> METHOD(GetMtlResource)(THIS) CONST PURE;
+    virtual id<MTLResource> METHOD(GetMtlResource)( ) const =0;
 
     /// Returns a pointer to the Metal heap where the texture is allocated.
-    VIRTUAL id<MTLHeap> METHOD(GetMtlHeap)(THIS) CONST PURE;
+    virtual id<MTLHeap> METHOD(GetMtlHeap)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -69,4 +68,4 @@ DILIGENT_END_INTERFACE
 // clang-format on
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

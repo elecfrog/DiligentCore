@@ -36,10 +36,10 @@
 
 #include "../../GraphicsEngine/interface/Shader.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {902FA43B-AFC6-4103-815F-C97AA31E0C7B}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderWebGPU =
+static constexpr INTERFACE_ID IID_ShaderWebGPU =
     {0x902fA43B, 0xAFC6, 0x4103, {0x81, 0x5F, 0xC9, 0x7A, 0xA3, 0x1E, 0x0C, 0x7B}};
 
 #define IShaderWebGPUInclusiveMethods \
@@ -53,7 +53,7 @@ class IShaderWebGPU : public IShader
 {
 public:
     /// Returns WGSL source code
-    virtual const std::string& DILIGENT_CALL_TYPE GetWGSL() const = 0;
+    virtual const std::string& CALLTYPE GetWGSL() const = 0;
 
     /// Returns emulated array index suffix
 
@@ -62,9 +62,9 @@ public:
     ///
     /// This value is defined by `ShaderCI.WebGPUEmulatedArrayIndexSuffix`,
     /// see Diligent::ShaderCreateInfo::WebGPUEmulatedArrayIndexSuffix.
-    virtual const char* DILIGENT_CALL_TYPE GetEmulatedArrayIndexSuffix() const = 0;
+    virtual const char* CALLTYPE GetEmulatedArrayIndexSuffix() const = 0;
 };
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

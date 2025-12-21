@@ -33,13 +33,12 @@
 #include "../../GraphicsEngine/interface/BottomLevelAS.h"
 #include "../../GraphicsEngine/interface/DeviceContext.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {610228AF-F161-4B12-A00E-71E6E3BB97FE}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_BottomLevelASD3D12 =
+static constexpr INTERFACE_ID IID_BottomLevelASD3D12 =
     {0x610228af, 0xf161, 0x4b12, {0xa0, 0xe, 0x71, 0xe6, 0xe3, 0xbb, 0x97, 0xfe}};
 
-#define DILIGENT_INTERFACE_NAME IBottomLevelASD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBottomLevelASD3D12InclusiveMethods \
@@ -55,11 +54,11 @@ DILIGENT_BEGIN_INTERFACE(IBottomLevelASD3D12, IBottomLevelAS)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D12Resource* METHOD(GetD3D12BLAS)(THIS) PURE;
+    virtual ID3D12Resource* METHOD(GetD3D12BLAS)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -67,4 +66,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

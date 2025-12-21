@@ -35,12 +35,12 @@
 #include "../../../Primitives/interface/FlagEnum.h"
 #include "DeviceObject.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 struct ISampler;
 
 // {5B2EA04E-8128-45E4-AA4D-6DC7E70DC424}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureView =
+static constexpr INTERFACE_ID IID_TextureView =
     {0x5b2ea04e, 0x8128, 0x45e4,{0xaa, 0x4d, 0x6d, 0xc7, 0xe7, 0xd, 0xc4, 0x24}};
 
 // clang-format off
@@ -251,9 +251,6 @@ struct TextureViewDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     /// will be referenced.
     UInt32 NumMipLevels            DEFAULT_INITIALIZER(0);
 
-#if defined(DILIGENT_SHARP_GEN)
-    UInt32 FirstSlice DEFAULT_INITIALIZER(0);
-#else
     union
     {
         /// For a texture array, first array slice to address in the view
@@ -262,11 +259,7 @@ struct TextureViewDesc DILIGENT_DERIVE(DeviceObjectAttribs)
         /// For a 3D texture, first depth slice to address the view
         UInt32 FirstDepthSlice;
     };
-#endif
 
-#if defined(DILIGENT_SHARP_GEN)
-    UInt32 NumSlices DEFAULT_INITIALIZER(0);
-#else
     union
     {
         /// For a texture array, number of array slices to address in the view.
@@ -279,7 +272,6 @@ struct TextureViewDesc DILIGENT_DERIVE(DeviceObjectAttribs)
         /// Set to 0 to address all depth slices.
         UInt32 NumDepthSlices;
     };
-#endif
 
     /// For an unordered access view, allowed access flags.
 
@@ -296,7 +288,7 @@ struct TextureViewDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     // NB: when adding new members, don't forget to update std::hash<Diligent::TextureViewDesc>
     //
 
-#if DILIGENT_CPP_INTERFACE && !defined(DILIGENT_SHARP_GEN)
+#if DILIGENT_CPP_INTERFACE
 
     constexpr TextureViewDesc() noexcept {}
 
@@ -361,7 +353,6 @@ typedef struct TextureViewDesc TextureViewDesc;
 
 // clang-format on
 
-#define DILIGENT_INTERFACE_NAME ITextureView
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITextureViewInclusiveMethods \
@@ -375,7 +366,7 @@ typedef struct TextureViewDesc TextureViewDesc;
 /// will not be destroyed until all views are released.
 /// The texture view will also keep a strong reference to the texture sampler,
 /// if any is set.
-DILIGENT_BEGIN_INTERFACE(ITextureView, IDeviceObject)
+struct ITextureView : public IDeviceObject
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the texture view description used to create the object
@@ -386,24 +377,24 @@ DILIGENT_BEGIN_INTERFACE(ITextureView, IDeviceObject)
     /// when accessing a texture from shaders. Only
     /// shader resource views can be assigned a sampler.
     /// The view will keep strong reference to the sampler.
-    VIRTUAL void METHOD(SetSampler)(THIS_ struct ISampler * pSampler) PURE;
+    virtual void METHOD(SetSampler)(  struct ISampler * pSampler) =0;
 
     /// Returns the pointer to the sampler object set by the ITextureView::SetSampler().
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL struct ISampler* METHOD(GetSampler)(THIS) PURE;
+    virtual struct ISampler* METHOD(GetSampler)( ) =0;
 
 
     /// Returns a pointer to the referenced texture object.
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL struct ITexture* METHOD(GetTexture)(THIS) PURE;
+    virtual struct ITexture* METHOD(GetTexture)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -419,4 +410,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE
+ }

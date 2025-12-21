@@ -32,14 +32,13 @@
 
 #include "../../GraphicsEngine/interface/BottomLevelAS.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 // {7212AFC9-02E2-4D7F-81A8-1CE5353CEA2D}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_BottomLevelASVk =
+static constexpr INTERFACE_ID IID_BottomLevelASVk =
     {0x7212afc9, 0x2e2, 0x4d7f, {0x81, 0xa8, 0x1c, 0xe5, 0x35, 0x3c, 0xea, 0x2d}};
 
-#define DILIGENT_INTERFACE_NAME IBottomLevelASVk
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBottomLevelASVkInclusiveMethods \
@@ -47,17 +46,17 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_BottomLevelASVk =
     IBottomLevelASVkMethods BottomLevelASVk
 
 /// Exposes Vulkan-specific functionality of a Bottom-level acceleration structure object.
-DILIGENT_BEGIN_INTERFACE(IBottomLevelASVk, IBottomLevelAS)
+struct IBottomLevelASVk : public IBottomLevelAS
 {
     /// Returns a Vulkan handle of the internal BLAS object.
-    VIRTUAL VkAccelerationStructureKHR METHOD(GetVkBLAS)(THIS) CONST PURE;
+    virtual VkAccelerationStructureKHR METHOD(GetVkBLAS)( ) const =0;
 
     /// Returns a Vulkan device address of the internal BLAS object.
-    VIRTUAL VkDeviceAddress METHOD(GetVkDeviceAddress)(THIS) CONST PURE;
+    virtual VkDeviceAddress METHOD(GetVkDeviceAddress)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -66,4 +65,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

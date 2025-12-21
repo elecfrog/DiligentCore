@@ -42,9 +42,9 @@
 
 #ifdef _MSC_VER
 // Note that MSVC x86 compiler by default uses __this call for class member functions
-#    define DILIGENT_CALL_TYPE __cdecl
+#    define CALLTYPE __cdecl
 #else
-#    define DILIGENT_CALL_TYPE
+#    define CALLTYPE
 #endif
 
 #if UINTPTR_MAX == UINT64_MAX
@@ -55,64 +55,21 @@
 #    pragma error Unexpected value of UINTPTR_MAX
 #endif
 
-#if DILIGENT_C_INTERFACE
 
-#    define DILIGENT_BEGIN_NAMESPACE(Name)
-#    define DILIGENT_END_NAMESPACE
+#define DILIGENT_TYPED_ENUM(EnumName, EnumType) enum EnumName : EnumType
 
-#    define DILIGENT_TYPED_ENUM(EnumName, EnumType) \
-        typedef EnumType EnumName;                  \
-        enum _##EnumName
+#define DILIGENT_DERIVE(TypeName) : public TypeName \
+    {
 
-#    define DILIGENT_DERIVE(TypeName) \
-        {                             \
-            struct TypeName _##TypeName;
+#define DEFAULT_INITIALIZER(x) = x
 
-#    define DEFAULT_INITIALIZER(x)
+#define DILIGENT_GLOBAL_FUNCTION(FuncName) FuncName
 
-#    define DILIGENT_GLOBAL_FUNCTION(FuncName) Diligent_##FuncName
+#define DILIGENT_BEGIN_INTERFACE(Name, Base) struct Name : public Base
 
-#    define DILIGENT_BEGIN_INTERFACE(Iface, Base) \
-        typedef struct Iface                      \
-        {                                         \
-            struct Iface##Vtbl* pVtbl;            \
-        } Iface;                                  \
-        struct Iface##Methods
+#define DEFAULT_VALUE(x) = x
 
-#    define DEFAULT_VALUE(x)
 
-#    define CALL_IFACE_METHOD(Iface, Method, This, ...) (This)->pVtbl->Iface.Method((I##Iface*)(This), ##__VA_ARGS__)
-
-// Two levels of indirection are required to concatenate expanded macros
-#    define DILIGENT_CONCATENATE0(X, Y) X##Y
-#    define DILIGENT_CONCATENATE(X, Y)  DILIGENT_CONCATENATE0(X, Y)
-
-#    define DILIGENT_CONSTEXPR const
-
-#else
-
-#    define DILIGENT_BEGIN_NAMESPACE(Name) \
-        namespace Name                     \
-        {
-
-#    define DILIGENT_END_NAMESPACE }
-
-#    define DILIGENT_TYPED_ENUM(EnumName, EnumType) enum EnumName : EnumType
-
-#    define DILIGENT_DERIVE(TypeName) : public TypeName \
-        {
-
-#    define DEFAULT_INITIALIZER(x) = x
-
-#    define DILIGENT_GLOBAL_FUNCTION(FuncName) FuncName
-
-#    define DILIGENT_BEGIN_INTERFACE(Name, Base) struct Name : public Base
-
-#    define DEFAULT_VALUE(x) = x
-
-#    define DILIGENT_CONSTEXPR constexpr
-
-#endif
 
 #if DILIGENT_C_INTERFACE
 #    define DILIGENT_CPP_INTERFACE 0

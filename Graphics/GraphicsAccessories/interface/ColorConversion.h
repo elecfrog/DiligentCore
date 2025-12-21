@@ -33,7 +33,7 @@
 #include "CommonDefinitions.h"
 #include <math/basic_math.hpp>
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 /// Converts linear color to gamma color space
 
@@ -177,4 +177,4 @@ inline Vector4f FastSRGBAToLinear(const Vector4f& SRGBA)
     return Vector4f{FastGammaToLinear(SRGBA.r), FastGammaToLinear(SRGBA.g), FastGammaToLinear(SRGBA.b), SRGBA.a};
 }
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

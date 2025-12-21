@@ -36,14 +36,13 @@
 #include "../../GraphicsEngine/interface/PipelineResourceSignature.h"
 #include "Archiver.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {205BB0B2-0966-4F51-9380-46EE5BCED28B}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_SerializationDevice =
+static constexpr INTERFACE_ID IID_SerializationDevice =
     {0x205bb0b2, 0x966, 0x4f51, {0x93, 0x80, 0x46, 0xee, 0x5b, 0xce, 0xd2, 0x8b}};
 
 
-#define DILIGENT_INTERFACE_NAME ISerializationDevice
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ISerializationDeviceInclusiveMethods \
@@ -159,11 +158,11 @@ DILIGENT_BEGIN_INTERFACE(ISerializationDevice, IRenderDevice)
     ///                                 If null, the output will be ignored.
     /// \note
     ///     The method is thread-safe and may be called from multiple threads simultaneously.
-    VIRTUAL void METHOD(CreateShader)(THIS_
-                                      const ShaderCreateInfo REF  ShaderCI,
-                                      const ShaderArchiveInfo REF ArchiveInfo,
+    virtual void METHOD(CreateShader)(
+                                      const ShaderCreateInfo  &  ShaderCI,
+                                      const ShaderArchiveInfo  & ArchiveInfo,
                                       IShader**                   ppShader,
-                                      IDataBlob**                 ppCompilerOutput DEFAULT_VALUE(nullptr)) PURE;
+                                      IDataBlob**                 ppCompilerOutput DEFAULT_VALUE(nullptr)) =0;
 
  
     /// Creates a serialized pipeline resource signature.
@@ -175,10 +174,10 @@ DILIGENT_BEGIN_INTERFACE(ISerializationDevice, IRenderDevice)
     ///
     /// \note
     ///     The method is thread-safe and may be called from multiple threads simultaneously.
-    VIRTUAL void METHOD(CreatePipelineResourceSignature)(THIS_
-                                                         const PipelineResourceSignatureDesc REF Desc,
-                                                         const ResourceSignatureArchiveInfo REF  ArchiveInfo,
-                                                         IPipelineResourceSignature**            ppSignature) PURE;
+    virtual void METHOD(CreatePipelineResourceSignature)(
+                                                         const PipelineResourceSignatureDesc  & Desc,
+                                                         const ResourceSignatureArchiveInfo  &  ArchiveInfo,
+                                                         IPipelineResourceSignature**            ppSignature) =0;
 
     /// Creates a serialized graphics pipeline state.
 
@@ -192,10 +191,10 @@ DILIGENT_BEGIN_INTERFACE(ISerializationDevice, IRenderDevice)
     ///     serialized objects created by the same serialization device.
     ///
     ///     The method is thread-safe and may be called from multiple threads simultaneously.
-    VIRTUAL void METHOD(CreateGraphicsPipelineState)(THIS_
-                                                     const GraphicsPipelineStateCreateInfo REF PSOCreateInfo,
-                                                     const PipelineStateArchiveInfo REF        ArchiveInfo,
-                                                     IPipelineState**                          ppPipelineState) PURE;
+    virtual void METHOD(CreateGraphicsPipelineState)(
+                                                     const GraphicsPipelineStateCreateInfo  & PSOCreateInfo,
+                                                     const PipelineStateArchiveInfo  &        ArchiveInfo,
+                                                     IPipelineState**                          ppPipelineState) =0;
 
     /// Creates a serialized compute pipeline state.
 
@@ -209,10 +208,10 @@ DILIGENT_BEGIN_INTERFACE(ISerializationDevice, IRenderDevice)
     ///     serialized objects created by the same serialization device.
     ///
     ///     The method is thread-safe and may be called from multiple threads simultaneously.
-    VIRTUAL void METHOD(CreateComputePipelineState)(THIS_
-                                                    const ComputePipelineStateCreateInfo REF PSOCreateInfo,
-                                                    const PipelineStateArchiveInfo REF       ArchiveInfo,
-                                                    IPipelineState**                         ppPipelineState) PURE;
+    virtual void METHOD(CreateComputePipelineState)(
+                                                    const ComputePipelineStateCreateInfo  & PSOCreateInfo,
+                                                    const PipelineStateArchiveInfo  &       ArchiveInfo,
+                                                    IPipelineState**                         ppPipelineState) =0;
 
     /// Creates a serialized ray tracing pipeline state.
 
@@ -226,10 +225,10 @@ DILIGENT_BEGIN_INTERFACE(ISerializationDevice, IRenderDevice)
     ///     serialized objects created by the same serialization device.
     ///
     ///     The method is thread-safe and may be called from multiple threads simultaneously.
-    VIRTUAL void METHOD(CreateRayTracingPipelineState)(THIS_
-                                                       const RayTracingPipelineStateCreateInfo REF PSOCreateInfo,
-                                                       const PipelineStateArchiveInfo REF          ArchiveInfo,
-                                                       IPipelineState**                            ppPipelineState) PURE;
+    virtual void METHOD(CreateRayTracingPipelineState)(
+                                                       const RayTracingPipelineStateCreateInfo  & PSOCreateInfo,
+                                                       const PipelineStateArchiveInfo  &          ArchiveInfo,
+                                                       IPipelineState**                            ppPipelineState) =0;
 
     /// Creates a serialized tile pipeline state.
 
@@ -243,28 +242,28 @@ DILIGENT_BEGIN_INTERFACE(ISerializationDevice, IRenderDevice)
     ///     serialized objects created by the same serialization device.
     ///
     ///     The method is thread-safe and may be called from multiple threads simultaneously.
-    VIRTUAL void METHOD(CreateTilePipelineState)(THIS_
-                                                 const TilePipelineStateCreateInfo REF PSOCreateInfo,
-                                                 const PipelineStateArchiveInfo REF    ArchiveInfo,
-                                                 IPipelineState**                      ppPipelineState) PURE;
+    virtual void METHOD(CreateTilePipelineState)(
+                                                 const TilePipelineStateCreateInfo  & PSOCreateInfo,
+                                                 const PipelineStateArchiveInfo  &    ArchiveInfo,
+                                                 IPipelineState**                      ppPipelineState) =0;
 
 
     /// Populates an array of pipeline resource bindings.
-    VIRTUAL void METHOD(GetPipelineResourceBindings)(THIS_
-                                                     const PipelineResourceBindingAttribs REF Attribs,
-                                                     UInt32 REF                               NumBindings,
-                                                     const PipelineResourceBinding* REF       pBindings) PURE;
+    virtual void METHOD(GetPipelineResourceBindings)(
+                                                     const PipelineResourceBindingAttribs  & Attribs,
+                                                     UInt32  &                               NumBindings,
+                                                     const PipelineResourceBinding*  &       pBindings) =0;
 
 
     /// Returns a combination of supported device flags, see Diligent::ARCHIVE_DEVICE_DATA_FLAGS.
-    VIRTUAL ARCHIVE_DEVICE_DATA_FLAGS METHOD(GetSupportedDeviceFlags)(THIS) CONST PURE;
+    virtual ARCHIVE_DEVICE_DATA_FLAGS METHOD(GetSupportedDeviceFlags)( ) const =0;
 
     /// Adds a optional render device that will be used to initialize device-specific objects that
     /// may be used for rendering (e.g. shaders).
     /// For example, a shader object retrieved with ISerializedShader::GetDeviceShader() will be
     /// suitable for rendering.
-    VIRTUAL void METHOD(AddRenderDevice)(THIS_
-                                         IRenderDevice* pDevice) PURE;
+    virtual void METHOD(AddRenderDevice)(
+                                         IRenderDevice* pDevice) =0;
 
 #if DILIGENT_CPP_INTERFACE
     /// Overloaded alias for ISerializationDevice::CreateGraphicsPipelineState.
@@ -289,9 +288,9 @@ DILIGENT_BEGIN_INTERFACE(ISerializationDevice, IRenderDevice)
     }
 #endif
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -305,4 +304,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

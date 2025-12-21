@@ -6,7 +6,6 @@
 
 	<include-prolog>
 		#define PLATFORM_WIN32 1
-		#define DILIGENT_SHARP_GEN
 		#define INTERFACE_ID GUID
 	</include-prolog>
 

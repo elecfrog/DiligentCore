@@ -239,7 +239,7 @@ function(set_common_target_properties TARGET)
 
             foreach(REL_CONFIG ${RELEASE_CONFIGURATIONS})
                 set_target_properties(${TARGET} PROPERTIES
-                    LINK_FLAGS_${REL_CONFIG} "/LTCG /OPT:REF /INCREMENTAL:NO"
+                    LINK_FLAGS_${REL_CONFIG} "/LTCG /OPT: & /INCREMENTAL:NO"
                 )
             endforeach()
 

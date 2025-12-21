@@ -55,9 +55,9 @@ public:
                          IDataBlob**              ppCompilerOutput);
     ~SerializedShaderImpl();
 
-    virtual void DILIGENT_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
+    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
 
-    virtual const ShaderDesc& DILIGENT_CALL_TYPE GetDesc() const override final { return m_CreateInfo.Get().Desc; }
+    virtual const ShaderDesc& CALLTYPE GetDesc() const override final { return m_CreateInfo.Get().Desc; }
 
     UNSUPPORTED_CONST_METHOD(UInt32, GetResourceCount)
     UNSUPPORTED_CONST_METHOD(void, GetResourceDesc, UInt32 Index, ShaderResourceDesc& ResourceDesc)
@@ -67,8 +67,8 @@ public:
     UNSUPPORTED_CONST_METHOD(IObject*, GetUserData)
     UNSUPPORTED_CONST_METHOD(void, GetBytecode, const void** ppBytecode, UInt64& Size);
 
-    virtual SHADER_STATUS DILIGENT_CALL_TYPE GetStatus(bool WaitForCompletion) override final;
-    virtual IShader* DILIGENT_CALL_TYPE      GetDeviceShader(RENDER_DEVICE_TYPE Type) const override final;
+    virtual SHADER_STATUS CALLTYPE GetStatus(bool WaitForCompletion) override final;
+    virtual IShader* CALLTYPE      GetDeviceShader(RENDER_DEVICE_TYPE Type) const override final;
 
     bool IsCompiling() const;
 

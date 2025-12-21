@@ -73,7 +73,7 @@ public:
         Resize(m_SwapChainDesc.Width, m_SwapChainDesc.Height, m_SwapChainDesc.PreTransform);
     }
 
-    virtual void DILIGENT_CALL_TYPE Present(UInt32 SyncInterval) override
+    virtual void CALLTYPE Present(UInt32 SyncInterval) override
     {
         RefCntAutoPtr<IDeviceContext> pDeviceContext = m_wpDeviceContext.Lock();
         if (!pDeviceContext)
@@ -102,7 +102,7 @@ public:
         }
     }
 
-    virtual void DILIGENT_CALL_TYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final
+    virtual void CALLTYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final
     {
         if (TSwapChainBase::Resize(NewWidth, NewHeight, NewPreTransform))
         {
@@ -151,27 +151,27 @@ public:
         }
     }
 
-    virtual void DILIGENT_CALL_TYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final
+    virtual void CALLTYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final
     {
         UNEXPECTED("Off-screen swap chain can't go into full screen mode");
     }
 
-    virtual void DILIGENT_CALL_TYPE SetWindowedMode() override final
+    virtual void CALLTYPE SetWindowedMode() override final
     {
         UNEXPECTED("Off-screen swap chain can't switch between windowed and full screen modes");
     }
 
-    virtual void DILIGENT_CALL_TYPE SetMaximumFrameLatency(UInt32 MaxLatency) override final
+    virtual void CALLTYPE SetMaximumFrameLatency(UInt32 MaxLatency) override final
     {
         UNEXPECTED("Off-screen swap chain can't set the maximum frame latency");
     }
 
-    virtual ITextureView* DILIGENT_CALL_TYPE GetCurrentBackBufferRTV() override final
+    virtual ITextureView* CALLTYPE GetCurrentBackBufferRTV() override final
     {
         return m_pRTV;
     }
 
-    virtual ITextureView* DILIGENT_CALL_TYPE GetDepthBufferDSV() override final
+    virtual ITextureView* CALLTYPE GetDepthBufferDSV() override final
     {
         return m_pDSV;
     }

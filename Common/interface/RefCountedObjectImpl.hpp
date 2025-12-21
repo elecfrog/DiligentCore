@@ -160,7 +160,7 @@ public:
         if (m_ObjectState.load() != ObjectState::Alive)
             return; // Early exit
 
-        // It is essential to INCREMENT REF COUNTER while HOLDING THE LOCK to make sure that
+        // It is essential to INCREMENT  & COUNTER while HOLDING THE LOCK to make sure that
         // StrongRefCnt > 1 guarantees that the object is alive.
 
         // If other thread started deleting the object in ReleaseStrongRef(), then m_NumStrongReferences==0
@@ -305,7 +305,7 @@ private:
         //         The second one will read expired m_LockFlag
 
         //  IT IS CRUCIALLY IMPORTANT TO ASSURE THAT ONLY ONE THREAD WILL EVER
-        //  EXECUTE THIS CODE
+        //  EXECUTE   CODE
 
         // The solution is to atomically increment strong ref counter in QueryObject().
         // There are two possible scenarios depending on who first increments the counter:
@@ -537,13 +537,13 @@ public:
         //        "There remain strong references to the object being destroyed" );
     }
 
-    inline virtual IReferenceCounters* DILIGENT_CALL_TYPE GetReferenceCounters() const override final
+    inline virtual IReferenceCounters* CALLTYPE GetReferenceCounters() const override final
     {
         VERIFY_EXPR(m_pRefCounters != nullptr);
         return m_pRefCounters;
     }
 
-    inline virtual ReferenceCounterValueType DILIGENT_CALL_TYPE AddRef() override final
+    inline virtual ReferenceCounterValueType CALLTYPE AddRef() override final
     {
         VERIFY_EXPR(m_pRefCounters != nullptr);
         // Since type of m_pRefCounters is RefCountersImpl,
@@ -551,7 +551,7 @@ public:
         return m_pRefCounters->AddStrongRef();
     }
 
-    inline virtual ReferenceCounterValueType DILIGENT_CALL_TYPE Release() override
+    inline virtual ReferenceCounterValueType CALLTYPE Release() override
     {
         VERIFY_EXPR(m_pRefCounters != nullptr);
         // Since type of m_pRefCounters is RefCountersImpl,

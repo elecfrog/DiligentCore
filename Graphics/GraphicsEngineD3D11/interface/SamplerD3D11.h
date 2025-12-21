@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/Sampler.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {31A3BFAF-738E-4D8C-AD18-B021C5D948DD}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_SamplerD3D11 =
+static constexpr struct INTERFACE_ID IID_SamplerD3D11 =
     {0x31a3bfaf, 0x738e, 0x4d8c, {0xad, 0x18, 0xb0, 0x21, 0xc5, 0xd9, 0x48, 0xdd}};
 
-#define DILIGENT_INTERFACE_NAME ISamplerD3D11
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ISamplerD3D11InclusiveMethods \
@@ -52,11 +51,11 @@ DILIGENT_BEGIN_INTERFACE(ISamplerD3D11, ISampler)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D11SamplerState* METHOD(GetD3D11SamplerState)(THIS) PURE;
+    virtual ID3D11SamplerState* METHOD(GetD3D11SamplerState)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -64,4 +63,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

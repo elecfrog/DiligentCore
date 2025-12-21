@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/Buffer.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {A3AB9014-8B47-4A13-AA96-F4975BFD13CA}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferWebGPU =
+static constexpr INTERFACE_ID IID_BufferWebGPU =
     {0xA3AB9014, 0x8B47, 0x4A13, {0xAA, 0x96, 0xF4, 0x97, 0x5B, 0xFD, 0x13, 0xCA}};
 
-#define DILIGENT_INTERFACE_NAME IBufferWebGPU
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBufferWebGPUInclusiveMethods \
@@ -53,12 +52,12 @@ DILIGENT_BEGIN_INTERFACE(IBufferWebGPU, IBuffer)
 
     /// The application must not destroy the returned buffer
     /// Returns a WebGPU handle of the internal buffer object.
-    VIRTUAL WGPUBuffer METHOD(GetWebGPUBuffer)(THIS) CONST PURE;
+    virtual WGPUBuffer METHOD(GetWebGPUBuffer)( ) const =0;
 
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -66,4 +65,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

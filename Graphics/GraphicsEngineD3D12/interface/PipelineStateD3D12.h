@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/PipelineState.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {33C9BE4B-6F23-4F83-A665-5AC1836DF35A}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_PipelineStateD3D12 =
+static constexpr INTERFACE_ID IID_PipelineStateD3D12 =
     {0x33c9be4b, 0x6f23, 0x4f83, {0xa6, 0x65, 0x5a, 0xc1, 0x83, 0x6d, 0xf3, 0x5a}};
 
-#define DILIGENT_INTERFACE_NAME IPipelineStateD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IPipelineStateD3D12InclusiveMethods \
@@ -52,23 +51,23 @@ DILIGENT_BEGIN_INTERFACE(IPipelineStateD3D12, IPipelineState)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D12PipelineState* METHOD(GetD3D12PipelineState)(THIS) CONST PURE;
+    virtual ID3D12PipelineState* METHOD(GetD3D12PipelineState)( ) const =0;
 
     /// Returns `ID3D12StateObject` interface of the internal D3D12 state object for ray tracing.
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D12StateObject* METHOD(GetD3D12StateObject)(THIS) CONST PURE;
+    virtual ID3D12StateObject* METHOD(GetD3D12StateObject)( ) const =0;
 
     /// Returns a pointer to the root signature object associated with this pipeline state.
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D12RootSignature* METHOD(GetD3D12RootSignature)(THIS) CONST PURE;
+    virtual ID3D12RootSignature* METHOD(GetD3D12RootSignature)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -82,4 +81,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

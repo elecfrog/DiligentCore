@@ -29,13 +29,12 @@
 
 #include "../../GraphicsEngine/interface/DeviceMemory.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {FAA1CD77-590A-408B-B0E8-C21CD062542C}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_DeviceMemoryMtl =
+static constexpr INTERFACE_ID IID_DeviceMemoryMtl =
     {0xfaa1cd77, 0x590a, 0x408b, {0xb0, 0xe8, 0xc2, 0x1c, 0xd0, 0x62, 0x54, 0x2c}};
 
-#define DILIGENT_INTERFACE_NAME IDeviceMemoryMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IDeviceMemoryMtlInclusiveMethods \
@@ -48,11 +47,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_DeviceMemoryMtl =
 DILIGENT_BEGIN_INTERFACE(IDeviceMemoryMtl, IDeviceMemory)
 {
     /// Returns a pointer to a Metal heap object.
-    VIRTUAL id<MTLHeap> METHOD(GetMtlResource)(THIS) CONST PURE;
+    virtual id<MTLHeap> METHOD(GetMtlResource)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -60,4 +59,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

@@ -31,7 +31,8 @@
 
 #include "../../GraphicsEngine/interface/RenderDevice.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent
+{
 
 // clang-format off
 
@@ -138,20 +139,19 @@ struct RenderStateCacheCreateInfo
 };
 typedef struct RenderStateCacheCreateInfo RenderStateCacheCreateInfo;
 
-#include "../../../Primitives/interface/DefineRefMacro.h"
+
 
 /// Type of the callback function called by the IRenderStateCache::Reload method.
-typedef void(DILIGENT_CALL_TYPE* ReloadGraphicsPipelineCallbackType)(const char* PipelineName, GraphicsPipelineDesc REF GraphicsDesc, void* pUserData);
+typedef void(CALLTYPE* ReloadGraphicsPipelineCallbackType)(const char* PipelineName, GraphicsPipelineDesc& GraphicsDesc, void* pUserData);
 
-#include "../../../Primitives/interface/UndefRefMacro.h"
+
 
 // clang-format on
 
 // {5B356268-256C-401F-BDE2-B9832157141A}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_RenderStateCache =
+static constexpr INTERFACE_ID IID_RenderStateCache =
     {0x5b356268, 0x256c, 0x401f, {0xbd, 0xe2, 0xb9, 0x83, 0x21, 0x57, 0x14, 0x1a}};
 
-#define DILIGENT_INTERFACE_NAME IRenderStateCache
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IRenderStateCacheInclusiveMethods \
@@ -184,10 +184,10 @@ DILIGENT_BEGIN_INTERFACE(IRenderStateCache, IObject)
     /// 
     /// \note       This method is not thread-safe and must not be called simultaneously
     ///             with other methods.
-    VIRTUAL bool METHOD(Load)(THIS_
+    virtual bool METHOD(Load)(
                               const IDataBlob* pCacheData,
                               UInt32           ContentVersion DEFAULT_VALUE(~0u),
-                              bool             MakeCopy       DEFAULT_VALUE(false)) PURE;
+                              bool             MakeCopy       DEFAULT_VALUE(false)) =0;
 
     /// Creates a shader object from cached data.
 
@@ -196,9 +196,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderStateCache, IObject)
     ///                         shader object will be written.
     ///
     /// \return     true if the shader was loaded from the cache, and false otherwise.
-    VIRTUAL bool METHOD(CreateShader)(THIS_
-                                      const ShaderCreateInfo REF ShaderCI,
-                                      IShader**                  ppShader) PURE;
+    virtual bool METHOD(CreateShader)(
+                                      const ShaderCreateInfo  & ShaderCI,
+                                      IShader**                  ppShader) =0;
 
     /// Creates a graphics pipeline state object from cached data.
 
@@ -207,9 +207,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderStateCache, IObject)
     ///                                pipeline state object will be written.
     ///
     /// \return     true if the pipeline state was loaded from the cache, and false otherwise.
-    VIRTUAL bool METHOD(CreateGraphicsPipelineState)(THIS_
-                                                     const GraphicsPipelineStateCreateInfo REF PSOCreateInfo,
-                                                     IPipelineState**                          ppPipelineState) PURE;
+    virtual bool METHOD(CreateGraphicsPipelineState)(
+                                                     const GraphicsPipelineStateCreateInfo  & PSOCreateInfo,
+                                                     IPipelineState**                          ppPipelineState) =0;
 
     /// Creates a compute pipeline state object from cached data.
 
@@ -218,9 +218,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderStateCache, IObject)
     ///                                pipeline state object will be written.
     ///
     /// \return     true if the pipeline state was loaded from the cache, and false otherwise.
-    VIRTUAL bool METHOD(CreateComputePipelineState)(THIS_
-                                                    const ComputePipelineStateCreateInfo REF PSOCreateInfo,
-                                                    IPipelineState**                         ppPipelineState) PURE;
+    virtual bool METHOD(CreateComputePipelineState)(
+                                                    const ComputePipelineStateCreateInfo  & PSOCreateInfo,
+                                                    IPipelineState**                         ppPipelineState) =0;
 
     /// Creates a ray tracing pipeline state object from cached data.
 
@@ -229,9 +229,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderStateCache, IObject)
     ///                                pipeline state object will be written.
     ///
     /// \return     true if the pipeline state was loaded from the cache, and false otherwise.
-    VIRTUAL bool METHOD(CreateRayTracingPipelineState)(THIS_
-                                                       const RayTracingPipelineStateCreateInfo REF PSOCreateInfo,
-                                                       IPipelineState**                            ppPipelineState) PURE;
+    virtual bool METHOD(CreateRayTracingPipelineState)(
+                                                       const RayTracingPipelineStateCreateInfo  & PSOCreateInfo,
+                                                       IPipelineState**                            ppPipelineState) =0;
 
     /// Creates a tile pipeline state object from cached data.
 
@@ -240,9 +240,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderStateCache, IObject)
     ///                                pipeline state object will be written.
     ///
     /// \return     true if the pipeline state was loaded from the cache, and false otherwise.
-    VIRTUAL bool METHOD(CreateTilePipelineState)(THIS_
-                                                 const TilePipelineStateCreateInfo REF PSOCreateInfo,
-                                                 IPipelineState**                      ppPipelineState) PURE;
+    virtual bool METHOD(CreateTilePipelineState)(
+                                                 const TilePipelineStateCreateInfo  & PSOCreateInfo,
+                                                 IPipelineState**                      ppPipelineState) =0;
 
     /// Writes cache contents to a memory blob.
 
@@ -254,9 +254,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderStateCache, IObject)
     ///
     /// \remarks    If ContentVersion is `~0u` (aka `0xFFFFFFFF`), the version of the
     ///             previously loaded content will be used, or 0 if none was loaded.
-    VIRTUAL Bool METHOD(WriteToBlob)(THIS_
+    virtual Bool METHOD(WriteToBlob)(
                                      UInt32      ContentVersion,
-                                     IDataBlob** ppBlob) PURE;
+                                     IDataBlob** ppBlob) =0;
 
     /// Writes cache contents to a file stream.
 
@@ -267,13 +267,13 @@ DILIGENT_BEGIN_INTERFACE(IRenderStateCache, IObject)
     ///
     /// \remarks    If ContentVersion is `~0u` (aka `0xFFFFFFFF`), the version of the
     ///             previously loaded content will be used, or 0 if none was loaded.
-    VIRTUAL Bool METHOD(WriteToStream)(THIS_
+    virtual Bool METHOD(WriteToStream)(
                                        UInt32       ContentVersion,
-                                       IFileStream* pStream) PURE;
+                                       IFileStream* pStream) =0;
 
 
     /// Resets the cache to default state.
-    VIRTUAL void METHOD(Reset)(THIS) PURE;
+    virtual void METHOD(Reset)( ) =0;
 
     /// Reloads render states in the cache.
 
@@ -286,24 +286,24 @@ DILIGENT_BEGIN_INTERFACE(IRenderStateCache, IObject)
     ///
     /// Reloading is only enabled if the cache was created with the `EnableHotReload` member of
     /// `Diligent::RenderStateCacheCreateInfo` struct set to true.
-    VIRTUAL UInt32 METHOD(Reload)(THIS_
+    virtual UInt32 METHOD(Reload)(
                                   ReloadGraphicsPipelineCallbackType ReloadGraphicsPipeline DEFAULT_VALUE(nullptr), 
-                                  void*                              pUserData              DEFAULT_VALUE(nullptr)) PURE;
+                                  void*                              pUserData              DEFAULT_VALUE(nullptr)) =0;
 
     /// Returns the content version of the cache data.
 
     /// If no data has been loaded, returns `~0u` (aka `0xFFFFFFFF`).
-    VIRTUAL UInt32 METHOD(GetContentVersion)(THIS) CONST PURE;
+    virtual UInt32 METHOD(GetContentVersion)( ) const =0;
 
 
     /// Returns the reload version of the cache data.
 
     /// The reload version is incremented every time the cache is reloaded.
-    VIRTUAL UInt32 METHOD(GetReloadVersion)(THIS) CONST PURE;
+    virtual UInt32 METHOD(GetReloadVersion)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -324,11 +324,10 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-#include "../../../Primitives/interface/DefineGlobalFuncHelperMacros.h"
 
-void DILIGENT_GLOBAL_FUNCTION(CreateRenderStateCache)(const RenderStateCacheCreateInfo REF CreateInfo,
-                                                      IRenderStateCache**                  ppCache);
 
-#include "../../../Primitives/interface/UndefGlobalFuncHelperMacros.h"
+void CreateRenderStateCache(const RenderStateCacheCreateInfo& CreateInfo, IRenderStateCache** ppCache);
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+
+
+} // namespace Diligent

@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/TopLevelAS.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {356FFFFA-9E57-49F7-8FF4-7017B61BE6A8}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TopLevelASVk =
+static constexpr INTERFACE_ID IID_TopLevelASVk =
     {0x356ffffa, 0x9e57, 0x49f7, {0x8f, 0xf4, 0x70, 0x17, 0xb6, 0x1b, 0xe6, 0xa8}};
 
-#define DILIGENT_INTERFACE_NAME ITopLevelASVk
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITopLevelASVkInclusiveMethods \
@@ -46,17 +45,17 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_TopLevelASVk =
     ITopLevelASVkMethods TopLevelASVk
 
 /// Exposes Vulkan-specific functionality of a Top-level acceleration structure object.
-DILIGENT_BEGIN_INTERFACE(ITopLevelASVk, ITopLevelAS)
+struct ITopLevelASVk : public ITopLevelAS
 {
     /// Returns a Vulkan handle of the internal top-level AS object.
-    VIRTUAL VkAccelerationStructureKHR METHOD(GetVkTLAS)(THIS) CONST PURE;
+    virtual VkAccelerationStructureKHR METHOD(GetVkTLAS)( ) const =0;
 
     /// Returns a Vulkan device address of the internal top-level AS object.
-    VIRTUAL VkDeviceAddress METHOD(GetVkDeviceAddress)(THIS) CONST PURE;
+    virtual VkDeviceAddress METHOD(GetVkDeviceAddress)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -65,4 +64,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

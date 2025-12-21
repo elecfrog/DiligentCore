@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/TextureView.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {0767EBE4-AD47-4E70-9B65-38C6B9CAC37D}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureViewD3D11 =
+static constexpr INTERFACE_ID IID_TextureViewD3D11 =
     {0x767ebe4, 0xad47, 0x4e70, {0x9b, 0x65, 0x38, 0xc6, 0xb9, 0xca, 0xc3, 0x7d}};
 
-#define DILIGENT_INTERFACE_NAME ITextureViewD3D11
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITextureViewD3D11InclusiveMethods \
@@ -52,11 +51,11 @@ DILIGENT_BEGIN_INTERFACE(ITextureViewD3D11, ITextureView)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D11View* METHOD(GetD3D11View)(THIS) PURE;
+    virtual ID3D11View* METHOD(GetD3D11View)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -64,4 +63,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

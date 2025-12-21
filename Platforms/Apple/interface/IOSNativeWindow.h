@@ -29,7 +29,7 @@
 
 #include "../../../Primitives/interface/CommonDefinitions.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 struct IOSNativeWindow
 {
@@ -50,4 +50,4 @@ struct IOSNativeWindow
 #endif
 };
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

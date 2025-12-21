@@ -63,7 +63,7 @@ public:
     }
 
     STDMETHOD(Open)
-    (THIS_ D3D_INCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID* ppData, UINT* pBytes)
+    (  D3D_INCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID* ppData, UINT* pBytes)
     {
         RefCntAutoPtr<IFileStream> pSourceStream;
         m_pStreamFactory->CreateInputStream(pFileName, &pSourceStream);
@@ -84,7 +84,7 @@ public:
     }
 
     STDMETHOD(Close)
-    (THIS_ LPCVOID pData)
+    (  LPCVOID pData)
     {
         m_DataBlobs.erase(pData);
         return S_OK;

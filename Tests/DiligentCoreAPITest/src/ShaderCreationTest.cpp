@@ -144,12 +144,12 @@ TEST(ShaderCreationTest, FromBytecode)
             {
             }
 
-            virtual void DILIGENT_CALL_TYPE CreateInputStream(const Char* Name, IFileStream** ppStream) override final
+            virtual void CALLTYPE CreateInputStream(const Char* Name, IFileStream** ppStream) override final
             {
                 CreateInputStream2(Name, CREATE_SHADER_SOURCE_INPUT_STREAM_FLAG_NONE, ppStream);
             }
 
-            virtual void DILIGENT_CALL_TYPE CreateInputStream2(const Char*                             Name,
+            virtual void CALLTYPE CreateInputStream2(const Char*                             Name,
                                                                CREATE_SHADER_SOURCE_INPUT_STREAM_FLAGS Flags,
                                                                IFileStream**                           ppStream) override final
             {

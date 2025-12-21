@@ -31,10 +31,10 @@
 
 #include "DeviceObject.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {815F7AE1-84A8-4ADD-A93B-3E28C1711D5E}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_DeviceMemory =
+static constexpr INTERFACE_ID IID_DeviceMemory =
     {0x815f7ae1, 0x84a8, 0x4add, {0xa9, 0x3b, 0x3e, 0x28, 0xc1, 0x71, 0x1d, 0x5e}};
 
 // clang-format off
@@ -118,7 +118,6 @@ typedef struct DeviceMemoryCreateInfo DeviceMemoryCreateInfo;
 
 // clang-format on
 
-#define DILIGENT_INTERFACE_NAME IDeviceMemory
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IDeviceMemoryInclusiveMethods \
@@ -130,7 +129,7 @@ typedef struct DeviceMemoryCreateInfo DeviceMemoryCreateInfo;
 /// Device memory interface
 
 /// Defines the methods to manipulate a device memory object.
-DILIGENT_BEGIN_INTERFACE(IDeviceMemory, IDeviceObject)
+struct IDeviceMemory : public IDeviceObject
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the device memory description
@@ -146,25 +145,25 @@ DILIGENT_BEGIN_INTERFACE(IDeviceMemory, IDeviceObject)
     ///
     /// \remarks  This method must be externally synchronized with IDeviceMemory::GetCapacity()
     ///           and IDeviceContext::BindSparseResourceMemory().
-    VIRTUAL Bool METHOD(Resize)(THIS_
-                                UInt64 NewSize) PURE;
+    virtual Bool METHOD(Resize)(
+                                UInt64 NewSize) =0;
 
     /// Returns the current size of the memory object.
 
     /// \remarks  This method must be externally synchronized with IDeviceMemory::Resize()
     ///           and IDeviceContext::BindSparseResourceMemory().
-    VIRTUAL UInt64 METHOD(GetCapacity)(THIS) CONST PURE;
+    virtual UInt64 METHOD(GetCapacity)( ) const =0;
 
     /// Checks if the given resource is compatible with this memory object.
-    VIRTUAL Bool METHOD(IsCompatible)(THIS_
-                                      IDeviceObject* pResource) CONST PURE;
+    virtual Bool METHOD(IsCompatible)(
+                                      IDeviceObject* pResource) const =0;
 
     // AZ TODO:
-    //VIRTUAL void METHOD(DbgOnResourceDestroyed)(THIS) PURE;
+    //virtual void METHOD(DbgOnResourceDestroyed)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -178,4 +177,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

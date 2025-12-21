@@ -36,7 +36,7 @@
 #include "../../../Primitives/interface/FlagEnum.h"
 #include "Constants.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 /// Blend factors
@@ -446,4 +446,4 @@ struct BlendStateDesc
 };
 typedef struct BlendStateDesc BlendStateDesc;
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/DeviceContext.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {F0EE0335-C8AB-4EC1-BB15-B8EE5F003B99}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_DeviceContextD3D11 =
+static constexpr struct INTERFACE_ID IID_DeviceContextD3D11 =
     {0xf0ee0335, 0xc8ab, 0x4ec1, {0xbb, 0x15, 0xb8, 0xee, 0x5f, 0x0, 0x3b, 0x99}};
 
-#define DILIGENT_INTERFACE_NAME IDeviceContextD3D11
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IDeviceContextD3D11InclusiveMethods \
@@ -52,11 +51,11 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContextD3D11, IDeviceContext)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D11DeviceContext* METHOD(GetD3D11DeviceContext)(THIS) PURE;
+    virtual ID3D11DeviceContext* METHOD(GetD3D11DeviceContext)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -64,4 +63,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

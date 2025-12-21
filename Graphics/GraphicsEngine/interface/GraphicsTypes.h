@@ -43,7 +43,7 @@
 #include "Constants.h"
 
 /// Graphics engine namespace
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 /// Value type
 
@@ -4897,4 +4897,4 @@ DILIGENT_TYPED_ENUM(STATE_TRANSITION_TYPE, UInt8)
     STATE_TRANSITION_TYPE_END
 };
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

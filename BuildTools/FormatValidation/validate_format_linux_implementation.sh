@@ -42,7 +42,7 @@ function validate_format() {
 ## Example usage:
 #
 # #!/bin/bash
-# source /PATH/TO/THIS/FILE/validate_format_linux_implementation.sh
+# source /PATH/TO/ /FILE/validate_format_linux_implementation.sh
 #
 # validate_format ../../Common ../../Graphics ../../Platforms ../../Primitives ../../Tests \
 #   --exclude ../../Graphics/HLSL2GLSLConverterLib/include/GLSLDefinitions.h \

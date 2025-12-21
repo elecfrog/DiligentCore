@@ -31,14 +31,13 @@
 
 #include "../../GraphicsEngine/interface/DeviceMemory.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {401D0549-66EF-42AD-9F67-22002718806D}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_DeviceMemoryVk =
+static constexpr INTERFACE_ID IID_DeviceMemoryVk =
     {0x401d0549, 0x66ef, 0x42ad, {0x9f, 0x67, 0x22, 0x0, 0x27, 0x18, 0x80, 0x6d}};
 
 
-#define DILIGENT_INTERFACE_NAME IDeviceMemoryVk
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IDeviceMemoryVkInclusiveMethods \
@@ -69,13 +68,13 @@ DILIGENT_BEGIN_INTERFACE(IDeviceMemoryVk, IDeviceMemory)
 {
     /// Returns a DeviceMemoryRangeVk object with the information about
     /// the Vulkan device memory associated with the specified memory range.
-    VIRTUAL DeviceMemoryRangeVk METHOD(GetRange)(THIS_
+    virtual DeviceMemoryRangeVk METHOD(GetRange)(
                                                  UInt64 Offset,
-                                                 UInt64 Size) CONST PURE;
+                                                 UInt64 Size) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -83,4 +82,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

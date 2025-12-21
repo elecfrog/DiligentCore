@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/Fence.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {45F2BE28-652B-4180-B6E4-E75F83F63CC7}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_FenceD3D11 =
+static constexpr struct INTERFACE_ID IID_FenceD3D11 =
     {0x45f2be28, 0x652b, 0x4180, {0xb6, 0xe4, 0xe7, 0x5f, 0x83, 0xf6, 0x3c, 0xc7}};
 
-#define DILIGENT_INTERFACE_NAME IFenceD3D11
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 // clang-format off
@@ -56,7 +55,7 @@ class IFenceD3D11 : public IFence
 
 #endif
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -72,4 +71,4 @@ typedef struct IFenceD3D11
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

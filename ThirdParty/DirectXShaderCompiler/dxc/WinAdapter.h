@@ -271,9 +271,9 @@
 #define _COM_Outptr_result_maybenull_
 #define _COM_Outptr_opt_result_maybenull_
 
-#define THIS_
-#define THIS
-#define PURE = 0
+#define
+#define
+#define =0 = 0
 
 #define _Maybenull_
 

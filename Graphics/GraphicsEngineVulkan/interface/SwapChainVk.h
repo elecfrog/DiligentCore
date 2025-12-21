@@ -33,13 +33,12 @@
 #include "../../GraphicsEngine/interface/SwapChain.h"
 #include "TextureViewVk.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {22A39881-5EC5-4A9C-8395-90215F04A5CC}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_SwapChainVk =
+static constexpr INTERFACE_ID IID_SwapChainVk =
     {0x22a39881, 0x5ec5, 0x4a9c, {0x83, 0x95, 0x90, 0x21, 0x5f, 0x4, 0xa5, 0xcc}};
 
-#define DILIGENT_INTERFACE_NAME ISwapChainVk
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ISwapChainVkInclusiveMethods \
@@ -47,17 +46,17 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_SwapChainVk =
     ISwapChainVkMethods SwapChainVk
 
 /// Exposes Vulkan-specific functionality of a swap chain.
-DILIGENT_BEGIN_INTERFACE(ISwapChainVk, ISwapChain)
+struct ISwapChainVk : public ISwapChain
 {
     /// Returns a Vulkan handle to the internal surface object.
-    VIRTUAL VkSurfaceKHR METHOD(GetVkSurface)(THIS) PURE;
+    virtual VkSurfaceKHR METHOD(GetVkSurface)( ) =0;
 
     /// Returns a Vulkan handle to the internal swap chain object.
-    VIRTUAL VkSwapchainKHR METHOD(GetVkSwapChain)(THIS) PURE;
+    virtual VkSwapchainKHR METHOD(GetVkSwapChain)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -69,4 +68,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

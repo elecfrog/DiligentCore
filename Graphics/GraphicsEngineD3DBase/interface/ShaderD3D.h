@@ -32,11 +32,11 @@
 
 #include "../../GraphicsEngine/interface/Shader.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 // {1EA0898C-1612-457F-B74E-808843D2CBE3}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_ShaderD3D =
+static constexpr struct INTERFACE_ID IID_ShaderD3D =
     {0x1ea0898c, 0x1612, 0x457f, {0xb7, 0x4e, 0x80, 0x88, 0x43, 0xd2, 0xcb, 0xe3}};
 
 
@@ -55,7 +55,6 @@ typedef struct HLSLShaderResourceDesc HLSLShaderResourceDesc;
 
 // clang-format on
 
-#define DILIGENT_INTERFACE_NAME IShaderD3D
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IShaderD3DInclusiveMethods \
@@ -71,13 +70,13 @@ DILIGENT_BEGIN_INTERFACE(IShaderD3D, IShader)
 
     /// \param [in] Index         - Resource index.
     /// \param [out] ResourceDesc - Resource description, see HLSLShaderResourceDesc.
-    VIRTUAL void METHOD(GetHLSLResource)(THIS_
+    virtual void METHOD(GetHLSLResource)(
                                          UInt32                     Index,
-                                         HLSLShaderResourceDesc REF ResourceDesc) CONST PURE;
+                                         HLSLShaderResourceDesc  & ResourceDesc) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -89,4 +88,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

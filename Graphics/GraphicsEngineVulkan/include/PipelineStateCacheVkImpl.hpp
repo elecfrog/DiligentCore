@@ -52,10 +52,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_PipelineStateCacheVk, TPipelineStateCacheBase)
 
     /// Implementation of IPipelineStateCache::GetData().
-    virtual void DILIGENT_CALL_TYPE GetData(IDataBlob** ppBlob) override final;
+    virtual void CALLTYPE GetData(IDataBlob** ppBlob) override final;
 
     /// Implementation of IPipelineStateCacheVk::GetVkPipelineCache().
-    virtual VkPipelineCache DILIGENT_CALL_TYPE GetVkPipelineCache() const override final { return m_PipelineStateCache; }
+    virtual VkPipelineCache CALLTYPE GetVkPipelineCache() const override final { return m_PipelineStateCache; }
 
 private:
     VulkanUtilities::PipelineCacheWrapper m_PipelineStateCache;

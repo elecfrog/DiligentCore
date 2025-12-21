@@ -31,13 +31,12 @@
 #include "CommandQueueMtl.h"
 #include "RasterizationRateMapMtl.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {2DEA7704-C586-4BA7-B938-93B239DFA268}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_DeviceContextMtl =
+static constexpr INTERFACE_ID IID_DeviceContextMtl =
     {0x2dea7704, 0xc586, 0x4ba7, {0xb9, 0x38, 0x93, 0xb2, 0x39, 0xdf, 0xa2, 0x68}};
 
-#define DILIGENT_INTERFACE_NAME IDeviceContextMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IDeviceContextMtlInclusiveMethods \
@@ -65,16 +64,16 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContextMtl, IDeviceContext)
     ///           appropriate Diligent API calls.
     ///
     ///           Engine will end all active encoders.
-    VIRTUAL id<MTLCommandBuffer> METHOD(GetMtlCommandBuffer)(THIS) PURE;
+    virtual id<MTLCommandBuffer> METHOD(GetMtlCommandBuffer)( ) =0;
 
 
     /// Sets the size of a block of threadgroup memory.
 
     /// \param [in] Length - The size of the threadgroup memory, in bytes. Must be a multiple of 16 bytes.
     /// \param [in] Index  - The index in the threadgroup memory argument table.
-    VIRTUAL void METHOD(SetComputeThreadgroupMemoryLength)(THIS_
+    virtual void METHOD(SetComputeThreadgroupMemoryLength)(
                                                            UInt32 Length,
-                                                           UInt32 Index) PURE;
+                                                           UInt32 Index) =0;
 
 
     /// Sets the size of a threadgroup memory buffer for the tile function at an index in the argument table.
@@ -82,14 +81,14 @@ DILIGENT_BEGIN_INTERFACE(IDeviceContextMtl, IDeviceContext)
     /// \param [in] Length - The threadgroup memory length, in bytes.
     /// \param [in] Offset - The distance, in bytes, between the start of the data and the start of the threadgroup memory.
     /// \param [in] Index  - The argument table index.
-    VIRTUAL void METHOD(SetTileThreadgroupMemoryLength)(THIS_
+    virtual void METHOD(SetTileThreadgroupMemoryLength)(
                                                         UInt32 Length,
                                                         UInt32 Offset,
-                                                        UInt32 Index) API_AVAILABLE(ios(11), macosx(11.0), tvos(14.5)) PURE;
+                                                        UInt32 Index) API_AVAILABLE(ios(11), macosx(11.0), tvos(14.5)) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -103,4 +102,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

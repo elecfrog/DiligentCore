@@ -63,10 +63,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_TextureWebGPU, TTextureBase)
 
     /// Implementation of ITexture::GetNativeHandle() in WebGPU backend.
-    UInt64 DILIGENT_CALL_TYPE GetNativeHandle() override final;
+    UInt64 CALLTYPE GetNativeHandle() override final;
 
     /// Implementation of ITextureWebGPU::GetWebGPUTexture() in WebGPU backend.
-    WGPUTexture DILIGENT_CALL_TYPE GetWebGPUTexture() const override final;
+    WGPUTexture CALLTYPE GetWebGPUTexture() const override final;
 
     StagingBufferInfo* GetStagingBuffer();
 

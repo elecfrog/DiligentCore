@@ -33,14 +33,13 @@
 #include "../../GraphicsEngine/interface/Shader.h"
 #include "../../../Primitives/interface/DataBlob.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {1FDE020A-9C73-4A76-8AEF-C2C6C2CF0EA5}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_HLSL2GLSLConversionStream =
+static constexpr INTERFACE_ID IID_HLSL2GLSLConversionStream =
     {0x1fde020a, 0x9c73, 0x4a76, {0x8a, 0xef, 0xc2, 0xc6, 0xc2, 0xcf, 0xe, 0xa5}};
 
 
-#define DILIGENT_INTERFACE_NAME IHLSL2GLSLConversionStream
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IHLSL2GLSLConversionStreamInclusiveMethods \
@@ -51,18 +50,18 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_HLSL2GLSLConversionStream =
 
 DILIGENT_BEGIN_INTERFACE(IHLSL2GLSLConversionStream, IObject)
 {
-    VIRTUAL void METHOD(Convert)(THIS_
+    virtual void METHOD(Convert)(
                                  const Char* EntryPoint,
                                  SHADER_TYPE ShaderType,
                                  bool        IncludeDefintions,
                                  const char* SamplerSuffix,
                                  bool        UseInOutLocationQualifiers,
                                  bool        UseRowMajorMatrices,
-                                 IDataBlob** ppGLSLSource) PURE;
+                                 IDataBlob** ppGLSLSource) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -76,10 +75,9 @@ DILIGENT_END_INTERFACE
 
 
 // {44A21160-77E0-4DDC-A57E-B8B8B65B5342}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_HLSL2GLSLConverter =
+static constexpr INTERFACE_ID IID_HLSL2GLSLConverter =
     {0x44a21160, 0x77e0, 0x4ddc, {0xa5, 0x7e, 0xb8, 0xb8, 0xb6, 0x5b, 0x53, 0x42}};
 
-#define DILIGENT_INTERFACE_NAME IHLSL2GLSLConverter
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IHLSL2GLSLConverterInclusiveMethods \
@@ -89,18 +87,18 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_HLSL2GLSLConverter =
 // clang-format off
 
 /// HLSL to GLSL converter interface.
-DILIGENT_BEGIN_INTERFACE(IHLSL2GLSLConverter, IObject)
+struct IHLSL2GLSLConverter : public IObject
 {
-    VIRTUAL void METHOD(CreateStream)(THIS_
+    virtual void METHOD(CreateStream)(
                                       const Char*                      InputFileName,
                                       IShaderSourceInputStreamFactory* pSourceStreamFactory,
                                       const Char*                      HLSLSource,
                                       size_t                           NumSymbols,
-                                      IHLSL2GLSLConversionStream**     ppStream) CONST PURE;
+                                      IHLSL2GLSLConversionStream**     ppStream) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -114,4 +112,4 @@ DILIGENT_END_INTERFACE
 
 void DILIGENT_GLOBAL_FUNCTION(CreateHLSL2GLSLConverter)(IHLSL2GLSLConverter** ppConverter);
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

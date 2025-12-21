@@ -40,7 +40,7 @@
 #include "ShaderResourceVariable.h"
 #include "ShaderResourceBinding.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 /// Immutable sampler description.
@@ -436,10 +436,9 @@ typedef struct PipelineResourceSignatureDesc PipelineResourceSignatureDesc;
 
 
 // {DCE499A5-F812-4C93-B108-D684A0B56118}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_PipelineResourceSignature =
+static constexpr INTERFACE_ID IID_PipelineResourceSignature =
     {0xdce499a5, 0xf812, 0x4c93, {0xb1, 0x8, 0xd6, 0x84, 0xa0, 0xb5, 0x61, 0x18}};
 
-#define DILIGENT_INTERFACE_NAME IPipelineResourceSignature
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IPipelineResourceSignatureInclusiveMethods \
@@ -449,7 +448,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_PipelineResourceSignature =
 // clang-format off
 
 /// Pipeline resource signature interface
-DILIGENT_BEGIN_INTERFACE(IPipelineResourceSignature, IDeviceObject)
+struct IPipelineResourceSignature : public IDeviceObject
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the pipeline resource signature description, see Diligent::PipelineResourceSignatureDesc.
@@ -463,9 +462,9 @@ DILIGENT_BEGIN_INTERFACE(IPipelineResourceSignature, IDeviceObject)
     /// \param [in] InitStaticResources      - If set to true, the method will initialize static resources in
     ///                                        the created object, which has the exact same effect as calling
     ///                                        IPipelineResourceSignature::InitializeStaticSRBResources().
-    VIRTUAL void METHOD(CreateShaderResourceBinding)(THIS_
+    virtual void METHOD(CreateShaderResourceBinding)(
                                                      IShaderResourceBinding** ppShaderResourceBinding,
-                                                     Bool                     InitStaticResources DEFAULT_VALUE(false)) PURE;
+                                                     Bool                     InitStaticResources DEFAULT_VALUE(false)) =0;
 
 
     /// Binds static resources for the specified shader stages in the pipeline resource signature.
@@ -474,10 +473,10 @@ DILIGENT_BEGIN_INTERFACE(IPipelineResourceSignature, IDeviceObject)
     ///                                Any combination of Diligent::SHADER_TYPE may be used.
     /// \param [in] pResourceMapping - Pointer to the resource mapping interface.
     /// \param [in] Flags            - Additional flags. See Diligent::BIND_SHADER_RESOURCES_FLAGS.
-    VIRTUAL void METHOD(BindStaticResources)(THIS_
+    virtual void METHOD(BindStaticResources)(
                                              SHADER_TYPE                 ShaderStages,
                                              IResourceMapping*           pResourceMapping,
-                                             BIND_SHADER_RESOURCES_FLAGS Flags) PURE;
+                                             BIND_SHADER_RESOURCES_FLAGS Flags) =0;
 
 
     /// Returns static shader resource variable. If the variable is not found,
@@ -500,9 +499,9 @@ DILIGENT_BEGIN_INTERFACE(IPipelineResourceSignature, IDeviceObject)
     /// The method does not increment the reference counter of the
     /// returned interface, and the application must *not* call Release()
     /// unless it explicitly called AddRef().
-    VIRTUAL IShaderResourceVariable* METHOD(GetStaticVariableByName)(THIS_
+    virtual IShaderResourceVariable* METHOD(GetStaticVariableByName)(
                                                                      SHADER_TYPE ShaderType,
-                                                                     const Char* Name) PURE;
+                                                                     const Char* Name) =0;
 
 
     /// Returns static shader resource variable by its index.
@@ -527,9 +526,9 @@ DILIGENT_BEGIN_INTERFACE(IPipelineResourceSignature, IDeviceObject)
     /// The method does not increment the reference counter of the
     /// returned interface, and the application must *not* call Release()
     /// unless it explicitly called AddRef().
-    VIRTUAL IShaderResourceVariable* METHOD(GetStaticVariableByIndex)(THIS_
+    virtual IShaderResourceVariable* METHOD(GetStaticVariableByIndex)(
                                                                       SHADER_TYPE ShaderType,
-                                                                      UInt32      Index) PURE;
+                                                                      UInt32      Index) =0;
 
 
     /// Returns the number of static shader resource variables.
@@ -538,8 +537,8 @@ DILIGENT_BEGIN_INTERFACE(IPipelineResourceSignature, IDeviceObject)
     ///
     /// \remarks   Only static variables (that can be accessed directly through the PSO) are counted.
     ///            Mutable and dynamic variables are accessed through Shader Resource Binding object.
-    VIRTUAL UInt32 METHOD(GetStaticVariableCount)(THIS_
-                                                  SHADER_TYPE ShaderType) CONST PURE;
+    virtual UInt32 METHOD(GetStaticVariableCount)(
+                                                  SHADER_TYPE ShaderType) const =0;
 
     /// Initializes static resources in the shader binding object.
 
@@ -554,27 +553,27 @@ DILIGENT_BEGIN_INTERFACE(IPipelineResourceSignature, IDeviceObject)
     ///
     /// If static resources have already been initialized in the SRB and the method
     /// is called again, it will have no effect and a warning message will be displayed.
-    VIRTUAL void METHOD(InitializeStaticSRBResources)(THIS_
-                                                      struct IShaderResourceBinding* pShaderResourceBinding) CONST PURE;
+    virtual void METHOD(InitializeStaticSRBResources)(
+                                                      struct IShaderResourceBinding* pShaderResourceBinding) const =0;
 
     /// Copies static resource bindings to the destination signature.
 
     /// \param [in] pDstSignature - Destination pipeline resource signature.
     ///
     /// \note   Destination signature must be compatible with this signature.
-    VIRTUAL void METHOD(CopyStaticResources)(THIS_
-                                             IPipelineResourceSignature* pDstSignature) CONST PURE;
+    virtual void METHOD(CopyStaticResources)(
+                                             IPipelineResourceSignature* pDstSignature) const =0;
 
     /// Returns true if the signature is compatible with another one.
 
     /// Two signatures are compatible if they contain identical resources and immutabke samplers,
     /// defined in the same order disregarding their names.
-    VIRTUAL Bool METHOD(IsCompatibleWith)(THIS_
-                                          const struct IPipelineResourceSignature* pPRS) CONST PURE;
+    virtual Bool METHOD(IsCompatibleWith)(
+                                          const struct IPipelineResourceSignature* pPRS) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -595,4 +594,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE
+ }

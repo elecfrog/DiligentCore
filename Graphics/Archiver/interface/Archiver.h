@@ -33,13 +33,12 @@
 #include "../../GraphicsEngine/interface/PipelineResourceSignature.h"
 #include "../../GraphicsEngine/interface/PipelineState.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {D8EBEC99-5A44-41A3-968F-1D7127ABEC79}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_Archiver =
+static constexpr INTERFACE_ID IID_Archiver =
     {0xd8ebec99, 0x5a44, 0x41a3, {0x96, 0x8f, 0x1d, 0x71, 0x27, 0xab, 0xec, 0x79}};
 
-#define DILIGENT_INTERFACE_NAME IArchiver
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IArchiverInclusiveMethods \
@@ -95,9 +94,9 @@ DILIGENT_BEGIN_INTERFACE(IArchiver, IObject)
 
     /// \note
     ///     The method is *not* thread-safe and **must not** be called from multiple threads simultaneously.
-    VIRTUAL Bool METHOD(SerializeToBlob)(THIS_
+    virtual Bool METHOD(SerializeToBlob)(
                                          UInt32      ContentVersion,
-                                         IDataBlob** ppBlob) PURE;
+                                         IDataBlob** ppBlob) =0;
 
     /// Writes archive to a file stream
 
@@ -106,9 +105,9 @@ DILIGENT_BEGIN_INTERFACE(IArchiver, IObject)
 
     /// \note
     ///     The method is *not* thread-safe and **must not** be called from multiple threads simultaneously.
-    VIRTUAL Bool METHOD(SerializeToStream)(THIS_
+    virtual Bool METHOD(SerializeToStream)(
                                            UInt32       ContentVersion,
-                                           IFileStream* pStream) PURE;
+                                           IFileStream* pStream) =0;
 
     /// Adds a shader to the archive.
 
@@ -123,8 +122,8 @@ DILIGENT_BEGIN_INTERFACE(IArchiver, IObject)
     ///     Multiple shaders may be packed into the same archive as long as they use unique names.
     ///
     ///     The method is thread-safe and may be called from multiple threads simultaneously.
-    VIRTUAL Bool METHOD(AddShader)(THIS_
-                                   IShader* pShader) PURE;
+    virtual Bool METHOD(AddShader)(
+                                   IShader* pShader) =0;
 
     /// Adds a pipeline state to the archive.
 
@@ -141,8 +140,8 @@ DILIGENT_BEGIN_INTERFACE(IArchiver, IObject)
     ///     and must also use unique names.
     ///
     ///     The method is thread-safe and may be called from multiple threads simultaneously.
-    VIRTUAL Bool METHOD(AddPipelineState)(THIS_
-                                          IPipelineState* pPSO) PURE;
+    virtual Bool METHOD(AddPipelineState)(
+                                          IPipelineState* pPSO) =0;
 
 
     /// Adds a pipeline resource signature to the archive.
@@ -158,11 +157,11 @@ DILIGENT_BEGIN_INTERFACE(IArchiver, IObject)
     ///     Multiple PSOs and signatures may be packed into the same archive as long as they use distinct names.
     ///
     ///     The method is thread-safe and may be called from multiple threads simultaneously.
-    VIRTUAL Bool METHOD(AddPipelineResourceSignature)(THIS_
-                                                      IPipelineResourceSignature* pSignature) PURE;
+    virtual Bool METHOD(AddPipelineResourceSignature)(
+                                                      IPipelineResourceSignature* pSignature) =0;
 
     /// Resets the archiver to default state and removes all added resources.
-    VIRTUAL void METHOD(Reset)(THIS) PURE;
+    virtual void METHOD(Reset)( ) =0;
 
     /// Returns a pointer to the shader object previously added by the AddShader() method.
 
@@ -171,8 +170,8 @@ DILIGENT_BEGIN_INTERFACE(IArchiver, IObject)
     ///
     /// \note       The method does **NOT** increment the reference counter of the returned object,
     ///             so the application **must not** call Release() unless it also explicitly calls AddRef().
-    VIRTUAL IShader* METHOD(GetShader)(THIS_
-                                       const char* ShaderName) PURE;
+    virtual IShader* METHOD(GetShader)(
+                                       const char* ShaderName) =0;
 
     /// Returns a pointer to the pipeline state object previously added by the AddPipelineState() method.
 
@@ -182,9 +181,9 @@ DILIGENT_BEGIN_INTERFACE(IArchiver, IObject)
     ///
     /// \note       The method does **NOT** increment the reference counter of the returned object,
     ///             so the application **must not** call Release() unless it also explicitly calls AddRef().
-    VIRTUAL IPipelineState* METHOD(GetPipelineState)(THIS_
+    virtual IPipelineState* METHOD(GetPipelineState)(
                                                      PIPELINE_TYPE PSOType,
-                                                     const char*   PSOName) PURE;
+                                                     const char*   PSOName) =0;
 
     /// Returns a pointer to the pipeline resource signature previously added by the AddPipelineResourceSignature() method.
 
@@ -193,12 +192,12 @@ DILIGENT_BEGIN_INTERFACE(IArchiver, IObject)
     ///
     /// \note      The method does **NOT** increment the reference counter of the returned object,
     ///             so the application **must not** call Release() unless it also explicitly calls AddRef().
-    VIRTUAL IPipelineResourceSignature* METHOD(GetPipelineResourceSignature)(THIS_
-                                                                             const char* PRSName) PURE;
+    virtual IPipelineResourceSignature* METHOD(GetPipelineResourceSignature)(
+                                                                             const char* PRSName) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -213,4 +212,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

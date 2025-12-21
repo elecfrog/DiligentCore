@@ -32,20 +32,20 @@
 #if PLATFORM_ANDROID || PLATFORM_WEB
 
 #   include "RenderDeviceGLES.h"
-    DILIGENT_BEGIN_NAMESPACE(Diligent)
+    namespace Diligent {
 
         typedef IRenderDeviceGLES IGLDeviceBaseInterface;
 
-    DILIGENT_END_NAMESPACE
+     }
 
 #elif PLATFORM_WIN32 || PLATFORM_LINUX || PLATFORM_MACOS || PLATFORM_IOS
 
 #   include "RenderDeviceGL.h"
-    DILIGENT_BEGIN_NAMESPACE(Diligent)
+    namespace Diligent {
 
         typedef IRenderDeviceGL IGLDeviceBaseInterface;
 
-    DILIGENT_END_NAMESPACE
+     }
 
 #else
 
@@ -54,8 +54,8 @@
 #endif
 
 #include "DeviceContextGL.h"
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
     typedef IDeviceContextGL IGLDeviceContextBaseInterface;
 
-DILIGENT_END_NAMESPACE
+ }

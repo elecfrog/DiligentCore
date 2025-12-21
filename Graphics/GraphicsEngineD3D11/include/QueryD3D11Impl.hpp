@@ -55,17 +55,17 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_QueryD3D11, TQueryBase)
 
     /// Implementation of IQuery::GetData().
-    virtual bool DILIGENT_CALL_TYPE GetData(void* pData, UInt32 DataSize, bool AutoInvalidate) override final;
+    virtual bool CALLTYPE GetData(void* pData, UInt32 DataSize, bool AutoInvalidate) override final;
 
     /// Implementation of IQuery::Invalidate().
-    virtual void DILIGENT_CALL_TYPE Invalidate() override final
+    virtual void CALLTYPE Invalidate() override final
     {
         m_DisjointQuery.reset();
         TQueryBase::Invalidate();
     }
 
     /// Implementation of IQueryD3D11::GetD3D11Query().
-    virtual ID3D11Query* DILIGENT_CALL_TYPE GetD3D11Query(UInt32 QueryId) override final
+    virtual ID3D11Query* CALLTYPE GetD3D11Query(UInt32 QueryId) override final
     {
         VERIFY_EXPR(QueryId == 0 || m_Desc.Type == QUERY_TYPE_DURATION && QueryId == 1);
         return m_pd3d11Query[QueryId];

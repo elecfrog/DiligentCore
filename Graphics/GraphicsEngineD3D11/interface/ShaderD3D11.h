@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngineD3DBase/interface/ShaderD3D.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {C513E83E-B037-405B-8B49-BF8F5C220DEE}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_ShaderD3D11 =
+static constexpr struct INTERFACE_ID IID_ShaderD3D11 =
     {0xc513e83e, 0xb037, 0x405b, {0x8b, 0x49, 0xbf, 0x8f, 0x5c, 0x22, 0xd, 0xee}};
 
-#define DILIGENT_INTERFACE_NAME IShaderD3D11
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IShaderD3D11InclusiveMethods \
@@ -52,11 +51,11 @@ DILIGENT_BEGIN_INTERFACE(IShaderD3D11, IShaderD3D)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D11DeviceChild* METHOD(GetD3D11Shader)(THIS) PURE;
+    virtual ID3D11DeviceChild* METHOD(GetD3D11Shader)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -64,4 +63,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

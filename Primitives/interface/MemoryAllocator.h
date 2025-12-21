@@ -32,7 +32,7 @@
 
 #include "CommonDefinitions.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 #if DILIGENT_CPP_INTERFACE
@@ -88,4 +88,4 @@ typedef struct IMemoryAllocator
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

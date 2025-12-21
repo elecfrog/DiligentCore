@@ -156,7 +156,7 @@ public:
         m_ReferenceData.resize(m_ReferenceDataPitch * m_SwapChainDesc.Height);
     }
 
-    virtual void DILIGENT_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override
+    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override
     {
         if (ppInterface == nullptr)
             return;
@@ -173,32 +173,32 @@ public:
         }
     }
 
-    virtual void DILIGENT_CALL_TYPE Present(UInt32 SyncInterval = 1) override
+    virtual void CALLTYPE Present(UInt32 SyncInterval = 1) override
     {
         CompareWithSnapshot(nullptr);
     }
 
-    virtual void DILIGENT_CALL_TYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final
+    virtual void CALLTYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final
     {
         UNEXPECTED("Resizing testing swap chains is not supported");
     }
 
-    virtual void DILIGENT_CALL_TYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final
+    virtual void CALLTYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final
     {
         UNEXPECTED("Testing swap chain can't go into full screen mode");
     }
 
-    virtual void DILIGENT_CALL_TYPE SetWindowedMode() override final
+    virtual void CALLTYPE SetWindowedMode() override final
     {
         UNEXPECTED("Testing swap chain can't switch between windowed and full screen modes");
     }
 
-    virtual void DILIGENT_CALL_TYPE SetMaximumFrameLatency(UInt32 MaxLatency) override final
+    virtual void CALLTYPE SetMaximumFrameLatency(UInt32 MaxLatency) override final
     {
         UNEXPECTED("Testing swap chain can't set the maximum frame latency");
     }
 
-    virtual ITextureView* DILIGENT_CALL_TYPE GetCurrentBackBufferRTV() override final
+    virtual ITextureView* CALLTYPE GetCurrentBackBufferRTV() override final
     {
         return m_pRTV;
     }
@@ -208,12 +208,12 @@ public:
         return m_pUAV;
     }
 
-    virtual ITextureView* DILIGENT_CALL_TYPE GetDepthBufferDSV() override final
+    virtual ITextureView* CALLTYPE GetDepthBufferDSV() override final
     {
         return m_pDSV;
     }
 
-    virtual const SwapChainDesc& DILIGENT_CALL_TYPE GetDesc() const override final
+    virtual const SwapChainDesc& CALLTYPE GetDesc() const override final
     {
         return m_SwapChainDesc;
     }

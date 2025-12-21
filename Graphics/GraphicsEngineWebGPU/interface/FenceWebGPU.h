@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/Fence.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {4B0B5F76-C4C4-4DDA-BD10-85E3CFB778FC}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_FenceWebGPU =
+static constexpr INTERFACE_ID IID_FenceWebGPU =
     {0x4B0B5F76, 0xC4C4, 0x4DDA, {0xBD, 0x10, 0x85, 0xE3, 0xCF, 0xB7, 0x78, 0xFC}};
 
-#define DILIGENT_INTERFACE_NAME IFenceWebGPU
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IFenceWebGPUInclusiveMethods \
@@ -48,11 +47,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_FenceWebGPU =
 
 /// Exposes WebGPU-specific functionality of a fence object.
 DILIGENT_BEGIN_INTERFACE(IFenceWebGPU, IFence){};
-DILIGENT_END_INTERFACE
+
 
 #endif
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -63,4 +62,4 @@ typedef struct IFenceWebGPUtbl
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

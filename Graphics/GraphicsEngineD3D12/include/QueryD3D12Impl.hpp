@@ -55,16 +55,16 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_QueryD3D12, TQueryBase)
 
     /// Implementation of IQuery::GetData().
-    virtual bool DILIGENT_CALL_TYPE GetData(void* pData, UInt32 DataSize, bool AutoInvalidate) override final;
+    virtual bool CALLTYPE GetData(void* pData, UInt32 DataSize, bool AutoInvalidate) override final;
 
     /// Implementation of IQuery::Invalidate().
-    virtual void DILIGENT_CALL_TYPE Invalidate() override final;
+    virtual void CALLTYPE Invalidate() override final;
 
     /// Implementation of IQueryD3D12::GetD3D12QueryHeap().
-    virtual ID3D12QueryHeap* DILIGENT_CALL_TYPE GetD3D12QueryHeap() override final;
+    virtual ID3D12QueryHeap* CALLTYPE GetD3D12QueryHeap() override final;
 
     /// Implementation of IQueryD3D12::GetQueryHeapIndex().
-    virtual UInt32 DILIGENT_CALL_TYPE GetQueryHeapIndex(UInt32 QueryId) const override final
+    virtual UInt32 CALLTYPE GetQueryHeapIndex(UInt32 QueryId) const override final
     {
         VERIFY_EXPR(QueryId == 0 || m_Desc.Type == QUERY_TYPE_DURATION && QueryId == 1);
         return m_QueryHeapIndex[QueryId];

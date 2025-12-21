@@ -49,18 +49,18 @@ public:
         m_Desc{m_Name.c_str(), PSODesc.PipelineType}
     {}
 
-    virtual const PipelineStateDesc& DILIGENT_CALL_TYPE GetDesc() const override
+    virtual const PipelineStateDesc& CALLTYPE GetDesc() const override
     {
         return m_pPipeline ? m_pPipeline->GetDesc() : m_Desc;
     }
 
-    virtual Int32 DILIGENT_CALL_TYPE GetUniqueID() const override
+    virtual Int32 CALLTYPE GetUniqueID() const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         return m_pPipeline ? m_pPipeline->GetUniqueID() : -1;
     }
 
-    virtual void DILIGENT_CALL_TYPE SetUserData(IObject* pUserData) override
+    virtual void CALLTYPE SetUserData(IObject* pUserData) override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         if (m_pPipeline)
@@ -69,34 +69,34 @@ public:
         }
     }
 
-    virtual IObject* DILIGENT_CALL_TYPE GetUserData() const override
+    virtual IObject* CALLTYPE GetUserData() const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         return m_pPipeline ? m_pPipeline->GetUserData() : nullptr;
     }
 
-    virtual const GraphicsPipelineDesc& DILIGENT_CALL_TYPE GetGraphicsPipelineDesc() const override
+    virtual const GraphicsPipelineDesc& CALLTYPE GetGraphicsPipelineDesc() const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         static constexpr GraphicsPipelineDesc NullDesc;
         return m_pPipeline ? m_pPipeline->GetGraphicsPipelineDesc() : NullDesc;
     }
 
-    virtual const RayTracingPipelineDesc& DILIGENT_CALL_TYPE GetRayTracingPipelineDesc() const override
+    virtual const RayTracingPipelineDesc& CALLTYPE GetRayTracingPipelineDesc() const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         static constexpr RayTracingPipelineDesc NullDesc;
         return m_pPipeline ? m_pPipeline->GetRayTracingPipelineDesc() : NullDesc;
     }
 
-    virtual const TilePipelineDesc& DILIGENT_CALL_TYPE GetTilePipelineDesc() const override
+    virtual const TilePipelineDesc& CALLTYPE GetTilePipelineDesc() const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         static constexpr TilePipelineDesc NullDesc;
         return m_pPipeline ? m_pPipeline->GetTilePipelineDesc() : NullDesc;
     }
 
-    virtual void DILIGENT_CALL_TYPE BindStaticResources(SHADER_TYPE ShaderStages, IResourceMapping* pResourceMapping, BIND_SHADER_RESOURCES_FLAGS Flags) override
+    virtual void CALLTYPE BindStaticResources(SHADER_TYPE ShaderStages, IResourceMapping* pResourceMapping, BIND_SHADER_RESOURCES_FLAGS Flags) override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         if (m_pPipeline)
@@ -105,25 +105,25 @@ public:
         }
     }
 
-    virtual UInt32 DILIGENT_CALL_TYPE GetStaticVariableCount(SHADER_TYPE ShaderType) const override
+    virtual UInt32 CALLTYPE GetStaticVariableCount(SHADER_TYPE ShaderType) const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         return m_pPipeline ? m_pPipeline->GetStaticVariableCount(ShaderType) : 0;
     }
 
-    virtual IShaderResourceVariable* DILIGENT_CALL_TYPE GetStaticVariableByName(SHADER_TYPE ShaderType, const Char* Name) override
+    virtual IShaderResourceVariable* CALLTYPE GetStaticVariableByName(SHADER_TYPE ShaderType, const Char* Name) override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         return m_pPipeline ? m_pPipeline->GetStaticVariableByName(ShaderType, Name) : nullptr;
     }
 
-    virtual IShaderResourceVariable* DILIGENT_CALL_TYPE GetStaticVariableByIndex(SHADER_TYPE ShaderType, UInt32 Index) override
+    virtual IShaderResourceVariable* CALLTYPE GetStaticVariableByIndex(SHADER_TYPE ShaderType, UInt32 Index) override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         return m_pPipeline ? m_pPipeline->GetStaticVariableByIndex(ShaderType, Index) : nullptr;
     }
 
-    virtual void DILIGENT_CALL_TYPE CreateShaderResourceBinding(IShaderResourceBinding** ppShaderResourceBinding, bool InitStaticResources) override
+    virtual void CALLTYPE CreateShaderResourceBinding(IShaderResourceBinding** ppShaderResourceBinding, bool InitStaticResources) override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         if (m_pPipeline)
@@ -132,7 +132,7 @@ public:
         }
     }
 
-    virtual void DILIGENT_CALL_TYPE InitializeStaticSRBResources(IShaderResourceBinding* pShaderResourceBinding) const override
+    virtual void CALLTYPE InitializeStaticSRBResources(IShaderResourceBinding* pShaderResourceBinding) const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         if (m_pPipeline)
@@ -141,7 +141,7 @@ public:
         }
     }
 
-    virtual void DILIGENT_CALL_TYPE CopyStaticResources(IPipelineState* pPSO) const override
+    virtual void CALLTYPE CopyStaticResources(IPipelineState* pPSO) const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         if (m_pPipeline)
@@ -150,25 +150,25 @@ public:
         }
     }
 
-    virtual bool DILIGENT_CALL_TYPE IsCompatibleWith(const IPipelineState* pPSO) const override
+    virtual bool CALLTYPE IsCompatibleWith(const IPipelineState* pPSO) const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         return m_pPipeline ? m_pPipeline->IsCompatibleWith(pPSO) : false;
     }
 
-    virtual UInt32 DILIGENT_CALL_TYPE GetResourceSignatureCount() const override
+    virtual UInt32 CALLTYPE GetResourceSignatureCount() const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         return m_pPipeline ? m_pPipeline->GetResourceSignatureCount() : 0;
     }
 
-    virtual IPipelineResourceSignature* DILIGENT_CALL_TYPE GetResourceSignature(UInt32 Index) const override
+    virtual IPipelineResourceSignature* CALLTYPE GetResourceSignature(UInt32 Index) const override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         return m_pPipeline ? m_pPipeline->GetResourceSignature(Index) : nullptr;
     }
 
-    virtual PIPELINE_STATE_STATUS DILIGENT_CALL_TYPE GetStatus(bool WaitForCompletion) override
+    virtual PIPELINE_STATE_STATUS CALLTYPE GetStatus(bool WaitForCompletion) override
     {
         DEV_CHECK_ERR(m_pPipeline, "Internal pipeline is null");
         return m_pPipeline ? m_pPipeline->GetStatus(WaitForCompletion) : PIPELINE_STATE_STATUS_UNINITIALIZED;

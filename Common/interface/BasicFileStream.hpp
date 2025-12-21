@@ -54,21 +54,21 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_FileStream, TBase)
 
     /// Reads data from the stream
-    virtual void DILIGENT_CALL_TYPE ReadBlob(IDataBlob* pData) override;
+    virtual void CALLTYPE ReadBlob(IDataBlob* pData) override;
 
     /// Reads data from the stream
-    virtual bool DILIGENT_CALL_TYPE Read(void* Data, size_t Size) override;
+    virtual bool CALLTYPE Read(void* Data, size_t Size) override;
 
     /// Writes data to the stream
-    virtual bool DILIGENT_CALL_TYPE Write(const void* Data, size_t Size) override;
+    virtual bool CALLTYPE Write(const void* Data, size_t Size) override;
 
-    virtual size_t DILIGENT_CALL_TYPE GetSize() override;
+    virtual size_t CALLTYPE GetSize() override;
 
-    virtual size_t DILIGENT_CALL_TYPE GetPos() override;
+    virtual size_t CALLTYPE GetPos() override;
 
-    virtual bool DILIGENT_CALL_TYPE SetPos(size_t Offset, int Origin) override;
+    virtual bool CALLTYPE SetPos(size_t Offset, int Origin) override;
 
-    virtual bool DILIGENT_CALL_TYPE IsValid() override;
+    virtual bool CALLTYPE IsValid() override;
 
 private:
     FileWrapper m_FileWrpr;

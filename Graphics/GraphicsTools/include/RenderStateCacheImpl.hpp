@@ -54,58 +54,58 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_RenderStateCache, TBase);
 
-    virtual bool DILIGENT_CALL_TYPE Load(const IDataBlob* pArchive,
+    virtual bool CALLTYPE Load(const IDataBlob* pArchive,
                                          UInt32           ContentVersion,
                                          bool             MakeCopy) override final
     {
         return m_pDearchiver->LoadArchive(pArchive, ContentVersion, MakeCopy);
     }
 
-    virtual bool DILIGENT_CALL_TYPE CreateShader(const ShaderCreateInfo& ShaderCI,
+    virtual bool CALLTYPE CreateShader(const ShaderCreateInfo& ShaderCI,
                                                  IShader**               ppShader) override final;
 
-    virtual bool DILIGENT_CALL_TYPE CreateGraphicsPipelineState(
+    virtual bool CALLTYPE CreateGraphicsPipelineState(
         const GraphicsPipelineStateCreateInfo& PSOCreateInfo,
         IPipelineState**                       ppPipelineState) override final
     {
         return CreatePipelineState(PSOCreateInfo, ppPipelineState);
     }
 
-    virtual bool DILIGENT_CALL_TYPE CreateComputePipelineState(
+    virtual bool CALLTYPE CreateComputePipelineState(
         const ComputePipelineStateCreateInfo& PSOCreateInfo,
         IPipelineState**                      ppPipelineState) override final
     {
         return CreatePipelineState(PSOCreateInfo, ppPipelineState);
     }
 
-    virtual bool DILIGENT_CALL_TYPE CreateRayTracingPipelineState(
+    virtual bool CALLTYPE CreateRayTracingPipelineState(
         const RayTracingPipelineStateCreateInfo& PSOCreateInfo,
         IPipelineState**                         ppPipelineState) override final
     {
         return CreatePipelineState(PSOCreateInfo, ppPipelineState);
     }
 
-    virtual bool DILIGENT_CALL_TYPE CreateTilePipelineState(
+    virtual bool CALLTYPE CreateTilePipelineState(
         const TilePipelineStateCreateInfo& PSOCreateInfo,
         IPipelineState**                   ppPipelineState) override final
     {
         return CreatePipelineState(PSOCreateInfo, ppPipelineState);
     }
 
-    virtual Bool DILIGENT_CALL_TYPE WriteToBlob(UInt32 ContentVersion, IDataBlob** ppBlob) override final;
+    virtual Bool CALLTYPE WriteToBlob(UInt32 ContentVersion, IDataBlob** ppBlob) override final;
 
-    virtual Bool DILIGENT_CALL_TYPE WriteToStream(UInt32 ContentVersion, IFileStream* pStream) override final;
+    virtual Bool CALLTYPE WriteToStream(UInt32 ContentVersion, IFileStream* pStream) override final;
 
-    virtual void DILIGENT_CALL_TYPE Reset() override final;
+    virtual void CALLTYPE Reset() override final;
 
-    virtual UInt32 DILIGENT_CALL_TYPE Reload(ReloadGraphicsPipelineCallbackType ReloadGraphicsPipeline, void* pUserData) override final;
+    virtual UInt32 CALLTYPE Reload(ReloadGraphicsPipelineCallbackType ReloadGraphicsPipeline, void* pUserData) override final;
 
-    virtual UInt32 DILIGENT_CALL_TYPE GetContentVersion() const override final
+    virtual UInt32 CALLTYPE GetContentVersion() const override final
     {
         return m_pDearchiver ? m_pDearchiver->GetContentVersion() : ~0u;
     }
 
-    virtual UInt32 DILIGENT_CALL_TYPE GetReloadVersion() const override final
+    virtual UInt32 CALLTYPE GetReloadVersion() const override final
     {
         return m_ReloadVersion;
     }

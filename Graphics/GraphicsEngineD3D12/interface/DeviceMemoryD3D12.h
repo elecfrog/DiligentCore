@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/DeviceMemory.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {CC43FEB3-688F-4D4D-B493-0E509F4A0D02}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_DeviceMemoryD3D12 =
+static constexpr INTERFACE_ID IID_DeviceMemoryD3D12 =
     {0xcc43feb3, 0x688f, 0x4d4d, {0xb4, 0x93, 0xe, 0x50, 0x9f, 0x4a, 0xd, 0x2}};
 
-#define DILIGENT_INTERFACE_NAME IDeviceMemoryD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IDeviceMemoryD3D12InclusiveMethods \
@@ -68,16 +67,16 @@ DILIGENT_BEGIN_INTERFACE(IDeviceMemoryD3D12, IDeviceMemory)
 {
     /// Returns a DeviceMemoryRangeD3D12 object with the information
     /// about ID3D12Heap associated with the specified memory range.
-    VIRTUAL DeviceMemoryRangeD3D12 METHOD(GetRange)(THIS_
+    virtual DeviceMemoryRangeD3D12 METHOD(GetRange)(
                                                     UInt64 Offset,
-                                                    UInt64 Size) CONST PURE;
+                                                    UInt64 Size) const =0;
 
     /// Returns true if the heap was created using NVApi.
-    VIRTUAL Bool METHOD(IsUsingNVApi)(THIS) CONST PURE;
+    virtual Bool METHOD(IsUsingNVApi)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -86,4 +85,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

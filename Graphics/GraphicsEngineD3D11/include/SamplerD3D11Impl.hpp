@@ -52,7 +52,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_SamplerD3D11, TSamplerBase)
 
     /// Implementation of ISamplerD3D11::ISamplerD3D11() method.
-    virtual ID3D11SamplerState* DILIGENT_CALL_TYPE GetD3D11SamplerState() override final { return m_pd3dSampler; }
+    virtual ID3D11SamplerState* CALLTYPE GetD3D11SamplerState() override final { return m_pd3dSampler; }
 
 private:
     /// D3D11 sampler

@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/RenderDevice.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {05B1CBB8-FCAD-49EE-BADA-7801223EC3FE}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_RenderDeviceD3D11 =
+static constexpr struct INTERFACE_ID IID_RenderDeviceD3D11 =
     {0x5b1cbb8, 0xfcad, 0x49ee, {0xba, 0xda, 0x78, 0x1, 0x22, 0x3e, 0xc3, 0xfe}};
 
-#define DILIGENT_INTERFACE_NAME IRenderDeviceD3D11
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IRenderDeviceD3D11InclusiveMethods \
@@ -54,7 +53,7 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceD3D11, IRenderDevice)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D11Device* METHOD(GetD3D11Device)(THIS) PURE;
+    virtual ID3D11Device* METHOD(GetD3D11Device)( ) =0;
 
     /// Creates a buffer object from native d3d11 buffer
 
@@ -68,11 +67,11 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceD3D11, IRenderDevice)
     ///                             buffer interface will be stored.
     ///                             The function calls AddRef(), so that the new object will contain
     ///                             one reference.
-    VIRTUAL void METHOD(CreateBufferFromD3DResource)(THIS_
+    virtual void METHOD(CreateBufferFromD3DResource)(
                                                      ID3D11Buffer*        pd3d11Buffer,
-                                                     const BufferDesc REF BuffDesc,
+                                                     const BufferDesc  & BuffDesc,
                                                      RESOURCE_STATE       InitialState,
-                                                     IBuffer**            ppBuffer) PURE;
+                                                     IBuffer**            ppBuffer) =0;
 
     /// Creates a texture object from native d3d11 1D texture
 
@@ -82,10 +81,10 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceD3D11, IRenderDevice)
     ///                              texture interface will be stored.
     ///                              The function calls AddRef(), so that the new object will contain
     ///                              one reference.
-    VIRTUAL void METHOD(CreateTexture1DFromD3DResource)(THIS_
+    virtual void METHOD(CreateTexture1DFromD3DResource)(
                                                         ID3D11Texture1D* pd3d11Texture,
                                                         RESOURCE_STATE   InitialState,
-                                                        ITexture**       ppTexture) PURE;
+                                                        ITexture**       ppTexture) =0;
 
     /// Creates a texture object from native d3d11 2D texture
 
@@ -95,10 +94,10 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceD3D11, IRenderDevice)
     ///                              texture interface will be stored.
     ///                              The function calls AddRef(), so that the new object will contain
     ///                              one reference.
-    VIRTUAL void METHOD(CreateTexture2DFromD3DResource)(THIS_
+    virtual void METHOD(CreateTexture2DFromD3DResource)(
                                                         ID3D11Texture2D* pd3d11Texture,
                                                         RESOURCE_STATE   InitialState,
-                                                        ITexture**       ppTexture) PURE;
+                                                        ITexture**       ppTexture) =0;
 
     /// Creates a texture object from native d3d11 3D texture
 
@@ -108,14 +107,14 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceD3D11, IRenderDevice)
     ///                              texture interface will be stored.
     ///                              The function calls AddRef(), so that the new object will contain
     ///                              one reference.
-    VIRTUAL void METHOD(CreateTexture3DFromD3DResource)(THIS_
+    virtual void METHOD(CreateTexture3DFromD3DResource)(
                                                         ID3D11Texture3D* pd3d11Texture,
                                                         RESOURCE_STATE   InitialState,
-                                                        ITexture**       ppTexture) PURE;
+                                                        ITexture**       ppTexture) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -131,4 +130,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

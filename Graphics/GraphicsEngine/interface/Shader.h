@@ -34,10 +34,10 @@
 #include "../../../Primitives/interface/FlagEnum.h"
 #include "DeviceObject.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {2989B45C-143D-4886-B89C-C3271C2DCC5D}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_Shader =
+static constexpr INTERFACE_ID IID_Shader =
     {0x2989b45c, 0x143d, 0x4886, {0xb8, 0x9c, 0xc3, 0x27, 0x1c, 0x2d, 0xcc, 0x5d}};
 
 // clang-format off
@@ -221,13 +221,12 @@ DILIGENT_TYPED_ENUM(SHADER_STATUS, UInt32)
 // clang-format on
 
 // {3EA98781-082F-4413-8C30-B9BA6D82DBB7}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_IShaderSourceInputStreamFactory =
+static constexpr INTERFACE_ID IID_IShaderSourceInputStreamFactory =
     {0x3ea98781, 0x82f, 0x4413, {0x8c, 0x30, 0xb9, 0xba, 0x6d, 0x82, 0xdb, 0xb7}};
 
 
 // clang-format off
 
-#define DILIGENT_INTERFACE_NAME IShaderSourceInputStreamFactory
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IShaderSourceInputStreamFactoryInclusiveMethods \
@@ -235,16 +234,16 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_IShaderSourceInputStreamFactory =
     IShaderSourceInputStreamFactoryMethods ShaderSourceInputStreamFactory
 
 /// Shader source stream factory interface
-DILIGENT_BEGIN_INTERFACE(IShaderSourceInputStreamFactory, IObject)
+struct IShaderSourceInputStreamFactory : public IObject
 {
     /// Creates a shader source input stream for the specified file name.
 
     /// The stream is used to load the shader source code.
     /// \param [in] Name      - The name of the file to load.
     /// \param [out] ppStream - Pointer to the shader source input stream.
-    VIRTUAL void METHOD(CreateInputStream)(THIS_
+    virtual void METHOD(CreateInputStream)(
                                            const Char*   Name,
-                                           IFileStream** ppStream) PURE;
+                                           IFileStream** ppStream) =0;
 
     /// Creates a shader source input stream for the specified file name.
 
@@ -253,14 +252,14 @@ DILIGENT_BEGIN_INTERFACE(IShaderSourceInputStreamFactory, IObject)
     /// \param [in] Flags     - Flags that control the stream creation,
     ///                         see Diligent::CREATE_SHADER_SOURCE_INPUT_STREAM_FLAGS.
     /// \param [out] ppStream - Pointer to the shader source input stream.
-    VIRTUAL void METHOD(CreateInputStream2)(THIS_
+    virtual void METHOD(CreateInputStream2)(
                                             const Char*                             Name,
                                             CREATE_SHADER_SOURCE_INPUT_STREAM_FLAGS Flags,
-                                            IFileStream**                           ppStream) PURE;
+                                            IFileStream**                           ppStream) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -457,9 +456,6 @@ struct ShaderCreateInfo
     /// HLSL shaders need to be compiled against 4.0 profile or higher.
     const void* ByteCode DEFAULT_INITIALIZER(nullptr);
 
-#if defined(DILIGENT_SHARP_GEN)
-    size_t ByteCodeSize DEFAULT_INITIALIZER(0);
-#else
     union
     {
         /// Length of the source code, when `Source` is not null.
@@ -476,7 +472,6 @@ struct ShaderCreateInfo
         /// Byte code size (in bytes) must not be zero if `ByteCode` is not null.
         size_t ByteCodeSize;
     };
-#endif
 
     /// Shader entry point
 
@@ -554,7 +549,7 @@ struct ShaderCreateInfo
     /// \remarks    This member is ignored when compiling shaders for backends other than WebGPU.
     const char* WebGPUEmulatedArrayIndexSuffix DEFAULT_INITIALIZER(nullptr);
 
-#if DILIGENT_CPP_INTERFACE && !defined(DILIGENT_SHARP_GEN)
+#if DILIGENT_CPP_INTERFACE
     constexpr ShaderCreateInfo() noexcept
     {}
 
@@ -1046,7 +1041,6 @@ typedef struct ShaderCodeBufferDesc
 } ShaderCodeBufferDesc;
 
 
-#define DILIGENT_INTERFACE_NAME IShader
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IShaderInclusiveMethods    \
@@ -1056,7 +1050,7 @@ typedef struct ShaderCodeBufferDesc
 // clang-format off
 
 /// Shader interface
-DILIGENT_BEGIN_INTERFACE(IShader, IDeviceObject)
+struct IShader : public IDeviceObject
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the shader description
@@ -1064,12 +1058,12 @@ DILIGENT_BEGIN_INTERFACE(IShader, IDeviceObject)
 #endif
 
     /// Returns the total number of shader resources
-    VIRTUAL UInt32 METHOD(GetResourceCount)(THIS) CONST PURE;
+    virtual UInt32 METHOD(GetResourceCount)( ) const =0;
 
     /// Returns the pointer to the array of shader resources
-    VIRTUAL void METHOD(GetResourceDesc)(THIS_
+    virtual void METHOD(GetResourceDesc)(
                                          UInt32 Index,
-                                         ShaderResourceDesc REF ResourceDesc) CONST PURE;
+                                         ShaderResourceDesc  & ResourceDesc) const =0;
 
     /// For a constant buffer resource, returns the buffer description. See Diligent::ShaderCodeBufferDesc.
 
@@ -1079,8 +1073,8 @@ DILIGENT_BEGIN_INTERFACE(IShader, IDeviceObject)
     ///
     /// This method requires that the `LoadConstantBufferReflection` flag was set to `true`
     /// when the shader was created.
-    VIRTUAL const ShaderCodeBufferDesc* METHOD(GetConstantBufferDesc)(THIS_
-                                               UInt32 Index) CONST PURE;
+    virtual const ShaderCodeBufferDesc* METHOD(GetConstantBufferDesc)(
+                                               UInt32 Index) const =0;
 
     /// Returns the shader bytecode.
 
@@ -1092,9 +1086,9 @@ DILIGENT_BEGIN_INTERFACE(IShader, IDeviceObject)
     ///
     /// The pointer returned by the method remains valid while the
     /// shader object is alive. An application must NOT free the memory.
-    VIRTUAL void METHOD(GetBytecode)(THIS_
+    virtual void METHOD(GetBytecode)(
                                      const void** ppBytecode,
-                                     UInt64 REF   Size) CONST PURE;
+                                     UInt64  &   Size) const =0;
 
     /// Returns the shader status, see Diligent::SHADER_STATUS.
 
@@ -1102,12 +1096,12 @@ DILIGENT_BEGIN_INTERFACE(IShader, IDeviceObject)
     ///                                 If false, the method will return the shader status without waiting.
     /// 							    This parameter is ignored if the shader was compiled synchronously.
     /// \return     The shader status.
-    VIRTUAL SHADER_STATUS METHOD(GetStatus)(THIS_
-                                            bool WaitForCompletion DEFAULT_VALUE(false)) PURE;
+    virtual SHADER_STATUS METHOD(GetStatus)(
+                                            bool WaitForCompletion DEFAULT_VALUE(false)) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -1125,4 +1119,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

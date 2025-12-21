@@ -1,29 +1,3 @@
-/*
- *  Copyright 2024-2025 Diligent Graphics LLC
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- *  In no event and under no legal theory, whether in tort (including negligence),
- *  contract, or otherwise, unless required by applicable law (such as deliberate
- *  and grossly negligent acts) or agreed to in writing, shall any Contributor be
- *  liable for any damages, including any direct, indirect, special, incidental,
- *  or consequential damages of any character arising as a result of this License or
- *  out of the use or inability to use the software (including but not limited to damages
- *  for loss of goodwill, work stoppage, computer failure or malfunction, or any and
- *  all other commercial damages or losses), even if such Contributor has been advised
- *  of the possibility of such damages.
- */
-
 #pragma once
 
 /// \file
@@ -32,13 +6,11 @@
 #include "../../Primitives/interface/DataBlob.h"
 #include "../../Primitives/interface/FlagEnum.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
-
-#include "../../Primitives/interface/DefineRefMacro.h"
+namespace Diligent
+{
 
 /// Geometry primitive vertex flags.
-// clang-format off
-DILIGENT_TYPED_ENUM(GEOMETRY_PRIMITIVE_VERTEX_FLAGS, UInt32)
+enum GEOMETRY_PRIMITIVE_VERTEX_FLAGS : UInt32
 {
     /// No flags.
     GEOMETRY_PRIMITIVE_VERTEX_FLAG_NONE = 0u,
@@ -56,24 +28,19 @@ DILIGENT_TYPED_ENUM(GEOMETRY_PRIMITIVE_VERTEX_FLAGS, UInt32)
     GEOMETRY_PRIMITIVE_VERTEX_FLAG_LAST = GEOMETRY_PRIMITIVE_VERTEX_FLAG_TEXCOORD,
 
     /// Geometry primitive contains all vertex components.
-    GEOMETRY_PRIMITIVE_VERTEX_FLAG_ALL = GEOMETRY_PRIMITIVE_VERTEX_FLAG_POSITION |
-                                         GEOMETRY_PRIMITIVE_VERTEX_FLAG_NORMAL |
-                                          GEOMETRY_PRIMITIVE_VERTEX_FLAG_TEXCOORD,
+    GEOMETRY_PRIMITIVE_VERTEX_FLAG_ALL = GEOMETRY_PRIMITIVE_VERTEX_FLAG_POSITION | GEOMETRY_PRIMITIVE_VERTEX_FLAG_NORMAL | GEOMETRY_PRIMITIVE_VERTEX_FLAG_TEXCOORD,
 
     /// Geometry primitive vertex contains position and normal.
-    GEOMETRY_PRIMITIVE_VERTEX_FLAG_POS_NORM = GEOMETRY_PRIMITIVE_VERTEX_FLAG_POSITION |
-											  GEOMETRY_PRIMITIVE_VERTEX_FLAG_NORMAL,
+    GEOMETRY_PRIMITIVE_VERTEX_FLAG_POS_NORM = GEOMETRY_PRIMITIVE_VERTEX_FLAG_POSITION | GEOMETRY_PRIMITIVE_VERTEX_FLAG_NORMAL,
 
     /// Geometry primitive vertex contains position and texture coordinates.
-    GEOMETRY_PRIMITIVE_VERTEX_FLAG_POS_TEX = GEOMETRY_PRIMITIVE_VERTEX_FLAG_POSITION |
-                                             GEOMETRY_PRIMITIVE_VERTEX_FLAG_TEXCOORD,
+    GEOMETRY_PRIMITIVE_VERTEX_FLAG_POS_TEX = GEOMETRY_PRIMITIVE_VERTEX_FLAG_POSITION | GEOMETRY_PRIMITIVE_VERTEX_FLAG_TEXCOORD,
 };
-// clang-format on
+
 DEFINE_FLAG_ENUM_OPERATORS(GEOMETRY_PRIMITIVE_VERTEX_FLAGS)
 
 /// Geometry primitive types.
-// clang-format off
-DILIGENT_TYPED_ENUM(GEOMETRY_PRIMITIVE_TYPE, UInt32)
+enum GEOMETRY_PRIMITIVE_TYPE : UInt32
 {
     /// Geometry primitive type is undefined.
     GEOMETRY_PRIMITIVE_TYPE_UNDEFINED = 0u,
@@ -87,7 +54,6 @@ DILIGENT_TYPED_ENUM(GEOMETRY_PRIMITIVE_TYPE, UInt32)
     /// Geometry primitive type count.
     GEOMETRY_PRIMITIVE_TYPE_COUNT
 };
-// clang-format on
 
 /// Geometry primitive attributes.
 struct GeometryPrimitiveAttributes
@@ -105,9 +71,8 @@ struct GeometryPrimitiveAttributes
     /// For example, for a cube geometry primitive, the cube faces are subdivided
     /// into `Subdivision x Subdivision` quads, producing `(Subdivision + 1)^2` vertices
     /// per face.
-    UInt32 NumSubdivisions DEFAULT_INITIALIZER(0);
+    UInt32 NumSubdivisions = 0;
 
-#if DILIGENT_CPP_INTERFACE
     GeometryPrimitiveAttributes() noexcept = default;
 
     explicit GeometryPrimitiveAttributes(GEOMETRY_PRIMITIVE_TYPE         _Type,
@@ -117,47 +82,42 @@ struct GeometryPrimitiveAttributes
         VertexFlags{_VertexFlags},
         NumSubdivisions{_NumSubdivision}
     {}
-#endif
 };
 typedef struct GeometryPrimitiveAttributes GeometryPrimitiveAttributes;
 
 /// Cube geometry primitive attributes.
 // clang-format off
-struct CubeGeometryPrimitiveAttributes DILIGENT_DERIVE(GeometryPrimitiveAttributes)
+struct CubeGeometryPrimitiveAttributes : public GeometryPrimitiveAttributes {
 
     /// The size of the cube.
 
     /// The cube is centered at (0, 0, 0) and has the size of Size x Size x Size.
     /// If the cube size is 1, the coordinates of the cube vertices are in the range [-0.5, 0.5].
-    float Size DEFAULT_INITIALIZER(1.f);
+    float Size = 1.f;
 
-#if DILIGENT_CPP_INTERFACE
 	explicit CubeGeometryPrimitiveAttributes(float                           _Size           = 1,
                                              GEOMETRY_PRIMITIVE_VERTEX_FLAGS _VertexFlags    = GEOMETRY_PRIMITIVE_VERTEX_FLAG_ALL,
                                              UInt32                          _NumSubdivision = 1) noexcept :
         GeometryPrimitiveAttributes{GEOMETRY_PRIMITIVE_TYPE_CUBE, _VertexFlags, _NumSubdivision},
         Size{_Size}
     {}
-#endif
 };
 // clang-format on
 
 
 /// Sphere geometry primitive attributes.
 // clang-format off
-struct SphereGeometryPrimitiveAttributes DILIGENT_DERIVE(GeometryPrimitiveAttributes)
+struct SphereGeometryPrimitiveAttributes : public GeometryPrimitiveAttributes {
 
     /// Sphere radius.
-    float Radius DEFAULT_INITIALIZER(1.f);
+    float Radius = 1.f;
 
-#if DILIGENT_CPP_INTERFACE
 	explicit SphereGeometryPrimitiveAttributes(float                           _Radius         = 1,
                                                GEOMETRY_PRIMITIVE_VERTEX_FLAGS _VertexFlags    = GEOMETRY_PRIMITIVE_VERTEX_FLAG_ALL,
                                                UInt32                          _NumSubdivision = 1) noexcept :
         GeometryPrimitiveAttributes{GEOMETRY_PRIMITIVE_TYPE_SPHERE, _VertexFlags, _NumSubdivision},
         Radius{_Radius}
     {}
-#endif
 };
 // clang-format on
 
@@ -165,13 +125,13 @@ struct SphereGeometryPrimitiveAttributes DILIGENT_DERIVE(GeometryPrimitiveAttrib
 struct GeometryPrimitiveInfo
 {
     /// The number of vertices.
-    UInt32 NumVertices DEFAULT_INITIALIZER(0);
+    UInt32 NumVertices = 0;
 
     /// The number of indices.
-    UInt32 NumIndices DEFAULT_INITIALIZER(0);
+    UInt32 NumIndices = 0;
 
     /// The size of the vertex in bytes.
-    UInt32 VertexSize DEFAULT_INITIALIZER(0);
+    UInt32 VertexSize = 0;
 };
 typedef struct GeometryPrimitiveInfo GeometryPrimitiveInfo;
 
@@ -190,10 +150,7 @@ UInt32 GetGeometryPrimitiveVertexSize(GEOMETRY_PRIMITIVE_VERTEX_FLAGS VertexFlag
 ///                           Index data is stored as 32-bit unsigned integers representing the triangle list.
 /// \param [out] pInfo      - A pointer to the structure that will receive information about the created geometry primitive.
 ///                           See Diligent::GeometryPrimitiveInfo.
-void DILIGENT_GLOBAL_FUNCTION(CreateGeometryPrimitive)(const GeometryPrimitiveAttributes REF Attribs,
-                                                       IDataBlob**                           ppVertices,
-                                                       IDataBlob**                           ppIndices,
-                                                       GeometryPrimitiveInfo* pInfo          DEFAULT_VALUE(nullptr));
-#include "../../Primitives/interface/UndefRefMacro.h"
+void CreateGeometryPrimitive(const GeometryPrimitiveAttributes& Attribs, IDataBlob** ppVertices, IDataBlob** ppIndices, GeometryPrimitiveInfo* pInfo = nullptr);
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+
+} // namespace Diligent

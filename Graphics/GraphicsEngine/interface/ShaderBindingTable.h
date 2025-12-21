@@ -38,10 +38,10 @@
 #include "PipelineState.h"
 #include "TopLevelAS.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {1EE12101-7010-4825-AA8E-AC6BB9858BD6}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderBindingTable =
+static constexpr INTERFACE_ID IID_ShaderBindingTable =
     {0x1ee12101, 0x7010, 0x4825, {0xaa, 0x8e, 0xac, 0x6b, 0xb9, 0x85, 0x8b, 0xd6}};
 
 // clang-format off
@@ -76,7 +76,6 @@ DILIGENT_TYPED_ENUM(VERIFY_SBT_FLAGS, UInt32)
 DEFINE_FLAG_ENUM_OPERATORS(VERIFY_SBT_FLAGS)
 
 
-#define DILIGENT_INTERFACE_NAME IShaderBindingTable
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IShaderBindingTableInclusiveMethods      \
@@ -90,7 +89,7 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the shader binding table description that was used to create the object
-    virtual const ShaderBindingTableDesc& DILIGENT_CALL_TYPE GetDesc() const override = 0;
+    virtual const ShaderBindingTableDesc& CALLTYPE GetDesc() const override = 0;
 #endif
 
     /// Checks that all shaders are bound, instances and geometries have not changed, shader record data are initialized.
@@ -104,8 +103,8 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     /// This method is only implemented in development build and has no effect in release build.
     ///
     /// \note Access to the SBT must be externally synchronized.
-    VIRTUAL Bool METHOD(Verify)(THIS_
-                                VERIFY_SBT_FLAGS Flags) CONST PURE;
+    virtual Bool METHOD(Verify)(
+                                VERIFY_SBT_FLAGS Flags) const =0;
 
 
     /// Resets the SBT with the new pipeline state. This is more efficient than creating a new SBT.
@@ -114,8 +113,8 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     /// IDeviceContext::TraceRaysIndirect() commands, so they can run in parallel.
     ///
     /// \note Access to the SBT must be externally synchronized.
-    VIRTUAL void METHOD(Reset)(THIS_
-                               IPipelineState* pPSO) PURE;
+    virtual void METHOD(Reset)(
+                               IPipelineState* pPSO) =0;
 
 
     /// Resets hit groups in the SBT.
@@ -127,7 +126,7 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     /// IDeviceContext::TraceRaysIndirect() commands, so they can run in parallel.
     ///
     /// \note Access to the SBT must be externally synchronized.
-    VIRTUAL void METHOD(ResetHitGroups)(THIS) PURE;
+    virtual void METHOD(ResetHitGroups)( ) =0;
 
 
     /// Binds a ray-generation shader.
@@ -141,10 +140,10 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     /// IDeviceContext::TraceRaysIndirect() commands, so they can run in parallel.
     ///
     /// \note Access to the SBT must be externally synchronized.
-    VIRTUAL void METHOD(BindRayGenShader)(THIS_
+    virtual void METHOD(BindRayGenShader)(
                                           const Char* pShaderGroupName,
                                           const void* pData            DEFAULT_INITIALIZER(nullptr),
-                                          UInt32      DataSize         DEFAULT_INITIALIZER(0)) PURE;
+                                          UInt32      DataSize         DEFAULT_INITIALIZER(0)) =0;
 
 
     /// Binds a ray-miss shader.
@@ -161,11 +160,11 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     /// IDeviceContext::TraceRaysIndirect() commands, so they can run in parallel.
     ///
     /// \note Access to the SBT must be externally synchronized.
-    VIRTUAL void METHOD(BindMissShader)(THIS_
+    virtual void METHOD(BindMissShader)(
                                         const Char* pShaderGroupName,
                                         UInt32      MissIndex,
                                         const void* pData            DEFAULT_INITIALIZER(nullptr),
-                                        UInt32      DataSize         DEFAULT_INITIALIZER(0)) PURE;
+                                        UInt32      DataSize         DEFAULT_INITIALIZER(0)) =0;
 
 
     /// Binds a hit group for the the specified geometry in the instance.
@@ -193,14 +192,14 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     ///     Access to the BLAS that was used in the TLAS instance with name pInstanceName must be externally synchronized.\n
     ///     Access to the TLAS must be externally synchronized.\n
     ///     Access to the SBT must be externally synchronized.
-    VIRTUAL void METHOD(BindHitGroupForGeometry)(THIS_
+    virtual void METHOD(BindHitGroupForGeometry)(
                                                  ITopLevelAS* pTLAS,
                                                  const Char*  pInstanceName,
                                                  const Char*  pGeometryName,
                                                  UInt32       RayOffsetInHitGroupIndex,
                                                  const Char*  pShaderGroupName,
                                                  const void*  pData            DEFAULT_INITIALIZER(nullptr),
-                                                 UInt32       DataSize         DEFAULT_INITIALIZER(0)) PURE;
+                                                 UInt32       DataSize         DEFAULT_INITIALIZER(0)) =0;
 
 
     /// Binds a hit group to the specified location in the table.
@@ -219,11 +218,11 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     ///             ITopLevelAS::GetInstanceDesc().ContributionToHitGroupIndex to calculate the binding index.
     ///
     /// \note Access to the SBT must be externally synchronized.
-    VIRTUAL void METHOD(BindHitGroupByIndex)(THIS_
+    virtual void METHOD(BindHitGroupByIndex)(
                                              UInt32      BindingIndex,
                                              const Char* pShaderGroupName,
                                              const void* pData            DEFAULT_INITIALIZER(nullptr),
-                                             UInt32      DataSize         DEFAULT_INITIALIZER(0)) PURE;
+                                             UInt32      DataSize         DEFAULT_INITIALIZER(0)) =0;
 
 
     /// Binds a hit group for all geometries in the specified instance.
@@ -245,13 +244,13 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     /// IDeviceContext::TraceRaysIndirect() commands, so they can run in parallel.
     ///
     /// \note Access to the SBT and TLAS must be externally synchronized.
-    VIRTUAL void METHOD(BindHitGroupForInstance)(THIS_
+    virtual void METHOD(BindHitGroupForInstance)(
                                                  ITopLevelAS* pTLAS,
                                                  const Char*  pInstanceName,
                                                  UInt32       RayOffsetInHitGroupIndex,
                                                  const Char*  pShaderGroupName,
                                                  const void*  pData            DEFAULT_INITIALIZER(nullptr),
-                                                 UInt32       DataSize         DEFAULT_INITIALIZER(0)) PURE;
+                                                 UInt32       DataSize         DEFAULT_INITIALIZER(0)) =0;
 
 
     /// Binds a hit group for all instances in the given top-level AS.
@@ -271,12 +270,12 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     /// IDeviceContext::TraceRaysIndirect() commands, so they can run in parallel.
     ///
     /// \note Access to the SBT and TLAS must be externally synchronized. 
-    VIRTUAL void METHOD(BindHitGroupForTLAS)(THIS_
+    virtual void METHOD(BindHitGroupForTLAS)(
                                              ITopLevelAS* pTLAS,
                                              UInt32       RayOffsetInHitGroupIndex,
                                              const Char*  pShaderGroupName,
                                              const void*  pData            DEFAULT_INITIALIZER(nullptr),
-                                             UInt32       DataSize         DEFAULT_INITIALIZER(0)) PURE;
+                                             UInt32       DataSize         DEFAULT_INITIALIZER(0)) =0;
 
 
     /// Binds a callable shader.
@@ -293,15 +292,15 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
     /// IDeviceContext::TraceRaysIndirect() commands, so they can run in parallel.
     ///
     /// \note Access to the SBT must be externally synchronized.
-    VIRTUAL void METHOD(BindCallableShader)(THIS_
+    virtual void METHOD(BindCallableShader)(
                                             const Char* pShaderGroupName,
                                             UInt32      CallableIndex,
                                             const void* pData           DEFAULT_INITIALIZER(nullptr),
-                                            UInt32      DataSize        DEFAULT_INITIALIZER(0)) PURE;
+                                            UInt32      DataSize        DEFAULT_INITIALIZER(0)) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -324,4 +323,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

@@ -52,13 +52,12 @@
 #    define DILIGENT_OPENGL_EXPLICIT_LOAD 1
 #endif
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {9BAAC767-02CC-4FFA-9E4B-E1340F572C49}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_EngineFactoryOpenGL =
+static constexpr INTERFACE_ID IID_EngineFactoryOpenGL =
     {0x9baac767, 0x2cc, 0x4ffa, {0x9e, 0x4b, 0xe1, 0x34, 0xf, 0x57, 0x2c, 0x49}};
 
-#define DILIGENT_INTERFACE_NAME IEngineFactoryOpenGL
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IEngineFactoryOpenGLInclusiveMethods \
@@ -80,19 +79,19 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryOpenGL, IEngineFactory)
     /// \param [in]  SCDesc             - Swap chain description.
     /// \param [out] ppSwapChain        - Address of the memory location where pointer to
     ///                                   the created swap chain will be written.
-    VIRTUAL void METHOD(CreateDeviceAndSwapChainGL)(THIS_
-                                                    const EngineGLCreateInfo REF EngineCI,
+    virtual void METHOD(CreateDeviceAndSwapChainGL)(
+                                                    const EngineGLCreateInfo  & EngineCI,
                                                     IRenderDevice**              ppDevice,
                                                     IDeviceContext**             ppImmediateContext,
-                                                    const SwapChainDesc REF      SCDesc,
-                                                    ISwapChain**                 ppSwapChain) PURE;
+                                                    const SwapChainDesc  &      SCDesc,
+                                                    ISwapChain**                 ppSwapChain) =0;
 
     /// Creates a HLSL2GLSL converter.
 
     /// \param [out] ppConverter - Address of the memory location where pointer to
     ///                            the created HLSL2GLSL converter will be written.
-    VIRTUAL void METHOD(CreateHLSL2GLSLConverter)(THIS_
-                                                  IHLSL2GLSLConverter** ppConverter) PURE;
+    virtual void METHOD(CreateHLSL2GLSLConverter)(
+                                                  IHLSL2GLSLConverter** ppConverter) =0;
 
     /// Attaches to the active GL context in the thread.
 
@@ -103,14 +102,14 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryOpenGL, IEngineFactory)
     /// 								  the immediate device context will be written.
     /// 
     /// \note The application is responsible for presenting the main frame buffer.
-    VIRTUAL void METHOD(AttachToActiveGLContext)(THIS_
-                                                 const EngineGLCreateInfo REF EngineCI,
+    virtual void METHOD(AttachToActiveGLContext)(
+                                                 const EngineGLCreateInfo  & EngineCI,
                                                  IRenderDevice**              ppDevice,
-                                                 IDeviceContext**             ppImmediateContext) PURE;
+                                                 IDeviceContext**             ppImmediateContext) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -162,4 +161,4 @@ inline struct IEngineFactoryOpenGL* DILIGENT_GLOBAL_FUNCTION(LoadAndGetEngineFac
     return GetFactoryFunc();
 }
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

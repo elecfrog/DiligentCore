@@ -33,9 +33,8 @@
 #include "PipelineResourceSignature.h"
 #include "PipelineState.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
-
-#include "../../../Primitives/interface/DefineRefMacro.h"
+namespace Diligent
+{
 
 // clang-format off
 
@@ -49,7 +48,7 @@ struct ShaderUnpackInfo
 
     /// An optional function to be called by the dearchiver to let the application modify
     /// the shader description.
-    void (*ModifyShaderDesc)(ShaderDesc REF Desc, void* pUserData) DEFAULT_INITIALIZER(nullptr);
+    void (*ModifyShaderDesc)(ShaderDesc  & Desc, void* pUserData) DEFAULT_INITIALIZER(nullptr);
 
     /// A pointer to the user data to pass to the ModifyShaderDesc function.
     void* pUserData DEFAULT_INITIALIZER(nullptr);
@@ -75,7 +74,7 @@ struct ResourceSignatureUnpackInfo
 typedef struct ResourceSignatureUnpackInfo ResourceSignatureUnpackInfo;
 
 /// Pipeline state archive flags
-DILIGENT_TYPED_ENUM(PSO_ARCHIVE_FLAGS, UInt32)
+enum PSO_ARCHIVE_FLAGS : UInt32
 {
     /// No flags are set
     PSO_ARCHIVE_FLAG_NONE = 0u,
@@ -100,7 +99,7 @@ DEFINE_FLAG_ENUM_OPERATORS(PSO_ARCHIVE_FLAGS)
 
 
 /// Pipeline state unpack flags
-DILIGENT_TYPED_ENUM(PSO_UNPACK_FLAGS, UInt32)
+enum PSO_UNPACK_FLAGS : UInt32
 {
     /// No flags are set
     PSO_UNPACK_FLAG_NONE = 0u,
@@ -170,7 +169,7 @@ struct PipelineStateUnpackInfo
     /// An application may modify shader pointers (e.g. GraphicsPipelineCI.pVS), but it must
     /// ensure that the shader layout is compatible with the pipeline state, otherwise hard-to-debug
     /// errors will occur.
-    void (*ModifyPipelineStateCreateInfo)(PipelineStateCreateInfo REF PipelineCI, void* pUserData) DEFAULT_INITIALIZER(nullptr);
+    void (*ModifyPipelineStateCreateInfo)(PipelineStateCreateInfo  & PipelineCI, void* pUserData) DEFAULT_INITIALIZER(nullptr);
 
     /// A pointer to the user data to pass to the ModifyPipelineStateCreateInfo function.
     void* pUserData DEFAULT_INITIALIZER(nullptr);
@@ -188,23 +187,20 @@ struct RenderPassUnpackInfo
 
     /// An optional function to be called by the dearchiver to let the application modify
     /// the render pass description.
-    void (*ModifyRenderPassDesc)(RenderPassDesc REF Desc, void* pUserData) DEFAULT_INITIALIZER(nullptr);
+    void (*ModifyRenderPassDesc)(RenderPassDesc  & Desc, void* pUserData) DEFAULT_INITIALIZER(nullptr);
 
     /// A pointer to the user data to pass to the ModifyRenderPassDesc function.
     void* pUserData DEFAULT_INITIALIZER(nullptr);
 };
 typedef struct RenderPassUnpackInfo RenderPassUnpackInfo;
 
-#include "../../../Primitives/interface/UndefRefMacro.h"
-
 // clang-format on
 
 
 // {ACB3F67A-CE3B-4212-9592-879122D3C191}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_Dearchiver =
+static constexpr INTERFACE_ID IID_Dearchiver =
     {0xacb3f67a, 0xce3b, 0x4212, {0x95, 0x92, 0x87, 0x91, 0x22, 0xd3, 0xc1, 0x91}};
 
-#define DILIGENT_INTERFACE_NAME IDearchiver
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IDearchiverInclusiveMethods \
@@ -215,7 +211,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_Dearchiver =
 
 
 /// Dearchiver interface
-DILIGENT_BEGIN_INTERFACE(IDearchiver, IObject)
+struct IDearchiver : public IObject
 {
     /// Lodas a device object archive.
 
@@ -239,10 +235,10 @@ DILIGENT_BEGIN_INTERFACE(IDearchiver, IObject)
     /// 
     /// \warning    This method is not thread-safe and must not be called simultaneously
     ///             with other methods.
-    VIRTUAL Bool METHOD(LoadArchive)(THIS_
+    virtual Bool METHOD(LoadArchive)(
                                      const IDataBlob* pArchive,
                                      UInt32           ContentVersion DEFAULT_VALUE(~0u),
-                                     Bool             MakeCopy       DEFAULT_VALUE(false)) PURE;
+                                     Bool             MakeCopy       DEFAULT_VALUE(false)) =0;
 
     /// Unpacks a shader from the device object archive.
 
@@ -253,9 +249,9 @@ DILIGENT_BEGIN_INTERFACE(IDearchiver, IObject)
     ///                           one reference.
     ///
     /// \note   This method is thread-safe.
-    VIRTUAL void METHOD(UnpackShader)(THIS_
-                                      const ShaderUnpackInfo REF UnpackInfo,
-                                      IShader**                  ppShader) PURE;
+    virtual void METHOD(UnpackShader)(
+                                      const ShaderUnpackInfo  & UnpackInfo,
+                                      IShader**                  ppShader) =0;
 
     /// Unpacks a pipeline state object from the device object archive.
 
@@ -268,9 +264,9 @@ DILIGENT_BEGIN_INTERFACE(IDearchiver, IObject)
     /// \note   Resource signatures used by the PSO will be unpacked from the same archive.
     ///
     /// \note   This method is thread-safe.
-    VIRTUAL void METHOD(UnpackPipelineState)(THIS_
-                                             const PipelineStateUnpackInfo REF UnpackInfo,
-                                             IPipelineState**                  ppPSO) PURE;
+    virtual void METHOD(UnpackPipelineState)(
+                                             const PipelineStateUnpackInfo  & UnpackInfo,
+                                             IPipelineState**                  ppPSO) =0;
 
     /// Unpacks resource signature from the device object archive.
 
@@ -281,9 +277,9 @@ DILIGENT_BEGIN_INTERFACE(IDearchiver, IObject)
     ///                            one reference.
     ///
     /// \note   This method is thread-safe.
-    VIRTUAL void METHOD(UnpackResourceSignature)(THIS_
-                                                 const ResourceSignatureUnpackInfo REF UnpackInfo,
-                                                 IPipelineResourceSignature**          ppSignature) PURE;
+    virtual void METHOD(UnpackResourceSignature)(
+                                                 const ResourceSignatureUnpackInfo  & UnpackInfo,
+                                                 IPipelineResourceSignature**          ppSignature) =0;
 
     /// Unpacks render pass from the device object archive.
 
@@ -294,9 +290,9 @@ DILIGENT_BEGIN_INTERFACE(IDearchiver, IObject)
     ///                            one reference.
     ///
     /// \note   This method is thread-safe.
-    VIRTUAL void METHOD(UnpackRenderPass)(THIS_
-                                          const RenderPassUnpackInfo REF UnpackInfo,
-                                          IRenderPass**                  ppRP) PURE;
+    virtual void METHOD(UnpackRenderPass)(
+                                          const RenderPassUnpackInfo  & UnpackInfo,
+                                          IRenderPass**                  ppRP) =0;
 
     /// Writes archive data to the data blob.
 
@@ -307,34 +303,18 @@ DILIGENT_BEGIN_INTERFACE(IDearchiver, IObject)
     ///
     /// \warning    This method is not thread-safe and must not be called simultaneously
     ///             with other methods.
-    VIRTUAL Bool METHOD(Store)(THIS_
-                               IDataBlob** ppArchive) CONST PURE;
+    virtual Bool METHOD(Store)(
+                               IDataBlob** ppArchive) const =0;
 
     /// Resets the dearchiver state and releases all loaded objects.
     ///
     /// \warning    This method is not thread-safe and must not be called simultaneously
     ///             with other methods.
-    VIRTUAL void METHOD(Reset)(THIS) PURE;
+    virtual void METHOD(Reset)( ) =0;
 
     /// Returns the content version of the archive.
     /// If no data has been loaded, returns ~0u (aka 0xFFFFFFFF).
-    VIRTUAL UInt32 METHOD(GetContentVersion)(THIS) CONST PURE;
+    virtual UInt32 METHOD(GetContentVersion)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
-
-#if DILIGENT_C_INTERFACE
-
-#    define IDearchiver_LoadArchive(This, ...)             CALL_IFACE_METHOD(Dearchiver, LoadArchive,             This, __VA_ARGS__)
-#    define IDearchiver_UnpackShader(This, ...)            CALL_IFACE_METHOD(Dearchiver, UnpackShader,            This, __VA_ARGS__)
-#    define IDearchiver_UnpackPipelineState(This, ...)     CALL_IFACE_METHOD(Dearchiver, UnpackPipelineState,     This, __VA_ARGS__)
-#    define IDearchiver_UnpackResourceSignature(This, ...) CALL_IFACE_METHOD(Dearchiver, UnpackResourceSignature, This, __VA_ARGS__)
-#    define IDearchiver_UnpackRenderPass(This, ...)        CALL_IFACE_METHOD(Dearchiver, UnpackRenderPass,        This, __VA_ARGS__)
-#    define IDearchiver_Store(This, ...)                   CALL_IFACE_METHOD(Dearchiver, Store,                   This, __VA_ARGS__)
-#    define IDearchiver_Reset(This)                        CALL_IFACE_METHOD(Dearchiver, Reset,                   This)
-#    define IDearchiver_GetContentVersion(This)            CALL_IFACE_METHOD(Dearchiver, GetContentVersion,       This)
-
-#endif
-
-DILIGENT_END_NAMESPACE
+ }

@@ -39,13 +39,12 @@
 #    include "../../GraphicsEngine/interface/LoadEngineDll.h"
 #endif
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {62663A30-AAF0-4A9A-9729-9EAC6BF789F2}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_EngineFactoryD3D11 =
+static constexpr struct INTERFACE_ID IID_EngineFactoryD3D11 =
     {0x62663a30, 0xaaf0, 0x4a9a, {0x97, 0x29, 0x9e, 0xac, 0x6b, 0xf7, 0x89, 0xf2}};
 
-#define DILIGENT_INTERFACE_NAME IEngineFactoryD3D11
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IEngineFactoryD3D11InclusiveMethods \
@@ -66,10 +65,10 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryD3D11, IEngineFactory)
     ///                           the contexts will be written. Immediate context goes at
     ///                           position 0. If `EngineCI.NumDeferredContexts > 0`,
     ///                           pointers to deferred contexts are written afterwards.
-    VIRTUAL void METHOD(CreateDeviceAndContextsD3D11)(THIS_
-                                                      const EngineD3D11CreateInfo REF EngineCI,
+    virtual void METHOD(CreateDeviceAndContextsD3D11)(
+                                                      const EngineD3D11CreateInfo  & EngineCI,
                                                       IRenderDevice**                    ppDevice,
-                                                      IDeviceContext**                   ppContexts) PURE;
+                                                      IDeviceContext**                   ppContexts) =0;
 
 
     /// Creates a swap chain for Direct3D11-based engine implementation.
@@ -86,13 +85,13 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryD3D11, IEngineFactory)
     ///
     /// \param [out] ppSwapChain    - Address of the memory location where pointer to the new
     ///                               swap chain will be written.
-    VIRTUAL void METHOD(CreateSwapChainD3D11)(THIS_
+    virtual void METHOD(CreateSwapChainD3D11)(
                                               IRenderDevice*               pDevice,
                                               IDeviceContext*              pImmediateContext,
-                                              const SwapChainDesc REF      SCDesc,
-                                              const FullScreenModeDesc REF FSDesc,
-                                              const NativeWindow REF       Window,
-                                              ISwapChain**                 ppSwapChain) PURE;
+                                              const SwapChainDesc  &      SCDesc,
+                                              const FullScreenModeDesc  & FSDesc,
+                                              const NativeWindow  &       Window,
+                                              ISwapChain**                 ppSwapChain) =0;
 
 
     /// Attaches to existing Direct3D11 render device and immediate context.
@@ -106,12 +105,12 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryD3D11, IEngineFactory)
     ///                           the contexts will be written. Immediate context goes at
     ///                           position 0. If `EngineCI.NumDeferredContexts > 0`,
     ///                           pointers to the deferred contexts are written afterwards.
-    VIRTUAL void METHOD(AttachToD3D11Device)(THIS_
+    virtual void METHOD(AttachToD3D11Device)(
                                              void*                           pd3d11NativeDevice,
                                              void*                           pd3d11ImmediateContext,
-                                             const EngineD3D11CreateInfo REF EngineCI,
+                                             const EngineD3D11CreateInfo  & EngineCI,
                                              IRenderDevice**                 ppDevice,
-                                             IDeviceContext**                ppContexts) PURE;
+                                             IDeviceContext**                ppContexts) =0;
 
 
     /// Enumerates available display modes for the specified output of the specified adapter.
@@ -126,17 +125,17 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryD3D11, IEngineFactory)
     ///                                    this value should contain the maximum number of elements
     ///                                    to be written to `DisplayModes` array. It is overwritten with
     ///                                    the actual number of display modes written.
-    VIRTUAL void METHOD(EnumerateDisplayModes)(THIS_
+    virtual void METHOD(EnumerateDisplayModes)(
                                                Version                MinFeatureLevel,
                                                UInt32                 AdapterId,
                                                UInt32                 OutputId,
                                                TEXTURE_FORMAT         Format,
-                                               UInt32 REF             NumDisplayModes,
-                                               DisplayModeAttribs*    DisplayModes) PURE;
+                                               UInt32  &             NumDisplayModes,
+                                               DisplayModeAttribs*    DisplayModes) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -187,4 +186,4 @@ inline struct IEngineFactoryD3D11* DILIGENT_GLOBAL_FUNCTION(LoadAndGetEngineFact
     return GetFactoryFunc();
 }
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

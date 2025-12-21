@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/ShaderResourceBinding.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {97A6D4AC-D4AF-4AA9-B46C-67417B89026A}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_ShaderResourceBindingD3D11 =
+static constexpr struct INTERFACE_ID IID_ShaderResourceBindingD3D11 =
     {0x97a6d4ac, 0xd4af, 0x4aa9, {0xb4, 0x6c, 0x67, 0x41, 0x7b, 0x89, 0x2, 0x6a}};
 
-#define DILIGENT_INTERFACE_NAME IShaderResourceBindingD3D11
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 // clang-format off
@@ -51,11 +50,11 @@ static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_ShaderResourceBindingD3D11 =
 
 /// Exposes Direct3D11-specific functionality of a shader resource binding object.
 DILIGENT_BEGIN_INTERFACE(IShaderResourceBindingD3D11, IShaderResourceBinding){};
-DILIGENT_END_INTERFACE
+
 
 #endif
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -71,4 +70,4 @@ typedef struct IShaderResourceBindingD3D11
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

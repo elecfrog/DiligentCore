@@ -59,7 +59,7 @@ public:
     {}
 
 
-    virtual void DILIGENT_CALL_TYPE EnumerateAdapters(Version              MinVersion,
+    virtual void CALLTYPE EnumerateAdapters(Version              MinVersion,
                                                       UInt32&              NumAdapters,
                                                       GraphicsAdapterInfo* Adapters) const override
     {
@@ -89,7 +89,7 @@ public:
     }
 
 
-    virtual void DILIGENT_CALL_TYPE EnumerateDisplayModes(Version             MinVersion,
+    virtual void CALLTYPE EnumerateDisplayModes(Version             MinVersion,
                                                           UInt32              AdapterId,
                                                           UInt32              OutputId,
                                                           TEXTURE_FORMAT      Format,

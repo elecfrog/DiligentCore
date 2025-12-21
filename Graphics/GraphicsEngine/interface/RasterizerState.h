@@ -34,7 +34,7 @@
 
 #include "GraphicsTypes.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 /// Fill mode
@@ -204,4 +204,4 @@ struct RasterizerStateDesc
 };
 typedef struct RasterizerStateDesc RasterizerStateDesc;
 
-DILIGENT_END_NAMESPACE
+ }

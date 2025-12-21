@@ -33,13 +33,12 @@
 #include "../../GraphicsEngine/interface/TopLevelAS.h"
 #include "../../GraphicsEngine/interface/DeviceContext.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {46334F12-64CB-4F7C-BB71-31515B6F386D}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TopLevelASD3D12 =
+static constexpr INTERFACE_ID IID_TopLevelASD3D12 =
     {0x46334f12, 0x64cb, 0x4f7c, {0xbb, 0x71, 0x31, 0x51, 0x5b, 0x6f, 0x38, 0x6d}};
 
-#define DILIGENT_INTERFACE_NAME ITopLevelASD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITopLevelASD3D12InclusiveMethods \
@@ -55,17 +54,17 @@ DILIGENT_BEGIN_INTERFACE(ITopLevelASD3D12, ITopLevelAS)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D12Resource* METHOD(GetD3D12TLAS)(THIS) PURE;
+    virtual ID3D12Resource* METHOD(GetD3D12TLAS)( ) =0;
 
     /// Returns a CPU descriptor handle of the D3D12 acceleration structure
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL D3D12_CPU_DESCRIPTOR_HANDLE METHOD(GetCPUDescriptorHandle)(THIS) PURE;
+    virtual D3D12_CPU_DESCRIPTOR_HANDLE METHOD(GetCPUDescriptorHandle)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -74,4 +73,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

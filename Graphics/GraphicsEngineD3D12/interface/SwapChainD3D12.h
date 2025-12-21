@@ -35,13 +35,12 @@
 #include "../../GraphicsEngine/interface/SwapChain.h"
 #include "TextureViewD3D12.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {C9F8384D-A45E-4970-8447-394177E5B0EE}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_SwapChainD3D12 =
+static constexpr INTERFACE_ID IID_SwapChainD3D12 =
     {0xc9f8384d, 0xa45e, 0x4970, {0x84, 0x47, 0x39, 0x41, 0x77, 0xe5, 0xb0, 0xee}};
 
-#define DILIGENT_INTERFACE_NAME ISwapChainD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ISwapChainD3D12InclusiveMethods \
@@ -55,11 +54,11 @@ DILIGENT_BEGIN_INTERFACE(ISwapChainD3D12, ISwapChain)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL IDXGISwapChain* METHOD(GetDXGISwapChain)(THIS) PURE;
+    virtual IDXGISwapChain* METHOD(GetDXGISwapChain)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -71,4 +70,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

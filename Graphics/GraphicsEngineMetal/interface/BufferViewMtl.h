@@ -29,13 +29,12 @@
 
 #include "../../GraphicsEngine/interface/BufferView.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {6D8B8199-1011-42B6-80DF-A9FA8B4F33FF}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferViewMtl =
+static constexpr INTERFACE_ID IID_BufferViewMtl =
     {0x6d8b8199, 0x1011, 0x42b6, {0x80, 0xdf, 0xa9, 0xfa, 0x8b, 0x4f, 0x33, 0xff}};
 
-#define DILIGENT_INTERFACE_NAME IBufferViewMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBufferViewMtlInclusiveMethods \
@@ -47,11 +46,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferViewMtl =
 /// Exposes Metal-specific functionality of a buffer view object.
 DILIGENT_BEGIN_INTERFACE(IBufferViewMtl, IBufferView)
 {
-    VIRTUAL id<MTLTexture> METHOD(GetMtlTextureView)(THIS) CONST PURE;
+    virtual id<MTLTexture> METHOD(GetMtlTextureView)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -59,4 +58,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

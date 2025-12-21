@@ -36,19 +36,19 @@
 #include "../../GraphicsEngine/interface/RasterizerState.h"
 #include "../../GraphicsEngine/interface/Sampler.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 // =========================== Depth-stencil states ===========================
 
-static DILIGENT_CONSTEXPR DepthStencilStateDesc DSS_Default{};
+static constexpr DepthStencilStateDesc DSS_Default{};
 
-static DILIGENT_CONSTEXPR DepthStencilStateDesc DSS_DisableDepth{
+static constexpr DepthStencilStateDesc DSS_DisableDepth{
     False, // DepthEnable
     False  // DepthWriteEnable
 };
 
-static DILIGENT_CONSTEXPR DepthStencilStateDesc DSS_EnableDepthNoWrites{
+static constexpr DepthStencilStateDesc DSS_EnableDepthNoWrites{
     True, // DepthEnable
     False // DepthWriteEnable
 };
@@ -56,46 +56,46 @@ static DILIGENT_CONSTEXPR DepthStencilStateDesc DSS_EnableDepthNoWrites{
 
 // ============================ Rasterizer states =============================
 
-static DILIGENT_CONSTEXPR RasterizerStateDesc RS_Default{};
+static constexpr RasterizerStateDesc RS_Default{};
 
-static DILIGENT_CONSTEXPR RasterizerStateDesc RS_SolidFillNoCull{
+static constexpr RasterizerStateDesc RS_SolidFillNoCull{
     FILL_MODE_SOLID,
     CULL_MODE_NONE,
 };
 
-static DILIGENT_CONSTEXPR RasterizerStateDesc RS_SolidFillCullBack{
+static constexpr RasterizerStateDesc RS_SolidFillCullBack{
     FILL_MODE_SOLID,
     CULL_MODE_BACK,
 };
 
-static DILIGENT_CONSTEXPR RasterizerStateDesc RS_SolidFillCullFront{
+static constexpr RasterizerStateDesc RS_SolidFillCullFront{
     FILL_MODE_SOLID,
     CULL_MODE_FRONT,
 };
 
-static DILIGENT_CONSTEXPR RasterizerStateDesc RS_SolidFillCullBackCCW{
+static constexpr RasterizerStateDesc RS_SolidFillCullBackCCW{
     FILL_MODE_SOLID,
     CULL_MODE_BACK,
     True,
 };
 
-static DILIGENT_CONSTEXPR RasterizerStateDesc RS_SolidFillCullFrontCCW{
+static constexpr RasterizerStateDesc RS_SolidFillCullFrontCCW{
     FILL_MODE_SOLID,
     CULL_MODE_FRONT,
     True,
 };
 
-static DILIGENT_CONSTEXPR RasterizerStateDesc RS_WireFillNoCull{
+static constexpr RasterizerStateDesc RS_WireFillNoCull{
     FILL_MODE_WIREFRAME,
     CULL_MODE_NONE,
 };
 
-static DILIGENT_CONSTEXPR RasterizerStateDesc RS_WireFillCullBack{
+static constexpr RasterizerStateDesc RS_WireFillCullBack{
     FILL_MODE_WIREFRAME,
     CULL_MODE_BACK,
 };
 
-static DILIGENT_CONSTEXPR RasterizerStateDesc RS_WireFillCullFront{
+static constexpr RasterizerStateDesc RS_WireFillCullFront{
     FILL_MODE_WIREFRAME,
     CULL_MODE_FRONT,
 };
@@ -103,9 +103,9 @@ static DILIGENT_CONSTEXPR RasterizerStateDesc RS_WireFillCullFront{
 
 // =============================== Blend states ===============================
 
-static DILIGENT_CONSTEXPR BlendStateDesc BS_Default{};
+static constexpr BlendStateDesc BS_Default{};
 
-static DILIGENT_CONSTEXPR BlendStateDesc BS_AlphaBlend{
+static constexpr BlendStateDesc BS_AlphaBlend{
     False,                // AlphaToCoverageEnable
     False,                // IndependentBlendEnable
     RenderTargetBlendDesc // Render Target 0
@@ -121,7 +121,7 @@ static DILIGENT_CONSTEXPR BlendStateDesc BS_AlphaBlend{
     },
 };
 
-static DILIGENT_CONSTEXPR BlendStateDesc BS_PremultipliedAlphaBlend{
+static constexpr BlendStateDesc BS_PremultipliedAlphaBlend{
     False,                // AlphaToCoverageEnable
     False,                // IndependentBlendEnable
     RenderTargetBlendDesc // Render Target 0
@@ -137,7 +137,7 @@ static DILIGENT_CONSTEXPR BlendStateDesc BS_PremultipliedAlphaBlend{
     },
 };
 
-static DILIGENT_CONSTEXPR BlendStateDesc BS_AdditiveBlend{
+static constexpr BlendStateDesc BS_AdditiveBlend{
     False,                // AlphaToCoverageEnable
     False,                // IndependentBlendEnable
     RenderTargetBlendDesc // Render Target 0
@@ -156,7 +156,7 @@ static DILIGENT_CONSTEXPR BlendStateDesc BS_AdditiveBlend{
 
 // ================================= Samplers =================================
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_LinearClamp{
+static constexpr SamplerDesc Sam_LinearClamp{
     FILTER_TYPE_LINEAR,
     FILTER_TYPE_LINEAR,
     FILTER_TYPE_LINEAR,
@@ -165,7 +165,7 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_LinearClamp{
     TEXTURE_ADDRESS_CLAMP,
 };
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_PointClamp{
+static constexpr SamplerDesc Sam_PointClamp{
     FILTER_TYPE_POINT,
     FILTER_TYPE_POINT,
     FILTER_TYPE_POINT,
@@ -174,7 +174,7 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_PointClamp{
     TEXTURE_ADDRESS_CLAMP,
 };
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_LinearMirror{
+static constexpr SamplerDesc Sam_LinearMirror{
     FILTER_TYPE_LINEAR,
     FILTER_TYPE_LINEAR,
     FILTER_TYPE_LINEAR,
@@ -183,7 +183,7 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_LinearMirror{
     TEXTURE_ADDRESS_MIRROR,
 };
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_PointWrap{
+static constexpr SamplerDesc Sam_PointWrap{
     FILTER_TYPE_POINT,
     FILTER_TYPE_POINT,
     FILTER_TYPE_POINT,
@@ -192,7 +192,7 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_PointWrap{
     TEXTURE_ADDRESS_WRAP,
 };
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_LinearWrap{
+static constexpr SamplerDesc Sam_LinearWrap{
     FILTER_TYPE_LINEAR,
     FILTER_TYPE_LINEAR,
     FILTER_TYPE_LINEAR,
@@ -201,7 +201,7 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_LinearWrap{
     TEXTURE_ADDRESS_WRAP,
 };
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_ComparisonLinearClamp{
+static constexpr SamplerDesc Sam_ComparisonLinearClamp{
     FILTER_TYPE_COMPARISON_LINEAR,
     FILTER_TYPE_COMPARISON_LINEAR,
     FILTER_TYPE_COMPARISON_LINEAR,
@@ -213,7 +213,7 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_ComparisonLinearClamp{
     COMPARISON_FUNC_LESS,
 };
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso2xClamp{
+static constexpr SamplerDesc Sam_Aniso2xClamp{
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
@@ -224,7 +224,7 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso2xClamp{
     2    // MaxAnisotropy
 };
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso4xClamp{
+static constexpr SamplerDesc Sam_Aniso4xClamp{
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
@@ -235,7 +235,7 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso4xClamp{
     4    // MaxAnisotropy
 };
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso8xClamp{
+static constexpr SamplerDesc Sam_Aniso8xClamp{
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
@@ -246,7 +246,7 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso8xClamp{
     8    // MaxAnisotropy
 };
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso16xClamp{
+static constexpr SamplerDesc Sam_Aniso16xClamp{
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
@@ -257,7 +257,7 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso16xClamp{
     16   // MaxAnisotropy
 };
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso2xWrap{
+static constexpr SamplerDesc Sam_Aniso2xWrap{
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
@@ -268,7 +268,7 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso2xWrap{
     2    // MaxAnisotropy
 };
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso4xWrap{
+static constexpr SamplerDesc Sam_Aniso4xWrap{
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
@@ -279,7 +279,7 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso4xWrap{
     4    // MaxAnisotropy
 };
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso8xWrap{
+static constexpr SamplerDesc Sam_Aniso8xWrap{
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
@@ -290,7 +290,7 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso8xWrap{
     8    // MaxAnisotropy
 };
 
-static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso16xWrap{
+static constexpr SamplerDesc Sam_Aniso16xWrap{
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
     FILTER_TYPE_ANISOTROPIC,
@@ -301,4 +301,4 @@ static DILIGENT_CONSTEXPR SamplerDesc Sam_Aniso16xWrap{
     16   // MaxAnisotropy
 };
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

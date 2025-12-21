@@ -52,16 +52,16 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DeviceMemoryD3D11, TDeviceMemoryBase)
 
     /// Implementation of IDeviceMemory::Resize().
-    virtual Bool DILIGENT_CALL_TYPE Resize(UInt64 NewSize) override final;
+    virtual Bool CALLTYPE Resize(UInt64 NewSize) override final;
 
     /// Implementation of IDeviceMemory::GetCapacity().
-    virtual UInt64 DILIGENT_CALL_TYPE GetCapacity() const override final;
+    virtual UInt64 CALLTYPE GetCapacity() const override final;
 
     /// Implementation of IDeviceMemory::IsCompatible().
-    virtual Bool DILIGENT_CALL_TYPE IsCompatible(IDeviceObject* pResource) const override final;
+    virtual Bool CALLTYPE IsCompatible(IDeviceObject* pResource) const override final;
 
     /// Implementation of IDeviceMemoryD3D11::GetD3D11TilePool().
-    virtual ID3D11Buffer* DILIGENT_CALL_TYPE GetD3D11TilePool() const override final
+    virtual ID3D11Buffer* CALLTYPE GetD3D11TilePool() const override final
     {
         return m_pd3d11Buffer;
     }

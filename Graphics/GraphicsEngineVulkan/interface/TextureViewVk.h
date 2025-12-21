@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/TextureView.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {B02AA468-3328-46F3-9777-55E97BF6C86E}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureViewVk =
+static constexpr INTERFACE_ID IID_TextureViewVk =
     {0xb02aa468, 0x3328, 0x46f3, {0x97, 0x77, 0x55, 0xe9, 0x7b, 0xf6, 0xc8, 0x6e}};
 
-#define DILIGENT_INTERFACE_NAME ITextureViewVk
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITextureViewVkInclusiveMethods \
@@ -51,11 +50,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureViewVk =
 DILIGENT_BEGIN_INTERFACE(ITextureViewVk, ITextureView)
 {
     /// Returns Vulkan image view handle
-    VIRTUAL VkImageView METHOD(GetVulkanImageView)(THIS) CONST PURE;
+    virtual VkImageView METHOD(GetVulkanImageView)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -67,4 +66,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

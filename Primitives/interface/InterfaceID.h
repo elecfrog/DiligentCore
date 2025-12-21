@@ -31,7 +31,7 @@
 
 
 /// Unique identification structures
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 /// Unique interface identifier
 struct INTERFACE_ID
@@ -58,6 +58,6 @@ struct INTERFACE_ID
 typedef struct INTERFACE_ID INTERFACE_ID;
 
 /// Unknown interface
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_Unknown = {0, 0, 0, {0, 0, 0, 0, 0, 0, 0, 0}};
+static constexpr INTERFACE_ID IID_Unknown = {0, 0, 0, {0, 0, 0, 0, 0, 0, 0, 0}};
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

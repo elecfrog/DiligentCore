@@ -43,7 +43,7 @@
 #include <Windows.h>
 #include "../../../Platforms/Win32/interface/WinHPostface.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 inline FARPROC LoadEngineDll(const char* EngineName, const char* GetFactoryFuncName)
 {
@@ -96,4 +96,4 @@ inline FARPROC LoadEngineDll(const char* EngineName, const char* GetFactoryFuncN
     return GetFactoryFunc;
 }
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

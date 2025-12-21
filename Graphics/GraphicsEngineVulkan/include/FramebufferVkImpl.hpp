@@ -48,7 +48,7 @@ public:
                       const FramebufferDesc& Desc);
     ~FramebufferVkImpl();
 
-    VkFramebuffer DILIGENT_CALL_TYPE GetVkFramebuffer() const override final
+    VkFramebuffer CALLTYPE GetVkFramebuffer() const override final
     {
         return m_VkFramebuffer;
     }

@@ -90,13 +90,13 @@ private:
 
         void ResolveQueries(RenderDeviceWebGPUImpl* pDevice, DeviceContextWebGPUImpl* pDeviceContext);
 
-        const DeviceObjectAttribs& DILIGENT_CALL_TYPE GetDesc() const override final;
+        const DeviceObjectAttribs& CALLTYPE GetDesc() const override final;
 
-        Int32 DILIGENT_CALL_TYPE GetUniqueID() const override final;
+        Int32 CALLTYPE GetUniqueID() const override final;
 
-        void DILIGENT_CALL_TYPE SetUserData(IObject* pUserData) override final;
+        void CALLTYPE SetUserData(IObject* pUserData) override final;
 
-        IObject* DILIGENT_CALL_TYPE GetUserData() const override final;
+        IObject* CALLTYPE GetUserData() const override final;
 
     private:
         DeviceObjectAttribs   m_Desc;

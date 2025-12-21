@@ -34,13 +34,12 @@
 @protocol MTLAccelerationStructure; // Not available in tvOS
 #endif
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {8D483E4A-2D53-47B2-B8D7-276F4CE57F68}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_RenderDeviceMtl =
+static constexpr INTERFACE_ID IID_RenderDeviceMtl =
     {0x8d483e4a, 0x2d53, 0x47b2, {0xb8, 0xd7, 0x27, 0x6f, 0x4c, 0xe5, 0x7f, 0x68}};
 
-#define DILIGENT_INTERFACE_NAME IRenderDeviceMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IRenderDeviceMtlInclusiveMethods \
@@ -53,58 +52,58 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_RenderDeviceMtl =
 DILIGENT_BEGIN_INTERFACE(IRenderDeviceMtl, IRenderDevice)
 {
     /// Returns the pointer to Metal device (MTLDevice).
-    VIRTUAL id<MTLDevice> METHOD(GetMtlDevice)(THIS) CONST PURE;
+    virtual id<MTLDevice> METHOD(GetMtlDevice)( ) const =0;
 
     /// Creates a texture from existing Metal resource
-    VIRTUAL void METHOD(CreateTextureFromMtlResource)(THIS_
+    virtual void METHOD(CreateTextureFromMtlResource)(
                                                       id<MTLTexture> mtlTexture,
                                                       RESOURCE_STATE InitialState,
-                                                      ITexture**     ppTexture) PURE;
+                                                      ITexture**     ppTexture) =0;
 
     /// Creates a buffer from existing Metal resource
-    VIRTUAL void METHOD(CreateBufferFromMtlResource)(THIS_
+    virtual void METHOD(CreateBufferFromMtlResource)(
                                                      id<MTLBuffer>        mtlBuffer,
-                                                     const BufferDesc REF BuffDesc,
+                                                     const BufferDesc  & BuffDesc,
                                                      RESOURCE_STATE       InitialState,
-                                                     IBuffer**            ppBuffer) PURE;
+                                                     IBuffer**            ppBuffer) =0;
 
     /// Creates a buffer from existing Metal resource
-    VIRTUAL void METHOD(CreateBLASFromMtlResource)(THIS_
+    virtual void METHOD(CreateBLASFromMtlResource)(
                                                    id<MTLAccelerationStructure> mtlBLAS,
-                                                   const BottomLevelASDesc REF  Desc,
+                                                   const BottomLevelASDesc  &  Desc,
                                                    RESOURCE_STATE               InitialState,
-                                                   IBottomLevelAS**             ppBLAS) API_AVAILABLE(ios(14), macosx(11.0)) API_UNAVAILABLE(tvos) PURE;
+                                                   IBottomLevelAS**             ppBLAS) API_AVAILABLE(ios(14), macosx(11.0)) API_UNAVAILABLE(tvos) =0;
 
     /// Creates a buffer from existing Metal resource
-    VIRTUAL void METHOD(CreateTLASFromMtlResource)(THIS_
+    virtual void METHOD(CreateTLASFromMtlResource)(
                                                    id<MTLAccelerationStructure> mtlTLAS,
-                                                   const TopLevelASDesc REF     Desc,
+                                                   const TopLevelASDesc  &     Desc,
                                                    RESOURCE_STATE               InitialState,
-                                                   ITopLevelAS**                ppTLAS) API_AVAILABLE(ios(14), macosx(11.0)) API_UNAVAILABLE(tvos) PURE;
+                                                   ITopLevelAS**                ppTLAS) API_AVAILABLE(ios(14), macosx(11.0)) API_UNAVAILABLE(tvos) =0;
 
     /// Creates a rasterization rate map from existing Metal resource
-    VIRTUAL void METHOD(CreateRasterizationRateMapFromMtlResource)(THIS_
+    virtual void METHOD(CreateRasterizationRateMapFromMtlResource)(
                                                                    id<MTLRasterizationRateMap> mtlRRM,
-                                                                   IRasterizationRateMapMtl**  ppRRM) API_AVAILABLE(ios(13), macosx(10.15.4)) API_UNAVAILABLE(tvos) PURE;
+                                                                   IRasterizationRateMapMtl**  ppRRM) API_AVAILABLE(ios(13), macosx(10.15.4)) API_UNAVAILABLE(tvos) =0;
 
     /// Creates a rasterization rate map
-    VIRTUAL void METHOD(CreateRasterizationRateMap)(THIS_
-                                                    const RasterizationRateMapCreateInfo REF CreateInfo,
-                                                    IRasterizationRateMapMtl**               ppRRM) PURE;
+    virtual void METHOD(CreateRasterizationRateMap)(
+                                                    const RasterizationRateMapCreateInfo  & CreateInfo,
+                                                    IRasterizationRateMapMtl**               ppRRM) =0;
 
     /// Creates a sparse texture
     ///
     /// \note  Before you release a sparse texture, unmap all of its sparse tiles.
     ///        Otherwise, the sparse heap continues to mark those tiles as mapped.
     ///        However, all mapped tile memory is freed when you release the heap.
-    VIRTUAL void METHOD(CreateSparseTexture)(THIS_
-                                             const TextureDesc REF TexDesc,
+    virtual void METHOD(CreateSparseTexture)(
+                                             const TextureDesc  & TexDesc,
                                              IDeviceMemory*        pMemory,
-                                             ITexture**            ppTexture) PURE;
+                                             ITexture**            ppTexture) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -124,4 +123,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

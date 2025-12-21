@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/ShaderResourceBinding.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {41DB0329-B6D2-4470-9A58-D44CF4695FC6}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderResourceBindingGL =
+static constexpr INTERFACE_ID IID_ShaderResourceBindingGL =
     {0x41db0329, 0xb6d2, 0x4470, {0x9a, 0x58, 0xd4, 0x4c, 0xf4, 0x69, 0x5f, 0xc6}};
 
-#define DILIGENT_INTERFACE_NAME IShaderResourceBindingGL
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IShaderResourceBindingGLInclusiveMethods \
@@ -49,11 +48,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderResourceBindingGL =
 
 /// Exposes OpenGL-specific functionality of a shader resource binding object.
 DILIGENT_BEGIN_INTERFACE(IShaderResourceBindingGL, IShaderResourceBinding){};
-DILIGENT_END_INTERFACE
+
 
 #endif
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -65,4 +64,4 @@ typedef struct IShaderResourceBindingGLVtbl
 #endif
 
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

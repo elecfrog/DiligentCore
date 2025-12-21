@@ -29,13 +29,12 @@
 
 #include "../../GraphicsEngine/interface/Sampler.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {73F8C099-049B-4C81-AD19-C98963AC7FEB}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_SamplerMtl =
+static constexpr INTERFACE_ID IID_SamplerMtl =
     {0x73f8c099, 0x49b, 0x4c81, {0xad, 0x19, 0xc9, 0x89, 0x63, 0xac, 0x7f, 0xeb}};
 
-#define DILIGENT_INTERFACE_NAME ISamplerMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ISamplerMtlInclusiveMethods \
@@ -45,11 +44,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_SamplerMtl =
 /// Exposes Metal-specific functionality of a sampler object.
 DILIGENT_BEGIN_INTERFACE(ISamplerMtl, ISampler)
 {
-    VIRTUAL id<MTLSamplerState> METHOD(GetMtlSampler)(THIS) PURE;
+    virtual id<MTLSamplerState> METHOD(GetMtlSampler)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -58,4 +57,4 @@ DILIGENT_END_INTERFACE
 #endif
 
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

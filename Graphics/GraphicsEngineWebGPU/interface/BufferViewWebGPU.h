@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/BufferView.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {E68164C9-C0BD-40F8-85F2-F58BC0DDB542}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferViewWebGPU =
+static constexpr INTERFACE_ID IID_BufferViewWebGPU =
     {0xE68164C9, 0xC0BD, 0x40F8, {0x85, 0xF2, 0xF5, 0x8B, 0xC0, 0xDD, 0xB5, 0x42}};
 
-#define DILIGENT_INTERFACE_NAME IBufferViewGL
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBufferViewWebGPUInclusiveMethods \
@@ -48,11 +47,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferViewWebGPU =
 
 /// Exposes WebGPU-specific functionality of a buffer view object.
 DILIGENT_BEGIN_INTERFACE(IBufferViewWebGPU, IBufferView){};
-DILIGENT_END_INTERFACE
+
 
 #endif
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -68,4 +67,4 @@ typedef struct IBufferViewWebGPU
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

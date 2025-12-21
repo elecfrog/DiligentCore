@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/Query.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {76CE4788-2061-4A77-92A7-7D5585B7BF1B}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_QueryWebGPU =
+static constexpr INTERFACE_ID IID_QueryWebGPU =
     {0x76CE4788, 0x2061, 0x4A77, {0x92, 0xA7, 0x7D, 0x55, 0x85, 0xB7, 0xBF, 0x1B}};
 
-#define DILIGENT_INTERFACE_NAME IQueryWebGPU
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IQueryWebGPUInclusiveMethods \
@@ -48,11 +47,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_QueryWebGPU =
 
 /// Exposes WebGPU-specific functionality of a query object.
 DILIGENT_BEGIN_INTERFACE(IQueryWebGPU, IQuery){};
-DILIGENT_END_INTERFACE
+
 
 #endif
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -63,4 +62,4 @@ typedef struct IQueryWebGPUVtbl
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

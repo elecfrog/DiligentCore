@@ -33,13 +33,12 @@
 #include "../../GraphicsEngine/interface/RenderDevice.h"
 
 /// Namespace for the OpenGL implementation of the graphics engine
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {B4B395B9-AC99-4E8A-B7E1-9DCA0D485618}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_RenderDeviceGL =
+static constexpr INTERFACE_ID IID_RenderDeviceGL =
     {0xb4b395b9, 0xac99, 0x4e8a, {0xb7, 0xe1, 0x9d, 0xca, 0xd, 0x48, 0x56, 0x18}};
 
-#define DILIGENT_INTERFACE_NAME IRenderDeviceGL
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IRenderDeviceGLInclusiveMethods \
@@ -102,12 +101,12 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceGL, IRenderDevice)
     ///
     /// \note  Diligent engine texture object does not take ownership of the GL resource,
     ///        and the application must not destroy it while it is in use by the engine.
-    VIRTUAL void METHOD(CreateTextureFromGLHandle)(THIS_
+    virtual void METHOD(CreateTextureFromGLHandle)(
                                                    UInt32                GLHandle,
                                                    UInt32                GLBindTarget,
-                                                   const TextureDesc REF TexDesc,
+                                                   const TextureDesc  & TexDesc,
                                                    RESOURCE_STATE        InitialState,
-                                                   ITexture**            ppTexture) PURE;
+                                                   ITexture**            ppTexture) =0;
 
     /// Creates a buffer from OpenGL handle
 
@@ -123,11 +122,11 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceGL, IRenderDevice)
     ///
     /// \note  Diligent engine buffer object does not take ownership of the GL resource,
     ///        and the application must not destroy it while it is in use by the engine.
-    VIRTUAL void METHOD(CreateBufferFromGLHandle)(THIS_
+    virtual void METHOD(CreateBufferFromGLHandle)(
                                                   UInt32               GLHandle,
-                                                  const BufferDesc REF BuffDesc,
+                                                  const BufferDesc  & BuffDesc,
                                                   RESOURCE_STATE       InitialState,
-                                                  IBuffer**            ppBuffer) PURE;
+                                                  IBuffer**            ppBuffer) =0;
 
 
     /// Creates a dummy texture with null handle.
@@ -144,19 +143,19 @@ DILIGENT_BEGIN_INTERFACE(IRenderDeviceGL, IRenderDevice)
     ///                             one reference.
     ///
     /// \note  Only RESOURCE_DIM_TEX_2D dummy textures are supported.
-    VIRTUAL void METHOD(CreateDummyTexture)(THIS_
-                                            const TextureDesc REF TexDesc,
+    virtual void METHOD(CreateDummyTexture)(
+                                            const TextureDesc  & TexDesc,
                                             RESOURCE_STATE        InitialState,
-                                            ITexture**            ppTexture) PURE;
+                                            ITexture**            ppTexture) =0;
 
 #if PLATFORM_WIN32 || PLATFORM_ANDROID
     /// Returns platform-specific GL context attributes
-    VIRTUAL NativeGLContextAttribs METHOD(GetNativeGLContextAttribs)(THIS) CONST PURE;
+    virtual NativeGLContextAttribs METHOD(GetNativeGLContextAttribs)( ) const =0;
 #endif
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -171,4 +170,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

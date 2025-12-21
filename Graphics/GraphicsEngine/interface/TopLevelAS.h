@@ -37,10 +37,10 @@
 #include "Buffer.h"
 #include "BottomLevelAS.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {16561861-294B-4804-96FA-1717333F769A}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TopLevelAS =
+static constexpr INTERFACE_ID IID_TopLevelAS =
     {0x16561861, 0x294b, 0x4804, {0x96, 0xfa, 0x17, 0x17, 0x33, 0x3f, 0x76, 0x9a}};
 
 // clang-format off
@@ -146,7 +146,6 @@ struct TLASInstanceDesc
 typedef struct TLASInstanceDesc TLASInstanceDesc;
 
 
-#define DILIGENT_INTERFACE_NAME ITopLevelAS
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITopLevelASInclusiveMethods        \
@@ -156,11 +155,11 @@ typedef struct TLASInstanceDesc TLASInstanceDesc;
 /// Top-level AS interface
 
 /// Defines the methods to manipulate a TLAS object
-DILIGENT_BEGIN_INTERFACE(ITopLevelAS, IDeviceObject)
+struct ITopLevelAS : public IDeviceObject
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the top level AS description used to create the object
-    virtual const TopLevelASDesc& DILIGENT_CALL_TYPE GetDesc() const override = 0;
+    virtual const TopLevelASDesc& CALLTYPE GetDesc() const override = 0;
 #endif
 
     /// Returns instance description that can be used in shader binding table.
@@ -171,8 +170,8 @@ DILIGENT_BEGIN_INTERFACE(ITopLevelAS, IDeviceObject)
     ///         and TLASInstanceDesc::InstanceIndex are set to INVALID_INDEX.
     ///
     /// \note Access to the TLAS must be externally synchronized.
-    VIRTUAL TLASInstanceDesc METHOD(GetInstanceDesc)(THIS_
-                                                     const Char* Name) CONST PURE;
+    virtual TLASInstanceDesc METHOD(GetInstanceDesc)(
+                                                     const Char* Name) const =0;
 
 
     /// Returns TLAS state after the last build or update operation.
@@ -180,20 +179,20 @@ DILIGENT_BEGIN_INTERFACE(ITopLevelAS, IDeviceObject)
     /// \return TLASBuildInfo object, see Diligent::TLASBuildInfo.
     ///
     /// \note Access to the TLAS must be externally synchronized.
-    VIRTUAL TLASBuildInfo METHOD(GetBuildInfo)(THIS) CONST PURE;
+    virtual TLASBuildInfo METHOD(GetBuildInfo)( ) const =0;
 
 
     /// Returns scratch buffer info for the current acceleration structure.
 
     /// \return ScratchBufferSizes object, see Diligent::ScratchBufferSizes.
-    VIRTUAL ScratchBufferSizes METHOD(GetScratchBufferSizes)(THIS) CONST PURE;
+    virtual ScratchBufferSizes METHOD(GetScratchBufferSizes)( ) const =0;
 
 
     /// Returns native acceleration structure handle specific to the underlying graphics API
 
     /// \return A pointer to `ID3D12Resource` interface, for D3D12 implementation\n
     ///         `VkAccelerationStructure` handle, for Vulkan implementation
-    VIRTUAL UInt64 METHOD(GetNativeHandle)(THIS) PURE;
+    virtual UInt64 METHOD(GetNativeHandle)( ) =0;
 
 
     /// Sets the acceleration structure usage state.
@@ -203,16 +202,16 @@ DILIGENT_BEGIN_INTERFACE(ITopLevelAS, IDeviceObject)
     /// This method should be used after the application finished
     /// manually managing the acceleration structure state and wants to hand over
     /// state management back to the engine.
-    VIRTUAL void METHOD(SetState)(THIS_
-                                  RESOURCE_STATE State) PURE;
+    virtual void METHOD(SetState)(
+                                  RESOURCE_STATE State) =0;
 
 
     /// Returns the internal acceleration structure state
-    VIRTUAL RESOURCE_STATE METHOD(GetState)(THIS) CONST PURE;
+    virtual RESOURCE_STATE METHOD(GetState)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -231,4 +230,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

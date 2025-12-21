@@ -32,10 +32,10 @@
 
 #include "DeviceObject.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {6C1AC7A6-B429-4139-9433-9E54E93E384A}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ResourceMapping =
+static constexpr INTERFACE_ID IID_ResourceMapping =
     {0x6c1ac7a6, 0xb429, 0x4139, {0x94, 0x33, 0x9e, 0x54, 0xe9, 0x3e, 0x38, 0x4a}};
 
 /// Describes the resource mapping object entry
@@ -92,7 +92,6 @@ struct ResourceMappingCreateInfo
 };
 typedef struct ResourceMappingCreateInfo ResourceMappingCreateInfo;
 
-#define DILIGENT_INTERFACE_NAME IResourceMapping
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IResourceMappingInclusiveMethods \
@@ -106,7 +105,7 @@ typedef struct ResourceMappingCreateInfo ResourceMappingCreateInfo;
 /// This interface provides mapping between literal names and resource pointers.
 /// It is created by IRenderDevice::CreateResourceMapping().
 /// \remarks Resource mapping holds strong references to all objects it keeps.
-DILIGENT_BEGIN_INTERFACE(IResourceMapping, IObject)
+struct IResourceMapping : public IObject
 {
     /// Adds a resource to the mapping.
 
@@ -118,10 +117,10 @@ DILIGENT_BEGIN_INTERFACE(IResourceMapping, IObject)
     ///
     /// \remarks Resource mapping increases the reference counter for referenced objects. So an
     ///          object will not be released as long as it is in the resource mapping.
-    VIRTUAL void METHOD(AddResource)(THIS_
+    virtual void METHOD(AddResource)(
                                      const Char*    Name,
                                      IDeviceObject* pObject,
-                                     Bool           bIsUnique) PURE;
+                                     Bool           bIsUnique) =0;
 
 
     /// Adds resource array to the mapping.
@@ -136,21 +135,21 @@ DILIGENT_BEGIN_INTERFACE(IResourceMapping, IObject)
     ///
     /// \remarks Resource mapping increases the reference counter for referenced objects. So an
     ///          object will not be released as long as it is in the resource mapping.
-    VIRTUAL void METHOD(AddResourceArray)(THIS_
+    virtual void METHOD(AddResourceArray)(
                                           const Char*           Name,
                                           UInt32                StartIndex,
                                           IDeviceObject* const* ppObjects,
                                           UInt32                NumElements,
-                                          Bool                  bIsUnique) PURE;
+                                          Bool                  bIsUnique) =0;
 
 
     /// Removes a resource from the mapping using its literal name.
 
     /// \param [in] Name - Name of the resource to remove.
     /// \param [in] ArrayIndex - For array resources, index in the array
-    VIRTUAL void METHOD(RemoveResourceByName)(THIS_
+    virtual void METHOD(RemoveResourceByName)(
                                               const Char* Name,
-                                              UInt32      ArrayIndex DEFAULT_VALUE(0)) PURE;
+                                              UInt32      ArrayIndex DEFAULT_VALUE(0)) =0;
 
     /// Finds a resource in the mapping.
 
@@ -163,16 +162,16 @@ DILIGENT_BEGIN_INTERFACE(IResourceMapping, IObject)
     ///          of the returned object, so Release() **must not** be called.
     ///          The pointer is guaranteed to be valid until the object is removed
     ///          from the resource mapping, or the mapping is destroyed.
-    VIRTUAL IDeviceObject* METHOD(GetResource)(THIS_
+    virtual IDeviceObject* METHOD(GetResource)(
                                                const Char* Name,
-                                               UInt32      ArrayIndex DEFAULT_VALUE(0)) PURE;
+                                               UInt32      ArrayIndex DEFAULT_VALUE(0)) =0;
 
     /// Returns the size of the resource mapping, i.e. the number of objects.
-    VIRTUAL size_t METHOD(GetSize)(THIS) PURE;
+    virtual size_t METHOD(GetSize)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -188,4 +187,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

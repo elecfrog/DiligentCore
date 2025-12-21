@@ -36,11 +36,11 @@
 #include "DeviceObject.h"
 #include "TextureView.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 // {A64B0E60-1B5E-4CFD-B880-663A1ADCBE98}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_Texture =
+static constexpr INTERFACE_ID IID_Texture =
     {0xa64b0e60, 0x1b5e, 0x4cfd,{0xb8, 0x80, 0x66, 0x3a, 0x1a, 0xdc, 0xbe, 0x98}};
 
 
@@ -89,9 +89,6 @@ struct TextureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     /// Texture height, in pixels.
     UInt32 Height           DEFAULT_INITIALIZER(0);
 
-#if defined(DILIGENT_SHARP_GEN)
-    UInt32 ArraySizeOrDepth DEFAULT_INITIALIZER(1);
-#else
     union
     {
         /// For a 1D array or 2D array, number of array slices.
@@ -103,7 +100,7 @@ struct TextureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
         /// For a 3D texture, number of depth slices
         UInt32 Depth;
     };
-#endif
+
     /// Texture format, see Diligent::TEXTURE_FORMAT.
 
     /// Use IRenderDevice::GetTextureFormatInfo() to check if format is supported.
@@ -150,7 +147,7 @@ struct TextureDesc DILIGENT_DERIVE(DeviceObjectAttribs)
     UInt64 ImmediateContextMask         DEFAULT_INITIALIZER(1);
 
 
-#if DILIGENT_CPP_INTERFACE && !defined(DILIGENT_SHARP_GEN)
+#if DILIGENT_CPP_INTERFACE
     constexpr TextureDesc() noexcept {}
 
     constexpr TextureDesc(const Char*         _Name,
@@ -432,7 +429,6 @@ struct SparseTextureProperties
 };
 typedef struct SparseTextureProperties SparseTextureProperties;
 
-#define DILIGENT_INTERFACE_NAME ITexture
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITextureInclusiveMethods   \
@@ -440,7 +436,7 @@ typedef struct SparseTextureProperties SparseTextureProperties;
     ITextureMethods Texture
 
 /// Texture interface
-DILIGENT_BEGIN_INTERFACE(ITexture, IDeviceObject)
+struct ITexture : public IDeviceObject
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the texture description used to create the object
@@ -472,9 +468,9 @@ DILIGENT_BEGIN_INTERFACE(ITexture, IDeviceObject)
     ///
     /// The function calls AddRef() for the created interface, so it must be released by
     /// a call to Release() when it is no longer needed.
-    VIRTUAL void METHOD(CreateView)(THIS_
-                                    const TextureViewDesc REF ViewDesc,
-                                    ITextureView**            ppView) PURE;
+    virtual void METHOD(CreateView)(
+                                    const TextureViewDesc  & ViewDesc,
+                                    ITextureView**            ppView) =0;
 
     /// Returns the pointer to the default view.
 
@@ -483,8 +479,8 @@ DILIGENT_BEGIN_INTERFACE(ITexture, IDeviceObject)
     ///
     /// \note The function does **not** increase the reference counter for the returned interface, so
     ///       Release() **must not** be called.
-    VIRTUAL ITextureView* METHOD(GetDefaultView)(THIS_
-                                                 TEXTURE_VIEW_TYPE ViewType) PURE;
+    virtual ITextureView* METHOD(GetDefaultView)(
+                                                 TEXTURE_VIEW_TYPE ViewType) =0;
 
 
     /// Returns native texture handle specific to the underlying graphics API
@@ -495,7 +491,7 @@ DILIGENT_BEGIN_INTERFACE(ITexture, IDeviceObject)
     ///         GL texture name, for OpenGL implementation\n
     ///         `MtlTexture`, for Metal implementation\n
     ///         `WGPUTexture` for WebGPU implementation
-    VIRTUAL UInt64 METHOD(GetNativeHandle)(THIS) PURE;
+    virtual UInt64 METHOD(GetNativeHandle)( ) =0;
 
     /// Sets the usage state for all texture subresources.
 
@@ -504,18 +500,18 @@ DILIGENT_BEGIN_INTERFACE(ITexture, IDeviceObject)
     /// This method should be used after the application finished
     /// manually managing the texture state and wants to hand over
     /// state management back to the engine.
-    VIRTUAL void METHOD(SetState)(THIS_
-                                  RESOURCE_STATE State) PURE;
+    virtual void METHOD(SetState)(
+                                  RESOURCE_STATE State) =0;
 
     /// Returns the internal texture state
-    VIRTUAL RESOURCE_STATE METHOD(GetState)(THIS) CONST PURE;
+    virtual RESOURCE_STATE METHOD(GetState)( ) const =0;
 
     /// Returns the sparse texture properties, see Diligent::SparseTextureProperties.
-    VIRTUAL const SparseTextureProperties REF METHOD(GetSparseProperties)(THIS) CONST PURE;
+    virtual const SparseTextureProperties  & METHOD(GetSparseProperties)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -534,4 +530,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+} // namespace Diligent

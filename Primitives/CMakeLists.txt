@@ -12,9 +12,7 @@ set(INTERFACE
     interface/CommonDefinitions.h
     interface/DataBlob.h
     interface/DebugOutput.h
-    interface/DefineGlobalFuncHelperMacros.h
     interface/DefineInterfaceHelperMacros.h
-    interface/DefineRefMacro.h
     interface/FlagEnum.h
     interface/Errors.hpp
     interface/FileStream.h
@@ -23,9 +21,6 @@ set(INTERFACE
     interface/MemoryAllocator.h
     interface/Object.h
     interface/ReferenceCounters.h
-    interface/UndefGlobalFuncHelperMacros.h
-    interface/UndefInterfaceHelperMacros.h
-    interface/UndefRefMacro.h
 )
 
 # This should be an interface library. However, CMake does not show

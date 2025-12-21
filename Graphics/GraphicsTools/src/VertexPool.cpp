@@ -69,7 +69,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_VertexPoolAllocation, TBase)
 
-    virtual ReferenceCounterValueType DILIGENT_CALL_TYPE Release() override final
+    virtual ReferenceCounterValueType CALLTYPE Release() override final
     {
         RefCntAutoPtr<VertexPoolImpl> pParent;
         return TBase::Release(

@@ -49,22 +49,21 @@
 #    define DILIGENT_VK_EXPLICIT_LOAD 1
 #endif
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent
+{
 
 // {F554EEE4-57C2-4637-A508-85BE80DC657C}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_EngineFactoryVk =
+static constexpr INTERFACE_ID IID_EngineFactoryVk =
     {0xf554eee4, 0x57c2, 0x4637, {0xa5, 0x8, 0x85, 0xbe, 0x80, 0xdc, 0x65, 0x7c}};
 
-#define DILIGENT_INTERFACE_NAME IEngineFactoryVk
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IEngineFactoryVkInclusiveMethods \
     IEngineFactoryInclusiveMethods;      \
     IEngineFactoryVkMethods EngineFactoryVk
 
-// clang-format off
 
-DILIGENT_BEGIN_INTERFACE(IEngineFactoryVk, IEngineFactory)
+struct IEngineFactoryVk : public IEngineFactory
 {
     /// Creates a render device and device contexts for Vulkan backend
 
@@ -75,10 +74,9 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryVk, IEngineFactory)
     ///                           the contexts will be written. Immediate context goes at
     ///                           position 0. If EngineCI.NumDeferredContexts > 0,
     ///                           pointers to the deferred contexts are written afterwards.
-    VIRTUAL void METHOD(CreateDeviceAndContextsVk)(THIS_
-                                                   const EngineVkCreateInfo REF EngineCI,
-                                                   IRenderDevice**              ppDevice,
-                                                   IDeviceContext**             ppContexts) PURE;
+    virtual void CALLTYPE CreateDeviceAndContextsVk(const EngineVkCreateInfo& EngineCI,
+                                                    IRenderDevice**           ppDevice,
+                                                    IDeviceContext**          ppContexts) = 0;
 
 
     /// Creates a swap chain for Vulkan-based engine implementation
@@ -92,12 +90,12 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryVk, IEngineFactory)
     ///
     /// \param [out] ppSwapChain    - Address of the memory location where pointer to the new
     ///                               swap chain will be written
-    VIRTUAL void METHOD(CreateSwapChainVk)(THIS_
-                                           IRenderDevice*          pDevice,
-                                           IDeviceContext*         pImmediateContext,
-                                           const SwapChainDesc REF SwapChainDesc,
-                                           const NativeWindow REF  Window,
-                                           ISwapChain**            ppSwapChain) PURE;
+    virtual void CALLTYPE CreateSwapChainVk(
+        IRenderDevice*       pDevice,
+        IDeviceContext*      pImmediateContext,
+        const SwapChainDesc& SwapChainDesc,
+        const NativeWindow&  Window,
+        ISwapChain**         ppSwapChain) = 0;
 
     /// Enables device simulation layer (if available).
 
@@ -105,30 +103,14 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryVk, IEngineFactory)
     /// Use VK_DEVSIM_FILENAME environment variable to define the path to the .json file.
     ///
     /// \remarks Use this function before calling EnumerateAdapters() and CreateDeviceAndContextsVk().
-    VIRTUAL void METHOD(EnableDeviceSimulation)(THIS) PURE;
+    virtual void CALLTYPE EnableDeviceSimulation() = 0;
 
 
     /// Returns the supported Vulkan version. If Vulkan is not supported, returns 0.
 
     /// This function can be used to check whether Vulkan is supported on the platform.
-    VIRTUAL Version METHOD(GetVulkanVersion)(THIS) CONST PURE;
+    virtual Version CALLTYPE GetVulkanVersion() const = 0;
 };
-DILIGENT_END_INTERFACE
-
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
-
-#if DILIGENT_C_INTERFACE
-
-// clang-format off
-
-#    define IEngineFactoryVk_CreateDeviceAndContextsVk(This, ...) CALL_IFACE_METHOD(EngineFactoryVk, CreateDeviceAndContextsVk, This, __VA_ARGS__)
-#    define IEngineFactoryVk_CreateSwapChainVk(This, ...)         CALL_IFACE_METHOD(EngineFactoryVk, CreateSwapChainVk,         This, __VA_ARGS__)
-#    define IEngineFactoryVk_EnableDeviceSimulation(This)         CALL_IFACE_METHOD(EngineFactoryVk, EnableDeviceSimulation,    This)
-#    define IEngineFactoryVk_GetVulkanVersion(This)               CALL_IFACE_METHOD(EngineFactoryVk, GetVulkanVersion,          This)
-
-// clang-format on
-
-#endif
 
 typedef struct IEngineFactoryVk* (*GetEngineFactoryVkType)();
 
@@ -167,4 +149,4 @@ inline struct IEngineFactoryVk* DILIGENT_GLOBAL_FUNCTION(LoadAndGetEngineFactory
     return GetFactoryFunc();
 }
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+} // namespace Diligent

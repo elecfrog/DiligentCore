@@ -29,13 +29,12 @@
 
 #include "../../GraphicsEngine/interface/TextureView.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {94C0D9C3-61E7-4358-AB9F-066EAD84D6F1}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureViewMtl =
+static constexpr INTERFACE_ID IID_TextureViewMtl =
     {0x94c0d9c3, 0x61e7, 0x4358, {0xab, 0x9f, 0x6, 0x6e, 0xad, 0x84, 0xd6, 0xf1}};
 
-#define DILIGENT_INTERFACE_NAME ITextureViewMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITextureViewMtlInclusiveMethods \
@@ -48,11 +47,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureViewMtl =
 DILIGENT_BEGIN_INTERFACE(ITextureViewMtl, ITextureView)
 {
     /// Returns a pointer to Metal texture view (MTLTexture)
-    VIRTUAL id<MTLTexture> METHOD(GetMtlTexture)(THIS) CONST PURE;
+    virtual id<MTLTexture> METHOD(GetMtlTexture)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -64,4 +63,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

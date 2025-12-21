@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngineD3DBase/interface/ShaderD3D.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {C059B160-7F31-4029-943D-0996B98EE79A}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderD3D12 =
+static constexpr INTERFACE_ID IID_ShaderD3D12 =
     {0xc059b160, 0x7f31, 0x4029, {0x94, 0x3d, 0x9, 0x96, 0xb9, 0x8e, 0xe7, 0x9a}};
 
-#define DILIGENT_INTERFACE_NAME IShaderD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 // clang-format off
@@ -57,11 +56,11 @@ DILIGENT_BEGIN_INTERFACE(IShaderD3D12, IShaderD3D){
     /// so Release() **must not** be called.
     //virtual ID3D12DeviceChild* GetD3D12Shader() = 0;
 };
-DILIGENT_END_INTERFACE
+
 
 #endif
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -77,4 +76,4 @@ typedef struct IShaderD3D12
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

@@ -112,14 +112,14 @@ struct _DummyReturn<void>
 };
 
 #define UNSUPPORTED_METHOD(RetType, MethodName, ...)                          \
-    virtual RetType DILIGENT_CALL_TYPE MethodName(__VA_ARGS__) override final \
+    virtual RetType CALLTYPE MethodName(__VA_ARGS__) override final \
     {                                                                         \
         UNSUPPORTED(#MethodName " is not supported in serialization engine"); \
         return _DummyReturn<RetType>{}();                                     \
     }
 
 #define UNSUPPORTED_CONST_METHOD(RetType, MethodName, ...)                          \
-    virtual RetType DILIGENT_CALL_TYPE MethodName(__VA_ARGS__) const override final \
+    virtual RetType CALLTYPE MethodName(__VA_ARGS__) const override final \
     {                                                                               \
         UNSUPPORTED(#MethodName " is not supported in serialization engine");       \
         return _DummyReturn<RetType>{}();                                           \

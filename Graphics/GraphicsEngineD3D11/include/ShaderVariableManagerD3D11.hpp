@@ -101,7 +101,7 @@ public:
 
         const ResourceAttribs& GetAttribs() const { return m_ParentManager.GetResourceAttribs(m_ResIndex); }
 
-        virtual void DILIGENT_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final
+        virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final
         {
             if (ppInterface == nullptr)
                 return;
@@ -116,13 +116,13 @@ public:
 
         using IObject::QueryInterface;
 
-        virtual void DILIGENT_CALL_TYPE GetHLSLResourceDesc(HLSLShaderResourceDesc& HLSLResDesc) const override final
+        virtual void CALLTYPE GetHLSLResourceDesc(HLSLShaderResourceDesc& HLSLResDesc) const override final
         {
             this->GetResourceDesc(HLSLResDesc);
             HLSLResDesc.ShaderRegister = GetAttribs().BindPoints[m_ParentManager.m_ShaderTypeIndex];
         }
 
-        virtual IDeviceObject* DILIGENT_CALL_TYPE Get(UInt32 ArrayIndex) const override final
+        virtual IDeviceObject* CALLTYPE Get(UInt32 ArrayIndex) const override final
         {
             VERIFY_EXPR(ArrayIndex < this->GetDesc().ArraySize);
             return m_ParentManager.m_ResourceCache.template GetResource<ResRange>(GetAttribs().BindPoints + ArrayIndex).Get();

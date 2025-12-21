@@ -29,13 +29,12 @@
 
 #include "../../GraphicsEngine/interface/Fence.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {54FE9F8F-FBBF-4ABB-8280-D980982DA364}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_FenceMtl =
+static constexpr INTERFACE_ID IID_FenceMtl =
     {0x54fe9f8f, 0xfbbf, 0x4abb, {0x82, 0x80, 0xd9, 0x80, 0x98, 0x2d, 0xa3, 0x64}};
 
-#define DILIGENT_INTERFACE_NAME IFenceMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IFenceMtlInclusiveMethods \
@@ -48,11 +47,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_FenceMtl =
 DILIGENT_BEGIN_INTERFACE(IFenceMtl, IFence)
 {
     /// Returns a pointer to Metal shared event (MTLSharedEvent)
-    VIRTUAL id<MTLSharedEvent> METHOD(GetMtlSharedEvent)(THIS) CONST API_AVAILABLE(ios(12), macosx(10.14), tvos(12.0)) PURE;
+    virtual id<MTLSharedEvent> METHOD(GetMtlSharedEvent)( ) const API_AVAILABLE(ios(12), macosx(10.14), tvos(12.0)) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -64,4 +63,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

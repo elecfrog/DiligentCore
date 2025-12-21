@@ -50,19 +50,19 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_SwapChainGL, TSwapChainGLBase)
 
     /// Implementation of ISwapChain::Present() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE Present(UInt32 SyncInterval) override final;
+    virtual void CALLTYPE Present(UInt32 SyncInterval) override final;
 
     /// Implementation of ISwapChain::Resize() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
+    virtual void CALLTYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
 
     /// Implementation of ISwapChain::SetFullscreenMode() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final;
+    virtual void CALLTYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final;
 
     /// Implementation of ISwapChain::SetWindowedMode() in OpenGL backend.
-    virtual void DILIGENT_CALL_TYPE SetWindowedMode() override final;
+    virtual void CALLTYPE SetWindowedMode() override final;
 
     /// Implementation of ISwapChainGL::GetDefaultFBO().
-    virtual GLuint DILIGENT_CALL_TYPE GetDefaultFBO() const override final { return 0; }
+    virtual GLuint CALLTYPE GetDefaultFBO() const override final { return 0; }
 };
 
 } // namespace Diligent

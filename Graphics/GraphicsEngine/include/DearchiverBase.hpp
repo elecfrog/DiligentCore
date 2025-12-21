@@ -63,32 +63,32 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_Dearchiver, TObjectBase)
 
     /// Implementation of IDearchiver::LoadArchive().
-    virtual bool DILIGENT_CALL_TYPE LoadArchive(const IDataBlob* pArchiveData, UInt32 ContentVersion, bool MakeCopy) override final;
+    virtual bool CALLTYPE LoadArchive(const IDataBlob* pArchiveData, UInt32 ContentVersion, bool MakeCopy) override final;
 
     /// Implementation of IDearchiver::UnpackShader().
-    virtual void DILIGENT_CALL_TYPE UnpackShader(const ShaderUnpackInfo& UnpackInfo,
+    virtual void CALLTYPE UnpackShader(const ShaderUnpackInfo& UnpackInfo,
                                                  IShader**               ppShader) override final;
 
     /// Implementation of IDearchiver::UnpackPipelineState().
-    virtual void DILIGENT_CALL_TYPE UnpackPipelineState(const PipelineStateUnpackInfo& DeArchiveInfo,
+    virtual void CALLTYPE UnpackPipelineState(const PipelineStateUnpackInfo& DeArchiveInfo,
                                                         IPipelineState**               ppPSO) override final;
 
     /// Implementation of IDearchiver::UnpackResourceSignature().
-    virtual void DILIGENT_CALL_TYPE UnpackResourceSignature(const ResourceSignatureUnpackInfo& DeArchiveInfo,
+    virtual void CALLTYPE UnpackResourceSignature(const ResourceSignatureUnpackInfo& DeArchiveInfo,
                                                             IPipelineResourceSignature**       ppSignature) override final;
 
     /// Implementation of IDearchiver::UnpackRenderPass().
-    virtual void DILIGENT_CALL_TYPE UnpackRenderPass(const RenderPassUnpackInfo& DeArchiveInfo,
+    virtual void CALLTYPE UnpackRenderPass(const RenderPassUnpackInfo& DeArchiveInfo,
                                                      IRenderPass**               ppRP) override final;
 
     /// Implementation of IDearchiver::Store().
-    virtual bool DILIGENT_CALL_TYPE Store(IDataBlob** ppArchive) const override final;
+    virtual bool CALLTYPE Store(IDataBlob** ppArchive) const override final;
 
     /// Implementation of IDearchiver::Reset().
-    virtual void DILIGENT_CALL_TYPE Reset() override final;
+    virtual void CALLTYPE Reset() override final;
 
     /// Implementation of IDearchiver::GetContentVersion().
-    virtual UInt32 DILIGENT_CALL_TYPE GetContentVersion() const override final;
+    virtual UInt32 CALLTYPE GetContentVersion() const override final;
 
 protected:
     template <typename RenderDeviceImplType, typename PRSSerializerType>

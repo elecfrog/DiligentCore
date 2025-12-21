@@ -52,7 +52,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_ShaderBindingTableVk, TShaderBindingTableBase)
 
-    virtual const BindingTableVk& DILIGENT_CALL_TYPE GetVkBindingTable() const override final { return m_VkBindingTable; }
+    virtual const BindingTableVk& CALLTYPE GetVkBindingTable() const override final { return m_VkBindingTable; }
 
     using BindingTable = TShaderBindingTableBase::BindingTable;
     void GetData(BufferVkImpl*& pSBTBufferVk,

@@ -33,28 +33,25 @@
 #include "../../../Primitives/interface/DebugOutput.h"
 #include "SerializationDevice.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent
+{
 
 // {F20B91EB-BDE3-4615-81CC-F720AA32410E}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ArchiverFactory =
+static constexpr INTERFACE_ID IID_ArchiverFactory =
     {0xf20b91eb, 0xbde3, 0x4615, {0x81, 0xcc, 0xf7, 0x20, 0xaa, 0x32, 0x41, 0xe}};
 
-#define DILIGENT_INTERFACE_NAME IArchiverFactory
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IArchiverFactoryInclusiveMethods \
     IObjectInclusiveMethods;             \
     IArchiverFactoryMethods ArchiverFactory
 
-// clang-format off
-
 /// Serialization device attributes for Direct3D11 backend
 struct SerializationDeviceD3D11Info
 {
     /// Direct3D11 feature level
-    Version FeatureLevel DEFAULT_INITIALIZER(Version(11, 0));
+    Version FeatureLevel = Version(11, 0);
 
-#if DILIGENT_CPP_INTERFACE
     /// Tests if two structures are equivalent
     constexpr bool operator==(const SerializationDeviceD3D11Info& RHS) const
     {
@@ -64,8 +61,6 @@ struct SerializationDeviceD3D11Info
     {
         return !(*this == RHS);
     }
-#endif
-
 };
 typedef struct SerializationDeviceD3D11Info SerializationDeviceD3D11Info;
 
@@ -74,12 +69,11 @@ typedef struct SerializationDeviceD3D11Info SerializationDeviceD3D11Info;
 struct SerializationDeviceD3D12Info
 {
     /// Shader version supported by the device
-    Version     ShaderVersion  DEFAULT_INITIALIZER(Version(6, 0));
+    Version ShaderVersion = Version(6, 0);
 
     /// DX Compiler path
-    const Char* DxCompilerPath DEFAULT_INITIALIZER(nullptr);
+    const Char* DxCompilerPath = nullptr;
 
-#if DILIGENT_CPP_INTERFACE
     /// Tests if two structures are equivalent
     bool operator==(const SerializationDeviceD3D12Info& RHS) const noexcept
     {
@@ -89,8 +83,6 @@ struct SerializationDeviceD3D12Info
     {
         return !(*this == RHS);
     }
-#endif
-
 };
 typedef struct SerializationDeviceD3D12Info SerializationDeviceD3D12Info;
 
@@ -111,7 +103,7 @@ struct SerializationDeviceGLInfo
     ///             with GLSLang and then translate SPIRV back to GLSL using SPIRV-Cross.
     ///             The resulting GLSL code will be much more compact and will be stored in the
     ///             archive instead of the original source code.
-    Bool  OptimizeShaders DEFAULT_INITIALIZER(True);
+    Bool OptimizeShaders DEFAULT_INITIALIZER(True);
 
     /// Whether to use zero-to-one clip-space Z range.
     ///
@@ -120,17 +112,15 @@ struct SerializationDeviceGLInfo
     ///             that the shaders use zero-to-one clip-space Z range.
     Bool ZeroToOneClipZ DEFAULT_INITIALIZER(False);
 
-#if DILIGENT_CPP_INTERFACE
     bool operator==(const SerializationDeviceGLInfo& RHS) const noexcept
     {
         return OptimizeShaders == RHS.OptimizeShaders &&
-			   ZeroToOneClipZ  == RHS.ZeroToOneClipZ;
+            ZeroToOneClipZ == RHS.ZeroToOneClipZ;
     }
     bool operator!=(const SerializationDeviceGLInfo& RHS) const noexcept
     {
         return !(*this == RHS);
     }
-#endif
 };
 typedef struct SerializationDeviceGLInfo SerializationDeviceGLInfo;
 
@@ -139,27 +129,25 @@ typedef struct SerializationDeviceGLInfo SerializationDeviceGLInfo;
 struct SerializationDeviceVkInfo
 {
     /// Vulkan API version
-    Version     ApiVersion      DEFAULT_INITIALIZER(Version(1, 0));
+    Version ApiVersion = Version(1, 0);
 
     /// Indicates whether the device supports SPIRV 1.4 or above
-    Bool        SupportsSpirv14 DEFAULT_INITIALIZER(False);
+    Bool SupportsSpirv14 = False;
 
     /// Path to DX compiler for Vulkan
-    const Char* DxCompilerPath  DEFAULT_INITIALIZER(nullptr);
+    const Char* DxCompilerPath = nullptr;
 
-#if DILIGENT_CPP_INTERFACE
     /// Tests if two structures are equivalent
     bool operator==(const SerializationDeviceVkInfo& RHS) const noexcept
     {
-        return ApiVersion      == RHS.ApiVersion &&
-               SupportsSpirv14 == RHS.SupportsSpirv14 &&
-               SafeStrEqual(DxCompilerPath, RHS.DxCompilerPath);
+        return ApiVersion == RHS.ApiVersion &&
+            SupportsSpirv14 == RHS.SupportsSpirv14 &&
+            SafeStrEqual(DxCompilerPath, RHS.DxCompilerPath);
     }
     bool operator!=(const SerializationDeviceVkInfo& RHS) const noexcept
     {
         return !(*this == RHS);
     }
-#endif
 };
 typedef struct SerializationDeviceVkInfo SerializationDeviceVkInfo;
 
@@ -168,30 +156,28 @@ typedef struct SerializationDeviceVkInfo SerializationDeviceVkInfo;
 struct SerializationDeviceMtlInfo
 {
     /// Additional compilation options for Metal command-line compiler for MacOS.
-    const Char* CompileOptionsMacOS DEFAULT_INITIALIZER("-sdk macosx metal");
+    const Char* CompileOptionsMacOS = "-sdk macosx metal";
 
     /// Additional compilation options for Metal command-line compiler for iOS.
-    const Char* CompileOptionsiOS   DEFAULT_INITIALIZER("-sdk iphoneos metal");
+    const Char* CompileOptionsiOS = "-sdk iphoneos metal";
 
     /// Name of the command-line application that is used to preprocess Metal shader source before compiling to bytecode.
-    const Char* MslPreprocessorCmd DEFAULT_INITIALIZER(nullptr);
+    const Char* MslPreprocessorCmd = nullptr;
 
     /// Optional directory to dump converted MSL source code and temporary files produced by the Metal toolchain.
-    const Char* DumpDirectory      DEFAULT_INITIALIZER(nullptr);
+    const Char* DumpDirectory = nullptr;
 
-#if DILIGENT_CPP_INTERFACE
     /// Tests if two structures are equivalent
     bool operator==(const SerializationDeviceMtlInfo& RHS) const noexcept
     {
         return SafeStrEqual(CompileOptionsMacOS, RHS.CompileOptionsMacOS) &&
-               SafeStrEqual(CompileOptionsiOS,   RHS.CompileOptionsiOS)   &&
-               SafeStrEqual(MslPreprocessorCmd,  RHS.MslPreprocessorCmd);
+            SafeStrEqual(CompileOptionsiOS, RHS.CompileOptionsiOS) &&
+            SafeStrEqual(MslPreprocessorCmd, RHS.MslPreprocessorCmd);
     }
     bool operator!=(const SerializationDeviceMtlInfo& RHS) const noexcept
     {
         return !(*this == RHS);
     }
-#endif
 };
 typedef struct SerializationDeviceMtlInfo SerializationDeviceMtlInfo;
 
@@ -204,7 +190,7 @@ struct SerializationDeviceCreateInfo
     /// Can be used to validate shaders, render passes, resource signatures and pipeline states.
     ///
     /// \note For OpenGL that does not support separable programs, disable the SeparablePrograms feature.
-    RenderDeviceInfo    DeviceInfo;
+    RenderDeviceInfo DeviceInfo;
 
     /// Adapter info, contains device parameters.
 
@@ -235,12 +221,11 @@ struct SerializationDeviceCreateInfo
     /// the default thread pool.
     /// If the value is `0xFFFFFFFF`, the number of threads will be determined automatically.
     /// If the value is `0`, the default thread pool will not be created.
-    ///             
+    ///
     /// If `pAsyncShaderCompilationThreadPool` is not `null`, the value is ignored as the user-provided
     /// thread pool is used instead.
     UInt32 NumAsyncShaderCompilationThreads DEFAULT_INITIALIZER(0);
 
-#if DILIGENT_CPP_INTERFACE
     SerializationDeviceCreateInfo() noexcept
     {
         DeviceInfo.Features  = DeviceFeatures{DEVICE_FEATURE_STATE_ENABLED};
@@ -248,41 +233,33 @@ struct SerializationDeviceCreateInfo
         // Disable subpass framebuffer fetch by default to allow backwards compatibility on Metal.
         DeviceInfo.Features.SubpassFramebufferFetch = DEVICE_FEATURE_STATE_DISABLED;
     }
-#endif
 };
 typedef struct SerializationDeviceCreateInfo SerializationDeviceCreateInfo;
 
 
 /// Archiver factory interface
-DILIGENT_BEGIN_INTERFACE(IArchiverFactory, IObject)
+struct IArchiverFactory : public IObject
 {
     /// Creates a serialization device.
 
     /// \param [in]  CreateInfo - Serialization device create information, see Diligent::SerializationDeviceCreateInfo.
     /// \param [out] ppDevice   - Address of the memory location where a pointer to the
     ///                           device interface will be written.
-    VIRTUAL void METHOD(CreateSerializationDevice)(THIS_
-                                                   const SerializationDeviceCreateInfo REF CreateInfo,
-                                                   ISerializationDevice**                  ppDevice) PURE;
+    virtual void CALLTYPE CreateSerializationDevice(const SerializationDeviceCreateInfo& CreateInfo, ISerializationDevice** ppDevice) = 0;
 
     /// Creates an archiver.
 
     /// \param [in]  pDevice    - Pointer to the serialization device.
     /// \param [out] ppArchiver - Address of the memory location where a pointer to the
     ///                           archiver interface will be written.
-    VIRTUAL void METHOD(CreateArchiver)(THIS_
-                                        ISerializationDevice* pDevice,
-                                        IArchiver**           ppArchiver) PURE;
+    virtual void CALLTYPE CreateArchiver(ISerializationDevice* pDevice, IArchiver** ppArchiver) = 0;
 
     /// Creates a default shader source input stream factory
 
     /// \param [in]  SearchDirectories           - Semicolon-separated list of search directories.
     /// \param [out] ppShaderSourceStreamFactory - Memory address where a pointer to the shader source
     ///                                            stream factory will be written.
-    VIRTUAL void METHOD(CreateDefaultShaderSourceStreamFactory)(
-                        THIS_
-                        const Char*                              SearchDirectories,
-                        struct IShaderSourceInputStreamFactory** ppShaderSourceFactory) CONST PURE;
+    virtual void CALLTYPE CreateDefaultShaderSourceStreamFactory(const Char* SearchDirectories, struct IShaderSourceInputStreamFactory** ppShaderSourceFactory) const = 0;
 
 
     /// Removes device-specific data from the archive and writes a new archive to the stream.
@@ -291,10 +268,10 @@ DILIGENT_BEGIN_INTERFACE(IArchiverFactory, IObject)
     /// \param [in]  DeviceFlags  - Combination of device types that will be removed.
     /// \param [out] ppDstArchive - Memory address where a pointer to the new archive will be written.
     /// \return     `true` if the device-specific data was successfully removed, and `false` otherwise.
-    VIRTUAL Bool METHOD(RemoveDeviceData)(THIS_
-                                          const IDataBlob*          pSrcArchive,
-                                          ARCHIVE_DEVICE_DATA_FLAGS DeviceFlags,
-                                          IDataBlob**               ppDstArchive) CONST PURE;
+    virtual Bool METHOD(RemoveDeviceData)(
+        const IDataBlob*          pSrcArchive,
+        ARCHIVE_DEVICE_DATA_FLAGS DeviceFlags,
+        IDataBlob**               ppDstArchive) const = 0;
 
 
     /// Copies device-specific data from the source archive to the destination and writes a new archive to the stream.
@@ -304,11 +281,11 @@ DILIGENT_BEGIN_INTERFACE(IArchiverFactory, IObject)
     /// \param [in]  pDeviceArchive - Archive that contains the same common data and additional device-specific data.
     /// \param [out] ppDstArchive   - Memory address where a pointer to the new archive will be written.
     /// \return     `true` if the device-specific data was successfully added, and `false` otherwise.
-    VIRTUAL Bool METHOD(AppendDeviceData)(THIS_
-                                          const IDataBlob*          pSrcArchive,
-                                          ARCHIVE_DEVICE_DATA_FLAGS DeviceFlags,
-                                          const IDataBlob*          pDeviceArchive,
-                                          IDataBlob**               ppDstArchive) CONST PURE;
+    virtual Bool METHOD(AppendDeviceData)(
+        const IDataBlob*          pSrcArchive,
+        ARCHIVE_DEVICE_DATA_FLAGS DeviceFlags,
+        const IDataBlob*          pDeviceArchive,
+        IDataBlob**               ppDstArchive) const = 0;
 
 
     /// Merges multiple archives into one.
@@ -317,30 +294,30 @@ DILIGENT_BEGIN_INTERFACE(IArchiverFactory, IObject)
     /// \param [in]  NumSrcArchives  - The number of elements in `ppArchives` array.
     /// \param [out] ppDstArchive    - Memory address where a pointer to the merged archive will be written.
     /// \return     `true` if the archives were successfully merged, and `false` otherwise.
-    VIRTUAL Bool METHOD(MergeArchives)(THIS_
-                                       const IDataBlob* ppSrcArchives[],
-                                       UInt32           NumSrcArchives,
-                                       IDataBlob**      ppDstArchive) CONST PURE;
+    virtual Bool METHOD(MergeArchives)(
+        const IDataBlob* ppSrcArchives[],
+        UInt32           NumSrcArchives,
+        IDataBlob**      ppDstArchive) const = 0;
 
 
     /// Prints archive content for debugging and validation.
-    VIRTUAL Bool METHOD(PrintArchiveContent)(THIS_
-                                             const IDataBlob* pArchive) CONST PURE;
+    virtual Bool METHOD(PrintArchiveContent)(
+        const IDataBlob* pArchive) const = 0;
 
     /// Sets a user-provided debug message callback.
 
     /// \param [in]     MessageCallback - Debug message callback function to use instead of the default one.
-    VIRTUAL void METHOD(SetMessageCallback)(THIS_
-                                            DebugMessageCallbackType MessageCallback) CONST PURE;
+    virtual void METHOD(SetMessageCallback)(
+        DebugMessageCallbackType MessageCallback) const = 0;
 
     /// Sets whether to break program execution on assertion failure.
 
     /// \param [in]     BreakOnError - Whether to break on assertion failure.
-    VIRTUAL void METHOD(SetBreakOnError)(THIS_
-                                         bool BreakOnError) CONST PURE;
+    virtual void METHOD(SetBreakOnError)(
+        bool BreakOnError) const = 0;
 
     /// Sets the memory allocator to be used by the archiver.
-    
+
     /// \param [in] pAllocator - Pointer to the memory allocator.
     ///
     /// The allocator is a global setting that applies to the entire execution unit
@@ -350,26 +327,8 @@ DILIGENT_BEGIN_INTERFACE(IArchiverFactory, IObject)
     /// should not be changed afterwards.
     /// The allocator object must remain valid until all objects created by the factory
     /// are destroyed.
-    VIRTUAL void METHOD(SetMemoryAllocator)(THIS_
-                                            IMemoryAllocator* pAllocator) CONST PURE;
+    virtual void METHOD(SetMemoryAllocator)(
+        IMemoryAllocator* pAllocator) const = 0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
-
-#if DILIGENT_C_INTERFACE
-
-#    define IArchiverFactory_CreateArchiver(This, ...)                          CALL_IFACE_METHOD(ArchiverFactory, CreateArchiver,                         This, __VA_ARGS__)
-#    define IArchiverFactory_CreateSerializationDevice(This, ...)               CALL_IFACE_METHOD(ArchiverFactory, CreateSerializationDevice,              This, __VA_ARGS__)
-#    define IArchiverFactory_CreateDefaultShaderSourceStreamFactory(This, ...)  CALL_IFACE_METHOD(ArchiverFactory, CreateDefaultShaderSourceStreamFactory, This, __VA_ARGS__)
-#    define IArchiverFactory_RemoveDeviceData(This, ...)                        CALL_IFACE_METHOD(ArchiverFactory, RemoveDeviceData,                       This, __VA_ARGS__)
-#    define IArchiverFactory_AppendDeviceData(This, ...)                        CALL_IFACE_METHOD(ArchiverFactory, AppendDeviceData,                       This, __VA_ARGS__)
-#    define IArchiverFactory_MergeArchives(This, ...)                           CALL_IFACE_METHOD(ArchiverFactory, MergeArchives,                          This, __VA_ARGS__)
-#    define IArchiverFactory_PrintArchiveContent(This, ...)                     CALL_IFACE_METHOD(ArchiverFactory, PrintArchiveContent,                    This, __VA_ARGS__)
-#    define IArchiverFactory_SetMessageCallback(This, ...)                      CALL_IFACE_METHOD(ArchiverFactory, SetMessageCallback,                     This, __VA_ARGS__)
-#    define IArchiverFactory_SetBreakOnError(This, ...)                         CALL_IFACE_METHOD(ArchiverFactory, SetBreakOnError,                        This, __VA_ARGS__)
-#    define IArchiverFactory_SetMemoryAllocator(This, ...)                      CALL_IFACE_METHOD(ArchiverFactory, SetMemoryAllocator,                     This, __VA_ARGS__)
-
-#endif
-
-DILIGENT_END_NAMESPACE // namespace Diligent
+} // namespace Diligent

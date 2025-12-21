@@ -39,15 +39,14 @@
 #    include "../../GraphicsEngine/interface/LoadEngineDll.h"
 #endif
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 struct ICommandQueueD3D12;
 
 // {72BD38B0-684A-4889-9C68-0A80EC802DDE}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_EngineFactoryD3D12 =
+static constexpr INTERFACE_ID IID_EngineFactoryD3D12 =
     {0x72bd38b0, 0x684a, 0x4889, {0x9c, 0x68, 0xa, 0x80, 0xec, 0x80, 0x2d, 0xde}};
 
-#define DILIGENT_INTERFACE_NAME IEngineFactoryD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 // clang-format off
@@ -69,8 +68,8 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryD3D12, IEngineFactory)
     /// load the DLL if it has not be loaded already.
     ///
     /// This method has no effect on UWP.
-    VIRTUAL Bool METHOD(LoadD3D12)(THIS_
-                                   const char* DllName DEFAULT_VALUE("d3d12.dll")) PURE;
+    virtual Bool METHOD(LoadD3D12)(
+                                   const char* DllName DEFAULT_VALUE("d3d12.dll")) =0;
 
     /// Creates a render device and device contexts for Direct3D12-based engine implementation.
 
@@ -81,10 +80,10 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryD3D12, IEngineFactory)
     ///                           the contexts will be written. Immediate context goes at
     ///                           position 0. If `EngineCI.NumDeferredContexts > 0`,
     ///                           pointers to the deferred contexts are written afterwards.
-    VIRTUAL void METHOD(CreateDeviceAndContextsD3D12)(THIS_
-                                                      const EngineD3D12CreateInfo REF EngineCI,
+    virtual void METHOD(CreateDeviceAndContextsD3D12)(
+                                                      const EngineD3D12CreateInfo  & EngineCI,
                                                       IRenderDevice**                 ppDevice,
-                                                      IDeviceContext**                ppContexts) PURE;
+                                                      IDeviceContext**                ppContexts) =0;
 
     /// Creates a command queue from Direct3D12 native command queue.
 
@@ -93,11 +92,11 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryD3D12, IEngineFactory)
     /// \param [in]  pRawMemAllocator   - Pointer to the raw memory allocator.
     ///                                   Must be the same as EngineCreateInfo::pRawMemAllocator in the following AttachToD3D12Device() call.
     /// \param [out] ppCommandQueue     - Address of the memory location where pointer to the command queue will be written.
-    VIRTUAL void METHOD(CreateCommandQueueD3D12)(THIS_
+    virtual void METHOD(CreateCommandQueueD3D12)(
                                                  void*                       pd3d12NativeDevice,
                                                  void*                       pd3d12NativeCommandQueue,
                                                  struct IMemoryAllocator*    pRawMemAllocator,
-                                                 struct ICommandQueueD3D12** ppCommandQueue) PURE;
+                                                 struct ICommandQueueD3D12** ppCommandQueue) =0;
 
     /// Attaches to existing Direct3D12 device.
 
@@ -112,13 +111,13 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryD3D12, IEngineFactory)
     ///                           the contexts will be written. Immediate context goes at
     ///                           position 0. If `EngineCI.NumDeferredContexts > 0`,
     ///                           pointers to the deferred contexts are written afterwards.
-    VIRTUAL void METHOD(AttachToD3D12Device)(THIS_
+    virtual void METHOD(AttachToD3D12Device)(
                                              void*                           pd3d12NativeDevice,
                                              UInt32                          CommandQueueCount,
                                              struct ICommandQueueD3D12**     ppCommandQueues,
-                                             const EngineD3D12CreateInfo REF EngineCI,
+                                             const EngineD3D12CreateInfo  & EngineCI,
                                              IRenderDevice**                 ppDevice,
-                                             IDeviceContext**                ppContexts) PURE;
+                                             IDeviceContext**                ppContexts) =0;
 
 
     /// Creates a swap chain for Direct3D12-based engine implementation.
@@ -136,13 +135,13 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryD3D12, IEngineFactory)
     ///
     /// \param [out] ppSwapChain    - Address of the memory location where pointer to the new
     ///                               swap chain will be written
-    VIRTUAL void METHOD(CreateSwapChainD3D12)(THIS_
+    virtual void METHOD(CreateSwapChainD3D12)(
                                               IRenderDevice*               pDevice,
                                               IDeviceContext*              pImmediateContext,
-                                              const SwapChainDesc REF      SwapChainDesc,
-                                              const FullScreenModeDesc REF FSDesc,
-                                              const NativeWindow REF       Window,
-                                              ISwapChain**                 ppSwapChain) PURE;
+                                              const SwapChainDesc  &      SwapChainDesc,
+                                              const FullScreenModeDesc  & FSDesc,
+                                              const NativeWindow  &       Window,
+                                              ISwapChain**                 ppSwapChain) =0;
 
 
     /// Enumerates available display modes for the specified output of the specified adapter.
@@ -159,17 +158,17 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryD3D12, IEngineFactory)
     ///                                    the actual number of display modes written.
     ///
     /// \note           D3D12 must be loaded before this method can be called, see IEngineFactoryD3D12::LoadD3D12.
-    VIRTUAL void METHOD(EnumerateDisplayModes)(THIS_
+    virtual void METHOD(EnumerateDisplayModes)(
                                                Version                MinFeatureLevel,
                                                UInt32                 AdapterId,
                                                UInt32                 OutputId,
                                                TEXTURE_FORMAT         Format,
-                                               UInt32 REF             NumDisplayModes,
-                                               DisplayModeAttribs*    DisplayModes) PURE;
+                                               UInt32  &             NumDisplayModes,
+                                               DisplayModeAttribs*    DisplayModes) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -224,4 +223,4 @@ inline struct IEngineFactoryD3D12* DILIGENT_GLOBAL_FUNCTION(LoadAndGetEngineFact
 }
 
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

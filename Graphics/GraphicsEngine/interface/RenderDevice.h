@@ -59,13 +59,12 @@
 #include "RasterizerState.h"
 #include "BlendState.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {F0E9B607-AE33-4B2B-B1AF-A8B2C3104022}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_RenderDevice =
+static constexpr INTERFACE_ID IID_RenderDevice =
     {0xf0e9b607, 0xae33, 0x4b2b, {0xb1, 0xaf, 0xa8, 0xb2, 0xc3, 0x10, 0x40, 0x22}};
 
-#define DILIGENT_INTERFACE_NAME IRenderDevice
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IRenderDeviceInclusiveMethods \
@@ -75,7 +74,7 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_RenderDevice =
 // clang-format off
 
 /// Render device interface
-DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
+struct IRenderDevice : public IObject
 {
     /// Creates a new buffer object
 
@@ -92,10 +91,10 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///
     /// Stride of a formatted buffer will be computed automatically from the format if
     /// ElementByteStride member of buffer description is set to default value (0).
-    VIRTUAL void METHOD(CreateBuffer)(THIS_
-                                      const BufferDesc REF BuffDesc,
+    virtual void METHOD(CreateBuffer)(
+                                      const BufferDesc  & BuffDesc,
                                       const BufferData*    pBuffData,
-                                      IBuffer**            ppBuffer) PURE;
+                                      IBuffer**            ppBuffer) =0;
 
     /// Creates a new shader object
 
@@ -112,10 +111,10 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     /// The first one is the compiler output message. The second one is the full
     /// shader source code including definitions added by the engine. The data blob
     /// object must be released by the client.
-    VIRTUAL void METHOD(CreateShader)(THIS_
-                                      const ShaderCreateInfo REF ShaderCI,
+    virtual void METHOD(CreateShader)(
+                                      const ShaderCreateInfo  & ShaderCI,
                                       IShader**                  ppShader,
-                                      IDataBlob**                ppCompilerOutput DEFAULT_VALUE(nullptr)) PURE;
+                                      IDataBlob**                ppCompilerOutput DEFAULT_VALUE(nullptr)) =0;
 
     /// Creates a new texture object
 
@@ -144,10 +143,10 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     /// For a 15 x 6 x 4 3D texture, the following array of subresources should be provided:
     ///
     ///     15x6x4, 7x3x2, 3x1x1, 1x1x1
-    VIRTUAL void METHOD(CreateTexture)(THIS_
-                                       const TextureDesc REF TexDesc,
+    virtual void METHOD(CreateTexture)(
+                                       const TextureDesc  & TexDesc,
                                        const TextureData*    pData,
-                                       ITexture**            ppTexture) PURE;
+                                       ITexture**            ppTexture) =0;
 
     /// Creates a new sampler object
 
@@ -161,9 +160,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     /// as an existing interface, the same interface will be returned.
     ///
     /// In D3D11, 4096 unique sampler state objects can be created on a device at a time.
-    VIRTUAL void METHOD(CreateSampler)(THIS_
-                                       const SamplerDesc REF SamDesc,
-                                       ISampler**            ppSampler) PURE;
+    virtual void METHOD(CreateSampler)(
+                                       const SamplerDesc  & SamDesc,
+                                       ISampler**            ppSampler) =0;
 
     /// Creates a new resource mapping
 
@@ -172,9 +171,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                             resource mapping interface will be written.
     ///                             The function calls AddRef(), so that the new object will have
     ///                             one reference.
-    VIRTUAL void METHOD(CreateResourceMapping)(THIS_
-                                               const ResourceMappingCreateInfo REF ResMappingCI,
-                                               IResourceMapping**                  ppMapping) PURE;
+    virtual void METHOD(CreateResourceMapping)(
+                                               const ResourceMappingCreateInfo  & ResMappingCI,
+                                               IResourceMapping**                  ppMapping) =0;
 
     /// Creates a new graphics pipeline state object
 
@@ -183,9 +182,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                                pipeline state interface will be written.
     ///                                The function calls AddRef(), so that the new object will have
     ///                                one reference.
-    VIRTUAL void METHOD(CreateGraphicsPipelineState)(THIS_
-                                                     const GraphicsPipelineStateCreateInfo REF PSOCreateInfo,
-                                                     IPipelineState**                          ppPipelineState) PURE;
+    virtual void METHOD(CreateGraphicsPipelineState)(
+                                                     const GraphicsPipelineStateCreateInfo  & PSOCreateInfo,
+                                                     IPipelineState**                          ppPipelineState) =0;
 
     /// Creates a new compute pipeline state object
 
@@ -194,9 +193,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                                pipeline state interface will be written.
     ///                                The function calls AddRef(), so that the new object will have
     ///                                one reference.
-    VIRTUAL void METHOD(CreateComputePipelineState)(THIS_
-                                                    const ComputePipelineStateCreateInfo REF PSOCreateInfo,
-                                                    IPipelineState**                         ppPipelineState) PURE;
+    virtual void METHOD(CreateComputePipelineState)(
+                                                    const ComputePipelineStateCreateInfo  & PSOCreateInfo,
+                                                    IPipelineState**                         ppPipelineState) =0;
 
     /// Creates a new ray tracing pipeline state object
 
@@ -205,9 +204,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                                pipeline state interface will be written.
     ///                                The function calls AddRef(), so that the new object will have
     ///                                one reference.
-    VIRTUAL void METHOD(CreateRayTracingPipelineState)(THIS_
-                                                       const RayTracingPipelineStateCreateInfo REF PSOCreateInfo,
-                                                       IPipelineState**                            ppPipelineState) PURE;
+    virtual void METHOD(CreateRayTracingPipelineState)(
+                                                       const RayTracingPipelineStateCreateInfo  & PSOCreateInfo,
+                                                       IPipelineState**                            ppPipelineState) =0;
 
     /// Creates a new tile pipeline state object
 
@@ -216,9 +215,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                                pipeline state interface will be written.
     ///                                The function calls AddRef(), so that the new object will have
     ///                                one reference.
-    VIRTUAL void METHOD(CreateTilePipelineState)(THIS_
-                                                 const TilePipelineStateCreateInfo REF PSOCreateInfo,
-                                                 IPipelineState**                      ppPipelineState) PURE;
+    virtual void METHOD(CreateTilePipelineState)(
+                                                 const TilePipelineStateCreateInfo  & PSOCreateInfo,
+                                                 IPipelineState**                      ppPipelineState) =0;
 
     /// Creates a new fence object
 
@@ -227,9 +226,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                        fence interface will be written.
     ///                        The function calls AddRef(), so that the new object will have
     ///                        one reference.
-    VIRTUAL void METHOD(CreateFence)(THIS_
-                                     const FenceDesc REF Desc,
-                                     IFence**            ppFence) PURE;
+    virtual void METHOD(CreateFence)(
+                                     const FenceDesc  & Desc,
+                                     IFence**            ppFence) =0;
 
 
     /// Creates a new query object
@@ -239,9 +238,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                        query interface will be written.
     ///                        The function calls AddRef(), so that the new object will have
     ///                        one reference.
-    VIRTUAL void METHOD(CreateQuery)(THIS_
-                                     const QueryDesc REF Desc,
-                                     IQuery**            ppQuery) PURE;
+    virtual void METHOD(CreateQuery)(
+                                     const QueryDesc  & Desc,
+                                     IQuery**            ppQuery) =0;
 
 
     /// Creates a render pass object
@@ -251,9 +250,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                             render pass interface will be written.
     ///                             The function calls AddRef(), so that the new object will have
     ///                             one reference.
-    VIRTUAL void METHOD(CreateRenderPass)(THIS_
-                                          const RenderPassDesc REF Desc,
-                                          IRenderPass**            ppRenderPass) PURE;
+    virtual void METHOD(CreateRenderPass)(
+                                          const RenderPassDesc  & Desc,
+                                          IRenderPass**            ppRenderPass) =0;
 
 
 
@@ -264,9 +263,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                              framebuffer interface will be written.
     ///                              The function calls AddRef(), so that the new object will have
     ///                              one reference.
-    VIRTUAL void METHOD(CreateFramebuffer)(THIS_
-                                           const FramebufferDesc REF Desc,
-                                           IFramebuffer**            ppFramebuffer) PURE;
+    virtual void METHOD(CreateFramebuffer)(
+                                           const FramebufferDesc  & Desc,
+                                           IFramebuffer**            ppFramebuffer) =0;
 
 
     /// Creates a bottom-level acceleration structure object (BLAS).
@@ -276,9 +275,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                        BLAS interface will be written.
     ///                        The function calls AddRef(), so that the new object will have
     ///                        one reference.
-    VIRTUAL void METHOD(CreateBLAS)(THIS_
-                                    const BottomLevelASDesc REF Desc,
-                                    IBottomLevelAS**            ppBLAS) PURE;
+    virtual void METHOD(CreateBLAS)(
+                                    const BottomLevelASDesc  & Desc,
+                                    IBottomLevelAS**            ppBLAS) =0;
 
 
     /// Creates a top-level acceleration structure object (TLAS).
@@ -288,9 +287,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                        TLAS interface will be written.
     ///                        The function calls AddRef(), so that the new object will have
     ///                        one reference.
-    VIRTUAL void METHOD(CreateTLAS)(THIS_
-                                    const TopLevelASDesc REF Desc,
-                                    ITopLevelAS**            ppTLAS) PURE;
+    virtual void METHOD(CreateTLAS)(
+                                    const TopLevelASDesc  & Desc,
+                                    ITopLevelAS**            ppTLAS) =0;
 
 
     /// Creates a shader resource binding table object (SBT).
@@ -300,9 +299,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                        SBT interface will be written.
     ///                        The function calls AddRef(), so that the new object will have
     ///                        one reference.
-    VIRTUAL void METHOD(CreateSBT)(THIS_
-                                   const ShaderBindingTableDesc REF Desc,
-                                   IShaderBindingTable**            ppSBT) PURE;
+    virtual void METHOD(CreateSBT)(
+                                   const ShaderBindingTableDesc  & Desc,
+                                   IShaderBindingTable**            ppSBT) =0;
 
     /// Creates a pipeline resource signature object.
 
@@ -311,9 +310,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                             pipeline resource signature interface will be written.
     ///                             The function calls AddRef(), so that the new object will have
     ///                             one reference.
-    VIRTUAL void METHOD(CreatePipelineResourceSignature)(THIS_
-                                                         const PipelineResourceSignatureDesc REF Desc,
-                                                         IPipelineResourceSignature**            ppSignature) PURE;
+    virtual void METHOD(CreatePipelineResourceSignature)(
+                                                         const PipelineResourceSignatureDesc  & Desc,
+                                                         IPipelineResourceSignature**            ppSignature) =0;
 
 
     /// Creates a device memory object.
@@ -323,9 +322,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                           device memory interface will be written.
     ///                           The function calls AddRef(), so that the new object will have
     ///                           one reference.
-    VIRTUAL void METHOD(CreateDeviceMemory)(THIS_
-                                            const DeviceMemoryCreateInfo REF CreateInfo,
-                                            IDeviceMemory**                  ppMemory) PURE;
+    virtual void METHOD(CreateDeviceMemory)(
+                                            const DeviceMemoryCreateInfo  & CreateInfo,
+                                            IDeviceMemory**                  ppMemory) =0;
 
 
     /// Creates a pipeline state cache object.
@@ -338,9 +337,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///
     /// On devices that don't support pipeline state caches (e.g. Direct3D11, OpenGL),
     /// the method will silently do nothing.
-    VIRTUAL void METHOD(CreatePipelineStateCache)(THIS_
-                                                  const PipelineStateCacheCreateInfo REF CreateInfo,
-                                                  IPipelineStateCache**                  ppPSOCache) PURE;
+    virtual void METHOD(CreatePipelineStateCache)(
+                                                  const PipelineStateCacheCreateInfo  & CreateInfo,
+                                                  IPipelineStateCache**                  ppPSOCache) =0;
 
 
     /// Creates a deferred context.
@@ -349,14 +348,14 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///                          deferred context interface will be written.
     /// 
     /// \remarks    Deferred contexts are not supported in OpenGL and WebGPU backends.
-    VIRTUAL void METHOD(CreateDeferredContext)(THIS_
-                                               IDeviceContext** ppContext) PURE;
+    virtual void METHOD(CreateDeferredContext)(
+                                               IDeviceContext** ppContext) =0;
 
     /// Returns the device information, see Diligent::RenderDeviceInfo for details.
-    VIRTUAL const RenderDeviceInfo REF METHOD(GetDeviceInfo)(THIS) CONST PURE;
+    virtual const RenderDeviceInfo  & METHOD(GetDeviceInfo)( ) const =0;
 
     /// Returns the graphics adapter information, see Diligent::GraphicsAdapterInfo for details.
-    VIRTUAL const GraphicsAdapterInfo REF METHOD(GetAdapterInfo)(THIS) CONST PURE;
+    virtual const GraphicsAdapterInfo  & METHOD(GetAdapterInfo)( ) const =0;
 
     /// Returns the basic texture format information.
 
@@ -366,8 +365,8 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     ///         texture format description.
     ///
     /// \remarks This method must be externally synchronized.
-    VIRTUAL const TextureFormatInfo REF METHOD(GetTextureFormatInfo)(THIS_
-                                                                     TEXTURE_FORMAT TexFormat) CONST PURE;
+    virtual const TextureFormatInfo  & METHOD(GetTextureFormatInfo)(
+                                                                     TEXTURE_FORMAT TexFormat) const =0;
 
 
     /// Returns the extended texture format information.
@@ -383,23 +382,23 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     /// extended information, call GetTextureFormatInfo() instead.
     ///
     /// \remarks This method must be externally synchronized.
-    VIRTUAL const TextureFormatInfoExt REF METHOD(GetTextureFormatInfoExt)(THIS_
-                                                                           TEXTURE_FORMAT TexFormat) PURE;
+    virtual const TextureFormatInfoExt  & METHOD(GetTextureFormatInfoExt)(
+                                                                           TEXTURE_FORMAT TexFormat) =0;
 
 
     /// Returns the sparse texture format info for the given texture format, resource dimension and sample count.
-    VIRTUAL SparseTextureFormatInfo METHOD(GetSparseTextureFormatInfo)(THIS_
+    virtual SparseTextureFormatInfo METHOD(GetSparseTextureFormatInfo)(
                                                                        TEXTURE_FORMAT     TexFormat,
                                                                        RESOURCE_DIMENSION Dimension,
-                                                                       UInt32             SampleCount) CONST PURE;
+                                                                       UInt32             SampleCount) const =0;
 
     /// Purges device release queues and releases all stale resources.
     /// This method is automatically called by ISwapChain::Present() of the primary swap chain.
     /// \param [in]  ForceRelease - Forces release of all objects. Use this option with
     ///                             great care only if you are sure the resources are not
     ///                             in use by the GPU (such as when the device has just been idled).
-    VIRTUAL void METHOD(ReleaseStaleResources)(THIS_
-                                               Bool ForceRelease DEFAULT_VALUE(false)) PURE;
+    virtual void METHOD(ReleaseStaleResources)(
+                                               Bool ForceRelease DEFAULT_VALUE(false)) =0;
 
 
     /// Waits until all outstanding operations on the GPU are complete.
@@ -410,21 +409,21 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     /// the contexts using IDeviceContext::Flush() if it needs to make sure all recorded commands
     /// have been previously submitted for execution. An application should explicitly flush
     /// are complete when the method returns.
-    VIRTUAL void METHOD(IdleGPU)(THIS) PURE;
+    virtual void METHOD(IdleGPU)( ) =0;
 
 
     /// Returns engine factory this device was created from.
 
     /// This method does not increment the reference counter of the returned interface,
     /// so an application must not call Release().
-    VIRTUAL IEngineFactory* METHOD(GetEngineFactory)(THIS) CONST PURE;
+    virtual IEngineFactory* METHOD(GetEngineFactory)( ) const =0;
 
 
     /// Returns a pointer to the shader compilation thread pool.
 
     /// This method does not increment the reference counter of the returned interface,
     /// so an application must not call Release().
-    VIRTUAL IThreadPool* METHOD(GetShaderCompilationThreadPool)(THIS) CONST PURE;
+    virtual IThreadPool* METHOD(GetShaderCompilationThreadPool)( ) const =0;
 
 #if DILIGENT_CPP_INTERFACE
     /// Overloaded alias for CreateGraphicsPipelineState.
@@ -449,9 +448,9 @@ DILIGENT_BEGIN_INTERFACE(IRenderDevice, IObject)
     }
 #endif
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -488,4 +487,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

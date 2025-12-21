@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/BufferView.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {6ABA95FC-CD7D-4C03-8CAE-AFC45F9696B7}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_BufferViewD3D11 =
+static constexpr struct INTERFACE_ID IID_BufferViewD3D11 =
     {0x6aba95fc, 0xcd7d, 0x4c03, {0x8c, 0xae, 0xaf, 0xc4, 0x5f, 0x96, 0x96, 0xb7}};
 
-#define DILIGENT_INTERFACE_NAME IBufferViewD3D11
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBufferViewD3D11InclusiveMethods \
@@ -52,11 +51,11 @@ DILIGENT_BEGIN_INTERFACE(IBufferViewD3D11, IBufferView)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D11View* METHOD(GetD3D11View)(THIS) PURE;
+    virtual ID3D11View* METHOD(GetD3D11View)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -64,4 +63,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

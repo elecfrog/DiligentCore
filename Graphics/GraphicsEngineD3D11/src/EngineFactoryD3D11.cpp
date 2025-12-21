@@ -120,18 +120,18 @@ public:
         TBase{IID_EngineFactoryD3D11}
     {}
 
-    virtual void DILIGENT_CALL_TYPE CreateDeviceAndContextsD3D11(const EngineD3D11CreateInfo& EngineCI,
+    virtual void CALLTYPE CreateDeviceAndContextsD3D11(const EngineD3D11CreateInfo& EngineCI,
                                                                  IRenderDevice**              ppDevice,
                                                                  IDeviceContext**             ppContexts) override final;
 
-    virtual void DILIGENT_CALL_TYPE CreateSwapChainD3D11(IRenderDevice*            pDevice,
+    virtual void CALLTYPE CreateSwapChainD3D11(IRenderDevice*            pDevice,
                                                          IDeviceContext*           pImmediateContext,
                                                          const SwapChainDesc&      SCDesc,
                                                          const FullScreenModeDesc& FSDesc,
                                                          const NativeWindow&       Window,
                                                          ISwapChain**              ppSwapChain) override final;
 
-    virtual void DILIGENT_CALL_TYPE AttachToD3D11Device(void*                        pd3d11NativeDevice,
+    virtual void CALLTYPE AttachToD3D11Device(void*                        pd3d11NativeDevice,
                                                         void*                        pd3d11ImmediateContext,
                                                         const EngineD3D11CreateInfo& EngineCI,
                                                         IRenderDevice**              ppDevice,
@@ -141,7 +141,7 @@ public:
                                                        IDXGIAdapter1* pDXIAdapter) const override final;
 
 
-    virtual void DILIGENT_CALL_TYPE CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
+    virtual void CALLTYPE CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
                                                      IDearchiver**               ppDearchiver) const override final
     {
         TBase::CreateDearchiver<DearchiverD3D11Impl>(CreateInfo, ppDearchiver);

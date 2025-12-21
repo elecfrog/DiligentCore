@@ -78,44 +78,44 @@ public:
     // clang-format on
 
     /// Implementation of IRenderDevice::CreateRenderPass().
-    virtual void DILIGENT_CALL_TYPE CreateRenderPass(const RenderPassDesc& Desc,
+    virtual void CALLTYPE CreateRenderPass(const RenderPassDesc& Desc,
                                                      IRenderPass**         ppRenderPass) override final;
 
     UNSUPPORTED_CONST_METHOD(SparseTextureFormatInfo, GetSparseTextureFormatInfo, TEXTURE_FORMAT TexFormat, RESOURCE_DIMENSION Dimension, UInt32 SampleCount)
 
     /// Implementation of ISerializationDevice::CreateShader().
-    virtual void DILIGENT_CALL_TYPE CreateShader(const ShaderCreateInfo&  ShaderCI,
+    virtual void CALLTYPE CreateShader(const ShaderCreateInfo&  ShaderCI,
                                                  const ShaderArchiveInfo& ArchiveInfo,
                                                  IShader**                ppShader,
                                                  IDataBlob**              ppCompilerOutput) override final;
 
     /// Implementation of ISerializationDevice::CreatePipelineResourceSignature().
-    virtual void DILIGENT_CALL_TYPE CreatePipelineResourceSignature(const PipelineResourceSignatureDesc& Desc,
+    virtual void CALLTYPE CreatePipelineResourceSignature(const PipelineResourceSignatureDesc& Desc,
                                                                     const ResourceSignatureArchiveInfo&  ArchiveInfo,
                                                                     IPipelineResourceSignature**         ppSignature) override final;
 
     /// Implementation of ISerializationDevice::CreateGraphicsPipelineState().
-    virtual void DILIGENT_CALL_TYPE CreateGraphicsPipelineState(const GraphicsPipelineStateCreateInfo& PSOCreateInfo,
+    virtual void CALLTYPE CreateGraphicsPipelineState(const GraphicsPipelineStateCreateInfo& PSOCreateInfo,
                                                                 const PipelineStateArchiveInfo&        ArchiveInfo,
                                                                 IPipelineState**                       ppPipelineState) override final;
 
     /// Implementation of ISerializationDevice::CreateComputePipelineState().
-    virtual void DILIGENT_CALL_TYPE CreateComputePipelineState(const ComputePipelineStateCreateInfo& PSOCreateInfo,
+    virtual void CALLTYPE CreateComputePipelineState(const ComputePipelineStateCreateInfo& PSOCreateInfo,
                                                                const PipelineStateArchiveInfo&       ArchiveInfo,
                                                                IPipelineState**                      ppPipelineState) override final;
 
     /// Implementation of ISerializationDevice::CreateRayTracingPipelineState().
-    virtual void DILIGENT_CALL_TYPE CreateRayTracingPipelineState(const RayTracingPipelineStateCreateInfo& PSOCreateInfo,
+    virtual void CALLTYPE CreateRayTracingPipelineState(const RayTracingPipelineStateCreateInfo& PSOCreateInfo,
                                                                   const PipelineStateArchiveInfo&          ArchiveInfo,
                                                                   IPipelineState**                         ppPipelineState) override final;
 
     /// Implementation of ISerializationDevice::CreateTilePipelineState().
-    virtual void DILIGENT_CALL_TYPE CreateTilePipelineState(const TilePipelineStateCreateInfo& PSOCreateInfo,
+    virtual void CALLTYPE CreateTilePipelineState(const TilePipelineStateCreateInfo& PSOCreateInfo,
                                                             const PipelineStateArchiveInfo&    ArchiveInfo,
                                                             IPipelineState**                   ppPipelineState) override final;
 
     /// Implementation of ISerializationDevice::AddRenderDevice().
-    virtual void DILIGENT_CALL_TYPE AddRenderDevice(IRenderDevice* pDevice) override final;
+    virtual void CALLTYPE AddRenderDevice(IRenderDevice* pDevice) override final;
 
     void CreateSerializedResourceSignature(const PipelineResourceSignatureDesc& Desc,
                                            const ResourceSignatureArchiveInfo&  ArchiveInfo,
@@ -124,11 +124,11 @@ public:
 
     void CreateSerializedResourceSignature(SerializedResourceSignatureImpl** ppSignature, const char* Name);
 
-    virtual void DILIGENT_CALL_TYPE GetPipelineResourceBindings(const PipelineResourceBindingAttribs& Attribs,
+    virtual void CALLTYPE GetPipelineResourceBindings(const PipelineResourceBindingAttribs& Attribs,
                                                                 UInt32&                               NumBindings,
                                                                 const PipelineResourceBinding*&       pBindings) override final;
 
-    virtual ARCHIVE_DEVICE_DATA_FLAGS DILIGENT_CALL_TYPE GetSupportedDeviceFlags() const override final
+    virtual ARCHIVE_DEVICE_DATA_FLAGS CALLTYPE GetSupportedDeviceFlags() const override final
     {
         return m_ValidDeviceFlags;
     }

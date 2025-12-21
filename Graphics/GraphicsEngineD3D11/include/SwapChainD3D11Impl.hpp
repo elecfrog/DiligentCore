@@ -53,19 +53,19 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_SwapChainD3D11, TSwapChainBase)
 
     /// Implementation of ISwapChain::Present() in Direct3D11 backend.
-    virtual void DILIGENT_CALL_TYPE Present(UInt32 SyncInterval) override final;
+    virtual void CALLTYPE Present(UInt32 SyncInterval) override final;
 
     /// Implementation of ISwapChain::Resize() in Direct3D11 backend.
-    virtual void DILIGENT_CALL_TYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
+    virtual void CALLTYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
 
     /// Implementation of ISwapChainD3D11::GetDXGISwapChain() in Direct3D11 backend.
-    virtual IDXGISwapChain* DILIGENT_CALL_TYPE GetDXGISwapChain() override final { return m_pSwapChain; }
+    virtual IDXGISwapChain* CALLTYPE GetDXGISwapChain() override final { return m_pSwapChain; }
 
     /// Implementation of ISwapChainD3D11::GetCurrentBackBufferRTV() in Direct3D11 backend.
-    virtual ITextureViewD3D11* DILIGENT_CALL_TYPE GetCurrentBackBufferRTV() override final { return m_pRenderTargetView; }
+    virtual ITextureViewD3D11* CALLTYPE GetCurrentBackBufferRTV() override final { return m_pRenderTargetView; }
 
     /// Implementation of ISwapChainD3D11::GetDepthBufferDSV() in Direct3D11 backend.
-    virtual ITextureViewD3D11* DILIGENT_CALL_TYPE GetDepthBufferDSV() override final { return m_pDepthStencilView; }
+    virtual ITextureViewD3D11* CALLTYPE GetDepthBufferDSV() override final { return m_pDepthStencilView; }
 
 private:
     virtual void UpdateSwapChain(bool CreateNew) override final;

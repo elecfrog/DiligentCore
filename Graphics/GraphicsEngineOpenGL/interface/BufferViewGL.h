@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/BufferView.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {927A865B-3CEB-4743-9A22-2A1397A73E6D}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferViewGL =
+static constexpr INTERFACE_ID IID_BufferViewGL =
     {0x927a865b, 0x3ceb, 0x4743, {0x9a, 0x22, 0x2a, 0x13, 0x97, 0xa7, 0x3e, 0x6d}};
 
-#define DILIGENT_INTERFACE_NAME IBufferViewGL
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBufferViewGLInclusiveMethods \
@@ -49,11 +48,11 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_BufferViewGL =
 
 /// Exposes OpenGL-specific functionality of a buffer view object.
 DILIGENT_BEGIN_INTERFACE(IBufferViewGL, IBufferView){};
-DILIGENT_END_INTERFACE
+
 
 #endif
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -69,4 +68,4 @@ typedef struct IBufferViewGL
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

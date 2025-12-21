@@ -819,33 +819,33 @@ TEST(GraphicsTypesXTest, BottomLevelASDescX)
 
 struct DumyShader final : IShader
 {
-    virtual void DILIGENT_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final {}
+    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final {}
 
-    virtual ReferenceCounterValueType DILIGENT_CALL_TYPE AddRef() override final { return 0; }
-    virtual ReferenceCounterValueType DILIGENT_CALL_TYPE Release() override final { return 0; }
-    virtual IReferenceCounters* DILIGENT_CALL_TYPE       GetReferenceCounters() const override final { return nullptr; }
+    virtual ReferenceCounterValueType CALLTYPE AddRef() override final { return 0; }
+    virtual ReferenceCounterValueType CALLTYPE Release() override final { return 0; }
+    virtual IReferenceCounters* CALLTYPE       GetReferenceCounters() const override final { return nullptr; }
 
-    virtual const ShaderDesc& DILIGENT_CALL_TYPE GetDesc() const override final
+    virtual const ShaderDesc& CALLTYPE GetDesc() const override final
     {
         static const ShaderDesc DummyDesc;
         return DummyDesc;
     }
 
-    virtual Int32 DILIGENT_CALL_TYPE GetUniqueID() const override final { return 0; }
+    virtual Int32 CALLTYPE GetUniqueID() const override final { return 0; }
 
-    virtual void DILIGENT_CALL_TYPE SetUserData(IObject* pUserData) override final {}
+    virtual void CALLTYPE SetUserData(IObject* pUserData) override final {}
 
-    virtual IObject* DILIGENT_CALL_TYPE GetUserData() const override final { return nullptr; }
+    virtual IObject* CALLTYPE GetUserData() const override final { return nullptr; }
 
-    virtual UInt32 DILIGENT_CALL_TYPE GetResourceCount() const override final { return 0; }
+    virtual UInt32 CALLTYPE GetResourceCount() const override final { return 0; }
 
-    virtual void DILIGENT_CALL_TYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final {}
+    virtual void CALLTYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final {}
 
-    virtual const ShaderCodeBufferDesc* DILIGENT_CALL_TYPE GetConstantBufferDesc(UInt32 Index) const override final { return nullptr; }
+    virtual const ShaderCodeBufferDesc* CALLTYPE GetConstantBufferDesc(UInt32 Index) const override final { return nullptr; }
 
-    virtual void DILIGENT_CALL_TYPE GetBytecode(const void** ppBytecode, UInt64& Size) const override final {}
+    virtual void CALLTYPE GetBytecode(const void** ppBytecode, UInt64& Size) const override final {}
 
-    virtual SHADER_STATUS DILIGENT_CALL_TYPE GetStatus(bool WaitForCompletion) override final { return SHADER_STATUS_UNINITIALIZED; }
+    virtual SHADER_STATUS CALLTYPE GetStatus(bool WaitForCompletion) override final { return SHADER_STATUS_UNINITIALIZED; }
 };
 
 TEST(GraphicsTypesXTest, RayTracingPipelineStateCreateInfoX)

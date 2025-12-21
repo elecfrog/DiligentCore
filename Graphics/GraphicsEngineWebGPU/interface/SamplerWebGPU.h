@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/Sampler.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {5425A1DD-7C75-43D1-9171-30ED61B3F9A2}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_SamplerWebGPU =
+static constexpr INTERFACE_ID IID_SamplerWebGPU =
     {0x5425A1DD, 0x7C75, 0x43D1, {0x91, 0x71, 0x30, 0xED, 0x61, 0xB3, 0xF9, 0xA2}};
 
-#define DILIGENT_INTERFACE_NAME ISamplerWebGPU
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ISamplerWebGPUInclusiveMethods \
@@ -45,14 +44,14 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_SamplerWebGPU =
     ISamplerWebGPUMethods SamplerWebGPU
 
 /// Exposes WebGPU-specific functionality of a sampler object.
-DILIGENT_BEGIN_INTERFACE(ISamplerWebGPU, ISampler)
+struct ISamplerWebGPU : public ISampler
 {
     /// Returns a WebGPU handle of the internal sampler object.
-    VIRTUAL WGPUSampler METHOD(GetWebGPUSampler)(THIS) CONST PURE;
+    virtual WGPUSampler METHOD(GetWebGPUSampler)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -60,4 +59,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

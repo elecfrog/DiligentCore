@@ -32,16 +32,16 @@
 
 #include "Object.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent
+{
 
 
 // {F578FF0D-ABD2-4514-9D32-7CB454D4A73B}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_DataBlob =
+static constexpr struct INTERFACE_ID IID_DataBlob =
     {0xf578ff0d, 0xabd2, 0x4514, {0x9d, 0x32, 0x7c, 0xb4, 0x54, 0xd4, 0xa7, 0x3b}};
 
 // clang-format off
 
-#define DILIGENT_INTERFACE_NAME IDataBlob
 #include "DefineInterfaceHelperMacros.h"
 
 #define IDataBlobInclusiveMethods \
@@ -49,22 +49,22 @@ static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_DataBlob =
     IDataBlobMethods DataBlob
 
 /// Binary data blob
-DILIGENT_BEGIN_INTERFACE(IDataBlob, IObject)
+struct IDataBlob : public IObject
 {
     /// Sets the size of the internal data buffer
-    VIRTUAL void METHOD(Resize)(THIS_
-                                size_t NewSize) PURE;
+    virtual void METHOD(Resize)(
+                                size_t NewSize) =0;
 
     /// Returns the size of the internal data buffer
-    VIRTUAL size_t METHOD(GetSize)(THIS) CONST PURE;
+    virtual size_t METHOD(GetSize)( ) const =0;
 
     /// Returns the pointer to the internal data buffer
-    VIRTUAL void* METHOD(GetDataPtr)(THIS_
-                                     size_t Offset DEFAULT_VALUE(0)) PURE;
+    virtual void* METHOD(GetDataPtr)(
+                                     size_t Offset DEFAULT_VALUE(0)) =0;
 
     /// Returns const pointer to the internal data buffer
-    VIRTUAL const void* METHOD(GetConstDataPtr)(THIS_
-                                                size_t Offset DEFAULT_VALUE(0)) CONST PURE;
+    virtual const void* METHOD(GetConstDataPtr)(
+                                                size_t Offset DEFAULT_VALUE(0)) const =0;
 
 #if DILIGENT_CPP_INTERFACE
     template <typename T>
@@ -80,21 +80,5 @@ DILIGENT_BEGIN_INTERFACE(IDataBlob, IObject)
     }
 #endif
 };
-DILIGENT_END_INTERFACE
 
-#include "UndefInterfaceHelperMacros.h"
-
-#if DILIGENT_C_INTERFACE
-
-// clang-format off
-
-#    define IDataBlob_Resize(This, ...)           CALL_IFACE_METHOD(DataBlob, Resize,          This, __VA_ARGS__)
-#    define IDataBlob_GetSize(This)               CALL_IFACE_METHOD(DataBlob, GetSize,         This)
-#    define IDataBlob_GetDataPtr(This, ...)       CALL_IFACE_METHOD(DataBlob, GetDataPtr,      This, __VA_ARGS__)
-#    define IDataBlob_GetConstDataPtr(This, ...)  CALL_IFACE_METHOD(DataBlob, GetConstDataPtr, This, __VA_ARGS__)
-
-// clang-format on
-
-#endif
-
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

@@ -35,17 +35,16 @@
 #include "ShaderResourceVariable.h"
 #include "ResourceMapping.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 struct IPipelineState;
 struct IPipelineResourceSignature;
 
 // {061F8774-9A09-48E8-8411-B5BD20560104}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderResourceBinding =
+static constexpr INTERFACE_ID IID_ShaderResourceBinding =
     {0x61f8774, 0x9a09, 0x48e8, {0x84, 0x11, 0xb5, 0xbd, 0x20, 0x56, 0x1, 0x4}};
 
 
-#define DILIGENT_INTERFACE_NAME IShaderResourceBinding
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IShaderResourceBindingInclusiveMethods \
@@ -55,14 +54,14 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderResourceBinding =
 // clang-format off
 
 /// Shader resource binding interface
-DILIGENT_BEGIN_INTERFACE(IShaderResourceBinding, IObject)
+struct IShaderResourceBinding : public IObject
 {
     /// Returns a pointer to the pipeline resource signature object that
     /// defines the layout of this shader resource binding object.
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL struct IPipelineResourceSignature* METHOD(GetPipelineResourceSignature)(THIS) CONST PURE;
+    virtual struct IPipelineResourceSignature* METHOD(GetPipelineResourceSignature)( ) const =0;
 
 
     /// Binds SRB resources using the resource mapping
@@ -71,10 +70,10 @@ DILIGENT_BEGIN_INTERFACE(IShaderResourceBinding, IObject)
     ///                            Any combination of Diligent::SHADER_TYPE may be used.
     /// \param [in] pResMapping  - Shader resource mapping where required resources will be looked up.
     /// \param [in] Flags        - Additional flags. See Diligent::BIND_SHADER_RESOURCES_FLAGS.
-    VIRTUAL void METHOD(BindResources)(THIS_
+    virtual void METHOD(BindResources)(
                                        SHADER_TYPE                 ShaderStages,
                                        IResourceMapping*           pResMapping,
-                                       BIND_SHADER_RESOURCES_FLAGS Flags) PURE;
+                                       BIND_SHADER_RESOURCES_FLAGS Flags) =0;
 
 
     /// Checks currently bound resources, see remarks.
@@ -104,11 +103,11 @@ DILIGENT_BEGIN_INTERFACE(IShaderResourceBinding, IObject)
     /// - If Diligent::BIND_SHADER_RESOURCES_VERIFY_ALL_RESOLVED flag is set, the method will check that
     ///   all resources of the specified variable types are bound and return the types of the variables
     ///   that are not bound.
-    VIRTUAL SHADER_RESOURCE_VARIABLE_TYPE_FLAGS METHOD(CheckResources)(
-                                        THIS_
+    virtual SHADER_RESOURCE_VARIABLE_TYPE_FLAGS METHOD(CheckResources)(
+
                                         SHADER_TYPE                 ShaderStages,
                                         IResourceMapping*           pResMapping,
-                                        BIND_SHADER_RESOURCES_FLAGS Flags) CONST PURE;
+                                        BIND_SHADER_RESOURCES_FLAGS Flags) const =0;
 
 
     /// Returns the variable by its name.
@@ -119,9 +118,9 @@ DILIGENT_BEGIN_INTERFACE(IShaderResourceBinding, IObject)
     ///
     /// \note  This operation may potentially be expensive. If the variable will be used often, it is
     ///        recommended to store and reuse the pointer as it never changes.
-    VIRTUAL IShaderResourceVariable* METHOD(GetVariableByName)(THIS_
+    virtual IShaderResourceVariable* METHOD(GetVariableByName)(
                                                                SHADER_TYPE ShaderType,
-                                                               const Char* Name) PURE;
+                                                               const Char* Name) =0;
 
 
     /// Returns the total variable count for the specific shader stage.
@@ -132,8 +131,8 @@ DILIGENT_BEGIN_INTERFACE(IShaderResourceBinding, IObject)
     /// The method only counts mutable and dynamic variables that can be accessed through
     /// the Shader Resource Binding object. Static variables are accessed through the Shader
     /// object.
-    VIRTUAL UInt32 METHOD(GetVariableCount)(THIS_
-                                            SHADER_TYPE ShaderType) CONST PURE;
+    virtual UInt32 METHOD(GetVariableCount)(
+                                            SHADER_TYPE ShaderType) const =0;
 
     /// Returns the variable by its index.
 
@@ -148,16 +147,16 @@ DILIGENT_BEGIN_INTERFACE(IShaderResourceBinding, IObject)
     ///
     /// \note   This operation may potentially be expensive. If the variable will be used often, it is
     ///         recommended to store and reuse the pointer as it never changes.
-    VIRTUAL IShaderResourceVariable* METHOD(GetVariableByIndex)(THIS_
+    virtual IShaderResourceVariable* METHOD(GetVariableByIndex)(
                                                                 SHADER_TYPE ShaderType,
-                                                                UInt32      Index) PURE;
+                                                                UInt32      Index) =0;
 
     /// Returns true if static resources have been initialized in this SRB.
-    VIRTUAL Bool METHOD(StaticResourcesInitialized)(THIS) CONST PURE;
+    virtual Bool METHOD(StaticResourcesInitialized)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -175,4 +174,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

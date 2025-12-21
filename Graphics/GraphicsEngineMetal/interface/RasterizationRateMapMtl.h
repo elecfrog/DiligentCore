@@ -35,13 +35,12 @@
 @protocol MTLRasterizationRateMap; // Not available in tvOS
 #endif
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {89148E0E-1300-4FF2-BEA4-F1127ED24CF9}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_RasterizationRateMapMtl =
+static constexpr INTERFACE_ID IID_RasterizationRateMapMtl =
     {0x89148e0e, 0x1300, 0x4ff2, {0xbe, 0xa4, 0xf1, 0x12, 0x7e, 0xd2, 0x4c, 0xf9}};
 
-#define DILIGENT_INTERFACE_NAME IRasterizationRateMapMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IRasterizationRateMapMtlInclusiveMethods \
@@ -107,40 +106,40 @@ DILIGENT_BEGIN_INTERFACE(IRasterizationRateMapMtl, IDeviceObject)
 #endif
 
     /// Returns a pointer to the Metal rasterization rate map object.
-    VIRTUAL id<MTLRasterizationRateMap> METHOD(GetMtlResource)(THIS) CONST API_AVAILABLE(ios(13), macosx(10.15.4), tvos(16.0)) PURE;
+    virtual id<MTLRasterizationRateMap> METHOD(GetMtlResource)( ) const API_AVAILABLE(ios(13), macosx(10.15.4), tvos(16.0)) =0;
 
     /// Returns the physical size of the specified layer.
-    VIRTUAL void METHOD(GetPhysicalSizeForLayer)(THIS_
+    virtual void METHOD(GetPhysicalSizeForLayer)(
                                                  UInt32     LayerIndex,
-                                                 UInt32 REF PhysicalWidth,
-                                                 UInt32 REF PhysicalHeight) CONST PURE;
+                                                 UInt32  & PhysicalWidth,
+                                                 UInt32  & PhysicalHeight) const =0;
 
     /// The granularity, in physical pixels, at which the rasterization rate varies.
     /// For better performance, tile size should be a multiple of physical granularity.
-    VIRTUAL void METHOD(GetPhysicalGranularity)(THIS_
-                                                UInt32 REF XGranularity,
-                                                UInt32 REF YGranularity) CONST PURE;
+    virtual void METHOD(GetPhysicalGranularity)(
+                                                UInt32  & XGranularity,
+                                                UInt32  & YGranularity) const =0;
 
     /// Converts a point in logical viewport coordinates to the corresponding physical coordinates in the layer.
-    VIRTUAL void METHOD(MapScreenToPhysicalCoordinates)(THIS_
+    virtual void METHOD(MapScreenToPhysicalCoordinates)(
                                                         UInt32    LayerIndex,
                                                         float     ScreenCoordX,
                                                         float     ScreenCoordY,
-                                                        float REF PhysicalCoordX,
-                                                        float REF PhysicalCoordY) CONST PURE;
+                                                        float  & PhysicalCoordX,
+                                                        float  & PhysicalCoordY) const =0;
 
     /// Converts a point in physical coordinates inside a layer to its corresponding logical viewport coordinates.
-    VIRTUAL void METHOD(MapPhysicalToScreenCoordinates)(THIS_
+    virtual void METHOD(MapPhysicalToScreenCoordinates)(
                                                         UInt32    LayerIndex,
                                                         float     PhysicalCoordX,
                                                         float     PhysicalCoordY,
-                                                        float REF ScreenCoordX,
-                                                        float REF ScreenCoordY) CONST PURE;
+                                                        float  & ScreenCoordX,
+                                                        float  & ScreenCoordY) const =0;
 
     /// Returns the size and alignment of the parameter buffer that will be used in the resolve pass.
-    VIRTUAL void METHOD(GetParameterBufferSizeAndAlign)(THIS_
-                                                        UInt64 REF Size,
-                                                        UInt32 REF Align) CONST PURE;
+    virtual void METHOD(GetParameterBufferSizeAndAlign)(
+                                                        UInt64  & Size,
+                                                        UInt32  & Align) const =0;
 
     /// Copy rasterization rate map parameters to the buffer.
 
@@ -148,16 +147,16 @@ DILIGENT_BEGIN_INTERFACE(IRasterizationRateMapMtl, IDeviceObject)
     ///                          The buffer must be created with USAGE_UNIFIED.
     /// \param [in] Offset     - Offset in the buffer; must be a multiple of alignment returned by
     ///                          GetParameterBufferSizeAndAlign().
-    VIRTUAL void METHOD(CopyParameterDataToBuffer)(THIS_
+    virtual void METHOD(CopyParameterDataToBuffer)(
                                                    IBuffer* pDstBuffer,
-                                                   UInt64   Offset) CONST PURE;
+                                                   UInt64   Offset) const =0;
 
     /// Returns texture view that can be used to set the rasterization rate map as framebuffer attachment.
-    VIRTUAL ITextureView* METHOD(GetView)(THIS) PURE;
+    virtual ITextureView* METHOD(GetView)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -174,4 +173,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

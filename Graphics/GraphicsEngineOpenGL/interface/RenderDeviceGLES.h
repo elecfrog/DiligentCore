@@ -39,13 +39,12 @@
 #    error Unsupported platform
 #endif
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {F705A0D9-2023-4DE1-8B3C-C56E4CEB8DB7}
 static const INTERFACE_ID IID_RenderDeviceGLES =
     {0xf705a0d9, 0x2023, 0x4de1, {0x8b, 0x3c, 0xc5, 0x6e, 0x4c, 0xeb, 0x8d, 0xb7}};
 
-#define DILIGENT_INTERFACE_NAME IRenderDeviceGLES
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IRenderDeviceGLESInclusiveMethods \
@@ -57,19 +56,19 @@ static const INTERFACE_ID IID_RenderDeviceGLES =
 /// Interface to the render device object implemented in OpenGLES
 DILIGENT_BEGIN_INTERFACE(IRenderDeviceGLES, IRenderDeviceGL)
 {
-    VIRTUAL bool METHOD(Invalidate)(THIS) PURE;
+    virtual bool METHOD(Invalidate)( ) =0;
 
-    VIRTUAL void METHOD(Suspend)(THIS) PURE;
+    virtual void METHOD(Suspend)( ) =0;
 
 #if PLATFORM_ANDROID
-    VIRTUAL EGLint METHOD(Resume)(THIS_
-                                  ANativeWindow* window) PURE;
+    virtual EGLint METHOD(Resume)(
+                                  ANativeWindow* window) =0;
 #endif
 
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -83,4 +82,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

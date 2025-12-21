@@ -56,25 +56,25 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_SwapChainWebGPU, TSwapChainBase)
 
     /// Implementation of ISwapChain::Present() in Direct3D11 backend.
-    void DILIGENT_CALL_TYPE Present(UInt32 SyncInterval) override final;
+    void CALLTYPE Present(UInt32 SyncInterval) override final;
 
     /// Implementation of ISwapChain::Resize() in Direct3D11 backend.
-    void DILIGENT_CALL_TYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
+    void CALLTYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
 
     /// Implementation of ISwapChain::SetFullscreenMode() in WebGPU backend.
-    void DILIGENT_CALL_TYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final;
+    void CALLTYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final;
 
     /// Implementation of ISwapChain::SetWindowedMode() in WebGPU backend.
-    void DILIGENT_CALL_TYPE SetWindowedMode() override final;
+    void CALLTYPE SetWindowedMode() override final;
 
     /// Implementation of ISwapChainWebGPU::GetCurrentBackBufferRTV() in WebGPU backend.
-    ITextureViewWebGPU* DILIGENT_CALL_TYPE GetCurrentBackBufferRTV() override final { return m_pBackBufferRTV; }
+    ITextureViewWebGPU* CALLTYPE GetCurrentBackBufferRTV() override final { return m_pBackBufferRTV; }
 
     /// Implementation of ISwapChainWebGPU::GetDepthBufferDSV() in WebGPU backend.
-    ITextureViewWebGPU* DILIGENT_CALL_TYPE GetDepthBufferDSV() override final { return m_pDepthBufferDSV; }
+    ITextureViewWebGPU* CALLTYPE GetDepthBufferDSV() override final { return m_pDepthBufferDSV; }
 
     /// Implementation of ISwapChainWebGPU::GetWebGPUSurface() in WebGPU backend.
-    WGPUSurface DILIGENT_CALL_TYPE GetWebGPUSurface() override final { return m_wgpuSurface.Get(); }
+    WGPUSurface CALLTYPE GetWebGPUSurface() override final { return m_wgpuSurface.Get(); }
 
 private:
     void CreateSurface();

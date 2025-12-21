@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/TextureView.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {15F93272-6135-414F-AB10-53FF9A5004AD}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureViewGL =
+static constexpr INTERFACE_ID IID_TextureViewGL =
     {0x15f93272, 0x6135, 0x414f, {0xab, 0x10, 0x53, 0xff, 0x9a, 0x50, 0x4, 0xad}};
 
-#define DILIGENT_INTERFACE_NAME ITextureViewGL
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITextureViewGLInclusiveMethods \
@@ -53,11 +52,11 @@ DILIGENT_BEGIN_INTERFACE(ITextureViewGL, ITextureView) //
     //const GLObjectWrappers::GLTextureObj& GetHandle();
     //GLenum GetBindTarget();
 };
-DILIGENT_END_INTERFACE
+
 
 #endif
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -73,4 +72,4 @@ typedef struct ITextureViewGL
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

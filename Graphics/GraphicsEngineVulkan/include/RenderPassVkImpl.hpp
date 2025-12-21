@@ -50,7 +50,7 @@ public:
     ~RenderPassVkImpl();
 
     /// Implementation of ISamplerVk::GetVkRenderPass().
-    virtual VkRenderPass DILIGENT_CALL_TYPE GetVkRenderPass() const override final { return m_VkRenderPass; }
+    virtual VkRenderPass CALLTYPE GetVkRenderPass() const override final { return m_VkRenderPass; }
 
 private:
     template <size_t RPVersion>

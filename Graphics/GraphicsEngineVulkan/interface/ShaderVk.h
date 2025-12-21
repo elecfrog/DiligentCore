@@ -37,10 +37,10 @@
 
 #include "../../GraphicsEngine/interface/Shader.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {8B0C91B4-B1D8-4E03-9250-A70E131A59FA}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderVk =
+static constexpr INTERFACE_ID IID_ShaderVk =
     {0x8b0c91b4, 0xb1d8, 0x4e03, {0x92, 0x50, 0xa7, 0xe, 0x13, 0x1a, 0x59, 0xfa}};
 
 #define IShaderVkInclusiveMethods \
@@ -54,9 +54,9 @@ class IShaderVk : public IShader
 {
 public:
     /// Returns SPIRV bytecode
-    virtual const std::vector<uint32_t>& DILIGENT_CALL_TYPE GetSPIRV() const = 0;
+    virtual const std::vector<uint32_t>& CALLTYPE GetSPIRV() const = 0;
 };
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

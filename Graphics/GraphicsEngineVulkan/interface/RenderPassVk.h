@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/RenderPass.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {3DE6938F-D34D-4135-A6FA-15A89E9525D0}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_RenderPassVk =
+static constexpr INTERFACE_ID IID_RenderPassVk =
     {0x3de6938f, 0xd34d, 0x4135, {0xa6, 0xfa, 0x15, 0xa8, 0x9e, 0x95, 0x25, 0xd0}};
 
-#define DILIGENT_INTERFACE_NAME IRenderPassVk
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IRenderPassVkInclusiveMethods                              \
@@ -46,14 +45,14 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_RenderPassVk =
     IRenderPassVkMethods RenderPassVk
 
 /// Exposes Vulkan-specific functionality of a RenderPass object.
-DILIGENT_BEGIN_INTERFACE(IRenderPassVk, IRenderPass)
+struct IRenderPassVk : public IRenderPass
 {
     /// Returns a Vulkan handle of the internal render pass object.
-    VIRTUAL VkRenderPass METHOD(GetVkRenderPass)(THIS) CONST PURE;
+    virtual VkRenderPass METHOD(GetVkRenderPass)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -61,4 +60,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

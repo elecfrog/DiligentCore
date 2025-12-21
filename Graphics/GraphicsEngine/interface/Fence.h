@@ -32,10 +32,10 @@
 
 #include "DeviceObject.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {3B19184D-32AB-4701-84F4-9A0C03AE1672}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_Fence =
+static constexpr INTERFACE_ID IID_Fence =
     {0x3b19184d, 0x32ab, 0x4701, {0x84, 0xf4, 0x9a, 0xc, 0x3, 0xae, 0x16, 0x72}};
 
 // clang-format off
@@ -73,7 +73,6 @@ typedef struct FenceDesc FenceDesc;
 
 // clang-format off
 
-#define DILIGENT_INTERFACE_NAME IFence
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IFenceInclusiveMethods      \
@@ -88,7 +87,7 @@ typedef struct FenceDesc FenceDesc;
 /// it may block the GPU until all prior commands have completed execution.
 ///
 /// \remarks In Direct3D12 and Vulkan backends, fence is thread-safe.
-DILIGENT_BEGIN_INTERFACE(IFence, IDeviceObject)
+struct IFence : public IDeviceObject
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the fence description used to create the object
@@ -100,7 +99,7 @@ DILIGENT_BEGIN_INTERFACE(IFence, IDeviceObject)
     /// \remarks   In Direct3D11 backend, this method is not thread-safe (even if the fence
     ///            object is protected by a mutex) and must only be called by the same thread
     ///            that signals the fence via IDeviceContext::EnqueueSignal().
-    VIRTUAL UInt64 METHOD(GetCompletedValue)(THIS) PURE;
+    virtual UInt64 METHOD(GetCompletedValue)( ) =0;
 
 
     /// Sets the fence to the specified value.
@@ -114,8 +113,8 @@ DILIGENT_BEGIN_INTERFACE(IFence, IDeviceObject)
     /// are complete.
     ///
     /// \note  The fence must have been created with type Diligent::FENCE_TYPE_GENERAL.
-    VIRTUAL void METHOD(Signal)(THIS_
-                                UInt64 Value) PURE;
+    virtual void METHOD(Signal)(
+                                UInt64 Value) =0;
 
 
     /// Waits until the fence reaches or exceeds the specified value, on the host.
@@ -123,12 +122,12 @@ DILIGENT_BEGIN_INTERFACE(IFence, IDeviceObject)
     /// \param [in] Value - The value that the fence is waiting for to reach.
     ///
     /// The method blocks the execution of the calling thread until the wait is complete.
-    VIRTUAL void METHOD(Wait)(THIS_
-                              UInt64 Value) PURE;
+    virtual void METHOD(Wait)(
+                              UInt64 Value) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -144,4 +143,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

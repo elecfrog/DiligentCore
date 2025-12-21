@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/CommandQueue.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {1C0013CB-41B8-453D-8983-4D935F5973B0}
 static const INTERFACE_ID IID_CommandQueueMtl =
     {0x1c0013cb, 0x41b8, 0x453d, {0x89, 0x83, 0x4d, 0x93, 0x5f, 0x59, 0x73, 0xb0}};
 
-#define DILIGENT_INTERFACE_NAME ICommandQueueMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ICommandQueueMtlInclusiveMethods \
@@ -50,17 +49,17 @@ static const INTERFACE_ID IID_CommandQueueMtl =
 DILIGENT_BEGIN_INTERFACE(ICommandQueueMtl, ICommandQueue)
 {
     /// Returns a pointer to Metal command queue (MTLCommandQueue)
-    VIRTUAL id<MTLCommandQueue> METHOD(GetMtlCommandQueue)(THIS) CONST PURE;
+    virtual id<MTLCommandQueue> METHOD(GetMtlCommandQueue)( ) const =0;
 
     /// Submits a given command buffer to the command queue
 
     /// \return Fence value associated with the submitted command buffer
-    VIRTUAL UInt64 METHOD(Submit)(THIS_
-                                  id<MTLCommandBuffer> mtlCommandBuffer) PURE;
+    virtual UInt64 METHOD(Submit)(
+                                  id<MTLCommandBuffer> mtlCommandBuffer) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -73,4 +72,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

@@ -42,16 +42,15 @@ struct ANativeActivity;
 struct AAssetManager;
 #endif
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 struct IShaderSourceInputStreamFactory;
 struct IDearchiver;
 
 // {D932B052-4ED6-4729-A532-F31DEEC100F3}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_EngineFactory =
+static constexpr INTERFACE_ID IID_EngineFactory =
     {0xd932b052, 0x4ed6, 0x4729, {0xa5, 0x32, 0xf3, 0x1d, 0xee, 0xc1, 0x0, 0xf3}};
 
-#define DILIGENT_INTERFACE_NAME IEngineFactory
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IEngineFactoryInclusiveMethods \
@@ -64,25 +63,25 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_EngineFactory =
 /// Dearchiver create information
 struct DearchiverCreateInfo
 {
-    void* pDummy DEFAULT_INITIALIZER(nullptr);
+    void* pDummy = nullptr;
 };
 typedef struct DearchiverCreateInfo DearchiverCreateInfo;
 
 
 /// Engine factory base interface
-DILIGENT_BEGIN_INTERFACE(IEngineFactory, IObject)
+struct IEngineFactory : public IObject
 {
     /// Returns API info structure, see Diligent::APIInfo.
-    VIRTUAL const APIInfo REF METHOD(GetAPIInfo)(THIS) CONST PURE;
+    virtual const APIInfo  & METHOD(GetAPIInfo)( ) const =0;
 
     /// Creates default shader source input stream factory
 
     /// \param [in]  SearchDirectories           - Semicolon-separated list of search directories.
     /// \param [out] ppShaderSourceStreamFactory - Memory address where the pointer to the shader source stream factory will be written.
-    VIRTUAL void METHOD(CreateDefaultShaderSourceStreamFactory)(
-                        THIS_
+    virtual void METHOD(CreateDefaultShaderSourceStreamFactory)(
+
                         const Char*                              SearchDirectories,
-                        struct IShaderSourceInputStreamFactory** ppShaderSourceFactory) CONST PURE;
+                        struct IShaderSourceInputStreamFactory** ppShaderSourceFactory) const =0;
 
     /// Creates a data blob.
 
@@ -90,10 +89,10 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactory, IObject)
     /// \param [in]  pData       - Pointer to the data to write to the internal buffer.
     ///                            If null, no data will be written.
     /// \param [out] ppDataBlob  - Memory address where the pointer to the data blob will be written.
-    VIRTUAL void METHOD(CreateDataBlob)(THIS_
+    virtual void METHOD(CreateDataBlob)(
                                         size_t      InitialSize,
                                         const void* pData,
-                                        IDataBlob** ppDataBlob) CONST PURE;
+                                        IDataBlob** ppDataBlob) const =0;
 
     /// Enumerates adapters available on this machine.
 
@@ -110,10 +109,10 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactory, IObject)
     ///                            written to NumAdapters.
     ///
     /// \note OpenGL backend only supports one device; features and properties will have limited information.
-    VIRTUAL void METHOD(EnumerateAdapters)(THIS_
+    virtual void METHOD(EnumerateAdapters)(
                                            Version              MinVersion,
-                                           UInt32 REF           NumAdapters,
-                                           GraphicsAdapterInfo* Adapters) CONST PURE;
+                                           UInt32  &           NumAdapters,
+                                           GraphicsAdapterInfo* Adapters) const =0;
 
     /// Creates a dearchiver object.
 
@@ -122,9 +121,9 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactory, IObject)
     ///                             interface will be written.
     ///                             The function calls AddRef(), so that the new object will have
     ///                             one reference.
-    VIRTUAL void METHOD(CreateDearchiver)(THIS_
-                                          const DearchiverCreateInfo REF CreateInfo,
-                                          struct IDearchiver**           ppDearchiver) CONST PURE;
+    virtual void METHOD(CreateDearchiver)(
+                                          const DearchiverCreateInfo  & CreateInfo,
+                                          struct IDearchiver**           ppDearchiver) const =0;
 
 
     /// Sets a user-provided debug message callback.
@@ -133,8 +132,8 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactory, IObject)
     ///
     /// MessageCallback is a global setting that applies to the entire execution unit
     /// (executable or shared library that contains the engine implementation).
-    VIRTUAL void METHOD(SetMessageCallback)(THIS_
-                                            DebugMessageCallbackType MessageCallback) CONST PURE;
+    virtual void METHOD(SetMessageCallback)(
+                                            DebugMessageCallbackType MessageCallback) const =0;
 
 
     /// Sets whether to break program execution on assertion failure.
@@ -143,8 +142,8 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactory, IObject)
     ///
     /// BreakOnError is a global setting that applies to the entire execution unit 
     /// (executable or shared library that contains the engine implementation).
-    VIRTUAL void METHOD(SetBreakOnError)(THIS_
-                                         bool BreakOnError) CONST PURE;
+    virtual void METHOD(SetBreakOnError)(
+                                         bool BreakOnError) const =0;
 
 
     /// Sets the memory allocator to be used by the engine.
@@ -158,8 +157,8 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactory, IObject)
     /// should not be changed afterwards.
     /// The allocator object must remain valid for the lifetime of the
     /// engine until all engine objects are destroyed.
-    VIRTUAL void METHOD(SetMemoryAllocator)(THIS_
-                                            IMemoryAllocator* pAllocator) CONST PURE;
+    virtual void METHOD(SetMemoryAllocator)(
+                                            IMemoryAllocator* pAllocator) const =0;
 
 #if PLATFORM_ANDROID
     /// On Android platform, it is necessary to initialize the file system before
@@ -170,17 +169,17 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactory, IObject)
     /// \param [in] OutputFilesDir   - Output files directory.
     ///
     /// \remarks See AndroidFileSystem::Init.
-    VIRTUAL void METHOD(InitAndroidFileSystem)(THIS_
+    virtual void METHOD(InitAndroidFileSystem)(
                                                struct AAssetManager* AssetManager,
                                                const char*           ExternalFilesDir DEFAULT_VALUE(nullptr),
-                                               const char*           OutputFilesDir   DEFAULT_VALUE(nullptr)) CONST PURE;
+                                               const char*           OutputFilesDir   DEFAULT_VALUE(nullptr)) const =0;
 #endif
 };
-DILIGENT_END_INTERFACE
+
 
 // clang-format on
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -199,4 +198,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

@@ -29,7 +29,7 @@
 
 #include "../../GraphicsEngine/interface/Shader.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 /// Creates a default shader source stream factory
@@ -38,4 +38,4 @@ DILIGENT_BEGIN_NAMESPACE(Diligent)
 void CreateDefaultShaderSourceStreamFactory(const Char*                       SearchDirectories,
                                             IShaderSourceInputStreamFactory** ppShaderSourceStreamFactory);
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

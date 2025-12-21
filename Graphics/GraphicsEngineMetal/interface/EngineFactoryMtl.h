@@ -35,13 +35,12 @@
 // https://gcc.gnu.org/wiki/Visibility
 #define API_QUALIFIER __attribute__((visibility("default")))
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {CF4A590D-2E40-4F48-9579-0D25991F963B}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_EngineFactoryMtl =
+static constexpr INTERFACE_ID IID_EngineFactoryMtl =
     {0xcf4a590d, 0x2e40, 0x4f48, {0x95, 0x79, 0xd, 0x25, 0x99, 0x1f, 0x96, 0x3b}};
 
-#define DILIGENT_INTERFACE_NAME IEngineFactoryMtl
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IEngineFactoryMtlInclusiveMethods \
@@ -62,10 +61,10 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryMtl, IEngineFactory)
     ///                           the contexts will be written. Immediate context goes at
     ///                           position 0. If EngineCI.NumDeferredContexts > 0,
     ///                           pointers to the deferred contexts go afterwards.
-    VIRTUAL void METHOD(CreateDeviceAndContextsMtl)(THIS_
-                                                    const EngineMtlCreateInfo REF EngineCI,
+    virtual void METHOD(CreateDeviceAndContextsMtl)(
+                                                    const EngineMtlCreateInfo  & EngineCI,
                                                     IRenderDevice**               ppDevice,
-                                                    IDeviceContext**              ppContexts) PURE;
+                                                    IDeviceContext**              ppContexts) =0;
 
     /// Creates a swap chain for Metal-based engine implementation
 
@@ -75,12 +74,12 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryMtl, IEngineFactory)
     /// \param [in] Window       - Platform-specific native handle of the window.
     /// \param [out] ppSwapChain - Address of the memory location where pointer to the new
     ///                            swap chain will be written.
-    VIRTUAL void METHOD(CreateSwapChainMtl)(THIS_
+    virtual void METHOD(CreateSwapChainMtl)(
                                             IRenderDevice*          pDevice,
                                             IDeviceContext*         pImmediateContext,
-                                            const SwapChainDesc REF SCDesc,
-                                            const NativeWindow REF  Window,
-                                            ISwapChain**            ppSwapChain) PURE;
+                                            const SwapChainDesc  & SCDesc,
+                                            const NativeWindow  &  Window,
+                                            ISwapChain**            ppSwapChain) =0;
 
     /// Creates a command queue from Metal native command queue.
 
@@ -88,10 +87,10 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryMtl, IEngineFactory)
     /// \param [in]  pRawMemAllocator - Pointer to the raw memory allocator.
     ///                                 Must be same as EngineCreateInfo::pRawMemAllocator in the following AttachToMtlDevice() call.
     /// \param [out] ppCommandQueue   - Address of the memory location where pointer to the command queue will be written.
-    VIRTUAL void METHOD(CreateCommandQueueMtl)(THIS_
+    virtual void METHOD(CreateCommandQueueMtl)(
                                                void*                     pMtlNativeQueue,
                                                struct IMemoryAllocator*  pRawAllocator,
-                                               struct ICommandQueueMtl** ppCommandQueue) PURE;
+                                               struct ICommandQueueMtl** ppCommandQueue) =0;
 
     /// Attaches to existing Mtl render device and immediate context
 
@@ -106,17 +105,17 @@ DILIGENT_BEGIN_INTERFACE(IEngineFactoryMtl, IEngineFactory)
     ///                                  the contexts will be written. Immediate context goes at
     ///                                  position 0. If EngineCI.NumDeferredContexts > 0,
     ///                                  pointers to the deferred contexts go afterwards.
-    VIRTUAL void METHOD(AttachToMtlDevice)(THIS_
+    virtual void METHOD(AttachToMtlDevice)(
                                            void*                         pMtlNativeDevice,
                                            UInt32                        CommandQueueCount,
                                            struct ICommandQueueMtl**     ppCommandQueues,
-                                           const EngineMtlCreateInfo REF EngineCI,
+                                           const EngineMtlCreateInfo  & EngineCI,
                                            IRenderDevice**               ppDevice,
-                                           IDeviceContext**              ppContexts) PURE;
+                                           IDeviceContext**              ppContexts) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -133,4 +132,4 @@ DILIGENT_END_INTERFACE
 
 API_QUALIFIER IEngineFactoryMtl* DILIGENT_GLOBAL_FUNCTION(GetEngineFactoryMtl)();
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

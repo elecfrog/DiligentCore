@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/Texture.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {D7BC9FF0-28F0-4636-9732-710C204D1D63}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureGL =
+static constexpr INTERFACE_ID IID_TextureGL =
     {0xd7bc9ff0, 0x28f0, 0x4636, {0x97, 0x32, 0x71, 0xc, 0x20, 0x4d, 0x1d, 0x63}};
 
-#define DILIGENT_INTERFACE_NAME ITextureGL
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define ITextureGLInclusiveMethods \
@@ -49,14 +48,14 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_TextureGL =
 DILIGENT_BEGIN_INTERFACE(ITextureGL, ITexture)
 {
     /// Returns OpenGL texture handle
-    VIRTUAL GLuint METHOD(GetGLTextureHandle)(THIS) CONST PURE;
+    virtual GLuint METHOD(GetGLTextureHandle)( ) const =0;
 
     /// Returns bind target of the native OpenGL texture
-    VIRTUAL GLenum METHOD(GetBindTarget)(THIS) CONST PURE;
+    virtual GLenum METHOD(GetBindTarget)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -69,4 +68,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

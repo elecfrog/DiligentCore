@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/Framebuffer.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {846BE360-D89B-41AD-B089-7F2439ADCE3A}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_FramebufferVk =
+static constexpr INTERFACE_ID IID_FramebufferVk =
     {0x846be360, 0xd89b, 0x41ad, {0xb0, 0x89, 0x7f, 0x24, 0x39, 0xad, 0xce, 0x3a}};
 
-#define DILIGENT_INTERFACE_NAME IFramebufferVk
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IFramebufferVkInclusiveMethods                              \
@@ -46,14 +45,14 @@ static DILIGENT_CONSTEXPR INTERFACE_ID IID_FramebufferVk =
     IFramebufferVkMethods FramebufferVk
 
 /// Exposes Vulkan-specific functionality of a Framebuffer object.
-DILIGENT_BEGIN_INTERFACE(IFramebufferVk, IFramebuffer)
+struct IFramebufferVk : public IFramebuffer
 {
     /// Returns Vulkan framebuffer object handle
-    VIRTUAL VkFramebuffer METHOD(GetVkFramebuffer)(THIS) CONST PURE;
+    virtual VkFramebuffer METHOD(GetVkFramebuffer)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -61,4 +60,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

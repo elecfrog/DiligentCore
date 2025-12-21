@@ -35,11 +35,11 @@
 #include "DeviceObject.h"
 #include "BufferView.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 
 // {EC47EAD3-A2C4-44F2-81C5-5248D14F10E4}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_Buffer =
+static constexpr INTERFACE_ID IID_Buffer =
     {0xec47ead3, 0xa2c4, 0x44f2, {0x81, 0xc5, 0x52, 0x48, 0xd1, 0x4f, 0x10, 0xe4}};
 
 /// Describes the buffer access mode.
@@ -231,7 +231,6 @@ struct SparseBufferProperties
 typedef struct SparseBufferProperties SparseBufferProperties;
 
 
-#define DILIGENT_INTERFACE_NAME IBuffer
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IBufferInclusiveMethods     \
@@ -241,7 +240,7 @@ typedef struct SparseBufferProperties SparseBufferProperties;
 /// Buffer interface
 
 /// Defines the methods to manipulate a buffer object
-DILIGENT_BEGIN_INTERFACE(IBuffer, IDeviceObject)
+struct IBuffer : public IDeviceObject
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the buffer description used to create the object
@@ -259,9 +258,9 @@ DILIGENT_BEGIN_INTERFACE(IBuffer, IDeviceObject)
     ///          until all views are released.\n
     ///          The function calls AddRef() for the created interface, so it must be released by
     ///          a call to Release() when it is no longer needed.
-    VIRTUAL void METHOD(CreateView)(THIS_
-                                    const BufferViewDesc REF ViewDesc,
-                                    IBufferView** ppView) PURE;
+    virtual void METHOD(CreateView)(
+                                    const BufferViewDesc  & ViewDesc,
+                                    IBufferView** ppView) =0;
 
     /// Returns the pointer to the default view.
 
@@ -273,8 +272,8 @@ DILIGENT_BEGIN_INTERFACE(IBuffer, IDeviceObject)
     ///
     /// \note The function does not increase the reference counter for the returned interface, so
     ///       Release() must *NOT* be called.
-    VIRTUAL  IBufferView* METHOD(GetDefaultView)(THIS_
-                                                 BUFFER_VIEW_TYPE ViewType) PURE;
+    virtual  IBufferView* METHOD(GetDefaultView)(
+                                                 BUFFER_VIEW_TYPE ViewType) =0;
 
     /// Returns native buffer handle specific to the underlying graphics API
 
@@ -284,7 +283,7 @@ DILIGENT_BEGIN_INTERFACE(IBuffer, IDeviceObject)
     ///         GL buffer name, for OpenGL implementation\n
     ///         `MtlBuffer`, for Metal implementation\n
     ///         `WGPUBuffer`, for WGPU implementation\n
-    VIRTUAL UInt64 METHOD(GetNativeHandle)(THIS) PURE;
+    virtual UInt64 METHOD(GetNativeHandle)( ) =0;
 
     /// Sets the buffer usage state.
 
@@ -293,11 +292,11 @@ DILIGENT_BEGIN_INTERFACE(IBuffer, IDeviceObject)
     ///       This method should be used after the application finished
     ///       manually managing the buffer state and wants to hand over
     ///       state management back to the engine.
-    VIRTUAL void METHOD(SetState)(THIS_
-                                  RESOURCE_STATE State) PURE;
+    virtual void METHOD(SetState)(
+                                  RESOURCE_STATE State) =0;
 
     /// Returns the internal buffer state
-    VIRTUAL RESOURCE_STATE METHOD(GetState)(THIS) CONST PURE;
+    virtual RESOURCE_STATE METHOD(GetState)( ) const =0;
 
 
     /// Returns the buffer memory properties, see Diligent::MEMORY_PROPERTIES.
@@ -306,7 +305,7 @@ DILIGENT_BEGIN_INTERFACE(IBuffer, IDeviceObject)
     /// In particular, if the memory is not coherent, an application must call
     /// IBuffer::FlushMappedRange() to make writes by the CPU available to the GPU, and
     /// call IBuffer::InvalidateMappedRange() to make writes by the GPU visible to the CPU.
-    VIRTUAL MEMORY_PROPERTIES METHOD(GetMemoryProperties)(THIS) CONST PURE;
+    virtual MEMORY_PROPERTIES METHOD(GetMemoryProperties)( ) const =0;
 
 
     /// Flushes the specified range of non-coherent memory from the host cache to make
@@ -325,9 +324,9 @@ DILIGENT_BEGIN_INTERFACE(IBuffer, IDeviceObject)
     ///
     /// When a mapped buffer is unmapped it is automatically flushed by
     /// the engine if necessary.
-    VIRTUAL void METHOD(FlushMappedRange)(THIS_
+    virtual void METHOD(FlushMappedRange)(
                                           UInt64 StartOffset,
-                                          UInt64 Size) PURE;
+                                          UInt64 Size) =0;
 
 
     /// Invalidates the specified range of non-coherent memory modified by the GPU to make
@@ -346,16 +345,16 @@ DILIGENT_BEGIN_INTERFACE(IBuffer, IDeviceObject)
     ///
     /// When a mapped buffer is unmapped, it is automatically invalidated by
     /// the engine if necessary.
-    VIRTUAL void METHOD(InvalidateMappedRange)(THIS_
+    virtual void METHOD(InvalidateMappedRange)(
                                                UInt64 StartOffset,
-                                               UInt64 Size) PURE;
+                                               UInt64 Size) =0;
 
     /// Returns the sparse buffer memory properties
-    VIRTUAL SparseBufferProperties METHOD(GetSparseProperties)(THIS) CONST PURE;
+    virtual SparseBufferProperties METHOD(GetSparseProperties)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -377,4 +376,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

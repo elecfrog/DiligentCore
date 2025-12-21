@@ -33,13 +33,12 @@
 #include "../../GraphicsEngine/interface/ShaderBindingTable.h"
 #include "DeviceContextD3D12.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {DCA2FAD9-2C41-4419-9D16-79731C0ED9D8}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_ShaderBindingTableD3D12 =
+static constexpr INTERFACE_ID IID_ShaderBindingTableD3D12 =
     {0xdca2fad9, 0x2c41, 0x4419, {0x9d, 0x16, 0x79, 0x73, 0x1c, 0xe, 0xd9, 0xd8}};
 
-#define DILIGENT_INTERFACE_NAME IShaderBindingTableD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IShaderBindingTableD3D12InclusiveMethods \
@@ -55,11 +54,11 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTableD3D12, IShaderBindingTable)
 
     /// \remarks  The method is not thread-safe. An application must externally synchronize the access
     ///           to the shader binding table.
-    VIRTUAL const D3D12_DISPATCH_RAYS_DESC REF METHOD(GetD3D12BindingTable)(THIS) CONST PURE;
+    virtual const D3D12_DISPATCH_RAYS_DESC  & METHOD(GetD3D12BindingTable)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -67,4 +66,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

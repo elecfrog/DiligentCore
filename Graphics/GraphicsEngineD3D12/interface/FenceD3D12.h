@@ -32,13 +32,12 @@
 
 #include "../../GraphicsEngine/interface/Fence.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {053C0D8C-3757-4220-A9CC-4749EC4794AD}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_FenceD3D12 =
+static constexpr INTERFACE_ID IID_FenceD3D12 =
     {0x53c0d8c, 0x3757, 0x4220, {0xa9, 0xcc, 0x47, 0x49, 0xec, 0x47, 0x94, 0xad}};
 
-#define DILIGENT_INTERFACE_NAME IFenceD3D12
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 // clang-format off
@@ -54,11 +53,11 @@ DILIGENT_BEGIN_INTERFACE(IFenceD3D12, IFence)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D12Fence* METHOD(GetD3D12Fence)(THIS) PURE;
+    virtual ID3D12Fence* METHOD(GetD3D12Fence)( ) =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -70,4 +69,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

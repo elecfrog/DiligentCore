@@ -34,10 +34,10 @@
 
 #include "DeviceObject.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {B818DEC7-174D-447A-A8E4-94D21C57B40A}
-static DILIGENT_CONSTEXPR struct INTERFACE_ID IID_RenderPass =
+static constexpr struct INTERFACE_ID IID_RenderPass =
     { 0xb818dec7, 0x174d, 0x447a, { 0xa8, 0xe4, 0x94, 0xd2, 0x1c, 0x57, 0xb4, 0xa } };
 
 
@@ -163,7 +163,7 @@ typedef struct RenderPassAttachmentDesc RenderPassAttachmentDesc;
 #define DILIGENT_ATTACHMENT_UNUSED 0xFFFFFFFFU
 
 /// Special constant indicating that the render pass attachment is not used.
-static DILIGENT_CONSTEXPR UInt32 ATTACHMENT_UNUSED = DILIGENT_ATTACHMENT_UNUSED;
+static constexpr UInt32 ATTACHMENT_UNUSED = DILIGENT_ATTACHMENT_UNUSED;
 
 /// Attachment reference description.
 struct AttachmentReference
@@ -374,7 +374,7 @@ typedef struct SubpassDesc SubpassDesc;
 #define DILIGENT_SUBPASS_EXTERNAL 0xFFFFFFFFU
 
 /// Special subpass index value expanding synchronization scope outside a subpass.
-static DILIGENT_CONSTEXPR UInt32 SUBPASS_EXTERNAL = DILIGENT_SUBPASS_EXTERNAL;
+static constexpr UInt32 SUBPASS_EXTERNAL = DILIGENT_SUBPASS_EXTERNAL;
 
 /// Subpass dependency description
 struct SubpassDependencyDesc
@@ -505,7 +505,7 @@ class IRenderPass : public IDeviceObject
 {
 public:
     /// Returns the render pass description.
-    virtual const RenderPassDesc& DILIGENT_CALL_TYPE GetDesc() const override = 0;
+    virtual const RenderPassDesc& CALLTYPE GetDesc() const override = 0;
 };
 
 #else
@@ -531,4 +531,4 @@ typedef struct IRenderPass
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent

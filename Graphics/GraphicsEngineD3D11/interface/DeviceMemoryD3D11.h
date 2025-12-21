@@ -31,13 +31,12 @@
 
 #include "../../GraphicsEngine/interface/DeviceMemory.h"
 
-DILIGENT_BEGIN_NAMESPACE(Diligent)
+namespace Diligent {
 
 // {99DADE81-04F7-4C81-AE06-32B25F5B45AA}
-static DILIGENT_CONSTEXPR INTERFACE_ID IID_DeviceMemoryD3D11 =
+static constexpr INTERFACE_ID IID_DeviceMemoryD3D11 =
     {0x99dade81, 0x4f7, 0x4c81, {0xae, 0x6, 0x32, 0xb2, 0x5f, 0x5b, 0x45, 0xaa}};
 
-#define DILIGENT_INTERFACE_NAME IDeviceMemoryD3D11
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
 #define IDeviceMemoryD3D11InclusiveMethods \
@@ -51,11 +50,11 @@ DILIGENT_BEGIN_INTERFACE(IDeviceMemoryD3D11, IDeviceMemory)
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    VIRTUAL ID3D11Buffer* METHOD(GetD3D11TilePool)(THIS) CONST PURE;
+    virtual ID3D11Buffer* METHOD(GetD3D11TilePool)( ) const =0;
 };
-DILIGENT_END_INTERFACE
 
-#include "../../../Primitives/interface/UndefInterfaceHelperMacros.h"
+
+
 
 #if DILIGENT_C_INTERFACE
 
@@ -63,4 +62,4 @@ DILIGENT_END_INTERFACE
 
 #endif
 
-DILIGENT_END_NAMESPACE // namespace Diligent
+ } // namespace Diligent
