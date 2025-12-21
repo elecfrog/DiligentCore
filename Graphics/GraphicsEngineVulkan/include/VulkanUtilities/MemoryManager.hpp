@@ -253,7 +253,7 @@ protected:
         {
             size_t operator()(const MemoryPageIndex& PageIndex) const
             {
-                return Diligent::ComputeHash(PageIndex.MemoryTypeIndex, PageIndex.AllocateFlags, PageIndex.IsHostVisible);
+                return ComputeHash(PageIndex.MemoryTypeIndex, PageIndex.AllocateFlags, PageIndex.IsHostVisible);
             }
         };
     };

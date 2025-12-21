@@ -29,7 +29,7 @@
 #include <array>
 
 #include "DebugUtilities.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "DataBlobImpl.hpp"
 
 namespace Diligent

@@ -31,7 +31,7 @@
 
 #include "GPUTestingEnvironment.hpp"
 #include "TestingSwapChainBase.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "Align.hpp"
 #include "ShaderMacroHelper.hpp"
 

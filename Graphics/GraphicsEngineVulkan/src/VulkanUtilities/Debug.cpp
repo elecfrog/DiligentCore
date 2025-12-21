@@ -17,7 +17,7 @@
 #include "VulkanUtilities/LogicalDevice.hpp"
 #include "Errors.hpp"
 #include "DebugUtilities.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "HashUtils.hpp"
 
 using namespace Diligent;

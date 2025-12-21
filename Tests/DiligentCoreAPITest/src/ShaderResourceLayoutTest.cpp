@@ -31,7 +31,7 @@
 
 #include "ShaderMacroHelper.hpp"
 #include "GraphicsAccessories.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 
 #include "GPUTestingEnvironment.hpp"
 #include "ResourceLayoutTestCommon.hpp"

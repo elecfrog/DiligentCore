@@ -25,7 +25,7 @@
  *  of the possibility of such damages.
  */
 
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 
 namespace Diligent
 {

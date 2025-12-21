@@ -28,7 +28,7 @@
 #include <climits>
 #include <sstream>
 
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "AdvancedMath.hpp"
 
 #include "gtest/gtest.h"

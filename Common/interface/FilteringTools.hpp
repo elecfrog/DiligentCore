@@ -32,7 +32,7 @@
 
 #include "../../Platforms/interface/PlatformDefinitions.h"
 
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 
 #include "../../Graphics/GraphicsEngine/interface/Sampler.h"
 

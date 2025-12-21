@@ -30,9 +30,8 @@
 /// \file
 /// Color conversion functions
 
-#include <cmath>
 #include "CommonDefinitions.h"
-#include "../../../Common/interface/BasicMath.hpp"
+#include <math/basic_math.hpp>
 
 DILIGENT_BEGIN_NAMESPACE(Diligent)
 

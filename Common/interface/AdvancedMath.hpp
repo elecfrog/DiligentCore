@@ -37,7 +37,8 @@
 #include "../../Platforms/interface/PlatformDefinitions.h"
 #include "../../Primitives/interface/FlagEnum.h"
 
-#include "BasicMath.hpp"
+#include "math/basic_math.hpp"
+#include "HashUtils.hpp"
 
 namespace Diligent
 {
@@ -1607,7 +1608,7 @@ struct hash<Diligent::Plane3D>
 {
     size_t operator()(const Diligent::Plane3D& Plane) const
     {
-        return Diligent::ComputeHash(Plane.Normal, Plane.Distance);
+        return ComputeHash(Plane.Normal, Plane.Distance);
     }
 };
 
@@ -1616,7 +1617,7 @@ struct hash<Diligent::ViewFrustum>
 {
     size_t operator()(const Diligent::ViewFrustum& Frustum) const
     {
-        return Diligent::ComputeHash(Frustum.LeftPlane, Frustum.RightPlane, Frustum.BottomPlane, Frustum.TopPlane, Frustum.NearPlane, Frustum.FarPlane);
+        return ComputeHash(Frustum.LeftPlane, Frustum.RightPlane, Frustum.BottomPlane, Frustum.TopPlane, Frustum.NearPlane, Frustum.FarPlane);
     }
 };
 
@@ -1625,9 +1626,9 @@ struct hash<Diligent::ViewFrustumExt>
 {
     size_t operator()(const Diligent::ViewFrustumExt& Frustum) const
     {
-        size_t Seed = Diligent::ComputeHash(static_cast<const Diligent::ViewFrustum&>(Frustum));
+        size_t Seed = ComputeHash(static_cast<const Diligent::ViewFrustum&>(Frustum));
         for (size_t Corner = 0; Corner < _countof(Frustum.FrustumCorners); ++Corner)
-            Diligent::HashCombine(Seed, Frustum.FrustumCorners[Corner]);
+            HashCombine(Seed, Frustum.FrustumCorners[Corner]);
         return Seed;
     }
 };

@@ -27,7 +27,7 @@
 #include "GPUTestingEnvironment.hpp"
 #include "TestingSwapChainBase.hpp"
 #include "MapHelper.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 
 #include "gtest/gtest.h"
 

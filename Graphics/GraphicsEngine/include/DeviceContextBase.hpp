@@ -46,7 +46,7 @@
 #include "GraphicsAccessories.hpp"
 #include "TextureBase.hpp"
 #include "IndexWrapper.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "PlatformMisc.hpp"
 #include "Align.hpp"
 

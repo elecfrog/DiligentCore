@@ -32,7 +32,7 @@
 #include "ShaderMacroHelper.hpp"
 #include "MapHelper.hpp"
 #include "Align.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "GraphicsUtilities.h"
 
 #include "InlineShaders/SparseResourcesTest.h"

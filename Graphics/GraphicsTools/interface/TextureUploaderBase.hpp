@@ -43,7 +43,7 @@ struct hash<Diligent::UploadBufferDesc>
 {
     size_t operator()(const Diligent::UploadBufferDesc& Desc) const
     {
-        return Diligent::ComputeHash(Desc.Width, Desc.Height, Desc.Depth, Desc.MipLevels, Desc.ArraySize, static_cast<Int32>(Desc.Format));
+        return ComputeHash(Desc.Width, Desc.Height, Desc.Depth, Desc.MipLevels, Desc.ArraySize, static_cast<Int32>(Desc.Format));
     }
 };
 

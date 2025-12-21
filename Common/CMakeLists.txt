@@ -11,7 +11,6 @@ set(INTERFACE
     interface/Align.hpp
     interface/Array2DTools.hpp
     interface/AsyncInitializer.hpp
-    interface/BasicMath.hpp
     interface/BasicFileStream.hpp
     interface/DataBlobImpl.hpp
     interface/DefaultRawMemoryAllocator.hpp

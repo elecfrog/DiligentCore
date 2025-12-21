@@ -38,7 +38,7 @@
 #include "GLObjectWrapper.hpp"
 #include "GLTypeConversions.hpp"
 #include "GLContextState.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "PlatformMisc.hpp"
 
 namespace Diligent

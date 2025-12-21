@@ -31,7 +31,7 @@
 #include "../include/d3dx12_win.h"
 
 #include "Align.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 
 #include "InlineShaders/RayTracingTestHLSL.h"
 #include "RayTracingTestConstants.hpp"

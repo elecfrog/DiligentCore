@@ -32,7 +32,7 @@
 #include "EngineMemory.h"
 #include "DataBlobImpl.hpp"
 #include "PlatformMisc.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "PSOSerializer.hpp"
 
 namespace Diligent

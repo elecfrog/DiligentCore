@@ -31,7 +31,7 @@
 #include "GraphicsAccessories.hpp"
 #include "DebugUtilities.hpp"
 #include "Align.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "Cast.hpp"
 #include "StringTools.hpp"
 #include "HashUtils.hpp"

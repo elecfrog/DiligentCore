@@ -33,7 +33,7 @@
 #include "RenderDevice.h"
 #include "DeviceContext.h"
 #include "RefCntAutoPtr.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 
 #include "GPUTestingEnvironment.hpp"
 

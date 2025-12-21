@@ -30,7 +30,7 @@
 #include "Vulkan/TestingEnvironmentVk.hpp"
 #include "Vulkan/TestingSwapChainVk.hpp"
 #include "Align.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 
 #include "DeviceContextVk.h"
 

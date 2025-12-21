@@ -30,7 +30,7 @@
 #include "RenderDeviceVkImpl.hpp"
 #include "VulkanTypeConversions.hpp"
 #include "GraphicsAccessories.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 
 namespace Diligent
 {

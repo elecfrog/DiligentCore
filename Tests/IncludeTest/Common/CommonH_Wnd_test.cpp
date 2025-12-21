@@ -29,7 +29,7 @@
 #    error min/max macros are not defined
 #endif
 
-#include "DiligentCore/Common/interface/BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "DiligentCore/Common/interface/AdvancedMath.hpp"
 #include "DiligentCore/Common/interface/HashUtils.hpp"
 #include "DiligentCore/Common/interface/STDAllocator.hpp"

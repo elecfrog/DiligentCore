@@ -43,7 +43,7 @@
 #include "DeviceObjectBase.hpp"
 #include "RenderDeviceBase.hpp"
 #include "FixedLinearAllocator.hpp"
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "StringTools.hpp"
 #include "PlatformMisc.hpp"
 #include "SRBMemoryAllocator.hpp"

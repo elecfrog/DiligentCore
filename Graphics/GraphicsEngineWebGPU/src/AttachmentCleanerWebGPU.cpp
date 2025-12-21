@@ -28,7 +28,7 @@
 
 #include "AttachmentCleanerWebGPU.hpp"
 
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "DebugUtilities.hpp"
 #include "DeviceContextWebGPUImpl.hpp"
 #include "RenderDeviceWebGPUImpl.hpp"

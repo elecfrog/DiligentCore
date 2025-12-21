@@ -33,7 +33,7 @@
 #include "../../GraphicsEngine/interface/RenderDevice.h"
 #include "../../GraphicsEngine/interface/DeviceContext.h"
 #include "../../GraphicsEngine/interface/Texture.h"
-#include "../../../Common/interface/BasicMath.hpp"
+#include <math/basic_math.hpp>
 
 namespace Diligent
 {

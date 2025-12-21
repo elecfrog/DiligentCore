@@ -26,7 +26,7 @@
 
 #include "VulkanUtilities/RenderingInfoWrapper.hpp"
 
-#include "BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "PlatformMisc.hpp"
 
 namespace VulkanUtilities
@@ -89,7 +89,7 @@ void RenderingInfoWrapper::ResetClears()
 {
     while (m_AttachmentClearMask != 0)
     {
-        uint32_t Bit = Diligent::ExtractLSB(m_AttachmentClearMask);
+        uint32_t Bit = ExtractLSB(m_AttachmentClearMask);
         uint32_t Idx = Diligent::PlatformMisc::GetLSB(Bit);
         VERIFY_EXPR(Idx < m_RI.colorAttachmentCount + (m_RI.pDepthAttachment != nullptr ? 1 : 0) + (m_RI.pStencilAttachment != nullptr ? 1 : 0));
         m_Attachments[Idx].loadOp     = VK_ATTACHMENT_LOAD_OP_LOAD;

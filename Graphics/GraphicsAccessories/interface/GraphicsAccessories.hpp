@@ -39,7 +39,7 @@
 #include "../../GraphicsEngine/interface/Buffer.h"
 #include "../../GraphicsEngine/interface/RenderDevice.h"
 #include "../../Archiver/interface/Archiver.h"
-#include "../../../Common/interface/BasicMath.hpp"
+#include <math/basic_math.hpp>
 #include "../../../Platforms/Basic/interface/DebugUtilities.hpp"
 #include "../../../Platforms/interface/PlatformMisc.hpp"
 
