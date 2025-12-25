@@ -130,7 +130,7 @@ ShaderVariableVkImpl* ShaderVariableManagerVk::GetVariable(UInt32 Index) const
 {
     if (Index >= m_NumVariables)
     {
-        DG_LOG_ERROR("Index ", Index, " is out of range");
+        LOG_ERROR("Index ", Index, " is out of range");
         return nullptr;
     }
 
@@ -141,7 +141,7 @@ UInt32 ShaderVariableManagerVk::GetVariableIndex(const ShaderVariableVkImpl& Var
 {
     if (m_pVariables == nullptr)
     {
-        DG_LOG_ERROR("This shader variable manager has no variables");
+        LOG_ERROR("This shader variable manager has no variables");
         return ~0u;
     }
 
@@ -152,7 +152,7 @@ UInt32 ShaderVariableManagerVk::GetVariableIndex(const ShaderVariableVkImpl& Var
         return Index;
     else
     {
-        DG_LOG_ERROR("Failed to get variable index. The variable ", &Variable, " does not belong to this shader variable manager");
+        LOG_ERROR_MESSAGE("Failed to get variable index. The variable ", &Variable, " does not belong to this shader variable manager");
         return ~0u;
     }
 }

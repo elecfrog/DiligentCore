@@ -99,7 +99,7 @@ public:
         auto DXGIAdapters = FindCompatibleAdapters(MinVersion);
         if (AdapterId >= DXGIAdapters.size())
         {
-            DG_LOG_ERROR("Incorrect adapter id ", AdapterId);
+            LOG_ERROR("Incorrect adapter id ", AdapterId);
             return;
         }
 
@@ -254,7 +254,7 @@ public:
             Mem.UnifiedMemory       = 0;
             Mem.MaxMemoryAllocation = 0; // no way to query
 
-            ASSERT_SIZEOF(Mem, 40, "Did you add a new member to AdapterMemoryInfo? Please initialize it here.");
+            SPW_ASSERT_SIZEOF(Mem, 40, "Did you add a new member to AdapterMemoryInfo? Please initialize it here.");
         }
 
         // Draw command properties

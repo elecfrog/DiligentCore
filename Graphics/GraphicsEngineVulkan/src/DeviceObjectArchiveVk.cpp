@@ -38,7 +38,7 @@ bool PRSSerializerVk<Mode>::SerializeInternalData(
     ConstQual<PipelineResourceSignatureInternalDataVk>& InternalData,
     DynamicLinearAllocator*                             Allocator)
 {
-    ASSERT_SIZEOF64(InternalData, 48, "Did you add a new member to PipelineResourceSignatureInternalDataVk? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(InternalData, 48, "Did you add a new member to PipelineResourceSignatureInternalDataVk? Please add serialization here.");
 
     if (!PRSSerializer<Mode>::template SerializeInternalData<PipelineResourceSignatureInternalDataVk>(Ser, InternalData, Allocator))
         return false;

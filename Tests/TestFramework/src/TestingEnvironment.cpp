@@ -52,14 +52,14 @@ TestingEnvironment::TestingEnvironment()
     PlatformDebug::SetBreakOnError(false);
 }
 
-void TestingEnvironment::MessageCallback(DEBUG_MESSAGE_SEVERITY Severity,
+void TestingEnvironment::MessageCallback(spw::LogLevel Severity,
                                          const Char*            Message,
                                          const char*            Function,
                                          const char*            File,
                                          int                    Line)
 {
     TextColor MsgColor = TextColor::Auto;
-    if (Severity == DEBUG_MESSAGE_SEVERITY_ERROR || Severity == DEBUG_MESSAGE_SEVERITY_FATAL_ERROR)
+    if (Severity == Error || Severity == Critical)
     {
         if (m_NumAllowedErrors == 0)
         {

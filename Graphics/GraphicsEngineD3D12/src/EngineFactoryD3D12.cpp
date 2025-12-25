@@ -243,7 +243,7 @@ CComPtr<IDXGIAdapter1> DXGIAdapterFromD3D12Device(ID3D12Device* pd3d12Device)
     }
     else
     {
-        DG_LOG_ERROR("Unable to create DXIFactory");
+        LOG_ERROR("Unable to create DXIFactory");
     }
     return nullptr;
 }
@@ -511,7 +511,7 @@ void EngineFactoryD3D12Impl::CreateDeviceAndContextsD3D12(const EngineD3D12Creat
     }
     catch (const std::runtime_error&)
     {
-        DG_LOG_ERROR("Failed to initialize D3D12 resources");
+        LOG_ERROR("Failed to initialize D3D12 resources");
         return;
     }
 
@@ -542,7 +542,7 @@ void EngineFactoryD3D12Impl::CreateCommandQueueD3D12(void*                pd3d12
     }
     catch (const std::runtime_error&)
     {
-        DG_LOG_ERROR("Failed to initialize D3D12 resources");
+        LOG_ERROR("Failed to initialize D3D12 resources");
         return;
     }
 }
@@ -655,7 +655,7 @@ void EngineFactoryD3D12Impl::AttachToD3D12Device(void*                        pd
             }
         }
 
-        DG_LOG_ERROR("Failed to create device and contexts");
+        LOG_ERROR("Failed to create device and contexts");
     }
 }
 
@@ -690,7 +690,7 @@ void EngineFactoryD3D12Impl::CreateSwapChainD3D12(IRenderDevice*            pDev
             *ppSwapChain = nullptr;
         }
 
-        DG_LOG_ERROR("Failed to create the swap chain");
+        LOG_ERROR("Failed to create the swap chain");
     }
 }
 
@@ -809,7 +809,7 @@ GraphicsAdapterInfo EngineFactoryD3D12Impl::GetGraphicsAdapterInfo(void*        
             MeshProps.MaxThreadGroupCountY     = 65536;
             MeshProps.MaxThreadGroupCountZ     = 65536;
             MeshProps.MaxThreadGroupTotalCount = 1u << 22u;
-            ASSERT_SIZEOF(MeshProps, 16, "Did you add a new member to MeshShaderProperties? Please initialize it here.");
+            SPW_ASSERT_SIZEOF(MeshProps, 16, "Did you add a new member to MeshShaderProperties? Please initialize it here.");
         }
 
         Features.ShaderResourceRuntimeArrays = DEVICE_FEATURE_STATE_ENABLED;
@@ -903,7 +903,7 @@ GraphicsAdapterInfo EngineFactoryD3D12Impl::GetGraphicsAdapterInfo(void*        
                     for (UInt32 q = 0; q < AdapterInfo.NumQueues; ++q)
                         AdapterInfo.Queues[q].QueueType |= COMMAND_QUEUE_TYPE_SPARSE_BINDING;
 
-                    ASSERT_SIZEOF(SparseRes, 32, "Did you add a new member to SparseResourceProperties? Please initialize it here.");
+                    SPW_ASSERT_SIZEOF(SparseRes, 32, "Did you add a new member to SparseResourceProperties? Please initialize it here.");
                 }
             }
 
@@ -922,7 +922,7 @@ GraphicsAdapterInfo EngineFactoryD3D12Impl::GetGraphicsAdapterInfo(void*        
                     if (MeshShadersSupported)
                         WaveOpProps.SupportedStages |= SHADER_TYPE_AMPLIFICATION | SHADER_TYPE_MESH;
 
-                    ASSERT_SIZEOF(WaveOpProps, 16, "Did you add a new member to WaveOpProperties? Please initialize it here.");
+                    SPW_ASSERT_SIZEOF(WaveOpProps, 16, "Did you add a new member to WaveOpProperties? Please initialize it here.");
                 }
             }
 
@@ -972,7 +972,7 @@ GraphicsAdapterInfo EngineFactoryD3D12Impl::GetGraphicsAdapterInfo(void*        
                 {
                     RayTracingProps.CapFlags |= RAY_TRACING_CAP_FLAG_INLINE_RAY_TRACING | RAY_TRACING_CAP_FLAG_INDIRECT_RAY_TRACING;
                 }
-                ASSERT_SIZEOF(RayTracingProps, 60, "Did you add a new member to RayTracingProperites? Please initialize it here.");
+                SPW_ASSERT_SIZEOF(RayTracingProps, 60, "Did you add a new member to RayTracingProperites? Please initialize it here.");
             }
 
 #ifdef NTDDI_WIN10_19H1
@@ -1036,7 +1036,7 @@ GraphicsAdapterInfo EngineFactoryD3D12Impl::GetGraphicsAdapterInfo(void*        
 
                 // TODO: add support for D3D12_FEATURE_DATA_D3D12_OPTIONS10
 
-                ASSERT_SIZEOF(ShadingRateProps, 52, "Did you add a new member to ShadingRateProperties? Please initialize it here.");
+                SPW_ASSERT_SIZEOF(ShadingRateProps, 52, "Did you add a new member to ShadingRateProperties? Please initialize it here.");
             }
 #endif // NTDDI_WIN10_19H1
         }
@@ -1046,7 +1046,7 @@ GraphicsAdapterInfo EngineFactoryD3D12Impl::GetGraphicsAdapterInfo(void*        
             BufferProperties& BufferProps{AdapterInfo.Buffer};
             BufferProps.ConstantBufferOffsetAlignment   = D3D12_CONSTANT_BUFFER_DATA_PLACEMENT_ALIGNMENT;
             BufferProps.StructuredBufferOffsetAlignment = D3D12_RAW_UAV_SRV_BYTE_ALIGNMENT;
-            ASSERT_SIZEOF(BufferProps, 8, "Did you add a new member to BufferProperites? Please initialize it here.");
+            SPW_ASSERT_SIZEOF(BufferProps, 8, "Did you add a new member to BufferProperites? Please initialize it here.");
         }
     }
 
@@ -1064,7 +1064,7 @@ GraphicsAdapterInfo EngineFactoryD3D12Impl::GetGraphicsAdapterInfo(void*        
         TexProps.TextureViewSupported       = True;
         TexProps.CubemapArraysSupported     = True;
         TexProps.TextureView2DOn3DSupported = True;
-        ASSERT_SIZEOF(TexProps, 32, "Did you add a new member to TextureProperites? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(TexProps, 32, "Did you add a new member to TextureProperites? Please initialize it here.");
     }
 
     // Sampler properties
@@ -1074,7 +1074,7 @@ GraphicsAdapterInfo EngineFactoryD3D12Impl::GetGraphicsAdapterInfo(void*        
         SamProps.BorderSamplingModeSupported = True;
         SamProps.MaxAnisotropy               = D3D12_DEFAULT_MAX_ANISOTROPY;
         SamProps.LODBiasSupported            = True;
-        ASSERT_SIZEOF(SamProps, 3, "Did you add a new member to SamplerProperites? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(SamProps, 3, "Did you add a new member to SamplerProperites? Please initialize it here.");
     }
 
     // Compute shader properties
@@ -1088,7 +1088,7 @@ GraphicsAdapterInfo EngineFactoryD3D12Impl::GetGraphicsAdapterInfo(void*        
         CompProps.MaxThreadGroupCountX      = D3D12_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION;
         CompProps.MaxThreadGroupCountY      = D3D12_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION;
         CompProps.MaxThreadGroupCountZ      = D3D12_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION;
-        ASSERT_SIZEOF(CompProps, 32, "Did you add a new member to ComputeShaderProperties? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(CompProps, 32, "Did you add a new member to ComputeShaderProperties? Please initialize it here.");
     }
 
     // Draw command properties
@@ -1103,10 +1103,10 @@ GraphicsAdapterInfo EngineFactoryD3D12Impl::GetGraphicsAdapterInfo(void*        
             DRAW_COMMAND_CAP_FLAG_BASE_VERTEX |
             DRAW_COMMAND_CAP_FLAG_NATIVE_MULTI_DRAW_INDIRECT |
             DRAW_COMMAND_CAP_FLAG_DRAW_INDIRECT_COUNTER_BUFFER;
-        ASSERT_SIZEOF(DrawCommandProps, 12, "Did you add a new member to DrawCommandProperties? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(DrawCommandProps, 12, "Did you add a new member to DrawCommandProperties? Please initialize it here.");
     }
 
-    ASSERT_SIZEOF(DeviceFeatures, 47, "Did you add a new feature to DeviceFeatures? Please handle its status here.");
+    SPW_ASSERT_SIZEOF(DeviceFeatures, 47, "Did you add a new feature to DeviceFeatures? Please handle its status here.");
 
     return AdapterInfo;
 }

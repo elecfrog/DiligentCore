@@ -31,7 +31,7 @@
 /// Defines Diligent::IEngineFactory interface
 
 #include "../../../Primitives/interface/Object.h"
-#include "../../../Primitives/interface/DebugOutput.h"
+#include "Primitives.h"
 #include "../../../Primitives/interface/DataBlob.h"
 #include "../../../Primitives/interface/MemoryAllocator.h"
 #include "GraphicsTypes.h"
@@ -42,7 +42,8 @@ struct ANativeActivity;
 struct AAssetManager;
 #endif
 
-namespace Diligent {
+namespace Diligent
+{
 
 struct IShaderSourceInputStreamFactory;
 struct IDearchiver;
@@ -57,9 +58,6 @@ static constexpr INTERFACE_ID IID_EngineFactory =
     IObjectInclusiveMethods;           \
     IEngineFactoryMethods EngineFactory
 
-// clang-format off
-
-
 /// Dearchiver create information
 struct DearchiverCreateInfo
 {
@@ -72,7 +70,7 @@ typedef struct DearchiverCreateInfo DearchiverCreateInfo;
 struct IEngineFactory : public IObject
 {
     /// Returns API info structure, see Diligent::APIInfo.
-    virtual const APIInfo  & METHOD(GetAPIInfo)( ) const =0;
+    virtual const APIInfo& METHOD(GetAPIInfo)() const = 0;
 
     /// Creates default shader source input stream factory
 
@@ -80,8 +78,8 @@ struct IEngineFactory : public IObject
     /// \param [out] ppShaderSourceStreamFactory - Memory address where the pointer to the shader source stream factory will be written.
     virtual void METHOD(CreateDefaultShaderSourceStreamFactory)(
 
-                        const Char*                              SearchDirectories,
-                        struct IShaderSourceInputStreamFactory** ppShaderSourceFactory) const =0;
+        const Char*                              SearchDirectories,
+        struct IShaderSourceInputStreamFactory** ppShaderSourceFactory) const = 0;
 
     /// Creates a data blob.
 
@@ -90,9 +88,9 @@ struct IEngineFactory : public IObject
     ///                            If null, no data will be written.
     /// \param [out] ppDataBlob  - Memory address where the pointer to the data blob will be written.
     virtual void METHOD(CreateDataBlob)(
-                                        size_t      InitialSize,
-                                        const void* pData,
-                                        IDataBlob** ppDataBlob) const =0;
+        size_t      InitialSize,
+        const void* pData,
+        IDataBlob** ppDataBlob) const = 0;
 
     /// Enumerates adapters available on this machine.
 
@@ -110,9 +108,9 @@ struct IEngineFactory : public IObject
     ///
     /// \note OpenGL backend only supports one device; features and properties will have limited information.
     virtual void METHOD(EnumerateAdapters)(
-                                           Version              MinVersion,
-                                           UInt32  &           NumAdapters,
-                                           GraphicsAdapterInfo* Adapters) const =0;
+        Version              MinVersion,
+        UInt32&              NumAdapters,
+        GraphicsAdapterInfo* Adapters) const = 0;
 
     /// Creates a dearchiver object.
 
@@ -121,9 +119,8 @@ struct IEngineFactory : public IObject
     ///                             interface will be written.
     ///                             The function calls AddRef(), so that the new object will have
     ///                             one reference.
-    virtual void METHOD(CreateDearchiver)(
-                                          const DearchiverCreateInfo  & CreateInfo,
-                                          struct IDearchiver**           ppDearchiver) const =0;
+    virtual void METHOD(CreateDearchiver)(const DearchiverCreateInfo& CreateInfo,
+                                          struct IDearchiver**        ppDearchiver) const = 0;
 
 
     /// Sets a user-provided debug message callback.
@@ -132,22 +129,21 @@ struct IEngineFactory : public IObject
     ///
     /// MessageCallback is a global setting that applies to the entire execution unit
     /// (executable or shared library that contains the engine implementation).
-    virtual void METHOD(SetMessageCallback)(
-                                            DebugMessageCallbackType MessageCallback) const =0;
+    virtual void METHOD(SetMessageCallback)(spw::DebugMessageCallbackType MessageCallback) const = 0;
 
 
     /// Sets whether to break program execution on assertion failure.
 
     /// \param [in] BreakOnError - Whether to break on assertion failure.
     ///
-    /// BreakOnError is a global setting that applies to the entire execution unit 
+    /// BreakOnError is a global setting that applies to the entire execution unit
     /// (executable or shared library that contains the engine implementation).
     virtual void METHOD(SetBreakOnError)(
-                                         bool BreakOnError) const =0;
+        bool BreakOnError) const = 0;
 
 
     /// Sets the memory allocator to be used by the engine.
-    
+
     /// \param [in] pAllocator - Pointer to the memory allocator.
     ///
     /// The allocator is a global setting that applies to the entire execution unit
@@ -158,7 +154,7 @@ struct IEngineFactory : public IObject
     /// The allocator object must remain valid for the lifetime of the
     /// engine until all engine objects are destroyed.
     virtual void METHOD(SetMemoryAllocator)(
-                                            IMemoryAllocator* pAllocator) const =0;
+        IMemoryAllocator* pAllocator) const = 0;
 
 #if PLATFORM_ANDROID
     /// On Android platform, it is necessary to initialize the file system before
@@ -170,9 +166,9 @@ struct IEngineFactory : public IObject
     ///
     /// \remarks See AndroidFileSystem::Init.
     virtual void METHOD(InitAndroidFileSystem)(
-                                               struct AAssetManager* AssetManager,
-                                               const char*           ExternalFilesDir DEFAULT_VALUE(nullptr),
-                                               const char*           OutputFilesDir   DEFAULT_VALUE(nullptr)) const =0;
+        struct AAssetManager*        AssetManager,
+        const char* ExternalFilesDir DEFAULT_VALUE(nullptr),
+        const char* OutputFilesDir   DEFAULT_VALUE(nullptr)) const = 0;
 #endif
 };
 
@@ -198,4 +194,4 @@ struct IEngineFactory : public IObject
 
 #endif
 
- } // namespace Diligent
+} // namespace Diligent

@@ -28,6 +28,7 @@
 #include "pch.h"
 #include "VulkanUploadHeap.hpp"
 #include "RenderDeviceVkImpl.hpp"
+#include <log_system/log_system.hpp>
 
 namespace Diligent
 {
@@ -47,8 +48,8 @@ VulkanUploadHeap::~VulkanUploadHeap()
 {
     DEV_CHECK_ERR(m_Pages.empty(), "Upload heap '", m_HeapName, "' not all pages are released");
     VkDeviceSize PeakAllocatedPages = m_PeakAllocatedSize / m_PageSize;
-    LOG_INFO_MESSAGE(m_HeapName, " peak used/allocated frame size: ", FormatMemorySize(m_PeakFrameSize, 2, m_PeakAllocatedSize),
-                     " / ", FormatMemorySize(m_PeakAllocatedSize, 2),
+    LOG_INFO_MESSAGE(m_HeapName, " peak used/allocated frame size: ", spw::LogSystem::FormatMemorySize(m_PeakFrameSize, 2, m_PeakAllocatedSize),
+                     " / ", spw::LogSystem::FormatMemorySize(m_PeakAllocatedSize, 2),
                      " (", PeakAllocatedPages, (PeakAllocatedPages == 1 ? " page)" : " pages)"));
 }
 

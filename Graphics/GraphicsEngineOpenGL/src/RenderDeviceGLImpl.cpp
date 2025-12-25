@@ -886,7 +886,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
             TexProps.TextureViewSupported       = IsGL43OrAbove || CheckExtension("GL_ARB_texture_view");
             TexProps.CubemapArraysSupported     = IsGL43OrAbove || CheckExtension("GL_ARB_texture_cube_map_array");
             TexProps.TextureView2DOn3DSupported = TexProps.TextureViewSupported;
-            ASSERT_SIZEOF(TexProps, 32, "Did you add a new member to TextureProperites? Please initialize it here.");
+            SPW_ASSERT_SIZEOF(TexProps, 32, "Did you add a new member to TextureProperites? Please initialize it here.");
 
             SamProps.BorderSamplingModeSupported = True;
             if (IsGL46OrAbove || CheckExtension("GL_ARB_texture_filter_anisotropic"))
@@ -898,7 +898,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
             }
 
             SamProps.LODBiasSupported = True;
-            ASSERT_SIZEOF(SamProps, 3, "Did you add a new member to SamplerProperites? Please initialize it here.");
+            SPW_ASSERT_SIZEOF(SamProps, 3, "Did you add a new member to SamplerProperites? Please initialize it here.");
 
             m_GLCaps.FramebufferSRGB  = IsGL40OrAbove || CheckExtension("GL_ARB_framebuffer_sRGB");
             m_GLCaps.SemalessCubemaps = IsGL40OrAbove || CheckExtension("GL_ARB_seamless_cube_map");
@@ -967,7 +967,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
             TexProps.TextureViewSupported       = IsGLES31OrAbove || strstr(Extensions, "texture_view");
             TexProps.CubemapArraysSupported     = IsGLES32OrAbove || strstr(Extensions, "texture_cube_map_array");
             TexProps.TextureView2DOn3DSupported = TexProps.TextureViewSupported;
-            ASSERT_SIZEOF(TexProps, 32, "Did you add a new member to TextureProperites? Please initialize it here.");
+            SPW_ASSERT_SIZEOF(TexProps, 32, "Did you add a new member to TextureProperites? Please initialize it here.");
 
             SamProps.BorderSamplingModeSupported = GL_TEXTURE_BORDER_COLOR && (IsGLES32OrAbove || strstr(Extensions, "texture_border_clamp"));
             if (strstr(Extensions, "texture_filter_anisotropic"))
@@ -978,7 +978,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
                 SamProps.MaxAnisotropy = static_cast<UInt8>(MaxAnisotropy);
             }
             SamProps.LODBiasSupported = GL_TEXTURE_LOD_BIAS && IsGLES31OrAbove;
-            ASSERT_SIZEOF(SamProps, 3, "Did you add a new member to SamplerProperites? Please initialize it here.");
+            SPW_ASSERT_SIZEOF(SamProps, 3, "Did you add a new member to SamplerProperites? Please initialize it here.");
 
             m_GLCaps.FramebufferSRGB  = strstr(Extensions, "sRGB_write_control");
             m_GLCaps.SemalessCubemaps = false;
@@ -1005,7 +1005,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
                 WaveOpProps.MaxSize         = static_cast<UInt32>(SubgroupSize);
                 WaveOpProps.SupportedStages = GLShaderBitsToShaderTypes(SubgroupStages);
                 WaveOpProps.Features        = GLSubgroupFeatureBitsToWaveFeatures(SubgroupFeatures);
-                ASSERT_SIZEOF(WaveOpProps, 16, "Did you add a new member to WaveOpProperties? Please initialize it here.");
+                SPW_ASSERT_SIZEOF(WaveOpProps, 16, "Did you add a new member to WaveOpProperties? Please initialize it here.");
             }
 
             ENABLE_FEATURE(WaveOp, true);
@@ -1035,7 +1035,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
             BufferProperties& BufferProps{m_AdapterInfo.Buffer};
             BufferProps.ConstantBufferOffsetAlignment   = 256;
             BufferProps.StructuredBufferOffsetAlignment = 16;
-            ASSERT_SIZEOF(BufferProps, 8, "Did you add a new member to BufferProperites? Please initialize it here.");
+            SPW_ASSERT_SIZEOF(BufferProps, 8, "Did you add a new member to BufferProperites? Please initialize it here.");
         }
 #undef ENABLE_FEATURE
     }
@@ -1064,7 +1064,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
         glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, reinterpret_cast<GLint*>(&CompProps.MaxThreadGroupCountZ));
         CHECK_GL_ERROR("glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2)");
 
-        ASSERT_SIZEOF(CompProps, 32, "Did you add a new member to ComputeShaderProperties? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(CompProps, 32, "Did you add a new member to ComputeShaderProperties? Please initialize it here.");
     }
 #endif
 
@@ -1115,7 +1115,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
             }
         }
 
-        ASSERT_SIZEOF(DrawCommandProps, 12, "Did you add a new member to DrawCommandProperties? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(DrawCommandProps, 12, "Did you add a new member to DrawCommandProperties? Please initialize it here.");
     }
 
     // Set queue info
@@ -1129,7 +1129,7 @@ void RenderDeviceGLImpl::InitAdapterInfo()
         m_AdapterInfo.Queues[0].TextureCopyGranularity[2] = 1;
     }
 
-    ASSERT_SIZEOF(DeviceFeatures, 47, "Did you add a new feature to DeviceFeatures? Please handle its status here.");
+    SPW_ASSERT_SIZEOF(DeviceFeatures, 47, "Did you add a new feature to DeviceFeatures? Please handle its status here.");
 }
 
 void RenderDeviceGLImpl::FlagSupportedTexFormats()

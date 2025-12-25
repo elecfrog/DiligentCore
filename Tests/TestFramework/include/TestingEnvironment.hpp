@@ -31,7 +31,7 @@
 #include <string>
 #include <mutex>
 
-#include "DebugOutput.h"
+#include "Primitives.h""
 
 #include "gtest/gtest.h"
 
@@ -82,7 +82,7 @@ public:
     };
 
 protected:
-    static void MessageCallback(DEBUG_MESSAGE_SEVERITY Severity,
+    static void MessageCallback(spw::LogLevel Severity,
                                 const Char*            Message,
                                 const char*            Function,
                                 const char*            File,

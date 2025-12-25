@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "DebugUtilities.hpp"
 #include "VulkanUtilities/Debug.hpp"
 
@@ -35,7 +35,7 @@
     {                                                                                                                                                            \
         if (err != VK_SUCCESS)                                                                                                                                   \
         {                                                                                                                                                        \
-            Diligent::LogError<false>(/*IsFatal=*/false, __FUNCTION__, __FILE__, __LINE__, __VA_ARGS__, "\nVK Error: ", VulkanUtilities::VkResultToString(err)); \
+            spw::LogSystem::Log(spw::LogLevel::Error, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__, "\nVK Error: ", VulkanUtilities::VkResultToString(err)); \
             UNEXPECTED("Error");                                                                                                                                 \
         }                                                                                                                                                        \
     }
@@ -43,5 +43,5 @@
 #define CHECK_VK_ERROR_AND_THROW(err, ...)                                                                                                                           \
     {                                                                                                                                                                \
         if (err != VK_SUCCESS)                                                                                                                                       \
-            Diligent::LogError<true>(/*IsFatal=*/false, __FUNCTION__, __FILE__, __LINE__, __VA_ARGS__, "\nVK Error Code: ", VulkanUtilities::VkResultToString(err)); \
+            spw::LogSystem::Log(spw::LogLevel::Error, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__, "\nVK Error Code: ", VulkanUtilities::VkResultToString(err)); \
     }

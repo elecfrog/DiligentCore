@@ -28,7 +28,7 @@
 #include <iostream>
 
 #include "EmscriptenDebug.hpp"
-#include "FormatString.hpp"
+#include "Primitives.h"
 
 namespace Diligent
 {
@@ -38,11 +38,11 @@ void EmscriptenDebug::AssertionFailed(const Char* Message, const char* Function,
     String AssertionFailedMessage = FormatAssertionFailedMessage(Message, Function, File, Line);
     if (DebugMessageCallback)
     {
-        DebugMessageCallback(DEBUG_MESSAGE_SEVERITY_ERROR, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
+        DebugMessageCallback(Error, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
     }
     else
     {
-        OutputDebugMessage(DEBUG_MESSAGE_SEVERITY_ERROR, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
+        OutputDebugMessage(Error, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
     }
 
     if (GetBreakOnError())
@@ -51,7 +51,7 @@ void EmscriptenDebug::AssertionFailed(const Char* Message, const char* Function,
     }
 }
 
-void EmscriptenDebug::OutputDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
+void EmscriptenDebug::OutputDebugMessage(spw::LogLevel Severity,
                                          const Char*            Message,
                                          const char*            Function,
                                          const char*            File,
@@ -69,7 +69,7 @@ void DebugAssertionFailed(const Diligent::Char* Message, const char* Function, c
     EmscriptenDebug::AssertionFailed(Message, Function, File, Line);
 }
 
-static void OutputDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
+static void OutputDebugMessage(spw::LogLevel Severity,
                                const Char*            Message,
                                const char*            Function,
                                const char*            File,

@@ -622,7 +622,7 @@ void TextureWebGPUImpl::CreateViewInternal(const TextureViewDesc& ViewDesc, ITex
     catch (const std::runtime_error&)
     {
         const char* ViewTypeName = GetTexViewTypeLiteralName(ViewDesc.ViewType);
-        DG_LOG_ERROR("Failed to create view \"", ViewDesc.Name ? ViewDesc.Name : "", "\" (", ViewTypeName, ") for texture \"", m_Desc.Name ? m_Desc.Name : "", "\"");
+        LOG_ERROR("Failed to create view \"", ViewDesc.Name ? ViewDesc.Name : "", "\" (", ViewTypeName, ") for texture \"", m_Desc.Name ? m_Desc.Name : "", "\"");
     }
 }
 

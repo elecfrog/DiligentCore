@@ -26,7 +26,7 @@
  */
 
 #include "AndroidDebug.hpp"
-#include "FormatString.hpp"
+#include "Primitives.h"
 #include "../../../Common/interface/StringTools.hpp"
 #include <android/log.h>
 #include <csignal>
@@ -39,11 +39,11 @@ void AndroidDebug::AssertionFailed(const Char* Message, const char* Function, co
     String AssertionFailedMessage = FormatAssertionFailedMessage(Message, Function, File, Line);
     if (DebugMessageCallback)
     {
-        DebugMessageCallback(DEBUG_MESSAGE_SEVERITY_ERROR, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
+        DebugMessageCallback(Error, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
     }
     else
     {
-        OutputDebugMessage(DEBUG_MESSAGE_SEVERITY_ERROR, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
+        OutputDebugMessage(Error, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
     }
 
     if (GetBreakOnError())
@@ -52,7 +52,7 @@ void AndroidDebug::AssertionFailed(const Char* Message, const char* Function, co
     }
 }
 
-void AndroidDebug::OutputDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
+void AndroidDebug::OutputDebugMessage(spw::LogLevel Severity,
                                       const Char*            Message,
                                       const char*            Function,
                                       const char*            File,
@@ -87,7 +87,7 @@ void DebugAssertionFailed(const Char* Message, const char* Function, const char*
     AndroidDebug::AssertionFailed(Message, Function, File, Line);
 }
 
-static void OutputDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
+static void OutputDebugMessage(spw::LogLevel Severity,
                                const Char*            Message,
                                const char*            Function,
                                const char*            File,

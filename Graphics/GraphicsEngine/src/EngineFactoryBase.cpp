@@ -29,7 +29,7 @@
 #include <array>
 
 #include "PrivateConstants.h"
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "DebugUtilities.hpp"
 #include "Buffer.h"
 #include "Texture.h"

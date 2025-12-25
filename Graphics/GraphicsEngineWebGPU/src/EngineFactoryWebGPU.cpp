@@ -210,7 +210,7 @@ static void DeviceLostCallback(WGPUDeviceLostReason Reason,
 #endif
     if (Expression && WGPUStringViewValid(Message))
     {
-        LOG_DEBUG_MESSAGE(DEBUG_MESSAGE_SEVERITY_ERROR, "WebGPU: ", WGPUStringViewToString(Message));
+        LOG_DEBUG_MESSAGE(Error, "WebGPU: ", WGPUStringViewToString(Message));
     }
 }
 
@@ -232,7 +232,7 @@ static void UncapturedErrorCallback2(WGPUDevice const* device,
 {
     if (WGPUStringViewValid(Message))
     {
-        LOG_DEBUG_MESSAGE(DEBUG_MESSAGE_SEVERITY_ERROR, "WebGPU: ", WGPUStringViewToString(Message));
+        LOG_DEBUG_MESSAGE(Error, "WebGPU: ", WGPUStringViewToString(Message));
     }
 }
 #endif
@@ -409,7 +409,7 @@ DeviceFeatures GetSupportedFeatures(WGPUAdapter wgpuAdapter, WGPUDevice wgpuDevi
         CheckFeature(WGPUFeatureName_ChromiumExperimentalTimestampQueryInsidePasses) :
         DEVICE_FEATURE_STATE_DISABLED;
 
-    ASSERT_SIZEOF(DeviceFeatures, 47, "Did you add a new feature to DeviceFeatures? Please handle its status here.");
+    SPW_ASSERT_SIZEOF(DeviceFeatures, 47, "Did you add a new feature to DeviceFeatures? Please handle its status here.");
 
     return Features;
 }
@@ -632,7 +632,7 @@ void EngineFactoryWebGPUImpl::CreateSwapChainWebGPU(IRenderDevice*       pDevice
             *ppSwapChain = nullptr;
         }
 
-        DG_LOG_ERROR("Failed to create WebGPU-based swapchain");
+        LOG_ERROR("Failed to create WebGPU-based swapchain");
     }
 }
 
@@ -718,7 +718,7 @@ void EngineFactoryWebGPUImpl::AttachToWebGPUDevice(void*                        
             *ppImmediateContext = nullptr;
         }
 
-        DG_LOG_ERROR("Failed to create WebGPU-based render device and context");
+        LOG_ERROR("Failed to create WebGPU-based render device and context");
     }
 }
 

@@ -26,7 +26,7 @@
 
 #pragma once
 
-#include "Errors.hpp"
+#include "Primitives.h"
 
 #ifndef GLAPIENTRY
 #    define GLAPIENTRY GL_APIENTRY

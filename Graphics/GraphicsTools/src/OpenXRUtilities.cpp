@@ -256,14 +256,14 @@ static XrBool32 OpenXRMessageCallbackFunction(XrDebugUtilsMessageSeverityFlagsEX
                                               const XrDebugUtilsMessengerCallbackDataEXT* pCallbackData,
                                               void*                                       pUserData)
 {
-    DEBUG_MESSAGE_SEVERITY MessageSeverity = DEBUG_MESSAGE_SEVERITY_INFO;
+    spw::LogLevel MessageSeverity = Info;
     if (xrMessageSeverity & XR_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT)
     {
-        MessageSeverity = DEBUG_MESSAGE_SEVERITY_ERROR;
+        MessageSeverity = Error;
     }
     else if (xrMessageSeverity & XR_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT)
     {
-        MessageSeverity = DEBUG_MESSAGE_SEVERITY_WARNING;
+        MessageSeverity = Warn;
     }
 
     std::string MessageTypeStr;

@@ -777,7 +777,7 @@ void PipelineStateVkImpl::RemapOrVerifyShaderResources(
                 if (!StrippedSPIRV.empty())
                     SPIRV = std::move(StrippedSPIRV);
                 else
-                    DG_LOG_ERROR("Failed to strip reflection information from shader '", pShader->GetDesc().Name, "'. This may indicate a problem with the byte code.");
+                    LOG_ERROR("Failed to strip reflection information from shader '", pShader->GetDesc().Name, "'. This may indicate a problem with the byte code.");
 #endif
             }
         }

@@ -114,7 +114,7 @@ public:
         Diligent::CreateDefaultShaderSourceStreamFactory(SearchDirectories, ppShaderSourceFactory);
     }
 
-    virtual void CALLTYPE SetMessageCallback(DebugMessageCallbackType MessageCallback) const override final
+    virtual void CALLTYPE SetMessageCallback(spw::DebugMessageCallbackType MessageCallback) const override final
     {
         SetDebugMessageCallback(MessageCallback);
     }

@@ -27,7 +27,7 @@
 
 
 #include "D3D12Loader.hpp"
-#include "Errors.hpp"
+#include "Primitives.h"
 
 #include "WinHPreface.h"
 #include <Windows.h>

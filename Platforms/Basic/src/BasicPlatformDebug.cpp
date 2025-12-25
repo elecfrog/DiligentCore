@@ -26,7 +26,7 @@
  */
 
 #include "BasicPlatformDebug.hpp"
-#include "FormatString.hpp"
+#include "Primitives.h"
 #include "BasicFileSystem.hpp"
 #include <iostream>
 #include <atomic>
@@ -41,10 +41,10 @@ String BasicPlatformDebug::FormatAssertionFailedMessage(const char* Message,
 {
     String FileName;
     BasicFileSystem::GetPathComponents(File, nullptr, &FileName);
-    return FormatString("Debug assertion failed in ", Function, "(), file ", FileName, ", line ", Line, ":\n", Message);
+    return spw::LogSystem::FormatString("Debug assertion failed in ", Function, "(), file ", FileName, ", line ", Line, ":\n", Message);
 }
 
-String BasicPlatformDebug::FormatDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
+String BasicPlatformDebug::FormatDebugMessage(spw::LogLevel Severity,
                                               const Char*            Message,
                                               const char*            Function, // type of __FUNCTION__
                                               const char*            File,     // type of __FILE__
@@ -76,7 +76,7 @@ String BasicPlatformDebug::FormatDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
     return msg_ss.str();
 }
 
-const char* BasicPlatformDebug::TextColorToTextColorCode(DEBUG_MESSAGE_SEVERITY Severity, TextColor Color)
+const char* BasicPlatformDebug::TextColorToTextColorCode(spw::LogLevel Severity, TextColor Color)
 {
     switch (Color)
     {
@@ -84,22 +84,22 @@ const char* BasicPlatformDebug::TextColorToTextColorCode(DEBUG_MESSAGE_SEVERITY 
         {
             switch (Severity)
             {
-                case DEBUG_MESSAGE_SEVERITY_INFO:
-                    return TextColorCode::Default;
+                case spw::LogLevel::Info:
+                    return spw::LoggerColors::UnifiedColors::TextColorCode::Default;
 
-                case DEBUG_MESSAGE_SEVERITY_WARNING:
-                    return TextColorCode::Yellow;
+                case spw::LogLevel::Warn:
+                    return spw::LoggerColors::UnifiedColors::TextColorCode::Yellow;
 
-                case DEBUG_MESSAGE_SEVERITY_ERROR:
-                case DEBUG_MESSAGE_SEVERITY_FATAL_ERROR:
-                    return TextColorCode::Red;
+                case spw::LogLevel::Error:
+                case spw::LogLevel::Critical:
+                    return spw::LoggerColors::UnifiedColors::TextColorCode::Red;
 
                 default:
-                    return TextColorCode::Default;
+                    return spw::LoggerColors::UnifiedColors::TextColorCode::Default;
             }
         }
 #define TEX_COLOR_TO_CODE(Color) \
-    case TextColor::Color: return TextColorCode::Color
+    case TextColor::Color: return spw::LoggerColors::UnifiedColors::TextColorCode::Color
 
             TEX_COLOR_TO_CODE(Default);
 
@@ -122,7 +122,7 @@ const char* BasicPlatformDebug::TextColorToTextColorCode(DEBUG_MESSAGE_SEVERITY 
 #undef TEX_COLOR_TO_CODE
 
         default:
-            return TextColorCode::Default;
+            return spw::LoggerColors::UnifiedColors::TextColorCode::Default;
     }
 }
 

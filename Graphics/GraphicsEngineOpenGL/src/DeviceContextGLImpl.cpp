@@ -1564,13 +1564,13 @@ void DeviceContextGLImpl::FinishFrame()
 
 void DeviceContextGLImpl::FinishCommandList(ICommandList** ppCommandList)
 {
-    DG_LOG_ERROR("Deferred contexts are not supported in OpenGL mode");
+    LOG_ERROR("Deferred contexts are not supported in OpenGL mode");
 }
 
 void DeviceContextGLImpl::ExecuteCommandLists(UInt32               NumCommandLists,
                                               ICommandList* const* ppCommandLists)
 {
-    DG_LOG_ERROR("Deferred contexts are not supported in OpenGL mode");
+    LOG_ERROR("Deferred contexts are not supported in OpenGL mode");
 }
 
 void DeviceContextGLImpl::EnqueueSignal(IFence* pFence, UInt64 Value)

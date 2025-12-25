@@ -26,7 +26,7 @@
  */
 
 #include "UWPDebug.hpp"
-#include "FormatString.hpp"
+#include "Primitives.h"
 #include <csignal>
 
 #include "WinHPreface.h"
@@ -41,11 +41,11 @@ void WindowsStoreDebug::AssertionFailed(const Char* Message, const char* Functio
     String AssertionFailedMessage = FormatAssertionFailedMessage(Message, Function, File, Line);
     if (DebugMessageCallback)
     {
-        DebugMessageCallback(DEBUG_MESSAGE_SEVERITY_ERROR, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
+        DebugMessageCallback(Error, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
     }
     else
     {
-        OutputDebugMessage(DEBUG_MESSAGE_SEVERITY_ERROR, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
+        OutputDebugMessage(Error, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
     }
 
     if (GetBreakOnError())
@@ -81,7 +81,7 @@ void WindowsStoreDebug::AssertionFailed(const Char* Message, const char* Functio
     }
 }
 
-void WindowsStoreDebug::OutputDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
+void WindowsStoreDebug::OutputDebugMessage(spw::LogLevel Severity,
                                            const Char*            Message,
                                            const char*            Function,
                                            const char*            File,
@@ -97,7 +97,7 @@ void DebugAssertionFailed(const Char* Message, const char* Function, const char*
     WindowsStoreDebug ::AssertionFailed(Message, Function, File, Line);
 }
 
-static void OutputDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
+static void OutputDebugMessage(spw::LogLevel Severity,
                                const Char*            Message,
                                const char*            Function,
                                const char*            File,

@@ -312,7 +312,7 @@ void TextureUploaderD3D11::InternalData::Execute(ID3D11DeviceContext*    pd3d11N
                             }
                             else
                             {
-                                DG_LOG_ERROR("Unknown DX error when mapping staging texture: ", hr);
+                                LOG_ERROR("Unknown DX error when mapping staging texture: ", hr);
                             }
                         }
                     }

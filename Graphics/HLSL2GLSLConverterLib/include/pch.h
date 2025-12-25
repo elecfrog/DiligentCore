@@ -39,7 +39,7 @@
 #include <unordered_set>
 #include <algorithm>
 
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "PlatformDefinitions.h"
 #include "RefCntAutoPtr.hpp"
 #include "DebugUtilities.hpp"

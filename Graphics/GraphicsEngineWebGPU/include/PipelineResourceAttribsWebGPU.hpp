@@ -157,6 +157,6 @@ public:
         return ComputeHash(BindingIndex, ArraySize, EntryType, BindGroup, ImtblSamplerAssigned);
     }
 };
-ASSERT_SIZEOF(PipelineResourceAttribsWebGPU, 16, "The struct is used in serialization and must be tightly packed");
+SPW_ASSERT_SIZEOF(PipelineResourceAttribsWebGPU, 16, "The struct is used in serialization and must be tightly packed");
 
 } // namespace Diligent

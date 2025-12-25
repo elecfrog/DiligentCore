@@ -169,7 +169,7 @@ DynamicMemoryManagerWebGPU::Page DynamicMemoryManagerWebGPU::GetPage(size_t Size
 
     if (m_CurrentOffset + PageSize > m_BufferSize)
     {
-        DG_LOG_ERROR("Requested dynamic allocation size ", m_CurrentOffset + PageSize, " exceeds maximum dynamic memory size ", m_BufferSize, ". The app should increase dynamic heap size.");
+        LOG_ERROR("Requested dynamic allocation size ", m_CurrentOffset + PageSize, " exceeds maximum dynamic memory size ", m_BufferSize, ". The app should increase dynamic heap size.");
         return Page{};
     }
 

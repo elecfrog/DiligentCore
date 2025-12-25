@@ -63,7 +63,7 @@ public:
         Other.m_Size       = 0;
         Other.m_Hash.store(0);
 
-        ASSERT_SIZEOF64(*this, 32, "Please handle new members here");
+        SPW_ASSERT_SIZEOF(*this, 32, "Please handle new members here");
     }
 
     SerializedData& operator=(SerializedData&& Rhs) noexcept;

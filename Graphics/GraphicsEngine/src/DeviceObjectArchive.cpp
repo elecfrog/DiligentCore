@@ -34,6 +34,8 @@
 #include "DataBlobImpl.hpp"
 #include "PSOSerializer.hpp"
 
+#include <iomanip>
+
 namespace Diligent
 {
 
@@ -87,7 +89,7 @@ struct ArchiveSerializer
 
     bool SerializeHeader(ConstQual<ArchiveHeader>& Header) const
     {
-        ASSERT_SIZEOF64(Header, 24, "Please handle new members here");
+        SPW_ASSERT_SIZEOF(Header, 24, "Please handle new members here");
         // NB: this must match header deserialization in DeviceObjectArchive::Deserialize
         return Ser(Header.MagicNumber, Header.Version, Header.APIVersion, Header.ContentVersion, Header.GitHash);
     }
@@ -191,7 +193,7 @@ bool DeviceObjectArchive::Deserialize(const CreateInfo& CI) noexcept
 
     // NB: this must match header serialization in DeviceObjectArchive::SerializeHeader
     ArchiveHeader Header;
-    ASSERT_SIZEOF64(Header, 24, "Please handle new members here");
+    SPW_ASSERT_SIZEOF(Header, 24, "Please handle new members here");
     CHECK_ARCHIVE(ArchiveReader.Ser(Header.MagicNumber), "Failed to read device object archive header magic number.");
 
     CHECK_ARCHIVE(Header.MagicNumber == HeaderMagicNumber, "Invalid device object archive header.");

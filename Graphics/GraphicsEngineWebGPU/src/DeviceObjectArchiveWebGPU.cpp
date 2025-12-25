@@ -38,7 +38,7 @@ bool PRSSerializerWebGPU<Mode>::SerializeInternalData(
     ConstQual<PipelineResourceSignatureInternalDataWebGPU>& InternalData,
     DynamicLinearAllocator*                                 Allocator)
 {
-    ASSERT_SIZEOF64(InternalData, 40, "Did you add a new member to PipelineResourceSignatureInternalDataWebGPU? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(InternalData, 40, "Did you add a new member to PipelineResourceSignatureInternalDataWebGPU? Please add serialization here.");
 
     return PRSSerializer<Mode>::template SerializeInternalData<PipelineResourceSignatureInternalDataWebGPU>(Ser, InternalData, Allocator);
 }

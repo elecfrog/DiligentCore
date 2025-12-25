@@ -123,7 +123,7 @@
 
 #include "GLStubs.h"
 
-#include "Errors.hpp"
+#include "Primitives.h"
 
 #include "PlatformDefinitions.h"
 #include "RefCntAutoPtr.hpp"
@@ -139,7 +139,7 @@
         auto err = glGetError();                                                                                         \
         if (err != GL_NO_ERROR)                                                                                          \
         {                                                                                                                \
-            LogError<false>(/*IsFatal=*/false, __FUNCTION__, __FILE__, __LINE__, __VA_ARGS__, "\nGL Error Code: ", err); \
+            spw::LogSystem::Log(spw::LogLevel::Error, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__, "\nGL Error Code: ", err); \
             UNEXPECTED("Error");                                                                                         \
         }                                                                                                                \
     } while (false)
@@ -149,7 +149,7 @@
     {                                                                                                                   \
         auto err = glGetError();                                                                                        \
         if (err != GL_NO_ERROR)                                                                                         \
-            LogError<true>(/*IsFatal=*/false, __FUNCTION__, __FILE__, __LINE__, __VA_ARGS__, "\nGL Error Code: ", err); \
+            spw::LogSystem::Log(spw::LogLevel::Error, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__, "\nGL Error Code: ", err); \
     } while (false)
 
 #ifdef DILIGENT_DEVELOPMENT

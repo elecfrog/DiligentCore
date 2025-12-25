@@ -85,7 +85,7 @@ public:
     {
 #ifdef DILIGENT_DEVELOPMENT
         if (this->m_Desc.ViewType != TEXTURE_VIEW_SHADER_RESOURCE)
-            DG_LOG_ERROR("Texture view \"", this->m_Desc.Name, "\": a sampler can be attached to a shader resource view only. The view type is ", GetTexViewTypeLiteralName(this->m_Desc.ViewType));
+            LOG_ERROR("Texture view \"", this->m_Desc.Name, "\": a sampler can be attached to a shader resource view only. The view type is ", GetTexViewTypeLiteralName(this->m_Desc.ViewType));
 #endif
         m_pSampler = pSampler;
     }

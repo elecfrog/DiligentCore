@@ -26,7 +26,7 @@
  */
 
 #include "AndroidFileSystem.hpp"
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "DebugUtilities.hpp"
 
 namespace Diligent

@@ -207,7 +207,7 @@ bool GLContext::InitEGLContext()
 #if DILIGENT_USE_OPENXR
     if (openxr_attribs_ && OpenXRRequiredGLESVersion > Version{static_cast<UInt32>(major_version_), static_cast<UInt32>(minor_version_)})
     {
-        DG_LOG_ERROR("OpenGLES version ", major_version_, '.', minor_version_, " does not meet minimum required version for OpenXR: ",
+        LOG_ERROR("OpenGLES version ", major_version_, '.', minor_version_, " does not meet minimum required version for OpenXR: ",
                   OpenXRRequiredGLESVersion.Major, '.', OpenXRRequiredGLESVersion.Minor);
     }
 #endif
@@ -415,7 +415,7 @@ void GLContext::UpdateScreenSize()
 
     if (CurrSurface == EGL_NO_SURFACE)
     {
-        DG_LOG_ERROR("Failed to attach to EGLSurface: no active surface");
+        LOG_ERROR("Failed to attach to EGLSurface: no active surface");
         return;
     }
 

@@ -433,7 +433,7 @@ TEST(PSOSerializerTest, SerializeGraphicsPSOCreateInfo)
             GraphicsPipeline.SmplDesc.Count   = Val(UInt8{0}, UInt8{64});
             GraphicsPipeline.SmplDesc.Quality = Val(UInt8{0}, UInt8{8});
 
-            ASSERT_SIZEOF64(GraphicsPipelineStateCreateInfo, 344, "Did you add a new member to GraphicsPipelineStateCreateInfo? Please add serialization test here.");
+            SPW_ASSERT_SIZEOF(GraphicsPipelineStateCreateInfo, 344, "Did you add a new member to GraphicsPipelineStateCreateInfo? Please add serialization test here.");
         }
 
         void Measure(Serializer<SerializerMode::Measure>& Ser, const GraphicsPipelineStateCreateInfo& CI, const TPRSNames& PRSNames)

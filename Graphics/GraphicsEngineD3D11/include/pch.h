@@ -73,7 +73,7 @@
 constexpr D3D_FEATURE_LEVEL D3D_FEATURE_LEVEL_12_2 = static_cast<D3D_FEATURE_LEVEL>(0xc200);
 #endif
 
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "RefCntAutoPtr.hpp"
 #include "DebugUtilities.hpp"
 #include "D3DErrors.hpp"

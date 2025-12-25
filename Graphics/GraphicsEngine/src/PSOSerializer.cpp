@@ -52,7 +52,7 @@ bool SerializeImmutableSampler(
                SampDesc.Desc.MinLOD,
                SampDesc.Desc.MaxLOD);
 
-    ASSERT_SIZEOF64(ImmutableSamplerDesc, 72, "Did you add a new member to ImmutableSamplerDesc? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(ImmutableSamplerDesc, 72, "Did you add a new member to ImmutableSamplerDesc? Please add serialization here.");
 }
 
 template <SerializerMode Mode>
@@ -87,8 +87,8 @@ bool PRSSerializer<Mode>::SerializeDesc(
 
     return Ser.SerializeArray(Allocator, Desc.ImmutableSamplers, Desc.NumImmutableSamplers, SerializeImmutableSampler<Mode>);
 
-    ASSERT_SIZEOF64(PipelineResourceSignatureDesc, 56, "Did you add a new member to PipelineResourceSignatureDesc? Please add serialization here.");
-    ASSERT_SIZEOF64(PipelineResourceDesc, 24, "Did you add a new member to PipelineResourceDesc? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(PipelineResourceSignatureDesc, 56, "Did you add a new member to PipelineResourceSignatureDesc? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(PipelineResourceDesc, 24, "Did you add a new member to PipelineResourceDesc? Please add serialization here.");
 }
 
 template <SerializerMode Mode>
@@ -135,8 +135,8 @@ bool PSOSerializer<Mode>::SerializeCreateInfo(
             return false;
     }
 
-    ASSERT_SIZEOF64(ShaderResourceVariableDesc, 16, "Did you add a new member to ShaderResourceVariableDesc? Please add serialization here.");
-    ASSERT_SIZEOF64(PipelineStateCreateInfo, 96, "Did you add a new member to PipelineStateCreateInfo? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(ShaderResourceVariableDesc, 16, "Did you add a new member to ShaderResourceVariableDesc? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(PipelineStateCreateInfo, 96, "Did you add a new member to PipelineStateCreateInfo? Please add serialization here.");
 
     return true;
 }
@@ -193,8 +193,8 @@ bool PSOSerializer<Mode>::SerializeCreateInfo(
 
     // Skip NodeMask
 
-    ASSERT_SIZEOF64(GraphicsPipelineStateCreateInfo, 344, "Did you add a new member to GraphicsPipelineStateCreateInfo? Please add serialization here.");
-    ASSERT_SIZEOF64(LayoutElement, 40, "Did you add a new member to LayoutElement? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(GraphicsPipelineStateCreateInfo, 344, "Did you add a new member to GraphicsPipelineStateCreateInfo? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(LayoutElement, 40, "Did you add a new member to LayoutElement? Please add serialization here.");
 }
 
 template <SerializerMode Mode>
@@ -206,7 +206,7 @@ bool PSOSerializer<Mode>::SerializeCreateInfo(
 {
     return SerializeCreateInfo(Ser, static_cast<ConstQual<PipelineStateCreateInfo>&>(CreateInfo), PRSNames, Allocator);
 
-    ASSERT_SIZEOF64(ComputePipelineStateCreateInfo, 104, "Did you add a new member to ComputePipelineStateCreateInfo? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(ComputePipelineStateCreateInfo, 104, "Did you add a new member to ComputePipelineStateCreateInfo? Please add serialization here.");
 }
 
 template <SerializerMode Mode>
@@ -224,7 +224,7 @@ bool PSOSerializer<Mode>::SerializeCreateInfo(
                CreateInfo.TilePipeline.SampleCount,
                CreateInfo.TilePipeline.RTVFormats);
 
-    ASSERT_SIZEOF64(TilePipelineStateCreateInfo, 128, "Did you add a new member to TilePipelineStateCreateInfo? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(TilePipelineStateCreateInfo, 128, "Did you add a new member to TilePipelineStateCreateInfo? Please add serialization here.");
 }
 
 template <SerializerMode Mode>
@@ -336,10 +336,10 @@ bool PSOSerializer<Mode>::SerializeCreateInfo(
                            });
     return res;
 
-    ASSERT_SIZEOF64(RayTracingPipelineStateCreateInfo, 168, "Did you add a new member to RayTracingPipelineStateCreateInfo? Please add serialization here.");
-    ASSERT_SIZEOF64(RayTracingGeneralShaderGroup, 16, "Did you add a new member to RayTracingGeneralShaderGroup? Please add serialization here.");
-    ASSERT_SIZEOF64(RayTracingTriangleHitShaderGroup, 24, "Did you add a new member to RayTracingTriangleHitShaderGroup? Please add serialization here.");
-    ASSERT_SIZEOF64(RayTracingProceduralHitShaderGroup, 32, "Did you add a new member to RayTracingProceduralHitShaderGroup? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(RayTracingPipelineStateCreateInfo, 168, "Did you add a new member to RayTracingPipelineStateCreateInfo? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(RayTracingGeneralShaderGroup, 16, "Did you add a new member to RayTracingGeneralShaderGroup? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(RayTracingTriangleHitShaderGroup, 24, "Did you add a new member to RayTracingTriangleHitShaderGroup? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(RayTracingProceduralHitShaderGroup, 32, "Did you add a new member to RayTracingProceduralHitShaderGroup? Please add serialization here.");
 }
 
 template <SerializerMode Mode>
@@ -425,12 +425,12 @@ bool RPSerializer<Mode>::SerializeDesc(
                            });
     return res;
 
-    ASSERT_SIZEOF64(RenderPassDesc, 56, "Did you add a new member to RenderPassDesc? Please add serialization here.");
-    ASSERT_SIZEOF64(SubpassDesc, 72, "Did you add a new member to SubpassDesc? Please add serialization here.");
-    ASSERT_SIZEOF(RenderPassAttachmentDesc, 16, "Did you add a new member to RenderPassAttachmentDesc? Please add serialization here.");
-    ASSERT_SIZEOF(SubpassDependencyDesc, 24, "Did you add a new member to SubpassDependencyDesc? Please add serialization here.");
-    ASSERT_SIZEOF(ShadingRateAttachment, 16, "Did you add a new member to ShadingRateAttachment? Please add serialization here.");
-    ASSERT_SIZEOF(AttachmentReference, 8, "Did you add a new member to AttachmentReference? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(RenderPassDesc, 56, "Did you add a new member to RenderPassDesc? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(SubpassDesc, 72, "Did you add a new member to SubpassDesc? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(RenderPassAttachmentDesc, 16, "Did you add a new member to RenderPassAttachmentDesc? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(SubpassDependencyDesc, 24, "Did you add a new member to SubpassDependencyDesc? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(ShadingRateAttachment, 16, "Did you add a new member to ShadingRateAttachment? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(AttachmentReference, 8, "Did you add a new member to AttachmentReference? Please add serialization here.");
 }
 
 template <SerializerMode Mode>
@@ -448,7 +448,7 @@ bool PSOSerializer<Mode>::SerializeAuxData(Serializer<Mode>&                Ser,
                                            DynamicLinearAllocator*          Allocator)
 {
     return Ser(AuxData.NoShaderReflection);
-    ASSERT_SIZEOF(SerializedPSOAuxData, 1, "Did you add a new member to SerializedPSOAuxData? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(SerializedPSOAuxData, 1, "Did you add a new member to SerializedPSOAuxData? Please add serialization here.");
 }
 
 template <SerializerMode Mode>
@@ -511,7 +511,7 @@ bool ShaderSerializer<Mode>::SerializeCI(Serializer<Mode>&            Ser,
 
     return SerializeBytecodeOrSource(Ser, CI);
 
-    ASSERT_SIZEOF64(ShaderCreateInfo, 152, "Did you add a new member to ShaderCreateInfo? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(ShaderCreateInfo, 152, "Did you add a new member to ShaderCreateInfo? Please add serialization here.");
 }
 
 template struct PSOSerializer<SerializerMode::Read>;

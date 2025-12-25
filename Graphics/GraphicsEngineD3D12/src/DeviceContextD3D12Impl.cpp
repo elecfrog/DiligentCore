@@ -1756,7 +1756,7 @@ void DeviceContextD3D12Impl::MapBuffer(IBuffer* pBuffer, MAP_TYPE MapType, MAP_F
 
                 if (pd3d12Resource != nullptr)
                 {
-                    DG_LOG_ERROR("Formatted buffers require actual Direct3D12 backing resource and cannot be suballocated "
+                    LOG_ERROR("Formatted buffers require actual Direct3D12 backing resource and cannot be suballocated "
                               "from dynamic heap. In current implementation, the entire contents of the backing buffer is updated when the buffer is unmapped. "
                               "As a consequence, the buffer cannot be mapped with MAP_FLAG_NO_OVERWRITE flag because updating the whole "
                               "buffer will overwrite regions that may still be in use by the GPU.");
@@ -1769,16 +1769,16 @@ void DeviceContextD3D12Impl::MapBuffer(IBuffer* pBuffer, MAP_TYPE MapType, MAP_F
         }
         else
         {
-            DG_LOG_ERROR("Only USAGE_DYNAMIC and USAGE_STAGING D3D12 buffers can be mapped for writing");
+            LOG_ERROR("Only USAGE_DYNAMIC and USAGE_STAGING D3D12 buffers can be mapped for writing");
         }
     }
     else if (MapType == MAP_READ_WRITE)
     {
-        DG_LOG_ERROR("MAP_READ_WRITE is not supported in D3D12");
+        LOG_ERROR("MAP_READ_WRITE is not supported in D3D12");
     }
     else
     {
-        DG_LOG_ERROR("Only MAP_WRITE_DISCARD and MAP_READ are currently implemented in D3D12");
+        LOG_ERROR("Only MAP_WRITE_DISCARD and MAP_READ are currently implemented in D3D12");
     }
 }
 
@@ -2264,7 +2264,7 @@ void DeviceContextD3D12Impl::MapTextureSubresource(ITexture*                 pTe
     {
         if (MapType != MAP_WRITE)
         {
-            DG_LOG_ERROR("USAGE_DYNAMIC textures can only be mapped for writing");
+            LOG_ERROR("USAGE_DYNAMIC textures can only be mapped for writing");
             MappedData = MappedTextureSubresource{};
             return;
         }

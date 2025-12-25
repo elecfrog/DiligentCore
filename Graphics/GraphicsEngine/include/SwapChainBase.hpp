@@ -34,7 +34,7 @@
 #include "DeviceContext.h"
 #include "SwapChain.h"
 #include "ObjectBase.hpp"
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "RefCntAutoPtr.hpp"
 
 namespace Diligent

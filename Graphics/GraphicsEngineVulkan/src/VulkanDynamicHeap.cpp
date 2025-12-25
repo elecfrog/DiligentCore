@@ -111,7 +111,7 @@ VulkanDynamicMemoryManager::VulkanDynamicMemoryManager(IMemoryAllocator&   Alloc
     err = LogicalDevice.BindBufferMemory(m_VkBuffer, m_BufferMemory, 0 /*offset*/);
     CHECK_VK_ERROR_AND_THROW(err, "Failed to bind buffer memory");
 
-    LOG_INFO_MESSAGE("GPU dynamic heap created. Total buffer size: ", FormatMemorySize(Size, 2));
+    LOG_INFO_MESSAGE("GPU dynamic heap created. Total buffer size: ", spw::LogSystem::FormatMemorySize(Size, 2));
 }
 
 void VulkanDynamicMemoryManager::Destroy()
@@ -131,8 +131,8 @@ VulkanDynamicMemoryManager::~VulkanDynamicMemoryManager()
     OffsetType Size = GetSize();
     LOG_INFO_MESSAGE("Dynamic memory manager usage stats:\n"
                      "                       Total size: ",
-                     FormatMemorySize(Size, 2),
-                     ". Peak allocated size: ", FormatMemorySize(m_TotalPeakSize, 2, Size),
+                     spw::LogSystem::FormatMemorySize(Size, 2),
+                     ". Peak allocated size: ", spw::LogSystem::FormatMemorySize(m_TotalPeakSize, 2, Size),
                      ". Peak utilization: ",
                      std::fixed, std::setprecision(1), static_cast<double>(m_TotalPeakSize) / static_cast<double>(std::max(Size, size_t{1})) * 100.0, '%');
 }
@@ -145,7 +145,7 @@ VulkanDynamicMemoryManager::MasterBlock VulkanDynamicMemoryManager::AllocateMast
 
     if (SizeInBytes > GetSize())
     {
-        DG_LOG_ERROR("Requested dynamic allocation size ", SizeInBytes,
+        LOG_ERROR("Requested dynamic allocation size ", SizeInBytes,
                   " exceeds maximum dynamic memory size ", GetSize(),
                   ". The app should increase dynamic heap size.");
         return MasterBlock{};
@@ -305,9 +305,9 @@ VulkanDynamicHeap::~VulkanDynamicHeap()
     LOG_INFO_MESSAGE(m_HeapName,
                      " usage stats:\n"
                      "                       Peak used/aligned/allocated size: ",
-                     FormatMemorySize(m_PeakUsedSize, 2, m_PeakAllocatedSize), " / ",
-                     FormatMemorySize(m_PeakAlignedSize, 2, m_PeakAllocatedSize), " / ",
-                     FormatMemorySize(m_PeakAllocatedSize, 2, m_PeakAllocatedSize),
+                     spw::LogSystem::FormatMemorySize(m_PeakUsedSize, 2, m_PeakAllocatedSize), " / ",
+                     spw::LogSystem::FormatMemorySize(m_PeakAlignedSize, 2, m_PeakAllocatedSize), " / ",
+                     spw::LogSystem::FormatMemorySize(m_PeakAllocatedSize, 2, m_PeakAllocatedSize),
                      " (", PeakAllocatedPages, (PeakAllocatedPages == 1 ? " page)" : " pages)"),
                      ". Peak efficiency (used/aligned): ", std::fixed, std::setprecision(1), static_cast<double>(m_PeakUsedSize) / static_cast<double>(std::max(m_PeakAlignedSize, 1U)) * 100.0, '%',
                      ". Peak utilization (used/allocated): ", std::fixed, std::setprecision(1), static_cast<double>(m_PeakUsedSize) / static_cast<double>(std::max(m_PeakAllocatedSize, 1U)) * 100.0, '%');

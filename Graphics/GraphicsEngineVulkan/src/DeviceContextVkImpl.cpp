@@ -628,7 +628,7 @@ void DeviceContextVkImpl::CommitVkVertexBuffers()
 {
 #ifdef DILIGENT_DEVELOPMENT
     if (m_NumVertexStreams < m_pPipelineState->GetNumBufferSlotsUsed())
-        DG_LOG_ERROR("Currently bound pipeline state '", m_pPipelineState->GetDesc().Name, "' expects ", m_pPipelineState->GetNumBufferSlotsUsed(), " input buffer slots, but only ", m_NumVertexStreams, " is bound");
+        LOG_ERROR("Currently bound pipeline state '", m_pPipelineState->GetDesc().Name, "' expects ", m_pPipelineState->GetNumBufferSlotsUsed(), " input buffer slots, but only ", m_NumVertexStreams, " is bound");
 #endif
     // Do not initialize array with zeros for performance reasons
     VkBuffer     vkVertexBuffers[MAX_BUFFER_SLOTS]; // = {}
@@ -2202,7 +2202,7 @@ void DeviceContextVkImpl::MapBuffer(IBuffer* pBuffer, MAP_TYPE MapType, MAP_FLAG
 
                 if (pBufferVk->m_VulkanBuffer != VK_NULL_HANDLE)
                 {
-                    DG_LOG_ERROR("Formatted or structured buffers require actual Vulkan backing resource and cannot be suballocated "
+                    LOG_ERROR("Formatted or structured buffers require actual Vulkan backing resource and cannot be suballocated "
                               "from dynamic heap. In current implementation, the entire contents of the backing buffer is updated when the buffer is unmapped. "
                               "As a consequence, the buffer cannot be mapped with MAP_FLAG_NO_OVERWRITE flag because updating the whole "
                               "buffer will overwrite regions that may still be in use by the GPU.");
@@ -2224,12 +2224,12 @@ void DeviceContextVkImpl::MapBuffer(IBuffer* pBuffer, MAP_TYPE MapType, MAP_FLAG
         }
         else
         {
-            DG_LOG_ERROR("Only USAGE_DYNAMIC, USAGE_STAGING and USAGE_UNIFIED Vulkan buffers can be mapped for writing");
+            LOG_ERROR("Only USAGE_DYNAMIC, USAGE_STAGING and USAGE_UNIFIED Vulkan buffers can be mapped for writing");
         }
     }
     else if (MapType == MAP_READ_WRITE)
     {
-        DG_LOG_ERROR("MAP_READ_WRITE is not supported in Vulkan backend");
+        LOG_ERROR("MAP_READ_WRITE is not supported in Vulkan backend");
     }
     else
     {
@@ -2696,7 +2696,7 @@ void DeviceContextVkImpl::MapTextureSubresource(ITexture*                 pTextu
     {
         if (MapType != MAP_WRITE)
         {
-            DG_LOG_ERROR("Dynamic textures can be mapped for writing only in Vulkan backend");
+            LOG_ERROR("Dynamic textures can be mapped for writing only in Vulkan backend");
             MappedData = MappedTextureSubresource{};
             return;
         }

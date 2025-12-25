@@ -15,7 +15,7 @@
 
 #include "VulkanUtilities/Debug.hpp"
 #include "VulkanUtilities/LogicalDevice.hpp"
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "DebugUtilities.hpp"
 #include <math/basic_math.hpp>
 #include "HashUtils.hpp"
@@ -52,22 +52,22 @@ VKAPI_ATTR VkBool32 VKAPI_CALL DebugMessengerCallback(VkDebugUtilsMessageSeverit
                                                       const VkDebugUtilsMessengerCallbackDataEXT* callbackData,
                                                       void*                                       userData)
 {
-    DEBUG_MESSAGE_SEVERITY MsgSeverity = DEBUG_MESSAGE_SEVERITY_INFO;
+    spw::LogLevel MsgSeverity = spw::LogLevel::Info;
     if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT)
     {
-        MsgSeverity = DEBUG_MESSAGE_SEVERITY_ERROR;
+        MsgSeverity = spw::LogLevel::Error;
     }
     else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT)
     {
-        MsgSeverity = DEBUG_MESSAGE_SEVERITY_WARNING;
+        MsgSeverity = spw::LogLevel::Warn;
     }
     else if (messageSeverity & (VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT))
     {
-        MsgSeverity = DEBUG_MESSAGE_SEVERITY_INFO;
+        MsgSeverity = spw::LogLevel::Info;
     }
     else
     {
-        MsgSeverity = DEBUG_MESSAGE_SEVERITY_INFO;
+        MsgSeverity = spw::LogLevel::Info;
     }
 
     if (callbackData->pMessageIdName != nullptr)
@@ -76,7 +76,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL DebugMessengerCallback(VkDebugUtilsMessageSeverit
         if (it != g_IgnoreMessages.end())
         {
             const int PrevMsgCount = it->second.fetch_add(1);
-            if (MsgSeverity == DEBUG_MESSAGE_SEVERITY_ERROR && PrevMsgCount == 0)
+            if (MsgSeverity == spw::LogLevel::Error && PrevMsgCount == 0)
             {
                 LOG_WARNING_MESSAGE("Vulkan Validation error '", callbackData->pMessageIdName, "' is being ignored. This may obfuscate a real issue.");
             }
@@ -163,18 +163,18 @@ VkBool32 VKAPI_PTR DebugReportCallback(
     const char*                pMessage,     // a null-terminated string detailing the trigger conditions.
     void*                      pUserData)
 {
-    DEBUG_MESSAGE_SEVERITY MsgSeverity = DEBUG_MESSAGE_SEVERITY_INFO;
+    spw::LogLevel MsgSeverity = spw::LogLevel::Info;
     if (flags & VK_DEBUG_REPORT_ERROR_BIT_EXT)
     {
-        MsgSeverity = DEBUG_MESSAGE_SEVERITY_ERROR;
+        MsgSeverity = spw::LogLevel::Error;
     }
     else if (flags & (VK_DEBUG_REPORT_WARNING_BIT_EXT | VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT))
     {
-        MsgSeverity = DEBUG_MESSAGE_SEVERITY_WARNING;
+        MsgSeverity = spw::LogLevel::Warn;
     }
     else if (flags & (VK_DEBUG_REPORT_INFORMATION_BIT_EXT | VK_DEBUG_REPORT_DEBUG_BIT_EXT))
     {
-        MsgSeverity = DEBUG_MESSAGE_SEVERITY_INFO;
+        MsgSeverity = spw::LogLevel::Info;
     }
 
     std::stringstream debugMessage;

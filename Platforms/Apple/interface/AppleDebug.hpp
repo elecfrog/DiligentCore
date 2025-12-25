@@ -38,7 +38,7 @@ struct AppleDebug : public BasicPlatformDebug
                                 const char* Function, // type of __FUNCTION__
                                 const char* File,     // type of __FILE__
                                 int         Line);
-    static void OutputDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
+    static void OutputDebugMessage(spw::LogLevel Severity,
                                    const Char*            Message,
                                    const char*            Function, // type of __FUNCTION__
                                    const char*            File,     // type of __FILE__

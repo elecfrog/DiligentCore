@@ -27,8 +27,7 @@
 
 #pragma once
 
-#include "../../../Primitives/interface/FormatString.hpp"
-#include "../../../Primitives/interface/Errors.hpp"
+#include "Primitives.h"
 #include "BasicPlatformDebug.hpp"
 
 #ifdef DILIGENT_DEBUG
@@ -38,7 +37,7 @@
 #    define ASSERTION_FAILED(Message, ...)                                                 \
         do                                                                                 \
         {                                                                                  \
-            auto msg = Diligent::FormatString(Message, ##__VA_ARGS__);                     \
+            auto msg = spw::LogSystem::FormatString(Message, ##__VA_ARGS__);                     \
             Diligent::DebugAssertionFailed(msg.c_str(), __FUNCTION__, __FILE__, __LINE__); \
         } while (false)
 

@@ -36,6 +36,8 @@
 #include "StringTools.hpp"
 #include "HashUtils.hpp"
 
+#include <iomanip>
+
 namespace Diligent
 {
 

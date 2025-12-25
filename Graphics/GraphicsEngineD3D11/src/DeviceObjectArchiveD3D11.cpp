@@ -38,7 +38,7 @@ bool PRSSerializerD3D11<Mode>::SerializeInternalData(
     ConstQual<PipelineResourceSignatureInternalDataD3D11>& InternalData,
     DynamicLinearAllocator*                                Allocator)
 {
-    ASSERT_SIZEOF64(InternalData, 40, "Did you add a new member to PipelineResourceSignatureInternalDataD3D11? Please add serialization here.");
+    SPW_ASSERT_SIZEOF(InternalData, 40, "Did you add a new member to PipelineResourceSignatureInternalDataD3D11? Please add serialization here.");
     return PRSSerializer<Mode>::template SerializeInternalData<PipelineResourceSignatureInternalDataD3D11>(Ser, InternalData, Allocator);
 }
 

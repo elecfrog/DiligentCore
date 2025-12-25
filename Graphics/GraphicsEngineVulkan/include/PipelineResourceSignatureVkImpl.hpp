@@ -56,7 +56,7 @@ struct ImmutableSamplerAttribsVk
     UInt32 DescrSet     = ~0u;
     UInt32 BindingIndex = ~0u;
 };
-ASSERT_SIZEOF(ImmutableSamplerAttribsVk, 8, "The struct is used in serialization and must be tightly packed");
+SPW_ASSERT_SIZEOF(ImmutableSamplerAttribsVk, 8, "The struct is used in serialization and must be tightly packed");
 
 struct PipelineResourceSignatureInternalDataVk : PipelineResourceSignatureInternalData<PipelineResourceAttribsVk, ImmutableSamplerAttribsVk>
 {

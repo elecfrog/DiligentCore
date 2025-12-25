@@ -281,9 +281,7 @@ void DynamicBuffer::CommitResize(IRenderDevice*  pDevice,
             else
                 ResizeDefaultBuffer(pContext);
 
-            LOG_INFO_MESSAGE("Dynamic buffer: expanding dynamic buffer '", m_Desc.Name, "' from ",
-                             FormatMemorySize(m_Desc.Size, 1), " to ", FormatMemorySize(m_PendingSize, 1),
-                             ". Version: ", GetVersion());
+            LOG_INFO_MESSAGE("Dynamic buffer: expanding dynamic buffer '", m_Desc.Name, "' from ", spw::LogSystem::FormatMemorySize(m_Desc.Size, 1), " to ", spw::LogSystem::FormatMemorySize(m_PendingSize, 1), ". Version: ", GetVersion());
 
             m_Desc.Size = m_PendingSize;
         }

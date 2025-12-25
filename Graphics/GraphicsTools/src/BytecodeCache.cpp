@@ -215,7 +215,7 @@ void CreateBytecodeCache(const BytecodeCacheCreateInfo& CreateInfo,
     }
     catch (...)
     {
-        DG_LOG_ERROR("Failed to create the bytecode cache");
+        LOG_ERROR("Failed to create the bytecode cache");
     }
 }
 

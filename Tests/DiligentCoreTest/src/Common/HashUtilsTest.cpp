@@ -391,7 +391,7 @@ private:
 template <template <typename T> class HelperType>
 void TestSamplerDescHasher()
 {
-    ASSERT_SIZEOF64(SamplerDesc, 56, "Did you add new members to SamplerDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(SamplerDesc, 56, "Did you add new members to SamplerDesc? Please update the tests.");
     DEFINE_HELPER(SamplerDesc, true);
 
     TEST_RANGE(MinFilter, static_cast<FILTER_TYPE>(1), FILTER_TYPE_NUM_FILTERS);
@@ -430,7 +430,7 @@ TEST(Common_HashUtils, SamplerDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestStencilOpDescHasher()
 {
-    ASSERT_SIZEOF(StencilOpDesc, 4, "Did you add new members to StencilOpDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(StencilOpDesc, 4, "Did you add new members to StencilOpDesc? Please update the tests.");
     DEFINE_HELPER(StencilOpDesc, true);
 
     TEST_RANGE(StencilFailOp, static_cast<STENCIL_OP>(1), STENCIL_OP_NUM_OPS);
@@ -453,7 +453,7 @@ TEST(Common_HashUtils, StencilOpDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestDepthStencilStateDescHasher()
 {
-    ASSERT_SIZEOF(DepthStencilStateDesc, 14, "Did you add new members to StencilOpDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(DepthStencilStateDesc, 14, "Did you add new members to StencilOpDesc? Please update the tests.");
     DEFINE_HELPER(DepthStencilStateDesc, true);
 
     TEST_BOOL(DepthEnable);
@@ -478,7 +478,7 @@ TEST(Common_HashUtils, DepthStencilStateDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestRasterizerStateDesc()
 {
-    ASSERT_SIZEOF(RasterizerStateDesc, 20, "Did you add new members to RasterizerStateDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(RasterizerStateDesc, 20, "Did you add new members to RasterizerStateDesc? Please update the tests.");
     DEFINE_HELPER(RasterizerStateDesc, true);
 
     TEST_RANGE(FillMode, static_cast<FILL_MODE>(1), FILL_MODE_NUM_MODES);
@@ -506,7 +506,7 @@ TEST(Common_HashUtils, RasterizerStateDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestBlendStateDescHasher()
 {
-    ASSERT_SIZEOF(BlendStateDesc, 82, "Did you add new members to RasterizerStateDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(BlendStateDesc, 82, "Did you add new members to RasterizerStateDesc? Please update the tests.");
     DEFINE_HELPER(BlendStateDesc, true);
 
     TEST_BOOL(AlphaToCoverageEnable);
@@ -541,7 +541,7 @@ TEST(Common_HashUtils, BlendStateDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestTextureViewDescHasher()
 {
-    ASSERT_SIZEOF64(TextureViewDesc, 40, "Did you add new members to TextureViewDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(TextureViewDesc, 40, "Did you add new members to TextureViewDesc? Please update the tests.");
     DEFINE_HELPER(TextureViewDesc);
 
     TEST_RANGE(ViewType, static_cast<TEXTURE_VIEW_TYPE>(1), TEXTURE_VIEW_NUM_VIEWS);
@@ -573,7 +573,7 @@ TEST(Common_HashUtils, TextureViewDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestSampleDescHasher()
 {
-    ASSERT_SIZEOF(SampleDesc, 2, "Did you add new members to SampleDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(SampleDesc, 2, "Did you add new members to SampleDesc? Please update the tests.");
     DEFINE_HELPER(SampleDesc);
 
     TEST_RANGE(Count, UInt8{2u}, UInt8{255u});
@@ -594,7 +594,7 @@ TEST(Common_HashUtils, SampleDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestShaderResourceVariableDescHasher()
 {
-    ASSERT_SIZEOF64(ShaderResourceVariableDesc, 16, "Did you add new members to ShaderResourceVariableDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(ShaderResourceVariableDesc, 16, "Did you add new members to ShaderResourceVariableDesc? Please update the tests.");
     DEFINE_HELPER(ShaderResourceVariableDesc);
 
     TEST_STRINGS(Name, "Name1", "Name2", "Name3");
@@ -617,7 +617,7 @@ TEST(Common_HashUtils, ShaderResourceVariableXXH128Hasher)
 template <template <typename T> class HelperType>
 void TestImmutableSamplerDescHasher()
 {
-    ASSERT_SIZEOF64(ImmutableSamplerDesc, 16 + sizeof(SamplerDesc), "Did you add new members to ImmutableSamplerDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(ImmutableSamplerDesc, 16 + sizeof(SamplerDesc), "Did you add new members to ImmutableSamplerDesc? Please update the tests.");
     DEFINE_HELPER(ImmutableSamplerDesc);
 
     TEST_FLAGS(ShaderStages, static_cast<SHADER_TYPE>(1), SHADER_TYPE_LAST);
@@ -638,7 +638,7 @@ TEST(Common_HashUtils, ImmutableSamplerDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestPipelineResourceDescHasher()
 {
-    ASSERT_SIZEOF64(PipelineResourceDesc, 24, "Did you add new members to PipelineResourceDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(PipelineResourceDesc, 24, "Did you add new members to PipelineResourceDesc? Please update the tests.");
     DEFINE_HELPER(PipelineResourceDesc);
     Helper.Get().VarType = static_cast<SHADER_RESOURCE_VARIABLE_TYPE>(0);
 
@@ -664,7 +664,7 @@ TEST(Common_HashUtils, PipelineResourceDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestPipelineResourceLayoutDescHasher()
 {
-    ASSERT_SIZEOF64(PipelineResourceLayoutDesc, 40, "Did you add new members to PipelineResourceLayoutDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(PipelineResourceLayoutDesc, 40, "Did you add new members to PipelineResourceLayoutDesc? Please update the tests.");
     DEFINE_HELPER(PipelineResourceLayoutDesc);
 
     TEST_RANGE(DefaultVariableType, static_cast<SHADER_RESOURCE_VARIABLE_TYPE>(1), SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES);
@@ -703,7 +703,7 @@ TEST(Common_HashUtils, PipelineResourceLayoutDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestRenderPassAttachmentDescHasher()
 {
-    ASSERT_SIZEOF(RenderPassAttachmentDesc, 16, "Did you add new members to RenderPassAttachmentDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(RenderPassAttachmentDesc, 16, "Did you add new members to RenderPassAttachmentDesc? Please update the tests.");
     DEFINE_HELPER(RenderPassAttachmentDesc);
 
     TEST_RANGE(Format, static_cast<TEXTURE_FORMAT>(1), TEX_FORMAT_NUM_FORMATS);
@@ -730,7 +730,7 @@ TEST(Common_HashUtils, RenderPassAttachmentXXH128Hasher)
 template <template <typename T> class HelperType>
 void TestAttachmentReferenceHasher()
 {
-    ASSERT_SIZEOF(AttachmentReference, 8, "Did you add new members to AttachmentReference? Please update the tests.");
+    SPW_ASSERT_SIZEOF(AttachmentReference, 8, "Did you add new members to AttachmentReference? Please update the tests.");
     DEFINE_HELPER(AttachmentReference);
 
     TEST_RANGE(AttachmentIndex, 1u, 8u);
@@ -751,7 +751,7 @@ TEST(Common_HashUtils, AttachmentReferenceXXH128Hash)
 template <template <typename T> class HelperType>
 void TestShadingRateAttachmentHasher()
 {
-    ASSERT_SIZEOF(ShadingRateAttachment, 16, "Did you add new members to ShadingRateAttachment? Please update the tests.");
+    SPW_ASSERT_SIZEOF(ShadingRateAttachment, 16, "Did you add new members to ShadingRateAttachment? Please update the tests.");
     DEFINE_HELPER(ShadingRateAttachment);
 
     TEST_VALUE(Attachment, AttachmentReference{1, RESOURCE_STATE_RENDER_TARGET});
@@ -775,7 +775,7 @@ TEST(Common_HashUtils, ShadingRateAttachmentXXH128Hash)
 template <template <typename T> class HelperType>
 void TestSubpassDescHasher()
 {
-    ASSERT_SIZEOF64(SubpassDesc, 72, "Did you add new members to SubpassDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(SubpassDesc, 72, "Did you add new members to SubpassDesc? Please update the tests.");
     DEFINE_HELPER(SubpassDesc);
 
     constexpr AttachmentReference Inputs[] =
@@ -838,7 +838,7 @@ TEST(Common_HashUtils, SubpassDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestSubpassDependencyDescHasher()
 {
-    ASSERT_SIZEOF64(SubpassDependencyDesc, 24, "Did you add new members to SubpassDependencyDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(SubpassDependencyDesc, 24, "Did you add new members to SubpassDependencyDesc? Please update the tests.");
     DEFINE_HELPER(SubpassDependencyDesc);
 
     TEST_RANGE(SrcSubpass, 1u, 32u);
@@ -863,7 +863,7 @@ TEST(Common_HashUtils, SubpassDependencyDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestRenderPassDescHasher()
 {
-    ASSERT_SIZEOF64(RenderPassDesc, 56, "Did you add new members to RenderPassDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(RenderPassDesc, 56, "Did you add new members to RenderPassDesc? Please update the tests.");
     DEFINE_HELPER(RenderPassDesc);
 
     RenderPassAttachmentDesc Attachments[3];
@@ -899,7 +899,7 @@ TEST(Common_HashUtils, RenderPassDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestLayoutElementHasher()
 {
-    ASSERT_SIZEOF64(LayoutElement, 40, "Did you add new members to LayoutElement? Please update the tests.");
+    SPW_ASSERT_SIZEOF(LayoutElement, 40, "Did you add new members to LayoutElement? Please update the tests.");
     DEFINE_HELPER(LayoutElement);
     Helper.Get().ValueType = VT_UNDEFINED;
     Helper.Get().Frequency = INPUT_ELEMENT_FREQUENCY_UNDEFINED;
@@ -930,7 +930,7 @@ TEST(Common_HashUtils, LayoutElementXXH128Hash)
 template <template <typename T> class HelperType>
 void TestInputLayoutDescHasher()
 {
-    ASSERT_SIZEOF64(InputLayoutDesc, 16, "Did you add new members to InputLayoutDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(InputLayoutDesc, 16, "Did you add new members to InputLayoutDesc? Please update the tests.");
     DEFINE_HELPER(InputLayoutDesc);
 
     constexpr LayoutElement LayoutElems[] =
@@ -1057,7 +1057,7 @@ TEST(Common_HashUtils, PipelineStateDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestPipelineResourceSignatureDescHasher()
 {
-    ASSERT_SIZEOF64(PipelineResourceSignatureDesc, 56, "Did you add new members to PipelineResourceSignatureDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(PipelineResourceSignatureDesc, 56, "Did you add new members to PipelineResourceSignatureDesc? Please update the tests.");
     DEFINE_HELPER(PipelineResourceSignatureDesc);
 
     constexpr PipelineResourceDesc Resources[] = //
@@ -1101,7 +1101,7 @@ TEST(Common_HashUtils, PipelineResourceSignatureDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestShaderDescHasher()
 {
-    ASSERT_SIZEOF64(ShaderDesc, 24, "Did you add new members to ShaderDesc? Please update the tests.");
+    SPW_ASSERT_SIZEOF(ShaderDesc, 24, "Did you add new members to ShaderDesc? Please update the tests.");
     DEFINE_HELPER(ShaderDesc);
 
     TEST_FLAGS(ShaderType, static_cast<SHADER_TYPE>(1), SHADER_TYPE_LAST);
@@ -1123,7 +1123,7 @@ TEST(Common_HashUtils, ShaderDescXXH128Hash)
 template <template <typename T> class HelperType>
 void TestVersionHasher()
 {
-    ASSERT_SIZEOF64(Version, 8, "Did you add new members to Version? Please update the tests.");
+    SPW_ASSERT_SIZEOF(Version, 8, "Did you add new members to Version? Please update the tests.");
     DEFINE_HELPER(Version);
 
     TEST_RANGE(Minor, 1u, 1024u);
@@ -1142,7 +1142,7 @@ TEST(Common_HashUtils, VersionXXH128Hash)
 
 TEST(XXH128HasherTest, ShaderCreateInfo)
 {
-    ASSERT_SIZEOF64(ShaderCreateInfo, 152, "Did you add new members to ShaderCreateInfo? Please update the tests.");
+    SPW_ASSERT_SIZEOF(ShaderCreateInfo, 152, "Did you add new members to ShaderCreateInfo? Please update the tests.");
     XXH128HasherTestHelper<ShaderCreateInfo> Helper{"ShaderCreateInfo"};
 
     TEST_STRINGS(Source, "Source1", "Source2", "Source3");

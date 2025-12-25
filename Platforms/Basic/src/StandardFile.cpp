@@ -27,7 +27,7 @@
 
 #include "StandardFile.hpp"
 #include "DebugUtilities.hpp"
-#include "Errors.hpp"
+#include "Primitives.h"
 
 namespace Diligent
 {

@@ -30,7 +30,7 @@
 /// Defines Diligent::IArchiverFactory interface and related structures.
 
 #include "../../../Primitives/interface/Object.h"
-#include "../../../Primitives/interface/DebugOutput.h"
+#include "Primitives.h"
 #include "SerializationDevice.h"
 
 namespace Diligent
@@ -307,8 +307,7 @@ struct IArchiverFactory : public IObject
     /// Sets a user-provided debug message callback.
 
     /// \param [in]     MessageCallback - Debug message callback function to use instead of the default one.
-    virtual void METHOD(SetMessageCallback)(
-        DebugMessageCallbackType MessageCallback) const = 0;
+    virtual void METHOD(SetMessageCallback)(spw::DebugMessageCallbackType MessageCallback) const = 0;
 
     /// Sets whether to break program execution on assertion failure.
 

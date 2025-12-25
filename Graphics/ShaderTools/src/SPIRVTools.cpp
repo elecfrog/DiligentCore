@@ -42,40 +42,40 @@ void SpvOptimizerMessageConsumer(
     const char* message)
 {
     const char*            LevelText   = "message";
-    DEBUG_MESSAGE_SEVERITY MsgSeverity = DEBUG_MESSAGE_SEVERITY_INFO;
+    spw::LogLevel MsgSeverity = spw::LogLevel::Info;
     switch (level)
     {
         case SPV_MSG_FATAL:
             // Unrecoverable error due to environment (e.g. out of memory)
             LevelText   = "fatal error";
-            MsgSeverity = DEBUG_MESSAGE_SEVERITY_FATAL_ERROR;
+            MsgSeverity = spw::LogLevel::Critical;
             break;
 
         case SPV_MSG_INTERNAL_ERROR:
             // Unrecoverable error due to SPIRV-Tools internals (e.g. unimplemented feature)
             LevelText   = "internal error";
-            MsgSeverity = DEBUG_MESSAGE_SEVERITY_ERROR;
+            MsgSeverity = spw::LogLevel::Error;
             break;
 
         case SPV_MSG_ERROR:
             // Normal error due to user input.
             LevelText   = "error";
-            MsgSeverity = DEBUG_MESSAGE_SEVERITY_ERROR;
+            MsgSeverity = spw::LogLevel::Error;
             break;
 
         case SPV_MSG_WARNING:
             LevelText   = "warning";
-            MsgSeverity = DEBUG_MESSAGE_SEVERITY_WARNING;
+            MsgSeverity = spw::LogLevel::Warn;
             break;
 
         case SPV_MSG_INFO:
             LevelText   = "info";
-            MsgSeverity = DEBUG_MESSAGE_SEVERITY_INFO;
+            MsgSeverity = spw::LogLevel::Info;
             break;
 
         case SPV_MSG_DEBUG:
             LevelText   = "debug";
-            MsgSeverity = DEBUG_MESSAGE_SEVERITY_INFO;
+            MsgSeverity = spw::LogLevel::Info;
             break;
     }
 

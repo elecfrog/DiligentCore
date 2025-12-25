@@ -63,7 +63,7 @@ public:
 
     bool IsAllocated() const { return BindingIndex != ~0u; }
 };
-ASSERT_SIZEOF(ImmutableSamplerAttribsWebGPU, 16, "The struct is used in serialization and must be tightly packed");
+SPW_ASSERT_SIZEOF(ImmutableSamplerAttribsWebGPU, 16, "The struct is used in serialization and must be tightly packed");
 
 struct PipelineResourceSignatureInternalDataWebGPU : PipelineResourceSignatureInternalData<PipelineResourceAttribsWebGPU, ImmutableSamplerAttribsWebGPU>
 {

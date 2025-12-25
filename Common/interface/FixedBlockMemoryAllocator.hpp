@@ -36,7 +36,7 @@
 #include <vector>
 #include <cstring>
 #include <memory>
-#include "../../Primitives/interface/Errors.hpp"
+#include "Primitives.h"
 #include "../../Primitives/interface/MemoryAllocator.h"
 #include "STDAllocator.hpp"
 

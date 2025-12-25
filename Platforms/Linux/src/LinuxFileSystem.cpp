@@ -38,7 +38,7 @@
 #include <errno.h>
 
 #include "../interface/LinuxFileSystem.hpp"
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "DebugUtilities.hpp"
 #include "../../Basic/include/SearchRecursive.inl"
 

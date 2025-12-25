@@ -217,7 +217,7 @@ GLObjectWrappers::GLFrameBufferObj FBOCache::CreateFBO(GLContextState&    Contex
     if (Status != GL_FRAMEBUFFER_COMPLETE)
     {
         const Char* StatusString = GetFramebufferStatusString(Status);
-        DG_LOG_ERROR("Framebuffer is incomplete. FB status: ", StatusString);
+        LOG_ERROR("Framebuffer is incomplete. FB status: ", StatusString);
         UNEXPECTED("Framebuffer is incomplete");
     }
 #endif
@@ -381,7 +381,7 @@ const GLObjectWrappers::GLFrameBufferObj& FBOCache::GetFBO(TextureBaseGL*       
         if (Status != GL_FRAMEBUFFER_COMPLETE)
         {
             const Char* StatusString = GetFramebufferStatusString(Status);
-            DG_LOG_ERROR("Read framebuffer is incomplete. FB status: ", StatusString);
+            LOG_ERROR("Read framebuffer is incomplete. FB status: ", StatusString);
             UNEXPECTED("Read framebuffer is incomplete");
         }
 #endif

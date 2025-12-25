@@ -281,7 +281,7 @@ void ReloadablePipelineState::Create(RenderStateCacheImpl*          pStateCache,
     }
     catch (...)
     {
-        DG_LOG_ERROR("Failed to create reloadable pipeline state '", (CreateInfo.PSODesc.Name ? CreateInfo.PSODesc.Name : "<unnamed>"), "'.");
+        LOG_ERROR("Failed to create reloadable pipeline state '", (CreateInfo.PSODesc.Name ? CreateInfo.PSODesc.Name : "<unnamed>"), "'.");
     }
 }
 

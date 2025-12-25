@@ -691,7 +691,7 @@ String HLSL2GLSLConverterImpl::ConversionStream::PrintTokenContext(IteratorType&
     {                                                                    \
         if (!(Condition))                                                \
         {                                                                \
-            auto err = FormatString(__VA_ARGS__);                        \
+            auto err = spw::LogSystem::FormatString(__VA_ARGS__);                        \
             LOG_ERROR_AND_THROW(err, "\n", PrintTokenContext(Token, 4)); \
         }                                                                \
     } while (false)

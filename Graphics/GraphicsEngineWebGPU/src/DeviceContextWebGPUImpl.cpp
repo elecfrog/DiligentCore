@@ -604,7 +604,7 @@ void DeviceContextWebGPUImpl::UpdateBuffer(IBuffer*                       pBuffe
         const UploadMemoryManagerWebGPU::Allocation UploadAlloc = AllocateUploadMemory(StaticCast<size_t>(Size));
         if (!UploadAlloc)
         {
-            DG_LOG_ERROR("Failed to allocate upload memory for buffer update");
+            LOG_ERROR("Failed to allocate upload memory for buffer update");
             return;
         }
 
@@ -739,7 +739,7 @@ void DeviceContextWebGPUImpl::MapBuffer(IBuffer*  pBuffer,
                 DynAllocation = AllocateDynamicMemory(StaticCast<size_t>(BuffDesc.Size), pBufferWebGPU->GetAlignment());
                 if (!DynAllocation)
                 {
-                    DG_LOG_ERROR("Failed to allocate dynamic memory for buffer mapping. Try increasing the size of the dynamic heap in engine EngineWebGPUCreateInfo");
+                    LOG_ERROR("Failed to allocate dynamic memory for buffer mapping. Try increasing the size of the dynamic heap in engine EngineWebGPUCreateInfo");
                     return;
                 }
                 pMappedData = DynAllocation.pData;
@@ -748,7 +748,7 @@ void DeviceContextWebGPUImpl::MapBuffer(IBuffer*  pBuffer,
             {
                 if (pBufferWebGPU->m_wgpuBuffer != nullptr)
                 {
-                    DG_LOG_ERROR("Formatted or structured buffers require actual WebGPU backing resource and cannot be suballocated "
+                    LOG_ERROR("Formatted or structured buffers require actual WebGPU backing resource and cannot be suballocated "
                               "from dynamic heap. In current implementation, the entire contents of the backing buffer is updated when the buffer is unmapped. "
                               "As a consequence, the buffer cannot be mapped with MAP_FLAG_NO_OVERWRITE flag because updating the whole "
                               "buffer will overwrite regions that may still be in use by the GPU.");
@@ -760,12 +760,12 @@ void DeviceContextWebGPUImpl::MapBuffer(IBuffer*  pBuffer,
         }
         else
         {
-            DG_LOG_ERROR("Only USAGE_DYNAMIC or USAGE_STAGING WebGPU buffers can be mapped for writing");
+            LOG_ERROR("Only USAGE_DYNAMIC or USAGE_STAGING WebGPU buffers can be mapped for writing");
         }
     }
     else if (MapType == MAP_READ_WRITE)
     {
-        DG_LOG_ERROR("MAP_READ_WRITE is not supported in WebGPU backend");
+        LOG_ERROR("MAP_READ_WRITE is not supported in WebGPU backend");
     }
     else
     {
@@ -807,7 +807,7 @@ void DeviceContextWebGPUImpl::UnmapBuffer(IBuffer* pBuffer, MAP_TYPE MapType)
         }
         else
         {
-            DG_LOG_ERROR("Only USAGE_DYNAMIC, USAGE_STAGING WebGPU buffers can be mapped for writing");
+            LOG_ERROR("Only USAGE_DYNAMIC, USAGE_STAGING WebGPU buffers can be mapped for writing");
         }
     }
 }
@@ -951,7 +951,7 @@ void DeviceContextWebGPUImpl::UpdateTexture(ITexture*                      pText
         const UploadMemoryManagerWebGPU::Allocation UploadAlloc = AllocateUploadMemory(StaticCast<size_t>(CopyInfo.MemorySize));
         if (!UploadAlloc)
         {
-            DG_LOG_ERROR("Failed to allocate upload memory for texture update");
+            LOG_ERROR("Failed to allocate upload memory for texture update");
             return;
         }
 
@@ -1079,7 +1079,7 @@ void DeviceContextWebGPUImpl::CopyTexture(const CopyTextureAttribs& CopyAttribs)
         WebGPUResourceBase::StagingBufferInfo* pSrcStagingBuffer = pSrcTexWebGPU->GetStagingBuffer();
         if (pSrcStagingBuffer == nullptr)
         {
-            DG_LOG_ERROR("Unable to get staging buffer info from the source texture");
+            LOG_ERROR("Unable to get staging buffer info from the source texture");
             return;
         }
 
@@ -1129,7 +1129,7 @@ void DeviceContextWebGPUImpl::CopyTexture(const CopyTextureAttribs& CopyAttribs)
         WebGPUResourceBase::StagingBufferInfo* pDstStagingBuffer = pDstTexWebGPU->GetStagingBuffer();
         if (pDstStagingBuffer == nullptr)
         {
-            DG_LOG_ERROR("Unable to get staging buffer info from the destination texture");
+            LOG_ERROR("Unable to get staging buffer info from the destination texture");
             return;
         }
 
@@ -1210,7 +1210,7 @@ void DeviceContextWebGPUImpl::MapTextureSubresource(ITexture*                 pT
         const UploadMemoryManagerWebGPU::Allocation UploadAlloc = AllocateUploadMemory(StaticCast<size_t>(CopyInfo.MemorySize), TextureWebGPUImpl::ImageCopyBufferRowAlignment);
         if (!UploadAlloc)
         {
-            DG_LOG_ERROR("Failed to allocate upload memory for texture mapping");
+            LOG_ERROR("Failed to allocate upload memory for texture mapping");
             MappedData = MappedTextureSubresource{};
             return;
         }
@@ -1322,12 +1322,12 @@ void DeviceContextWebGPUImpl::UnmapTextureSubresource(ITexture* pTexture, UInt32
 
 void DeviceContextWebGPUImpl::FinishCommandList(ICommandList** ppCommandList)
 {
-    DG_LOG_ERROR("Deferred contexts are not supported in WebGPU");
+    LOG_ERROR("Deferred contexts are not supported in WebGPU");
 }
 
 void DeviceContextWebGPUImpl::ExecuteCommandLists(UInt32 NumCommandLists, ICommandList* const* ppCommandLists)
 {
-    DG_LOG_ERROR("Deferred contexts are not supported in WebGPU");
+    LOG_ERROR("Deferred contexts are not supported in WebGPU");
 }
 
 void DeviceContextWebGPUImpl::EnqueueSignal(IFence* pFence, UInt64 Value)
@@ -2196,7 +2196,7 @@ void DeviceContextWebGPUImpl::CommitVertexBuffers(WGPURenderPassEncoder CmdEncod
 
 #ifdef DILIGENT_DEVELOPMENT
     if (m_NumVertexStreams < m_pPipelineState->GetNumBufferSlotsUsed())
-        DG_LOG_ERROR("Currently bound pipeline state '", m_pPipelineState->GetDesc().Name, "' expects ", m_pPipelineState->GetNumBufferSlotsUsed(), " input buffer slots, but only ", m_NumVertexStreams, " is bound");
+        LOG_ERROR("Currently bound pipeline state '", m_pPipelineState->GetDesc().Name, "' expects ", m_pPipelineState->GetNumBufferSlotsUsed(), " input buffer slots, but only ", m_NumVertexStreams, " is bound");
 #endif
 
     m_EncoderState.HasDynamicVertexBuffers = false;

@@ -70,7 +70,7 @@ MemoryPage::MemoryPage(MemoryManager&        ParentMemoryMgr,
         MemFlagInfo.flags = AllocateFlags;
     }
 
-    std::string MemoryName = Diligent::FormatString("Device memory page. Size: ", Diligent::FormatMemorySize(PageSize, 2), ", type: ", MemoryTypeIndex);
+    std::string MemoryName = spw::LogSystem::FormatString("Device memory page. Size: ", spw::LogSystem::FormatMemorySize(PageSize, 2), ", type: ", MemoryTypeIndex);
     m_VkMemory             = ParentMemoryMgr.m_LogicalDevice.AllocateDeviceMemory(MemAlloc, MemoryName.c_str());
 
     if (IsHostVisible)
@@ -193,8 +193,8 @@ MemoryAllocation MemoryManager::Allocate(VkDeviceSize Size, VkDeviceSize Alignme
 
         auto it = m_Pages.emplace(PageIdx, MemoryPage{*this, PageSize, MemoryTypeIndex, HostVisible, AllocateFlags});
         LOG_INFO_MESSAGE("MemoryManager '", m_MgrName, "': created new ", (HostVisible ? "host-visible" : "device-local"),
-                         " page. (", Diligent::FormatMemorySize(PageSize, 2), ", type idx: ", MemoryTypeIndex,
-                         "). Current allocated size: ", Diligent::FormatMemorySize(m_CurrAllocatedSize[stat_ind], 2));
+                         " page. (", spw::LogSystem::FormatMemorySize(PageSize, 2), ", type idx: ", MemoryTypeIndex,
+                         "). Current allocated size: ", spw::LogSystem::FormatMemorySize(m_CurrAllocatedSize[stat_ind], 2));
         OnNewPageCreated(it->second);
         Allocation = it->second.Allocate(Size, Alignment);
         DEV_CHECK_ERR(Allocation.Page != nullptr, "Failed to allocate new memory page");
@@ -230,9 +230,9 @@ void MemoryManager::ShrinkMemory()
             VkDeviceSize PageSize = Page.GetPageSize();
             m_CurrAllocatedSize[IsHostVisible ? 1 : 0] -= PageSize;
             LOG_INFO_MESSAGE("MemoryManager '", m_MgrName, "': destroying ", (IsHostVisible ? "host-visible" : "device-local"),
-                             " page (", Diligent::FormatMemorySize(PageSize, 2),
+                             " page (", spw::LogSystem::FormatMemorySize(PageSize, 2),
                              "). Current allocated size: ",
-                             Diligent::FormatMemorySize(m_CurrAllocatedSize[IsHostVisible ? 1 : 0], 2));
+                             spw::LogSystem::FormatMemorySize(m_CurrAllocatedSize[IsHostVisible ? 1 : 0], 2));
             OnPageDestroy(Page);
             m_Pages.erase(curr_it);
         }
@@ -250,12 +250,12 @@ MemoryManager::~MemoryManager()
     VkDeviceSize PeakHostVisiblePages = m_PeakAllocatedSize[1] / m_HostVisiblePageSize;
     LOG_INFO_MESSAGE("MemoryManager '", m_MgrName, "' stats:\n"
                                                    "                       Peak used/allocated device-local memory size: ",
-                     Diligent::FormatMemorySize(m_PeakUsedSize[0], 2, m_PeakAllocatedSize[0]), " / ",
-                     Diligent::FormatMemorySize(m_PeakAllocatedSize[0], 2, m_PeakAllocatedSize[0]),
+                     spw::LogSystem::FormatMemorySize(m_PeakUsedSize[0], 2, m_PeakAllocatedSize[0]), " / ",
+                     spw::LogSystem::FormatMemorySize(m_PeakAllocatedSize[0], 2, m_PeakAllocatedSize[0]),
                      " (", PeakDeviceLocalPages, (PeakDeviceLocalPages == 1 ? " page)" : " pages)"),
                      "\n                       Peak used/allocated host-visible memory size: ",
-                     Diligent::FormatMemorySize(m_PeakUsedSize[1], 2, m_PeakAllocatedSize[1]), " / ",
-                     Diligent::FormatMemorySize(m_PeakAllocatedSize[1], 2, m_PeakAllocatedSize[1]),
+                     spw::LogSystem::FormatMemorySize(m_PeakUsedSize[1], 2, m_PeakAllocatedSize[1]), " / ",
+                     spw::LogSystem::FormatMemorySize(m_PeakAllocatedSize[1], 2, m_PeakAllocatedSize[1]),
                      " (", PeakHostVisiblePages, (PeakHostVisiblePages == 1 ? " page)" : " pages)"));
 
     for (auto it = m_Pages.begin(); it != m_Pages.end(); ++it)

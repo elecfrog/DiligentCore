@@ -26,7 +26,7 @@
  */
 
 #include "Win32FileSystem.hpp"
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "../../Common/interface/StringTools.hpp"
 #include "../../Basic/include/SearchRecursive.inl"
 

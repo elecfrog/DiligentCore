@@ -351,7 +351,7 @@ Instance::Instance(const CreateInfo& CI) :
                    << VK_API_VERSION_MINOR(Layer.specVersion) << '.'
                    << VK_API_VERSION_PATCH(Layer.specVersion);
             }
-            LOG_INFO_MESSAGE("Available Vulkan instance layers: ", ss.str());
+            LOG_INFO("Available Vulkan instance layers: ", ss.str());
         }
         else
         {

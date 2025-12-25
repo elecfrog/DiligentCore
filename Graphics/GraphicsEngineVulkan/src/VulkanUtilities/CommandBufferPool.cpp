@@ -28,7 +28,7 @@
 
 #include "VulkanUtilities/CommandBufferPool.hpp"
 #include "VulkanUtilities/Debug.hpp"
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "DebugUtilities.hpp"
 #include "VulkanErrors.hpp"
 

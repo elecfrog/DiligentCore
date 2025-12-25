@@ -156,6 +156,6 @@ public:
         return ComputeHash(Register, Space, SRBRootIndex, SRBOffsetFromTableStart, ImtblSamplerAssigned, RootParamType);
     }
 };
-ASSERT_SIZEOF(PipelineResourceAttribsD3D12, 16, "The struct is used in serialization and must be tightly packed");
+SPW_ASSERT_SIZEOF(PipelineResourceAttribsD3D12, 16, "The struct is used in serialization and must be tightly packed");
 
 } // namespace Diligent

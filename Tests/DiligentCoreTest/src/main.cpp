@@ -28,7 +28,7 @@
 #include "gtest/gtest-spi.h"
 
 #include "TestingEnvironment.hpp"
-#include "Errors.hpp"
+#include "Primitives.h"
 
 #if PLATFORM_WIN32
 #    include <crtdbg.h>

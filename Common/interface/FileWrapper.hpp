@@ -29,7 +29,7 @@
 
 #include <vector>
 
-#include "../../Primitives/interface/Errors.hpp"
+#include "Primitives.h"
 #include "../../Primitives/interface/DataBlob.h"
 #include "../../Platforms/Basic/interface/DebugUtilities.hpp"
 #include "../../Platforms/interface/FileSystem.hpp"

@@ -2,25 +2,18 @@ cmake_minimum_required (VERSION 3.10)
 
 project(Diligent-Primitives CXX)
 
-set(SOURCE
-    src/DebugOutput.cpp
-    src/test.cpp
-)
-
 set(INTERFACE
     interface/CheckBaseStructAlignment.hpp
     interface/CommonDefinitions.h
     interface/DataBlob.h
-    interface/DebugOutput.h
     interface/DefineInterfaceHelperMacros.h
     interface/FlagEnum.h
-    interface/Errors.hpp
     interface/FileStream.h
-    interface/FormatString.hpp
     interface/InterfaceID.h
     interface/MemoryAllocator.h
     interface/Object.h
     interface/ReferenceCounters.h
+    interface/Primitives.h
 )
 
 # This should be an interface library. However, CMake does not show
@@ -39,7 +32,6 @@ PUBLIC
 )
 
 source_group("interface" FILES ${INTERFACE})
-source_group("src" FILES ${SOURCE})
 
 set_target_properties(Diligent-Primitives PROPERTIES
     FOLDER DiligentCore

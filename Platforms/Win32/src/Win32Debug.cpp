@@ -26,7 +26,7 @@
  */
 
 #include "Win32Debug.hpp"
-#include "FormatString.hpp"
+#include "Primitives.h"
 #include <csignal>
 #include <iostream>
 #include <Windows.h>
@@ -74,11 +74,11 @@ void WindowsDebug::AssertionFailed(const Char* Message, const char* Function, co
     String AssertionFailedMessage = FormatAssertionFailedMessage(Message, Function, File, Line);
     if (DebugMessageCallback)
     {
-        DebugMessageCallback(DEBUG_MESSAGE_SEVERITY_ERROR, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
+        DebugMessageCallback(spw::LogLevel::Error, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
     }
     else
     {
-        OutputDebugMessage(DEBUG_MESSAGE_SEVERITY_ERROR, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
+        OutputDebugMessage(spw::LogLevel::Error, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
     }
 
     if (GetBreakOnError())
@@ -113,7 +113,7 @@ void WindowsDebug::AssertionFailed(const Char* Message, const char* Function, co
     }
 }
 
-void WindowsDebug::OutputDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
+void WindowsDebug::OutputDebugMessage(spw::LogLevel Severity,
                                       const Char*            Message,
                                       const char*            Function,
                                       const char*            File,
@@ -126,7 +126,7 @@ void WindowsDebug::OutputDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
     OutputDebugStringA(msg.c_str());
 
     const auto* ColorCode = TextColorToTextColorCode(Severity, Color);
-    std::cout << ColorCode << msg << TextColorCode::Default;
+    std::cout << ColorCode << msg << spw::LoggerColors::UnifiedColors::TextColorCode::Default;
 }
 
 void DebugAssertionFailed(const Char* Message, const char* Function, const char* File, int Line)
@@ -134,7 +134,7 @@ void DebugAssertionFailed(const Char* Message, const char* Function, const char*
     WindowsDebug::AssertionFailed(Message, Function, File, Line);
 }
 
-static void OutputDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
+static void OutputDebugMessage(spw::LogLevel Severity,
                                const Char*            Message,
                                const char*            Function,
                                const char*            File,
@@ -143,6 +143,6 @@ static void OutputDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
     return WindowsDebug::OutputDebugMessage(Severity, Message, Function, File, Line, TextColor::Auto);
 }
 
-DebugMessageCallbackType DebugMessageCallback = OutputDebugMessage;
+spw::DebugMessageCallbackType DebugMessageCallback = OutputDebugMessage;
 
 } // namespace Diligent

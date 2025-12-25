@@ -32,7 +32,7 @@
 #include <cstring>
 #include <algorithm>
 
-#include "../../Primitives/interface/Errors.hpp"
+#include "Primitives.h"
 #include "../../Platforms/Basic/interface/DebugUtilities.hpp"
 #include "../../Graphics/GraphicsEngine/interface/Sampler.h"
 #include "../../Graphics/GraphicsEngine/interface/RasterizerState.h"
@@ -62,14 +62,14 @@ struct HashCombiner<HasherType, SamplerDesc> : HashCombinerBase<HasherType>
 
     void operator()(const SamplerDesc& SamDesc) const
     {
-        ASSERT_SIZEOF(SamDesc.MinFilter, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(SamDesc.MagFilter, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(SamDesc.MipFilter, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(SamDesc.AddressU, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(SamDesc.AddressV, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(SamDesc.AddressW, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(SamDesc.Flags, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(SamDesc.BorderColor, 16, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(SamDesc.MinFilter, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(SamDesc.MagFilter, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(SamDesc.MipFilter, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(SamDesc.AddressU, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(SamDesc.AddressV, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(SamDesc.AddressW, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(SamDesc.Flags, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(SamDesc.BorderColor, 16, "Hash logic below may be incorrect.");
 
         // Ignore Name. This is consistent with the operator==
         this->m_Hasher( // SamDesc.Name,
@@ -90,7 +90,7 @@ struct HashCombiner<HasherType, SamplerDesc> : HashCombinerBase<HasherType>
             SamDesc.BorderColor[3],
             SamDesc.MinLOD,
             SamDesc.MaxLOD);
-        ASSERT_SIZEOF64(SamDesc, 56, "Did you add new members to SamplerDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(SamDesc, 56, "Did you add new members to SamplerDesc? Please handle them here.");
     }
 };
 
@@ -105,10 +105,10 @@ struct HashCombiner<HasherType, StencilOpDesc> : HashCombinerBase<HasherType>
     void operator()(const StencilOpDesc& StOpDesc) const
     {
         // clang-format off
-        ASSERT_SIZEOF(StOpDesc.StencilFailOp,      1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(StOpDesc.StencilDepthFailOp, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(StOpDesc.StencilPassOp,      1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(StOpDesc.StencilFunc,        1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(StOpDesc.StencilFailOp,      1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(StOpDesc.StencilDepthFailOp, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(StOpDesc.StencilPassOp,      1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(StOpDesc.StencilFunc,        1, "Hash logic below may be incorrect.");
 
         this->m_Hasher(
             ((static_cast<uint32_t>(StOpDesc.StencilFailOp)      <<  0u) |
@@ -116,7 +116,7 @@ struct HashCombiner<HasherType, StencilOpDesc> : HashCombinerBase<HasherType>
              (static_cast<uint32_t>(StOpDesc.StencilPassOp)      << 16u) |
              (static_cast<uint32_t>(StOpDesc.StencilFunc)        << 24u)));
         // clang-format on
-        ASSERT_SIZEOF(StOpDesc, 4, "Did you add new members to StencilOpDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(StOpDesc, 4, "Did you add new members to StencilOpDesc? Please handle them here.");
     }
 };
 
@@ -130,9 +130,9 @@ struct HashCombiner<HasherType, DepthStencilStateDesc> : HashCombinerBase<Hasher
 
     void operator()(const DepthStencilStateDesc& DSSDesc) const
     {
-        ASSERT_SIZEOF(DSSDesc.DepthFunc, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(DSSDesc.StencilReadMask, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(DSSDesc.StencilWriteMask, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(DSSDesc.DepthFunc, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(DSSDesc.StencilReadMask, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(DSSDesc.StencilWriteMask, 1, "Hash logic below may be incorrect.");
         // clang-format off
         this->m_Hasher(
             (((DSSDesc.DepthEnable      ? 1u : 0u) << 0u) |
@@ -144,7 +144,7 @@ struct HashCombiner<HasherType, DepthStencilStateDesc> : HashCombinerBase<Hasher
             DSSDesc.FrontFace,
             DSSDesc.BackFace);
         // clang-format on
-        ASSERT_SIZEOF(DSSDesc, 14, "Did you add new members to DepthStencilStateDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(DSSDesc, 14, "Did you add new members to DepthStencilStateDesc? Please handle them here.");
     }
 };
 
@@ -158,8 +158,8 @@ struct HashCombiner<HasherType, RasterizerStateDesc> : HashCombinerBase<HasherTy
 
     void operator()(const RasterizerStateDesc& RSDesc) const
     {
-        ASSERT_SIZEOF(RSDesc.FillMode, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(RSDesc.CullMode, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(RSDesc.FillMode, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(RSDesc.CullMode, 1, "Hash logic below may be incorrect.");
 
         // clang-format off
         this->m_Hasher(
@@ -173,7 +173,7 @@ struct HashCombiner<HasherType, RasterizerStateDesc> : HashCombinerBase<HasherTy
             RSDesc.DepthBiasClamp,
             RSDesc.SlopeScaledDepthBias);
         // clang-format on
-        ASSERT_SIZEOF(RSDesc, 20, "Did you add new members to RasterizerStateDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(RSDesc, 20, "Did you add new members to RasterizerStateDesc? Please handle them here.");
     }
 };
 
@@ -191,14 +191,14 @@ struct HashCombiner<HasherType, BlendStateDesc> : HashCombinerBase<HasherType>
         {
             const RenderTargetBlendDesc& rt = BSDesc.RenderTargets[i];
 
-            ASSERT_SIZEOF(rt.SrcBlend, 1, "Hash logic below may be incorrect.");
-            ASSERT_SIZEOF(rt.DestBlend, 1, "Hash logic below may be incorrect.");
-            ASSERT_SIZEOF(rt.BlendOp, 1, "Hash logic below may be incorrect.");
-            ASSERT_SIZEOF(rt.SrcBlendAlpha, 1, "Hash logic below may be incorrect.");
-            ASSERT_SIZEOF(rt.DestBlendAlpha, 1, "Hash logic below may be incorrect.");
-            ASSERT_SIZEOF(rt.BlendOpAlpha, 1, "Hash logic below may be incorrect.");
-            ASSERT_SIZEOF(rt.LogicOp, 1, "Hash logic below may be incorrect.");
-            ASSERT_SIZEOF(rt.RenderTargetWriteMask, 1, "Hash logic below may be incorrect.");
+            SPW_ASSERT_SIZEOF(rt.SrcBlend, 1, "Hash logic below may be incorrect.");
+            SPW_ASSERT_SIZEOF(rt.DestBlend, 1, "Hash logic below may be incorrect.");
+            SPW_ASSERT_SIZEOF(rt.BlendOp, 1, "Hash logic below may be incorrect.");
+            SPW_ASSERT_SIZEOF(rt.SrcBlendAlpha, 1, "Hash logic below may be incorrect.");
+            SPW_ASSERT_SIZEOF(rt.DestBlendAlpha, 1, "Hash logic below may be incorrect.");
+            SPW_ASSERT_SIZEOF(rt.BlendOpAlpha, 1, "Hash logic below may be incorrect.");
+            SPW_ASSERT_SIZEOF(rt.LogicOp, 1, "Hash logic below may be incorrect.");
+            SPW_ASSERT_SIZEOF(rt.RenderTargetWriteMask, 1, "Hash logic below may be incorrect.");
 
             // clang-format off
             this->m_Hasher(
@@ -218,7 +218,7 @@ struct HashCombiner<HasherType, BlendStateDesc> : HashCombinerBase<HasherType>
             (((BSDesc.AlphaToCoverageEnable ? 1u : 0u) << 0u) |
              ((BSDesc.IndependentBlendEnable ? 1u : 0u) << 1u)));
 
-        ASSERT_SIZEOF(BSDesc, 82, "Did you add new members to BlendStateDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(BSDesc, 82, "Did you add new members to BlendStateDesc? Please handle them here.");
     }
 };
 
@@ -232,12 +232,12 @@ struct HashCombiner<HasherType, TextureViewDesc> : HashCombinerBase<HasherType>
 
     void operator()(const TextureViewDesc& TexViewDesc) const
     {
-        ASSERT_SIZEOF(TexViewDesc.ViewType, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(TexViewDesc.TextureDim, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(TexViewDesc.Format, 2, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(TexViewDesc.AccessFlags, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(TexViewDesc.Flags, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(TexViewDesc.Swizzle, 4, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(TexViewDesc.ViewType, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(TexViewDesc.TextureDim, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(TexViewDesc.Format, 2, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(TexViewDesc.AccessFlags, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(TexViewDesc.Flags, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(TexViewDesc.Swizzle, 4, "Hash logic below may be incorrect.");
 
         // Ignore Name. This is consistent with the operator==
         this->m_Hasher(
@@ -251,7 +251,7 @@ struct HashCombiner<HasherType, TextureViewDesc> : HashCombinerBase<HasherType>
             ((static_cast<uint32_t>(TexViewDesc.AccessFlags) << 0u) |
              (static_cast<uint32_t>(TexViewDesc.Flags) << 8u)),
             TexViewDesc.Swizzle.AsUint32());
-        ASSERT_SIZEOF64(TexViewDesc, 40, "Did you add new members to TextureViewDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(TexViewDesc, 40, "Did you add new members to TextureViewDesc? Please handle them here.");
     }
 };
 
@@ -265,13 +265,13 @@ struct HashCombiner<HasherType, SampleDesc> : HashCombinerBase<HasherType>
 
     void operator()(const SampleDesc& SmplDesc) const
     {
-        ASSERT_SIZEOF(SmplDesc.Count, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(SmplDesc.Quality, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(SmplDesc.Count, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(SmplDesc.Quality, 1, "Hash logic below may be incorrect.");
 
         this->m_Hasher(
             ((static_cast<uint32_t>(SmplDesc.Count) << 0u) |
              (static_cast<uint32_t>(SmplDesc.Quality) << 8u)));
-        ASSERT_SIZEOF(SmplDesc, 2, "Did you add new members to SampleDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(SmplDesc, 2, "Did you add new members to SampleDesc? Please handle them here.");
     }
 };
 
@@ -285,15 +285,15 @@ struct HashCombiner<HasherType, ShaderResourceVariableDesc> : HashCombinerBase<H
 
     void operator()(const ShaderResourceVariableDesc& VarDesc) const
     {
-        ASSERT_SIZEOF(VarDesc.Type, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(VarDesc.Flags, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(VarDesc.Type, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(VarDesc.Flags, 1, "Hash logic below may be incorrect.");
 
         this->m_Hasher(
             VarDesc.Name,
             VarDesc.ShaderStages,
             ((static_cast<uint32_t>(VarDesc.Type) << 0u) |
              (static_cast<uint32_t>(VarDesc.Flags) << 8u)));
-        ASSERT_SIZEOF64(VarDesc, 16, "Did you add new members to ShaderResourceVariableDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(VarDesc, 16, "Did you add new members to ShaderResourceVariableDesc? Please handle them here.");
     }
 };
 
@@ -308,7 +308,7 @@ struct HashCombiner<HasherType, ImmutableSamplerDesc> : HashCombinerBase<HasherT
     void operator()(const ImmutableSamplerDesc& SamDesc) const
     {
         this->m_Hasher(SamDesc.ShaderStages, SamDesc.SamplerOrTextureName, SamDesc.Desc);
-        ASSERT_SIZEOF64(SamDesc, 16 + sizeof(SamplerDesc), "Did you add new members to ImmutableSamplerDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(SamDesc, 16 + sizeof(SamplerDesc), "Did you add new members to ImmutableSamplerDesc? Please handle them here.");
     }
 };
 
@@ -322,9 +322,9 @@ struct HashCombiner<HasherType, PipelineResourceDesc> : HashCombinerBase<HasherT
 
     void operator()(const PipelineResourceDesc& ResDesc) const
     {
-        ASSERT_SIZEOF(ResDesc.ResourceType, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(ResDesc.VarType, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(ResDesc.Flags, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(ResDesc.ResourceType, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(ResDesc.VarType, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(ResDesc.Flags, 1, "Hash logic below may be incorrect.");
 
         this->m_Hasher(
             ResDesc.Name,
@@ -333,7 +333,7 @@ struct HashCombiner<HasherType, PipelineResourceDesc> : HashCombinerBase<HasherT
             ((static_cast<uint32_t>(ResDesc.ResourceType) << 0u) |
              (static_cast<uint32_t>(ResDesc.VarType) << 8u) |
              (static_cast<uint32_t>(ResDesc.Flags) << 16u)));
-        ASSERT_SIZEOF64(ResDesc, 24, "Did you add new members to PipelineResourceDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(ResDesc, 24, "Did you add new members to PipelineResourceDesc? Please handle them here.");
     }
 };
 
@@ -373,7 +373,7 @@ struct HashCombiner<HasherType, PipelineResourceLayoutDesc> : HashCombinerBase<H
             VERIFY_EXPR(LayoutDesc.NumImmutableSamplers == 0);
         }
 
-        ASSERT_SIZEOF64(LayoutDesc, 40, "Did you add new members to PipelineResourceDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(LayoutDesc, 40, "Did you add new members to PipelineResourceDesc? Please handle them here.");
     }
 };
 
@@ -388,12 +388,12 @@ struct HashCombiner<HasherType, RenderPassAttachmentDesc> : HashCombinerBase<Has
 
     void operator()(const RenderPassAttachmentDesc& Desc) const
     {
-        ASSERT_SIZEOF(Desc.Format, 2, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Desc.SampleCount, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Desc.LoadOp, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Desc.StoreOp, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Desc.StencilLoadOp, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Desc.StencilStoreOp, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.Format, 2, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.SampleCount, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.LoadOp, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.StoreOp, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.StencilLoadOp, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.StencilStoreOp, 1, "Hash logic below may be incorrect.");
 
         this->m_Hasher(
             ((static_cast<uint32_t>(Desc.Format) << 0u) |
@@ -404,7 +404,7 @@ struct HashCombiner<HasherType, RenderPassAttachmentDesc> : HashCombinerBase<Has
              (static_cast<uint32_t>(Desc.StencilStoreOp) << 16u)),
             Desc.InitialState,
             Desc.FinalState);
-        ASSERT_SIZEOF(Desc, 16, "Did you add new members to RenderPassAttachmentDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(Desc, 16, "Did you add new members to RenderPassAttachmentDesc? Please handle them here.");
     }
 };
 
@@ -419,7 +419,7 @@ struct HashCombiner<HasherType, AttachmentReference> : HashCombinerBase<HasherTy
     void operator()(const AttachmentReference& Ref) const
     {
         this->m_Hasher(Ref.AttachmentIndex, Ref.State);
-        ASSERT_SIZEOF(Ref, 8, "Did you add new members to AttachmentReference? Please handle them here.");
+        SPW_ASSERT_SIZEOF(Ref, 8, "Did you add new members to AttachmentReference? Please handle them here.");
     }
 };
 
@@ -433,9 +433,9 @@ struct HashCombiner<HasherType, ShadingRateAttachment> : HashCombinerBase<Hasher
 
     void operator()(const ShadingRateAttachment& SRA) const
     {
-        ASSERT_SIZEOF(SRA.TileSize, 8, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(SRA.TileSize, 8, "Hash logic below may be incorrect.");
         this->m_Hasher(SRA.Attachment, SRA.TileSize[0], SRA.TileSize[1]);
-        ASSERT_SIZEOF(SRA, 16, "Did you add new members to AttachmentReference? Please handle them here.");
+        SPW_ASSERT_SIZEOF(SRA, 16, "Did you add new members to AttachmentReference? Please handle them here.");
     }
 };
 
@@ -496,7 +496,7 @@ struct HashCombiner<HasherType, SubpassDesc> : HashCombinerBase<HasherType>
         if (Subpass.pShadingRateAttachment)
             this->m_Hasher(*Subpass.pShadingRateAttachment);
 
-        ASSERT_SIZEOF64(Subpass, 72, "Did you add new members to SubpassDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(Subpass, 72, "Did you add new members to SubpassDesc? Please handle them here.");
     }
 };
 
@@ -517,7 +517,7 @@ struct HashCombiner<HasherType, SubpassDependencyDesc> : HashCombinerBase<Hasher
             Dep.DstStageMask,
             Dep.SrcAccessMask,
             Dep.DstAccessMask);
-        ASSERT_SIZEOF(Dep, 24, "Did you add new members to SubpassDependencyDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(Dep, 24, "Did you add new members to SubpassDependencyDesc? Please handle them here.");
     }
 };
 
@@ -567,7 +567,7 @@ struct HashCombiner<HasherType, RenderPassDesc> : HashCombinerBase<HasherType>
             VERIFY_EXPR(RP.DependencyCount == 0);
         }
 
-        ASSERT_SIZEOF64(RP, 56, "Did you add new members to RenderPassDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(RP, 56, "Did you add new members to RenderPassDesc? Please handle them here.");
     }
 };
 
@@ -581,9 +581,9 @@ struct HashCombiner<HasherType, LayoutElement> : HashCombinerBase<HasherType>
 
     void operator()(const LayoutElement& Elem) const
     {
-        ASSERT_SIZEOF(Elem.ValueType, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Elem.IsNormalized, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Elem.Frequency, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Elem.ValueType, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Elem.IsNormalized, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Elem.Frequency, 1, "Hash logic below may be incorrect.");
 
         this->m_Hasher(
             Elem.HLSLSemantic,
@@ -596,7 +596,7 @@ struct HashCombiner<HasherType, LayoutElement> : HashCombinerBase<HasherType>
             Elem.RelativeOffset,
             Elem.Stride,
             Elem.InstanceDataStepRate);
-        ASSERT_SIZEOF64(Elem, 40, "Did you add new members to LayoutElement? Please handle them here.");
+        SPW_ASSERT_SIZEOF(Elem, 40, "Did you add new members to LayoutElement? Please handle them here.");
     }
 };
 
@@ -621,7 +621,7 @@ struct HashCombiner<HasherType, InputLayoutDesc> : HashCombinerBase<HasherType>
             VERIFY_EXPR(Layout.NumElements == 0);
         }
 
-        ASSERT_SIZEOF64(Layout, 16, "Did you add new members to InputLayoutDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(Layout, 16, "Did you add new members to InputLayoutDesc? Please handle them here.");
     }
 };
 
@@ -635,10 +635,10 @@ struct HashCombiner<HasherType, GraphicsPipelineDesc> : HashCombinerBase<HasherT
 
     void operator()(const GraphicsPipelineDesc& Desc) const
     {
-        ASSERT_SIZEOF(Desc.NumViewports, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Desc.NumRenderTargets, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Desc.SubpassIndex, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Desc.ShadingRateFlags, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.NumViewports, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.NumRenderTargets, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.SubpassIndex, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.ShadingRateFlags, 1, "Hash logic below may be incorrect.");
 
         this->m_Hasher(
             Desc.BlendDesc,
@@ -675,12 +675,12 @@ struct HashCombiner<HasherType, RayTracingPipelineDesc> : HashCombinerBase<Hashe
 
     void operator()(const RayTracingPipelineDesc& Desc) const
     {
-        ASSERT_SIZEOF(Desc.ShaderRecordSize, 2, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Desc.MaxRecursionDepth, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.ShaderRecordSize, 2, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.MaxRecursionDepth, 1, "Hash logic below may be incorrect.");
         this->m_Hasher(
             ((static_cast<uint32_t>(Desc.ShaderRecordSize) << 0u) |
              (static_cast<uint32_t>(Desc.MaxRecursionDepth) << 16u)));
-        ASSERT_SIZEOF(Desc, 4, "Did you add new members to RayTracingPipelineDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(Desc, 4, "Did you add new members to RayTracingPipelineDesc? Please handle them here.");
     }
 };
 
@@ -713,8 +713,8 @@ struct HashCombiner<HasherType, PipelineResourceSignatureDesc> : HashCombinerBas
 
     void operator()(const PipelineResourceSignatureDesc& Desc) const
     {
-        ASSERT_SIZEOF(Desc.BindingIndex, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Desc.UseCombinedTextureSamplers, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.BindingIndex, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.UseCombinedTextureSamplers, 1, "Hash logic below may be incorrect.");
         // Ignore Name. This is consistent with the operator==
         this->m_Hasher(
             Desc.NumResources,
@@ -746,7 +746,7 @@ struct HashCombiner<HasherType, PipelineResourceSignatureDesc> : HashCombinerBas
         if (Desc.UseCombinedTextureSamplers)
             this->m_Hasher(Desc.CombinedSamplerSuffix);
 
-        ASSERT_SIZEOF64(Desc, 56, "Did you add new members to PipelineResourceSignatureDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(Desc, 56, "Did you add new members to PipelineResourceSignatureDesc? Please handle them here.");
     }
 };
 
@@ -766,7 +766,7 @@ struct HashCombiner<HasherType, ShaderDesc> : HashCombinerBase<HasherType>
             Desc.UseCombinedTextureSamplers,
             Desc.CombinedSamplerSuffix);
 
-        ASSERT_SIZEOF64(Desc, 24, "Did you add new members to ShaderDesc? Please handle them here.");
+        SPW_ASSERT_SIZEOF(Desc, 24, "Did you add new members to ShaderDesc? Please handle them here.");
     }
 };
 
@@ -781,7 +781,7 @@ struct HashCombiner<HasherType, Version> : HashCombinerBase<HasherType>
     void operator()(const Version& Ver) const
     {
         this->m_Hasher(Ver.Minor, Ver.Major);
-        ASSERT_SIZEOF64(Ver, 8, "Did you add new members to Version? Please handle them here.");
+        SPW_ASSERT_SIZEOF(Ver, 8, "Did you add new members to Version? Please handle them here.");
     }
 };
 
@@ -919,8 +919,8 @@ struct HashCombiner<HasherType, TilePipelineDesc> : HashCombinerBase<HasherType>
 
     void operator()(const TilePipelineDesc& Desc) const
     {
-        ASSERT_SIZEOF(Desc.NumRenderTargets, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Desc.SampleCount, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.NumRenderTargets, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.SampleCount, 1, "Hash logic below may be incorrect.");
 
         this->m_Hasher(
             ((static_cast<uint32_t>(Desc.NumRenderTargets) << 0u) |
@@ -954,9 +954,9 @@ struct HashCombiner<HasherType, VertexPoolElementDesc> : HashCombinerBase<Hasher
 
     void operator()(const VertexPoolElementDesc& Desc) const
     {
-        ASSERT_SIZEOF(Desc.Usage, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Desc.CPUAccessFlags, 1, "Hash logic below may be incorrect.");
-        ASSERT_SIZEOF(Desc.Mode, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.Usage, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.CPUAccessFlags, 1, "Hash logic below may be incorrect.");
+        SPW_ASSERT_SIZEOF(Desc.Mode, 1, "Hash logic below may be incorrect.");
 
         this->m_Hasher(
             Desc.Size,

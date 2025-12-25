@@ -33,7 +33,7 @@
 #include "GraphicsTypes.h"
 #include "Shader.h"
 #include "RefCountedObjectImpl.hpp"
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "DataBlobImpl.hpp"
 
 namespace Diligent

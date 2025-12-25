@@ -2061,7 +2061,7 @@ DeviceFeatures VkFeaturesToDeviceFeatures(uint32_t                              
 
 #undef INIT_FEATURE
 
-    ASSERT_SIZEOF(DeviceFeatures, 47, "Did you add a new feature to DeviceFeatures? Please handle its status here (if necessary).");
+    SPW_ASSERT_SIZEOF(DeviceFeatures, 47, "Did you add a new feature to DeviceFeatures? Please handle its status here (if necessary).");
 
     return Features;
 }
@@ -2081,7 +2081,7 @@ DeviceFeaturesVk PhysicalDeviceFeaturesToDeviceFeaturesVk(const VulkanUtilities:
 
 #undef INIT_FEATURE
 
-    ASSERT_SIZEOF(DeviceFeaturesVk, 2, "Did you add a new feature to DeviceFeaturesVk? Please handle its status here (if necessary).");
+    SPW_ASSERT_SIZEOF(DeviceFeaturesVk, 2, "Did you add a new feature to DeviceFeaturesVk? Please handle its status here (if necessary).");
 
     return FeaturesVk;
 }

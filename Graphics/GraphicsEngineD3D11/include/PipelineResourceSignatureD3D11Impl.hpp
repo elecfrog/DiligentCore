@@ -58,7 +58,7 @@ public:
 
     bool IsAllocated() const { return !BindPoints.IsEmpty(); }
 };
-ASSERT_SIZEOF(ImmutableSamplerAttribsD3D11, 12, "The struct is used in serialization and must be tightly packed");
+SPW_ASSERT_SIZEOF(ImmutableSamplerAttribsD3D11, 12, "The struct is used in serialization and must be tightly packed");
 
 
 struct PipelineResourceSignatureInternalDataD3D11 : PipelineResourceSignatureInternalData<PipelineResourceAttribsD3D11, ImmutableSamplerAttribsD3D11>

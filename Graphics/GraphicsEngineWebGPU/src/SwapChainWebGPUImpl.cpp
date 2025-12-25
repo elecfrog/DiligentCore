@@ -624,7 +624,7 @@ void SwapChainWebGPUImpl::RecreateSwapChain()
     }
     catch (const std::runtime_error&)
     {
-        DG_LOG_ERROR("Failed to recreate the swap chain");
+        LOG_ERROR("Failed to recreate the swap chain");
     }
 }
 

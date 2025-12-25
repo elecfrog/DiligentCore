@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include "../../../Primitives/interface/Errors.hpp"
+#include "Primitives.h"
 
 namespace Diligent
 {
@@ -64,13 +64,13 @@ struct BasicPlatformDebug
                                                const char* Function, // type of __FUNCTION__
                                                const char* File,     // type of __FILE__
                                                int         Line);
-    static String FormatDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
-                                     const Char*            Message,
-                                     const char*            Function, // type of __FUNCTION__
-                                     const char*            File,     // type of __FILE__
-                                     int                    Line);
+    static String FormatDebugMessage(spw::LogLevel Severity,
+                                     const Char*   Message,
+                                     const char*   Function, // type of __FUNCTION__
+                                     const char*   File,     // type of __FILE__
+                                     int           Line);
 
-    static const char* TextColorToTextColorCode(DEBUG_MESSAGE_SEVERITY Severity, TextColor Color);
+    static const char* TextColorToTextColorCode(spw::LogLevel Severity, TextColor Color);
 
     static bool ColoredTextSupported()
     {

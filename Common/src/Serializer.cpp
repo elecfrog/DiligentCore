@@ -69,7 +69,7 @@ SerializedData& SerializedData::operator=(SerializedData&& Rhs) noexcept
 {
     Free();
 
-    ASSERT_SIZEOF64(*this, 32, "Please handle new members here");
+    SPW_ASSERT_SIZEOF(*this, 32, "Please handle new members here");
 
     m_pAllocator = Rhs.m_pAllocator;
     m_Ptr        = Rhs.m_Ptr;

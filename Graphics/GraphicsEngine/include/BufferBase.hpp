@@ -37,7 +37,7 @@
 #include "DeviceObjectBase.hpp"
 #include "GraphicsAccessories.hpp"
 #include "STDAllocator.hpp"
-#include "FormatString.hpp"
+#include "Primitives.h"
 
 namespace Diligent
 {

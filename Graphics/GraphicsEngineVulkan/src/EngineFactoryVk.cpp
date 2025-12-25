@@ -179,7 +179,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
         BufferProperties& BufferProps{AdapterInfo.Buffer};
         BufferProps.ConstantBufferOffsetAlignment   = static_cast<UInt32>(vkDeviceLimits.minUniformBufferOffsetAlignment);
         BufferProps.StructuredBufferOffsetAlignment = static_cast<UInt32>(vkDeviceLimits.minStorageBufferOffsetAlignment);
-        ASSERT_SIZEOF(BufferProps, 8, "Did you add a new member to BufferProperites? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(BufferProps, 8, "Did you add a new member to BufferProperites? Please initialize it here.");
     }
 
     // Texture properties
@@ -196,7 +196,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
         TexProps.TextureViewSupported       = True;
         TexProps.CubemapArraysSupported     = vkFeatures.imageCubeArray;
         TexProps.TextureView2DOn3DSupported = vkExtFeatures.HasPortabilitySubset ? vkExtFeatures.PortabilitySubset.imageView2DOn3DImage == VK_TRUE : True;
-        ASSERT_SIZEOF(TexProps, 32, "Did you add a new member to TextureProperites? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(TexProps, 32, "Did you add a new member to TextureProperites? Please initialize it here.");
     }
 
     // Sampler properties
@@ -205,7 +205,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
         SamProps.BorderSamplingModeSupported = True;
         SamProps.MaxAnisotropy               = static_cast<UInt8>(vkDeviceLimits.maxSamplerAnisotropy);
         SamProps.LODBiasSupported            = True;
-        ASSERT_SIZEOF(SamProps, 3, "Did you add a new member to SamplerProperites? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(SamProps, 3, "Did you add a new member to SamplerProperites? Please initialize it here.");
     }
 
     // Ray tracing properties
@@ -236,7 +236,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
             RayTracingProps.CapFlags |= RAY_TRACING_CAP_FLAG_INLINE_RAY_TRACING;
         if (vkExtFeatures.RayTracingPipeline.rayTracingPipelineTraceRaysIndirect)
             RayTracingProps.CapFlags |= RAY_TRACING_CAP_FLAG_INDIRECT_RAY_TRACING;
-        ASSERT_SIZEOF(RayTracingProps, 60, "Did you add a new member to RayTracingProperites? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(RayTracingProps, 60, "Did you add a new member to RayTracingProperites? Please initialize it here.");
     }
 
     // Wave op properties
@@ -269,7 +269,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
         WaveOpProps.MaxSize         = vkWaveProps.subgroupSize;
         WaveOpProps.SupportedStages = VkShaderStageFlagsToShaderTypes(SupportedStages);
         WaveOpProps.Features        = VkSubgroupFeatureFlagsToWaveFeatures(vkWaveProps.supportedOperations);
-        ASSERT_SIZEOF(WaveOpProps, 16, "Did you add a new member to WaveOpProperties? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(WaveOpProps, 16, "Did you add a new member to WaveOpProperties? Please initialize it here.");
     }
 
     // Mesh shader properties
@@ -280,7 +280,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
         MeshProps.MaxThreadGroupCountY     = vkDeviceExtProps.MeshShader.maxMeshWorkGroupCount[1];
         MeshProps.MaxThreadGroupCountZ     = vkDeviceExtProps.MeshShader.maxMeshWorkGroupCount[2];
         MeshProps.MaxThreadGroupTotalCount = vkDeviceExtProps.MeshShader.maxMeshWorkGroupTotalCount;
-        ASSERT_SIZEOF(MeshProps, 16, "Did you add a new member to MeshShaderProperties? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(MeshProps, 16, "Did you add a new member to MeshShaderProperties? Please initialize it here.");
     }
 
     // Compute shader properties
@@ -294,7 +294,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
         CompProps.MaxThreadGroupCountX      = vkDeviceProps.limits.maxComputeWorkGroupCount[0];
         CompProps.MaxThreadGroupCountY      = vkDeviceProps.limits.maxComputeWorkGroupCount[1];
         CompProps.MaxThreadGroupCountZ      = vkDeviceProps.limits.maxComputeWorkGroupCount[2];
-        ASSERT_SIZEOF(CompProps, 32, "Did you add a new member to ComputeShaderProperties? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(CompProps, 32, "Did you add a new member to ComputeShaderProperties? Please initialize it here.");
     }
 
     // Shading rate properties
@@ -451,7 +451,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
                 ShadingRateProps.BindFlags |= BIND_RENDER_TARGET;
         }
 
-        ASSERT_SIZEOF(ShadingRateProps, 52, "Did you add a new member to ShadingRateProperties? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(ShadingRateProps, 52, "Did you add a new member to ShadingRateProperties? Please initialize it here.");
     }
 
     // Draw command properties
@@ -466,7 +466,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
             DrawCommandProps.CapFlags |= DRAW_COMMAND_CAP_FLAG_DRAW_INDIRECT_FIRST_INSTANCE;
         if (vkExtFeatures.DrawIndirectCount)
             DrawCommandProps.CapFlags |= DRAW_COMMAND_CAP_FLAG_DRAW_INDIRECT_COUNTER_BUFFER;
-        ASSERT_SIZEOF(DrawCommandProps, 12, "Did you add a new member to DrawCommandProperties? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(DrawCommandProps, 12, "Did you add a new member to DrawCommandProperties? Please initialize it here.");
     }
 
     // Sparse memory properties
@@ -515,7 +515,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
         SetSparseResCap(vkFeatures.sparseResidencyAliased,                    SPARSE_RESOURCE_CAP_FLAG_ALIASED                  );
         // clang-format on
 
-        ASSERT_SIZEOF(SparseRes, 32, "Did you add a new member to SparseResourceProperties? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(SparseRes, 32, "Did you add a new member to SparseResourceProperties? Please initialize it here.");
     }
 
     // Set memory properties
@@ -577,7 +577,7 @@ GraphicsAdapterInfo GetPhysicalDeviceGraphicsAdapterInfo(const VulkanUtilities::
                 Mem.HostVisibleMemory += static_cast<UInt64>(HeapInfo.size);
         }
 
-        ASSERT_SIZEOF(Mem, 40, "Did you add a new member to AdapterMemoryInfo? Please initialize it here.");
+        SPW_ASSERT_SIZEOF(Mem, 40, "Did you add a new member to AdapterMemoryInfo? Please initialize it here.");
     }
 
     // Set queue info
@@ -1279,7 +1279,7 @@ void EngineFactoryVkImpl::CreateDeviceAndContextsVk(const EngineVkCreateInfo& En
                 LOG_ERROR_MESSAGE("Can not enable extended device features when VK_KHR_get_physical_device_properties2 extension is not supported by device");
         }
 
-        ASSERT_SIZEOF(DeviceFeatures, 47, "Did you add a new feature to DeviceFeatures? Please handle its status here.");
+        SPW_ASSERT_SIZEOF(DeviceFeatures, 47, "Did you add a new feature to DeviceFeatures? Please handle its status here.");
 
         for (UInt32 i = 0; i < EngineCI.DeviceExtensionCount; ++i)
         {
@@ -1473,7 +1473,7 @@ void EngineFactoryVkImpl::AttachToVulkanDevice(std::shared_ptr<VulkanUtilities::
             }
         }
 
-        DG_LOG_ERROR("Failed to create device and contexts");
+        LOG_ERROR("Failed to create device and contexts");
     }
 }
 
@@ -1507,7 +1507,7 @@ void EngineFactoryVkImpl::CreateSwapChainVk(IRenderDevice*       pDevice,
             *ppSwapChain = nullptr;
         }
 
-        DG_LOG_ERROR("Failed to create the swap chain");
+        LOG_ERROR("Failed to create the swap chain");
     }
 }
 

@@ -29,7 +29,7 @@
 #import <Foundation/Foundation.h>
 
 #include "AppleDebug.hpp"
-#include "FormatString.hpp"
+#include "Primitives.h"
 
 namespace Diligent 
 {
@@ -39,11 +39,11 @@ void AppleDebug::AssertionFailed(const Char *Message, const char *Function, cons
     String AssertionFailedMessage = FormatAssertionFailedMessage(Message, Function, File, Line);
     if (DebugMessageCallback)
     {
-        DebugMessageCallback(DEBUG_MESSAGE_SEVERITY_ERROR, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
+        DebugMessageCallback(Error, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
     }
     else
     {
-        OutputDebugMessage(DEBUG_MESSAGE_SEVERITY_ERROR, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
+        OutputDebugMessage(Error, AssertionFailedMessage.c_str(), nullptr, nullptr, 0);
     }
 
     if (GetBreakOnError())
@@ -75,7 +75,7 @@ bool AppleDebug::ColoredTextSupported()
     return !StartedFromXCode;
 }
 
-void AppleDebug::OutputDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
+void AppleDebug::OutputDebugMessage(spw::LogLevel Severity,
                                     const Char*            Message,
                                     const char*            Function,
                                     const char*            File,
@@ -102,7 +102,7 @@ void DebugAssertionFailed(const Char* Message, const char* Function, const char*
     AppleDebug::AssertionFailed( Message, Function, File, Line );
 }
 
-static void OutputDebugMessage(DEBUG_MESSAGE_SEVERITY Severity,
+static void OutputDebugMessage(spw::LogLevel Severity,
                                const Char*            Message,
                                const char*            Function,
                                const char*            File,

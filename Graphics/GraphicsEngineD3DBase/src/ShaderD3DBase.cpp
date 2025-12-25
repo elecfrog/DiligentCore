@@ -69,7 +69,7 @@ public:
         m_pStreamFactory->CreateInputStream(pFileName, &pSourceStream);
         if (pSourceStream == nullptr)
         {
-            DG_LOG_ERROR("Failed to open shader include file ", pFileName, ". Check that the file exists");
+            LOG_ERROR("Failed to open shader include file ", pFileName, ". Check that the file exists");
             return E_FAIL;
         }
 

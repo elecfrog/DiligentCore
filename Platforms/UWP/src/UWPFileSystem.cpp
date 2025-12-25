@@ -26,7 +26,7 @@
  */
 
 #include "UWPFileSystem.hpp"
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "../../Common/interface/StringTools.hpp"
 #include "DebugUtilities.hpp"
 

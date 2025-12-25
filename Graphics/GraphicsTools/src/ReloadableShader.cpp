@@ -111,7 +111,7 @@ void ReloadableShader::Create(RenderStateCacheImpl*   pStateCache,
     }
     catch (...)
     {
-        DG_LOG_ERROR("Failed to create reloadable shader '", (CreateInfo.Desc.Name ? CreateInfo.Desc.Name : "<unnamed>"), "'.");
+        LOG_ERROR("Failed to create reloadable shader '", (CreateInfo.Desc.Name ? CreateInfo.Desc.Name : "<unnamed>"), "'.");
     }
 }
 

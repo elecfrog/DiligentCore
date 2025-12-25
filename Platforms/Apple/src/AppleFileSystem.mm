@@ -39,7 +39,7 @@
 #endif
 
 #include "AppleFileSystem.hpp"
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "DebugUtilities.hpp"
 
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"

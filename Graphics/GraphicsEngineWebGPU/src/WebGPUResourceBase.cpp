@@ -59,7 +59,7 @@ WebGPUResourceBase::StagingBufferInfo* WebGPUResourceBase::FindStagingWriteBuffe
         WebGPUBufferWrapper wgpuBuffer{wgpuDeviceCreateBuffer(wgpuDevice, &wgpuBufferDesc)};
         if (!wgpuBuffer)
         {
-            DG_LOG_ERROR("Failed to create WebGPU buffer '", StagingBufferName, '\'');
+            LOG_ERROR("Failed to create WebGPU buffer '", StagingBufferName, '\'');
             return nullptr;
         }
 
@@ -89,7 +89,7 @@ WebGPUResourceBase::StagingBufferInfo* WebGPUResourceBase::FindStagingReadBuffer
 
     if (m_StagingBuffers.size() == m_StagingBuffers.capacity())
     {
-        DG_LOG_ERROR("Unable to create a new staging read buffer: limit of ", m_StagingBuffers.capacity(), " buffers is reached");
+        LOG_ERROR("Unable to create a new staging read buffer: limit of ", m_StagingBuffers.capacity(), " buffers is reached");
         return nullptr;
     }
 
@@ -105,7 +105,7 @@ WebGPUResourceBase::StagingBufferInfo* WebGPUResourceBase::FindStagingReadBuffer
     WebGPUBufferWrapper wgpuBuffer{wgpuDeviceCreateBuffer(wgpuDevice, &wgpuBufferDesc)};
     if (!wgpuBuffer)
     {
-        DG_LOG_ERROR("Failed to create WebGPU buffer '", StagingBufferName, '\'');
+        LOG_ERROR("Failed to create WebGPU buffer '", StagingBufferName, '\'');
         return nullptr;
     }
 
@@ -144,7 +144,7 @@ void* WebGPUResourceBase::Map(MAP_TYPE MapType, UInt64 Offset)
     }
     else if (MapType == MAP_READ_WRITE)
     {
-        DG_LOG_ERROR("MAP_READ_WRITE is not supported in WebGPU backend");
+        LOG_ERROR("MAP_READ_WRITE is not supported in WebGPU backend");
     }
     else
     {

@@ -34,6 +34,6 @@
 
 #include "PlatformDefinitions.h"
 #include "CommonDefinitions.h"
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "FileWrapper.hpp"
 #include "RefCntAutoPtr.hpp"

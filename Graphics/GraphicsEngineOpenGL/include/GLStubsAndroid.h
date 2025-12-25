@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include "Errors.hpp"
+#include "Primitives.h"
 #include "GraphicsTypes.h"
 
 // clang-format off

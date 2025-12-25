@@ -75,7 +75,7 @@ void BlendStateDesc_To_D3D11_BLEND_DESC(const BlendStateDesc& BSDesc,
         const RenderTargetBlendDesc& SrcRTDesc = BSDesc.RenderTargets[i];
         if (SrcRTDesc.LogicOperationEnable)
         {
-            DG_LOG_ERROR("Logical operations on render targets are not supported by D3D11 device");
+            LOG_ERROR("Logical operations on render targets are not supported by D3D11 device");
         }
     }
 }

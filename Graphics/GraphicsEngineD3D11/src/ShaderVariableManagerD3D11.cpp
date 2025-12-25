@@ -614,7 +614,7 @@ UInt32 ShaderVariableManagerD3D11::GetVariableIndex(const IShaderResourceVariabl
 {
     if (m_pVariables == nullptr)
     {
-        DG_LOG_ERROR("This shader variable manager does not have any resources");
+        LOG_ERROR("This shader variable manager does not have any resources");
         return ~0u;
     }
 
@@ -640,7 +640,7 @@ UInt32 ShaderVariableManagerD3D11::GetVariableIndex(const IShaderResourceVariabl
             return IdxLocator.GetIndex();
     }
 
-    DG_LOG_ERROR("Failed to get variable index. The variable ", &Variable, " does not belong to this shader variable manager");
+    LOG_ERROR("Failed to get variable index. The variable ", &Variable, " does not belong to this shader variable manager");
     return ~0U;
 }
 
@@ -707,7 +707,7 @@ IShaderResourceVariable* ShaderVariableManagerD3D11::GetVariable(UInt32 Index) c
             return pSampler;
     }
 
-    DG_LOG_ERROR(Index, " is not a valid variable index.");
+    LOG_ERROR(Index, " is not a valid variable index.");
     return nullptr;
 }
 
