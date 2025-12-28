@@ -68,13 +68,13 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_BufferWebGPU, TBufferBase)
 
     /// Implementation of IBuffer::GetNativeHandle().
-    UInt64 CALLTYPE GetNativeHandle() override final;
+    UInt64 DG_CALL_TYPE GetNativeHandle() override final;
 
     /// Implementation of IBuffer::GetSparseProperties().
-    SparseBufferProperties CALLTYPE GetSparseProperties() const override final;
+    SparseBufferProperties DG_CALL_TYPE GetSparseProperties() const override final;
 
     /// Implementation of IBufferWebGPU::GetWebGPUBuffer().
-    WGPUBuffer CALLTYPE GetWebGPUBuffer() const override final;
+    WGPUBuffer DG_CALL_TYPE GetWebGPUBuffer() const override final;
 
     void* Map(MAP_TYPE MapType);
 

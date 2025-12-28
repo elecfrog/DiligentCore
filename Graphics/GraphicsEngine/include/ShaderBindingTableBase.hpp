@@ -99,7 +99,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_ShaderBindingTable, TDeviceObjectBase)
 
 
-    void CALLTYPE Reset(IPipelineState* pPSO) override final
+    void DG_CALL_TYPE Reset(IPipelineState* pPSO) override final
     {
 #ifdef DILIGENT_DEVELOPMENT
         this->m_DbgHitGroupBindings.clear();
@@ -129,7 +129,7 @@ public:
     }
 
 
-    void CALLTYPE ResetHitGroups() override final
+    void DG_CALL_TYPE ResetHitGroups() override final
     {
 #ifdef DILIGENT_DEVELOPMENT
         this->m_DbgHitGroupBindings.clear();
@@ -139,7 +139,7 @@ public:
     }
 
 
-    void CALLTYPE BindRayGenShader(const char* pShaderGroupName, const void* pData, UInt32 DataSize) override final
+    void DG_CALL_TYPE BindRayGenShader(const char* pShaderGroupName, const void* pData, UInt32 DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
@@ -153,7 +153,7 @@ public:
     }
 
 
-    void CALLTYPE BindMissShader(const char* pShaderGroupName, UInt32 MissIndex, const void* pData, UInt32 DataSize) override final
+    void DG_CALL_TYPE BindMissShader(const char* pShaderGroupName, UInt32 MissIndex, const void* pData, UInt32 DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
@@ -169,7 +169,7 @@ public:
     }
 
 
-    void CALLTYPE BindHitGroupByIndex(UInt32      BindingIndex,
+    void DG_CALL_TYPE BindHitGroupByIndex(UInt32      BindingIndex,
                                                 const char* pShaderGroupName,
                                                 const void* pData,
                                                 UInt32      DataSize) override final
@@ -193,7 +193,7 @@ public:
     }
 
 
-    void CALLTYPE BindHitGroupForGeometry(ITopLevelAS* pTLAS,
+    void DG_CALL_TYPE BindHitGroupForGeometry(ITopLevelAS* pTLAS,
                                                     const char*  pInstanceName,
                                                     const char*  pGeometryName,
                                                     UInt32       RayOffsetInHitGroupIndex,
@@ -236,7 +236,7 @@ public:
     }
 
 
-    void CALLTYPE BindHitGroupForInstance(ITopLevelAS* pTLAS,
+    void DG_CALL_TYPE BindHitGroupForInstance(ITopLevelAS* pTLAS,
                                                     const char*  pInstanceName,
                                                     UInt32       RayOffsetInHitGroupIndex,
                                                     const char*  pShaderGroupName,
@@ -293,7 +293,7 @@ public:
     }
 
 
-    void CALLTYPE BindHitGroupForTLAS(ITopLevelAS* pTLAS,
+    void DG_CALL_TYPE BindHitGroupForTLAS(ITopLevelAS* pTLAS,
                                                 UInt32       RayOffsetInHitGroupIndex,
                                                 const char*  pShaderGroupName,
                                                 const void*  pData,
@@ -330,7 +330,7 @@ public:
     }
 
 
-    void CALLTYPE BindCallableShader(const char* pShaderGroupName,
+    void DG_CALL_TYPE BindCallableShader(const char* pShaderGroupName,
                                                UInt32      CallableIndex,
                                                const void* pData,
                                                UInt32      DataSize) override final
@@ -348,7 +348,7 @@ public:
     }
 
 
-    Bool CALLTYPE Verify(VERIFY_SBT_FLAGS Flags) const override final
+    Bool DG_CALL_TYPE Verify(VERIFY_SBT_FLAGS Flags) const override final
     {
 #ifdef DILIGENT_DEVELOPMENT
         static_assert(EmptyElem != 0, "must not be zero");

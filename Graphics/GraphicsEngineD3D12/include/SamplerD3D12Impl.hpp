@@ -51,7 +51,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_SamplerD3D12, TSamplerBase)
 
     /// Implementation of ISamplerD3D12::GetCPUDescriptorHandle().
-    virtual D3D12_CPU_DESCRIPTOR_HANDLE CALLTYPE GetCPUDescriptorHandle() override { return m_Descriptor.GetCpuHandle(); }
+    virtual D3D12_CPU_DESCRIPTOR_HANDLE DG_CALL_TYPE GetCPUDescriptorHandle() override { return m_Descriptor.GetCpuHandle(); }
 
 private:
     friend class ShaderD3D12Impl;

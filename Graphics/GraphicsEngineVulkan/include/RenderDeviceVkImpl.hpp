@@ -80,42 +80,42 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_RenderDeviceVk, TRenderDeviceBase)
 
     /// Implementation of IRenderDevice::CreateGraphicsPipelineState() in Vulkan backend.
-    virtual void CALLTYPE CreateGraphicsPipelineState(const GraphicsPipelineStateCreateInfo& PSOCreateInfo, IPipelineState** ppPipelineState) override final;
+    virtual void DG_CALL_TYPE CreateGraphicsPipelineState(const GraphicsPipelineStateCreateInfo& PSOCreateInfo, IPipelineState** ppPipelineState) override final;
 
     /// Implementation of IRenderDevice::CreateComputePipelineState() in Vulkan backend.
-    virtual void CALLTYPE CreateComputePipelineState(const ComputePipelineStateCreateInfo& PSOCreateInfo, IPipelineState** ppPipelineState) override final;
+    virtual void DG_CALL_TYPE CreateComputePipelineState(const ComputePipelineStateCreateInfo& PSOCreateInfo, IPipelineState** ppPipelineState) override final;
 
     /// Implementation of IRenderDevice::CreateRayTracingPipelineState() in Vulkan backend.
-    virtual void CALLTYPE CreateRayTracingPipelineState(const RayTracingPipelineStateCreateInfo& PSOCreateInfo, IPipelineState** ppPipelineState) override final;
+    virtual void DG_CALL_TYPE CreateRayTracingPipelineState(const RayTracingPipelineStateCreateInfo& PSOCreateInfo, IPipelineState** ppPipelineState) override final;
 
     /// Implementation of IRenderDevice::CreateBuffer() in Vulkan backend.
-    virtual void CALLTYPE CreateBuffer(const BufferDesc& BuffDesc,
+    virtual void DG_CALL_TYPE CreateBuffer(const BufferDesc& BuffDesc,
                                                  const BufferData* pBuffData,
                                                  IBuffer**         ppBuffer) override final;
 
     /// Implementation of IRenderDevice::CreateShader() in Vulkan backend.
-    virtual void CALLTYPE CreateShader(const ShaderCreateInfo& ShaderCreateInfo,
+    virtual void DG_CALL_TYPE CreateShader(const ShaderCreateInfo& ShaderCreateInfo,
                                                  IShader**               ppShader,
                                                  IDataBlob**             ppCompilerOutput) override final;
 
     /// Implementation of IRenderDevice::CreateTexture() in Vulkan backend.
-    virtual void CALLTYPE CreateTexture(const TextureDesc& TexDesc,
+    virtual void DG_CALL_TYPE CreateTexture(const TextureDesc& TexDesc,
                                                   const TextureData* pData,
                                                   ITexture**         ppTexture) override final;
 
     void CreateTexture(const TextureDesc& TexDesc, VkImage vkImgHandle, RESOURCE_STATE InitialState, class TextureVkImpl** ppTexture);
 
     /// Implementation of IRenderDevice::CreateSampler() in Vulkan backend.
-    virtual void CALLTYPE CreateSampler(const SamplerDesc& SamplerDesc, ISampler** ppSampler) override final;
+    virtual void DG_CALL_TYPE CreateSampler(const SamplerDesc& SamplerDesc, ISampler** ppSampler) override final;
 
     /// Implementation of IRenderDevice::CreateFence() in Vulkan backend.
-    virtual void CALLTYPE CreateFence(const FenceDesc& Desc, IFence** ppFence) override final;
+    virtual void DG_CALL_TYPE CreateFence(const FenceDesc& Desc, IFence** ppFence) override final;
 
     /// Implementation of IRenderDevice::CreateQuery() in Vulkan backend.
-    virtual void CALLTYPE CreateQuery(const QueryDesc& Desc, IQuery** ppQuery) override final;
+    virtual void DG_CALL_TYPE CreateQuery(const QueryDesc& Desc, IQuery** ppQuery) override final;
 
     /// Implementation of IRenderDevice::CreateRenderPass() in Vulkan backend.
-    virtual void CALLTYPE CreateRenderPass(const RenderPassDesc& Desc,
+    virtual void DG_CALL_TYPE CreateRenderPass(const RenderPassDesc& Desc,
                                                      IRenderPass**         ppRenderPass) override final;
 
     void CreateRenderPass(const RenderPassDesc& Desc,
@@ -124,23 +124,23 @@ public:
 
 
     /// Implementation of IRenderDevice::CreateFramebuffer() in Vulkan backend.
-    virtual void CALLTYPE CreateFramebuffer(const FramebufferDesc& Desc,
+    virtual void DG_CALL_TYPE CreateFramebuffer(const FramebufferDesc& Desc,
                                                       IFramebuffer**         ppFramebuffer) override final;
 
     /// Implementation of IRenderDevice::CreateBLAS() in Vulkan backend.
-    virtual void CALLTYPE CreateBLAS(const BottomLevelASDesc& Desc,
+    virtual void DG_CALL_TYPE CreateBLAS(const BottomLevelASDesc& Desc,
                                                IBottomLevelAS**         ppBLAS) override final;
 
     /// Implementation of IRenderDevice::CreateTLAS() in Vulkan backend.
-    virtual void CALLTYPE CreateTLAS(const TopLevelASDesc& Desc,
+    virtual void DG_CALL_TYPE CreateTLAS(const TopLevelASDesc& Desc,
                                                ITopLevelAS**         ppTLAS) override final;
 
     /// Implementation of IRenderDevice::CreateSBT() in Vulkan backend.
-    virtual void CALLTYPE CreateSBT(const ShaderBindingTableDesc& Desc,
+    virtual void DG_CALL_TYPE CreateSBT(const ShaderBindingTableDesc& Desc,
                                               IShaderBindingTable**         ppSBT) override final;
 
     /// Implementation of IRenderDevice::CreatePipelineResourceSignature() in Vulkan backend.
-    virtual void CALLTYPE CreatePipelineResourceSignature(const PipelineResourceSignatureDesc& Desc,
+    virtual void DG_CALL_TYPE CreatePipelineResourceSignature(const PipelineResourceSignatureDesc& Desc,
                                                                     IPipelineResourceSignature**         ppSignature) override final;
 
     void CreatePipelineResourceSignature(const PipelineResourceSignatureDesc& Desc,
@@ -153,59 +153,59 @@ public:
                                          IPipelineResourceSignature**                   ppSignature);
 
     /// Implementation of IRenderDevice::CreateDeviceMemory() in Vulkan backend.
-    virtual void CALLTYPE CreateDeviceMemory(const DeviceMemoryCreateInfo& CreateInfo,
+    virtual void DG_CALL_TYPE CreateDeviceMemory(const DeviceMemoryCreateInfo& CreateInfo,
                                                        IDeviceMemory**               ppMemory) override final;
 
     /// Implementation of IRenderDevice::CreatePipelineStateCache() in Vulkan backend.
-    virtual void CALLTYPE CreatePipelineStateCache(const PipelineStateCacheCreateInfo& CreateInfo,
+    virtual void DG_CALL_TYPE CreatePipelineStateCache(const PipelineStateCacheCreateInfo& CreateInfo,
                                                              IPipelineStateCache**               ppPipelineStateCache) override final;
 
     /// Implementation of IRenderDevice::CreateDeferredContext() in Vulkan backend.
-    virtual void CALLTYPE CreateDeferredContext(IDeviceContext** ppContext) override final;
+    virtual void DG_CALL_TYPE CreateDeferredContext(IDeviceContext** ppContext) override final;
 
     /// Implementation of IRenderDeviceVk::GetVkDevice().
-    virtual VkDevice CALLTYPE GetVkDevice() override final { return m_LogicalDevice->GetVkDevice(); }
+    virtual VkDevice DG_CALL_TYPE GetVkDevice() override final { return m_LogicalDevice->GetVkDevice(); }
 
     /// Implementation of IRenderDeviceVk::GetVkPhysicalDevice().
-    virtual VkPhysicalDevice CALLTYPE GetVkPhysicalDevice() override final { return m_PhysicalDevice->GetVkDeviceHandle(); }
+    virtual VkPhysicalDevice DG_CALL_TYPE GetVkPhysicalDevice() override final { return m_PhysicalDevice->GetVkDeviceHandle(); }
 
     /// Implementation of IRenderDeviceVk::GetVkInstance().
-    virtual VkInstance CALLTYPE GetVkInstance() override final { return m_Instance->GetVkInstance(); }
+    virtual VkInstance DG_CALL_TYPE GetVkInstance() override final { return m_Instance->GetVkInstance(); }
 
     /// Implementation of IRenderDeviceVk::GetVkVersion().
-    virtual UInt32 CALLTYPE GetVkVersion() override final { return m_PhysicalDevice->GetVkVersion(); }
+    virtual UInt32 DG_CALL_TYPE GetVkVersion() override final { return m_PhysicalDevice->GetVkVersion(); }
 
     /// Implementation of IRenderDeviceVk::CreateTextureFromVulkanImage().
-    virtual void CALLTYPE CreateTextureFromVulkanImage(VkImage            vkImage,
+    virtual void DG_CALL_TYPE CreateTextureFromVulkanImage(VkImage            vkImage,
                                                                  const TextureDesc& TexDesc,
                                                                  RESOURCE_STATE     InitialState,
                                                                  ITexture**         ppTexture) override final;
 
     /// Implementation of IRenderDeviceVk::CreateBufferFromVulkanResource().
-    virtual void CALLTYPE CreateBufferFromVulkanResource(VkBuffer          vkBuffer,
+    virtual void DG_CALL_TYPE CreateBufferFromVulkanResource(VkBuffer          vkBuffer,
                                                                    const BufferDesc& BuffDesc,
                                                                    RESOURCE_STATE    InitialState,
                                                                    IBuffer**         ppBuffer) override final;
 
     /// Implementation of IRenderDeviceVk::CreateBLASFromVulkanResource().
-    virtual void CALLTYPE CreateBLASFromVulkanResource(VkAccelerationStructureKHR vkBLAS,
+    virtual void DG_CALL_TYPE CreateBLASFromVulkanResource(VkAccelerationStructureKHR vkBLAS,
                                                                  const BottomLevelASDesc&   Desc,
                                                                  RESOURCE_STATE             InitialState,
                                                                  IBottomLevelAS**           ppBLAS) override final;
 
     /// Implementation of IRenderDeviceVk::CreateTLASFromVulkanResource().
-    virtual void CALLTYPE CreateTLASFromVulkanResource(VkAccelerationStructureKHR vkTLAS,
+    virtual void DG_CALL_TYPE CreateTLASFromVulkanResource(VkAccelerationStructureKHR vkTLAS,
                                                                  const TopLevelASDesc&      Desc,
                                                                  RESOURCE_STATE             InitialState,
                                                                  ITopLevelAS**              ppTLAS) override final;
 
     /// Implementation of IRenderDeviceVk::CreateFenceFromVulkanResource().
-    virtual void CALLTYPE CreateFenceFromVulkanResource(VkSemaphore      vkTimelineSemaphore,
+    virtual void DG_CALL_TYPE CreateFenceFromVulkanResource(VkSemaphore      vkTimelineSemaphore,
                                                                   const FenceDesc& Desc,
                                                                   IFence**         ppFence) override final;
 
     /// Implementation of IRenderDevice::IdleGPU() in Vulkan backend.
-    virtual void CALLTYPE IdleGPU() override final;
+    virtual void DG_CALL_TYPE IdleGPU() override final;
 
     // pImmediateCtx parameter is only used to make sure the command buffer is submitted from the immediate context
     // The method returns fence value associated with the submitted command buffer
@@ -218,18 +218,18 @@ public:
     void ExecuteAndDisposeTransientCmdBuff(SoftwareQueueIndex CommandQueueId, VkCommandBuffer vkCmdBuff, VulkanUtilities::CommandPoolWrapper&& CmdPool);
 
     /// Implementation of IRenderDevice::ReleaseStaleResources() in Vulkan backend.
-    virtual void CALLTYPE ReleaseStaleResources(bool ForceRelease = false) override final;
+    virtual void DG_CALL_TYPE ReleaseStaleResources(bool ForceRelease = false) override final;
 
     /// Implementation of IRenderDevice::GetSparseTextureFormatInfo() in Vulkan backend.
-    virtual SparseTextureFormatInfo CALLTYPE GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
+    virtual SparseTextureFormatInfo DG_CALL_TYPE GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                                   RESOURCE_DIMENSION Dimension,
                                                                                   UInt32             SampleCount) const override final;
 
     /// Implementation of IRenderDeviceVk::GetDeviceFeaturesVk().
-    virtual void CALLTYPE GetDeviceFeaturesVk(DeviceFeaturesVk& FeaturesVk) const override final;
+    virtual void DG_CALL_TYPE GetDeviceFeaturesVk(DeviceFeaturesVk& FeaturesVk) const override final;
 
     /// Implementation of IRenderDeviceVk::GetDXCompiler().
-    virtual IDXCompiler* CALLTYPE GetDXCompiler() const override final
+    virtual IDXCompiler* DG_CALL_TYPE GetDXCompiler() const override final
     {
         return m_pDxCompiler.get();
     }

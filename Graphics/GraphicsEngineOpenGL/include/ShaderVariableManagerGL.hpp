@@ -125,7 +125,7 @@ public:
 
         void BindResource(const BindResourceInfo& BindInfo);
 
-        virtual IDeviceObject* CALLTYPE Get(UInt32 ArrayIndex) const override final
+        virtual IDeviceObject* DG_CALL_TYPE Get(UInt32 ArrayIndex) const override final
         {
             VERIFY_EXPR(ArrayIndex < GetDesc().ArraySize);
             const ShaderResourceCacheGL::CachedUB& UB = m_ParentManager.m_ResourceCache.GetConstUB(GetAttribs().CacheOffset + ArrayIndex);
@@ -144,7 +144,7 @@ public:
 
         void BindResource(const BindResourceInfo& BindInfo);
 
-        virtual IDeviceObject* CALLTYPE Get(UInt32 ArrayIndex) const override final
+        virtual IDeviceObject* DG_CALL_TYPE Get(UInt32 ArrayIndex) const override final
         {
             const PipelineResourceDesc& Desc = GetDesc();
             VERIFY_EXPR(ArrayIndex < Desc.ArraySize);
@@ -162,7 +162,7 @@ public:
 
         void BindResource(const BindResourceInfo& BindInfo);
 
-        virtual IDeviceObject* CALLTYPE Get(UInt32 ArrayIndex) const override final
+        virtual IDeviceObject* DG_CALL_TYPE Get(UInt32 ArrayIndex) const override final
         {
             const PipelineResourceDesc& Desc = GetDesc();
             VERIFY_EXPR(ArrayIndex < Desc.ArraySize);
@@ -180,7 +180,7 @@ public:
 
         void BindResource(const BindResourceInfo& BindInfo);
 
-        virtual IDeviceObject* CALLTYPE Get(UInt32 ArrayIndex) const override final
+        virtual IDeviceObject* DG_CALL_TYPE Get(UInt32 ArrayIndex) const override final
         {
             VERIFY_EXPR(ArrayIndex < GetDesc().ArraySize);
             const ShaderResourceCacheGL::CachedSSBO& SSBO = m_ParentManager.m_ResourceCache.GetConstSSBO(GetAttribs().CacheOffset + ArrayIndex);

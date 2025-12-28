@@ -92,58 +92,58 @@ public:
         m_RefCounters{*this}
     {}
 
-    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
+    virtual void DG_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
 
-    virtual ReferenceCounterValueType CALLTYPE AddRef() override final
+    virtual ReferenceCounterValueType DG_CALL_TYPE AddRef() override final
     {
         return m_RefCounters.AddStrongRef();
     }
 
-    virtual ReferenceCounterValueType CALLTYPE Release() override final
+    virtual ReferenceCounterValueType DG_CALL_TYPE Release() override final
     {
         return m_RefCounters.ReleaseStrongRef();
     }
 
-    virtual IReferenceCounters* CALLTYPE GetReferenceCounters() const override final
+    virtual IReferenceCounters* DG_CALL_TYPE GetReferenceCounters() const override final
     {
         return const_cast<IReferenceCounters*>(static_cast<const IReferenceCounters*>(&m_RefCounters));
     }
 
-    virtual void CALLTYPE CreateArchiver(
+    virtual void DG_CALL_TYPE CreateArchiver(
         ISerializationDevice* pDevice,
         IArchiver**           ppArchiver) override final;
 
-    virtual void CALLTYPE CreateSerializationDevice(
+    virtual void DG_CALL_TYPE CreateSerializationDevice(
         const SerializationDeviceCreateInfo& CreateInfo,
         ISerializationDevice**               ppDevice) override final;
 
-    virtual void CALLTYPE CreateDefaultShaderSourceStreamFactory(
+    virtual void DG_CALL_TYPE CreateDefaultShaderSourceStreamFactory(
         const Char*                              SearchDirectories,
         struct IShaderSourceInputStreamFactory** ppShaderSourceFactory) const override final;
 
-    virtual Bool CALLTYPE RemoveDeviceData(
+    virtual Bool DG_CALL_TYPE RemoveDeviceData(
         const IDataBlob*          pSrcArchive,
         ARCHIVE_DEVICE_DATA_FLAGS DeviceFlags,
         IDataBlob**               ppDstArchive) const override final;
 
-    virtual Bool CALLTYPE AppendDeviceData(
+    virtual Bool DG_CALL_TYPE AppendDeviceData(
         const IDataBlob*          pSrcArchive,
         ARCHIVE_DEVICE_DATA_FLAGS DeviceFlags,
         const IDataBlob*          pDeviceArchive,
         IDataBlob**               ppDstArchive) const override final;
 
-    virtual Bool CALLTYPE MergeArchives(
+    virtual Bool DG_CALL_TYPE MergeArchives(
         const IDataBlob* ppSrcArchives[],
         UInt32           NumSrcArchives,
         IDataBlob**      ppDstArchive) const override final;
 
-    virtual Bool CALLTYPE PrintArchiveContent(const IDataBlob* pArchive) const override final;
+    virtual Bool DG_CALL_TYPE PrintArchiveContent(const IDataBlob* pArchive) const override final;
 
-    virtual void CALLTYPE SetMessageCallback(DebugMessageCallbackType MessageCallback) const override final;
+    virtual void DG_CALL_TYPE SetMessageCallback(DebugMessageCallbackType MessageCallback) const override final;
 
-    virtual void CALLTYPE SetBreakOnError(bool BreakOnError) const override final;
+    virtual void DG_CALL_TYPE SetBreakOnError(bool BreakOnError) const override final;
 
-    virtual void CALLTYPE SetMemoryAllocator(IMemoryAllocator* pAllocator) const override final;
+    virtual void DG_CALL_TYPE SetMemoryAllocator(IMemoryAllocator* pAllocator) const override final;
 
 private:
     DummyReferenceCounters<ArchiverFactoryImpl> m_RefCounters;

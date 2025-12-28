@@ -52,7 +52,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_ShaderBindingTableD3D12, TShaderBindingTableBase)
 
-    virtual const D3D12_DISPATCH_RAYS_DESC& CALLTYPE GetD3D12BindingTable() const override final { return m_d3d12DispatchDesc; }
+    virtual const D3D12_DISPATCH_RAYS_DESC& DG_CALL_TYPE GetD3D12BindingTable() const override final { return m_d3d12DispatchDesc; }
 
     using BindingTable = TShaderBindingTableBase::BindingTable;
     void GetData(BufferD3D12Impl*& pSBTBufferD3D12,

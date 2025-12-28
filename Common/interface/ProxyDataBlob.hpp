@@ -74,26 +74,26 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DataBlob, TBase)
 
     /// Sets the size of the internal data buffer
-    virtual void CALLTYPE Resize(size_t NewSize) override
+    virtual void DG_CALL_TYPE Resize(size_t NewSize) override
     {
         UNEXPECTED("Resize is not supported by proxy data blob.");
     }
 
     /// Returns the size of the internal data buffer
-    virtual size_t CALLTYPE GetSize() const override
+    virtual size_t DG_CALL_TYPE GetSize() const override
     {
         return m_Size;
     }
 
     /// Returns the pointer to the internal data buffer
-    virtual void* CALLTYPE GetDataPtr(size_t Offset = 0) override
+    virtual void* DG_CALL_TYPE GetDataPtr(size_t Offset = 0) override
     {
         VERIFY(Offset < m_Size, "Offset (", Offset, ") exceeds the data size (", m_Size, ")");
         return static_cast<UInt8*>(m_pData) + Offset;
     }
 
     /// Returns the pointer to the internal data buffer
-    virtual const void* CALLTYPE GetConstDataPtr(size_t Offset = 0) const override
+    virtual const void* DG_CALL_TYPE GetConstDataPtr(size_t Offset = 0) const override
     {
         VERIFY(Offset < m_Size, "Offset (", Offset, ") exceeds the data size (", m_Size, ")");
         return static_cast<const UInt8*>(m_pConstData) + Offset;

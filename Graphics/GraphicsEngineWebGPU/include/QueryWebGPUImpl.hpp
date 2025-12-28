@@ -53,10 +53,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_QueryWebGPU, TQueryBase)
 
     /// Implementation of IQuery::GetData().
-    bool CALLTYPE GetData(void* pData, UInt32 DataSize, bool AutoInvalidate) override final;
+    bool DG_CALL_TYPE GetData(void* pData, UInt32 DataSize, bool AutoInvalidate) override final;
 
     /// Implementation of IQuery::Invalidate().
-    void CALLTYPE Invalidate() override final;
+    void DG_CALL_TYPE Invalidate() override final;
 
     UInt32 GetIndexInsideQuerySet(UInt32 QueryId) const;
 

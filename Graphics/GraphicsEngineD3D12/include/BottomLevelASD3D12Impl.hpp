@@ -56,10 +56,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_BottomLevelASD3D12, TBottomLevelASBase)
 
     /// Implementation of IBottomLevelASD3D12::GetD3D12BLAS().
-    virtual ID3D12Resource* CALLTYPE GetD3D12BLAS() override final { return GetD3D12Resource(); }
+    virtual ID3D12Resource* DG_CALL_TYPE GetD3D12BLAS() override final { return GetD3D12Resource(); }
 
     /// Implementation of IBottomLevelAS::GetNativeHandle() in Direct3D12 backend.
-    virtual UInt64 CALLTYPE GetNativeHandle() override final { return BitCast<UInt64>(GetD3D12BLAS()); }
+    virtual UInt64 DG_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetD3D12BLAS()); }
 
     D3D12_GPU_VIRTUAL_ADDRESS GetGPUAddress()
     {

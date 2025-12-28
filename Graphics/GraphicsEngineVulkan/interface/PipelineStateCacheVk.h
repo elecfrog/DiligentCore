@@ -23,7 +23,7 @@ static constexpr INTERFACE_ID IID_PipelineStateCacheVk =
 struct IPipelineStateCacheVk : public IPipelineStateCache
 {
     /// Returns a Vulkan handle of the internal pipeline cache object.
-    virtual VkPipelineCache CALLTYPE GetVkPipelineCache() const = 0;
+    virtual VkPipelineCache DG_CALL_TYPE GetVkPipelineCache() const = 0;
 };
 
 } // namespace Diligent

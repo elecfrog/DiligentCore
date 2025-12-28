@@ -62,7 +62,7 @@ public:
                       bool              bIsDeviceInternal);
 
     /// Implementation of IRenderDevice::CreateBuffer() in OpenGL backend.
-    virtual void CALLTYPE CreateBuffer(const BufferDesc& BuffDesc,
+    virtual void DG_CALL_TYPE CreateBuffer(const BufferDesc& BuffDesc,
                                                  const BufferData* BuffData,
                                                  IBuffer**         ppBuffer) override final;
 
@@ -73,7 +73,7 @@ public:
                       bool                    bIsDeviceInternal);
 
     /// Implementation of IRenderDevice::CreateShader() in OpenGL backend.
-    virtual void CALLTYPE CreateShader(const ShaderCreateInfo& ShaderCreateInfo,
+    virtual void DG_CALL_TYPE CreateShader(const ShaderCreateInfo& ShaderCreateInfo,
                                                  IShader**               ppShader,
                                                  IDataBlob**             ppCompilerOutput) override final;
 
@@ -83,7 +83,7 @@ public:
                        bool               bIsDeviceInternal);
 
     /// Implementation of IRenderDevice::CreateTexture() in OpenGL backend.
-    virtual void CALLTYPE CreateTexture(const TextureDesc& TexDesc,
+    virtual void DG_CALL_TYPE CreateTexture(const TextureDesc& TexDesc,
                                                   const TextureData* Data,
                                                   ITexture**         ppTexture) override final;
 
@@ -92,19 +92,19 @@ public:
                        bool               bIsDeviceInternal);
 
     /// Implementation of IRenderDevice::CreateSampler() in OpenGL backend.
-    virtual void CALLTYPE CreateSampler(const SamplerDesc& SamplerDesc,
+    virtual void DG_CALL_TYPE CreateSampler(const SamplerDesc& SamplerDesc,
                                                   ISampler**         ppSampler) override final;
 
     /// Implementation of IRenderDevice::CreateGraphicsPipelineState() in OpenGL backend.
-    virtual void CALLTYPE CreateGraphicsPipelineState(const GraphicsPipelineStateCreateInfo& PSOCreateInfo,
+    virtual void DG_CALL_TYPE CreateGraphicsPipelineState(const GraphicsPipelineStateCreateInfo& PSOCreateInfo,
                                                                 IPipelineState**                       ppPipelineState) override final;
 
     /// Implementation of IRenderDevice::CreateComputePipelineState() in OpenGL backend.
-    virtual void CALLTYPE CreateComputePipelineState(const ComputePipelineStateCreateInfo& PSOCreateInfo,
+    virtual void DG_CALL_TYPE CreateComputePipelineState(const ComputePipelineStateCreateInfo& PSOCreateInfo,
                                                                IPipelineState**                      ppPipelineState) override final;
 
     /// Implementation of IRenderDevice::CreateRayTracingPipelineState() in OpenGL backend.
-    virtual void CALLTYPE CreateRayTracingPipelineState(const RayTracingPipelineStateCreateInfo& PSOCreateInfo,
+    virtual void DG_CALL_TYPE CreateRayTracingPipelineState(const RayTracingPipelineStateCreateInfo& PSOCreateInfo,
                                                                   IPipelineState**                         ppPipelineState) override final;
 
     void CreateGraphicsPipelineState(const GraphicsPipelineStateCreateInfo& PSOCreateInfo,
@@ -115,33 +115,33 @@ public:
                                     bool                                  bIsDeviceInternal);
 
     /// Implementation of IRenderDevice::CreateFence() in OpenGL backend.
-    virtual void CALLTYPE CreateFence(const FenceDesc& Desc, IFence** ppFence) override final;
+    virtual void DG_CALL_TYPE CreateFence(const FenceDesc& Desc, IFence** ppFence) override final;
 
     /// Implementation of IRenderDevice::CreateQuery() in OpenGL backend.
-    virtual void CALLTYPE CreateQuery(const QueryDesc& Desc, IQuery** ppQuery) override final;
+    virtual void DG_CALL_TYPE CreateQuery(const QueryDesc& Desc, IQuery** ppQuery) override final;
 
     /// Implementation of IRenderDevice::CreateRenderPass() in OpenGL backend.
-    virtual void CALLTYPE CreateRenderPass(const RenderPassDesc& Desc,
+    virtual void DG_CALL_TYPE CreateRenderPass(const RenderPassDesc& Desc,
                                                      IRenderPass**         ppRenderPass) override final;
 
     /// Implementation of IRenderDevice::CreateFramebuffer() in OpenGL backend.
-    virtual void CALLTYPE CreateFramebuffer(const FramebufferDesc& Desc,
+    virtual void DG_CALL_TYPE CreateFramebuffer(const FramebufferDesc& Desc,
                                                       IFramebuffer**         ppFramebuffer) override final;
 
     /// Implementation of IRenderDevice::CreateBLAS() in OpenGL backend.
-    virtual void CALLTYPE CreateBLAS(const BottomLevelASDesc& Desc,
+    virtual void DG_CALL_TYPE CreateBLAS(const BottomLevelASDesc& Desc,
                                                IBottomLevelAS**         ppBLAS) override final;
 
     /// Implementation of IRenderDevice::CreateTLAS() in OpenGL backend.
-    virtual void CALLTYPE CreateTLAS(const TopLevelASDesc& Desc,
+    virtual void DG_CALL_TYPE CreateTLAS(const TopLevelASDesc& Desc,
                                                ITopLevelAS**         ppTLAS) override final;
 
     /// Implementation of IRenderDevice::CreateSBT() in OpenGL backend.
-    virtual void CALLTYPE CreateSBT(const ShaderBindingTableDesc& Desc,
+    virtual void DG_CALL_TYPE CreateSBT(const ShaderBindingTableDesc& Desc,
                                               IShaderBindingTable**         ppSBT) override final;
 
     /// Implementation of IRenderDevice::CreatePipelineResourceSignature() in OpenGL backend.
-    virtual void CALLTYPE CreatePipelineResourceSignature(const PipelineResourceSignatureDesc& Desc,
+    virtual void DG_CALL_TYPE CreatePipelineResourceSignature(const PipelineResourceSignatureDesc& Desc,
                                                                     IPipelineResourceSignature**         ppSignature) override final;
 
     void CreatePipelineResourceSignature(const PipelineResourceSignatureDesc& Desc,
@@ -154,47 +154,47 @@ public:
                                          IPipelineResourceSignature**                   ppSignature);
 
     /// Implementation of IRenderDeviceGL::CreateTextureFromGLHandle().
-    virtual void CALLTYPE CreateTextureFromGLHandle(UInt32             GLHandle,
+    virtual void DG_CALL_TYPE CreateTextureFromGLHandle(UInt32             GLHandle,
                                                               UInt32             GLBindTarget,
                                                               const TextureDesc& TexDesc,
                                                               RESOURCE_STATE     InitialState,
                                                               ITexture**         ppTexture) override final;
 
     /// Implementation of IRenderDeviceGL::CreateBufferFromGLHandle().
-    virtual void CALLTYPE CreateBufferFromGLHandle(UInt32            GLHandle,
+    virtual void DG_CALL_TYPE CreateBufferFromGLHandle(UInt32            GLHandle,
                                                              const BufferDesc& BuffDesc,
                                                              RESOURCE_STATE    InitialState,
                                                              IBuffer**         ppBuffer) override final;
 
     /// Implementation of IRenderDeviceGL::CreateDummyTexture().
-    virtual void CALLTYPE CreateDummyTexture(const TextureDesc& TexDesc,
+    virtual void DG_CALL_TYPE CreateDummyTexture(const TextureDesc& TexDesc,
                                                        RESOURCE_STATE     InitialState,
                                                        ITexture**         ppTexture) override final;
 
     /// Implementation of IRenderDevice::ReleaseStaleResources() in OpenGL backend.
-    virtual void CALLTYPE ReleaseStaleResources(bool ForceRelease = false) override final {}
+    virtual void DG_CALL_TYPE ReleaseStaleResources(bool ForceRelease = false) override final {}
 
     /// Implementation of IRenderDevice::IdleGPU() in OpenGL backend.
-    virtual void CALLTYPE IdleGPU() override final;
+    virtual void DG_CALL_TYPE IdleGPU() override final;
 
     /// Implementation of IRenderDevice::CreateDeviceMemory() in OpenGL backend.
-    virtual void CALLTYPE CreateDeviceMemory(const DeviceMemoryCreateInfo& CreateInfo,
+    virtual void DG_CALL_TYPE CreateDeviceMemory(const DeviceMemoryCreateInfo& CreateInfo,
                                                        IDeviceMemory**               ppMemory) override final;
 
     /// Implementation of IRenderDevice::CreatePipelineStateCache() in OpenGL backend.
-    virtual void CALLTYPE CreatePipelineStateCache(const PipelineStateCacheCreateInfo& CreateInfo,
+    virtual void DG_CALL_TYPE CreatePipelineStateCache(const PipelineStateCacheCreateInfo& CreateInfo,
                                                              IPipelineStateCache**               ppPSOCache) override final;
 
     /// Implementation of IRenderDevice::CreateDeferredContext() in OpenGL backend.
-    virtual void CALLTYPE CreateDeferredContext(IDeviceContext** ppContext) override final;
+    virtual void DG_CALL_TYPE CreateDeferredContext(IDeviceContext** ppContext) override final;
 
     /// Implementation of IRenderDevice::GetSparseTextureFormatInfo() in OpenGL backend.
-    virtual SparseTextureFormatInfo CALLTYPE GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
+    virtual SparseTextureFormatInfo DG_CALL_TYPE GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                                   RESOURCE_DIMENSION Dimension,
                                                                                   UInt32             SampleCount) const override final;
 
 #if PLATFORM_WIN32 || PLATFORM_ANDROID
-    virtual NativeGLContextAttribs CALLTYPE GetNativeGLContextAttribs() const override final;
+    virtual NativeGLContextAttribs DG_CALL_TYPE GetNativeGLContextAttribs() const override final;
 #endif
 
     FBOCache& GetFBOCache(GLContext::NativeGLContextType Context);

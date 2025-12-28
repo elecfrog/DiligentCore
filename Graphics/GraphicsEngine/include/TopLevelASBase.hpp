@@ -241,7 +241,7 @@ public:
     }
 
     /// Implementation of ITopLevelAS::GetInstanceDesc().
-    virtual TLASInstanceDesc CALLTYPE GetInstanceDesc(const char* Name) const override final
+    virtual TLASInstanceDesc DG_CALL_TYPE GetInstanceDesc(const char* Name) const override final
     {
         VERIFY_EXPR(Name != nullptr && Name[0] != '\0');
 
@@ -266,13 +266,13 @@ public:
     }
 
     /// Implementation of ITopLevelAS::GetBuildInfo().
-    virtual TLASBuildInfo CALLTYPE GetBuildInfo() const override final
+    virtual TLASBuildInfo DG_CALL_TYPE GetBuildInfo() const override final
     {
         return m_BuildInfo;
     }
 
     /// Implementation of ITopLevelAS::SetState().
-    virtual void CALLTYPE SetState(RESOURCE_STATE State) override final
+    virtual void DG_CALL_TYPE SetState(RESOURCE_STATE State) override final
     {
         VERIFY(State == RESOURCE_STATE_UNKNOWN || State == RESOURCE_STATE_BUILD_AS_READ || State == RESOURCE_STATE_BUILD_AS_WRITE || State == RESOURCE_STATE_RAY_TRACING,
                "Unsupported state for top-level acceleration structure");
@@ -280,13 +280,13 @@ public:
     }
 
     /// Implementation of ITopLevelAS::GetState().
-    virtual RESOURCE_STATE CALLTYPE GetState() const override final
+    virtual RESOURCE_STATE DG_CALL_TYPE GetState() const override final
     {
         return this->m_State;
     }
 
     /// Implementation of ITopLevelAS::GetScratchBufferSizes().
-    virtual ScratchBufferSizes CALLTYPE GetScratchBufferSizes() const override final
+    virtual ScratchBufferSizes DG_CALL_TYPE GetScratchBufferSizes() const override final
     {
         return this->m_ScratchSize;
     }

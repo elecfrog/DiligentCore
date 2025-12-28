@@ -19,7 +19,7 @@ static constexpr INTERFACE_ID IID_FenceVk =
 struct IFenceVk : public IFence
 {
     /// If timeline semaphores are supported, returns the semaphore object; otherwise returns VK_NULL_HANDLE.
-    virtual VkSemaphore CALLTYPE GetVkSemaphore() = 0;
+    virtual VkSemaphore DG_CALL_TYPE GetVkSemaphore() = 0;
 };
 
 } // namespace Diligent

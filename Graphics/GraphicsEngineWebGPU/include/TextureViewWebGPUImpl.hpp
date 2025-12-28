@@ -57,7 +57,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_TextureViewWebGPU, TTextureViewBase)
 
     /// Implementation of ITextureViewWebGPU::GetWebGPUTextureView() in WebGPU backend.
-    WGPUTextureView CALLTYPE GetWebGPUTextureView() const override;
+    WGPUTextureView DG_CALL_TYPE GetWebGPUTextureView() const override;
 
     WGPUTextureView GetMipLevelUAV(UInt32 Mip);
 

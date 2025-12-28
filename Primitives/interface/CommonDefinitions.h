@@ -42,9 +42,9 @@
 
 #ifdef _MSC_VER
 // Note that MSVC x86 compiler by default uses __this call for class member functions
-#    define CALLTYPE __cdecl
+#    define DG_CALL_TYPE __cdecl
 #else
-#    define CALLTYPE
+#    define DG_CALL_TYPE
 #endif
 
 #if UINTPTR_MAX == UINT64_MAX

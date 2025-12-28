@@ -25,7 +25,7 @@ static constexpr struct INTERFACE_ID IID_FileStream =
 struct IFileStream : public IObject
 {
     /// Reads data from the stream
-    virtual bool CALLTYPE Read(void* Data, size_t BufferSize) = 0;
+    virtual bool DG_CALL_TYPE Read(void* Data, size_t BufferSize) = 0;
 
     virtual void METHOD(ReadBlob)(IDataBlob* pData) = 0;
 

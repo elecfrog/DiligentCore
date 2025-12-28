@@ -87,12 +87,12 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_SwapChain, TObjectBase)
 
     /// Implementation of ISwapChain::GetDesc()
-    virtual const SwapChainDesc& CALLTYPE GetDesc() const override final
+    virtual const SwapChainDesc& DG_CALL_TYPE GetDesc() const override final
     {
         return m_SwapChainDesc;
     }
 
-    virtual void CALLTYPE SetMaximumFrameLatency(UInt32 MaxLatency) override
+    virtual void DG_CALL_TYPE SetMaximumFrameLatency(UInt32 MaxLatency) override
     {}
 
 protected:

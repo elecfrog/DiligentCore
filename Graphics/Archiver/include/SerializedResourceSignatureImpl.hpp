@@ -65,7 +65,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_SerializedResourceSignature, IID_PipelineResourceSignature, TBase)
 
-    virtual const PipelineResourceSignatureDesc& CALLTYPE GetDesc() const override final;
+    virtual const PipelineResourceSignatureDesc& DG_CALL_TYPE GetDesc() const override final;
 
     // clang-format off
     UNSUPPORTED_METHOD      (void, CreateShaderResourceBinding, IShaderResourceBinding** ppShaderResourceBinding, bool InitStaticResources)

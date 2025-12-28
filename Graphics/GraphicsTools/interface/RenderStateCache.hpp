@@ -211,7 +211,7 @@ public:
             {
                 FileWrapper CacheDataFile{FilePath, EFileAccessMode::Overwrite};
                 if (CacheDataFile->Write(pCacheData->GetConstDataPtr(), pCacheData->GetSize()))
-                    LOG_INFO_MESSAGE("Successfully saved state cache file ", FilePath, " (", FormatMemorySize(pCacheData->GetSize()), ").");
+                    LOG_INFO_MESSAGE("Successfully saved state cache file ", FilePath, " (", spw::LogSystem::FormatMemorySize(pCacheData->GetSize()), ").");
             }
         }
         else

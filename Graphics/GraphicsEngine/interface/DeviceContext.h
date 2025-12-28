@@ -2657,7 +2657,7 @@ struct IDeviceContext : public IObject
     /// explicitly manage the states using TransitionResourceStates() method.
     ///
     /// \remarks Supported contexts: graphics.
-    virtual void CALLTYPE SetVertexBuffers(UInt32 StartSlot,
+    virtual void DG_CALL_TYPE SetVertexBuffers(UInt32 StartSlot,
                                                      UInt32                         NumBuffersSet,
                                                      IBuffer* const*                ppBuffers,
                                                      const UInt64*                  pOffsets,

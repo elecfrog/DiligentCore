@@ -54,7 +54,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_BufferViewVk, TBufferViewBase)
 
     /// Implementation of IBufferViewVk::GetVkBufferView().
-    virtual VkBufferView CALLTYPE GetVkBufferView() const override final { return m_BuffView; }
+    virtual VkBufferView DG_CALL_TYPE GetVkBufferView() const override final { return m_BuffView; }
 
 protected:
     VulkanUtilities::BufferViewWrapper m_BuffView;

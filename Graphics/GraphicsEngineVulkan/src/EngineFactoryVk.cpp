@@ -72,7 +72,7 @@ public:
     {
     }
 
-    virtual void CALLTYPE CreateDeviceAndContextsVk(const EngineVkCreateInfo& EngineCI,
+    virtual void DG_CALL_TYPE CreateDeviceAndContextsVk(const EngineVkCreateInfo& EngineCI,
                                                               IRenderDevice**           ppDevice,
                                                               IDeviceContext**          ppContexts) override final;
 
@@ -101,28 +101,28 @@ public:
                               IRenderDevice**                                  ppDevice,
                               IDeviceContext**                                 ppContexts);
 
-    virtual void CALLTYPE CreateSwapChainVk(IRenderDevice*       pDevice,
+    virtual void DG_CALL_TYPE CreateSwapChainVk(IRenderDevice*       pDevice,
                                                       IDeviceContext*      pImmediateContext,
                                                       const SwapChainDesc& SwapChainDesc,
                                                       const NativeWindow&  Window,
                                                       ISwapChain**         ppSwapChain) override final;
 
-    virtual void CALLTYPE EnumerateAdapters(Version              MinVersion,
+    virtual void DG_CALL_TYPE EnumerateAdapters(Version              MinVersion,
                                                       UInt32&              NumAdapters,
                                                       GraphicsAdapterInfo* Adapters) const override final;
 
-    virtual void CALLTYPE EnableDeviceSimulation() override final
+    virtual void DG_CALL_TYPE EnableDeviceSimulation() override final
     {
         m_EnableDeviceSimulation = true;
     }
 
-    virtual Version CALLTYPE GetVulkanVersion() const override final
+    virtual Version DG_CALL_TYPE GetVulkanVersion() const override final
     {
         uint32_t ApiVersion = VulkanUtilities::Instance::GetApiVersion();
         return {VK_VERSION_MAJOR(ApiVersion), VK_VERSION_MINOR(ApiVersion)};
     }
 
-    virtual void CALLTYPE CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
+    virtual void DG_CALL_TYPE CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
                                                      IDearchiver**               ppDearchiver) const override final
     {
         TBase::CreateDearchiver<DearchiverVkImpl>(CreateInfo, ppDearchiver);

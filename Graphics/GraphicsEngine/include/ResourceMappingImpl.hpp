@@ -61,26 +61,26 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_ResourceMapping, TObjectBase)
 
     /// Implementation of IResourceMapping::AddResource()
-    virtual void CALLTYPE AddResource(const Char*    Name,
+    virtual void DG_CALL_TYPE AddResource(const Char*    Name,
                                                 IDeviceObject* pObject,
                                                 bool           bIsUnique) override final;
 
     /// Implementation of IResourceMapping::AddResourceArray()
-    virtual void CALLTYPE AddResourceArray(const Char*           Name,
+    virtual void DG_CALL_TYPE AddResourceArray(const Char*           Name,
                                                      UInt32                StartIndex,
                                                      IDeviceObject* const* ppObjects,
                                                      UInt32                NumElements,
                                                      bool                  bIsUnique) override final;
 
     /// Implementation of IResourceMapping::RemoveResourceByName()
-    virtual void CALLTYPE RemoveResourceByName(const Char* Name, UInt32 ArrayIndex) override final;
+    virtual void DG_CALL_TYPE RemoveResourceByName(const Char* Name, UInt32 ArrayIndex) override final;
 
     /// Implementation of IResourceMapping::GetResource()
-    virtual IDeviceObject* CALLTYPE GetResource(const Char* Name,
+    virtual IDeviceObject* DG_CALL_TYPE GetResource(const Char* Name,
                                                           UInt32      ArrayIndex) override final;
 
     /// Returns number of resources in the resource mapping.
-    virtual size_t CALLTYPE GetSize() override final;
+    virtual size_t DG_CALL_TYPE GetSize() override final;
 
 private:
     struct ResMappingHashKey : public HashMapStringKey

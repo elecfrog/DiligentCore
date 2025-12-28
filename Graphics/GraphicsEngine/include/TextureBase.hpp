@@ -146,7 +146,7 @@ public:
 
     /// Implementation of ITexture::CreateView(); calls CreateViewInternal() virtual function that
     /// creates texture view for the specific engine implementation.
-    virtual void CALLTYPE CreateView(const struct TextureViewDesc& ViewDesc, ITextureView** ppView) override
+    virtual void DG_CALL_TYPE CreateView(const struct TextureViewDesc& ViewDesc, ITextureView** ppView) override
     {
         DEV_CHECK_ERR(ViewDesc.ViewType != TEXTURE_VIEW_UNDEFINED, "Texture view type is not specified");
         if (ViewDesc.ViewType == TEXTURE_VIEW_SHADER_RESOURCE)
@@ -291,12 +291,12 @@ public:
         VERIFY_EXPR(ViewIdx == NumDefaultViews);
     }
 
-    virtual void CALLTYPE SetState(RESOURCE_STATE State) override final
+    virtual void DG_CALL_TYPE SetState(RESOURCE_STATE State) override final
     {
         this->m_State = State;
     }
 
-    virtual RESOURCE_STATE CALLTYPE GetState() const override final
+    virtual RESOURCE_STATE DG_CALL_TYPE GetState() const override final
     {
         return this->m_State;
     }
@@ -320,7 +320,7 @@ public:
     }
 
     /// Implementation of ITexture::GetDefaultView().
-    virtual ITextureView* CALLTYPE GetDefaultView(TEXTURE_VIEW_TYPE ViewType) override
+    virtual ITextureView* DG_CALL_TYPE GetDefaultView(TEXTURE_VIEW_TYPE ViewType) override
     {
         UInt8 ViewIdx = m_ViewIndices[ViewType];
         if (ViewIdx == InvalidViewIndex)
@@ -332,7 +332,7 @@ public:
     }
 
     /// Implementation of ITexture::GetSparseProperties().
-    virtual const SparseTextureProperties& CALLTYPE GetSparseProperties() const override final
+    virtual const SparseTextureProperties& DG_CALL_TYPE GetSparseProperties() const override final
     {
         DEV_CHECK_ERR(this->m_Desc.Usage == USAGE_SPARSE,
                       "ITexture::GetSparseProperties() must be used for sparse texture");

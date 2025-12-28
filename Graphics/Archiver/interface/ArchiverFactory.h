@@ -245,21 +245,21 @@ struct IArchiverFactory : public IObject
     /// \param [in]  CreateInfo - Serialization device create information, see Diligent::SerializationDeviceCreateInfo.
     /// \param [out] ppDevice   - Address of the memory location where a pointer to the
     ///                           device interface will be written.
-    virtual void CALLTYPE CreateSerializationDevice(const SerializationDeviceCreateInfo& CreateInfo, ISerializationDevice** ppDevice) = 0;
+    virtual void DG_CALL_TYPE CreateSerializationDevice(const SerializationDeviceCreateInfo& CreateInfo, ISerializationDevice** ppDevice) = 0;
 
     /// Creates an archiver.
 
     /// \param [in]  pDevice    - Pointer to the serialization device.
     /// \param [out] ppArchiver - Address of the memory location where a pointer to the
     ///                           archiver interface will be written.
-    virtual void CALLTYPE CreateArchiver(ISerializationDevice* pDevice, IArchiver** ppArchiver) = 0;
+    virtual void DG_CALL_TYPE CreateArchiver(ISerializationDevice* pDevice, IArchiver** ppArchiver) = 0;
 
     /// Creates a default shader source input stream factory
 
     /// \param [in]  SearchDirectories           - Semicolon-separated list of search directories.
     /// \param [out] ppShaderSourceStreamFactory - Memory address where a pointer to the shader source
     ///                                            stream factory will be written.
-    virtual void CALLTYPE CreateDefaultShaderSourceStreamFactory(const Char* SearchDirectories, struct IShaderSourceInputStreamFactory** ppShaderSourceFactory) const = 0;
+    virtual void DG_CALL_TYPE CreateDefaultShaderSourceStreamFactory(const Char* SearchDirectories, struct IShaderSourceInputStreamFactory** ppShaderSourceFactory) const = 0;
 
 
     /// Removes device-specific data from the archive and writes a new archive to the stream.

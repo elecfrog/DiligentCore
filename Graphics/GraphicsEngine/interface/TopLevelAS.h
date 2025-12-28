@@ -159,7 +159,7 @@ struct ITopLevelAS : public IDeviceObject
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the top level AS description used to create the object
-    virtual const TopLevelASDesc& CALLTYPE GetDesc() const override = 0;
+    virtual const TopLevelASDesc& DG_CALL_TYPE GetDesc() const override = 0;
 #endif
 
     /// Returns instance description that can be used in shader binding table.

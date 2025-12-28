@@ -638,7 +638,7 @@ struct ShaderVariableBase : public ResourceVariableBaseInterface
     {
     }
 
-    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override
+    virtual void DG_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override
     {
         if (ppInterface == nullptr)
             return;
@@ -651,27 +651,27 @@ struct ShaderVariableBase : public ResourceVariableBaseInterface
         }
     }
 
-    virtual ReferenceCounterValueType CALLTYPE AddRef() override final
+    virtual ReferenceCounterValueType DG_CALL_TYPE AddRef() override final
     {
         return m_ParentManager.GetOwner().AddRef();
     }
 
-    virtual ReferenceCounterValueType CALLTYPE Release() override final
+    virtual ReferenceCounterValueType DG_CALL_TYPE Release() override final
     {
         return m_ParentManager.GetOwner().Release();
     }
 
-    virtual IReferenceCounters* CALLTYPE GetReferenceCounters() const override final
+    virtual IReferenceCounters* DG_CALL_TYPE GetReferenceCounters() const override final
     {
         return m_ParentManager.GetOwner().GetReferenceCounters();
     }
 
-    virtual void CALLTYPE Set(IDeviceObject* pObject, SET_SHADER_RESOURCE_FLAGS Flags) override final
+    virtual void DG_CALL_TYPE Set(IDeviceObject* pObject, SET_SHADER_RESOURCE_FLAGS Flags) override final
     {
         static_cast<ThisImplType*>(this)->BindResource(BindResourceInfo{pObject, Flags});
     }
 
-    virtual void CALLTYPE SetArray(IDeviceObject* const*     ppObjects,
+    virtual void DG_CALL_TYPE SetArray(IDeviceObject* const*     ppObjects,
                                              UInt32                    FirstElement,
                                              UInt32                    NumElements,
                                              SET_SHADER_RESOURCE_FLAGS Flags) override final
@@ -686,7 +686,7 @@ struct ShaderVariableBase : public ResourceVariableBaseInterface
             static_cast<ThisImplType*>(this)->BindResource(BindResourceInfo{FirstElement + elem, ppObjects[elem], Flags});
     }
 
-    virtual void CALLTYPE SetBufferRange(IDeviceObject*            pObject,
+    virtual void DG_CALL_TYPE SetBufferRange(IDeviceObject*            pObject,
                                                    UInt64                    Offset,
                                                    UInt64                    Size,
                                                    UInt32                    ArrayIndex,
@@ -696,7 +696,7 @@ struct ShaderVariableBase : public ResourceVariableBaseInterface
         static_cast<ThisImplType*>(this)->BindResource(BindResourceInfo{ArrayIndex, pObject, Flags, Offset, Size});
     }
 
-    virtual void CALLTYPE SetBufferOffset(UInt32 Offset,
+    virtual void DG_CALL_TYPE SetBufferOffset(UInt32 Offset,
                                                     UInt32 ArrayIndex) override final
     {
 #ifdef DILIGENT_DEVELOPMENT
@@ -713,12 +713,12 @@ struct ShaderVariableBase : public ResourceVariableBaseInterface
     }
 
 
-    virtual SHADER_RESOURCE_VARIABLE_TYPE CALLTYPE GetType() const override final
+    virtual SHADER_RESOURCE_VARIABLE_TYPE DG_CALL_TYPE GetType() const override final
     {
         return GetDesc().VarType;
     }
 
-    virtual void CALLTYPE GetResourceDesc(ShaderResourceDesc& ResourceDesc) const override final
+    virtual void DG_CALL_TYPE GetResourceDesc(ShaderResourceDesc& ResourceDesc) const override final
     {
         const PipelineResourceDesc& Desc = GetDesc();
 
@@ -727,7 +727,7 @@ struct ShaderVariableBase : public ResourceVariableBaseInterface
         ResourceDesc.ArraySize = Desc.ArraySize;
     }
 
-    virtual UInt32 CALLTYPE GetIndex() const override final
+    virtual UInt32 DG_CALL_TYPE GetIndex() const override final
     {
         return m_ParentManager.GetVariableIndex(*static_cast<const ThisImplType*>(this));
     }

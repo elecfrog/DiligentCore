@@ -54,7 +54,7 @@ class IShaderVk : public IShader
 {
 public:
     /// Returns SPIRV bytecode
-    virtual const std::vector<uint32_t>& CALLTYPE GetSPIRV() const = 0;
+    virtual const std::vector<uint32_t>& DG_CALL_TYPE GetSPIRV() const = 0;
 };
 
 #endif

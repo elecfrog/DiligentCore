@@ -505,7 +505,7 @@ class IRenderPass : public IDeviceObject
 {
 public:
     /// Returns the render pass description.
-    virtual const RenderPassDesc& CALLTYPE GetDesc() const override = 0;
+    virtual const RenderPassDesc& DG_CALL_TYPE GetDesc() const override = 0;
 };
 
 #else

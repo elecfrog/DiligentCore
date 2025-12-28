@@ -440,7 +440,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_PipelineResourceSignature, TDeviceObjectBase)
 
     /// Implementation of IPipelineResourceSignature::GetStaticVariableCount.
-    virtual UInt32 CALLTYPE GetStaticVariableCount(SHADER_TYPE ShaderType) const override final
+    virtual UInt32 DG_CALL_TYPE GetStaticVariableCount(SHADER_TYPE ShaderType) const override final
     {
         if (!IsConsistentShaderType(ShaderType, m_PipelineType))
         {
@@ -459,7 +459,7 @@ public:
     }
 
     /// Implementation of IPipelineResourceSignature::GetStaticVariableByName.
-    virtual IShaderResourceVariable* CALLTYPE GetStaticVariableByName(SHADER_TYPE ShaderType,
+    virtual IShaderResourceVariable* DG_CALL_TYPE GetStaticVariableByName(SHADER_TYPE ShaderType,
                                                                                 const Char* Name) override final
     {
         if (!IsConsistentShaderType(ShaderType, m_PipelineType))
@@ -479,7 +479,7 @@ public:
     }
 
     /// Implementation of IPipelineResourceSignature::GetStaticVariableByIndex.
-    virtual IShaderResourceVariable* CALLTYPE GetStaticVariableByIndex(SHADER_TYPE ShaderType,
+    virtual IShaderResourceVariable* DG_CALL_TYPE GetStaticVariableByIndex(SHADER_TYPE ShaderType,
                                                                                  UInt32      Index) override final
     {
         if (!IsConsistentShaderType(ShaderType, m_PipelineType))
@@ -499,7 +499,7 @@ public:
     }
 
     /// Implementation of IPipelineResourceSignature::BindStaticResources.
-    virtual void CALLTYPE BindStaticResources(SHADER_TYPE                 ShaderStages,
+    virtual void DG_CALL_TYPE BindStaticResources(SHADER_TYPE                 ShaderStages,
                                                         IResourceMapping*           pResourceMapping,
                                                         BIND_SHADER_RESOURCES_FLAGS Flags) override final
     {
@@ -521,7 +521,7 @@ public:
     }
 
     /// Implementation of IPipelineResourceSignature::CreateShaderResourceBinding.
-    virtual void CALLTYPE CreateShaderResourceBinding(IShaderResourceBinding** ppShaderResourceBinding,
+    virtual void DG_CALL_TYPE CreateShaderResourceBinding(IShaderResourceBinding** ppShaderResourceBinding,
                                                                 bool                     InitStaticResources) override final
     {
         if (ppShaderResourceBinding == nullptr)
@@ -540,7 +540,7 @@ public:
     }
 
     /// Implementation of IPipelineResourceSignature::InitializeStaticSRBResources.
-    virtual void CALLTYPE InitializeStaticSRBResources(IShaderResourceBinding* pSRB) const override final
+    virtual void DG_CALL_TYPE InitializeStaticSRBResources(IShaderResourceBinding* pSRB) const override final
     {
         DEV_CHECK_ERR(pSRB != nullptr, "SRB must not be null");
 
@@ -566,7 +566,7 @@ public:
     }
 
     /// Implementation of IPipelineResourceSignature::CopyStaticResources.
-    virtual void CALLTYPE CopyStaticResources(IPipelineResourceSignature* pDstSignature) const override final
+    virtual void DG_CALL_TYPE CopyStaticResources(IPipelineResourceSignature* pDstSignature) const override final
     {
         if (pDstSignature == nullptr)
         {
@@ -593,7 +593,7 @@ public:
     }
 
     /// Implementation of IPipelineResourceSignature::IsCompatibleWith.
-    virtual bool CALLTYPE IsCompatibleWith(const IPipelineResourceSignature* pPRS) const override final
+    virtual bool DG_CALL_TYPE IsCompatibleWith(const IPipelineResourceSignature* pPRS) const override final
     {
         if (pPRS == nullptr)
             return IsEmpty();

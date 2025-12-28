@@ -111,7 +111,7 @@ public:
         }
     }
 
-    inline virtual ReferenceCounterValueType CALLTYPE Release() override final
+    inline virtual ReferenceCounterValueType DG_CALL_TYPE Release() override final
     {
         // Render device owns allocators for all types of device objects,
         // so it must be destroyed after all device objects are released.
@@ -140,7 +140,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DeviceObject, TBase)
 
-    virtual const ObjectDescType& CALLTYPE GetDesc() const override
+    virtual const ObjectDescType& DG_CALL_TYPE GetDesc() const override
     {
         return m_Desc;
     }
@@ -156,20 +156,20 @@ public:
     ///
     /// \note
     ///      Objects created from different devices may have the same unique ID.
-    virtual Int32 CALLTYPE GetUniqueID() const override final
+    virtual Int32 DG_CALL_TYPE GetUniqueID() const override final
     {
         VERIFY(m_UniqueID != 0, "Unique ID is not initialized. This indicates that this device object has been created without a device");
         return m_UniqueID;
     }
 
     /// Implementation of IDeviceObject::SetUserData.
-    virtual void CALLTYPE SetUserData(IObject* pUserData) override final
+    virtual void DG_CALL_TYPE SetUserData(IObject* pUserData) override final
     {
         m_pUserData = pUserData;
     }
 
     /// Implementation of IDeviceObject::GetUserData.
-    virtual IObject* CALLTYPE GetUserData() const override final
+    virtual IObject* DG_CALL_TYPE GetUserData() const override final
     {
         return m_pUserData;
     }

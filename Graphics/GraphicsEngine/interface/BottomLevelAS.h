@@ -285,7 +285,7 @@ DILIGENT_BEGIN_INTERFACE(IBottomLevelAS, IDeviceObject)
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the bottom level AS description used to create the object
-    virtual const BottomLevelASDesc& CALLTYPE GetDesc() const override = 0;
+    virtual const BottomLevelASDesc& DG_CALL_TYPE GetDesc() const override = 0;
 #endif
 
     /// Returns the geometry description index in BottomLevelASDesc::pTriangles or BottomLevelASDesc::pBoxes.

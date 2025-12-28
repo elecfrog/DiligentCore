@@ -69,7 +69,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_BufferSuballocation, TBase)
 
-    virtual ReferenceCounterValueType CALLTYPE Release() override final
+    virtual ReferenceCounterValueType DG_CALL_TYPE Release() override final
     {
         RefCntAutoPtr<BufferSuballocatorImpl> pParent;
         return TBase::Release(

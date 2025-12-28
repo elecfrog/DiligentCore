@@ -66,10 +66,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_PipelineStateVk, IID_InternalImpl, TPipelineStateBase)
 
     /// Implementation of IPipelineStateVk::GetRenderPass().
-    virtual IRenderPassVk* CALLTYPE GetRenderPass() const override final { return GetRenderPassPtr().RawPtr<IRenderPassVk>(); }
+    virtual IRenderPassVk* DG_CALL_TYPE GetRenderPass() const override final { return GetRenderPassPtr().RawPtr<IRenderPassVk>(); }
 
     /// Implementation of IPipelineStateVk::GetVkPipeline().
-    virtual VkPipeline CALLTYPE GetVkPipeline() const override final { return m_Pipeline; }
+    virtual VkPipeline DG_CALL_TYPE GetVkPipeline() const override final { return m_Pipeline; }
 
     const PipelineLayoutVk& GetPipelineLayout() const { return m_PipelineLayout; }
 

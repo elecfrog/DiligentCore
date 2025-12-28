@@ -59,37 +59,37 @@ public:
     IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_PipelineStateD3D11, IID_InternalImpl, TPipelineStateBase)
 
     /// Implementation of IPipelineState::IsCompatibleWith() in Direct3D11 backend.
-    virtual bool CALLTYPE IsCompatibleWith(const IPipelineState* pPSO) const override final;
+    virtual bool DG_CALL_TYPE IsCompatibleWith(const IPipelineState* pPSO) const override final;
 
     /// Implementation of IPipelineStateD3D11::GetD3D11BlendState() method.
-    virtual ID3D11BlendState* CALLTYPE GetD3D11BlendState() override final { return m_pd3d11BlendState; }
+    virtual ID3D11BlendState* DG_CALL_TYPE GetD3D11BlendState() override final { return m_pd3d11BlendState; }
 
     /// Implementation of IPipelineStateD3D11::GetD3D11RasterizerState() method.
-    virtual ID3D11RasterizerState* CALLTYPE GetD3D11RasterizerState() override final { return m_pd3d11RasterizerState; }
+    virtual ID3D11RasterizerState* DG_CALL_TYPE GetD3D11RasterizerState() override final { return m_pd3d11RasterizerState; }
 
     /// Implementation of IPipelineStateD3D11::GetD3D11DepthStencilState() method.
-    virtual ID3D11DepthStencilState* CALLTYPE GetD3D11DepthStencilState() override final { return m_pd3d11DepthStencilState; }
+    virtual ID3D11DepthStencilState* DG_CALL_TYPE GetD3D11DepthStencilState() override final { return m_pd3d11DepthStencilState; }
 
     /// Implementation of IPipelineStateD3D11::GetD3D11InputLayout() method.
-    virtual ID3D11InputLayout* CALLTYPE GetD3D11InputLayout() override final { return m_pd3d11InputLayout; }
+    virtual ID3D11InputLayout* DG_CALL_TYPE GetD3D11InputLayout() override final { return m_pd3d11InputLayout; }
 
     /// Implementation of IPipelineStateD3D11::GetD3D11VertexShader() method.
-    virtual ID3D11VertexShader* CALLTYPE GetD3D11VertexShader() override final { return GetD3D11Shader<ID3D11VertexShader>(VSInd); }
+    virtual ID3D11VertexShader* DG_CALL_TYPE GetD3D11VertexShader() override final { return GetD3D11Shader<ID3D11VertexShader>(VSInd); }
 
     /// Implementation of IPipelineStateD3D11::GetD3D11PixelShader() method.
-    virtual ID3D11PixelShader* CALLTYPE GetD3D11PixelShader() override final { return GetD3D11Shader<ID3D11PixelShader>(PSInd); }
+    virtual ID3D11PixelShader* DG_CALL_TYPE GetD3D11PixelShader() override final { return GetD3D11Shader<ID3D11PixelShader>(PSInd); }
 
     /// Implementation of IPipelineStateD3D11::GetD3D11GeometryShader() method.
-    virtual ID3D11GeometryShader* CALLTYPE GetD3D11GeometryShader() override final { return GetD3D11Shader<ID3D11GeometryShader>(GSInd); }
+    virtual ID3D11GeometryShader* DG_CALL_TYPE GetD3D11GeometryShader() override final { return GetD3D11Shader<ID3D11GeometryShader>(GSInd); }
 
     /// Implementation of IPipelineStateD3D11::GetD3D11DomainShader() method.
-    virtual ID3D11DomainShader* CALLTYPE GetD3D11DomainShader() override final { return GetD3D11Shader<ID3D11DomainShader>(DSInd); }
+    virtual ID3D11DomainShader* DG_CALL_TYPE GetD3D11DomainShader() override final { return GetD3D11Shader<ID3D11DomainShader>(DSInd); }
 
     /// Implementation of IPipelineStateD3D11::GetD3D11HullShader() method.
-    virtual ID3D11HullShader* CALLTYPE GetD3D11HullShader() override final { return GetD3D11Shader<ID3D11HullShader>(HSInd); }
+    virtual ID3D11HullShader* DG_CALL_TYPE GetD3D11HullShader() override final { return GetD3D11Shader<ID3D11HullShader>(HSInd); }
 
     /// Implementation of IPipelineStateD3D11::GetD3D11ComputeShader() method.
-    virtual ID3D11ComputeShader* CALLTYPE GetD3D11ComputeShader() override final { return GetD3D11Shader<ID3D11ComputeShader>(CSInd); }
+    virtual ID3D11ComputeShader* DG_CALL_TYPE GetD3D11ComputeShader() override final { return GetD3D11Shader<ID3D11ComputeShader>(CSInd); }
 
     UInt32 GetNumShaders() const { return m_NumShaders; }
 

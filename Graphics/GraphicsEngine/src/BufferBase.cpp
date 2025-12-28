@@ -201,9 +201,8 @@ void ValidateBufferInitData(const BufferDesc& Desc, const BufferData* pBuffData)
             LOG_BUFFER_ERROR_AND_THROW("Deferred contexts can't be used to initialize resources");
         if ((Desc.ImmediateContextMask & (UInt64{1} << CtxDesc.ContextId)) == 0)
         {
-            LOG_BUFFER_ERROR_AND_THROW("Can not initialize the buffer in device context '", CtxDesc.Name,
-                                       "' as ImmediateContextMask (", std::hex, Desc.ImmediateContextMask, ") does not contain ",
-                                       std::hex, (UInt64{1} << CtxDesc.ContextId), " bit.");
+            LOG_BUFFER_ERROR_AND_THROW("Can not initialize the buffer in device context '{}' as ImmediateContextMask (0x{:x}) does not contain 0x{:x} bit.",
+                                       CtxDesc.Name, Desc.ImmediateContextMask, (UInt64{1} << CtxDesc.ContextId));
         }
     }
 

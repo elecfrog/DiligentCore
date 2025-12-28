@@ -46,7 +46,7 @@ class IShaderResourceVariableD3D : public IShaderResourceVariable
 {
 public:
     /// Returns HLSL ShaderResourceVariable resource description
-    virtual void CALLTYPE GetHLSLResourceDesc(HLSLShaderResourceDesc& HLSLResDesc) const = 0;
+    virtual void DG_CALL_TYPE GetHLSLResourceDesc(HLSLShaderResourceDesc& HLSLResDesc) const = 0;
 };
 
 } // namespace Diligent

@@ -142,7 +142,7 @@ typedef struct RenderStateCacheCreateInfo RenderStateCacheCreateInfo;
 
 
 /// Type of the callback function called by the IRenderStateCache::Reload method.
-typedef void(CALLTYPE* ReloadGraphicsPipelineCallbackType)(const char* PipelineName, GraphicsPipelineDesc& GraphicsDesc, void* pUserData);
+typedef void(DG_CALL_TYPE* ReloadGraphicsPipelineCallbackType)(const char* PipelineName, GraphicsPipelineDesc& GraphicsDesc, void* pUserData);
 
 
 

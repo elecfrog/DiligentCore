@@ -49,7 +49,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_PipelineStateCacheD3D12, TPipelineStateCacheBase)
 
     /// Implementation of IPipelineStateCache::GetData().
-    virtual void CALLTYPE GetData(IDataBlob** ppBlob) override final;
+    virtual void DG_CALL_TYPE GetData(IDataBlob** ppBlob) override final;
 
     CComPtr<ID3D12DeviceChild> LoadComputePipeline(const wchar_t* Name, const D3D12_COMPUTE_PIPELINE_STATE_DESC& Desc);
     CComPtr<ID3D12DeviceChild> LoadGraphicsPipeline(const wchar_t* Name, const D3D12_GRAPHICS_PIPELINE_STATE_DESC& Desc);

@@ -54,7 +54,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_TextureViewVk, TTextureViewBase)
 
     /// Implementation of ITextureViewVk::GetVulkanImageView().
-    virtual VkImageView CALLTYPE GetVulkanImageView() const override final { return m_ImageView; }
+    virtual VkImageView DG_CALL_TYPE GetVulkanImageView() const override final { return m_ImageView; }
 
 protected:
     /// Vulkan image view descriptor handle

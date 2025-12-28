@@ -134,7 +134,7 @@ public:
     }
 
     /// Implementation of IBottomLevelAS::GetGeometryDescIndex()
-    virtual UInt32 CALLTYPE GetGeometryDescIndex(const char* Name) const override final
+    virtual UInt32 DG_CALL_TYPE GetGeometryDescIndex(const char* Name) const override final
     {
         DEV_CHECK_ERR(Name != nullptr && Name[0] != '\0', "Geometry name must not be empty");
 
@@ -147,7 +147,7 @@ public:
     }
 
     /// Implementation of IBottomLevelAS::GetGeometryIndex()
-    virtual UInt32 CALLTYPE GetGeometryIndex(const char* Name) const override final
+    virtual UInt32 DG_CALL_TYPE GetGeometryIndex(const char* Name) const override final
     {
         DEV_CHECK_ERR(Name != nullptr && Name[0] != '\0', "Geometry name must not be empty");
 
@@ -162,7 +162,7 @@ public:
     }
 
     /// Implementation of IBottomLevelAS::SetState()
-    virtual void CALLTYPE SetState(RESOURCE_STATE State) override final
+    virtual void DG_CALL_TYPE SetState(RESOURCE_STATE State) override final
     {
         DEV_CHECK_ERR(State == RESOURCE_STATE_UNKNOWN || State == RESOURCE_STATE_BUILD_AS_READ || State == RESOURCE_STATE_BUILD_AS_WRITE,
                       "Unsupported state for a bottom-level acceleration structure");
@@ -170,13 +170,13 @@ public:
     }
 
     /// Implementation of IBottomLevelAS::GetState()
-    virtual RESOURCE_STATE CALLTYPE GetState() const override final
+    virtual RESOURCE_STATE DG_CALL_TYPE GetState() const override final
     {
         return this->m_State;
     }
 
     /// Implementation of IBottomLevelAS::GetScratchBufferSizes()
-    virtual ScratchBufferSizes CALLTYPE GetScratchBufferSizes() const override final
+    virtual ScratchBufferSizes DG_CALL_TYPE GetScratchBufferSizes() const override final
     {
         return this->m_ScratchSize;
     }
@@ -224,7 +224,7 @@ public:
         m_GeometryCount = Count;
     }
 
-    virtual UInt32 CALLTYPE GetActualGeometryCount() const override final
+    virtual UInt32 DG_CALL_TYPE GetActualGeometryCount() const override final
     {
         return m_GeometryCount;
     }

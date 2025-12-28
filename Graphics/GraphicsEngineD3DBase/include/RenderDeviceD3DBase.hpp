@@ -184,7 +184,7 @@ public:
     }
 
 protected:
-    virtual SparseTextureFormatInfo CALLTYPE GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
+    virtual SparseTextureFormatInfo DG_CALL_TYPE GetSparseTextureFormatInfo(TEXTURE_FORMAT     TexFormat,
                                                                                   RESOURCE_DIMENSION Dimension,
                                                                                   UInt32             SampleCount) const override
     {

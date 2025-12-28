@@ -58,16 +58,16 @@ public:
                        const PipelineStateCreateInfo& CreateInfo);
     ~AsyncPipelineState();
 
-    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
+    virtual void DG_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
 
     using IObject::QueryInterface;
 
-    virtual Int32 CALLTYPE GetUniqueID() const override final
+    virtual Int32 DG_CALL_TYPE GetUniqueID() const override final
     {
         return m_UniqueID.GetID() + 0x10000000;
     }
 
-    virtual PIPELINE_STATE_STATUS CALLTYPE GetStatus(bool WaitForCompletion) override;
+    virtual PIPELINE_STATE_STATUS DG_CALL_TYPE GetStatus(bool WaitForCompletion) override;
 
     static void Create(RenderStateCacheImpl*          pStateCache,
                        const PipelineStateCreateInfo& CreateInfo,

@@ -31,7 +31,7 @@ namespace Diligent
 
 // clang-format off
 #define IMPLEMENT_QUERY_INTERFACE_IN_PLACE(InterfaceID, ParentClassName)                                    \
-    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override \
+    virtual void DG_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override \
         IMPLEMENT_QUERY_INTERFACE_BODY(InterfaceID, ParentClassName)                                        \
         using IObject::QueryInterface;
 // clang-format on
@@ -57,7 +57,7 @@ namespace Diligent
 
 // clang-format off
 #define IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(InterfaceID1, InterfaceID2, ParentClassName)                    \
-    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override \
+    virtual void DG_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override \
         IMPLEMENT_QUERY_INTERFACE2_BODY(InterfaceID1, InterfaceID2, ParentClassName)                        \
         using IObject::QueryInterface;
 // clang-format on
@@ -71,7 +71,7 @@ public:
         RefCountedObject<BaseInterface>{pRefCounters}
     {}
 
-    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface)
+    virtual void DG_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface)
     {
         if (ppInterface == nullptr)
             return;

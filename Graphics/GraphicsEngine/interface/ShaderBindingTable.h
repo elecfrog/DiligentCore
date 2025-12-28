@@ -89,7 +89,7 @@ DILIGENT_BEGIN_INTERFACE(IShaderBindingTable, IDeviceObject)
 {
 #if DILIGENT_CPP_INTERFACE
     /// Returns the shader binding table description that was used to create the object
-    virtual const ShaderBindingTableDesc& CALLTYPE GetDesc() const override = 0;
+    virtual const ShaderBindingTableDesc& DG_CALL_TYPE GetDesc() const override = 0;
 #endif
 
     /// Checks that all shaders are bound, instances and geometries have not changed, shader record data are initialized.

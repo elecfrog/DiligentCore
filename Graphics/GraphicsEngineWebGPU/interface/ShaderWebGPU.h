@@ -53,7 +53,7 @@ class IShaderWebGPU : public IShader
 {
 public:
     /// Returns WGSL source code
-    virtual const std::string& CALLTYPE GetWGSL() const = 0;
+    virtual const std::string& DG_CALL_TYPE GetWGSL() const = 0;
 
     /// Returns emulated array index suffix
 
@@ -62,7 +62,7 @@ public:
     ///
     /// This value is defined by `ShaderCI.WebGPUEmulatedArrayIndexSuffix`,
     /// see Diligent::ShaderCreateInfo::WebGPUEmulatedArrayIndexSuffix.
-    virtual const char* CALLTYPE GetEmulatedArrayIndexSuffix() const = 0;
+    virtual const char* DG_CALL_TYPE GetEmulatedArrayIndexSuffix() const = 0;
 };
 
 #endif

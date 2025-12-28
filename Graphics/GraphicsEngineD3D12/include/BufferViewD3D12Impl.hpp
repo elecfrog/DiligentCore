@@ -55,7 +55,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_BufferViewD3D12, TBufferViewBase)
 
     /// Implementation of IBufferViewD3D12::GetCPUDescriptorHandle().
-    virtual D3D12_CPU_DESCRIPTOR_HANDLE CALLTYPE GetCPUDescriptorHandle() override final
+    virtual D3D12_CPU_DESCRIPTOR_HANDLE DG_CALL_TYPE GetCPUDescriptorHandle() override final
     {
         return m_DescriptorHandle.GetCpuHandle();
     }

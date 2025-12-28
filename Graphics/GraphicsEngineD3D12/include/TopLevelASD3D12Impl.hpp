@@ -58,10 +58,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_TopLevelASD3D12, TTopLevelASBase)
 
     /// Implementation of ITopLevelASD3D12D3D12::GetD3D12TLAS().
-    virtual ID3D12Resource* CALLTYPE GetD3D12TLAS() override final { return GetD3D12Resource(); }
+    virtual ID3D12Resource* DG_CALL_TYPE GetD3D12TLAS() override final { return GetD3D12Resource(); }
 
     /// Implementation of ITopLevelASD3D12::GetNativeHandle() in Direct3D12 backend.
-    virtual UInt64 CALLTYPE GetNativeHandle() override final { return BitCast<UInt64>(GetD3D12TLAS()); }
+    virtual UInt64 DG_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetD3D12TLAS()); }
 
     D3D12_GPU_VIRTUAL_ADDRESS GetGPUAddress()
     {
@@ -69,7 +69,7 @@ public:
     }
 
     /// Implementation of ITopLevelASD3D12::GetCPUDescriptorHandle() in Direct3D12 backend.
-    virtual D3D12_CPU_DESCRIPTOR_HANDLE CALLTYPE GetCPUDescriptorHandle() override final
+    virtual D3D12_CPU_DESCRIPTOR_HANDLE DG_CALL_TYPE GetCPUDescriptorHandle() override final
     {
         return m_DescriptorHandle.GetCpuHandle();
     }

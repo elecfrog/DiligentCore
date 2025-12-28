@@ -65,13 +65,13 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_BufferD3D11, TBufferBase)
 
     /// Implementation of IBufferD3D11::GetD3D11Buffer().
-    virtual ID3D11Buffer* CALLTYPE GetD3D11Buffer() const override final { return m_pd3d11Buffer; }
+    virtual ID3D11Buffer* DG_CALL_TYPE GetD3D11Buffer() const override final { return m_pd3d11Buffer; }
 
     /// Implementation of IBuffer::GetNativeHandle().
-    virtual UInt64 CALLTYPE GetNativeHandle() override final { return BitCast<UInt64>(GetD3D11Buffer()); }
+    virtual UInt64 DG_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetD3D11Buffer()); }
 
     /// Implementation of IBuffer::GetSparseProperties().
-    virtual SparseBufferProperties CALLTYPE GetSparseProperties() const override final;
+    virtual SparseBufferProperties DG_CALL_TYPE GetSparseProperties() const override final;
 
     void AddState(RESOURCE_STATE State)
     {

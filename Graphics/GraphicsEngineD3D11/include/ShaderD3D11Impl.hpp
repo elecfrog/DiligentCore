@@ -70,11 +70,11 @@ public:
                     bool                         IsDeviceInternal = false);
     ~ShaderD3D11Impl();
 
-    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
+    virtual void DG_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
     using IObject::QueryInterface;
 
     /// Implementation of IShaderD3D11::GetD3D11Shader() method.
-    virtual ID3D11DeviceChild* CALLTYPE GetD3D11Shader() override final
+    virtual ID3D11DeviceChild* DG_CALL_TYPE GetD3D11Shader() override final
     {
         DEV_CHECK_ERR(!IsCompiling(), "Shader bytecode is not available until compilation is complete. Use GetStatus() to check the shader status.");
         return GetD3D11Shader(m_pShaderByteCode);

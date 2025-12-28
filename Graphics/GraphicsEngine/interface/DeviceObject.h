@@ -58,7 +58,7 @@ struct IDeviceObject : public IObject
     /// The method keeps strong reference to the user data object.
     /// If an application needs to release the object, it
     /// should call SetUserData(nullptr);
-    virtual void CALLTYPE SetUserData(IObject* pUserData) = 0;
+    virtual void DG_CALL_TYPE SetUserData(IObject* pUserData) = 0;
 
 
     /// Returns a pointer to the user data object previously set with SetUserData() method.
@@ -67,7 +67,7 @@ struct IDeviceObject : public IObject
     ///
     /// \remarks    The method does **NOT** call AddRef()
     ///             for the object being returned.
-    virtual IObject* CALLTYPE GetUserData() const = 0;
+    virtual IObject* DG_CALL_TYPE GetUserData() const = 0;
 };
 
 

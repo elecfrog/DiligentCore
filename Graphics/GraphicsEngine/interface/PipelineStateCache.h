@@ -89,7 +89,7 @@ static constexpr INTERFACE_ID IID_PipelineStateCache =
 struct IPipelineStateCache : public IDeviceObject
 {
     /// Creates a blob with pipeline state cache data
-    virtual void CALLTYPE GetData( IDataBlob** ppBlob) =0;
+    virtual void DG_CALL_TYPE GetData( IDataBlob** ppBlob) =0;
 };
 
 }

@@ -50,19 +50,19 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DeviceMemoryD3D12, TDeviceMemoryBase)
 
     /// Implementation of IDeviceMemory::Resize().
-    virtual Bool CALLTYPE Resize(UInt64 NewSize) override final;
+    virtual Bool DG_CALL_TYPE Resize(UInt64 NewSize) override final;
 
     /// Implementation of IDeviceMemory::GetCapacity().
-    virtual UInt64 CALLTYPE GetCapacity() const override final;
+    virtual UInt64 DG_CALL_TYPE GetCapacity() const override final;
 
     /// Implementation of IDeviceMemory::IsCompatible().
-    virtual Bool CALLTYPE IsCompatible(IDeviceObject* pResource) const override final;
+    virtual Bool DG_CALL_TYPE IsCompatible(IDeviceObject* pResource) const override final;
 
     /// Implementation of IDeviceMemoryD3D12::GetRange().
-    virtual DeviceMemoryRangeD3D12 CALLTYPE GetRange(UInt64 Offset, UInt64 Size) const override final;
+    virtual DeviceMemoryRangeD3D12 DG_CALL_TYPE GetRange(UInt64 Offset, UInt64 Size) const override final;
 
     /// Implementation of IDeviceMemoryD3D12::IsUsingNVApi().
-    virtual Bool CALLTYPE IsUsingNVApi() const override final { return m_UseNVApi; }
+    virtual Bool DG_CALL_TYPE IsUsingNVApi() const override final { return m_UseNVApi; }
 
 private:
     D3D12_HEAP_FLAGS m_d3d12HeapFlags = D3D12_HEAP_FLAG_NONE;

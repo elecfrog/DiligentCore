@@ -63,25 +63,25 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DataBlob, TBase)
 
     /// Sets the size of the internal data buffer
-    virtual void CALLTYPE Resize(size_t NewSize) override
+    virtual void DG_CALL_TYPE Resize(size_t NewSize) override
     {
         m_String.resize(NewSize);
     }
 
     /// Returns the size of the internal data buffer
-    virtual size_t CALLTYPE GetSize() const override
+    virtual size_t DG_CALL_TYPE GetSize() const override
     {
         return m_String.length();
     }
 
     /// Returns the pointer to the internal data buffer
-    virtual void* CALLTYPE GetDataPtr(size_t Offset = 0) override
+    virtual void* DG_CALL_TYPE GetDataPtr(size_t Offset = 0) override
     {
         return &m_String[Offset];
     }
 
     /// Returns the pointer to the internal data buffer
-    virtual const void* CALLTYPE GetConstDataPtr(size_t Offset = 0) const override
+    virtual const void* DG_CALL_TYPE GetConstDataPtr(size_t Offset = 0) const override
     {
         return &m_String[Offset];
     }

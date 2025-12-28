@@ -62,16 +62,16 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_FenceVk, TFenceBase)
 
     /// Implementation of IFence::GetCompletedValue() in Vulkan backend.
-    virtual UInt64 CALLTYPE GetCompletedValue() override final;
+    virtual UInt64 DG_CALL_TYPE GetCompletedValue() override final;
 
     /// Implementation of IFence::Signal() in Vulkan backend.
-    virtual void CALLTYPE Signal(UInt64 Value) override final;
+    virtual void DG_CALL_TYPE Signal(UInt64 Value) override final;
 
     /// Implementation of IFence::Wait() in Vulkan backend.
-    virtual void CALLTYPE Wait(UInt64 Value) override final;
+    virtual void DG_CALL_TYPE Wait(UInt64 Value) override final;
 
     /// Implementation of IFenceVk::GetVkSemaphore().
-    virtual VkSemaphore CALLTYPE GetVkSemaphore() override final { return m_TimelineSemaphore; }
+    virtual VkSemaphore DG_CALL_TYPE GetVkSemaphore() override final { return m_TimelineSemaphore; }
 
     VulkanUtilities::RecycledSemaphore ExtractSignalSemaphore(SoftwareQueueIndex CommandQueueId, UInt64 Value);
 

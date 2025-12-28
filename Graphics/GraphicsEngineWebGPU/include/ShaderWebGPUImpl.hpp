@@ -67,22 +67,22 @@ public:
     IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_ShaderWebGPU, IID_InternalImpl, TShaderBase)
 
     /// Implementation of IShader::GetResourceCount() in WebGPU backend.
-    UInt32 CALLTYPE GetResourceCount() const override final;
+    UInt32 DG_CALL_TYPE GetResourceCount() const override final;
 
     /// Implementation of IShader::GetResourceDesc() in WebGPU backend.
-    void CALLTYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final;
+    void DG_CALL_TYPE GetResourceDesc(UInt32 Index, ShaderResourceDesc& ResourceDesc) const override final;
 
     /// Implementation of IShader::GetConstantBufferDesc() in WebGPU backend.
-    const ShaderCodeBufferDesc* CALLTYPE GetConstantBufferDesc(UInt32 Index) const override final;
+    const ShaderCodeBufferDesc* DG_CALL_TYPE GetConstantBufferDesc(UInt32 Index) const override final;
 
     /// Implementation of IShader::GetBytecode() in WebGPU backend.
-    void CALLTYPE GetBytecode(const void** ppBytecode, UInt64& Size) const override final;
+    void DG_CALL_TYPE GetBytecode(const void** ppBytecode, UInt64& Size) const override final;
 
     /// Implementation of IShaderWebGPU::GetWGSL().
-    const std::string& CALLTYPE GetWGSL() const override final;
+    const std::string& DG_CALL_TYPE GetWGSL() const override final;
 
     /// Implementation of IShaderWebGPU::GetEmulatedArrayIndexSuffix().
-    const char* CALLTYPE GetEmulatedArrayIndexSuffix() const override final
+    const char* DG_CALL_TYPE GetEmulatedArrayIndexSuffix() const override final
     {
         return m_pShaderResources->GetEmulatedArrayIndexSuffix();
     }

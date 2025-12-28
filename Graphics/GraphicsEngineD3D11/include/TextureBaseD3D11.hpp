@@ -58,10 +58,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_TextureD3D11, TTextureBase)
 
     /// Implementation of ITextureD3D11::GetD3D11Texture().
-    virtual ID3D11Resource* CALLTYPE GetD3D11Texture() const override final { return m_pd3d11Texture; }
+    virtual ID3D11Resource* DG_CALL_TYPE GetD3D11Texture() const override final { return m_pd3d11Texture; }
 
     /// Implementation of ITexture::GetNativeHandle().
-    virtual UInt64 CALLTYPE GetNativeHandle() override final { return BitCast<UInt64>(GetD3D11Texture()); }
+    virtual UInt64 DG_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetD3D11Texture()); }
 
     void AddState(RESOURCE_STATE State)
     {

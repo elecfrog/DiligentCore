@@ -55,7 +55,7 @@ struct IAsyncTask : public IObject
     /// the Run() method completes. This way if the GetStatus() method returns
     /// any value other than Diligent::ASYNC_TASK_STATUS_RUNNING, it is guaranteed that the task
     /// is not executed by any thread.
-    virtual ASYNC_TASK_STATUS CALLTYPE Run(UInt32 ThreadId) = 0;
+    virtual ASYNC_TASK_STATUS DG_CALL_TYPE Run(UInt32 ThreadId) = 0;
 
     /// Cancel the task, if possible.
 
@@ -233,7 +233,7 @@ struct IThreadPool : public IObject
     ///         Thread.join();
     ///     }
     ///
-    virtual bool CALLTYPE ProcessTask(UInt32 ThreadId, bool WaitForTask) = 0;
+    virtual bool DG_CALL_TYPE ProcessTask(UInt32 ThreadId, bool WaitForTask) = 0;
 };
 
 } // namespace Diligent

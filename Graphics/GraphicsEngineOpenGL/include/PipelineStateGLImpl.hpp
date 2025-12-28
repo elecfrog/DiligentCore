@@ -65,10 +65,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_PipelineStateGL, IID_InternalImpl, TPipelineStateBase)
 
     /// Implementation of IPipelineState::GetStatus().
-    virtual PIPELINE_STATE_STATUS CALLTYPE GetStatus(bool WaitForCompletion = false) override final;
+    virtual PIPELINE_STATE_STATUS DG_CALL_TYPE GetStatus(bool WaitForCompletion = false) override final;
 
     /// Implementation of IPipelineStateGL::GetGLProgramHandle()
-    virtual GLuint CALLTYPE GetGLProgramHandle(SHADER_TYPE Stage) const override final;
+    virtual GLuint DG_CALL_TYPE GetGLProgramHandle(SHADER_TYPE Stage) const override final;
 
     void CommitProgram(GLContextState& State);
 

@@ -60,7 +60,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_SerializedPipelineState, IID_PipelineState, TBase)
 
-    virtual const PipelineStateDesc& CALLTYPE GetDesc() const override final
+    virtual const PipelineStateDesc& DG_CALL_TYPE GetDesc() const override final
     {
         return m_Desc;
     }
@@ -89,11 +89,11 @@ public:
     UNSUPPORTED_CONST_METHOD(IPipelineResourceSignature*, GetResourceSignature, UInt32 Index)
     // clang-format on
 
-    virtual PIPELINE_STATE_STATUS CALLTYPE GetStatus(bool WaitForCompletion = false) override;
+    virtual PIPELINE_STATE_STATUS DG_CALL_TYPE GetStatus(bool WaitForCompletion = false) override;
 
-    virtual UInt32 CALLTYPE GetPatchedShaderCount(ARCHIVE_DEVICE_DATA_FLAGS DeviceType) const override final;
+    virtual UInt32 DG_CALL_TYPE GetPatchedShaderCount(ARCHIVE_DEVICE_DATA_FLAGS DeviceType) const override final;
 
-    virtual ShaderCreateInfo CALLTYPE GetPatchedShaderCreateInfo(
+    virtual ShaderCreateInfo DG_CALL_TYPE GetPatchedShaderCreateInfo(
         ARCHIVE_DEVICE_DATA_FLAGS DataType,
         UInt32                    ShaderIndex) const override final;
 

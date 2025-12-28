@@ -45,7 +45,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_HLSL2GLSLConverter, TBase)
 
-    virtual void CALLTYPE CreateStream(const Char*                      InputFileName,
+    virtual void DG_CALL_TYPE CreateStream(const Char*                      InputFileName,
                                                  IShaderSourceInputStreamFactory* pSourceStreamFactory,
                                                  const Char*                      HLSLSource,
                                                  size_t                           NumSymbols,

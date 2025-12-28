@@ -59,11 +59,11 @@ public:
                             const PipelineStateCreateInfo& CreateInfo);
     ~ReloadablePipelineState();
 
-    virtual void CALLTYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
+    virtual void DG_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
 
     using IObject::QueryInterface;
 
-    virtual PIPELINE_STATE_STATUS CALLTYPE GetStatus(bool WaitForCompletion) override;
+    virtual PIPELINE_STATE_STATUS DG_CALL_TYPE GetStatus(bool WaitForCompletion) override;
 
     static void Create(RenderStateCacheImpl*          pStateCache,
                        IPipelineState*                pPipeline,

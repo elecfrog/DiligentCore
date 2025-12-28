@@ -175,10 +175,10 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DeviceContext, TObjectBase)
 
     /// Implementation of IDeviceContext::GetDesc().
-    virtual const DeviceContextDesc& CALLTYPE GetDesc() const override final { return m_Desc; }
+    virtual const DeviceContextDesc& DG_CALL_TYPE GetDesc() const override final { return m_Desc; }
 
     /// Implementation of IDeviceContext::SetRenderTargets().
-    virtual void CALLTYPE SetRenderTargets(UInt32                         NumRenderTargets,
+    virtual void DG_CALL_TYPE SetRenderTargets(UInt32                         NumRenderTargets,
                                                      ITextureView*                  ppRenderTargets[],
                                                      ITextureView*                  pDepthStencil,
                                                      RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final
@@ -188,14 +188,14 @@ public:
 
     /// Base implementation of IDeviceContext::SetVertexBuffers(); validates parameters and
     /// caches references to the buffers.
-    inline virtual void CALLTYPE SetVertexBuffers(UInt32                         StartSlot,
+    inline virtual void DG_CALL_TYPE SetVertexBuffers(UInt32                         StartSlot,
                                                             UInt32                         NumBuffersSet,
                                                             IBuffer* const*                ppBuffers,
                                                             const UInt64*                  pOffsets,
                                                             RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
                                                             SET_VERTEX_BUFFERS_FLAGS       Flags) override = 0;
 
-    inline virtual void CALLTYPE InvalidateState() override = 0;
+    inline virtual void DG_CALL_TYPE InvalidateState() override = 0;
 
     /// Base implementation of IDeviceContext::CommitShaderResources(); validates parameters.
     inline void CommitShaderResources(IShaderResourceBinding*        pShaderResourceBinding,
@@ -203,7 +203,7 @@ public:
                                       int);
 
     /// Base implementation of IDeviceContext::SetIndexBuffer(); caches the strong reference to the index buffer
-    inline virtual void CALLTYPE SetIndexBuffer(IBuffer*                       pIndexBuffer,
+    inline virtual void DG_CALL_TYPE SetIndexBuffer(IBuffer*                       pIndexBuffer,
                                                           UInt64                         ByteOffset,
                                                           RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override = 0;
 
@@ -213,21 +213,21 @@ public:
     /// Caches the scissor rects
     inline void SetScissorRects(UInt32 NumRects, const Rect* pRects, UInt32& RTWidth, UInt32& RTHeight);
 
-    virtual void CALLTYPE BeginRenderPass(const BeginRenderPassAttribs& Attribs) override = 0;
+    virtual void DG_CALL_TYPE BeginRenderPass(const BeginRenderPassAttribs& Attribs) override = 0;
 
-    virtual void CALLTYPE NextSubpass() override = 0;
+    virtual void DG_CALL_TYPE NextSubpass() override = 0;
 
-    virtual void CALLTYPE EndRenderPass() override = 0;
+    virtual void DG_CALL_TYPE EndRenderPass() override = 0;
 
     /// Base implementation of IDeviceContext::UpdateBuffer(); validates input parameters.
-    virtual void CALLTYPE UpdateBuffer(IBuffer*                       pBuffer,
+    virtual void DG_CALL_TYPE UpdateBuffer(IBuffer*                       pBuffer,
                                                  UInt64                         Offset,
                                                  UInt64                         Size,
                                                  const void*                    pData,
                                                  RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override = 0;
 
     /// Base implementation of IDeviceContext::CopyBuffer(); validates input parameters.
-    virtual void CALLTYPE CopyBuffer(IBuffer*                       pSrcBuffer,
+    virtual void DG_CALL_TYPE CopyBuffer(IBuffer*                       pSrcBuffer,
                                                UInt64                         SrcOffset,
                                                RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
                                                IBuffer*                       pDstBuffer,
@@ -236,16 +236,16 @@ public:
                                                RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) override = 0;
 
     /// Base implementation of IDeviceContext::MapBuffer(); validates input parameters.
-    virtual void CALLTYPE MapBuffer(IBuffer*  pBuffer,
+    virtual void DG_CALL_TYPE MapBuffer(IBuffer*  pBuffer,
                                               MAP_TYPE  MapType,
                                               MAP_FLAGS MapFlags,
                                               PVoid&    pMappedData) override = 0;
 
     /// Base implementation of IDeviceContext::UnmapBuffer()
-    virtual void CALLTYPE UnmapBuffer(IBuffer* pBuffer, MAP_TYPE MapType) override = 0;
+    virtual void DG_CALL_TYPE UnmapBuffer(IBuffer* pBuffer, MAP_TYPE MapType) override = 0;
 
     /// Base implementation of IDeviceContext::UpdateData(); validates input parameters
-    virtual void CALLTYPE UpdateTexture(ITexture*                      pTexture,
+    virtual void DG_CALL_TYPE UpdateTexture(ITexture*                      pTexture,
                                                   UInt32                         MipLevel,
                                                   UInt32                         Slice,
                                                   const Box&                     DstBox,
@@ -254,10 +254,10 @@ public:
                                                   RESOURCE_STATE_TRANSITION_MODE TextureTransitionMode) override = 0;
 
     /// Base implementation of IDeviceContext::CopyTexture(); validates input parameters
-    virtual void CALLTYPE CopyTexture(const CopyTextureAttribs& CopyAttribs) override = 0;
+    virtual void DG_CALL_TYPE CopyTexture(const CopyTextureAttribs& CopyAttribs) override = 0;
 
     /// Base implementation of IDeviceContext::MapTextureSubresource()
-    virtual void CALLTYPE MapTextureSubresource(ITexture*                 pTexture,
+    virtual void DG_CALL_TYPE MapTextureSubresource(ITexture*                 pTexture,
                                                           UInt32                    MipLevel,
                                                           UInt32                    ArraySlice,
                                                           MAP_TYPE                  MapType,
@@ -266,51 +266,51 @@ public:
                                                           MappedTextureSubresource& MappedData) override = 0;
 
     /// Base implementation of IDeviceContext::UnmapTextureSubresource()
-    virtual void CALLTYPE UnmapTextureSubresource(ITexture* pTexture,
+    virtual void DG_CALL_TYPE UnmapTextureSubresource(ITexture* pTexture,
                                                             UInt32    MipLevel,
                                                             UInt32    ArraySlice) override = 0;
 
-    virtual void CALLTYPE GenerateMips(ITextureView* pTexView) override = 0;
+    virtual void DG_CALL_TYPE GenerateMips(ITextureView* pTexView) override = 0;
 
-    virtual void CALLTYPE ResolveTextureSubresource(ITexture*                               pSrcTexture,
+    virtual void DG_CALL_TYPE ResolveTextureSubresource(ITexture*                               pSrcTexture,
                                                               ITexture*                               pDstTexture,
                                                               const ResolveTextureSubresourceAttribs& ResolveAttribs) override = 0;
 
-    virtual UInt64 CALLTYPE GetFrameNumber() const override final
+    virtual UInt64 DG_CALL_TYPE GetFrameNumber() const override final
     {
         return m_FrameNumber;
     }
 
     /// Implementation of IDeviceContext::SetUserData.
-    virtual void CALLTYPE SetUserData(IObject* pUserData) override final
+    virtual void DG_CALL_TYPE SetUserData(IObject* pUserData) override final
     {
         m_pUserData = pUserData;
     }
 
     /// Implementation of IDeviceContext::GetUserData.
-    virtual IObject* CALLTYPE GetUserData() const override final
+    virtual IObject* DG_CALL_TYPE GetUserData() const override final
     {
         return m_pUserData;
     }
 
     /// Base implementation of IDeviceContext::DispatchTile.
-    virtual void CALLTYPE DispatchTile(const DispatchTileAttribs& Attribs) override
+    virtual void DG_CALL_TYPE DispatchTile(const DispatchTileAttribs& Attribs) override
     {
         UNSUPPORTED("Tile pipeline is not supported by this device. Please check DeviceFeatures.TileShaders feature.");
     }
 
     /// Base implementation of IDeviceContext::GetTileSize.
-    virtual void CALLTYPE GetTileSize(UInt32& TileSizeX, UInt32& TileSizeY) override
+    virtual void DG_CALL_TYPE GetTileSize(UInt32& TileSizeX, UInt32& TileSizeY) override
     {
         UNSUPPORTED("Tile pipeline is not supported by this device. Please check DeviceFeatures.TileShaders feature.");
     }
 
-    virtual void CALLTYPE ClearStats() override final
+    virtual void DG_CALL_TYPE ClearStats() override final
     {
         m_Stats = {};
     }
 
-    virtual const DeviceContextStats& CALLTYPE GetStats() const override final
+    virtual const DeviceContextStats& DG_CALL_TYPE GetStats() const override final
     {
         return m_Stats;
     }

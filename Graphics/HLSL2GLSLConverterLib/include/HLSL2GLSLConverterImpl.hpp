@@ -258,7 +258,7 @@ private:
                             bool        UseInOutLocationQualifiers,
                             bool        UseRowMajorMatrices);
 
-        virtual void CALLTYPE Convert(const Char* EntryPoint,
+        virtual void DG_CALL_TYPE Convert(const Char* EntryPoint,
                                                 SHADER_TYPE ShaderType,
                                                 bool        IncludeDefintions,
                                                 const char* SamplerSuffix,

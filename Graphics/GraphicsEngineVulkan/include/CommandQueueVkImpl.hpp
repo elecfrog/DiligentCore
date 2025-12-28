@@ -110,37 +110,37 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_CommandQueueVk, TBase)
 
     /// Implementation of ICommandQueue::GetNextFenceValue().
-    virtual UInt64 CALLTYPE GetNextFenceValue() const override final { return m_NextFenceValue.load(); }
+    virtual UInt64 DG_CALL_TYPE GetNextFenceValue() const override final { return m_NextFenceValue.load(); }
 
     /// Implementation of ICommandQueue::GetCompletedFenceValue().
-    virtual UInt64 CALLTYPE GetCompletedFenceValue() override final;
+    virtual UInt64 DG_CALL_TYPE GetCompletedFenceValue() override final;
 
     /// Implementation of ICommandQueue::WaitForIdle().
-    virtual UInt64 CALLTYPE WaitForIdle() override final;
+    virtual UInt64 DG_CALL_TYPE WaitForIdle() override final;
 
     /// Implementation of ICommandQueueVk::SubmitCmdBuffer().
-    virtual UInt64 CALLTYPE SubmitCmdBuffer(VkCommandBuffer cmdBuffer) override final;
+    virtual UInt64 DG_CALL_TYPE SubmitCmdBuffer(VkCommandBuffer cmdBuffer) override final;
 
     /// Implementation of ICommandQueueVk::Submit().
-    virtual UInt64 CALLTYPE Submit(const VkSubmitInfo& SubmitInfo) override final;
+    virtual UInt64 DG_CALL_TYPE Submit(const VkSubmitInfo& SubmitInfo) override final;
 
     /// Implementation of ICommandQueueVk::Present().
-    virtual VkResult CALLTYPE Present(const VkPresentInfoKHR& PresentInfo) override final;
+    virtual VkResult DG_CALL_TYPE Present(const VkPresentInfoKHR& PresentInfo) override final;
 
     /// Implementation of ICommandQueueVk::BindSparse().
-    virtual UInt64 CALLTYPE BindSparse(const VkBindSparseInfo& InBindInfo) override final;
+    virtual UInt64 DG_CALL_TYPE BindSparse(const VkBindSparseInfo& InBindInfo) override final;
 
     /// Implementation of ICommandQueueVk::GetVkQueue().
-    virtual VkQueue CALLTYPE GetVkQueue() override final { return m_VkQueue; }
+    virtual VkQueue DG_CALL_TYPE GetVkQueue() override final { return m_VkQueue; }
 
     /// Implementation of ICommandQueueVk::GetQueueFamilyIndex().
-    virtual uint32_t CALLTYPE GetQueueFamilyIndex() const override final { return m_QueueFamilyIndex; }
+    virtual uint32_t DG_CALL_TYPE GetQueueFamilyIndex() const override final { return m_QueueFamilyIndex; }
 
     /// Implementation of ICommandQueueVk::EnqueueSignalFence().
-    virtual void CALLTYPE EnqueueSignalFence(VkFence vkFence) override final;
+    virtual void DG_CALL_TYPE EnqueueSignalFence(VkFence vkFence) override final;
 
     /// Implementation of ICommandQueueVk::EnqueueSignal().
-    virtual void CALLTYPE EnqueueSignal(VkSemaphore vkTimelineSemaphore, UInt64 Value) override final;
+    virtual void DG_CALL_TYPE EnqueueSignal(VkSemaphore vkTimelineSemaphore, UInt64 Value) override final;
 
     void SetFence(RefCntAutoPtr<FenceVkImpl> pFence)
     {

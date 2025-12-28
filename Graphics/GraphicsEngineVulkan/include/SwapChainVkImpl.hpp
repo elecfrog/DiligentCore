@@ -56,32 +56,32 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_SwapChainVk, TSwapChainBase)
 
     /// Implementation of ISwapChain::Present() in Vulkan backend.
-    virtual void CALLTYPE Present(UInt32 SyncInterval) override final;
+    virtual void DG_CALL_TYPE Present(UInt32 SyncInterval) override final;
 
     /// Implementation of ISwapChain::Resize() in Vulkan backend.
-    virtual void CALLTYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
+    virtual void DG_CALL_TYPE Resize(UInt32 NewWidth, UInt32 NewHeight, SURFACE_TRANSFORM NewPreTransform) override final;
 
     /// Implementation of ISwapChain::SetFullscreenMode() in Vulkan backend.
-    virtual void CALLTYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final;
+    virtual void DG_CALL_TYPE SetFullscreenMode(const DisplayModeAttribs& DisplayMode) override final;
 
     /// Implementation of ISwapChain::SetWindowedMode() in Vulkan backend.
-    virtual void CALLTYPE SetWindowedMode() override final;
+    virtual void DG_CALL_TYPE SetWindowedMode() override final;
 
     /// Implementation of ISwapChainVk::GetVkSurface().
-    virtual VkSurfaceKHR CALLTYPE GetVkSurface() override final { return m_VkSurface; }
+    virtual VkSurfaceKHR DG_CALL_TYPE GetVkSurface() override final { return m_VkSurface; }
 
     /// Implementation of ISwapChainVk::GetVkSwapChain().
-    virtual VkSwapchainKHR CALLTYPE GetVkSwapChain() override final { return m_VkSwapChain; }
+    virtual VkSwapchainKHR DG_CALL_TYPE GetVkSwapChain() override final { return m_VkSwapChain; }
 
     /// Implementation of ISwapChain::GetCurrentBackBufferRTV() in Vulkan backend.
-    virtual ITextureViewVk* CALLTYPE GetCurrentBackBufferRTV() override final
+    virtual ITextureViewVk* DG_CALL_TYPE GetCurrentBackBufferRTV() override final
     {
         VERIFY_EXPR(m_BackBufferIndex < m_SwapChainDesc.BufferCount);
         return m_pBackBufferRTV[m_BackBufferIndex];
     }
 
     /// Implementation of ISwapChain::GetDepthBufferDSV() in Vulkan backend.
-    virtual ITextureViewVk* CALLTYPE GetDepthBufferDSV() override final { return m_pDepthBufferDSV; }
+    virtual ITextureViewVk* DG_CALL_TYPE GetDepthBufferDSV() override final { return m_pDepthBufferDSV; }
 
 private:
     void     CreateSurface();

@@ -76,7 +76,7 @@ public:
     const GLObjectWrappers::GLTextureObj& GetGLHandle() const { return m_GlTexture; }
 
     /// Implementation of ITextureGL::GetBindTarget().
-    virtual GLenum CALLTYPE GetBindTarget() const override final { return m_BindTarget; }
+    virtual GLenum DG_CALL_TYPE GetBindTarget() const override final { return m_BindTarget; }
 
     GLenum GetGLTexFormat() const { return m_GLTexFormat; }
 
@@ -103,10 +103,10 @@ public:
                   UInt32               DstZ);
 
     /// Implementation of ITextureGL::GetGLTextureHandle().
-    virtual GLuint CALLTYPE GetGLTextureHandle() const override final { return GetGLHandle(); }
+    virtual GLuint DG_CALL_TYPE GetGLTextureHandle() const override final { return GetGLHandle(); }
 
     /// Implementation of ITexture::GetNativeHandle() in OpenGL backend.
-    virtual UInt64 CALLTYPE GetNativeHandle() override final { return BitCast<UInt64>(GetGLTextureHandle()); }
+    virtual UInt64 DG_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetGLTextureHandle()); }
 
     virtual void UpdateData(class GLContextState&    CtxState,
                             UInt32                   MipLevel,
