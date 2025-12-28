@@ -583,7 +583,7 @@ protected:
     }
 
     template <typename ObjectAllocatorType>
-    void operator delete(void* ptr, ObjectAllocatorType& Allocator, const Char* dbgDescription, const char* dbgFileName, const Int32 dbgLineNumber)
+    void operator delete(void* ptr, ObjectAllocatorType& Allocator, const Char*, const char*, const Int32)
     {
         return Allocator.Free(ptr);
     }

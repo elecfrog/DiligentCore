@@ -46,7 +46,7 @@ typename std::enable_if<std::is_destructible<T>::value, void>::type Destruct(T* 
 }
 
 template <typename T>
-typename std::enable_if<!std::is_destructible<T>::value, void>::type Destruct(T* ptr)
+typename std::enable_if<!std::is_destructible<T>::value, void>::type Destruct(T*)
 {
 }
 
@@ -132,7 +132,7 @@ struct STDAllocator
     pointer       address(reference r) { return &r; }
     const_pointer address(const_reference r) { return &r; }
 
-    void deallocate(T* p, std::size_t count)
+    void deallocate(T* p, std::size_t)
     {
         m_Allocator.FreeAligned(p);
     }
