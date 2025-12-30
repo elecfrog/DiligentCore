@@ -1,36 +1,4 @@
-/*
- *  Copyright 2019-2025 Diligent Graphics LLC
- *  Copyright 2015-2019 Egor Yusov
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- *  In no event and under no legal theory, whether in tort (including negligence),
- *  contract, or otherwise, unless required by applicable law (such as deliberate
- *  and grossly negligent acts) or agreed to in writing, shall any Contributor be
- *  liable for any damages, including any direct, indirect, special, incidental,
- *  or consequential damages of any character arising as a result of this License or
- *  out of the use or inability to use the software (including but not limited to damages
- *  for loss of goodwill, work stoppage, computer failure or malfunction, or any and
- *  all other commercial damages or losses), even if such Contributor has been advised
- *  of the possibility of such damages.
- */
-
 #pragma once
-
-// clang-format off
-
-/// \file
-/// Definition of the Diligent::IDeviceContext interface and related data structures
 
 #include "../../../Primitives/interface/Object.h"
 #include "../../../Primitives/interface/FlagEnum.h"
@@ -59,12 +27,11 @@
 #include "DeviceMemory.h"
 #include "CommandQueue.h"
 
-namespace Diligent {
-
+namespace Diligent
+{
 
 // {DC92711B-A1BE-4319-B2BD-C662D1CC19E4}
-static constexpr INTERFACE_ID IID_DeviceContext =
-    {0xdc92711b, 0xa1be, 0x4319, {0xb2, 0xbd, 0xc6, 0x62, 0xd1, 0xcc, 0x19, 0xe4}};
+static constexpr INTERFACE_ID IID_DeviceContext = {0xdc92711b, 0xa1be, 0x4319, {0xb2, 0xbd, 0xc6, 0x62, 0xd1, 0xcc, 0x19, 0xe4}};
 
 /// Device context description.
 struct DeviceContextDesc
@@ -72,7 +39,7 @@ struct DeviceContextDesc
     /// Device context name.
 
     /// This name is what was specified in ImmediateContextCreateInfo::Name when the engine was initialized.
-    const Char*  Name            DEFAULT_INITIALIZER(nullptr);
+    const Char* Name DEFAULT_INITIALIZER(nullptr);
 
     /// Command queue type that this context uses.
 
@@ -82,14 +49,14 @@ struct DeviceContextDesc
     COMMAND_QUEUE_TYPE QueueType DEFAULT_INITIALIZER(COMMAND_QUEUE_TYPE_UNKNOWN);
 
     /// Indicates if this is a deferred context.
-    Bool         IsDeferred      DEFAULT_INITIALIZER(False);
+    Bool IsDeferred DEFAULT_INITIALIZER(False);
 
     /// Device context ID. This value corresponds to the index of the device context
     /// in ppContexts array when the engine was initialized.
     /// When starting recording commands with a deferred context, the context id
     /// of the immediate context where the command list will be executed should be
     /// given to IDeviceContext::Begin() method.
-    UInt8        ContextId       DEFAULT_INITIALIZER(0);
+    UInt8 ContextId DEFAULT_INITIALIZER(0);
 
     /// Hardware queue index in GraphicsAdapterInfo::Queues array.
 
@@ -103,7 +70,7 @@ struct DeviceContextDesc
     ///   - 1 - Compute queue
     ///   - 2 - Transfer queue
     /// - Metal backend: index of the unique command queue.
-    UInt8        QueueId    DEFAULT_INITIALIZER(DEFAULT_QUEUE_ID);
+    UInt8 QueueId DEFAULT_INITIALIZER(DEFAULT_QUEUE_ID);
 
 
     /// Required texture granularity for copy operations, for a transfer queue.
@@ -115,7 +82,7 @@ struct DeviceContextDesc
     /// For deferred contexts, this member is only defined between IDeviceContext::Begin() and
     /// IDeviceContext::FinishCommandList() calls and matches the texture copy granularity of
     /// the immediate context where the command list will be executed.
-    UInt32       TextureCopyGranularity[3] DEFAULT_INITIALIZER({});
+    UInt32 TextureCopyGranularity[3] DEFAULT_INITIALIZER({});
 
 #if DILIGENT_CPP_INTERFACE
     constexpr DeviceContextDesc() noexcept {}
@@ -126,11 +93,11 @@ struct DeviceContextDesc
                                 Bool               _IsDeferred,
                                 UInt32             _ContextId,
                                 UInt32             _QueueId = DeviceContextDesc{}.QueueId) noexcept :
-        Name      {_Name      },
-        QueueType {_QueueType },
+        Name{_Name},
+        QueueType{_QueueType},
         IsDeferred{_IsDeferred},
-        ContextId {static_cast<decltype(ContextId)>(_ContextId)},
-        QueueId   {static_cast<decltype(QueueId)>(_QueueId)}
+        ContextId{static_cast<decltype(ContextId)>(_ContextId)},
+        QueueId{static_cast<decltype(QueueId)>(_QueueId)}
     {
         if (!IsDeferred)
         {
@@ -149,27 +116,26 @@ typedef struct DeviceContextDesc DeviceContextDesc;
 
 
 /// Draw command flags
-DILIGENT_TYPED_ENUM(DRAW_FLAGS, UInt8)
-{
+DILIGENT_TYPED_ENUM(DRAW_FLAGS, UInt8){
     /// No flags.
-    DRAW_FLAG_NONE                            = 0u,
+    DRAW_FLAG_NONE = 0u,
 
     /// Verify the state of index and vertex buffers (if any) used by the draw
     /// command. State validation is only performed in debug and development builds
     /// and the flag has no effect in release build.
-    DRAW_FLAG_VERIFY_STATES                   = 1u << 0u,
+    DRAW_FLAG_VERIFY_STATES = 1u << 0u,
 
     /// Verify correctness of parameters passed to the draw command.
     ///
     /// \remarks This flag only has effect in debug and development builds.
     ///          Verification is always disabled in release configuration.
-    DRAW_FLAG_VERIFY_DRAW_ATTRIBS             = 1u << 1u,
+    DRAW_FLAG_VERIFY_DRAW_ATTRIBS = 1u << 1u,
 
     /// Perform all state validation checks
     ///
     /// \remarks This flag only has effect in debug and development builds.
     ///          Verification is always disabled in release configuration.
-    DRAW_FLAG_VERIFY_ALL                      = DRAW_FLAG_VERIFY_STATES | DRAW_FLAG_VERIFY_DRAW_ATTRIBS,
+    DRAW_FLAG_VERIFY_ALL = DRAW_FLAG_VERIFY_STATES | DRAW_FLAG_VERIFY_DRAW_ATTRIBS,
 
     /// Indicates that none of the dynamic resource buffers used by the draw command
     /// have been modified by the CPU since the last command.
@@ -213,8 +179,7 @@ DILIGENT_TYPED_ENUM(DRAW_FLAGS, UInt8)
     ///  (see RootSignature::CommitRootViews). When `DRAW_FLAG_DYNAMIC_RESOURCE_BUFFERS_INTACT` is set, root views are only bound
     ///  by the first draw command that uses the PSO + SRB pair. The flag avoids setting the same GPU virtual addresses when
     ///  they stay unchanged.
-    DRAW_FLAG_DYNAMIC_RESOURCE_BUFFERS_INTACT = 1u << 2u
-};
+    DRAW_FLAG_DYNAMIC_RESOURCE_BUFFERS_INTACT = 1u << 2u};
 DEFINE_FLAG_ENUM_OPERATORS(DRAW_FLAGS)
 
 
@@ -222,8 +187,7 @@ DEFINE_FLAG_ENUM_OPERATORS(DRAW_FLAGS)
 
 /// Refer to http://diligentgraphics.com/2018/12/09/resource-state-management/ for detailed explanation
 /// of resource state management in Diligent Engine.
-DILIGENT_TYPED_ENUM(RESOURCE_STATE_TRANSITION_MODE, UInt8)
-{
+DILIGENT_TYPED_ENUM(RESOURCE_STATE_TRANSITION_MODE, UInt8){
     /// Perform no state transitions and no state validation.
     /// Resource states are not accessed (either read or written) by the command.
     RESOURCE_STATE_TRANSITION_MODE_NONE = 0,
@@ -249,8 +213,7 @@ DILIGENT_TYPED_ENUM(RESOURCE_STATE_TRANSITION_MODE, UInt8)
     /// \note    Any method that uses this mode will read the state of resources it works with.
     ///          As automatic state management is not thread-safe, no other thread is allowed to alter
     ///          the state of resources being used by the command. It is safe to read these states.
-    RESOURCE_STATE_TRANSITION_MODE_VERIFY
-};
+    RESOURCE_STATE_TRANSITION_MODE_VERIFY};
 
 
 /// Defines the draw command attributes.
@@ -259,23 +222,23 @@ DILIGENT_TYPED_ENUM(RESOURCE_STATE_TRANSITION_MODE, UInt8)
 struct DrawAttribs
 {
     /// The number of vertices to draw.
-    UInt32     NumVertices           DEFAULT_INITIALIZER(0);
+    UInt32 NumVertices DEFAULT_INITIALIZER(0);
 
     /// Additional flags, see Diligent::DRAW_FLAGS.
-    DRAW_FLAGS Flags                 DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
+    DRAW_FLAGS Flags DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
 
     /// The number of instances to draw.
 
     /// If more than one instance is specified, instanced draw call will be performed.
-    UInt32     NumInstances          DEFAULT_INITIALIZER(1);
+    UInt32 NumInstances DEFAULT_INITIALIZER(1);
 
     /// LOCATION (or INDEX, but NOT the byte offset) of the first vertex in the
     /// vertex buffer to start reading vertices from.
-    UInt32     StartVertexLocation   DEFAULT_INITIALIZER(0);
+    UInt32 StartVertexLocation DEFAULT_INITIALIZER(0);
 
     /// LOCATION (or INDEX, but NOT the byte offset) in the vertex buffer to start
     /// reading instance data from.
-    UInt32     FirstInstanceLocation DEFAULT_INITIALIZER(0);
+    UInt32 FirstInstanceLocation DEFAULT_INITIALIZER(0);
 
 
 #if DILIGENT_CPP_INTERFACE
@@ -298,10 +261,10 @@ struct DrawAttribs
                           UInt32     _NumInstances          = 1,
                           UInt32     _StartVertexLocation   = 0,
                           UInt32     _FirstInstanceLocation = 0) noexcept :
-        NumVertices          {_NumVertices          },
-        Flags                {_Flags                },
-        NumInstances         {_NumInstances         },
-        StartVertexLocation  {_StartVertexLocation  },
+        NumVertices{_NumVertices},
+        Flags{_Flags},
+        NumInstances{_NumInstances},
+        StartVertexLocation{_StartVertexLocation},
         FirstInstanceLocation{_FirstInstanceLocation}
     {}
 #endif
@@ -315,31 +278,31 @@ typedef struct DrawAttribs DrawAttribs;
 struct DrawIndexedAttribs
 {
     /// The number of indices to draw.
-    UInt32     NumIndices            DEFAULT_INITIALIZER(0);
+    UInt32 NumIndices DEFAULT_INITIALIZER(0);
 
     /// The type of elements in the index buffer.
 
     /// Allowed values: `VT_UINT16` and `VT_UINT32`.
-    VALUE_TYPE IndexType             DEFAULT_INITIALIZER(VT_UNDEFINED);
+    VALUE_TYPE IndexType DEFAULT_INITIALIZER(VT_UNDEFINED);
 
     /// Additional flags, see Diligent::DRAW_FLAGS.
-    DRAW_FLAGS Flags                 DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
+    DRAW_FLAGS Flags DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
 
     /// Number of instances to draw.
 
     /// If more than one instance is specified, instanced draw call will be performed.
-    UInt32     NumInstances          DEFAULT_INITIALIZER(1);
+    UInt32 NumInstances DEFAULT_INITIALIZER(1);
 
     /// LOCATION (NOT the byte offset) of the first index in
     /// the index buffer to start reading indices from.
-    UInt32     FirstIndexLocation    DEFAULT_INITIALIZER(0);
+    UInt32 FirstIndexLocation DEFAULT_INITIALIZER(0);
 
     /// A constant which is added to each index before accessing the vertex buffer.
-    UInt32     BaseVertex            DEFAULT_INITIALIZER(0);
+    UInt32 BaseVertex DEFAULT_INITIALIZER(0);
 
     /// LOCATION (or INDEX, but NOT the byte offset) in the vertex
     /// buffer to start reading instance data from.
-    UInt32     FirstInstanceLocation DEFAULT_INITIALIZER(0);
+    UInt32 FirstInstanceLocation DEFAULT_INITIALIZER(0);
 
 
 #if DILIGENT_CPP_INTERFACE
@@ -358,19 +321,19 @@ struct DrawIndexedAttribs
     constexpr DrawIndexedAttribs() noexcept {}
 
     /// Initializes the structure members with user-specified values.
-    constexpr DrawIndexedAttribs(UInt32      _NumIndices,
-                                 VALUE_TYPE  _IndexType,
-                                 DRAW_FLAGS  _Flags,
-                                 UInt32      _NumInstances          = 1,
-                                 UInt32      _FirstIndexLocation    = 0,
-                                 UInt32      _BaseVertex            = 0,
-                                 UInt32      _FirstInstanceLocation = 0) noexcept :
-        NumIndices           {_NumIndices           },
-        IndexType            {_IndexType            },
-        Flags                {_Flags                },
-        NumInstances         {_NumInstances         },
-        FirstIndexLocation   {_FirstIndexLocation   },
-        BaseVertex           {_BaseVertex           },
+    constexpr DrawIndexedAttribs(UInt32     _NumIndices,
+                                 VALUE_TYPE _IndexType,
+                                 DRAW_FLAGS _Flags,
+                                 UInt32     _NumInstances          = 1,
+                                 UInt32     _FirstIndexLocation    = 0,
+                                 UInt32     _BaseVertex            = 0,
+                                 UInt32     _FirstInstanceLocation = 0) noexcept :
+        NumIndices{_NumIndices},
+        IndexType{_IndexType},
+        Flags{_Flags},
+        NumInstances{_NumInstances},
+        FirstIndexLocation{_FirstIndexLocation},
+        BaseVertex{_BaseVertex},
         FirstInstanceLocation{_FirstInstanceLocation}
     {}
 #endif
@@ -391,36 +354,36 @@ struct DrawIndirectAttribs
     ///     UInt32 NumInstances;
     ///     UInt32 StartVertexLocation;
     ///     UInt32 FirstInstanceLocation;
-    IBuffer*   pAttribsBuffer       DEFAULT_VALUE(nullptr);
+    IBuffer* pAttribsBuffer DEFAULT_VALUE(nullptr);
 
     /// Offset from the beginning of the buffer to the location of draw command attributes.
-    UInt64 DrawArgsOffset           DEFAULT_INITIALIZER(0);
+    UInt64 DrawArgsOffset DEFAULT_INITIALIZER(0);
 
     /// Additional flags, see Diligent::DRAW_FLAGS.
-    DRAW_FLAGS Flags                DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
+    DRAW_FLAGS Flags DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
 
     /// The number of draw commands to execute. When the pCounterBuffer is not null, this member
     /// defines the maximum number of commands that will be executed.
     /// Must be less than DrawCommandProperties::MaxDrawIndirectCount.
-    UInt32 DrawCount                DEFAULT_INITIALIZER(1);
+    UInt32 DrawCount DEFAULT_INITIALIZER(1);
 
     /// When `DrawCount > 1`, the byte stride between successive sets of draw parameters.
     /// Must be a multiple of 4 and greater than or equal to 16 bytes (`sizeof(UInt32) * 4`).
-    UInt32 DrawArgsStride           DEFAULT_INITIALIZER(16);
+    UInt32 DrawArgsStride DEFAULT_INITIALIZER(16);
 
     /// State transition mode for indirect draw arguments buffer.
-    RESOURCE_STATE_TRANSITION_MODE  AttribsBufferStateTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
+    RESOURCE_STATE_TRANSITION_MODE AttribsBufferStateTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
 
     /// A pointer to the optional buffer, from which UInt32 value with the draw count will be read.
-    IBuffer* pCounterBuffer         DEFAULT_VALUE(nullptr);
+    IBuffer* pCounterBuffer DEFAULT_VALUE(nullptr);
 
     /// When pCounterBuffer is not null, an offset from the beginning of the buffer to the
     /// location of the command counter.
-    UInt64 CounterOffset            DEFAULT_INITIALIZER(0);
+    UInt64 CounterOffset DEFAULT_INITIALIZER(0);
 
     /// When counter buffer is not null, state transition mode for the count buffer.
-    RESOURCE_STATE_TRANSITION_MODE  CounterBufferStateTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
+    RESOURCE_STATE_TRANSITION_MODE CounterBufferStateTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
 
 #if DILIGENT_CPP_INTERFACE
@@ -437,14 +400,14 @@ struct DrawIndirectAttribs
                                            IBuffer*                       _pCounterBuffer              = DrawIndirectAttribs{}.pCounterBuffer,
                                            UInt64                         _CounterOffset               = DrawIndirectAttribs{}.CounterOffset,
                                            RESOURCE_STATE_TRANSITION_MODE _CounterBufferTransitionMode = DrawIndirectAttribs{}.CounterBufferStateTransitionMode) noexcept :
-        pAttribsBuffer                  {_pAttribsBuffer             },
-        DrawArgsOffset                  {_DrawArgsOffset             },
-        Flags                           {_Flags                      },
-        DrawCount                       {_DrawCount                  },
-        DrawArgsStride                  {_DrawArgsStride             },
+        pAttribsBuffer{_pAttribsBuffer},
+        DrawArgsOffset{_DrawArgsOffset},
+        Flags{_Flags},
+        DrawCount{_DrawCount},
+        DrawArgsStride{_DrawArgsStride},
         AttribsBufferStateTransitionMode{_AttribsBufferTransitionMode},
-        pCounterBuffer                  {_pCounterBuffer             },
-        CounterOffset                   {_CounterOffset              },
+        pCounterBuffer{_pCounterBuffer},
+        CounterOffset{_CounterOffset},
         CounterBufferStateTransitionMode{_CounterBufferTransitionMode}
     {}
 #endif
@@ -460,7 +423,7 @@ struct DrawIndexedIndirectAttribs
     /// The type of the elements in the index buffer.
 
     /// Allowed values: `VT_UINT16` and `VT_UINT32`.
-    VALUE_TYPE IndexType            DEFAULT_INITIALIZER(VT_UNDEFINED);
+    VALUE_TYPE IndexType DEFAULT_INITIALIZER(VT_UNDEFINED);
 
     /// A pointer to the buffer, from which indirect draw attributes will be read.
 
@@ -471,36 +434,36 @@ struct DrawIndexedIndirectAttribs
     ///     UInt32 FirstIndexLocation;
     ///     UInt32 BaseVertex;
     ///     UInt32 FirstInstanceLocation
-    IBuffer*  pAttribsBuffer        DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pAttribsBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// Offset from the beginning of the buffer to the location of the draw command attributes.
-    UInt64 DrawArgsOffset           DEFAULT_INITIALIZER(0);
+    UInt64 DrawArgsOffset DEFAULT_INITIALIZER(0);
 
     /// Additional flags, see Diligent::DRAW_FLAGS.
-    DRAW_FLAGS Flags                DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
+    DRAW_FLAGS Flags DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
 
     /// The number of draw commands to execute.
 
     /// When the `pCounterBuffer` is not null, this member
     /// defines the maximum number of commands that will be executed.
     /// Must be less than DrawCommandProperties::MaxDrawIndirectCount.
-    UInt32 DrawCount                DEFAULT_INITIALIZER(1);
+    UInt32 DrawCount DEFAULT_INITIALIZER(1);
 
     /// When `DrawCount > 1`, the byte stride between successive sets of draw parameters.
 
     /// Must be a multiple of 4 and greater than or equal to 20 bytes (`sizeof(UInt32) * 5`).
-    UInt32 DrawArgsStride           DEFAULT_INITIALIZER(20);
+    UInt32 DrawArgsStride DEFAULT_INITIALIZER(20);
 
     /// State transition mode for indirect draw arguments buffer.
     RESOURCE_STATE_TRANSITION_MODE AttribsBufferStateTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
 
     /// A pointer to the optional buffer, from which UInt32 value with the draw count will be read.
-    IBuffer* pCounterBuffer         DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pCounterBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// When `pCounterBuffer` is not null, offset from the beginning of the counter buffer to the
     /// location of the command counter.
-    UInt64 CounterOffset            DEFAULT_INITIALIZER(0);
+    UInt64 CounterOffset DEFAULT_INITIALIZER(0);
 
     /// When counter buffer is not null, state transition mode for the count buffer.
     RESOURCE_STATE_TRANSITION_MODE CounterBufferStateTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
@@ -521,15 +484,15 @@ struct DrawIndexedIndirectAttribs
                                          IBuffer*                       _pCounterBuffer              = DrawIndexedIndirectAttribs{}.pCounterBuffer,
                                          UInt64                         _CounterOffset               = DrawIndexedIndirectAttribs{}.CounterOffset,
                                          RESOURCE_STATE_TRANSITION_MODE _CounterBufferTransitionMode = DrawIndexedIndirectAttribs{}.CounterBufferStateTransitionMode) noexcept :
-        IndexType                       {_IndexType                  },
-        pAttribsBuffer                  {_pAttribsBuffer             },
-        DrawArgsOffset                  {_DrawArgsOffset             },
-        Flags                           {_Flags                      },
-        DrawCount                       {_DrawCount                  },
-        DrawArgsStride                  {_DrawArgsStride             },
+        IndexType{_IndexType},
+        pAttribsBuffer{_pAttribsBuffer},
+        DrawArgsOffset{_DrawArgsOffset},
+        Flags{_Flags},
+        DrawCount{_DrawCount},
+        DrawArgsStride{_DrawArgsStride},
         AttribsBufferStateTransitionMode{_AttribsBufferTransitionMode},
-        pCounterBuffer                  {_pCounterBuffer             },
-        CounterOffset                   {_CounterOffset              },
+        pCounterBuffer{_pCounterBuffer},
+        CounterOffset{_CounterOffset},
         CounterBufferStateTransitionMode{_CounterBufferTransitionMode}
     {}
 #endif
@@ -552,7 +515,7 @@ struct DrawMeshAttribs
     UInt32 ThreadGroupCountZ DEFAULT_INITIALIZER(1);
 
     /// Additional flags, see Diligent::DRAW_FLAGS.
-    DRAW_FLAGS Flags         DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
+    DRAW_FLAGS Flags DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
 
 #if DILIGENT_CPP_INTERFACE
     /// Initializes the structure members with default values.
@@ -561,7 +524,7 @@ struct DrawMeshAttribs
     explicit constexpr DrawMeshAttribs(UInt32     _ThreadGroupCountX,
                                        DRAW_FLAGS _Flags = DRAW_FLAG_NONE) noexcept :
         ThreadGroupCountX{_ThreadGroupCountX},
-        Flags            {_Flags}
+        Flags{_Flags}
     {}
 
     constexpr DrawMeshAttribs(UInt32     _ThreadGroupCountX,
@@ -569,7 +532,7 @@ struct DrawMeshAttribs
                               DRAW_FLAGS _Flags = DRAW_FLAG_NONE) noexcept :
         ThreadGroupCountX{_ThreadGroupCountX},
         ThreadGroupCountY{_ThreadGroupCountY},
-        Flags            {_Flags}
+        Flags{_Flags}
     {}
 
     constexpr DrawMeshAttribs(UInt32     _ThreadGroupCountX,
@@ -579,7 +542,7 @@ struct DrawMeshAttribs
         ThreadGroupCountX{_ThreadGroupCountX},
         ThreadGroupCountY{_ThreadGroupCountY},
         ThreadGroupCountZ{_ThreadGroupCountZ},
-        Flags            {_Flags}
+        Flags{_Flags}
     {}
 #endif
 };
@@ -606,18 +569,18 @@ struct DrawMeshIndirectAttribs
     ///        UInt32 FirstTask;
     ///
     /// Size of the buffer must be `sizeof(UInt32[3]) * Attribs.MaxDrawCommands`.
-    IBuffer*   pAttribsBuffer   DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pAttribsBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// Offset from the beginning of the attribs buffer to the location of the draw command attributes.
-    UInt64 DrawArgsOffset       DEFAULT_INITIALIZER(0);
+    UInt64 DrawArgsOffset DEFAULT_INITIALIZER(0);
 
     /// Additional flags, see Diligent::DRAW_FLAGS.
-    DRAW_FLAGS Flags            DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
+    DRAW_FLAGS Flags DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
 
     /// When `pCounterBuffer` is null, the number of commands to run.
     /// When `pCounterBuffer` is not null, the maximum number of commands
     /// that will be read from the count buffer.
-    UInt32 CommandCount         DEFAULT_INITIALIZER(1);
+    UInt32 CommandCount DEFAULT_INITIALIZER(1);
 
     /// State transition mode for indirect draw arguments buffer.
     RESOURCE_STATE_TRANSITION_MODE AttribsBufferStateTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
@@ -627,7 +590,7 @@ struct DrawMeshIndirectAttribs
     IBuffer* pCounterBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// When pCounterBuffer is not null, an offset from the beginning of the buffer to the location of the command counter.
-    UInt64 CounterOffset    DEFAULT_INITIALIZER(0);
+    UInt64 CounterOffset DEFAULT_INITIALIZER(0);
 
     /// When pCounterBuffer is not null, state transition mode for the count buffer.
     RESOURCE_STATE_TRANSITION_MODE CounterBufferStateTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
@@ -645,13 +608,13 @@ struct DrawMeshIndirectAttribs
                                       IBuffer*                       _pCounterBuffer                   = DrawMeshIndirectAttribs{}.pCounterBuffer,
                                       UInt64                         _CounterOffset                    = DrawMeshIndirectAttribs{}.CounterOffset,
                                       RESOURCE_STATE_TRANSITION_MODE _CounterBufferStateTransitionMode = DrawMeshIndirectAttribs{}.CounterBufferStateTransitionMode) noexcept :
-        pAttribsBuffer                  {_pAttribsBuffer                  },
-        DrawArgsOffset                  {_DrawArgsOffset                  },
-        Flags                           {_Flags                           },
-        CommandCount                    {_CommandCount                    },
+        pAttribsBuffer{_pAttribsBuffer},
+        DrawArgsOffset{_DrawArgsOffset},
+        Flags{_Flags},
+        CommandCount{_CommandCount},
         AttribsBufferStateTransitionMode{_AttribsBufferStateTransitionMode},
-        pCounterBuffer                  {_pCounterBuffer                  },
-        CounterOffset                   {_CounterOffset                   },
+        pCounterBuffer{_pCounterBuffer},
+        CounterOffset{_CounterOffset},
         CounterBufferStateTransitionMode{_CounterBufferStateTransitionMode}
     {}
 #endif
@@ -663,11 +626,11 @@ typedef struct DrawMeshIndirectAttribs DrawMeshIndirectAttribs;
 struct MultiDrawItem
 {
     /// The number of vertices to draw.
-    UInt32     NumVertices           DEFAULT_INITIALIZER(0);
+    UInt32 NumVertices DEFAULT_INITIALIZER(0);
 
     /// LOCATION (or INDEX, but NOT the byte offset) of the first vertex in the
     /// vertex buffer to start reading vertices from.
-    UInt32     StartVertexLocation   DEFAULT_INITIALIZER(0);
+    UInt32 StartVertexLocation DEFAULT_INITIALIZER(0);
 };
 typedef struct MultiDrawItem MultiDrawItem;
 
@@ -675,36 +638,36 @@ typedef struct MultiDrawItem MultiDrawItem;
 struct MultiDrawAttribs
 {
     /// The number of draw items to execute.
-    UInt32               DrawCount   DEFAULT_INITIALIZER(0);
+    UInt32 DrawCount DEFAULT_INITIALIZER(0);
 
     /// A pointer to the array of DrawCount draw command items.
-    const MultiDrawItem* pDrawItems  DEFAULT_INITIALIZER(nullptr);
+    const MultiDrawItem* pDrawItems DEFAULT_INITIALIZER(nullptr);
 
     /// Additional flags, see Diligent::DRAW_FLAGS.
-    DRAW_FLAGS Flags                 DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
+    DRAW_FLAGS Flags DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
 
     /// The number of instances to draw. If more than one instance is specified,
     /// instanced draw call will be performed.
-    UInt32     NumInstances          DEFAULT_INITIALIZER(1);
+    UInt32 NumInstances DEFAULT_INITIALIZER(1);
 
     /// LOCATION (or INDEX, but NOT the byte offset) in the vertex buffer to start
     /// reading instance data from.
-    UInt32     FirstInstanceLocation DEFAULT_INITIALIZER(0);
+    UInt32 FirstInstanceLocation DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr MultiDrawAttribs() noexcept {}
 
     constexpr MultiDrawAttribs(UInt32               _DrawCount,
                                const MultiDrawItem* _pDrawItems,
-							   DRAW_FLAGS           _Flags,
-							   UInt32               _NumInstances          = 1,
-							   UInt32               _FirstInstanceLocation = 0) noexcept :
-		DrawCount            {_DrawCount            },
-		pDrawItems           {_pDrawItems           },
-		Flags                {_Flags                },
-		NumInstances         {_NumInstances         },
-		FirstInstanceLocation{_FirstInstanceLocation}
-	{}
+                               DRAW_FLAGS           _Flags,
+                               UInt32               _NumInstances          = 1,
+                               UInt32               _FirstInstanceLocation = 0) noexcept :
+        DrawCount{_DrawCount},
+        pDrawItems{_pDrawItems},
+        Flags{_Flags},
+        NumInstances{_NumInstances},
+        FirstInstanceLocation{_FirstInstanceLocation}
+    {}
 #endif
 };
 typedef struct MultiDrawAttribs MultiDrawAttribs;
@@ -714,14 +677,14 @@ typedef struct MultiDrawAttribs MultiDrawAttribs;
 struct MultiDrawIndexedItem
 {
     /// The number of indices to draw.
-    UInt32     NumIndices            DEFAULT_INITIALIZER(0);
+    UInt32 NumIndices DEFAULT_INITIALIZER(0);
 
     /// LOCATION (NOT the byte offset) of the first index in
     /// the index buffer to start reading indices from.
-    UInt32     FirstIndexLocation    DEFAULT_INITIALIZER(0);
+    UInt32 FirstIndexLocation DEFAULT_INITIALIZER(0);
 
     /// A constant which is added to each index before accessing the vertex buffer.
-    UInt32     BaseVertex            DEFAULT_INITIALIZER(0);
+    UInt32 BaseVertex DEFAULT_INITIALIZER(0);
 };
 typedef struct MultiDrawIndexedItem MultiDrawIndexedItem;
 
@@ -729,7 +692,7 @@ typedef struct MultiDrawIndexedItem MultiDrawIndexedItem;
 struct MultiDrawIndexedAttribs
 {
     /// The number of draw items to execute.
-    UInt32                      DrawCount  DEFAULT_INITIALIZER(0);
+    UInt32 DrawCount DEFAULT_INITIALIZER(0);
 
     /// A pointer to the array of DrawCount draw command items.
     const MultiDrawIndexedItem* pDrawItems DEFAULT_INITIALIZER(nullptr);
@@ -737,36 +700,36 @@ struct MultiDrawIndexedAttribs
     /// The type of elements in the index buffer.
 
     /// Allowed values: `VT_UINT16` and `VT_UINT32`.
-    VALUE_TYPE IndexType             DEFAULT_INITIALIZER(VT_UNDEFINED);
+    VALUE_TYPE IndexType DEFAULT_INITIALIZER(VT_UNDEFINED);
 
     /// Additional flags, see Diligent::DRAW_FLAGS.
-    DRAW_FLAGS Flags                 DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
+    DRAW_FLAGS Flags DEFAULT_INITIALIZER(DRAW_FLAG_NONE);
 
     /// Number of instances to draw.
 
     /// If more than one instance is specified, instanced draw call will be performed.
-    UInt32     NumInstances          DEFAULT_INITIALIZER(1);
+    UInt32 NumInstances DEFAULT_INITIALIZER(1);
 
     /// LOCATION (or INDEX, but NOT the byte offset) in the vertex
     /// buffer to start reading instance data from.
-    UInt32     FirstInstanceLocation DEFAULT_INITIALIZER(0);
+    UInt32 FirstInstanceLocation DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
-constexpr MultiDrawIndexedAttribs() noexcept {}
+    constexpr MultiDrawIndexedAttribs() noexcept {}
 
-	constexpr MultiDrawIndexedAttribs(UInt32                      _DrawCount,
-									  const MultiDrawIndexedItem* _pDrawItems,
-									  VALUE_TYPE                  _IndexType,
-									  DRAW_FLAGS                  _Flags,
-									  UInt32                      _NumInstances          = 1,
-									  UInt32                      _FirstInstanceLocation = 0) noexcept :
-		DrawCount            {_DrawCount            },
-		pDrawItems           {_pDrawItems           },
-		IndexType            {_IndexType            },
-		Flags                {_Flags                },
-		NumInstances         {_NumInstances         },
-		FirstInstanceLocation{_FirstInstanceLocation}
-	{}
+    constexpr MultiDrawIndexedAttribs(UInt32                      _DrawCount,
+                                      const MultiDrawIndexedItem* _pDrawItems,
+                                      VALUE_TYPE                  _IndexType,
+                                      DRAW_FLAGS                  _Flags,
+                                      UInt32                      _NumInstances          = 1,
+                                      UInt32                      _FirstInstanceLocation = 0) noexcept :
+        DrawCount{_DrawCount},
+        pDrawItems{_pDrawItems},
+        IndexType{_IndexType},
+        Flags{_Flags},
+        NumInstances{_NumInstances},
+        FirstInstanceLocation{_FirstInstanceLocation}
+    {}
 #endif
 };
 typedef struct MultiDrawIndexedAttribs MultiDrawIndexedAttribs;
@@ -775,17 +738,15 @@ typedef struct MultiDrawIndexedAttribs MultiDrawIndexedAttribs;
 /// Defines which parts of the depth-stencil buffer to clear.
 
 /// These flags are used by IDeviceContext::ClearDepthStencil().
-DILIGENT_TYPED_ENUM(CLEAR_DEPTH_STENCIL_FLAGS, UInt32)
-{
+DILIGENT_TYPED_ENUM(CLEAR_DEPTH_STENCIL_FLAGS, UInt32){
     /// Perform no clear.
     CLEAR_DEPTH_FLAG_NONE = 0x00,
 
     /// Clear depth part of the buffer.
-    CLEAR_DEPTH_FLAG      = 0x01,
+    CLEAR_DEPTH_FLAG = 0x01,
 
     /// Clear stencil part of the buffer.
-    CLEAR_STENCIL_FLAG    = 0x02
-};
+    CLEAR_STENCIL_FLAG = 0x02};
 DEFINE_FLAG_ENUM_OPERATORS(CLEAR_DEPTH_STENCIL_FLAGS)
 
 
@@ -828,9 +789,9 @@ struct DispatchComputeAttribs
 
     /// Initializes the structure with user-specified values.
     constexpr DispatchComputeAttribs(UInt32 GroupsX, UInt32 GroupsY, UInt32 GroupsZ = 1) noexcept :
-        ThreadGroupCountX {GroupsX},
-        ThreadGroupCountY {GroupsY},
-        ThreadGroupCountZ {GroupsZ}
+        ThreadGroupCountX{GroupsX},
+        ThreadGroupCountY{GroupsY},
+        ThreadGroupCountZ{GroupsZ}
     {}
 #endif
 };
@@ -850,13 +811,13 @@ struct DispatchComputeIndirectAttribs
     ///     UInt32 ThreadGroupCountY;
     ///     UInt32 ThreadGroupCountZ;
     ///
-    IBuffer*                       pAttribsBuffer                   DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pAttribsBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// State transition mode for indirect dispatch attributes buffer.
     RESOURCE_STATE_TRANSITION_MODE AttribsBufferStateTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
     /// The offset from the beginning of the buffer to the dispatch command arguments.
-    UInt64  DispatchArgsByteOffset    DEFAULT_INITIALIZER(0);
+    UInt64 DispatchArgsByteOffset DEFAULT_INITIALIZER(0);
 
 
     /// Compute group X size.
@@ -884,10 +845,10 @@ struct DispatchComputeIndirectAttribs
     /// Initializes the structure with user-specified values.
     constexpr DispatchComputeIndirectAttribs(IBuffer*                       _pAttribsBuffer,
                                              RESOURCE_STATE_TRANSITION_MODE _StateTransitionMode,
-                                             UInt64                         _Offset              = 0) :
-        pAttribsBuffer                  {_pAttribsBuffer     },
+                                             UInt64                         _Offset = 0) :
+        pAttribsBuffer{_pAttribsBuffer},
         AttribsBufferStateTransitionMode{_StateTransitionMode},
-        DispatchArgsByteOffset          {_Offset             }
+        DispatchArgsByteOffset{_Offset}
     {}
 #endif
 };
@@ -919,9 +880,9 @@ struct DispatchTileAttribs
     constexpr DispatchTileAttribs(UInt32     _ThreadsX,
                                   UInt32     _ThreadsY,
                                   DRAW_FLAGS _Flags = DRAW_FLAG_NONE) noexcept :
-        ThreadsPerTileX {_ThreadsX},
-        ThreadsPerTileY {_ThreadsY},
-        Flags           {_Flags  }
+        ThreadsPerTileX{_ThreadsX},
+        ThreadsPerTileY{_ThreadsY},
+        Flags{_Flags}
     {}
 #endif
 };
@@ -934,19 +895,19 @@ typedef struct DispatchTileAttribs DispatchTileAttribs;
 struct ResolveTextureSubresourceAttribs
 {
     /// Mip level of the source multi-sampled texture to resolve.
-    UInt32 SrcMipLevel   DEFAULT_INITIALIZER(0);
+    UInt32 SrcMipLevel DEFAULT_INITIALIZER(0);
 
     /// Array slice of the source multi-sampled texture to resolve.
-    UInt32 SrcSlice      DEFAULT_INITIALIZER(0);
+    UInt32 SrcSlice DEFAULT_INITIALIZER(0);
 
     /// Source texture state transition mode, see Diligent::RESOURCE_STATE_TRANSITION_MODE.
     RESOURCE_STATE_TRANSITION_MODE SrcTextureTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
     /// Mip level of the destination non-multi-sampled texture.
-    UInt32 DstMipLevel   DEFAULT_INITIALIZER(0);
+    UInt32 DstMipLevel DEFAULT_INITIALIZER(0);
 
     /// Array slice of the destination non-multi-sampled texture.
-    UInt32 DstSlice      DEFAULT_INITIALIZER(0);
+    UInt32 DstSlice DEFAULT_INITIALIZER(0);
 
     /// Destination texture state transition mode, see Diligent::RESOURCE_STATE_TRANSITION_MODE.
     RESOURCE_STATE_TRANSITION_MODE DstTextureTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
@@ -961,15 +922,13 @@ typedef struct ResolveTextureSubresourceAttribs ResolveTextureSubresourceAttribs
 
 
 /// Defines allowed flags for IDeviceContext::SetVertexBuffers() function.
-DILIGENT_TYPED_ENUM(SET_VERTEX_BUFFERS_FLAGS, UInt8)
-{
+DILIGENT_TYPED_ENUM(SET_VERTEX_BUFFERS_FLAGS, UInt8){
     /// No extra operations.
-    SET_VERTEX_BUFFERS_FLAG_NONE  = 0x00,
+    SET_VERTEX_BUFFERS_FLAG_NONE = 0x00,
 
     /// Reset the vertex buffers to only the buffers specified in this
     /// call. All buffers previously bound to the pipeline will be unbound.
-    SET_VERTEX_BUFFERS_FLAG_RESET = 0x01
-};
+    SET_VERTEX_BUFFERS_FLAG_RESET = 0x01};
 DEFINE_FLAG_ENUM_OPERATORS(SET_VERTEX_BUFFERS_FLAGS)
 
 
@@ -979,50 +938,47 @@ DEFINE_FLAG_ENUM_OPERATORS(SET_VERTEX_BUFFERS_FLAGS)
 struct Viewport
 {
     /// X coordinate of the left boundary of the viewport.
-    Float32 TopLeftX    DEFAULT_INITIALIZER(0.f);
+    Float32 TopLeftX DEFAULT_INITIALIZER(0.f);
 
     /// Y coordinate of the top boundary of the viewport.
 
     /// When defining a viewport, DirectX convention is used:
     /// window coordinate systems originates in the LEFT TOP corner
     /// of the screen with Y axis pointing down.
-    Float32 TopLeftY    DEFAULT_INITIALIZER(0.f);
+    Float32 TopLeftY DEFAULT_INITIALIZER(0.f);
 
     /// Viewport width.
-    Float32 Width       DEFAULT_INITIALIZER(0.f);
+    Float32 Width DEFAULT_INITIALIZER(0.f);
 
     /// Viewport Height.
-    Float32 Height      DEFAULT_INITIALIZER(0.f);
+    Float32 Height DEFAULT_INITIALIZER(0.f);
 
     /// Minimum depth of the viewport. Ranges between 0 and 1.
-    Float32 MinDepth    DEFAULT_INITIALIZER(0.f);
+    Float32 MinDepth DEFAULT_INITIALIZER(0.f);
 
     /// Maximum depth of the viewport. Ranges between 0 and 1.
-    Float32 MaxDepth    DEFAULT_INITIALIZER(1.f);
+    Float32 MaxDepth DEFAULT_INITIALIZER(1.f);
 
 #if DILIGENT_CPP_INTERFACE
     /// Initializes the structure.
-    constexpr Viewport(Float32 _TopLeftX,     Float32 _TopLeftY,
-                       Float32 _Width,        Float32 _Height,
-                       Float32 _MinDepth = 0, Float32 _MaxDepth = 1) noexcept :
-        TopLeftX {_TopLeftX},
-        TopLeftY {_TopLeftY},
-        Width    {_Width   },
-        Height   {_Height  },
-        MinDepth {_MinDepth},
-        MaxDepth {_MaxDepth}
+    constexpr Viewport(Float32 _TopLeftX, Float32 _TopLeftY, Float32 _Width, Float32 _Height, Float32 _MinDepth = 0, Float32 _MaxDepth = 1) noexcept :
+        TopLeftX{_TopLeftX},
+        TopLeftY{_TopLeftY},
+        Width{_Width},
+        Height{_Height},
+        MinDepth{_MinDepth},
+        MaxDepth{_MaxDepth}
     {}
 
-    constexpr Viewport(UInt32  _Width,        UInt32  _Height,
-                       Float32 _MinDepth = 0, Float32 _MaxDepth = 1) noexcept :
-        Width   {static_cast<Float32>(_Width) },
-        Height  {static_cast<Float32>(_Height)},
+    constexpr Viewport(UInt32 _Width, UInt32 _Height, Float32 _MinDepth = 0, Float32 _MaxDepth = 1) noexcept :
+        Width{static_cast<Float32>(_Width)},
+        Height{static_cast<Float32>(_Height)},
         MinDepth{_MinDepth},
         MaxDepth{_MaxDepth}
     {}
 
     constexpr Viewport(Float32 _Width, Float32 _Height) noexcept :
-        Width {_Width },
+        Width{_Width},
         Height{_Height}
     {}
 
@@ -1030,20 +986,20 @@ struct Viewport
         Viewport{SCDesc.Width, SCDesc.Height}
     {}
 
-    constexpr bool operator == (const Viewport& vp) const
-	{
-		return TopLeftX == vp.TopLeftX &&
-			   TopLeftY == vp.TopLeftY &&
-			   Width    == vp.Width    &&
-			   Height   == vp.Height   &&
-			   MinDepth == vp.MinDepth &&
-			   MaxDepth == vp.MaxDepth;
-	}
+    constexpr bool operator==(const Viewport& vp) const
+    {
+        return TopLeftX == vp.TopLeftX &&
+            TopLeftY == vp.TopLeftY &&
+            Width == vp.Width &&
+            Height == vp.Height &&
+            MinDepth == vp.MinDepth &&
+            MaxDepth == vp.MaxDepth;
+    }
 
-    constexpr bool operator != (const Viewport& vp) const
+    constexpr bool operator!=(const Viewport& vp) const
     {
         return !(*this == vp);
-	}
+    }
 
     constexpr Viewport() noexcept {}
 #endif
@@ -1060,18 +1016,18 @@ typedef struct Viewport Viewport;
 ///          of the screen with Y axis pointing down.
 struct Rect
 {
-    Int32 left   DEFAULT_INITIALIZER(0);  ///< X coordinate of the left boundary of the viewport.
-    Int32 top    DEFAULT_INITIALIZER(0);  ///< Y coordinate of the top boundary of the viewport.
-    Int32 right  DEFAULT_INITIALIZER(0);  ///< X coordinate of the right boundary of the viewport.
-    Int32 bottom DEFAULT_INITIALIZER(0);  ///< Y coordinate of the bottom boundary of the viewport.
+    Int32 left   DEFAULT_INITIALIZER(0); ///< X coordinate of the left boundary of the viewport.
+    Int32 top    DEFAULT_INITIALIZER(0); ///< Y coordinate of the top boundary of the viewport.
+    Int32 right  DEFAULT_INITIALIZER(0); ///< X coordinate of the right boundary of the viewport.
+    Int32 bottom DEFAULT_INITIALIZER(0); ///< Y coordinate of the bottom boundary of the viewport.
 
 #if DILIGENT_CPP_INTERFACE
     /// Initializes the structure
     constexpr Rect(Int32 _left, Int32 _top, Int32 _right, Int32 _bottom) noexcept :
-        left   {_left  },
-        top    {_top   },
-        right  {_right },
-        bottom {_bottom}
+        left{_left},
+        top{_top},
+        right{_right},
+        bottom{_bottom}
     {}
 
     constexpr Rect() noexcept {}
@@ -1081,18 +1037,18 @@ struct Rect
         return right > left && bottom > top;
     }
 
-    constexpr bool operator == (const Rect& rc) const
-	{
-		return left   == rc.left   &&
-			   top    == rc.top    &&
-			   right  == rc.right  &&
-			   bottom == rc.bottom;
-	}
+    constexpr bool operator==(const Rect& rc) const
+    {
+        return left == rc.left &&
+            top == rc.top &&
+            right == rc.right &&
+            bottom == rc.bottom;
+    }
 
-    constexpr bool operator != (const Rect& rc) const
-	{
-		return !(*this == rc);
-	}
+    constexpr bool operator!=(const Rect& rc) const
+    {
+        return !(*this == rc);
+    }
 #endif
 };
 typedef struct Rect Rect;
@@ -1104,37 +1060,37 @@ typedef struct Rect Rect;
 struct CopyTextureAttribs
 {
     /// Source texture to copy data from.
-    ITexture*                      pSrcTexture              DEFAULT_INITIALIZER(nullptr);
+    ITexture* pSrcTexture DEFAULT_INITIALIZER(nullptr);
 
     /// Mip level of the source texture to copy data from.
-    UInt32                         SrcMipLevel              DEFAULT_INITIALIZER(0);
+    UInt32 SrcMipLevel DEFAULT_INITIALIZER(0);
 
     /// Array slice of the source texture to copy data from. Must be 0 for non-array textures.
-    UInt32                         SrcSlice                 DEFAULT_INITIALIZER(0);
+    UInt32 SrcSlice DEFAULT_INITIALIZER(0);
 
     /// Source region to copy. Use nullptr to copy the entire subresource.
-    const Box*                     pSrcBox                  DEFAULT_INITIALIZER(nullptr);
+    const Box* pSrcBox DEFAULT_INITIALIZER(nullptr);
 
     /// Source texture state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
     RESOURCE_STATE_TRANSITION_MODE SrcTextureTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
     /// Destination texture.
-    ITexture*                      pDstTexture              DEFAULT_INITIALIZER(nullptr);
+    ITexture* pDstTexture DEFAULT_INITIALIZER(nullptr);
 
     /// Destination mip level.
-    UInt32                         DstMipLevel              DEFAULT_INITIALIZER(0);
+    UInt32 DstMipLevel DEFAULT_INITIALIZER(0);
 
     /// Destination array slice. Must be 0 for non-array textures.
-    UInt32                         DstSlice                 DEFAULT_INITIALIZER(0);
+    UInt32 DstSlice DEFAULT_INITIALIZER(0);
 
     /// X offset on the destination subresource.
-    UInt32                         DstX                     DEFAULT_INITIALIZER(0);
+    UInt32 DstX DEFAULT_INITIALIZER(0);
 
     /// Y offset on the destination subresource.
-    UInt32                         DstY                     DEFAULT_INITIALIZER(0);
+    UInt32 DstY DEFAULT_INITIALIZER(0);
 
     /// Z offset on the destination subresource
-    UInt32                         DstZ                     DEFAULT_INITIALIZER(0);
+    UInt32 DstZ DEFAULT_INITIALIZER(0);
 
     /// Destination texture state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
     RESOURCE_STATE_TRANSITION_MODE DstTextureTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
@@ -1147,9 +1103,9 @@ struct CopyTextureAttribs
                                  RESOURCE_STATE_TRANSITION_MODE _SrcTextureTransitionMode,
                                  ITexture*                      _pDstTexture,
                                  RESOURCE_STATE_TRANSITION_MODE _DstTextureTransitionMode) noexcept :
-        pSrcTexture             {_pSrcTexture             },
+        pSrcTexture{_pSrcTexture},
         SrcTextureTransitionMode{_SrcTextureTransitionMode},
-        pDstTexture             {_pDstTexture             },
+        pDstTexture{_pDstTexture},
         DstTextureTransitionMode{_DstTextureTransitionMode}
     {}
 #endif
@@ -1163,24 +1119,24 @@ typedef struct CopyTextureAttribs CopyTextureAttribs;
 struct SetRenderTargetsAttribs
 {
     /// Number of render targets to bind.
-    UInt32                         NumRenderTargets     DEFAULT_INITIALIZER(0);
+    UInt32 NumRenderTargets DEFAULT_INITIALIZER(0);
 
     /// Array of pointers to ITextureView that represent the render
     /// targets to bind to the device. The type of each view in the
     /// array must be Diligent::TEXTURE_VIEW_RENDER_TARGET.
-    ITextureView**                 ppRenderTargets      DEFAULT_INITIALIZER(nullptr);
+    ITextureView** ppRenderTargets DEFAULT_INITIALIZER(nullptr);
 
     /// Pointer to the ITextureView that represents the depth stencil to
     /// bind to the device. The view type must be
     /// Diligent::TEXTURE_VIEW_DEPTH_STENCIL or Diligent::TEXTURE_VIEW_READ_ONLY_DEPTH_STENCIL.
-    ITextureView*                  pDepthStencil        DEFAULT_INITIALIZER(nullptr);
+    ITextureView* pDepthStencil DEFAULT_INITIALIZER(nullptr);
 
     /// Shading rate texture view. Set null to disable variable rate shading.
-    ITextureView*                  pShadingRateMap      DEFAULT_INITIALIZER(nullptr);
+    ITextureView* pShadingRateMap DEFAULT_INITIALIZER(nullptr);
 
     /// State transition mode of the render targets, depth stencil buffer
     /// and shading rate map being set (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
-    RESOURCE_STATE_TRANSITION_MODE StateTransitionMode  DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
+    RESOURCE_STATE_TRANSITION_MODE StateTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr SetRenderTargetsAttribs() noexcept {}
@@ -1190,10 +1146,10 @@ struct SetRenderTargetsAttribs
                                       ITextureView*                  _pDepthStencil       = nullptr,
                                       RESOURCE_STATE_TRANSITION_MODE _StateTransitionMode = RESOURCE_STATE_TRANSITION_MODE_NONE,
                                       ITextureView*                  _pShadingRateMap     = nullptr) noexcept :
-        NumRenderTargets   {_NumRenderTargets   },
-        ppRenderTargets    {_ppRenderTargets    },
-        pDepthStencil      {_pDepthStencil      },
-        pShadingRateMap    {_pShadingRateMap    },
+        NumRenderTargets{_NumRenderTargets},
+        ppRenderTargets{_ppRenderTargets},
+        pDepthStencil{_pDepthStencil},
+        pShadingRateMap{_pShadingRateMap},
         StateTransitionMode{_StateTransitionMode}
     {}
 #endif
@@ -1207,22 +1163,22 @@ typedef struct SetRenderTargetsAttribs SetRenderTargetsAttribs;
 struct BeginRenderPassAttribs
 {
     /// Render pass to begin.
-    IRenderPass*    pRenderPass     DEFAULT_INITIALIZER(nullptr);
+    IRenderPass* pRenderPass DEFAULT_INITIALIZER(nullptr);
 
     /// Framebuffer containing the attachments that are used with the render pass.
-    IFramebuffer*   pFramebuffer    DEFAULT_INITIALIZER(nullptr);
+    IFramebuffer* pFramebuffer DEFAULT_INITIALIZER(nullptr);
 
     /// The number of elements in pClearValues array.
-    UInt32 ClearValueCount          DEFAULT_INITIALIZER(0);
+    UInt32 ClearValueCount DEFAULT_INITIALIZER(0);
 
     /// Clear values for the attachments.
-    
+
     /// A pointer to an array of `ClearValueCount` OptimizedClearValue structures that contains
     /// clear values for each attachment, if the attachment uses a `LoadOp` value of Diligent::ATTACHMENT_LOAD_OP_CLEAR
     /// or if the attachment has a depth/stencil format and uses a `StencilLoadOp` value of Diligent::ATTACHMENT_LOAD_OP_CLEAR.
     /// The array is indexed by attachment number. Only elements corresponding to cleared attachments are used.
     /// Other elements of pClearValues are ignored.
-    OptimizedClearValue* pClearValues   DEFAULT_INITIALIZER(nullptr);
+    OptimizedClearValue* pClearValues DEFAULT_INITIALIZER(nullptr);
 
     /// Framebuffer attachments state transition mode before the render pass begins.
 
@@ -1242,8 +1198,7 @@ typedef struct BeginRenderPassAttribs BeginRenderPassAttribs;
 
 
 /// TLAS instance flags that are used in IDeviceContext::BuildTLAS().
-DILIGENT_TYPED_ENUM(RAYTRACING_INSTANCE_FLAGS, UInt8)
-{
+DILIGENT_TYPED_ENUM(RAYTRACING_INSTANCE_FLAGS, UInt8){
     /// No flags are set.
     RAYTRACING_INSTANCE_NONE = 0,
 
@@ -1263,16 +1218,14 @@ DILIGENT_TYPED_ENUM(RAYTRACING_INSTANCE_FLAGS, UInt8)
     /// geometries referenced by this instance. This behavior can be overridden in the shader with ray flags.
     RAYTRACING_INSTANCE_FORCE_NO_OPAQUE = 0x08,
 
-    RAYTRACING_INSTANCE_FLAG_LAST = RAYTRACING_INSTANCE_FORCE_NO_OPAQUE
-};
+    RAYTRACING_INSTANCE_FLAG_LAST = RAYTRACING_INSTANCE_FORCE_NO_OPAQUE};
 DEFINE_FLAG_ENUM_OPERATORS(RAYTRACING_INSTANCE_FLAGS)
 
 
 /// Defines acceleration structure copy mode.
 
 /// These the flags used by IDeviceContext::CopyBLAS() and IDeviceContext::CopyTLAS().
-DILIGENT_TYPED_ENUM(COPY_AS_MODE, UInt8)
-{
+DILIGENT_TYPED_ENUM(COPY_AS_MODE, UInt8){
     /// Creates a direct copy of the acceleration structure specified in pSrc into the one specified by pDst.
     /// The pDst acceleration structure must have been created with the same parameters as pSrc.
     COPY_AS_MODE_CLONE = 0,
@@ -1288,8 +1241,7 @@ DILIGENT_TYPED_ENUM(COPY_AS_MODE, UInt8)
 
 
 /// Defines geometry flags for ray tracing.
-DILIGENT_TYPED_ENUM(RAYTRACING_GEOMETRY_FLAGS, UInt8)
-{
+DILIGENT_TYPED_ENUM(RAYTRACING_GEOMETRY_FLAGS, UInt8){
     /// No flags are set.
     RAYTRACING_GEOMETRY_FLAG_NONE = 0,
 
@@ -1300,8 +1252,7 @@ DILIGENT_TYPED_ENUM(RAYTRACING_GEOMETRY_FLAGS, UInt8)
     /// If this bit is absent an implementation may invoke the any-hit shader more than once for this geometry.
     RAYTRACING_GEOMETRY_FLAG_NO_DUPLICATE_ANY_HIT_INVOCATION = 0x02,
 
-    RAYTRACING_GEOMETRY_FLAG_LAST = RAYTRACING_GEOMETRY_FLAG_NO_DUPLICATE_ANY_HIT_INVOCATION
-};
+    RAYTRACING_GEOMETRY_FLAG_LAST = RAYTRACING_GEOMETRY_FLAG_NO_DUPLICATE_ANY_HIT_INVOCATION};
 DEFINE_FLAG_ENUM_OPERATORS(RAYTRACING_GEOMETRY_FLAGS)
 
 
@@ -1311,74 +1262,74 @@ struct BLASBuildTriangleData
     /// Geometry name used to map a geometry to a hit group in the shader binding table.
 
     /// Add geometry data to the geometry that is allocated by BLASTriangleDesc with the same name.
-    const Char* GeometryName          DEFAULT_INITIALIZER(nullptr);
+    const Char* GeometryName DEFAULT_INITIALIZER(nullptr);
 
     /// Triangle vertices data source.
 
     /// Triangles are considered "inactive" if the x component of each vertex is NaN.
     /// The buffer must be created with BIND_RAY_TRACING flag.
-    IBuffer*    pVertexBuffer         DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pVertexBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// Data offset, in bytes, in `pVertexBuffer`.
-    
+
     /// * D3D12 and Vulkan: offset must be a multiple of the `VertexValueType` size.
     /// * Metal:            stride must be aligned by RayTracingProperties::VertexBufferAlignment
     ///                     and must be a multiple of the `VertexStride`.
-    UInt64      VertexOffset          DEFAULT_INITIALIZER(0);
+    UInt64 VertexOffset DEFAULT_INITIALIZER(0);
 
     /// Stride, in bytes, between vertices.
 
     /// * D3D12 and Vulkan: stride must be a multiple of the `VertexValueType` size.
     /// * Metal:            stride must be aligned by RayTracingProperties::VertexBufferAlignment.
-    UInt32      VertexStride          DEFAULT_INITIALIZER(0);
+    UInt32 VertexStride DEFAULT_INITIALIZER(0);
 
     /// The number of triangle vertices.
 
     /// Must be less than or equal to BLASTriangleDesc::MaxVertexCount.
-    UInt32      VertexCount           DEFAULT_INITIALIZER(0);
+    UInt32 VertexCount DEFAULT_INITIALIZER(0);
 
     /// The type of the vertex components.
 
     /// This is an optional value. Must be undefined or same as in BLASTriangleDesc.
-    VALUE_TYPE  VertexValueType       DEFAULT_INITIALIZER(VT_UNDEFINED);
+    VALUE_TYPE VertexValueType DEFAULT_INITIALIZER(VT_UNDEFINED);
 
     /// The number of vertex components.
 
     /// This is an optional value. Must be undefined or same as in BLASTriangleDesc.
-    UInt8       VertexComponentCount  DEFAULT_INITIALIZER(0);
+    UInt8 VertexComponentCount DEFAULT_INITIALIZER(0);
 
     /// The number of triangles.
 
     /// Must equal to `VertexCount / 3` if `pIndexBuffer` is `null` or must be equal to index count / 3.
-    UInt32      PrimitiveCount        DEFAULT_INITIALIZER(0);
+    UInt32 PrimitiveCount DEFAULT_INITIALIZER(0);
 
     /// Triangle indices data source.
 
     /// Must be null if BLASTriangleDesc::IndexType is undefined.
     /// The buffer must be created with Diligent::BIND_RAY_TRACING flag.
-    IBuffer*    pIndexBuffer          DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pIndexBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// Data offset in bytes in pIndexBuffer.
 
     /// Offset must be aligned by RayTracingProperties::IndexBufferAlignment
     /// and must be a multiple of the IndexType size.
-    UInt64      IndexOffset           DEFAULT_INITIALIZER(0);
+    UInt64 IndexOffset DEFAULT_INITIALIZER(0);
 
     /// The type of triangle indices, see Diligent::VALUE_TYPE.
 
     /// This is an optional value. Must be undefined or same as in BLASTriangleDesc.
-    VALUE_TYPE  IndexType             DEFAULT_INITIALIZER(VT_UNDEFINED);
+    VALUE_TYPE IndexType DEFAULT_INITIALIZER(VT_UNDEFINED);
 
     /// Geometry transformation data source, must contain a `float4x3` matrix aka Diligent::InstanceMatrix.
 
     /// The buffer must be created with Diligent::BIND_RAY_TRACING flag.
     /// \note Transform buffer is not supported in Metal backend.
-    IBuffer*    pTransformBuffer      DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pTransformBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// Data offset in bytes in `pTransformBuffer`.
 
     /// Offset must be aligned by RayTracingProperties::TransformBufferAlignment.
-    UInt64      TransformBufferOffset DEFAULT_INITIALIZER(0);
+    UInt64 TransformBufferOffset DEFAULT_INITIALIZER(0);
 
     /// Geometry flags, se Diligent::RAYTRACING_GEOMETRY_FLAGS.
     RAYTRACING_GEOMETRY_FLAGS Flags DEFAULT_INITIALIZER(RAYTRACING_GEOMETRY_FLAG_NONE);
@@ -1401,24 +1352,24 @@ struct BLASBuildBoundingBoxData
     /// An AABB are considered inactive if `AABB.Min.x` is `NaN`.
     ///
     /// The buffer must be created with Diligent::BIND_RAY_TRACING flag.
-    IBuffer*    pBoxBuffer   DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pBoxBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// Data offset in bytes in pBoxBuffer.
 
     /// * D3D12 and Vulkan: offset must be aligned by RayTracingProperties::BoxBufferAlignment.
     /// * Metal:            offset must be aligned by RayTracingProperties::BoxBufferAlignment
     ///                    and must be a multiple of the BoxStride.
-    UInt64      BoxOffset    DEFAULT_INITIALIZER(0);
+    UInt64 BoxOffset DEFAULT_INITIALIZER(0);
 
     /// Stride in bytes between each AABB.
 
     /// Stride must be aligned by RayTracingProperties::BoxBufferAlignment.
-    UInt32      BoxStride    DEFAULT_INITIALIZER(0);
+    UInt32 BoxStride DEFAULT_INITIALIZER(0);
 
     /// Number of AABBs.
 
     /// Must be less than or equal to BLASBoundingBoxDesc::MaxBoxCount.
-    UInt32      BoxCount     DEFAULT_INITIALIZER(0);
+    UInt32 BoxCount DEFAULT_INITIALIZER(0);
 
     /// Geometry flags, see Diligent::RAYTRACING_GEOMETRY_FLAGS.
     RAYTRACING_GEOMETRY_FLAGS Flags DEFAULT_INITIALIZER(RAYTRACING_GEOMETRY_FLAG_NONE);
@@ -1433,13 +1384,13 @@ struct BuildBLASAttribs
 
     /// \note
     ///     Access to the BLAS must be externally synchronized.
-    IBottomLevelAS*                 pBLAS                       DEFAULT_INITIALIZER(nullptr);
+    IBottomLevelAS* pBLAS DEFAULT_INITIALIZER(nullptr);
 
     /// Bottom-level AS state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
-    RESOURCE_STATE_TRANSITION_MODE  BLASTransitionMode          DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
+    RESOURCE_STATE_TRANSITION_MODE BLASTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
     /// Geometry data source buffers state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
-    RESOURCE_STATE_TRANSITION_MODE  GeometryTransitionMode      DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
+    RESOURCE_STATE_TRANSITION_MODE GeometryTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
     /// A pointer to the array of `TriangleDataCount` `BLASBuildTriangleData` structures that contains triangle geometry data.
 
@@ -1447,13 +1398,13 @@ struct BuildBLASAttribs
     ///   - Only vertex positions (in `pVertexBuffer`) and transformation (in `pTransformBuffer`) can be changed.
     ///   - All other content in BLASBuildTriangleData and buffers must be the same as what was used to build BLAS.
     ///   - To disable geometry, make all triangles inactive, see BLASBuildTriangleData::pVertexBuffer description.
-    BLASBuildTriangleData const*    pTriangleData               DEFAULT_INITIALIZER(nullptr);
+    BLASBuildTriangleData const* pTriangleData DEFAULT_INITIALIZER(nullptr);
 
     /// The number of triangle geometries.
 
     /// Must be less than or equal to BottomLevelASDesc::TriangleCount.
     /// If `Update` is `true` then the count must be the same as the one used to build BLAS.
-    UInt32                          TriangleDataCount           DEFAULT_INITIALIZER(0);
+    UInt32 TriangleDataCount DEFAULT_INITIALIZER(0);
 
     /// A pointer to an array of BoxDataCount BLASBuildBoundingBoxData structures that contain AABB geometry data.
 
@@ -1461,27 +1412,27 @@ struct BuildBLASAttribs
     ///   - AABB coordinates (in `pBoxBuffer`) can be changed.
     ///   - All other content in BLASBuildBoundingBoxData must be same as used to build BLAS.
     ///   - To disable geometry make all AAABBs inactive, see BLASBuildBoundingBoxData::pBoxBuffer description.
-    BLASBuildBoundingBoxData const* pBoxData                    DEFAULT_INITIALIZER(nullptr);
+    BLASBuildBoundingBoxData const* pBoxData DEFAULT_INITIALIZER(nullptr);
 
     /// The number of AABB geometries.
 
     /// Must be less than or equal to BottomLevelASDesc::BoxCount.
     /// If `Update` is `true` then the count must be the same as the one used to build BLAS.
-    UInt32                          BoxDataCount                DEFAULT_INITIALIZER(0);
+    UInt32 BoxDataCount DEFAULT_INITIALIZER(0);
 
     /// The buffer that is used for acceleration structure building.
 
     /// Must be created with Diligent::BIND_RAY_TRACING.
     /// Call IBottomLevelAS::GetScratchBufferSizes().Build to get the minimal size for the scratch buffer.
-    IBuffer*                        pScratchBuffer              DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pScratchBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// Offset from the beginning of the buffer.
 
     /// Offset must be aligned by RayTracingProperties::ScratchBufferAlignment.
-    UInt64                          ScratchBufferOffset         DEFAULT_INITIALIZER(0);
+    UInt64 ScratchBufferOffset DEFAULT_INITIALIZER(0);
 
     /// Scratch buffer state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
-    RESOURCE_STATE_TRANSITION_MODE  ScratchBufferTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
+    RESOURCE_STATE_TRANSITION_MODE ScratchBufferTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
     /// Whether to build the acceleration structure from scratch or update it.
 
@@ -1491,7 +1442,7 @@ struct BuildBLASAttribs
     /// `pBLAS` must be created with Diligent::RAYTRACING_BUILD_AS_ALLOW_UPDATE flag.
     ///
     /// An update will be faster than building an acceleration structure from scratch.
-    Bool                            Update                      DEFAULT_INITIALIZER(False);
+    Bool Update DEFAULT_INITIALIZER(False);
 };
 typedef struct BuildBLASAttribs BuildBLASAttribs;
 
@@ -1523,7 +1474,7 @@ struct InstanceMatrix
     ///     ([0,0]  [0,1]  [0,2])   ([0,3])
     ///     ([1,0]  [1,1]  [1,2])   ([1,3])
     ///     ([2,0]  [2,1]  [2,2])   ([2,3])
-    float data [3][4];
+    float data[3][4];
 
 #if DILIGENT_CPP_INTERFACE
     /// Construct identity matrix.
@@ -1533,10 +1484,10 @@ struct InstanceMatrix
              {0.0f, 0.0f, 1.0f, 0.0f}}
     {}
 
-    constexpr InstanceMatrix(const InstanceMatrix&)  noexcept = default;
-    constexpr InstanceMatrix(      InstanceMatrix&&) noexcept = default;
-    constexpr InstanceMatrix& operator=(const InstanceMatrix&)  noexcept = default;
-    constexpr InstanceMatrix& operator=(      InstanceMatrix&&) noexcept = default;
+    constexpr InstanceMatrix(const InstanceMatrix&) noexcept            = default;
+    constexpr InstanceMatrix(InstanceMatrix&&) noexcept                 = default;
+    constexpr InstanceMatrix& operator=(const InstanceMatrix&) noexcept = default;
+    constexpr InstanceMatrix& operator=(InstanceMatrix&&) noexcept      = default;
 
     /// Sets the translation part.
     InstanceMatrix& SetTranslation(float x, float y, float z) noexcept
@@ -1567,7 +1518,7 @@ typedef struct InstanceMatrix InstanceMatrix;
 struct TLASBuildInstanceData
 {
     /// Instance name that is used to map an instance to a hit group in shader binding table.
-    const Char*               InstanceName    DEFAULT_INITIALIZER(nullptr);
+    const Char* InstanceName DEFAULT_INITIALIZER(nullptr);
 
     /// Bottom-level AS that represents instance geometry.
 
@@ -1575,10 +1526,10 @@ struct TLASBuildInstanceData
     ///
     /// \note
     ///     Access to the BLAS must be externally synchronized.
-    IBottomLevelAS*           pBLAS           DEFAULT_INITIALIZER(nullptr);
+    IBottomLevelAS* pBLAS DEFAULT_INITIALIZER(nullptr);
 
     /// Instance to world transformation.
-    InstanceMatrix            Transform;
+    InstanceMatrix Transform;
 
     /// User-defined value that can be accessed in the shader
 
@@ -1590,22 +1541,22 @@ struct TLASBuildInstanceData
     /// * MSL:  `intersection_result< instancing >::instance_id`.
     ///
     /// Only the lower 24 bits are used.
-    UInt32                    CustomId        DEFAULT_INITIALIZER(0);
+    UInt32 CustomId DEFAULT_INITIALIZER(0);
 
     /// Instance flags, see Diligent::RAYTRACING_INSTANCE_FLAGS.
-    RAYTRACING_INSTANCE_FLAGS Flags           DEFAULT_INITIALIZER(RAYTRACING_INSTANCE_NONE);
+    RAYTRACING_INSTANCE_FLAGS Flags DEFAULT_INITIALIZER(RAYTRACING_INSTANCE_NONE);
 
     /// Visibility mask for the geometry, the instance may only be hit if `rayMask & instance.Mask != 0`.
 
     /// * `rayMask` in GLSL is a `cullMask` argument of `traceRay()`
     /// * `rayMask` in HLSL is an `InstanceInclusionMask` argument of `TraceRay()`.
-    UInt8                     Mask            DEFAULT_INITIALIZER(0xFF);
+    UInt8 Mask DEFAULT_INITIALIZER(0xFF);
 
     /// The index used to calculate the hit group location in the shader binding table.
 
     /// Must be Diligent::TLAS_INSTANCE_OFFSET_AUTO if BuildTLASAttribs::BindingMode is not Diligent::SHADER_BINDING_USER_DEFINED.
     /// Only the lower 24 bits are used.
-    UInt32                    ContributionToHitGroupIndex DEFAULT_INITIALIZER(TLAS_INSTANCE_OFFSET_AUTO);
+    UInt32 ContributionToHitGroupIndex DEFAULT_INITIALIZER(TLAS_INSTANCE_OFFSET_AUTO);
 };
 typedef struct TLASBuildInstanceData TLASBuildInstanceData;
 
@@ -1623,39 +1574,39 @@ struct BuildTLASAttribs
     /// Target top-level AS.
 
     /// Access to the TLAS must be externally synchronized.
-    ITopLevelAS*                    pTLAS                         DEFAULT_INITIALIZER(nullptr);
+    ITopLevelAS* pTLAS DEFAULT_INITIALIZER(nullptr);
 
     /// Top-level AS state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
-    RESOURCE_STATE_TRANSITION_MODE  TLASTransitionMode            DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
+    RESOURCE_STATE_TRANSITION_MODE TLASTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
     /// Bottom-level AS (in TLASBuildInstanceData::pBLAS) state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
-    RESOURCE_STATE_TRANSITION_MODE  BLASTransitionMode            DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
+    RESOURCE_STATE_TRANSITION_MODE BLASTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
     /// A pointer to an array of `InstanceCount` `TLASBuildInstanceData` structures that contain instance data.
 
     /// If `Update` is `true`:
     ///     - Any instance data can be changed.
     ///     - To disable an instance set TLASBuildInstanceData::Mask to zero or set empty TLASBuildInstanceData::BLAS to pBLAS.
-    TLASBuildInstanceData const*    pInstances                    DEFAULT_INITIALIZER(nullptr);
+    TLASBuildInstanceData const* pInstances DEFAULT_INITIALIZER(nullptr);
 
     /// The number of instances.
 
     /// Must be less than or equal to TopLevelASDesc::MaxInstanceCount.
     /// If Update is true then count must be the same as used to build TLAS.
-    UInt32                          InstanceCount                 DEFAULT_INITIALIZER(0);
+    UInt32 InstanceCount DEFAULT_INITIALIZER(0);
 
     /// The buffer that will be used to store instance data during AS building.
 
     /// The buffer size must be at least `TLAS_INSTANCE_DATA_SIZE * InstanceCount`.
     /// The buffer must be created with Diligent::BIND_RAY_TRACING flag.
-    IBuffer*                        pInstanceBuffer               DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pInstanceBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// Offset from the beginning of the buffer to the location of instance data.
     /// Offset must be aligned by RayTracingProperties::InstanceBufferAlignment.
-    UInt64                          InstanceBufferOffset          DEFAULT_INITIALIZER(0);
+    UInt64 InstanceBufferOffset DEFAULT_INITIALIZER(0);
 
     /// Instance buffer state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
-    RESOURCE_STATE_TRANSITION_MODE  InstanceBufferTransitionMode  DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
+    RESOURCE_STATE_TRANSITION_MODE InstanceBufferTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
     /// The number of hit shaders that can be bound for a single geometry or an instance (depends on BindingMode).
 
@@ -1665,19 +1616,19 @@ struct BuildTLASAttribs
     /// You should use the same value in a shader:
     /// * `MultiplierForGeometryContributionToHitGroupIndex` argument in `TraceRay()` in HLSL
     /// * `sbtRecordStride` argument in `traceRay()` in GLSL.
-    UInt32                          HitGroupStride         DEFAULT_INITIALIZER(1);
+    UInt32 HitGroupStride DEFAULT_INITIALIZER(1);
 
     /// Base offset for the hit group location.
 
     /// Can be used to bind hit shaders for multiple acceleration structures, see IShaderBindingTable::BindHitGroupForGeometry().
     ///   - Used to calculate TLASBuildInstanceData::ContributionToHitGroupIndex.
     ///   - Ignored if `BindingMode` is Diligent::SHADER_BINDING_USER_DEFINED.
-    UInt32                          BaseContributionToHitGroupIndex DEFAULT_INITIALIZER(0);
+    UInt32 BaseContributionToHitGroupIndex DEFAULT_INITIALIZER(0);
 
     /// Hit shader binding mode, see Diligent::SHADER_BINDING_MODE.
 
     /// Used to calculate TLASBuildInstanceData::ContributionToHitGroupIndex.
-    HIT_GROUP_BINDING_MODE          BindingMode                   DEFAULT_INITIALIZER(HIT_GROUP_BINDING_MODE_PER_GEOMETRY);
+    HIT_GROUP_BINDING_MODE BindingMode DEFAULT_INITIALIZER(HIT_GROUP_BINDING_MODE_PER_GEOMETRY);
 
     /// Buffer that is used for acceleration structure building.
 
@@ -1687,15 +1638,15 @@ struct BuildTLASAttribs
     ///
     /// \note
     ///     Access to the TLAS must be externally synchronized.
-    IBuffer*                        pScratchBuffer                DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pScratchBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// Offset from the beginning of the buffer.
 
     /// Offset must be aligned by RayTracingProperties::ScratchBufferAlignment.
-    UInt64                          ScratchBufferOffset           DEFAULT_INITIALIZER(0);
+    UInt64 ScratchBufferOffset DEFAULT_INITIALIZER(0);
 
     /// Scratch buffer state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
-    RESOURCE_STATE_TRANSITION_MODE  ScratchBufferTransitionMode   DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
+    RESOURCE_STATE_TRANSITION_MODE ScratchBufferTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
     /// Whether to build the acceleration structure from scratch or update it.
 
@@ -1706,7 +1657,7 @@ struct BuildTLASAttribs
     ///
     /// \note
     ///     An update will be faster than building an acceleration structure from scratch.
-    Bool                            Update                        DEFAULT_INITIALIZER(False);
+    Bool Update DEFAULT_INITIALIZER(False);
 };
 typedef struct BuildTLASAttribs BuildTLASAttribs;
 
@@ -1718,7 +1669,7 @@ struct CopyBLASAttribs
 
     /// \note
     ///     Access to the BLAS must be externally synchronized.
-    IBottomLevelAS*                pSrc              DEFAULT_INITIALIZER(nullptr);
+    IBottomLevelAS* pSrc DEFAULT_INITIALIZER(nullptr);
 
     /// Destination bottom-level AS.
 
@@ -1727,10 +1678,10 @@ struct CopyBLASAttribs
     ///
     /// \note
     ///     Access to the BLAS must be externally synchronized.
-    IBottomLevelAS*                pDst              DEFAULT_INITIALIZER(nullptr);
+    IBottomLevelAS* pDst DEFAULT_INITIALIZER(nullptr);
 
     /// Acceleration structure copy mode, see Diligent::COPY_AS_MODE.
-    COPY_AS_MODE                   Mode              DEFAULT_INITIALIZER(COPY_AS_MODE_CLONE);
+    COPY_AS_MODE Mode DEFAULT_INITIALIZER(COPY_AS_MODE_CLONE);
 
     /// Source bottom-level AS state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
     RESOURCE_STATE_TRANSITION_MODE SrcTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
@@ -1746,9 +1697,9 @@ struct CopyBLASAttribs
                               COPY_AS_MODE                   _Mode              = CopyBLASAttribs{}.Mode,
                               RESOURCE_STATE_TRANSITION_MODE _SrcTransitionMode = CopyBLASAttribs{}.SrcTransitionMode,
                               RESOURCE_STATE_TRANSITION_MODE _DstTransitionMode = CopyBLASAttribs{}.DstTransitionMode) noexcept :
-        pSrc             {_pSrc             },
-        pDst             {_pDst             },
-        Mode             {_Mode             },
+        pSrc{_pSrc},
+        pDst{_pDst},
+        Mode{_Mode},
         SrcTransitionMode{_SrcTransitionMode},
         DstTransitionMode{_DstTransitionMode}
     {
@@ -1765,7 +1716,7 @@ struct CopyTLASAttribs
 
     /// \note
     ///     Access to the TLAS must be externally synchronized.
-    ITopLevelAS*                   pSrc              DEFAULT_INITIALIZER(nullptr);
+    ITopLevelAS* pSrc DEFAULT_INITIALIZER(nullptr);
 
     /// Destination top-level AS.
 
@@ -1774,10 +1725,10 @@ struct CopyTLASAttribs
     ///
     /// \note
     ///     Access to the TLAS must be externally synchronized.
-    ITopLevelAS*                   pDst              DEFAULT_INITIALIZER(nullptr);
+    ITopLevelAS* pDst DEFAULT_INITIALIZER(nullptr);
 
     /// Acceleration structure copy mode, see Diligent::COPY_AS_MODE.
-    COPY_AS_MODE                   Mode              DEFAULT_INITIALIZER(COPY_AS_MODE_CLONE);
+    COPY_AS_MODE Mode DEFAULT_INITIALIZER(COPY_AS_MODE_CLONE);
 
     /// Source top-level AS state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
     RESOURCE_STATE_TRANSITION_MODE SrcTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
@@ -1793,9 +1744,9 @@ struct CopyTLASAttribs
                               COPY_AS_MODE                   _Mode              = CopyTLASAttribs{}.Mode,
                               RESOURCE_STATE_TRANSITION_MODE _SrcTransitionMode = CopyTLASAttribs{}.SrcTransitionMode,
                               RESOURCE_STATE_TRANSITION_MODE _DstTransitionMode = CopyTLASAttribs{}.DstTransitionMode) noexcept :
-        pSrc             {_pSrc             },
-        pDst             {_pDst             },
-        Mode             {_Mode             },
+        pSrc{_pSrc},
+        pDst{_pDst},
+        Mode{_Mode},
         SrcTransitionMode{_SrcTransitionMode},
         DstTransitionMode{_DstTransitionMode}
     {
@@ -1809,18 +1760,18 @@ typedef struct CopyTLASAttribs CopyTLASAttribs;
 struct WriteBLASCompactedSizeAttribs
 {
     /// Bottom-level AS.
-    IBottomLevelAS*                pBLAS                DEFAULT_INITIALIZER(nullptr);
+    IBottomLevelAS* pBLAS DEFAULT_INITIALIZER(nullptr);
 
     /// The destination buffer into which a 64-bit value representing the acceleration structure compacted size will be written to.
 
     /// \remarks  Metal backend writes a 32-bit value.
-    IBuffer*                       pDestBuffer          DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pDestBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// Offset from the beginning of the buffer to the location of the AS compacted size.
-    UInt64                         DestBufferOffset     DEFAULT_INITIALIZER(0);
+    UInt64 DestBufferOffset DEFAULT_INITIALIZER(0);
 
     /// Bottom-level AS state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
-    RESOURCE_STATE_TRANSITION_MODE BLASTransitionMode   DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
+    RESOURCE_STATE_TRANSITION_MODE BLASTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
     /// Destination buffer state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
     RESOURCE_STATE_TRANSITION_MODE BufferTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
@@ -1833,10 +1784,10 @@ struct WriteBLASCompactedSizeAttribs
                                             UInt64                         _DestBufferOffset     = WriteBLASCompactedSizeAttribs{}.DestBufferOffset,
                                             RESOURCE_STATE_TRANSITION_MODE _BLASTransitionMode   = WriteBLASCompactedSizeAttribs{}.BLASTransitionMode,
                                             RESOURCE_STATE_TRANSITION_MODE _BufferTransitionMode = WriteBLASCompactedSizeAttribs{}.BufferTransitionMode) noexcept :
-        pBLAS               {_pBLAS               },
-        pDestBuffer         {_pDestBuffer         },
-        DestBufferOffset    {_DestBufferOffset    },
-        BLASTransitionMode  {_BLASTransitionMode  },
+        pBLAS{_pBLAS},
+        pDestBuffer{_pDestBuffer},
+        DestBufferOffset{_DestBufferOffset},
+        BLASTransitionMode{_BLASTransitionMode},
         BufferTransitionMode{_BufferTransitionMode}
     {}
 #endif
@@ -1848,18 +1799,18 @@ typedef struct WriteBLASCompactedSizeAttribs WriteBLASCompactedSizeAttribs;
 struct WriteTLASCompactedSizeAttribs
 {
     /// Top-level AS.
-    ITopLevelAS*                   pTLAS                DEFAULT_INITIALIZER(nullptr);
+    ITopLevelAS* pTLAS DEFAULT_INITIALIZER(nullptr);
 
     /// The destination buffer into which a 64-bit value representing the acceleration structure compacted size will be written to.
 
     /// \remarks  Metal backend writes a 32-bit value.
-    IBuffer*                       pDestBuffer          DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pDestBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// Offset from the beginning of the buffer to the location of the AS compacted size.
-    UInt64                         DestBufferOffset     DEFAULT_INITIALIZER(0);
+    UInt64 DestBufferOffset DEFAULT_INITIALIZER(0);
 
     /// Top-level AS state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
-    RESOURCE_STATE_TRANSITION_MODE TLASTransitionMode   DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
+    RESOURCE_STATE_TRANSITION_MODE TLASTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
     /// Destination buffer state transition mode (see Diligent::RESOURCE_STATE_TRANSITION_MODE).
     RESOURCE_STATE_TRANSITION_MODE BufferTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
@@ -1872,10 +1823,10 @@ struct WriteTLASCompactedSizeAttribs
                                             UInt64                         _DestBufferOffset     = WriteTLASCompactedSizeAttribs{}.DestBufferOffset,
                                             RESOURCE_STATE_TRANSITION_MODE _TLASTransitionMode   = WriteTLASCompactedSizeAttribs{}.TLASTransitionMode,
                                             RESOURCE_STATE_TRANSITION_MODE _BufferTransitionMode = WriteTLASCompactedSizeAttribs{}.BufferTransitionMode) noexcept :
-        pTLAS               {_pTLAS               },
-        pDestBuffer         {_pDestBuffer         },
-        DestBufferOffset    {_DestBufferOffset    },
-        TLASTransitionMode  {_TLASTransitionMode  },
+        pTLAS{_pTLAS},
+        pDestBuffer{_pDestBuffer},
+        DestBufferOffset{_DestBufferOffset},
+        TLASTransitionMode{_TLASTransitionMode},
         BufferTransitionMode{_BufferTransitionMode}
     {}
 #endif
@@ -1887,11 +1838,11 @@ typedef struct WriteTLASCompactedSizeAttribs WriteTLASCompactedSizeAttribs;
 struct TraceRaysAttribs
 {
     /// Shader binding table.
-    const IShaderBindingTable* pSBT  DEFAULT_INITIALIZER(nullptr);
+    const IShaderBindingTable* pSBT DEFAULT_INITIALIZER(nullptr);
 
-    UInt32               DimensionX  DEFAULT_INITIALIZER(1); ///< The number of rays dispatched in X direction.
-    UInt32               DimensionY  DEFAULT_INITIALIZER(1); ///< The number of rays dispatched in Y direction.
-    UInt32               DimensionZ  DEFAULT_INITIALIZER(1); ///< The number of rays dispatched in Z direction.
+    UInt32 DimensionX DEFAULT_INITIALIZER(1); ///< The number of rays dispatched in X direction.
+    UInt32 DimensionY DEFAULT_INITIALIZER(1); ///< The number of rays dispatched in Y direction.
+    UInt32 DimensionZ DEFAULT_INITIALIZER(1); ///< The number of rays dispatched in Z direction.
 
 #if DILIGENT_CPP_INTERFACE
     constexpr TraceRaysAttribs() noexcept {}
@@ -1900,7 +1851,7 @@ struct TraceRaysAttribs
                                UInt32                     _DimensionX,
                                UInt32                     _DimensionY,
                                UInt32                     _DimensionZ = TraceRaysAttribs{}.DimensionZ) noexcept :
-        pSBT      {_pSBT      },
+        pSBT{_pSBT},
         DimensionX{_DimensionX},
         DimensionY{_DimensionY},
         DimensionZ{_DimensionZ}
@@ -1914,7 +1865,7 @@ typedef struct TraceRaysAttribs TraceRaysAttribs;
 struct TraceRaysIndirectAttribs
 {
     /// Shader binding table.
-    const IShaderBindingTable* pSBT  DEFAULT_INITIALIZER(nullptr);
+    const IShaderBindingTable* pSBT DEFAULT_INITIALIZER(nullptr);
 
     /// A pointer to the buffer containing indirect trace rays attributes.
 
@@ -1927,13 +1878,13 @@ struct TraceRaysIndirectAttribs
     ///
     /// \remarks  Use IDeviceContext::UpdateSBT() to initialize the first 88 bytes with the
     ///           same shader binding table as specified in TraceRaysIndirectAttribs::pSBT.
-    IBuffer*                       pAttribsBuffer                   DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pAttribsBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// State transition mode for indirect trace rays attributes buffer.
     RESOURCE_STATE_TRANSITION_MODE AttribsBufferStateTransitionMode DEFAULT_INITIALIZER(RESOURCE_STATE_TRANSITION_MODE_NONE);
 
     /// The offset from the beginning of the buffer to the trace rays command arguments.
-    UInt64  ArgsByteOffset  DEFAULT_INITIALIZER(0);
+    UInt64 ArgsByteOffset DEFAULT_INITIALIZER(0);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr TraceRaysIndirectAttribs() noexcept {}
@@ -1943,10 +1894,10 @@ struct TraceRaysIndirectAttribs
         IBuffer*                       _pAttribsBuffer,
         RESOURCE_STATE_TRANSITION_MODE _TransitionMode = TraceRaysIndirectAttribs{}.AttribsBufferStateTransitionMode,
         UInt64                         _ArgsByteOffset = TraceRaysIndirectAttribs{}.ArgsByteOffset) noexcept :
-        pSBT                            {_pSBT},
-        pAttribsBuffer                  {_pAttribsBuffer},
+        pSBT{_pSBT},
+        pAttribsBuffer{_pAttribsBuffer},
         AttribsBufferStateTransitionMode{_TransitionMode},
-        ArgsByteOffset                  {_ArgsByteOffset}
+        ArgsByteOffset{_ArgsByteOffset}
     {}
 #endif
 };
@@ -1972,9 +1923,9 @@ struct UpdateIndirectRTBufferAttribs
         IBuffer*                       _pAttribsBuffer,
         UInt64                         _AttribsBufferOffset = UpdateIndirectRTBufferAttribs{}.AttribsBufferOffset,
         RESOURCE_STATE_TRANSITION_MODE _TransitionMode      = UpdateIndirectRTBufferAttribs{}.TransitionMode) noexcept :
-        pAttribsBuffer     {_pAttribsBuffer     },
+        pAttribsBuffer{_pAttribsBuffer},
         AttribsBufferOffset{_AttribsBufferOffset},
-        TransitionMode     {_TransitionMode     }
+        TransitionMode{_TransitionMode}
     {}
 #endif
 };
@@ -1989,17 +1940,17 @@ struct SparseBufferMemoryBindRange
     /// Offset in buffer address space where memory will be bound/unbound.
 
     /// Must be a multiple of the SparseBufferProperties::BlockSize.
-    UInt64           BufferOffset  DEFAULT_INITIALIZER(0);
+    UInt64 BufferOffset DEFAULT_INITIALIZER(0);
 
     /// Memory range offset in pMemory.
 
     /// Must be a multiple of the SparseBufferProperties::BlockSize.
-    UInt64           MemoryOffset  DEFAULT_INITIALIZER(0);
+    UInt64 MemoryOffset DEFAULT_INITIALIZER(0);
 
     /// Size of the memory which will be bound/unbound.
 
     /// Must be a multiple of the SparseBufferProperties::BlockSize.
-    UInt64           MemorySize    DEFAULT_INITIALIZER(0);
+    UInt64 MemorySize DEFAULT_INITIALIZER(0);
 
     /// Pointer to the memory object.
 
@@ -2013,7 +1964,7 @@ struct SparseBufferMemoryBindRange
     ///
     /// \note  Memory object can be created by the engine using IRenderDevice::CreateDeviceMemory() or can be implemented by the user.
     ///        Memory object must implement interface methods for each backend (IDeviceMemoryD3D11, IDeviceMemoryD3D12, IDeviceMemoryVk).
-    IDeviceMemory*   pMemory       DEFAULT_INITIALIZER(nullptr);
+    IDeviceMemory* pMemory DEFAULT_INITIALIZER(nullptr);
 
 #if DILIGENT_CPP_INTERFACE
     constexpr SparseBufferMemoryBindRange() noexcept {}
@@ -2024,8 +1975,8 @@ struct SparseBufferMemoryBindRange
                                           IDeviceMemory* _pMemory) noexcept :
         BufferOffset{_BufferOffset},
         MemoryOffset{_MemoryOffset},
-        MemorySize  {_MemorySize  },
-        pMemory     {_pMemory     }
+        MemorySize{_MemorySize},
+        pMemory{_pMemory}
     {}
 #endif
 };
@@ -2037,14 +1988,14 @@ typedef struct SparseBufferMemoryBindRange SparseBufferMemoryBindRange;
 struct SparseBufferMemoryBindInfo
 {
     /// Buffer for which sparse binding command will be executed.
-    IBuffer*                           pBuffer    DEFAULT_INITIALIZER(nullptr);
+    IBuffer* pBuffer DEFAULT_INITIALIZER(nullptr);
 
     /// An array of `NumRanges` buffer memory ranges to bind/unbind,
     /// see Diligent::SparseBufferMemoryBindRange.
-    const SparseBufferMemoryBindRange* pRanges    DEFAULT_INITIALIZER(nullptr);
+    const SparseBufferMemoryBindRange* pRanges DEFAULT_INITIALIZER(nullptr);
 
     /// The number of elements in `pRanges` array.
-    UInt32                             NumRanges  DEFAULT_INITIALIZER(0);
+    UInt32 NumRanges DEFAULT_INITIALIZER(0);
 };
 typedef struct SparseBufferMemoryBindInfo SparseBufferMemoryBindInfo;
 
@@ -2057,10 +2008,10 @@ struct SparseTextureMemoryBindRange
 
     /// \note If this level is equal to SparseTextureProperties::FirstMipInTail,
     ///       all subsequent mip levels will also be affected.
-    UInt32           MipLevel      DEFAULT_INITIALIZER(0);
+    UInt32 MipLevel DEFAULT_INITIALIZER(0);
 
     /// Texture array slice index.
-    UInt32           ArraySlice    DEFAULT_INITIALIZER(0);
+    UInt32 ArraySlice DEFAULT_INITIALIZER(0);
 
     /// Region in pixels where to bind/unbind memory.
 
@@ -2070,7 +2021,7 @@ struct SparseTextureMemoryBindRange
     /// and `OffsetInMipTail` is used instead.
     ///
     /// If `Region` contains multiple tiles, they are bound in the row-major order.
-    Box              Region        DEFAULT_INITIALIZER({});
+    Box Region DEFAULT_INITIALIZER({});
 
     /// Offset in mip tail in bytes.
 
@@ -2078,23 +2029,23 @@ struct SparseTextureMemoryBindRange
     /// defines the starting offset to bind/unbind memory in the tail.
     /// If `MipLevel` is less than SparseTextureProperties::FirstMipInTail,
     /// this field is ignored and `Region` is used.
-    UInt64           OffsetInMipTail DEFAULT_INITIALIZER(0);
+    UInt64 OffsetInMipTail DEFAULT_INITIALIZER(0);
 
     /// Size of the memory that will be bound/unbound to this Region.
 
     /// Memory size must be equal to the number of tiles in Region multiplied by the
     /// sparse memory block size.
     /// It must be a multiple of the SparseTextureProperties::BlockSize.
-    /// 
+    ///
     /// \remarks Ignored in Metal.
-    UInt64           MemorySize    DEFAULT_INITIALIZER(0);
+    UInt64 MemorySize DEFAULT_INITIALIZER(0);
 
     /// Memory range offset in the `pMemory`.
 
     /// Must be a multiple of the SparseTextureProperties::BlockSize.
     ///
     /// \remarks Ignored in Metal.
-    UInt64           MemoryOffset  DEFAULT_INITIALIZER(0);
+    UInt64 MemoryOffset DEFAULT_INITIALIZER(0);
 
     /// Pointer to the memory object.
 
@@ -2111,7 +2062,7 @@ struct SparseTextureMemoryBindRange
     /// \note
     ///     * Memory object can be created by the engine using IRenderDevice::CreateDeviceMemory() or can be implemented by the user.
     ///     * Memory object must implement interface methods for each backend (IDeviceMemoryD3D11, IDeviceMemoryD3D12, IDeviceMemoryVk).
-    IDeviceMemory*   pMemory       DEFAULT_INITIALIZER(nullptr);
+    IDeviceMemory* pMemory DEFAULT_INITIALIZER(nullptr);
 };
 typedef struct SparseTextureMemoryBindRange SparseTextureMemoryBindRange;
 
@@ -2121,13 +2072,13 @@ typedef struct SparseTextureMemoryBindRange SparseTextureMemoryBindRange;
 struct SparseTextureMemoryBindInfo
 {
     /// Texture for which sparse binding command will be executed.
-    ITexture*                           pTexture   DEFAULT_INITIALIZER(nullptr);
+    ITexture* pTexture DEFAULT_INITIALIZER(nullptr);
 
     /// An array of NumRanges texture memory ranges to bind/unbind, see Diligent::SparseTextureMemoryBindRange.
-    const SparseTextureMemoryBindRange* pRanges    DEFAULT_INITIALIZER(nullptr);
+    const SparseTextureMemoryBindRange* pRanges DEFAULT_INITIALIZER(nullptr);
 
     /// The number of elements in the pRanges array.
-    UInt32                              NumRanges  DEFAULT_INITIALIZER(0);
+    UInt32 NumRanges DEFAULT_INITIALIZER(0);
 };
 typedef struct SparseTextureMemoryBindInfo SparseTextureMemoryBindInfo;
 
@@ -2138,39 +2089,39 @@ struct BindSparseResourceMemoryAttribs
 
     /// All commands must bind/unbind unique range in the buffer.
     /// Not supported in Metal.
-    const SparseBufferMemoryBindInfo*  pBufferBinds   DEFAULT_INITIALIZER(nullptr);
+    const SparseBufferMemoryBindInfo* pBufferBinds DEFAULT_INITIALIZER(nullptr);
 
     /// The number of elements in the `pBufferBinds` array.
-    UInt32                             NumBufferBinds DEFAULT_INITIALIZER(0);
+    UInt32 NumBufferBinds DEFAULT_INITIALIZER(0);
 
     /// An array of `NumTextureBinds` sparse texture bind commands.
 
     /// All commands must bind/unbind unique region in the texture.
-    const SparseTextureMemoryBindInfo* pTextureBinds   DEFAULT_INITIALIZER(nullptr);
+    const SparseTextureMemoryBindInfo* pTextureBinds DEFAULT_INITIALIZER(nullptr);
 
     /// The number of elements in the `pTextureBinds`.
-    UInt32                             NumTextureBinds DEFAULT_INITIALIZER(0);
+    UInt32 NumTextureBinds DEFAULT_INITIALIZER(0);
 
     /// An array of `NumWaitFences` fences to wait.
 
     /// \remarks The context will wait until all fences have reached the values
     ///          specified in `pWaitFenceValues`.
-    IFence**      ppWaitFences       DEFAULT_INITIALIZER(nullptr);
+    IFence** ppWaitFences DEFAULT_INITIALIZER(nullptr);
 
     /// An array of `NumWaitFences` values that the context should wait for the fences to reach.
-    const UInt64* pWaitFenceValues   DEFAULT_INITIALIZER(nullptr);
+    const UInt64* pWaitFenceValues DEFAULT_INITIALIZER(nullptr);
 
     /// The number of elements in the `ppWaitFences` and `pWaitFenceValues` arrays.
-    UInt32        NumWaitFences      DEFAULT_INITIALIZER(0);
+    UInt32 NumWaitFences DEFAULT_INITIALIZER(0);
 
     /// An array of `NumSignalFences` fences to signal.
-    IFence**      ppSignalFences     DEFAULT_INITIALIZER(nullptr);
+    IFence** ppSignalFences DEFAULT_INITIALIZER(nullptr);
 
     /// An array of `NumSignalFences` values to set the fences to.
     const UInt64* pSignalFenceValues DEFAULT_INITIALIZER(nullptr);
 
     /// The number of elements in the `ppSignalFences` and `pSignalFenceValues` arrays.
-    UInt32        NumSignalFences    DEFAULT_INITIALIZER(0);
+    UInt32 NumSignalFences DEFAULT_INITIALIZER(0);
 };
 typedef struct BindSparseResourceMemoryAttribs BindSparseResourceMemoryAttribs;
 
@@ -2184,10 +2135,9 @@ static constexpr UInt32 REMAINING_MIP_LEVELS   = DILIGENT_REMAINING_MIP_LEVELS;
 static constexpr UInt32 REMAINING_ARRAY_SLICES = DILIGENT_REMAINING_ARRAY_SLICES;
 
 /// Resource state transition flags.
-DILIGENT_TYPED_ENUM(STATE_TRANSITION_FLAGS, UInt8)
-{
+DILIGENT_TYPED_ENUM(STATE_TRANSITION_FLAGS, UInt8){
     /// No flags.
-    STATE_TRANSITION_FLAG_NONE            = 0,
+    STATE_TRANSITION_FLAG_NONE = 0,
 
     /// Indicates that the internal resource state should be updated to the new state
     /// specified by StateTransitionDesc, and the engine should take over the resource state
@@ -2196,7 +2146,7 @@ DILIGENT_TYPED_ENUM(STATE_TRANSITION_FLAGS, UInt8)
     /// If not used, internal resource state will be unchanged.
     ///
     /// \note This flag cannot be used when StateTransitionDesc.TransitionType is Diligent::STATE_TRANSITION_TYPE_BEGIN.
-    STATE_TRANSITION_FLAG_UPDATE_STATE    = 1u << 0,
+    STATE_TRANSITION_FLAG_UPDATE_STATE = 1u << 0,
 
     /// If set, the contents of the resource will be discarded, when possible.
     /// This may avoid potentially expensive operations such as render target decompression
@@ -2205,8 +2155,7 @@ DILIGENT_TYPED_ENUM(STATE_TRANSITION_FLAGS, UInt8)
 
     /// Indicates state transition between aliased resources that share the same memory.
     /// Currently it is only supported for sparse resources that were created with aliasing flag.
-    STATE_TRANSITION_FLAG_ALIASING        = 1u << 2
-};
+    STATE_TRANSITION_FLAG_ALIASING = 1u << 2};
 DEFINE_FLAG_ENUM_OPERATORS(STATE_TRANSITION_FLAGS);
 
 
@@ -2229,19 +2178,19 @@ struct StateTransitionDesc
     /// \note For aliasing transition (Diligent::STATE_TRANSITION_FLAG_ALIASING flag is set),
     ///       `pResource` may be `null`, which indicates that any sparse or
     ///       normal resource could cause aliasing.
-    IDeviceObject* pResource       DEFAULT_INITIALIZER(nullptr);
+    IDeviceObject* pResource DEFAULT_INITIALIZER(nullptr);
 
     /// When transitioning a texture, first mip level of the subresource range to transition.
-    UInt32 FirstMipLevel     DEFAULT_INITIALIZER(0);
+    UInt32 FirstMipLevel DEFAULT_INITIALIZER(0);
 
     /// When transitioning a texture, number of mip levels of the subresource range to transition.
-    UInt32 MipLevelsCount    DEFAULT_INITIALIZER(REMAINING_MIP_LEVELS);
+    UInt32 MipLevelsCount DEFAULT_INITIALIZER(REMAINING_MIP_LEVELS);
 
     /// When transitioning a texture, first array slice of the subresource range to transition.
-    UInt32 FirstArraySlice   DEFAULT_INITIALIZER(0);
+    UInt32 FirstArraySlice DEFAULT_INITIALIZER(0);
 
     /// When transitioning a texture, number of array slices of the subresource range to transition.
-    UInt32 ArraySliceCount   DEFAULT_INITIALIZER(REMAINING_ARRAY_SLICES);
+    UInt32 ArraySliceCount DEFAULT_INITIALIZER(REMAINING_ARRAY_SLICES);
 
     /// Resource state before transition.
 
@@ -2249,14 +2198,14 @@ struct StateTransitionDesc
     /// which must be defined in this case.
     ///
     /// \note  Resource state must be compatible with the context type.
-    RESOURCE_STATE OldState  DEFAULT_INITIALIZER(RESOURCE_STATE_UNKNOWN);
+    RESOURCE_STATE OldState DEFAULT_INITIALIZER(RESOURCE_STATE_UNKNOWN);
 
     /// Resource state after transition.
 
     /// Must **not** be Diligent::RESOURCE_STATE_UNKNOWN or Diligent::RESOURCE_STATE_UNDEFINED.
     ///
     /// \note  Resource state must be compatible with the context type.
-    RESOURCE_STATE NewState  DEFAULT_INITIALIZER(RESOURCE_STATE_UNKNOWN);
+    RESOURCE_STATE NewState DEFAULT_INITIALIZER(RESOURCE_STATE_UNKNOWN);
 
     /// State transition type, see Diligent::STATE_TRANSITION_TYPE.
 
@@ -2268,7 +2217,7 @@ struct StateTransitionDesc
     STATE_TRANSITION_FLAGS Flags DEFAULT_INITIALIZER(STATE_TRANSITION_FLAG_NONE);
 
 #if DILIGENT_CPP_INTERFACE
-    constexpr  StateTransitionDesc() noexcept {}
+    constexpr StateTransitionDesc() noexcept {}
 
     constexpr StateTransitionDesc(ITexture*              _pTexture,
                                   RESOURCE_STATE         _OldState,
@@ -2279,23 +2228,22 @@ struct StateTransitionDesc
                                   UInt32                 _ArraySliceCount = REMAINING_ARRAY_SLICES,
                                   STATE_TRANSITION_TYPE  _TransitionType  = STATE_TRANSITION_TYPE_IMMEDIATE,
                                   STATE_TRANSITION_FLAGS _Flags           = STATE_TRANSITION_FLAG_NONE) noexcept :
-        pResource       {static_cast<IDeviceObject*>(_pTexture)},
-        FirstMipLevel   {_FirstMipLevel  },
-        MipLevelsCount  {_MipLevelsCount },
-        FirstArraySlice {_FirstArraySlice},
-        ArraySliceCount {_ArraySliceCount},
-        OldState        {_OldState       },
-        NewState        {_NewState       },
-        TransitionType  {_TransitionType },
-        Flags           {_Flags          }
+        pResource{static_cast<IDeviceObject*>(_pTexture)},
+        FirstMipLevel{_FirstMipLevel},
+        MipLevelsCount{_MipLevelsCount},
+        FirstArraySlice{_FirstArraySlice},
+        ArraySliceCount{_ArraySliceCount},
+        OldState{_OldState},
+        NewState{_NewState},
+        TransitionType{_TransitionType},
+        Flags{_Flags}
     {}
 
     constexpr StateTransitionDesc(ITexture*              _pTexture,
                                   RESOURCE_STATE         _OldState,
                                   RESOURCE_STATE         _NewState,
                                   STATE_TRANSITION_FLAGS _Flags) noexcept :
-        StateTransitionDesc
-        {
+        StateTransitionDesc{
             _pTexture,
             _OldState,
             _NewState,
@@ -2304,46 +2252,45 @@ struct StateTransitionDesc
             0,
             REMAINING_ARRAY_SLICES,
             STATE_TRANSITION_TYPE_IMMEDIATE,
-            _Flags
-        }
+            _Flags}
     {}
 
     constexpr StateTransitionDesc(IBuffer*               _pBuffer,
                                   RESOURCE_STATE         _OldState,
                                   RESOURCE_STATE         _NewState,
                                   STATE_TRANSITION_FLAGS _Flags = STATE_TRANSITION_FLAG_NONE) noexcept :
-        pResource {_pBuffer },
-        OldState  {_OldState},
-        NewState  {_NewState},
-        Flags     {_Flags   }
+        pResource{_pBuffer},
+        OldState{_OldState},
+        NewState{_NewState},
+        Flags{_Flags}
     {}
 
     constexpr StateTransitionDesc(IBottomLevelAS*        _pBLAS,
                                   RESOURCE_STATE         _OldState,
                                   RESOURCE_STATE         _NewState,
                                   STATE_TRANSITION_FLAGS _Flags = STATE_TRANSITION_FLAG_NONE) noexcept :
-        pResource {_pBLAS   },
-        OldState  {_OldState},
-        NewState  {_NewState},
-        Flags     {_Flags   }
+        pResource{_pBLAS},
+        OldState{_OldState},
+        NewState{_NewState},
+        Flags{_Flags}
     {}
 
     constexpr StateTransitionDesc(ITopLevelAS*           _pTLAS,
                                   RESOURCE_STATE         _OldState,
                                   RESOURCE_STATE         _NewState,
                                   STATE_TRANSITION_FLAGS _Flags = STATE_TRANSITION_FLAG_NONE) noexcept :
-        pResource {_pTLAS   },
-        OldState  {_OldState},
-        NewState  {_NewState},
-        Flags     {_Flags   }
+        pResource{_pTLAS},
+        OldState{_OldState},
+        NewState{_NewState},
+        Flags{_Flags}
     {}
 
     /// Aliasing barrier
     constexpr StateTransitionDesc(IDeviceObject* _pResourceBefore,
                                   IDeviceObject* _pResourceAfter) noexcept :
         pResourceBefore{_pResourceBefore},
-        pResource      {_pResourceAfter},
-        Flags          {STATE_TRANSITION_FLAG_ALIASING}
+        pResource{_pResourceAfter},
+        Flags{STATE_TRANSITION_FLAG_ALIASING}
     {}
 #endif
 };
@@ -2482,7 +2429,7 @@ struct DeviceContextStats
 {
     /// The total number of primitives rendered, for each primitive topology.
     UInt32 PrimitiveCounts[PRIMITIVE_TOPOLOGY_NUM_TOPOLOGIES] DEFAULT_INITIALIZER({});
-    
+
     /// Command counters, see Diligent::DeviceContextCommandCounters.
     DeviceContextCommandCounters CommandCounters DEFAULT_INITIALIZER({});
 
@@ -2490,20 +2437,20 @@ struct DeviceContextStats
     constexpr UInt32 GetTotalTriangleCount() const noexcept
     {
         return PrimitiveCounts[PRIMITIVE_TOPOLOGY_TRIANGLE_LIST] +
-               PrimitiveCounts[PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP] +
-               PrimitiveCounts[PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP_ADJ];
+            PrimitiveCounts[PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP] +
+            PrimitiveCounts[PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP_ADJ];
     }
 
     constexpr UInt32 GetTotalLineCount() const noexcept
     {
         return PrimitiveCounts[PRIMITIVE_TOPOLOGY_LINE_LIST] +
-               PrimitiveCounts[PRIMITIVE_TOPOLOGY_LINE_STRIP] +
-               PrimitiveCounts[PRIMITIVE_TOPOLOGY_LINE_STRIP_ADJ];
+            PrimitiveCounts[PRIMITIVE_TOPOLOGY_LINE_STRIP] +
+            PrimitiveCounts[PRIMITIVE_TOPOLOGY_LINE_STRIP_ADJ];
     }
 
     constexpr UInt32 GetTotalPointCount() const noexcept
-	{
-    	return PrimitiveCounts[PRIMITIVE_TOPOLOGY_POINT_LIST];
+    {
+        return PrimitiveCounts[PRIMITIVE_TOPOLOGY_POINT_LIST];
     }
 #endif
 };
@@ -2512,8 +2459,8 @@ typedef struct DeviceContextStats DeviceContextStats;
 
 #include "../../../Primitives/interface/DefineInterfaceHelperMacros.h"
 
-#define IDeviceContextInclusiveMethods  \
-    IObjectInclusiveMethods;            \
+#define IDeviceContextInclusiveMethods \
+    IObjectInclusiveMethods;           \
     IDeviceContextMethods DeviceContext
 
 /// Device context interface.
@@ -2525,7 +2472,7 @@ typedef struct DeviceContextStats DeviceContextStats;
 struct IDeviceContext : public IObject
 {
     /// Returns the context description
-    virtual const DeviceContextDesc  & METHOD(GetDesc)( ) const =0;
+    virtual const DeviceContextDesc& METHOD(GetDesc)() const = 0;
 
     /// Begins recording commands in the deferred context.
 
@@ -2538,7 +2485,7 @@ struct IDeviceContext : public IObject
     /// \warning Command list recorded by the context must not be submitted to any other immediate context
     ///          other than one identified by ImmediateContextId.
     virtual void METHOD(Begin)(
-                               UInt32 ImmediateContextId) =0;
+        UInt32 ImmediateContextId) = 0;
 
     /// Sets the pipeline state.
 
@@ -2548,7 +2495,7 @@ struct IDeviceContext : public IObject
     ///     * Supported contexts for graphics and mesh pipeline:        graphics.
     ///     * Supported contexts for compute and ray tracing pipeline:  graphics and compute.
     virtual void METHOD(SetPipelineState)(
-                                          IPipelineState* pPipelineState) =0;
+        IPipelineState* pPipelineState) = 0;
 
 
     /// Transitions shader resources to the states required by Draw or Dispatch command.
@@ -2566,7 +2513,7 @@ struct IDeviceContext : public IObject
     ///          If the application intends to use the same resources in other threads simultaneously, it needs to
     ///          explicitly manage the states using TransitionResourceStates() method.
     virtual void METHOD(TransitionShaderResources)(
-                                                   IShaderResourceBinding* pShaderResourceBinding) =0;
+        IShaderResourceBinding* pShaderResourceBinding) = 0;
 
     /// Commits shader resources to the device context.
 
@@ -2601,8 +2548,8 @@ struct IDeviceContext : public IObject
     /// application is responsible for transitioning the resource back to correct state using one of the available methods
     /// before issuing the next draw or dispatch command.
     virtual void METHOD(CommitShaderResources)(
-                                               IShaderResourceBinding*        pShaderResourceBinding,
-                                               RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) =0;
+        IShaderResourceBinding*        pShaderResourceBinding,
+        RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) = 0;
 
     /// Sets the stencil reference value.
 
@@ -2610,7 +2557,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(SetStencilRef)(
-                                       UInt32 StencilRef) =0;
+        UInt32 StencilRef) = 0;
 
 
     /// Sets the blend factors for alpha blending.
@@ -2624,7 +2571,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(SetBlendFactors)(
-                                         const float* pBlendFactors DEFAULT_VALUE(nullptr)) =0;
+        const float* pBlendFactors DEFAULT_VALUE(nullptr)) = 0;
 
 
     /// Binds vertex buffers to the pipeline.
@@ -2657,19 +2604,19 @@ struct IDeviceContext : public IObject
     /// explicitly manage the states using TransitionResourceStates() method.
     ///
     /// \remarks Supported contexts: graphics.
-    virtual void DG_CALL_TYPE SetVertexBuffers(UInt32 StartSlot,
-                                                     UInt32                         NumBuffersSet,
-                                                     IBuffer* const*                ppBuffers,
-                                                     const UInt64*                  pOffsets,
-                                                     RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
-                                                     SET_VERTEX_BUFFERS_FLAGS       Flags = SET_VERTEX_BUFFERS_FLAG_NONE) = 0;
+    virtual void DG_CALL_TYPE SetVertexBuffers(UInt32                         StartSlot,
+                                               UInt32                         NumBuffersSet,
+                                               IBuffer* const*                ppBuffers,
+                                               const UInt64*                  pOffsets,
+                                               RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
+                                               SET_VERTEX_BUFFERS_FLAGS       Flags = SET_VERTEX_BUFFERS_FLAG_NONE) = 0;
 
 
     /// Invalidates the cached context state.
 
     /// This method should be called by an application to invalidate
     /// internal cached states.
-    virtual void METHOD(InvalidateState)( ) =0;
+    virtual void METHOD(InvalidateState)() = 0;
 
 
     /// Binds an index buffer to the pipeline.
@@ -2694,9 +2641,9 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(SetIndexBuffer)(
-                                        IBuffer*                       pIndexBuffer,
-                                        UInt64                         ByteOffset,
-                                        RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) =0;
+        IBuffer*                       pIndexBuffer,
+        UInt64                         ByteOffset,
+        RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) = 0;
 
 
     /// Sets an array of viewports.
@@ -2719,10 +2666,10 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(SetViewports)(
-                                      UInt32          NumViewports,
-                                      const Viewport* pViewports,
-                                      UInt32          RTWidth,
-                                      UInt32          RTHeight) =0;
+        UInt32          NumViewports,
+        const Viewport* pViewports,
+        UInt32          RTWidth,
+        UInt32          RTHeight) = 0;
 
 
     /// Sets active scissor rects.
@@ -2743,10 +2690,10 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(SetScissorRects)(
-                                         UInt32      NumRects,
-                                         const Rect* pRects,
-                                         UInt32      RTWidth,
-                                         UInt32      RTHeight) =0;
+        UInt32      NumRects,
+        const Rect* pRects,
+        UInt32      RTWidth,
+        UInt32      RTHeight) = 0;
 
 
     /// Binds one or more render targets and the depth-stencil buffer to the context. It also
@@ -2778,10 +2725,10 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(SetRenderTargets)(
-                                          UInt32                         NumRenderTargets,
-                                          ITextureView*                  ppRenderTargets[],
-                                          ITextureView*                  pDepthStencil,
-                                          RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) =0;
+        UInt32                         NumRenderTargets,
+        ITextureView*                  ppRenderTargets[],
+        ITextureView*                  pDepthStencil,
+        RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) = 0;
 
 
     /// Binds one or more render targets, the depth-stencil buffer and shading rate map to the context.
@@ -2798,7 +2745,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(SetRenderTargetsExt)(
-                                             const SetRenderTargetsAttribs  & Attribs) =0;
+        const SetRenderTargetsAttribs& Attribs) = 0;
 
 
     /// Begins a new render pass.
@@ -2807,19 +2754,19 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(BeginRenderPass)(
-                                         const BeginRenderPassAttribs  & Attribs) =0;
+        const BeginRenderPassAttribs& Attribs) = 0;
 
 
     /// Transitions to the next subpass in the render pass instance.
 
     /// \remarks Supported contexts: graphics.
-    virtual void METHOD(NextSubpass)( ) =0;
+    virtual void METHOD(NextSubpass)() = 0;
 
 
     /// Ends current render pass.
 
     /// \remarks Supported contexts: graphics.
-    virtual void METHOD(EndRenderPass)( ) =0;
+    virtual void METHOD(EndRenderPass)() = 0;
 
 
     /// Executes a draw command.
@@ -2835,7 +2782,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(Draw)(
-                              const DrawAttribs  & Attribs) =0;
+        const DrawAttribs& Attribs) = 0;
 
 
     /// Executes an indexed draw command.
@@ -2851,7 +2798,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(DrawIndexed)(
-                                     const DrawIndexedAttribs  & Attribs) =0;
+        const DrawIndexedAttribs& Attribs) = 0;
 
 
     /// Executes an indirect draw command.
@@ -2861,30 +2808,30 @@ struct IDeviceContext : public IObject
     /// Draw command arguments are read from the attributes buffer at the offset given by
     /// Attribs.IndirectDrawArgsOffset. If `Attribs.DrawCount > 1`, the arguments for command N
     /// will be read at the offset
-    /// 
+    ///
     ///     Attribs.IndirectDrawArgsOffset + N * Attribs.IndirectDrawArgsStride.
-    /// 
+    ///
     /// If pCountBuffer is not null, the number of commands to execute will be read from the buffer at the offset
     /// given by Attribs.CounterOffset. The number of commands will be the lesser of the value read from the buffer
     /// and Attribs.DrawCount:
-    /// 
+    ///
     ///     NumCommands = min(CountBuffer[Attribs.CounterOffset], Attribs.DrawCount)
-    /// 
+    ///
     /// If `Attribs.IndirectAttribsBufferStateTransitionMode` or `Attribs.CounterBufferStateTransitionMode` is
     /// Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION, the method may transition the state of the indirect
     /// draw arguments buffer, and the state of the counter buffer . This is not a thread safe operation,
     /// so no other thread is allowed to read or write the state of the buffer.
-    /// 
+    ///
     /// If Diligent::DRAW_FLAG_VERIFY_STATES flag is set, the method reads the state of vertex/index
     /// buffers, so no other threads are allowed to alter the states of the same resources.
     /// It is OK to read these states.
-    /// 
+    ///
     /// If the application intends to use the same resources in other threads simultaneously, it needs to
     /// explicitly manage the states using TransitionResourceStates() method.
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(DrawIndirect)(
-                                      const DrawIndirectAttribs  & Attribs) =0;
+        const DrawIndirectAttribs& Attribs) = 0;
 
 
     /// Executes an indexed indirect draw command.
@@ -2894,24 +2841,24 @@ struct IDeviceContext : public IObject
     /// Draw command arguments are read from the attributes buffer at the offset given by
     /// Attribs.IndirectDrawArgsOffset. If `Attribs.DrawCount > 1`, the arguments for command N
     /// will be read at the offset
-    /// 
+    ///
     ///     Attribs.IndirectDrawArgsOffset + N * Attribs.IndirectDrawArgsStride.
-    /// 
+    ///
     /// If pCountBuffer is not null, the number of commands to execute will be read from the buffer at the offset
     /// given by Attribs.CounterOffset. The number of commands will be the lesser of the value read from the buffer
     /// and Attribs.DrawCount:
-    /// 
+    ///
     ///     NumCommands = min(CountBuffer[Attribs.CounterOffset], Attribs.DrawCount)
-    /// 
+    ///
     /// If `Attribs.IndirectAttribsBufferStateTransitionMode` or `Attribs.CounterBufferStateTransitionMode` is
     /// Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION, the method may transition the state of the indirect
     /// draw arguments buffer, and the state of the counter buffer . This is not a thread safe operation,
     /// so no other thread is allowed to read or write the state of the buffer.
-    /// 
+    ///
     /// If Diligent::DRAW_FLAG_VERIFY_STATES flag is set, the method reads the state of vertex/index
     /// buffers, so no other threads are allowed to alter the states of the same resources.
     /// It is OK to read these states.
-    /// 
+    ///
     /// If the application intends to use the same resources in other threads simultaneously, it needs to
     /// explicitly manage the states using TransitionResourceStates() method.
     ///
@@ -2920,7 +2867,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(DrawIndexedIndirect)(
-                                             const DrawIndexedIndirectAttribs  & Attribs) =0;
+        const DrawIndexedIndirectAttribs& Attribs) = 0;
 
 
     /// Executes a mesh draw command.
@@ -2933,7 +2880,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(DrawMesh)(
-                                  const DrawMeshAttribs  & Attribs) =0;
+        const DrawMeshAttribs& Attribs) = 0;
 
 
     /// Executes an indirect mesh draw command.
@@ -2942,7 +2889,7 @@ struct IDeviceContext : public IObject
     ///
     /// For compatibility between Direct3D12 and Vulkan and with direct call (DrawMesh) use the first element in the structure,
     /// for example:
-    ///   * Direct3D12 `{TaskCount, 1, 1}` 
+    ///   * Direct3D12 `{TaskCount, 1, 1}`
     ///   * Vulkan `{TaskCount, 0}`.
     ///
     /// If `IndirectAttribsBufferStateTransitionMode` member is Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
@@ -2954,7 +2901,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(DrawMeshIndirect)(
-                                          const DrawMeshIndirectAttribs  & Attribs) =0;
+        const DrawMeshIndirectAttribs& Attribs) = 0;
 
 
     /// Executes a multi-draw command.
@@ -2967,8 +2914,8 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(MultiDraw)(
-                                   const MultiDrawAttribs  & Attribs) =0;
-    
+        const MultiDrawAttribs& Attribs) = 0;
+
 
     /// Executes an indexed multi-draw command.
 
@@ -2980,7 +2927,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(MultiDrawIndexed)(
-                                          const MultiDrawIndexedAttribs  & Attribs) =0;
+        const MultiDrawIndexedAttribs& Attribs) = 0;
 
 
     /// Executes a dispatch compute command.
@@ -2995,7 +2942,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics, compute.
     virtual void METHOD(DispatchCompute)(
-                                         const DispatchComputeAttribs  & Attribs) =0;
+        const DispatchComputeAttribs& Attribs) = 0;
 
 
     /// Executes an indirect dispatch compute command.
@@ -3017,14 +2964,14 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics, compute.
     virtual void METHOD(DispatchComputeIndirect)(
-                                                 const DispatchComputeIndirectAttribs  & Attribs) =0;
+        const DispatchComputeIndirectAttribs& Attribs) = 0;
 
 
     /// Executes a dispatch tile command.
 
     /// \param [in] Attribs - The command attributes, see Diligent::DispatchTileAttribs for details.
     virtual void METHOD(DispatchTile)(
-                                      const DispatchTileAttribs  & Attribs) =0;
+        const DispatchTileAttribs& Attribs) = 0;
 
 
     /// Returns current render pass tile size.
@@ -3034,8 +2981,8 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Result will be zero if there are no active render pass or render targets.
     virtual void METHOD(GetTileSize)(
-                                     UInt32  & TileSizeX,
-                                     UInt32  & TileSizeY) =0;
+        UInt32& TileSizeX,
+        UInt32& TileSizeY) = 0;
 
 
     /// Clears a depth-stencil view.
@@ -3061,11 +3008,11 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(ClearDepthStencil)(
-                                           ITextureView*                  pView,
-                                           CLEAR_DEPTH_STENCIL_FLAGS      ClearFlags,
-                                           float                          fDepth,
-                                           UInt8                          Stencil,
-                                           RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) =0;
+        ITextureView*                  pView,
+        CLEAR_DEPTH_STENCIL_FLAGS      ClearFlags,
+        float                          fDepth,
+        UInt8                          Stencil,
+        RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) = 0;
 
 
     /// Clears a render target view
@@ -3100,16 +3047,16 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(ClearRenderTarget)(
-                                           ITextureView*                  pView,
-                                           const void*                    RGBA,
-                                           RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) =0;
+        ITextureView*                  pView,
+        const void*                    RGBA,
+        RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) = 0;
 
 
     /// Finishes recording commands and generates a command list.
 
     /// \param [out] ppCommandList - Memory location where pointer to the recorded command list will be written.
     virtual void METHOD(FinishCommandList)(
-                                           ICommandList** ppCommandList) =0;
+        ICommandList** ppCommandList) = 0;
 
 
     /// Submits an array of recorded command lists for execution.
@@ -3118,8 +3065,8 @@ struct IDeviceContext : public IObject
     /// \param [in] ppCommandLists  - Pointer to the array of NumCommandLists command lists to execute.
     /// \remarks After a command list is executed, it is no longer valid and must be released.
     virtual void METHOD(ExecuteCommandLists)(
-                                             UInt32               NumCommandLists,
-                                             ICommandList* const* ppCommandLists) =0;
+        UInt32               NumCommandLists,
+        ICommandList* const* ppCommandLists) = 0;
 
 
     /// Tells the GPU to set a fence to a specified value after all previous work has completed.
@@ -3138,8 +3085,8 @@ struct IDeviceContext : public IObject
     ///   must be externally synchronized.
     /// * In Direct3D12 and Vulkan backends, the access to the fence is thread-safe.
     virtual void METHOD(EnqueueSignal)(
-                                       IFence*    pFence,
-                                       UInt64     Value) =0;
+        IFence* pFence,
+        UInt64  Value) = 0;
 
 
     /// Waits until the specified fence reaches or exceeds the specified value, on the device.
@@ -3159,19 +3106,19 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks  Wait is only allowed for immediate contexts.
     virtual void METHOD(DeviceWaitForFence)(
-                                            IFence*  pFence,
-                                            UInt64   Value) =0;
+        IFence* pFence,
+        UInt64  Value) = 0;
 
     /// Submits all outstanding commands for execution to the GPU and waits until they are complete.
 
     /// \note The method blocks the execution of the calling thread until the wait is complete.
     ///
     /// Only immediate contexts can be idled.
-    /// 
+    ///
     /// The methods implicitly flushes the context (see Flush()), so an
     /// application must explicitly reset the PSO and bind all required shader resources after
     /// idling the context.
-    virtual void METHOD(WaitForIdle)( ) =0;
+    virtual void METHOD(WaitForIdle)() = 0;
 
 
     /// Marks the beginning of a query.
@@ -3200,7 +3147,7 @@ struct IDeviceContext : public IObject
     /// \remarks Supported contexts for graphics queries: graphics.
     ///          Supported contexts for time queries:     graphics, compute.
     virtual void METHOD(BeginQuery)(
-                                    IQuery* pQuery) =0;
+        IQuery* pQuery) = 0;
 
 
     /// Marks the end of a query.
@@ -3219,20 +3166,20 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics, compute.
     virtual void METHOD(EndQuery)(
-                                  IQuery* pQuery) =0;
+        IQuery* pQuery) = 0;
 
 
     /// Submits all pending commands in the context for execution to the command queue.
 
     /// Only immediate contexts can be flushed.
-    /// 
+    ///
     /// Internally the method resets the state of the current command list/buffer.
     /// When the next draw command is issued, the engine will restore all states
     /// (rebind render targets and depth-stencil buffer as well as index and vertex buffers,
     /// restore viewports and scissor rects, etc.) except for the pipeline state and shader resource
     /// bindings. An application must explicitly reset the PSO and bind all required shader
     /// resources after flushing the context.
-    virtual void METHOD(Flush)( ) =0;
+    virtual void METHOD(Flush)() = 0;
 
 
     /// Updates the data in the buffer.
@@ -3245,11 +3192,11 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
     virtual void METHOD(UpdateBuffer)(
-                                      IBuffer*                       pBuffer,
-                                      UInt64                         Offset,
-                                      UInt64                         Size,
-                                      const void*                    pData,
-                                      RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) =0;
+        IBuffer*                       pBuffer,
+        UInt64                         Offset,
+        UInt64                         Size,
+        const void*                    pData,
+        RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) = 0;
 
 
     /// Copies the data from one buffer to another.
@@ -3265,13 +3212,13 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
     virtual void METHOD(CopyBuffer)(
-                                    IBuffer*                       pSrcBuffer,
-                                    UInt64                         SrcOffset,
-                                    RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
-                                    IBuffer*                       pDstBuffer,
-                                    UInt64                         DstOffset,
-                                    UInt64                         Size,
-                                    RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) =0;
+        IBuffer*                       pSrcBuffer,
+        UInt64                         SrcOffset,
+        RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
+        IBuffer*                       pDstBuffer,
+        UInt64                         DstOffset,
+        UInt64                         Size,
+        RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) = 0;
 
 
     /// Maps the buffer.
@@ -3283,10 +3230,10 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
     virtual void METHOD(MapBuffer)(
-                                   IBuffer*     pBuffer,
-                                   MAP_TYPE     MapType,
-                                   MAP_FLAGS    MapFlags,
-                                   PVoid  &    pMappedData) =0;
+        IBuffer*  pBuffer,
+        MAP_TYPE  MapType,
+        MAP_FLAGS MapFlags,
+        PVoid&    pMappedData) = 0;
 
 
     /// Unmaps the previously mapped buffer.
@@ -3297,8 +3244,8 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
     virtual void METHOD(UnmapBuffer)(
-                                     IBuffer*   pBuffer,
-                                     MAP_TYPE   MapType) =0;
+        IBuffer* pBuffer,
+        MAP_TYPE MapType) = 0;
 
 
     /// Updates the data in the texture.
@@ -3315,13 +3262,13 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
     virtual void METHOD(UpdateTexture)(
-                                       ITexture*                        pTexture,
-                                       UInt32                           MipLevel,
-                                       UInt32                           Slice,
-                                       const Box  &                    DstBox,
-                                       const TextureSubResData  &      SubresData,
-                                       RESOURCE_STATE_TRANSITION_MODE   SrcBufferTransitionMode,
-                                       RESOURCE_STATE_TRANSITION_MODE   TextureTransitionMode) =0;
+        ITexture*                      pTexture,
+        UInt32                         MipLevel,
+        UInt32                         Slice,
+        const Box&                     DstBox,
+        const TextureSubResData&       SubresData,
+        RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
+        RESOURCE_STATE_TRANSITION_MODE TextureTransitionMode) = 0;
 
 
     /// Copies data from one texture to another.
@@ -3330,7 +3277,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
     virtual void METHOD(CopyTexture)(
-                                     const CopyTextureAttribs  & CopyAttribs) =0;
+        const CopyTextureAttribs& CopyAttribs) = 0;
 
 
     /// Maps the texture subresource.
@@ -3350,13 +3297,13 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
     virtual void METHOD(MapTextureSubresource)(
-                                               ITexture*                    pTexture,
-                                               UInt32                       MipLevel,
-                                               UInt32                       ArraySlice,
-                                               MAP_TYPE                     MapType,
-                                               MAP_FLAGS                    MapFlags,
-                                               const Box*                   pMapRegion,
-                                               MappedTextureSubresource  & MappedData) =0;
+        ITexture*                 pTexture,
+        UInt32                    MipLevel,
+        UInt32                    ArraySlice,
+        MAP_TYPE                  MapType,
+        MAP_FLAGS                 MapFlags,
+        const Box*                pMapRegion,
+        MappedTextureSubresource& MappedData) = 0;
 
 
     /// Unmaps the texture subresource.
@@ -3367,9 +3314,9 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
     virtual void METHOD(UnmapTextureSubresource)(
-                                                 ITexture* pTexture,
-                                                 UInt32    MipLevel,
-                                                 UInt32    ArraySlice) =0;
+        ITexture* pTexture,
+        UInt32    MipLevel,
+        UInt32    ArraySlice) = 0;
 
 
     /// Generates a mipmap chain.
@@ -3380,7 +3327,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(GenerateMips)(
-                                      ITextureView* pTextureView) =0;
+        ITextureView* pTextureView) = 0;
 
 
     /// Finishes the current frame and releases dynamic resources allocated by the context.
@@ -3398,13 +3345,13 @@ struct IDeviceContext : public IObject
     /// have been executed through immediate context.
     ///
     /// The method does not Flush() the context.
-    virtual void METHOD(FinishFrame)( ) =0;
+    virtual void METHOD(FinishFrame)() = 0;
 
 
     /// Returns the current frame number.
 
     /// \note The frame number is incremented every time FinishFrame() is called.
-    virtual UInt64 METHOD(GetFrameNumber)( ) const =0;
+    virtual UInt64 METHOD(GetFrameNumber)() const = 0;
 
 
     /// Transitions resource states.
@@ -3437,8 +3384,8 @@ struct IDeviceContext : public IObject
     ///        Using TransitionResourceStates() with NewState = Diligent::RESOURCE_STATE_SHADER_RESOURCE will not invalidate cache in
     ///        graphics shaders and may cause undefined behaviour.
     virtual void METHOD(TransitionResourceStates)(
-                                                  UInt32                     BarrierCount,
-                                                  const StateTransitionDesc* pResourceBarriers) =0;
+        UInt32                     BarrierCount,
+        const StateTransitionDesc* pResourceBarriers) = 0;
 
 
     /// Resolves a multi-sampled texture subresource into a non-multi-sampled texture subresource.
@@ -3449,9 +3396,9 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.ResolveTextureSubresource
     virtual void METHOD(ResolveTextureSubresource)(
-                                                   ITexture*                                  pSrcTexture,
-                                                   ITexture*                                  pDstTexture,
-                                                   const ResolveTextureSubresourceAttribs  & ResolveAttribs) =0;
+        ITexture*                               pSrcTexture,
+        ITexture*                               pDstTexture,
+        const ResolveTextureSubresourceAttribs& ResolveAttribs) = 0;
 
 
     /// Builds a bottom-level acceleration structure with the specified geometries.
@@ -3462,8 +3409,7 @@ struct IDeviceContext : public IObject
     ///       that will not match with GPU-side, so shader binding were incorrect.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    virtual void METHOD(BuildBLAS)(
-                                   const BuildBLASAttribs  & Attribs) =0;
+    virtual void METHOD(BuildBLAS)(const BuildBLASAttribs& Attribs) = 0;
 
 
     /// Builds a top-level acceleration structure with the specified instances.
@@ -3474,8 +3420,7 @@ struct IDeviceContext : public IObject
     ///       that will not match with GPU-side, so shader binding were incorrect.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    virtual void METHOD(BuildTLAS)(
-                                   const BuildTLASAttribs  & Attribs) =0;
+    virtual void METHOD(BuildTLAS)(const BuildTLASAttribs& Attribs) = 0;
 
 
     /// Copies data from one acceleration structure to another.
@@ -3486,8 +3431,7 @@ struct IDeviceContext : public IObject
     ///       that will not match with GPU-side, so shader binding were incorrect.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    virtual void METHOD(CopyBLAS)(
-                                  const CopyBLASAttribs  & Attribs) =0;
+    virtual void METHOD(CopyBLAS)(const CopyBLASAttribs& Attribs) = 0;
 
 
     /// Copies data from one acceleration structure to another.
@@ -3498,8 +3442,7 @@ struct IDeviceContext : public IObject
     ///       that will not match with GPU-side, so shader binding were incorrect.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    virtual void METHOD(CopyTLAS)(
-                                  const CopyTLASAttribs  & Attribs) =0;
+    virtual void METHOD(CopyTLAS)(const CopyTLASAttribs& Attribs) = 0;
 
 
     /// Writes a bottom-level acceleration structure memory size required for compacting operation to a buffer.
@@ -3507,8 +3450,7 @@ struct IDeviceContext : public IObject
     /// \param [in] Attribs - Structure describing write BLAS compacted size command attributes, see Diligent::WriteBLASCompactedSizeAttribs for details.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    virtual void METHOD(WriteBLASCompactedSize)(
-                                                const WriteBLASCompactedSizeAttribs  & Attribs) =0;
+    virtual void METHOD(WriteBLASCompactedSize)(const WriteBLASCompactedSizeAttribs& Attribs) = 0;
 
 
     /// Writes a top-level acceleration structure memory size required for compacting operation to a buffer.
@@ -3516,8 +3458,7 @@ struct IDeviceContext : public IObject
     /// \param [in] Attribs - Structure describing write TLAS compacted size command attributes, see Diligent::WriteTLASCompactedSizeAttribs for details.
     ///
     /// \remarks Supported contexts: graphics, compute.
-    virtual void METHOD(WriteTLASCompactedSize)(
-                                                const WriteTLASCompactedSizeAttribs  & Attribs) =0;
+    virtual void METHOD(WriteTLASCompactedSize)(const WriteTLASCompactedSizeAttribs& Attribs) = 0;
 
 
     /// Executes a trace rays command.
@@ -3530,8 +3471,7 @@ struct IDeviceContext : public IObject
     ///         functions that don't modify the SBT (e.g. TraceRaysIndirect).
     ///
     /// \remarks Supported contexts: graphics, compute.
-    virtual void METHOD(TraceRays)(
-                                   const TraceRaysAttribs  & Attribs) =0;
+    virtual void METHOD(TraceRays)(const TraceRaysAttribs& Attribs) = 0;
 
 
     /// Executes an indirect trace rays command.
@@ -3544,8 +3484,7 @@ struct IDeviceContext : public IObject
     ///         functions that don't modify the SBT (e.g. TraceRays).
     ///
     /// \remarks Supported contexts: graphics, compute.
-    virtual void METHOD(TraceRaysIndirect)(
-                                           const TraceRaysIndirectAttribs  & Attribs) =0;
+    virtual void METHOD(TraceRaysIndirect)(const TraceRaysIndirectAttribs& Attribs) = 0;
 
 
     /// Updates SBT with the pending data that were recorded in IShaderBindingTable::Bind*** calls.
@@ -3567,9 +3506,7 @@ struct IDeviceContext : public IObject
     ///           The function modifies the data in the SBT and must not run in parallel with any other command that uses the same SBT.
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
-    virtual void METHOD(UpdateSBT)(
-                                   IShaderBindingTable*                 pSBT,
-                                   const UpdateIndirectRTBufferAttribs* pUpdateIndirectBufferAttribs DEFAULT_INITIALIZER(nullptr)) =0;
+    virtual void METHOD(UpdateSBT)(IShaderBindingTable* pSBT, const UpdateIndirectRTBufferAttribs* pUpdateIndirectBufferAttribs = nullptr) = 0;
 
 
     /// Stores a pointer to the user-provided data object.
@@ -3584,8 +3521,7 @@ struct IDeviceContext : public IObject
     /// The method keeps strong reference to the user data object.
     /// If an application needs to release the object, it
     /// should call SetUserData(nullptr);
-    virtual void METHOD(SetUserData)(
-                                     IObject* pUserData) =0;
+    virtual void METHOD(SetUserData)(IObject* pUserData) = 0;
 
 
     /// Returns a pointer to the user data object previously
@@ -3596,7 +3532,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks    The method does *NOT* call AddRef()
     ///             for the object being returned.
-    virtual IObject* METHOD(GetUserData)( ) const =0;
+    virtual IObject* METHOD(GetUserData)() const = 0;
 
 
     /// Begins a debug group with name and color.
@@ -3607,12 +3543,10 @@ struct IDeviceContext : public IObject
     /// \param [in] pColor - Region color.
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
-    virtual void METHOD(BeginDebugGroup)(
-                                        const Char*  Name,
-                                        const float* pColor DEFAULT_INITIALIZER(nullptr)) =0;
+    virtual void DG_CALL_TYPE BeginDebugGroup(const Char* Name, const float* pColor = nullptr) = 0;
 
     /// Ends a debug group that was previously started with BeginDebugGroup().
-    virtual void METHOD(EndDebugGroup)( ) =0;
+    virtual void DG_CALL_TYPE EndDebugGroup() = 0;
 
 
     /// Inserts a debug label with name and color.
@@ -3624,9 +3558,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
     ///          Not supported in Metal backend.
-    virtual void METHOD(InsertDebugLabel)(
-                                          const Char*  Label,
-                                          const float* pColor DEFAULT_INITIALIZER(nullptr)) =0;
+    virtual void DG_CALL_TYPE InsertDebugLabel(const Char* Label, const float* pColor DEFAULT_INITIALIZER(nullptr)) = 0;
 
     /// Locks the internal mutex and returns a pointer to the command queue that is associated with this device context.
 
@@ -3641,13 +3573,13 @@ struct IDeviceContext : public IObject
     /// The queue pointer never changes while the context is alive, so an application may cache and
     /// use the pointer if it does not need to prevent potential simultaneous access to the queue from
     /// other threads.
-    /// 
+    ///
     /// The engine manages the lifetimes of command queues and all other device objects,
     /// so an application must not call AddRef/Release methods on the returned interface.
-    virtual ICommandQueue* METHOD(LockCommandQueue)( ) =0;
+    virtual ICommandQueue* METHOD(LockCommandQueue)() = 0;
 
     /// Unlocks the command queue that was previously locked by LockCommandQueue().
-    virtual void METHOD(UnlockCommandQueue)( ) =0;
+    virtual void METHOD(UnlockCommandQueue)() = 0;
 
 
     /// Sets the shading base rate and combiners.
@@ -3666,7 +3598,7 @@ struct IDeviceContext : public IObject
     ///
     ///     PerPrimitiveRate - vertex shader output value (HLSL: SV_ShadingRate; GLSL: gl_PrimitiveShadingRateEXT).
     ///     TextureRate      - texel value from the shading rate texture, see SetRenderTargetsAttribs::pShadingRateMap.
-    /// 
+    ///
     ///     SHADING_RATE ApplyCombiner(SHADING_RATE_COMBINER Combiner, SHADING_RATE OriginalRate, SHADING_RATE NewRate)
     ///     {
     ///         switch (Combiner)
@@ -3689,9 +3621,9 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics.
     virtual void METHOD(SetShadingRate)(
-                                        SHADING_RATE          BaseRate,
-                                        SHADING_RATE_COMBINER PrimitiveCombiner,
-                                        SHADING_RATE_COMBINER TextureCombiner) =0;
+        SHADING_RATE          BaseRate,
+        SHADING_RATE_COMBINER PrimitiveCombiner,
+        SHADING_RATE_COMBINER TextureCombiner) = 0;
 
 
     /// Binds or unbinds memory objects to sparse buffer and sparse textures.
@@ -3713,95 +3645,12 @@ struct IDeviceContext : public IObject
     /// \remarks This command may only be executed by immediate context whose
     ///          internal queue supports COMMAND_QUEUE_TYPE_SPARSE_BINDING.
     virtual void METHOD(BindSparseResourceMemory)(
-                                                  const BindSparseResourceMemoryAttribs  & Attribs) =0;
+        const BindSparseResourceMemoryAttribs& Attribs) = 0;
 
     /// Clears the device context statistics.
-    virtual void METHOD(ClearStats)( ) =0;
+    virtual void METHOD(ClearStats)() = 0;
 
     /// Returns the device context statistics, see Diligent::DeviceContextStats.
-    virtual const DeviceContextStats  & METHOD(GetStats)( ) const =0;
+    virtual const DeviceContextStats& METHOD(GetStats)() const = 0;
 };
-
-
-
-
-#if DILIGENT_C_INTERFACE
-
-// clang-format off
-
-#    define IDeviceContext_GetDesc(This)                            CALL_IFACE_METHOD(DeviceContext, GetDesc,                   This)
-#    define IDeviceContext_Begin(This, ...)                         CALL_IFACE_METHOD(DeviceContext, Begin,                     This, __VA_ARGS__)
-#    define IDeviceContext_SetPipelineState(This, ...)              CALL_IFACE_METHOD(DeviceContext, SetPipelineState,          This, __VA_ARGS__)
-#    define IDeviceContext_TransitionShaderResources(This, ...)     CALL_IFACE_METHOD(DeviceContext, TransitionShaderResources, This, __VA_ARGS__)
-#    define IDeviceContext_CommitShaderResources(This, ...)         CALL_IFACE_METHOD(DeviceContext, CommitShaderResources,     This, __VA_ARGS__)
-#    define IDeviceContext_SetStencilRef(This, ...)                 CALL_IFACE_METHOD(DeviceContext, SetStencilRef,             This, __VA_ARGS__)
-#    define IDeviceContext_SetBlendFactors(This, ...)               CALL_IFACE_METHOD(DeviceContext, SetBlendFactors,           This, __VA_ARGS__)
-#    define IDeviceContext_SetVertexBuffers(This, ...)              CALL_IFACE_METHOD(DeviceContext, SetVertexBuffers,          This, __VA_ARGS__)
-#    define IDeviceContext_InvalidateState(This)                    CALL_IFACE_METHOD(DeviceContext, InvalidateState,           This)
-#    define IDeviceContext_SetIndexBuffer(This, ...)                CALL_IFACE_METHOD(DeviceContext, SetIndexBuffer,            This, __VA_ARGS__)
-#    define IDeviceContext_SetViewports(This, ...)                  CALL_IFACE_METHOD(DeviceContext, SetViewports,              This, __VA_ARGS__)
-#    define IDeviceContext_SetScissorRects(This, ...)               CALL_IFACE_METHOD(DeviceContext, SetScissorRects,           This, __VA_ARGS__)
-#    define IDeviceContext_SetRenderTargets(This, ...)              CALL_IFACE_METHOD(DeviceContext, SetRenderTargets,          This, __VA_ARGS__)
-#    define IDeviceContext_SetRenderTargetsExt(This, ...)           CALL_IFACE_METHOD(DeviceContext, SetRenderTargetsExt,       This, __VA_ARGS__)
-#    define IDeviceContext_BeginRenderPass(This, ...)               CALL_IFACE_METHOD(DeviceContext, BeginRenderPass,           This, __VA_ARGS__)
-#    define IDeviceContext_NextSubpass(This)                        CALL_IFACE_METHOD(DeviceContext, NextSubpass,               This)
-#    define IDeviceContext_EndRenderPass(This)                      CALL_IFACE_METHOD(DeviceContext, EndRenderPass,             This)
-#    define IDeviceContext_Draw(This, ...)                          CALL_IFACE_METHOD(DeviceContext, Draw,                      This, __VA_ARGS__)
-#    define IDeviceContext_DrawIndexed(This, ...)                   CALL_IFACE_METHOD(DeviceContext, DrawIndexed,               This, __VA_ARGS__)
-#    define IDeviceContext_DrawIndirect(This, ...)                  CALL_IFACE_METHOD(DeviceContext, DrawIndirect,              This, __VA_ARGS__)
-#    define IDeviceContext_DrawIndexedIndirect(This, ...)           CALL_IFACE_METHOD(DeviceContext, DrawIndexedIndirect,       This, __VA_ARGS__)
-#    define IDeviceContext_DrawMesh(This, ...)                      CALL_IFACE_METHOD(DeviceContext, DrawMesh,                  This, __VA_ARGS__)
-#    define IDeviceContext_DrawMeshIndirect(This, ...)              CALL_IFACE_METHOD(DeviceContext, DrawMeshIndirect,          This, __VA_ARGS__)
-#    define IDeviceContext_DispatchCompute(This, ...)               CALL_IFACE_METHOD(DeviceContext, DispatchCompute,           This, __VA_ARGS__)
-#    define IDeviceContext_DispatchComputeIndirect(This, ...)       CALL_IFACE_METHOD(DeviceContext, DispatchComputeIndirect,   This, __VA_ARGS__)
-#    define IDeviceContext_DispatchTile(This, ...)                  CALL_IFACE_METHOD(DeviceContext, DispatchTile,              This, __VA_ARGS__)
-#    define IDeviceContext_GetTileSize(This, ...)                   CALL_IFACE_METHOD(DeviceContext, GetTileSize,               This, __VA_ARGS__)
-#    define IDeviceContext_ClearDepthStencil(This, ...)             CALL_IFACE_METHOD(DeviceContext, ClearDepthStencil,         This, __VA_ARGS__)
-#    define IDeviceContext_ClearRenderTarget(This, ...)             CALL_IFACE_METHOD(DeviceContext, ClearRenderTarget,         This, __VA_ARGS__)
-#    define IDeviceContext_FinishCommandList(This, ...)             CALL_IFACE_METHOD(DeviceContext, FinishCommandList,         This, __VA_ARGS__)
-#    define IDeviceContext_ExecuteCommandLists(This, ...)           CALL_IFACE_METHOD(DeviceContext, ExecuteCommandLists,       This, __VA_ARGS__)
-#    define IDeviceContext_EnqueueSignal(This, ...)                 CALL_IFACE_METHOD(DeviceContext, EnqueueSignal,             This, __VA_ARGS__)
-#    define IDeviceContext_DeviceWaitForFence(This, ...)            CALL_IFACE_METHOD(DeviceContext, DeviceWaitForFence,        This, __VA_ARGS__)
-#    define IDeviceContext_WaitForIdle(This)                        CALL_IFACE_METHOD(DeviceContext, WaitForIdle,               This)
-#    define IDeviceContext_BeginQuery(This, ...)                    CALL_IFACE_METHOD(DeviceContext, BeginQuery,                This, __VA_ARGS__)
-#    define IDeviceContext_EndQuery(This, ...)                      CALL_IFACE_METHOD(DeviceContext, EndQuery,                  This, __VA_ARGS__)
-#    define IDeviceContext_Flush(This)                              CALL_IFACE_METHOD(DeviceContext, Flush,                     This)
-#    define IDeviceContext_UpdateBuffer(This, ...)                  CALL_IFACE_METHOD(DeviceContext, UpdateBuffer,              This, __VA_ARGS__)
-#    define IDeviceContext_CopyBuffer(This, ...)                    CALL_IFACE_METHOD(DeviceContext, CopyBuffer,                This, __VA_ARGS__)
-#    define IDeviceContext_MapBuffer(This, ...)                     CALL_IFACE_METHOD(DeviceContext, MapBuffer,                 This, __VA_ARGS__)
-#    define IDeviceContext_UnmapBuffer(This, ...)                   CALL_IFACE_METHOD(DeviceContext, UnmapBuffer,               This, __VA_ARGS__)
-#    define IDeviceContext_UpdateTexture(This, ...)                 CALL_IFACE_METHOD(DeviceContext, UpdateTexture,             This, __VA_ARGS__)
-#    define IDeviceContext_CopyTexture(This, ...)                   CALL_IFACE_METHOD(DeviceContext, CopyTexture,               This, __VA_ARGS__)
-#    define IDeviceContext_MapTextureSubresource(This, ...)         CALL_IFACE_METHOD(DeviceContext, MapTextureSubresource,     This, __VA_ARGS__)
-#    define IDeviceContext_UnmapTextureSubresource(This, ...)       CALL_IFACE_METHOD(DeviceContext, UnmapTextureSubresource,   This, __VA_ARGS__)
-#    define IDeviceContext_GenerateMips(This, ...)                  CALL_IFACE_METHOD(DeviceContext, GenerateMips,              This, __VA_ARGS__)
-#    define IDeviceContext_FinishFrame(This)                        CALL_IFACE_METHOD(DeviceContext, FinishFrame,               This)
-#    define IDeviceContext_GetFrameNumber(This)                     CALL_IFACE_METHOD(DeviceContext, GetFrameNumber,            This)
-#    define IDeviceContext_TransitionResourceStates(This, ...)      CALL_IFACE_METHOD(DeviceContext, TransitionResourceStates,  This, __VA_ARGS__)
-#    define IDeviceContext_ResolveTextureSubresource(This, ...)     CALL_IFACE_METHOD(DeviceContext, ResolveTextureSubresource, This, __VA_ARGS__)
-#    define IDeviceContext_BuildBLAS(This, ...)                     CALL_IFACE_METHOD(DeviceContext, BuildBLAS,                 This, __VA_ARGS__)
-#    define IDeviceContext_BuildTLAS(This, ...)                     CALL_IFACE_METHOD(DeviceContext, BuildTLAS,                 This, __VA_ARGS__)
-#    define IDeviceContext_CopyBLAS(This, ...)                      CALL_IFACE_METHOD(DeviceContext, CopyBLAS,                  This, __VA_ARGS__)
-#    define IDeviceContext_CopyTLAS(This, ...)                      CALL_IFACE_METHOD(DeviceContext, CopyTLAS,                  This, __VA_ARGS__)
-#    define IDeviceContext_WriteBLASCompactedSize(This, ...)        CALL_IFACE_METHOD(DeviceContext, WriteBLASCompactedSize,    This, __VA_ARGS__)
-#    define IDeviceContext_WriteTLASCompactedSize(This, ...)        CALL_IFACE_METHOD(DeviceContext, WriteTLASCompactedSize,    This, __VA_ARGS__)
-#    define IDeviceContext_TraceRays(This, ...)                     CALL_IFACE_METHOD(DeviceContext, TraceRays,                 This, __VA_ARGS__)
-#    define IDeviceContext_TraceRaysIndirect(This, ...)             CALL_IFACE_METHOD(DeviceContext, TraceRaysIndirect,         This, __VA_ARGS__)
-#    define IDeviceContext_UpdateSBT(This, ...)                     CALL_IFACE_METHOD(DeviceContext, UpdateSBT,                 This, __VA_ARGS__)
-#    define IDeviceContext_SetUserData(This, ...)                   CALL_IFACE_METHOD(DeviceContext, SetUserData,               This, __VA_ARGS__)
-#    define IDeviceContext_GetUserData(This)                        CALL_IFACE_METHOD(DeviceContext, GetUserData,               This)
-#    define IDeviceContext_BeginDebugGroup(This, ...)               CALL_IFACE_METHOD(DeviceContext, BeginDebugGroup,           This, __VA_ARGS__)
-#    define IDeviceContext_EndDebugGroup(This)                      CALL_IFACE_METHOD(DeviceContext, EndDebugGroup,             This)
-#    define IDeviceContext_InsertDebugLabel(This, ...)              CALL_IFACE_METHOD(DeviceContext, InsertDebugLabel,          This, __VA_ARGS__)
-#    define IDeviceContext_LockCommandQueue(This)                   CALL_IFACE_METHOD(DeviceContext, LockCommandQueue,          This)
-#    define IDeviceContext_UnlockCommandQueue(This)                 CALL_IFACE_METHOD(DeviceContext, UnlockCommandQueue,        This)
-#    define IDeviceContext_SetShadingRate(This, ...)                CALL_IFACE_METHOD(DeviceContext, SetShadingRate,            This, __VA_ARGS__)
-#    define IDeviceContext_BindSparseResourceMemory(This, ...)      CALL_IFACE_METHOD(DeviceContext, BindSparseResourceMemory,  This, __VA_ARGS__)
-#    define IDeviceContext_ClearStats(This)                         CALL_IFACE_METHOD(DeviceContext, ClearStats,                This)
-#    define IDeviceContext_GetStats(This)                           CALL_IFACE_METHOD(DeviceContext, GetStats,                  This)
-
-// clang-format on
-
-#endif
-
- } // namespace Diligent
+} // namespace Diligent

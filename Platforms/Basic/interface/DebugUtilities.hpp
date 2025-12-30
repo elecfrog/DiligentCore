@@ -37,23 +37,23 @@
 #    define ASSERTION_FAILED(Message, ...)                                                 \
         do                                                                                 \
         {                                                                                  \
-            auto msg = spw::LogSystem::FormatString(Message, ##__VA_ARGS__);                     \
+            auto msg = spw::LogSystem::FormatString(Message __VA_OPT__(, ) __VA_ARGS__);   \
             Diligent::DebugAssertionFailed(msg.c_str(), __FUNCTION__, __FILE__, __LINE__); \
         } while (false)
 
-#    define VERIFY(Expr, Message, ...)                    \
-        do                                                \
-        {                                                 \
-            if (!(Expr))                                  \
-            {                                             \
-                ASSERTION_FAILED(Message, ##__VA_ARGS__); \
-            }                                             \
+#    define VERIFY(Expr, Message, ...)                                \
+        do                                                            \
+        {                                                             \
+            if (!(Expr))                                              \
+            {                                                         \
+                ASSERTION_FAILED(Message __VA_OPT__(, ) __VA_ARGS__); \
+            }                                                         \
         } while (false)
 
 #    define UNEXPECTED  ASSERTION_FAILED
 #    define UNSUPPORTED ASSERTION_FAILED
 
-#    define VERIFY_EXPR(Expr) VERIFY((Expr), "Debug expression failed:\n", #    Expr)
+#    define VERIFY_EXPR(Expr) VERIFY((Expr), "Debug expression failed:\n", #Expr)
 
 
 template <typename DstType, typename SrcType>
