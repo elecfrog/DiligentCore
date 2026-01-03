@@ -35,7 +35,8 @@
 #include "ShaderResourceVariable.h"
 #include "ResourceMapping.h"
 
-namespace Diligent {
+namespace Diligent
+{
 
 struct IPipelineState;
 struct IPipelineResourceSignature;
@@ -51,8 +52,6 @@ static constexpr INTERFACE_ID IID_ShaderResourceBinding =
     IObjectInclusiveMethods;                   \
     IShaderResourceBindingMethods ShaderResourceBinding
 
-// clang-format off
-
 /// Shader resource binding interface
 struct IShaderResourceBinding : public IObject
 {
@@ -61,7 +60,7 @@ struct IShaderResourceBinding : public IObject
 
     /// The method does **NOT** increment the reference counter of the returned object,
     /// so Release() **must not** be called.
-    virtual struct IPipelineResourceSignature* METHOD(GetPipelineResourceSignature)( ) const =0;
+    virtual struct IPipelineResourceSignature* METHOD(GetPipelineResourceSignature)() const = 0;
 
 
     /// Binds SRB resources using the resource mapping
@@ -71,9 +70,9 @@ struct IShaderResourceBinding : public IObject
     /// \param [in] pResMapping  - Shader resource mapping where required resources will be looked up.
     /// \param [in] Flags        - Additional flags. See Diligent::BIND_SHADER_RESOURCES_FLAGS.
     virtual void METHOD(BindResources)(
-                                       SHADER_TYPE                 ShaderStages,
-                                       IResourceMapping*           pResMapping,
-                                       BIND_SHADER_RESOURCES_FLAGS Flags) =0;
+        SHADER_TYPE                 ShaderStages,
+        IResourceMapping*           pResMapping,
+        BIND_SHADER_RESOURCES_FLAGS Flags) = 0;
 
 
     /// Checks currently bound resources, see remarks.
@@ -105,9 +104,9 @@ struct IShaderResourceBinding : public IObject
     ///   that are not bound.
     virtual SHADER_RESOURCE_VARIABLE_TYPE_FLAGS METHOD(CheckResources)(
 
-                                        SHADER_TYPE                 ShaderStages,
-                                        IResourceMapping*           pResMapping,
-                                        BIND_SHADER_RESOURCES_FLAGS Flags) const =0;
+        SHADER_TYPE                 ShaderStages,
+        IResourceMapping*           pResMapping,
+        BIND_SHADER_RESOURCES_FLAGS Flags) const = 0;
 
 
     /// Returns the variable by its name.
@@ -118,9 +117,7 @@ struct IShaderResourceBinding : public IObject
     ///
     /// \note  This operation may potentially be expensive. If the variable will be used often, it is
     ///        recommended to store and reuse the pointer as it never changes.
-    virtual IShaderResourceVariable* METHOD(GetVariableByName)(
-                                                               SHADER_TYPE ShaderType,
-                                                               const Char* Name) =0;
+    virtual IShaderResourceVariable* DG_CALL_TYPE GetVariableByName(SHADER_TYPE ShaderType, const Char* Name) = 0;
 
 
     /// Returns the total variable count for the specific shader stage.
@@ -132,7 +129,7 @@ struct IShaderResourceBinding : public IObject
     /// the Shader Resource Binding object. Static variables are accessed through the Shader
     /// object.
     virtual UInt32 METHOD(GetVariableCount)(
-                                            SHADER_TYPE ShaderType) const =0;
+        SHADER_TYPE ShaderType) const = 0;
 
     /// Returns the variable by its index.
 
@@ -148,11 +145,11 @@ struct IShaderResourceBinding : public IObject
     /// \note   This operation may potentially be expensive. If the variable will be used often, it is
     ///         recommended to store and reuse the pointer as it never changes.
     virtual IShaderResourceVariable* METHOD(GetVariableByIndex)(
-                                                                SHADER_TYPE ShaderType,
-                                                                UInt32      Index) =0;
+        SHADER_TYPE ShaderType,
+        UInt32      Index) = 0;
 
     /// Returns true if static resources have been initialized in this SRB.
-    virtual Bool METHOD(StaticResourcesInitialized)( ) const =0;
+    virtual Bool METHOD(StaticResourcesInitialized)() const = 0;
 };
 
 
@@ -174,4 +171,4 @@ struct IShaderResourceBinding : public IObject
 
 #endif
 
- } // namespace Diligent
+} // namespace Diligent
