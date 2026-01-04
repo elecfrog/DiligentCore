@@ -100,7 +100,7 @@ public:
 
     virtual void DG_CALL_TYPE SetStatus(ASYNC_TASK_STATUS TaskStatus) override final
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         if (TaskStatus != m_TaskStatus)
         {
             switch (TaskStatus)

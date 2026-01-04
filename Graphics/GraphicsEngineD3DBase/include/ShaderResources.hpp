@@ -136,7 +136,7 @@ public:
         SamplerOrTexSRVId  {_SamplerId}
     // clang-format on
     {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         // clang-format off
         VERIFY(_InputType    < (1 << ShaderInputTypeBits),   "Shader input type is out of expected range");
         VERIFY(_SRVDimension < (1 << SRVDimBits),            "SRV dimensions is out of expected range");
@@ -418,7 +418,7 @@ public:
 
     size_t GetHash() const;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     static void DvpVerifyResourceLayout(const PipelineResourceLayoutDesc& ResourceLayout,
                                         const ShaderResources* const      pShaderResources[],
                                         UInt32                            NumShaders,
@@ -605,7 +605,7 @@ void ShaderResources::Initialize(TShaderReflection*  pShaderReflection,
     {
         m_SamplerSuffix = ResourceNamesPool.CopyString(CombinedSamplerSuffix);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         for (UInt32 n = 0; n < GetNumSamplers(); ++n)
         {
             const D3DShaderResourceAttribs& Sampler = GetSampler(n);

@@ -76,7 +76,7 @@ void ShaderResourceCacheVk::InitializeSets(IMemoryAllocator& MemAllocator, UInt3
 
     const size_t MemorySize = NumSets * sizeof(DescriptorSet) + m_TotalResources * sizeof(Resource);
     VERIFY_EXPR(MemorySize == GetRequiredMemorySize(NumSets, SetSizes));
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     m_DbgInitializedResources.resize(m_NumSets);
 #endif
     if (MemorySize > 0)
@@ -92,7 +92,7 @@ void ShaderResourceCacheVk::InitializeSets(IMemoryAllocator& MemAllocator, UInt3
         {
             new (&GetDescriptorSet(t)) DescriptorSet{SetSizes[t], SetSizes[t] > 0 ? pCurrResPtr : nullptr};
             pCurrResPtr += SetSizes[t];
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
             m_DbgInitializedResources[t].resize(SetSizes[t]);
 #endif
         }
@@ -106,7 +106,7 @@ void ShaderResourceCacheVk::InitializeResources(UInt32 Set, UInt32 Offset, UInt3
     for (UInt32 res = 0; res < ArraySize; ++res)
     {
         new (&DescrSet.GetResource(Offset + res)) Resource{Type, HasImmutableSampler};
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         m_DbgInitializedResources[Set][size_t{Offset} + res] = true;
 #endif
     }
@@ -164,7 +164,7 @@ static bool IsDynamicBuffer(const ShaderResourceCacheVk::Resource& Res)
 }
 
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 void ShaderResourceCacheVk::DbgVerifyResourceInitialization() const
 {
     for (const std::vector<bool>& SetFlags : m_DbgInitializedResources)
@@ -208,7 +208,7 @@ void ShaderResourceCacheVk::Resource::SetUniformBuffer(RefCntAutoPtr<IDeviceObje
 
     const BufferVkImpl* pBuffVk = pObject.ConstPtr<BufferVkImpl>();
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     if (pBuffVk != nullptr)
     {
         // VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER or VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC descriptor type require
@@ -251,7 +251,7 @@ void ShaderResourceCacheVk::Resource::SetStorageBuffer(RefCntAutoPtr<IDeviceObje
     BufferBaseOffset = ViewDesc.ByteOffset;
     BufferRangeSize  = ViewDesc.ByteWidth;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     {
         const BufferVkImpl* pBuffVk  = pBuffViewVk->GetBuffer<const BufferVkImpl>();
         const BufferDesc&   BuffDesc = pBuffVk->GetDesc();
@@ -513,7 +513,7 @@ inline void TransitionBufferView(DeviceContextVkImpl* pCtxVkImpl,
         return;
 
     const RESOURCE_STATE RequiredState = DescriptorTypeToResourceState(DescrType);
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     const VkAccessFlags RequiredAccessFlags = (RequiredState == RESOURCE_STATE_SHADER_RESOURCE) ?
         VK_ACCESS_SHADER_READ_BIT :
         (VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT);
@@ -641,7 +641,7 @@ inline void TransitionAccelStruct(DeviceContextVkImpl* pCtxVkImpl,
         }
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     pTLASVk->ValidateContent();
 #endif
 }
@@ -780,7 +780,7 @@ VkDescriptorImageInfo ShaderResourceCacheVk::Resource::GetImageDescriptorWriteIn
             // object (13.2.4)
             DescrImgInfo.sampler = pSamplerVk->GetVkSampler();
         }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         else
         {
             LOG_ERROR_MESSAGE("No sampler is assigned to texture view '", pTexViewVk->GetDesc().Name, "'");
@@ -936,7 +936,7 @@ UInt32 ShaderResourceCacheVk::GetDynamicBufferOffsets(DeviceContextVkImpl*   pCt
                 break;
         }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         for (; res < SetSize; ++res)
         {
             const Resource& Res = DescrSet.GetResource(res);

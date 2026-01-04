@@ -322,7 +322,7 @@ public:
 
     ResourceCacheContentType GetContentType() const { return m_ContentType; }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     void SetStaticResourcesInitialized()
     {
         m_bStaticResourcesInitialized = true;
@@ -345,7 +345,7 @@ public:
         return m_DynamicUBOMask != 0 || m_DynamicSSBOMask != 0;
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     void DbgVerifyDynamicBufferMasks() const;
 #endif
 
@@ -392,7 +392,7 @@ private:
     // Indicates what types of resources are stored in the cache
     const ResourceCacheContentType m_ContentType;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     bool m_bStaticResourcesInitialized = false;
 #endif
 };

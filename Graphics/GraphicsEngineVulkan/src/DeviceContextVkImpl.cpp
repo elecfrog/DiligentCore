@@ -359,7 +359,7 @@ void DeviceContextVkImpl::SetPipelineState(IPipelineState* pPipelineState)
 
     UInt32 DvpCompatibleSRBCount = 0;
     PrepareCommittedResources(BindInfo, DvpCompatibleSRBCount);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     for (UInt32 sign = DvpCompatibleSRBCount; sign < SignCount; ++sign)
     {
         // Do not clear DescriptorSetBaseInd and DynamicOffsetCount!
@@ -461,7 +461,7 @@ void DeviceContextVkImpl::CommitDescriptorSets(ResourceBindInfo& BindInfo, UInt3
             DynamicOffsetCount += SetInfo.DynamicOffsetCount;
         }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         SetInfo.LastBoundBaseInd = SetInfo.BaseInd;
 #endif
     }
@@ -481,7 +481,7 @@ void DeviceContextVkImpl::CommitDescriptorSets(ResourceBindInfo& BindInfo, UInt3
     BindInfo.StaleSRBMask &= ~BindInfo.ActiveSRBMask;
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void DeviceContextVkImpl::DvpValidateCommittedShaderResources(ResourceBindInfo& BindInfo)
 {
     if (BindInfo.ResourcesValidated)
@@ -542,7 +542,7 @@ void DeviceContextVkImpl::CommitShaderResources(IShaderResourceBinding* pShaderR
         return;
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     ResourceCache.DbgVerifyDynamicBuffersCounter();
 #endif
 
@@ -550,7 +550,7 @@ void DeviceContextVkImpl::CommitShaderResources(IShaderResourceBinding* pShaderR
     {
         ResourceCache.TransitionResources<false>(this);
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     else if (StateTransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
     {
         ResourceCache.TransitionResources<true>(this);
@@ -586,7 +586,7 @@ void DeviceContextVkImpl::CommitShaderResources(IShaderResourceBinding* pShaderR
 
         VkDescriptorSet vkDynamicDescrSet   = VK_NULL_HANDLE;
         const char*     DynamicDescrSetName = "Dynamic Descriptor Set";
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         String _DynamicDescrSetName{DynamicDescrSetName};
         _DynamicDescrSetName.append(" (");
         _DynamicDescrSetName.append(pSignature->GetDesc().Name);
@@ -626,7 +626,7 @@ void DeviceContextVkImpl::SetBlendFactors(const float* pBlendFactors)
 
 void DeviceContextVkImpl::CommitVkVertexBuffers()
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (m_NumVertexStreams < m_pPipelineState->GetNumBufferSlotsUsed())
         LOG_ERROR("Currently bound pipeline state '", m_pPipelineState->GetDesc().Name, "' expects ", m_pPipelineState->GetNumBufferSlotsUsed(), " input buffer slots, but only ", m_NumVertexStreams, " is bound");
 #endif
@@ -643,7 +643,7 @@ void DeviceContextVkImpl::CommitVkVertexBuffers()
             if (pBufferVk->GetDesc().Usage == USAGE_DYNAMIC)
             {
                 DynamicBufferPresent = true;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
                 DvpVerifyDynamicAllocation(pBufferVk);
 #endif
             }
@@ -732,7 +732,7 @@ void DeviceContextVkImpl::PrepareForDraw(DRAW_FLAGS Flags)
         ChooseRenderPassAndFramebuffer();
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpVerifyRenderTargets();
     VERIFY((m_vkRenderPass != VK_NULL_HANDLE && m_vkFramebuffer != VK_NULL_HANDLE) || m_DynamicRenderingInfo, "No render pass is active while executing draw command");
 #endif
@@ -744,7 +744,7 @@ void DeviceContextVkImpl::PrepareForDraw(DRAW_FLAGS Flags)
         CommitVkVertexBuffers();
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if ((Flags & DRAW_FLAG_VERIFY_STATES) != 0)
     {
         for (UInt32 slot = 0; slot < m_NumVertexStreams; ++slot)
@@ -765,14 +765,14 @@ void DeviceContextVkImpl::PrepareForDraw(DRAW_FLAGS Flags)
     {
         CommitDescriptorSets(BindInfo, CommitMask);
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Must be called after CommitDescriptorSets as it needs SetInfo.BaseInd
     DvpValidateCommittedShaderResources(BindInfo);
 #endif
 
     if (m_pPipelineState->GetGraphicsPipelineDesc().pRenderPass == nullptr)
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         IRenderPassVk* pRenderPass  = m_pPipelineState->GetRenderPass();
         VkRenderPass   vkRenderPass = pRenderPass != nullptr ? pRenderPass->GetVkRenderPass() : VK_NULL_HANDLE;
         if (vkRenderPass != m_vkRenderPass)
@@ -794,7 +794,7 @@ BufferVkImpl* DeviceContextVkImpl::PrepareIndirectAttribsBuffer(IBuffer*        
     DEV_CHECK_ERR(pAttribsBuffer, "Indirect draw attribs buffer must not be null");
     BufferVkImpl* pIndirectDrawAttribsVk = ClassPtrCast<BufferVkImpl>(pAttribsBuffer);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (pIndirectDrawAttribsVk->GetDesc().Usage == USAGE_DYNAMIC)
         DvpVerifyDynamicAllocation(pIndirectDrawAttribsVk);
 #endif
@@ -809,7 +809,7 @@ void DeviceContextVkImpl::PrepareForIndexedDraw(DRAW_FLAGS Flags, VALUE_TYPE Ind
 {
     PrepareForDraw(Flags);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if ((Flags & DRAW_FLAG_VERIFY_STATES) != 0)
     {
         DvpVerifyBufferState(*m_pIndexBuffer, RESOURCE_STATE_INDEX_BUFFER, "Indexed draw call (DeviceContextVkImpl::Draw)");
@@ -1064,7 +1064,7 @@ void DeviceContextVkImpl::PrepareForDispatchCompute()
         CommitDescriptorSets(BindInfo, CommitMask);
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Must be called after CommitDescriptorSets as it needs SetInfo.BaseInd
     DvpValidateCommittedShaderResources(BindInfo);
 #endif
@@ -1080,7 +1080,7 @@ void DeviceContextVkImpl::PrepareForRayTracing()
         CommitDescriptorSets(BindInfo, CommitMask);
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Must be called after CommitDescriptorSets as it needs SetInfo.BaseInd
     DvpValidateCommittedShaderResources(BindInfo);
 #endif
@@ -1107,7 +1107,7 @@ void DeviceContextVkImpl::DispatchComputeIndirect(const DispatchComputeIndirectA
 
     BufferVkImpl* pBufferVk = ClassPtrCast<BufferVkImpl>(Attribs.pAttribsBuffer);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (pBufferVk->GetDesc().Usage == USAGE_DYNAMIC)
         DvpVerifyDynamicAllocation(pBufferVk);
 #endif
@@ -1360,7 +1360,7 @@ void DeviceContextVkImpl::ClearRenderTarget(ITextureView* pView, const void* RGB
 
 void DeviceContextVkImpl::FinishFrame()
 {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (const auto& MappedBuffIt : m_DbgMappedBuffers)
     {
         const BufferDesc& BuffDesc = MappedBuffIt.first->GetDesc();
@@ -1465,7 +1465,7 @@ void DeviceContextVkImpl::Flush(UInt32               NumCommandLists,
         {
             EndRenderScope();
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             DEV_CHECK_ERR(m_DvpDebugGroupCount == 0, "Not all debug groups have been ended");
             m_DvpDebugGroupCount = 0;
 #endif
@@ -1514,7 +1514,7 @@ void DeviceContextVkImpl::Flush(UInt32               NumCommandLists,
         {
             UsedTimelineSemaphore = true;
             VkSemaphore WaitSem   = pFenceVk->GetVkSemaphore();
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             for (size_t i = 0; i < m_VkWaitSemaphores.size(); ++i)
             {
                 if (m_VkWaitSemaphores[i] == WaitSem)
@@ -1840,7 +1840,7 @@ void DeviceContextVkImpl::CommitRenderPassAndFramebuffer(bool VerifyStates)
 
         if ((m_vkFramebuffer != VK_NULL_HANDLE) || (DynamicRenderingHash != 0))
         {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             if (VerifyStates)
             {
                 TransitionRenderTargets(RESOURCE_STATE_TRANSITION_MODE_VERIFY);
@@ -2189,7 +2189,7 @@ void DeviceContextVkImpl::MapBuffer(IBuffer* pBuffer, MAP_TYPE MapType, MAP_FLAG
             if (m_MappedBuffers.size() <= DynamicBufferId)
                 m_MappedBuffers.resize(DynamicBufferId + 1);
             VulkanDynamicAllocation& DynAllocation = m_MappedBuffers[DynamicBufferId].Allocation;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             m_MappedBuffers[DynamicBufferId].DvpBufferUID = pBufferVk->GetUniqueID();
 #endif
             if ((MapFlags & MAP_FLAG_DISCARD) != 0 || !DynAllocation)
@@ -2283,7 +2283,7 @@ void DeviceContextVkImpl::UnmapBuffer(IBuffer* pBuffer, MAP_TYPE MapType)
     }
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void DeviceContextVkImpl::DvpVerifyDynamicAllocation(const BufferVkImpl* pBuffer) const
 {
     VERIFY_EXPR(pBuffer != nullptr);
@@ -2517,7 +2517,7 @@ void DeviceContextVkImpl::UpdateTextureRegion(const void*                    pSr
     // pages will be discarded
     VERIFY((Allocation.AlignedOffset % BufferOffsetAlignment) == 0, "Allocation offset must be at least 32-bit aligned");
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     {
         VERIFY(SrcStride >= CopyInfo.RowSize, "Source data stride (", SrcStride, ") is below the image row size (", CopyInfo.RowSize, ")");
         const UInt64 PlaneSize = SrcStride * CopyInfo.RowCount;
@@ -2994,7 +2994,7 @@ void DeviceContextVkImpl::TransitionImageLayout(ITexture* pTexture, VkImageLayou
 
 namespace
 {
-NODISCARD inline bool ResourceStateHasWriteAccess(RESOURCE_STATE State)
+[[nodiscard]] inline bool ResourceStateHasWriteAccess(RESOURCE_STATE State)
 {
     static_assert(RESOURCE_STATE_MAX_BIT == (1u << 21), "This function must be updated to handle new resource state flag");
     constexpr RESOURCE_STATE WriteAccessStates =
@@ -3106,7 +3106,7 @@ void DeviceContextVkImpl::TransitionOrVerifyTextureState(TextureVkImpl&         
             VERIFY_EXPR(Texture.GetLayout() == ExpectedLayout);
         }
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     else if (TransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
     {
         DvpVerifyTextureState(Texture, RequiredState, OperationName);
@@ -3198,7 +3198,7 @@ void DeviceContextVkImpl::TransitionOrVerifyBufferState(BufferVkImpl&           
             VERIFY_EXPR(Buffer.CheckAccessFlags(ExpectedAccessFlags));
         }
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     else if (TransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
     {
         DvpVerifyBufferState(Buffer, RequiredState, OperationName);
@@ -3311,7 +3311,7 @@ void DeviceContextVkImpl::TransitionOrVerifyBLASState(BottomLevelASVkImpl&      
             TransitionBLASState(BLAS, RESOURCE_STATE_UNKNOWN, RequiredState, true);
         }
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     else if (TransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
     {
         DvpVerifyBLASState(BLAS, RequiredState, OperationName);
@@ -3332,7 +3332,7 @@ void DeviceContextVkImpl::TransitionOrVerifyTLASState(TopLevelASVkImpl&         
             TransitionTLASState(TLAS, RESOURCE_STATE_UNKNOWN, RequiredState, true);
         }
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     else if (TransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
     {
         DvpVerifyTLASState(TLAS, RequiredState, OperationName);
@@ -3351,7 +3351,7 @@ VulkanDynamicAllocation DeviceContextVkImpl::AllocateDynamicSpace(UInt64 SizeInB
                   "Dynamic allocation size must be less than 2^32");
 
     VulkanDynamicAllocation DynAlloc = m_DynamicHeap.Allocate(static_cast<UInt32>(SizeInBytes), Alignment);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DynAlloc.dvpFrameNumber = GetFrameNumber();
 #endif
     return DynAlloc;
@@ -3369,7 +3369,7 @@ void DeviceContextVkImpl::TransitionResourceStates(UInt32 BarrierCount, const St
     for (UInt32 i = 0; i < BarrierCount; ++i)
     {
         const StateTransitionDesc& Barrier = pResourceBarriers[i];
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         DvpVerifyStateTransitionDesc(Barrier);
 #endif
         if (Barrier.TransitionType == STATE_TRANSITION_TYPE_BEGIN)
@@ -3672,7 +3672,7 @@ void DeviceContextVkImpl::BuildBLAS(const BuildBLASAttribs& Attribs)
     m_CommandBuffer.BuildAccelerationStructure(1, &vkASBuildInfo, &VkRangePtr);
     ++m_State.NumCommands;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     pBLASVk->DvpUpdateVersion();
 #endif
 }
@@ -3807,7 +3807,7 @@ void DeviceContextVkImpl::CopyBLAS(const CopyBLASAttribs& Attribs)
     m_CommandBuffer.CopyAccelerationStructure(Info);
     ++m_State.NumCommands;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     pDstVk->DvpUpdateVersion();
 #endif
 }
@@ -4088,7 +4088,7 @@ void DeviceContextVkImpl::BindSparseResourceMemory(const BindSparseResourceMemor
     {
         const SparseBufferMemoryBindInfo& BuffBind = Attribs.pBufferBinds[i];
         const BufferVkImpl*               pBuffVk  = ClassPtrCast<const BufferVkImpl>(BuffBind.pBuffer);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         const SparseBufferProperties& BuffSparseProps = pBuffVk->GetSparseProperties();
 #endif
 
@@ -4234,7 +4234,7 @@ void DeviceContextVkImpl::BindSparseResourceMemory(const BindSparseResourceMemor
         {
             UsedTimelineSemaphore = true;
             VkSemaphore WaitSem   = pFenceVk->GetVkSemaphore();
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             for (size_t j = 0; j < m_VkWaitSemaphores.size(); ++j)
             {
                 if (m_VkWaitSemaphores[j] == WaitSem)

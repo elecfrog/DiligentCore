@@ -203,7 +203,7 @@ public:
         // Transitions resource to the shader resource state required by Type member.
         __forceinline void TransitionResource(CommandContext& Ctx);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         // Verifies that resource is in correct shader resource state required by Type member.
         void DvpVerifyResourceState();
 #endif
@@ -343,7 +343,7 @@ public:
     // dynamic buffer or a buffer range.
     bool HasDynamicResources() const { return GetDynamicRootBuffersMask() != 0; }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     void DbgValidateDynamicBuffersMask() const;
 #endif
 

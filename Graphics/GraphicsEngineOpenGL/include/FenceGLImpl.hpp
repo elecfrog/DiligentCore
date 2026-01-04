@@ -67,7 +67,7 @@ public:
         m_PendingFences.emplace_back(Value, std::move(Fence));
         DvpSignal(Value);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         m_MaxPendingFences = std::max(m_MaxPendingFences, m_PendingFences.size());
 #endif
     }
@@ -78,7 +78,7 @@ public:
 private:
     std::deque<std::pair<UInt64, GLObjectWrappers::GLSyncObj>> m_PendingFences;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     size_t m_MaxPendingFences = 0;
 #endif
 };

@@ -615,7 +615,7 @@ void DearchiverBase::UnpackPipelineStateImpl(const PipelineStateUnpackInfo& Unpa
     if (!pArchiveData->pObjArchive->LoadResourceCommonData(ResType, UnpackInfo.Name, PSO))
         return;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (UnpackInfo.pDevice->GetDeviceInfo().IsD3DDevice())
     {
         // We always have reflection information in Direct3D shaders, so always

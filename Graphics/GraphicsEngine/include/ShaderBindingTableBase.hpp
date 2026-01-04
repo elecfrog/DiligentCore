@@ -101,7 +101,7 @@ public:
 
     void DG_CALL_TYPE Reset(IPipelineState* pPSO) override final
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         this->m_DbgHitGroupBindings.clear();
 #endif
         this->m_RayGenShaderRecord.clear();
@@ -131,7 +131,7 @@ public:
 
     void DG_CALL_TYPE ResetHitGroups() override final
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         this->m_DbgHitGroupBindings.clear();
 #endif
         this->m_HitGroupsRecord.clear();
@@ -187,7 +187,7 @@ public:
         std::memcpy(this->m_HitGroupsRecord.data() + Offset + GroupSize, pData, DataSize);
         this->m_Changed = true;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         OnBindHitGroup(nullptr, BindingIndex);
 #endif
     }
@@ -229,7 +229,7 @@ public:
         std::memcpy(this->m_HitGroupsRecord.data() + Offset + GroupSize, pData, DataSize);
         this->m_Changed = true;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         VERIFY_EXPR(Index >= Info.FirstContributionToHitGroupIndex && Index <= Info.LastContributionToHitGroupIndex);
         OnBindHitGroup(pTLASImpl, Index);
 #endif
@@ -285,7 +285,7 @@ public:
 
             std::memcpy(this->m_HitGroupsRecord.data() + Offset + GroupSize, pData, DataSize);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             VERIFY_EXPR(Index >= Info.FirstContributionToHitGroupIndex && Index <= Info.LastContributionToHitGroupIndex);
             OnBindHitGroup(pTLASImpl, Index);
 #endif
@@ -323,7 +323,7 @@ public:
             this->m_pPSO->CopyShaderHandle(pShaderGroupName, this->m_HitGroupsRecord.data() + Offset, Stride);
             std::memcpy(this->m_HitGroupsRecord.data() + Offset + GroupSize, pData, DataSize);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             OnBindHitGroup(pTLASImpl, Index);
 #endif
         }
@@ -350,7 +350,7 @@ public:
 
     Bool DG_CALL_TYPE Verify(VERIFY_SBT_FLAGS Flags) const override final
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         static_assert(EmptyElem != 0, "must not be zero");
 
         const UInt32 Stride      = this->m_ShaderRecordStride;
@@ -429,7 +429,7 @@ public:
 #else
         return true;
 
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
     }
 
     bool                  HasPendingData() const { return this->m_Changed; }
@@ -530,7 +530,7 @@ protected:
     UInt32 m_ShaderRecordStride = 0;
     bool   m_Changed            = true;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     static constexpr UInt8 EmptyElem = 0xA7;
 #else
     // In release mode clear uninitialized data by zeros.
@@ -539,7 +539,7 @@ protected:
 #endif
 
 private:
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     struct HitGroupBinding
     {
         RefCntWeakPtr<TopLevelASImplType> pTLAS;

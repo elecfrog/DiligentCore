@@ -670,7 +670,7 @@ void DXCompilerImpl::GetD3D12ShaderReflection(IDxcBlob*                pShaderBy
         CComPtr<ID3D12LibraryReflection> pd3d12LibRefl;
 
         CHECK_D3D_RESULT(pdxcReflection->GetPartReflection(shaderIdx, IID_PPV_ARGS(&pd3d12LibRefl)), "Failed to get d3d12 library reflection part");
-#    ifdef DILIGENT_DEVELOPMENT
+#    ifdef SPW_PROFILE
         {
             D3D12_LIBRARY_DESC Desc = {};
             pd3d12LibRefl->GetDesc(&Desc);
@@ -732,7 +732,7 @@ void DXCompilerImpl::Compile(const ShaderCreateInfo& ShaderCI,
     if (m_Library.GetTarget() == DXCompilerTarget::Direct3D12)
     {
         //DxilArgs.push_back(L"-WX");  // Warnings as errors
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         DxilArgs.push_back(DXC_ARG_DEBUG);              // Debug info
         DxilArgs.push_back(DXC_ARG_SKIP_OPTIMIZATIONS); // Disable optimization
         if (m_Library.GetVersion() >= Version{1, 5})
@@ -754,7 +754,7 @@ void DXCompilerImpl::Compile(const ShaderCreateInfo& ShaderCI,
             {
                 L"-spirv",
                 L"-fspv-reflect",
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
                 DXC_ARG_SKIP_OPTIMIZATIONS,
 #else
                 DXC_ARG_OPTIMIZATION_LEVEL3
@@ -924,7 +924,7 @@ bool DXCompilerImpl::RemapResourceBindings(const TResourceBindingMap& ResourceMa
                         return false;
                 }
 
-#    ifdef DILIGENT_DEVELOPMENT
+#    ifdef SPW_PROFILE
                 {
                     static_assert(SHADER_RESOURCE_TYPE_LAST == 8, "Please update the switch below to handle the new shader resource type");
                     RES_TYPE ExpectedResType = RES_TYPE_COUNT;
@@ -1644,7 +1644,7 @@ const DXCompilerImpl::TExtendedResourceMap::value_type* DXCompilerImpl::FindReso
         if (ResInfo.second.RecordId == RecordId &&
             ResInfo.second.Type == ResType)
         {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             for (const auto& ResInfo2 : ExtResMap)
             {
                 if (ResInfo2.second.RecordId == RecordId &&
@@ -1670,7 +1670,7 @@ const DXCompilerImpl::TExtendedResourceMap::value_type* DXCompilerImpl::FindReso
             ResInfo.second.SrcSpace == Space &&
             ResInfo.second.Type == ResType)
         {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             for (const auto& ResInfo2 : ExtResMap)
             {
                 if (ResInfo2.second.SrcBindPoint == BindPoint &&
@@ -1867,7 +1867,7 @@ void DXCompilerImpl::PatchResourceIndex(const ResourceExtendedInfo& ResInfo, con
 
         IndexLengthDelta = ReplaceBindPoint(ResInfo, Bind, ArgStart, pos);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         UInt32 IndexVarUsageCount = 0;
         for (pos = 0; pos < DXIL.size();)
         {

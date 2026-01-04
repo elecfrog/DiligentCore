@@ -110,7 +110,7 @@ void ValidateTextureDesc(const TextureDesc& Desc, const IRenderDevice* pDevice) 
             LOG_TEXTURE_ERROR_AND_THROW("Texture cube/cube array must have at least 6 slices (", Desc.ArraySize, " provided).");
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         UInt32 MaxDim = 0;
         if (Desc.Is1D())
@@ -330,7 +330,7 @@ void ValidateTextureRegion(const TextureDesc& TexDesc, UInt32 MipLevel, UInt32 S
         }                                                                                     \
     } while (false)
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     VERIFY_TEX_PARAMS(MipLevel < TexDesc.MipLevels, "Mip level (", MipLevel, ") is out of allowed range [0, ", TexDesc.MipLevels - 1, "]");
     VERIFY_TEX_PARAMS(Box.MinX < Box.MaxX, "Invalid X range: ", Box.MinX, "..", Box.MaxX);
     VERIFY_TEX_PARAMS(Box.MinY < Box.MaxY, "Invalid Y range: ", Box.MinY, "..", Box.MaxY);
@@ -393,7 +393,7 @@ void ValidateUpdateTextureParams(const TextureDesc& TexDesc, UInt32 MipLevel, UI
     VERIFY((SubresData.pData != nullptr) ^ (SubresData.pSrcBuffer != nullptr), "Either CPU data pointer (pData) or GPU buffer (pSrcBuffer) must not be null, but not both.");
     ValidateTextureRegion(TexDesc, MipLevel, Slice, DstBox);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     VERIFY_TEX_PARAMS(TexDesc.SampleCount == 1, "Only non-multisampled textures can be updated with UpdateData().");
     VERIFY_TEX_PARAMS((SubresData.Stride & 0x03) == 0, "Texture data stride (", SubresData.Stride, ") must be at least 32-bit aligned.");
     VERIFY_TEX_PARAMS((SubresData.DepthStride & 0x03) == 0, "Texture data depth stride (", SubresData.DepthStride, ") must be at least 32-bit aligned.");

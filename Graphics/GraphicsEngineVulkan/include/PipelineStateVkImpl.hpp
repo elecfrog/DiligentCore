@@ -91,7 +91,7 @@ public:
     };
     using TShaderStages = std::vector<ShaderStageInfo>;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Performs validation of SRB resource parameters that are not possible to validate
     // when resource is bound.
     using ShaderResourceCacheArrayType = std::array<ShaderResourceCacheVk*, MAX_RESOURCE_SIGNATURES>;
@@ -141,7 +141,7 @@ private:
     VulkanUtilities::PipelineWrapper m_Pipeline;
     PipelineLayoutVk                 m_PipelineLayout;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Shader resources for all shaders in all shader stages
     TShaderResources m_ShaderResources;
     // Resource attributions for every resource in m_ShaderResources, in the same order

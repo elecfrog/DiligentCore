@@ -356,7 +356,7 @@ protected:
         // Pointers to shader resource caches for each signature
         std::array<ShaderResourceCacheImplType*, MAX_RESOURCE_SIGNATURES> ResourceCaches = {};
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         // SRB array for each resource signature, corresponding to ResourceCaches
         std::array<RefCntWeakPtr<ShaderResourceBindingImplType>, MAX_RESOURCE_SIGNATURES> SRBs;
 
@@ -398,7 +398,7 @@ protected:
             else
                 DynamicSRBMask &= ~SRBBit;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             SRBs[Index] = pSRB;
             if (pSRB != nullptr)
                 ResourcesValidated = false;
@@ -414,7 +414,7 @@ protected:
         // Returns the mask of SRBs whose resources need to be committed
         SRBMaskType GetCommitMask(bool DynamicResourcesIntact = false) const
         {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             DvpVerifyCacheRevisions();
 #endif
 
@@ -429,7 +429,7 @@ protected:
             return CommitMask;
         }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         void DvpVerifyCacheRevisions() const
         {
             for (UInt32 ActiveSRBs = ActiveSRBMask; ActiveSRBs != 0;)
@@ -526,7 +526,7 @@ protected:
             m_Desc.TextureCopyGranularity[i] = 0;
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // clang-format off
     void DvpVerifyDispatchTileArguments(const DispatchTileAttribs& Attribs) const;
 
@@ -683,7 +683,7 @@ protected:
 
     std::vector<UInt8> m_ScratchSpace;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     // std::unordered_map is unbelievably slow. Keeping track of mapped buffers
     // in release builds is not feasible
     struct DbgMappedBufferInfo
@@ -692,7 +692,7 @@ protected:
     };
     std::unordered_map<IBuffer*, DbgMappedBufferInfo> m_DbgMappedBuffers;
 #endif
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     int    m_DvpDebugGroupCount         = 0;
     size_t m_DvpRenderTargetFormatsHash = 0;
 #endif
@@ -749,7 +749,7 @@ inline void DeviceContextBase<ImplementationTraits>::SetVertexBuffers(
         VertexStreamInfo<BufferImplType>& CurrStream{m_VertexStreams[StartSlot + Buff]};
         CurrStream.pBuffer = ppBuffers ? ClassPtrCast<BufferImplType>(ppBuffers[Buff]) : nullptr;
         CurrStream.Offset  = pOffsets ? pOffsets[Buff] : 0;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         if (CurrStream.pBuffer)
         {
             const BufferDesc& BuffDesc = CurrStream.pBuffer->GetDesc();
@@ -832,7 +832,7 @@ inline void DeviceContextBase<ImplementationTraits>::SetIndexBuffer(
     m_pIndexBuffer         = ClassPtrCast<BufferImplType>(pIndexBuffer);
     m_IndexDataStartOffset = ByteOffset;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "SetIndexBuffer");
 
     DEV_CHECK_ERR(!(m_pActiveRenderPass != nullptr && StateTransitionMode == RESOURCE_STATE_TRANSITION_MODE_TRANSITION),
@@ -1038,7 +1038,7 @@ inline bool DeviceContextBase<ImplementationTraits>::SetRenderTargets(const SetR
             }
             else
             {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
                 DEV_CHECK_ERR(m_FramebufferWidth == (std::max)(TexDesc.Width >> RTVDesc.MostDetailedMip, 1U),
                               "Render target width (", (std::max)(TexDesc.Width >> RTVDesc.MostDetailedMip, 1U), ") specified by RTV '", RTVDesc.Name, "' is inconsistent with the width of previously bound render targets (", m_FramebufferWidth, ")");
                 DEV_CHECK_ERR(m_FramebufferHeight == (std::max)(TexDesc.Height >> RTVDesc.MostDetailedMip, 1U),
@@ -1081,7 +1081,7 @@ inline bool DeviceContextBase<ImplementationTraits>::SetRenderTargets(const SetR
         }
         else
         {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             DEV_CHECK_ERR(m_FramebufferWidth == (std::max)(TexDesc.Width >> DSVDesc.MostDetailedMip, 1U),
                           "Depth-stencil target width (", (std::max)(TexDesc.Width >> DSVDesc.MostDetailedMip, 1U), ") specified by DSV '", DSVDesc.Name, "' is inconsistent with the width of previously bound render targets (", m_FramebufferWidth, ")");
             DEV_CHECK_ERR(m_FramebufferHeight == (std::max)(TexDesc.Height >> DSVDesc.MostDetailedMip, 1U),
@@ -1104,7 +1104,7 @@ inline bool DeviceContextBase<ImplementationTraits>::SetRenderTargets(const SetR
 
     if (Attribs.pShadingRateMap)
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         DEV_CHECK_ERR(m_pDevice->GetDeviceInfo().Features.VariableRateShading, "IDeviceContext::SetRenderTargets: VariableRateShading feature must be enabled when used pShadingRateMap");
 
         const ShadingRateProperties& SRProps  = m_pDevice->GetAdapterInfo().ShadingRate;
@@ -1153,7 +1153,7 @@ inline bool DeviceContextBase<ImplementationTraits>::SetRenderTargets(const SetR
         bBindRenderTargets     = true;
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     const ShadingRateProperties& SRProps = m_pDevice->GetAdapterInfo().ShadingRate;
     if (m_pBoundShadingRateMap &&
         (SRProps.CapFlags & SHADING_RATE_CAP_FLAG_NON_SUBSAMPLED_RENDER_TARGET) == 0 &&
@@ -1317,7 +1317,7 @@ inline void DeviceContextBase<ImplementationTraits>::ClearStateCache()
 {
     for (UInt32 stream = 0; stream < m_NumVertexStreams; ++stream)
         m_VertexStreams[stream] = VertexStreamInfo<BufferImplType>{};
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (UInt32 stream = m_NumVertexStreams; stream < _countof(m_VertexStreams); ++stream)
     {
         VERIFY(m_VertexStreams[stream].pBuffer == nullptr, "Unexpected non-null buffer");
@@ -1436,7 +1436,7 @@ void DeviceContextBase<ImplementationTraits>::ResetRenderTargets()
 {
     for (UInt32 rt = 0; rt < m_NumBoundRenderTargets; ++rt)
         m_pBoundRenderTargets[rt].Release();
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (UInt32 rt = m_NumBoundRenderTargets; rt < _countof(m_pBoundRenderTargets); ++rt)
     {
         VERIFY(m_pBoundRenderTargets[rt] == nullptr, "Non-null render target found");
@@ -1447,7 +1447,7 @@ void DeviceContextBase<ImplementationTraits>::ResetRenderTargets()
     m_FramebufferHeight     = 0;
     m_FramebufferSlices     = 0;
     m_FramebufferSamples    = 0;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     m_DvpRenderTargetFormatsHash = 0;
 #endif
 
@@ -1586,7 +1586,7 @@ inline void DeviceContextBase<ImplementationTraits>::ClearDepthStencil(ITextureV
 
     DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "ClearDepthStencil");
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const TextureViewDesc& ViewDesc = pView->GetDesc();
         DEV_CHECK_ERR(ViewDesc.ViewType == TEXTURE_VIEW_DEPTH_STENCIL,
@@ -1608,7 +1608,7 @@ inline void DeviceContextBase<ImplementationTraits>::ClearDepthStencil(ITextureV
             }
             else
             {
-                LOG_DVP_WARNING_MESSAGE("Depth-stencil view '", ViewDesc.Name,
+                LOG_WARNING_MESSAGE("Depth-stencil view '", ViewDesc.Name,
                                         "' is not bound to the device context. "
                                         "ClearDepthStencil command is more efficient when depth-stencil "
                                         "view is bound to the context. In OpenGL, Metal and WebGPU backends this is required.");
@@ -1626,7 +1626,7 @@ inline void DeviceContextBase<ImplementationTraits>::ClearRenderTarget(ITextureV
     DEV_CHECK_ERR(pView != nullptr, "Render target view to clear must not be null");
     DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "ClearRenderTarget");
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const TextureViewDesc& ViewDesc = pView->GetDesc();
         DEV_CHECK_ERR(ViewDesc.ViewType == TEXTURE_VIEW_RENDER_TARGET,
@@ -1654,7 +1654,7 @@ inline void DeviceContextBase<ImplementationTraits>::ClearRenderTarget(ITextureV
             }
             else
             {
-                LOG_DVP_WARNING_MESSAGE("Render target view '", ViewDesc.Name,
+                LOG_WARNING_MESSAGE("Render target view '", ViewDesc.Name,
                                         "' is not bound to the device context. ClearRenderTarget command is more efficient "
                                         "if render target view is bound to the device context. In OpenGL, Metal and WebGPU backends this is required.");
             }
@@ -1720,7 +1720,7 @@ inline void DeviceContextBase<ImplementationTraits>::UpdateBuffer(
     DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_TRANSFER, "UpdateBuffer");
     DEV_CHECK_ERR(pBuffer != nullptr, "Buffer must not be null");
     DEV_CHECK_ERR(m_pActiveRenderPass == nullptr, "UpdateBuffer command must be used outside of render pass.");
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const BufferDesc& BuffDesc = ClassPtrCast<BufferImplType>(pBuffer)->GetDesc();
         DEV_CHECK_ERR(BuffDesc.Usage == USAGE_DEFAULT || BuffDesc.Usage == USAGE_SPARSE, "Unable to update buffer '", BuffDesc.Name, "': only USAGE_DEFAULT or USAGE_SPARSE buffers can be updated with UpdateData()");
@@ -1746,7 +1746,7 @@ inline void DeviceContextBase<ImplementationTraits>::CopyBuffer(
     DEV_CHECK_ERR(pSrcBuffer != nullptr, "Source buffer must not be null");
     DEV_CHECK_ERR(pDstBuffer != nullptr, "Destination buffer must not be null");
     DEV_CHECK_ERR(m_pActiveRenderPass == nullptr, "CopyBuffer command must be used outside of render pass.");
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const BufferDesc& SrcBufferDesc = ClassPtrCast<BufferImplType>(pSrcBuffer)->GetDesc();
         const BufferDesc& DstBufferDesc = ClassPtrCast<BufferImplType>(pDstBuffer)->GetDesc();
@@ -1769,7 +1769,7 @@ inline void DeviceContextBase<ImplementationTraits>::MapBuffer(
 
     const BufferDesc& BuffDesc = pBuffer->GetDesc();
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     {
         VERIFY(m_DbgMappedBuffers.find(pBuffer) == m_DbgMappedBuffers.end(), "Buffer '", BuffDesc.Name, "' has already been mapped");
         m_DbgMappedBuffers[pBuffer] = DbgMappedBufferInfo{MapType};
@@ -1822,7 +1822,7 @@ template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::UnmapBuffer(IBuffer* pBuffer, MAP_TYPE MapType)
 {
     VERIFY(pBuffer, "pBuffer must not be null");
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     {
         auto MappedBufferIt = m_DbgMappedBuffers.find(pBuffer);
         VERIFY(MappedBufferIt != m_DbgMappedBuffers.end(), "Buffer '", pBuffer->GetDesc().Name, "' has not been mapped.");
@@ -1895,7 +1895,7 @@ inline void DeviceContextBase<ImplementationTraits>::GenerateMips(ITextureView* 
     DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "GenerateMips");
     DEV_CHECK_ERR(pTexView != nullptr, "pTexView must not be null");
     DEV_CHECK_ERR(m_pActiveRenderPass == nullptr, "GenerateMips command must be used outside of render pass.");
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const TextureViewDesc& ViewDesc = pTexView->GetDesc();
         DEV_CHECK_ERR(ViewDesc.ViewType == TEXTURE_VIEW_SHADER_RESOURCE, "Shader resource view '", ViewDesc.Name,
@@ -1914,7 +1914,7 @@ void DeviceContextBase<ImplementationTraits>::ResolveTextureSubresource(
     ITexture*                               pDstTexture,
     const ResolveTextureSubresourceAttribs& ResolveAttribs)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "ResolveTextureSubresource");
     DEV_CHECK_ERR(m_pActiveRenderPass == nullptr, "ResolveTextureSubresource command must be used outside of render pass.");
 
@@ -2099,7 +2099,7 @@ template <typename ImplementationTraits>
 void DeviceContextBase<ImplementationTraits>::BeginDebugGroup(const Char* Name, const float* pColor, int)
 {
     DEV_CHECK_ERR(Name != nullptr, "Name must not be null");
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     ++m_DvpDebugGroupCount;
 #endif
 }
@@ -2107,7 +2107,7 @@ void DeviceContextBase<ImplementationTraits>::BeginDebugGroup(const Char* Name, 
 template <typename ImplementationTraits>
 void DeviceContextBase<ImplementationTraits>::EndDebugGroup(int)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DEV_CHECK_ERR(m_DvpDebugGroupCount > 0, "There is no active debug group to end");
     --m_DvpDebugGroupCount;
 #endif
@@ -2122,7 +2122,7 @@ void DeviceContextBase<ImplementationTraits>::InsertDebugLabel(const Char* Label
 template <typename ImplementationTraits>
 void DeviceContextBase<ImplementationTraits>::SetShadingRate(SHADING_RATE BaseRate, SHADING_RATE_COMBINER PrimitiveCombiner, SHADING_RATE_COMBINER TextureCombiner, int) const
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "SetShadingRate");
 
     DEV_CHECK_ERR(IsPowerOfTwo(PrimitiveCombiner), "Only one primitive combiner must be specified");
@@ -2182,7 +2182,7 @@ inline void DeviceContextBase<ImplementationTraits>::PrepareCommittedResources(C
 
     DvpCompatibleSRBCount = 0;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Layout compatibility means that descriptor sets can be bound to a command buffer
     // for use by any pipeline created with a compatible pipeline layout, and without having bound
     // a particular pipeline first. It also means that descriptor sets can remain valid across
@@ -2258,7 +2258,7 @@ inline UInt32 GetPrimitiveCount(PRIMITIVE_TOPOLOGY Topology, UInt32 Elements)
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::Draw(const DrawAttribs& Attribs, int)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if ((Attribs.Flags & DRAW_FLAG_VERIFY_DRAW_ATTRIBS) != 0)
     {
         DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "Draw");
@@ -2282,7 +2282,7 @@ inline void DeviceContextBase<ImplementationTraits>::Draw(const DrawAttribs& Att
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::DrawIndexed(const DrawIndexedAttribs& Attribs, int)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if ((Attribs.Flags & DRAW_FLAG_VERIFY_DRAW_ATTRIBS) != 0)
     {
         DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "DrawIndexed");
@@ -2309,7 +2309,7 @@ inline void DeviceContextBase<ImplementationTraits>::DrawIndexed(const DrawIndex
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::DrawMesh(const DrawMeshAttribs& Attribs, int)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if ((Attribs.Flags & DRAW_FLAG_VERIFY_DRAW_ATTRIBS) != 0)
     {
         DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "DrawMesh");
@@ -2331,7 +2331,7 @@ inline void DeviceContextBase<ImplementationTraits>::DrawMesh(const DrawMeshAttr
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::DrawIndirect(const DrawIndirectAttribs& Attribs, int)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if ((Attribs.Flags & DRAW_FLAG_VERIFY_DRAW_ATTRIBS) != 0)
     {
         DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "DrawIndirect");
@@ -2360,7 +2360,7 @@ inline void DeviceContextBase<ImplementationTraits>::DrawIndirect(const DrawIndi
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::DrawIndexedIndirect(const DrawIndexedIndirectAttribs& Attribs, int)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if ((Attribs.Flags & DRAW_FLAG_VERIFY_DRAW_ATTRIBS) != 0)
     {
         DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "DrawIndexedIndirect");
@@ -2390,7 +2390,7 @@ inline void DeviceContextBase<ImplementationTraits>::DrawIndexedIndirect(const D
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::DrawMeshIndirect(const DrawMeshIndirectAttribs& Attribs, int)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if ((Attribs.Flags & DRAW_FLAG_VERIFY_DRAW_ATTRIBS) != 0)
     {
         DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "DrawMeshIndirect");
@@ -2416,7 +2416,7 @@ inline void DeviceContextBase<ImplementationTraits>::DrawMeshIndirect(const Draw
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::MultiDraw(const MultiDrawAttribs& Attribs, int)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if ((Attribs.Flags & DRAW_FLAG_VERIFY_DRAW_ATTRIBS) != 0)
     {
         DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "MultiDraw");
@@ -2444,7 +2444,7 @@ inline void DeviceContextBase<ImplementationTraits>::MultiDraw(const MultiDrawAt
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::MultiDrawIndexed(const MultiDrawIndexedAttribs& Attribs, int)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if ((Attribs.Flags & DRAW_FLAG_VERIFY_DRAW_ATTRIBS) != 0)
     {
         DVP_CHECK_QUEUE_TYPE_COMPATIBILITY(COMMAND_QUEUE_TYPE_GRAPHICS, "MultiDrawIndexed");
@@ -2472,7 +2472,7 @@ inline void DeviceContextBase<ImplementationTraits>::MultiDrawIndexed(const Mult
         m_Stats.CommandCounters.DrawIndexed += Attribs.DrawCount;
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::DvpVerifyRenderTargets() const
 {
@@ -2609,7 +2609,7 @@ inline void DeviceContextBase<ImplementationTraits>::DispatchComputeIndirect(con
     ++m_Stats.CommandCounters.DispatchComputeIndirect;
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 template <typename ImplementationTraits>
 inline void DeviceContextBase<ImplementationTraits>::DvpVerifyDispatchTileArguments(const DispatchTileAttribs& Attribs) const
 {
@@ -2724,7 +2724,7 @@ void DeviceContextBase<ImplementationTraits>::DvpVerifySRBCompatibility(
                       m_pPipelineState->GetDesc().Name, "'.");
     }
 }
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
 #undef DVP_CHECK_QUEUE_TYPE_COMPATIBILITY
 

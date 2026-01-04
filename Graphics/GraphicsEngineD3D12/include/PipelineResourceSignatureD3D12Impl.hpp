@@ -167,7 +167,7 @@ public:
     // Returns true if there is an immutable sampler array in the given shader stage.
     bool HasImmutableSamplerArray(SHADER_TYPE ShaderStage) const;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     /// Verifies committed resource using the resource attributes from the PSO.
     bool DvpValidateCommittedResource(const DeviceContextD3D12Impl*   pDeviceCtx,
                                       const D3DShaderResourceAttribs& D3DAttribs,

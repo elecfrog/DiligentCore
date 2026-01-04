@@ -134,7 +134,7 @@ void DeviceContextWebGPUImpl::TransitionShaderResources(IShaderResourceBinding* 
 }
 
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void DeviceContextWebGPUImpl::DvpValidateCommittedShaderResources()
 {
     if (m_BindInfo.ResourcesValidated)
@@ -180,7 +180,7 @@ void DeviceContextWebGPUImpl::CommitShaderResources(IShaderResourceBinding*     
         return;
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     ResourceCache.DbgVerifyDynamicBuffersCounter();
 #endif
 
@@ -379,7 +379,7 @@ void DeviceContextWebGPUImpl::Draw(const DrawAttribs& Attribs)
 {
     TDeviceContextBase::Draw(Attribs, 0);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpValidateCommittedShaderResources();
 #endif
 
@@ -394,7 +394,7 @@ void DeviceContextWebGPUImpl::MultiDraw(const MultiDrawAttribs& Attribs)
 {
     TDeviceContextBase::MultiDraw(Attribs, 0);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpValidateCommittedShaderResources();
 #endif
 
@@ -414,7 +414,7 @@ void DeviceContextWebGPUImpl::DrawIndexed(const DrawIndexedAttribs& Attribs)
 {
     TDeviceContextBase::DrawIndexed(Attribs, 0);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpValidateCommittedShaderResources();
 #endif
 
@@ -429,7 +429,7 @@ void DeviceContextWebGPUImpl::MultiDrawIndexed(const MultiDrawIndexedAttribs& At
 {
     TDeviceContextBase::MultiDrawIndexed(Attribs, 0);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpValidateCommittedShaderResources();
 #endif
 
@@ -449,7 +449,7 @@ void DeviceContextWebGPUImpl::DrawIndirect(const DrawIndirectAttribs& Attribs)
 {
     TDeviceContextBase::DrawIndirect(Attribs, 0);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpValidateCommittedShaderResources();
     if (Attribs.pAttribsBuffer->GetDesc().Usage == USAGE_DYNAMIC)
         DvpVerifyDynamicAllocation(ClassPtrCast<BufferWebGPUImpl>(Attribs.pAttribsBuffer));
@@ -470,7 +470,7 @@ void DeviceContextWebGPUImpl::DrawIndexedIndirect(const DrawIndexedIndirectAttri
 {
     TDeviceContextBase::DrawIndexedIndirect(Attribs, 0);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpValidateCommittedShaderResources();
     if (Attribs.pAttribsBuffer->GetDesc().Usage == USAGE_DYNAMIC)
         DvpVerifyDynamicAllocation(ClassPtrCast<BufferWebGPUImpl>(Attribs.pAttribsBuffer));
@@ -501,7 +501,7 @@ void DeviceContextWebGPUImpl::DispatchCompute(const DispatchComputeAttribs& Attr
 {
     TDeviceContextBase::DispatchCompute(Attribs, 0);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpValidateCommittedShaderResources();
 #endif
 
@@ -516,7 +516,7 @@ void DeviceContextWebGPUImpl::DispatchComputeIndirect(const DispatchComputeIndir
 {
     TDeviceContextBase::DispatchComputeIndirect(Attribs, 0);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpValidateCommittedShaderResources();
     if (Attribs.pAttribsBuffer->GetDesc().Usage == USAGE_DYNAMIC)
         DvpVerifyDynamicAllocation(ClassPtrCast<BufferWebGPUImpl>(Attribs.pAttribsBuffer));
@@ -730,7 +730,7 @@ void DeviceContextWebGPUImpl::MapBuffer(IBuffer*  pBuffer,
             if (m_MappedBuffers.size() <= DynamicBufferId)
                 m_MappedBuffers.resize(DynamicBufferId + 1);
             DynamicMemoryManagerWebGPU::Allocation& DynAllocation = m_MappedBuffers[DynamicBufferId].Allocation;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             m_MappedBuffers[DynamicBufferId].DvpBufferUID = pBufferWebGPU->GetUniqueID();
 #endif
 
@@ -812,7 +812,7 @@ void DeviceContextWebGPUImpl::UnmapBuffer(IBuffer* pBuffer, MAP_TYPE MapType)
     }
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void DeviceContextWebGPUImpl::DvpVerifyDynamicAllocation(const BufferWebGPUImpl* pBuffer) const
 {
     VERIFY_EXPR(pBuffer != nullptr);
@@ -863,7 +863,7 @@ UInt64 DeviceContextWebGPUImpl::GetDynamicBufferOffset(const BufferWebGPUImpl* p
     if (pBuffer->m_wgpuBuffer != nullptr)
         return 0;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (VerifyAllocation)
     {
         DvpVerifyDynamicAllocation(pBuffer);
@@ -1693,7 +1693,7 @@ void DeviceContextWebGPUImpl::ResolveTextureSubresource(ITexture*               
 {
     TDeviceContextBase::ResolveTextureSubresource(pSrcTexture, pDstTexture, ResolveAttribs);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     LOG_WARNING_MESSAGE_ONCE("ResolveTextureSubresource is suboptimal in WebGPU. Use render pass resolve attachments instead");
 #endif
 
@@ -2059,7 +2059,7 @@ void DeviceContextWebGPUImpl::ClearAttachment(Int32                     RTIndex,
 
 WGPURenderPassEncoder DeviceContextWebGPUImpl::PrepareForDraw(DRAW_FLAGS Flags)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpVerifyRenderTargets();
 #endif
     DEV_CHECK_ERR(m_pPipelineState != nullptr, "No PSO is bound in the context");
@@ -2194,7 +2194,7 @@ void DeviceContextWebGPUImpl::CommitVertexBuffers(WGPURenderPassEncoder CmdEncod
 {
     DEV_CHECK_ERR(m_pPipelineState, "No pipeline state to commit!");
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (m_NumVertexStreams < m_pPipelineState->GetNumBufferSlotsUsed())
         LOG_ERROR("Currently bound pipeline state '", m_pPipelineState->GetDesc().Name, "' expects ", m_pPipelineState->GetNumBufferSlotsUsed(), " input buffer slots, but only ", m_NumVertexStreams, " is bound");
 #endif
@@ -2367,7 +2367,7 @@ DynamicMemoryManagerWebGPU::Allocation DeviceContextWebGPUImpl::AllocateDynamicM
     }
 
     VERIFY_EXPR(Alloc);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     Alloc.dvpFrameNumber = GetFrameNumber();
 #endif
     return Alloc;

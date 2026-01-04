@@ -173,7 +173,7 @@ VAOCache::VAOHashKey::VAOHashKey(const VAOAttribs& Attribs) :
     IndexBufferUId {Attribs.pIndexBuffer ? Attribs.pIndexBuffer->GetUniqueID() : 0}
 // clang-format on
 {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (UInt32 i = 0; i < _countof(Streams); ++i)
         Streams[i].BufferUId = -1;
 #endif
@@ -351,7 +351,7 @@ const GLObjectWrappers::GLVertexArrayObj& VAOCache::GetVAO(const VAOAttribs& Att
             const UInt32 SlotBit = ExtractLSB(SlotMask);
             const UInt32 Slot    = PlatformMisc::GetLSB(SlotBit);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
             {
                 const RefCntAutoPtr<BufferGLImpl>& pBuffer = Attribs.VertexStreams[Slot].pBuffer;
                 VERIFY_EXPR(pBuffer);

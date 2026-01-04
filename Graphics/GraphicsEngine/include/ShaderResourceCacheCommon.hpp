@@ -50,7 +50,7 @@ enum class ResourceCacheContentType : UInt8
 class ShaderResourceCacheBase
 {
 public:
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     uint32_t DvpGetRevision() const
     {
         return m_DvpRevision.load();
@@ -60,12 +60,12 @@ public:
 protected:
     void UpdateRevision()
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         m_DvpRevision.fetch_add(1);
 #endif
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     std::atomic<uint32_t> m_DvpRevision{0};
 #endif
 };

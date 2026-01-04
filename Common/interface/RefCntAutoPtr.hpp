@@ -455,7 +455,7 @@ protected:
 };
 
 template <typename DstType, typename SrcType>
-NODISCARD DstType StaticCast(const RefCntAutoPtr<SrcType>& Src)
+[[nodiscard]] DstType StaticCast(const RefCntAutoPtr<SrcType>& Src)
 {
     return static_cast<DstType>(Src.RawPtr());
 }

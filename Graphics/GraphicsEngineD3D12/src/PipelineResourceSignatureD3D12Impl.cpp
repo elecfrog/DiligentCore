@@ -360,7 +360,7 @@ void PipelineResourceSignatureD3D12Impl::AllocateRootParameters(const bool IsSer
     }
     else
     {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         for (UInt32 TblSize : StaticResCacheTblSizes)
             VERIFY(TblSize == 0, "The size of every static resource cache table must be zero because there are no static resources in the PRS.");
 #endif
@@ -685,7 +685,7 @@ void PipelineResourceSignatureD3D12Impl::UpdateShaderResourceBindingMap(Resource
                 };
 
             auto it_inserted = ResourceMap.emplace(HashMapStringKey{SampName}, BindInfo);
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
             if (!it_inserted.second)
             {
                 const ResourceBinding::BindInfo& ExistingBindInfo = it_inserted.first->second;
@@ -714,7 +714,7 @@ bool PipelineResourceSignatureD3D12Impl::HasImmutableSamplerArray(SHADER_TYPE Sh
     return false;
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 bool PipelineResourceSignatureD3D12Impl::DvpValidateCommittedResource(const DeviceContextD3D12Impl*   pCtx,
                                                                       const D3DShaderResourceAttribs& D3DAttribs,
                                                                       UInt32                          ResIndex,

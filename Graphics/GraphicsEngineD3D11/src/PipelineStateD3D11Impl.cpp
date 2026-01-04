@@ -189,7 +189,7 @@ void PipelineStateD3D11Impl::InitResourceLayouts(const PipelineStateCreateInfo& 
 
     m_NumPixelUAVs = ResCounters[D3D11_RESOURCE_RANGE_UAV][PSInd];
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     for (UInt32 s = 0; s < D3D11ResourceBindPoints::NumShaderTypes; ++s)
     {
         const SHADER_TYPE ShaderType = GetShaderTypeFromIndex(s);
@@ -406,7 +406,7 @@ void PipelineStateD3D11Impl::ValidateShaderResources(const ShaderD3D11Impl* pSha
     const auto&       pShaderResources = pShader->GetShaderResources();
     const SHADER_TYPE ShaderType       = pShader->GetDesc().ShaderType;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     m_ShaderResources.emplace_back(pShaderResources);
 #endif
 
@@ -414,7 +414,7 @@ void PipelineStateD3D11Impl::ValidateShaderResources(const ShaderD3D11Impl* pSha
     pShaderResources->ProcessResources(
         [&](const D3DShaderResourceAttribs& Attribs, UInt32) //
         {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             m_ResourceAttibutions.emplace_back();
 #endif
 
@@ -422,7 +422,7 @@ void PipelineStateD3D11Impl::ValidateShaderResources(const ShaderD3D11Impl* pSha
             if (IsSampler && pShaderResources->IsUsingCombinedTextureSamplers())
                 return;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             ResourceAttribution& ResAttribution = m_ResourceAttibutions.back();
 #else
             ResourceAttribution ResAttribution;
@@ -472,7 +472,7 @@ void PipelineStateD3D11Impl::ValidateShaderResources(const ShaderD3D11Impl* pSha
     );
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void PipelineStateD3D11Impl::DvpVerifySRBResources(const ShaderResourceCacheArrayType& ResourceCaches,
                                                    const BaseBindingsArrayType&        BaseBindings) const
 {
@@ -508,6 +508,6 @@ void PipelineStateD3D11Impl::DvpVerifySRBResources(const ShaderResourceCacheArra
     VERIFY_EXPR(attrib_it == m_ResourceAttibutions.end());
 }
 
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
 } // namespace Diligent

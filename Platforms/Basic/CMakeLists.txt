@@ -1,8 +1,12 @@
-cmake_minimum_required (VERSION 3.10)
+cmake_minimum_required (VERSION 3.20)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(Diligent-BasicPlatform CXX)
 
-set(SOURCE 
+
+set(SOURCE
     src/BasicFileSystem.cpp
     src/BasicPlatformDebug.cpp
     src/BasicPlatformMisc.cpp
@@ -47,11 +51,13 @@ set_target_properties(Diligent-BasicPlatform PROPERTIES
     FOLDER DiligentCore/Platforms
 )
 
-
 if(DILIGENT_INSTALL_CORE)
     install_core_lib(Diligent-BasicPlatform)
     get_target_relative_dir(Diligent-BasicPlatform BASIC_PLATFORM_DIR)
+    
+    cmake_path(GET BASIC_PLATFORM_DIR PARENT_PATH PLATFORM_PARENT_DIR)
+    
     install(DIRECTORY    "../interface"
-            DESTINATION  "${CMAKE_INSTALL_INCLUDEDIR}/${BASIC_PLATFORM_DIR}/../"
+            DESTINATION  "${CMAKE_INSTALL_INCLUDEDIR}/${PLATFORM_PARENT_DIR}"
     )
 endif()

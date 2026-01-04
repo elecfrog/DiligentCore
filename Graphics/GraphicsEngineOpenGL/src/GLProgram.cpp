@@ -184,13 +184,13 @@ void GLProgram::ApplyBindings(const PipelineResourceSignatureGLImpl*            
     if (!m_BindingsApplied)
     {
         pSignature->ApplyBindings(m_GLProg, *m_pResources, State, BaseBindings);
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         m_DbgBaseBindings = BaseBindings;
 #endif
     }
     else
     {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         VERIFY(m_DbgBaseBindings == BaseBindings, "Base bindings have changed since the last time they were applied. "
                                                   "This should not happen as cached programs are keyed by pipeline resource signature IDs or resource layout.");
 #endif

@@ -59,7 +59,7 @@ DescriptorHeapAllocationManager::DescriptorHeapAllocationManager(IMemoryAllocato
 {
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 namespace
 {
 
@@ -140,7 +140,7 @@ CComPtr<ID3D12DescriptorHeap> CreateInvalidDescriptorHeap(ID3D12Device* pd3d12De
 }
 
 } // namespace
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
 // Uses subrange of descriptors in the existing D3D12 descriptor heap
 // that starts at offset FirstDescriptor and uses NumDescriptors descriptors
@@ -171,7 +171,7 @@ DescriptorHeapAllocationManager::DescriptorHeapAllocationManager(IMemoryAllocato
         m_FirstGPUHandle.ptr += SIZE_T{m_DescriptorSize} * SIZE_T{FirstDescriptor};
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         D3D12_DESCRIPTOR_HEAP_DESC InvalidHeapDesc = m_HeapDesc;
         InvalidHeapDesc.NumDescriptors             = InvalidDescriptorsCount;
@@ -213,7 +213,7 @@ DescriptorHeapAllocation DescriptorHeapAllocationManager::Allocate(uint32_t Coun
 
     m_MaxAllocatedSize = std::max(m_MaxAllocatedSize, m_FreeBlockManager.GetUsedSize());
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     ++m_AllocationsCounter;
     // Copy invalid descriptors. If the descriptors are accessed, this will cause device removal.
     {
@@ -247,7 +247,7 @@ void DescriptorHeapAllocationManager::FreeAllocation(DescriptorHeapAllocation&& 
 
     // Clear the allocation
     Allocation.Reset();
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     --m_AllocationsCounter;
 #endif
 }
@@ -299,7 +299,7 @@ CPUDescriptorHeap::~CPUDescriptorHeap()
                      " (", std::fixed, std::setprecision(2), m_MaxSize * 100.0 / std::max(TotalDescriptors, 1u), "%).");
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 int32_t CPUDescriptorHeap::DvpGetTotalAllocationCount()
 {
     int32_t AllocationCount = 0;

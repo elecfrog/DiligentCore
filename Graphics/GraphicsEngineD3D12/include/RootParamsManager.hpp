@@ -160,7 +160,7 @@ public:
 
     bool operator==(const RootParamsManager& RootParams) const noexcept;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     void Validate() const;
 #endif
 

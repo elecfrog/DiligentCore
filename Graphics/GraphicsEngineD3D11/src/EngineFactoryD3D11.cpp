@@ -156,7 +156,7 @@ private:
 };
 
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 // Check for SDK Layer support.
 inline bool SdkLayersAvailable()
 {
@@ -240,7 +240,7 @@ void EngineFactoryD3D11Impl::CreateDeviceAndContextsD3D11(const EngineD3D11Creat
     // D3D11_CREATE_DEVICE_BGRA_SUPPORT;
     UINT creationFlags = 0;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (EngineCI.EnableValidation && SdkLayersAvailable())
     {
         // If the project is in a debug build, enable debugging via SDK Layers with this flag.

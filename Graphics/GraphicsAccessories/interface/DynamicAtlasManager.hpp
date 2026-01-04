@@ -199,7 +199,7 @@ public:
 #undef CMP
 
 private:
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
     void DbgVerifyRegion(const Region& R) const;
     void DbgVerifyConsistency() const;
     struct Node;
@@ -251,7 +251,7 @@ private:
                 ProcessChild(Child(i));
         }
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
         void Validate() const;
 #endif
     private:

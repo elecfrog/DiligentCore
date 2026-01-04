@@ -114,7 +114,7 @@ VkCommandBuffer CommandBufferPool::GetCommandBuffer(const char* DebugName)
     VkResult err = vkBeginCommandBuffer(CmdBuffer, &CmdBuffBeginInfo);
     DEV_CHECK_ERR(err == VK_SUCCESS, "Failed to begin command buffer");
     (void)err;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     ++m_BuffCounter;
 #endif
     return CmdBuffer;
@@ -125,7 +125,7 @@ void CommandBufferPool::RecycleCommandBuffer(VkCommandBuffer&& CmdBuffer)
     std::lock_guard<std::mutex> Lock{m_Mutex};
     m_CmdBuffers.emplace_back(CmdBuffer);
     CmdBuffer = VK_NULL_HANDLE;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     --m_BuffCounter;
 #endif
 }

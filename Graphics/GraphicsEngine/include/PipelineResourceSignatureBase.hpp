@@ -427,7 +427,7 @@ public:
         this->m_Desc.ImmutableSamplers     = nullptr;
         this->m_Desc.CombinedSamplerSuffix = nullptr;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         ValidatePipelineResourceSignatureDesc(Desc, pDevice, EngineImplTraits::DeviceType);
 #endif
     }
@@ -552,7 +552,7 @@ public:
         }
 
         const PipelineResourceSignatureImplType* const pThisImpl = static_cast<const PipelineResourceSignatureImplType*>(this);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         {
             const IPipelineResourceSignature* pSRBSignature = pSRBImpl->GetPipelineResourceSignature();
             DEV_CHECK_ERR(pSRBSignature->IsCompatibleWith(pThisImpl), "Shader resource binding is not compatible with resource signature '", pThisImpl->m_Desc.Name, "'.");
@@ -825,7 +825,7 @@ protected:
 
         CopyPipelineResourceSignatureDesc(Allocator, Desc, this->m_Desc, m_ResourceOffsets);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         VERIFY_EXPR(m_ResourceOffsets[SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES] == this->m_Desc.NumResources);
         for (UInt32 VarType = 0; VarType < SHADER_RESOURCE_VARIABLE_TYPE_NUM_TYPES; ++VarType)
         {
@@ -1015,7 +1015,7 @@ protected:
 
         m_pRawMemory.reset();
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
         m_IsDestructed = true;
 #endif
     }
@@ -1100,7 +1100,7 @@ protected:
     // Allocator for shader resource binding object instances.
     SRBMemoryAllocator m_SRBMemAllocator;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     bool m_IsDestructed = false;
 #endif
 };

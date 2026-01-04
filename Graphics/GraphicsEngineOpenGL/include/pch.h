@@ -152,7 +152,7 @@
             spw::LogSystem::Log(spw::LogLevel::Error, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__, "\nGL Error Code: ", err); \
     } while (false)
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 #    define DEV_CHECK_GL_ERROR           CHECK_GL_ERROR
 #    define DEV_CHECK_GL_ERROR_AND_THROW CHECK_GL_ERROR_AND_THROW
 #else

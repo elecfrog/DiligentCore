@@ -238,7 +238,7 @@ public:
 
     ~LRUCache()
     {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         size_t DbgSize = 0;
         VERIFY_EXPR(m_Cache.size() == m_LRU.size());
         for (const KeyType& Key : m_LRU)

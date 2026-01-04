@@ -275,7 +275,7 @@ void ShaderVariableManagerD3D11::ConstBuffBindInfo::BindResource(const BindResou
 
     // We cannot use ClassPtrCast<> here as the resource can be of wrong type
     RefCntAutoPtr<BufferD3D11Impl> pBuffD3D11Impl{BindInfo.pObject, IID_BufferD3D11};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const ShaderResourceCacheD3D11::CachedCB& CachedCB = ResourceCache.GetResource<D3D11_RESOURCE_RANGE_CBV>(Attr.BindPoints + BindInfo.ArrayIndex);
         VerifyConstantBufferBinding(Desc, BindInfo, pBuffD3D11Impl.RawPtr(), CachedCB.pBuff.RawPtr(),
@@ -291,7 +291,7 @@ void ShaderVariableManagerD3D11::ConstBuffBindInfo::SetDynamicOffset(UInt32 Arra
     const PipelineResourceAttribsD3D11& Attr = GetAttribs();
     const PipelineResourceDesc&         Desc = GetDesc();
     VERIFY_EXPR(Desc.ResourceType == SHADER_RESOURCE_TYPE_CONSTANT_BUFFER);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const ShaderResourceCacheD3D11::CachedCB& CachedCB = m_ParentManager.m_ResourceCache.GetResource<D3D11_RESOURCE_RANGE_CBV>(Attr.BindPoints + ArrayIndex);
         VerifyDynamicBufferOffset<BufferD3D11Impl, BufferViewD3D11Impl>(Desc, CachedCB.pBuff, CachedCB.BaseOffset, CachedCB.RangeSize, Offset);
@@ -312,7 +312,7 @@ void ShaderVariableManagerD3D11::TexSRVBindInfo::BindResource(const BindResource
 
     // We cannot use ClassPtrCast<> here as the resource can be of wrong type
     RefCntAutoPtr<TextureViewD3D11Impl> pViewD3D11{BindInfo.pObject, IID_TextureViewD3D11};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const ShaderResourceCacheD3D11::CachedResource& CachedSRV = ResourceCache.GetResource<D3D11_RESOURCE_RANGE_SRV>(Attr.BindPoints + BindInfo.ArrayIndex);
         VerifyResourceViewBinding(Desc, BindInfo, pViewD3D11.RawPtr(), {TEXTURE_VIEW_SHADER_RESOURCE},
@@ -338,7 +338,7 @@ void ShaderVariableManagerD3D11::TexSRVBindInfo::BindResource(const BindResource
             SamplerD3D11Impl* const pSamplerD3D11Impl = pViewD3D11->GetSampler<SamplerD3D11Impl>();
             if (pSamplerD3D11Impl != nullptr)
             {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
                 {
                     const ShaderResourceCacheD3D11::CachedSampler& CachedSampler = ResourceCache.GetResource<D3D11_RESOURCE_RANGE_SAMPLER>(SampAttr.BindPoints + SampArrayIndex);
                     VerifySamplerBinding(SampDesc, BindResourceInfo{SampArrayIndex, pSamplerD3D11Impl, BindInfo.Flags}, pSamplerD3D11Impl, CachedSampler.pSampler,
@@ -370,7 +370,7 @@ void ShaderVariableManagerD3D11::SamplerBindInfo::BindResource(const BindResourc
 
     // We cannot use ClassPtrCast<> here as the resource can be of wrong type
     RefCntAutoPtr<SamplerD3D11Impl> pSamplerD3D11{BindInfo.pObject, IID_SamplerD3D11};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const ShaderResourceCacheD3D11::CachedSampler& CachedSampler = ResourceCache.GetResource<D3D11_RESOURCE_RANGE_SAMPLER>(Attr.BindPoints + BindInfo.ArrayIndex);
         VerifySamplerBinding(Desc, BindInfo, pSamplerD3D11.RawPtr(), CachedSampler.pSampler, m_ParentManager.m_pSignature->GetDesc().Name);
@@ -392,7 +392,7 @@ void ShaderVariableManagerD3D11::BuffSRVBindInfo::BindResource(const BindResourc
 
     // We cannot use ClassPtrCast<> here as the resource can be of wrong type
     RefCntAutoPtr<BufferViewD3D11Impl> pViewD3D11{BindInfo.pObject, IID_BufferViewD3D11};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const ShaderResourceCacheD3D11::CachedResource& CachedSRV = ResourceCache.GetResource<D3D11_RESOURCE_RANGE_SRV>(Attr.BindPoints + BindInfo.ArrayIndex);
         VerifyResourceViewBinding(Desc, BindInfo, pViewD3D11.RawPtr(), {BUFFER_VIEW_SHADER_RESOURCE},
@@ -417,7 +417,7 @@ void ShaderVariableManagerD3D11::TexUAVBindInfo::BindResource(const BindResource
 
     // We cannot use ClassPtrCast<> here as the resource can be of wrong type
     RefCntAutoPtr<TextureViewD3D11Impl> pViewD3D11{BindInfo.pObject, IID_TextureViewD3D11};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const ShaderResourceCacheD3D11::CachedResource& CachedUAV = ResourceCache.GetResource<D3D11_RESOURCE_RANGE_UAV>(Attr.BindPoints + BindInfo.ArrayIndex);
         VerifyResourceViewBinding(Desc, BindInfo, pViewD3D11.RawPtr(), {TEXTURE_VIEW_UNORDERED_ACCESS},
@@ -441,7 +441,7 @@ void ShaderVariableManagerD3D11::BuffUAVBindInfo::BindResource(const BindResourc
 
     // We cannot use ClassPtrCast<> here as the resource can be of wrong type
     RefCntAutoPtr<BufferViewD3D11Impl> pViewD3D11{BindInfo.pObject, IID_BufferViewD3D11};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const ShaderResourceCacheD3D11::CachedResource& CachedUAV = ResourceCache.GetResource<D3D11_RESOURCE_RANGE_UAV>(Attr.BindPoints + BindInfo.ArrayIndex);
         VerifyResourceViewBinding(Desc, BindInfo, pViewD3D11.RawPtr(), {BUFFER_VIEW_UNORDERED_ACCESS},
@@ -578,7 +578,7 @@ public:
     template <typename ResourceType>
     bool TryResource(ShaderVariableManagerD3D11::OffsetType NextResourceTypeOffset)
     {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         {
             VERIFY(Mgr.GetResourceOffset<ResourceType>() >= dbgPreviousResourceOffset, "Resource types are processed out of order!");
             dbgPreviousResourceOffset = Mgr.GetResourceOffset<ResourceType>();
@@ -605,7 +605,7 @@ private:
     const ShaderVariableManagerD3D11& Mgr;
     const size_t                      VarOffset;
     UInt32                            Index = 0;
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     UInt32 dbgPreviousResourceOffset = 0;
 #endif
 };
@@ -658,7 +658,7 @@ public:
     template <typename ResourceType>
     IShaderResourceVariable* TryResource()
     {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         {
             VERIFY(Mgr.GetResourceOffset<ResourceType>() >= dbgPreviousResourceOffset, "Resource types are processed out of order!");
             dbgPreviousResourceOffset = Mgr.GetResourceOffset<ResourceType>();
@@ -677,7 +677,7 @@ public:
 private:
     ShaderVariableManagerD3D11 const& Mgr;
     UInt32                            Index = 0;
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     UInt32 dbgPreviousResourceOffset = 0;
 #endif
 };

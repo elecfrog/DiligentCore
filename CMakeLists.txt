@@ -335,12 +335,12 @@ INTERFACE
 )
 
 foreach(DBG_CONFIG ${DEBUG_CONFIGURATIONS})
-    target_compile_definitions(Diligent-PublicBuildSettings INTERFACE "$<$<CONFIG:${DBG_CONFIG}>:DILIGENT_DEVELOPMENT;DILIGENT_DEBUG>")
+    target_compile_definitions(Diligent-PublicBuildSettings INTERFACE "$<$<CONFIG:${DBG_CONFIG}>:SPW_PROFILE;SPW_DEBUG>")
 endforeach()
 
-if(DILIGENT_DEVELOPMENT)
+if(SPW_PROFILE)
     foreach(REL_CONFIG ${RELEASE_CONFIGURATIONS})
-        target_compile_definitions(Diligent-PublicBuildSettings INTERFACE "$<$<CONFIG:${REL_CONFIG}>:DILIGENT_DEVELOPMENT>")
+        target_compile_definitions(Diligent-PublicBuildSettings INTERFACE "$<$<CONFIG:${REL_CONFIG}>:SPW_PROFILE>")
     endforeach()
 endif()
 

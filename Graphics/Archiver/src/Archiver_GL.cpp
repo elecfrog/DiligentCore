@@ -517,7 +517,7 @@ struct ShaderStageInfoGL
     const SerializedShaderImpl* pShader = nullptr;
 };
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 inline SHADER_TYPE GetShaderStageType(const ShaderStageInfoGL& Stage)
 {
     return Stage.Type;

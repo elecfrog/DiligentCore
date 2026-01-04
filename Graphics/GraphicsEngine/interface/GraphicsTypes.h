@@ -3550,7 +3550,7 @@ struct EngineCreateInfo
 #if DILIGENT_CPP_INTERFACE
     EngineCreateInfo() noexcept
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         SetValidationLevel(VALIDATION_LEVEL_1);
 #endif
     }
@@ -3699,7 +3699,7 @@ struct EngineD3D11CreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     explicit EngineD3D11CreateInfo(const EngineCreateInfo &EngineCI) noexcept :
         EngineCreateInfo{EngineCI}
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         SetValidationLevel(VALIDATION_LEVEL_1);
 #endif
     }
@@ -3882,7 +3882,7 @@ struct EngineD3D12CreateInfo DILIGENT_DERIVE(EngineCreateInfo)
     explicit EngineD3D12CreateInfo(const EngineCreateInfo &EngineCI) noexcept :
         EngineCreateInfo{EngineCI}
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         SetValidationLevel(VALIDATION_LEVEL_1);
 #endif
     }

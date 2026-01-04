@@ -112,7 +112,7 @@ private:
     }
 };
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 inline SHADER_TYPE GetShaderStageType(const ShaderStageInfoWebGPU& Stage)
 {
     return Stage.Type;

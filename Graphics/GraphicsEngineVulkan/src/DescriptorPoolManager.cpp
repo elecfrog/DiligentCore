@@ -92,7 +92,7 @@ DescriptorPoolManager::DescriptorPoolManager(RenderDeviceVkImpl&               D
     m_AllowFreeing{AllowFreeing        }
 // clang-format on
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     m_AllocatedPoolCounter = 0;
 #endif
 }
@@ -106,7 +106,7 @@ DescriptorPoolManager::~DescriptorPoolManager()
 VulkanUtilities::DescriptorPoolWrapper DescriptorPoolManager::GetPool(const char* DebugName)
 {
     std::lock_guard<std::mutex> Lock{m_Mutex};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     ++m_AllocatedPoolCounter;
 #endif
     if (m_Pools.empty())
@@ -166,7 +166,7 @@ void DescriptorPoolManager::FreePool(VulkanUtilities::DescriptorPoolWrapper&& Po
     std::lock_guard<std::mutex> Lock{m_Mutex};
     m_DeviceVkImpl.GetLogicalDevice().ResetDescriptorPool(Pool);
     m_Pools.emplace_back(std::move(Pool));
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     --m_AllocatedPoolCounter;
 #endif
 }
@@ -215,7 +215,7 @@ DescriptorSetAllocation DescriptorSetAllocator::Allocate(UInt64 CommandQueueMask
                 std::swap(*it, m_Pools.front());
             }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             ++m_AllocatedSetCounter;
 #endif
             return {vkSet, vkPool, CommandQueueMask, *this};
@@ -230,7 +230,7 @@ DescriptorSetAllocation DescriptorSetAllocator::Allocate(UInt64 CommandQueueMask
     VkDescriptorSet                         vkSet   = AllocateDescriptorSet(LogicalDevice, NewPool, SetLayout, DebugName);
     DEV_CHECK_ERR(vkSet != VK_NULL_HANDLE, "Failed to allocate descriptor set");
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     ++m_AllocatedSetCounter;
 #endif
 
@@ -272,7 +272,7 @@ void DescriptorSetAllocator::FreeDescriptorSet(VkDescriptorSet Set, VkDescriptor
             {
                 std::lock_guard<std::mutex> Lock{Allocator->m_Mutex};
                 Allocator->m_DeviceVkImpl.GetLogicalDevice().FreeDescriptorSet(Pool, Set);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
                 --Allocator->m_AllocatedSetCounter;
 #endif
             }

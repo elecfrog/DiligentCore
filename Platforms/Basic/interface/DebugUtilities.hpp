@@ -30,7 +30,7 @@
 #include "Primitives.h"
 #include "BasicPlatformDebug.hpp"
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 
 #    include <typeinfo>
 
@@ -80,9 +80,9 @@ void CheckDynamicType(SrcType* pSrcPtr)
 
 #endif
 
-#if defined(DILIGENT_DEBUG)
+#if defined(SPW_DEBUG)
 #    define DEV_CHECK_ERR VERIFY
-#elif defined(DILIGENT_DEVELOPMENT)
+#elif defined(SPW_PROFILE)
 #    define DEV_CHECK_ERR CHECK_ERR
 #else
 // clang-format off
@@ -92,7 +92,7 @@ void CheckDynamicType(SrcType* pSrcPtr)
 
 #define DEV_ERROR(...) DEV_CHECK_ERR(false, __VA_ARGS__)
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 
 #    define DEV_CHECK_WARN CHECK_WARN
 #    define DEV_CHECK_INFO CHECK_INFO

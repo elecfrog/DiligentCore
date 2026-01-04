@@ -212,7 +212,7 @@ void ExtractShaders(const GraphicsPipelineStateCreateInfo& CreateInfo,
             VERIFY((ActiveShaderStages & ShaderType) == 0,
                    "Shader stage ", GetShaderTypeLiteralName(ShaderType), " has already been initialized in PSO.");
             ActiveShaderStages |= ShaderType;
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
             for (size_t i = 0; i + 1 < ShaderStages.size(); ++i)
                 VERIFY_EXPR(GetShaderStageType(ShaderStages[i]) != ShaderType);
 #endif
@@ -479,7 +479,7 @@ public:
             GetRawAllocator().Free(m_pPipelineDataRawMem);
             m_pPipelineDataRawMem = nullptr;
         }
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
         m_IsDestructed = true;
 #endif
     }
@@ -774,7 +774,7 @@ public:
         return m_ActiveShaderStages;
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     size_t DvpGetRenderTargerFormatsHash() const
     {
         return m_pGraphicsPipelineData ? m_pGraphicsPipelineData->dvpRenderTargetFormatsHash : 0;
@@ -893,12 +893,12 @@ protected:
                 this->m_pDevice->GetShaderCompilationThreadPool(),
                 ShaderCompileTasks, // Make sure that all asynchronous shader compile tasks are completed first
                 [pThisImpl,
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
                  Shaders,
 #endif
                  CreateInfo = typename PipelineStateCreateInfoXTraits<PSOCreateInfoType>::CreateInfoXType{CreateInfo}](UInt32 ThreadId) mutable //
                 {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
                     for (const ShaderImplType* pShader : Shaders)
                     {
                         VERIFY(!pShader->IsCompiling(), "All shader compile tasks must have been completed since we used them as "
@@ -1011,7 +1011,7 @@ protected:
         }
         GraphicsPipeline.InputLayout.LayoutElements = pLayoutElements;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         this->m_pGraphicsPipelineData->dvpRenderTargetFormatsHash = ComputeRenderTargetFormatsHash(
             GraphicsPipeline.NumRenderTargets, GraphicsPipeline.RTVFormats, GraphicsPipeline.DSVFormat);
 #endif
@@ -1216,7 +1216,7 @@ private:
             for (UInt32 i = 0; i < SrcLayout.NumImmutableSamplers; ++i)
             {
                 const ImmutableSamplerDesc& SrcSmplr = SrcLayout.ImmutableSamplers[i];
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
                 {
                     const Float32* BorderColor = SrcSmplr.Desc.BorderColor;
                     if (!((BorderColor[0] == 0 && BorderColor[1] == 0 && BorderColor[2] == 0 && BorderColor[3] == 0) ||
@@ -1280,7 +1280,7 @@ private:
 
                 const UInt32 Index = pSignature->GetDesc().BindingIndex;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
                 VERIFY_EXPR(Index < m_SignatureCount);
 
                 VERIFY(m_Signatures[Index] == nullptr,
@@ -1333,7 +1333,7 @@ protected:
         UInt32* pStrides        = nullptr;
         UInt8   BufferSlotsUsed = 0;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         size_t dvpRenderTargetFormatsHash = 0;
 #endif
     };
@@ -1371,7 +1371,7 @@ protected:
         void*                   m_pPipelineDataRawMem = nullptr;
     };
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     bool m_IsDestructed = false;
 #endif
 };

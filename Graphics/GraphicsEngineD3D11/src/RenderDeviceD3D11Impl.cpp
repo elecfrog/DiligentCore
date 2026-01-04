@@ -106,7 +106,7 @@ RenderDeviceD3D11Impl::RenderDeviceD3D11Impl(IReferenceCounters*          pRefCo
         default: UNEXPECTED("Unexpected D3D feature level");
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 #    define CHECK_D3D11_DEVICE_VERSION(Version)               \
         if (CComQIPtr<ID3D11Device##Version>{m_pd3d11Device}) \
             m_MaxD3D11DeviceVersion = Version;

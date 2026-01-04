@@ -342,7 +342,7 @@ void PipelineResourceSignatureVkImpl::CreateSetLayouts(const bool IsSerialized)
         }
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     if (m_pStaticResCache != nullptr)
     {
         m_pStaticResCache->DbgVerifyResourceInitialization();
@@ -445,7 +445,7 @@ void PipelineResourceSignatureVkImpl::CreateSetLayouts(const bool IsSerialized)
             CacheGroupSizes[CACHE_GROUP_OTHER_DYN_VAR];
         ++NumSets;
     }
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (UInt32 i = 0; i < NumSets; ++i)
         VERIFY_EXPR(m_DescriptorSetSizes[i] != ~0U && m_DescriptorSetSizes[i] > 0);
 #else
@@ -495,7 +495,7 @@ void PipelineResourceSignatureVkImpl::Destruct()
 void PipelineResourceSignatureVkImpl::InitSRBResourceCache(ShaderResourceCacheVk& ResourceCache)
 {
     const UInt32 NumSets = GetNumDescriptorSets();
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (UInt32 i = 0; i < NumSets; ++i)
         VERIFY_EXPR(m_DescriptorSetSizes[i] != ~0U);
 #endif
@@ -513,14 +513,14 @@ void PipelineResourceSignatureVkImpl::InitSRBResourceCache(ShaderResourceCacheVk
                                           Attr.GetDescriptorType(), Attr.IsImmutableSamplerAssigned());
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     ResourceCache.DbgVerifyResourceInitialization();
 #endif
 
     if (VkDescriptorSetLayout vkLayout = GetVkDescriptorSetLayout(DESCRIPTOR_SET_ID_STATIC_MUTABLE))
     {
         const char* DescrSetName = "Static/Mutable Descriptor Set";
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         std::string _DescrSetName{m_Desc.Name};
         _DescrSetName.append(" - static/mutable set");
         DescrSetName = _DescrSetName.c_str();
@@ -589,7 +589,7 @@ void PipelineResourceSignatureVkImpl::CopyStaticResources(ShaderResourceCacheVk&
         }
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     DstResourceCache.DbgVerifyDynamicBuffersCounter();
 #endif
 }
@@ -615,7 +615,7 @@ void PipelineResourceSignatureVkImpl::CommitDynamicResources(const ShaderResourc
     VERIFY_EXPR(vkDynamicDescriptorSet != VK_NULL_HANDLE);
     VERIFY_EXPR(ResourceCache.GetContentType() == ResourceCacheContentType::SRB);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     static constexpr size_t ImgUpdateBatchSize          = 4;
     static constexpr size_t BuffUpdateBatchSize         = 2;
     static constexpr size_t TexelBuffUpdateBatchSize    = 2;
@@ -656,7 +656,7 @@ void PipelineResourceSignatureVkImpl::CommitDynamicResources(const ShaderResourc
         const UInt32                       ArraySize   = Attr.ArraySize;
         const DescriptorType               DescrType   = Attr.GetDescriptorType();
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         {
             const PipelineResourceDesc& Res = GetResourceDesc(ResIdx);
             VERIFY_EXPR(ArraySize == GetResourceDesc(ResIdx).ArraySize);
@@ -800,7 +800,7 @@ void PipelineResourceSignatureVkImpl::CommitDynamicResources(const ShaderResourc
 }
 
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 bool PipelineResourceSignatureVkImpl::DvpValidateCommittedResource(const DeviceContextVkImpl*        pDeviceCtx,
                                                                    const SPIRVShaderResourceAttribs& SPIRVAttribs,
                                                                    UInt32                            ResIndex,

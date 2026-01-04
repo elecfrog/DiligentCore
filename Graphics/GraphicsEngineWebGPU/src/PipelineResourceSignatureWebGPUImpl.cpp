@@ -601,7 +601,7 @@ void PipelineResourceSignatureWebGPUImpl::CreateBindGroupLayouts(const bool IsSe
 
     VERIFY_EXPR(StaticCacheOffset == StaticResourceCount);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     if (m_pStaticResCache != nullptr)
     {
         m_pStaticResCache->DbgVerifyResourceInitialization();
@@ -654,7 +654,7 @@ void PipelineResourceSignatureWebGPUImpl::CreateBindGroupLayouts(const bool IsSe
         ++NumGroups;
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (UInt32 i = 0; i < NumGroups; ++i)
         VERIFY_EXPR(m_BindGroupSizes[i] != ~0U && m_BindGroupSizes[i] > 0);
 #else
@@ -704,7 +704,7 @@ PipelineResourceSignatureWebGPUImpl::~PipelineResourceSignatureWebGPUImpl()
 void PipelineResourceSignatureWebGPUImpl::InitSRBResourceCache(ShaderResourceCacheWebGPU& ResourceCache)
 {
     const UInt32 NumGroups = GetNumBindGroups();
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (UInt32 i = 0; i < NumGroups; ++i)
         VERIFY_EXPR(m_BindGroupSizes[i] != ~0U);
 #endif
@@ -747,7 +747,7 @@ void PipelineResourceSignatureWebGPUImpl::InitSRBResourceCache(ShaderResourceCac
         }
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     ResourceCache.DbgVerifyResourceInitialization();
 #endif
 }
@@ -817,7 +817,7 @@ void PipelineResourceSignatureWebGPUImpl::CopyStaticResources(ShaderResourceCach
         }
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     DstResourceCache.DbgVerifyDynamicBuffersCounter();
 #endif
 }
@@ -862,7 +862,7 @@ PipelineResourceSignatureWebGPUImpl::PipelineResourceSignatureWebGPUImpl(IRefere
     }
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 bool PipelineResourceSignatureWebGPUImpl::DvpValidateCommittedResource(const DeviceContextWebGPUImpl*   pDeviceCtx,
                                                                        const WGSLShaderResourceAttribs& WGSLAttribs,
                                                                        UInt32                           ResIndex,

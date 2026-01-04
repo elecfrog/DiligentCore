@@ -231,7 +231,7 @@ void LoadD3DShaderResources(TShaderReflection*  pShaderReflection,
         {
             VERIFY(BindCount == 1, "When array elements are enumerated individually, BindCount is expected to always be 1");
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
             for (const auto& ExistingRes : Resources)
             {
                 VERIFY(Name.compare(ExistingRes.Name) != 0, "Resource with the same name has already been enumerated. All array elements are expected to be enumerated one after another");

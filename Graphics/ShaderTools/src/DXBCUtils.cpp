@@ -938,7 +938,7 @@ void RemapShaderResources(const DXBCUtils::TResourceBindingMap& ResourceMap, con
                     (ResType == RES_TYPE_CBV && Res.BindCount == ~0u) ||
                     Iter->second.ArraySize >= Res.BindCount);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         static_assert(SHADER_RESOURCE_TYPE_LAST == 8, "Please update the switch below to handle the new shader resource type");
         switch (Iter->second.ResType)
         {
@@ -1784,7 +1784,7 @@ RefCntAutoPtr<IDataBlob> RemapResourceBindings(const TResourceBindingMap& Resour
         return {};
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         DWORD Checksum[4] = {};
         CalculateDXBCChecksum(static_cast<const BYTE*>(pBytecode), static_cast<DWORD>(Size), Checksum);

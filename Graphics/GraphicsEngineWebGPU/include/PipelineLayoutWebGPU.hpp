@@ -76,7 +76,7 @@ private:
     // (Maximum is MAX_RESOURCE_SIGNATURES * 2)
     UInt8 m_BindGroupCount = 0;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     UInt32 m_DbgMaxBindIndex = 0;
 #endif
 };

@@ -113,7 +113,7 @@ void CreateComputePipeline(RenderDeviceVkImpl*                           pDevice
     VkComputePipelineCreateInfo PipelineCI{};
     PipelineCI.sType = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO;
     PipelineCI.pNext = nullptr;
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     PipelineCI.flags = VK_PIPELINE_CREATE_DISABLE_OPTIMIZATION_BIT;
 #endif
     PipelineCI.basePipelineHandle = VK_NULL_HANDLE; // a pipeline to derive from
@@ -141,7 +141,7 @@ void CreateGraphicsPipeline(RenderDeviceVkImpl*                           pDevic
     VkGraphicsPipelineCreateInfo PipelineCI{};
     PipelineCI.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
     PipelineCI.pNext = nullptr;
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     PipelineCI.flags = VK_PIPELINE_CREATE_DISABLE_OPTIMIZATION_BIT;
 #endif
 
@@ -375,7 +375,7 @@ void CreateRayTracingPipeline(RenderDeviceVkImpl*                               
     VkRayTracingPipelineCreateInfoKHR PipelineCI{};
     PipelineCI.sType = VK_STRUCTURE_TYPE_RAY_TRACING_PIPELINE_CREATE_INFO_KHR;
     PipelineCI.pNext = nullptr;
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     PipelineCI.flags = VK_PIPELINE_CREATE_DISABLE_OPTIMIZATION_BIT;
 #endif
 
@@ -448,7 +448,7 @@ std::vector<VkRayTracingShaderGroupCreateInfoKHR> BuildRTShaderGroupDescription(
         Group.anyHitShader       = VK_SHADER_UNUSED_KHR;
         Group.intersectionShader = VK_SHADER_UNUSED_KHR;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         {
             auto Iter = NameToGroupIndex.find(GeneralShader.Name);
             VERIFY(Iter != NameToGroupIndex.end(),
@@ -477,7 +477,7 @@ std::vector<VkRayTracingShaderGroupCreateInfoKHR> BuildRTShaderGroupDescription(
         Group.anyHitShader       = GetShaderModuleIndex(TriHitShader.pAnyHitShader);
         Group.intersectionShader = VK_SHADER_UNUSED_KHR;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         {
             auto Iter = NameToGroupIndex.find(TriHitShader.Name);
             VERIFY(Iter != NameToGroupIndex.end(),
@@ -506,7 +506,7 @@ std::vector<VkRayTracingShaderGroupCreateInfoKHR> BuildRTShaderGroupDescription(
         Group.closestHitShader   = GetShaderModuleIndex(ProcHitShader.pClosestHitShader);
         Group.anyHitShader       = GetShaderModuleIndex(ProcHitShader.pAnyHitShader);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         {
             auto Iter = NameToGroupIndex.find(ProcHitShader.Name);
             VERIFY(Iter != NameToGroupIndex.end(),
@@ -794,7 +794,7 @@ void PipelineStateVkImpl::InitPipelineLayout(const PipelineStateCreateInfo& Crea
         VERIFY_EXPR(m_Signatures[0]);
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpValidateResourceLimits();
 #endif
 
@@ -817,7 +817,7 @@ void PipelineStateVkImpl::InitPipelineLayout(const PipelineStateCreateInfo& Crea
                                      VerifyBindings, // VerifyOnly
                                      true,           // bStripReflection
                                      m_Desc.Name,
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
                                      &m_ShaderResources, &m_ResourceAttibutions
 #else
                                      nullptr, nullptr
@@ -937,7 +937,7 @@ void PipelineStateVkImpl::Destruct()
     TPipelineStateBase::Destruct();
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void PipelineStateVkImpl::DvpVerifySRBResources(const DeviceContextVkImpl* pCtx, const ShaderResourceCacheArrayType& ResourceCaches) const
 {
     auto res_info = m_ResourceAttibutions.begin();
@@ -1160,6 +1160,6 @@ void PipelineStateVkImpl::DvpValidateResourceLimits() const
                       "In PSO '", m_Desc.Name, "' shader stage '", StageName, "', the number of acceleration structures (", NumAccelerationStructures, ") exceeds the per-stage limit (", ASLimits.maxPerStageDescriptorAccelerationStructures, ").");
     }
 }
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
 } // namespace Diligent

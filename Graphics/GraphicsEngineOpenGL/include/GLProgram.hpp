@@ -87,7 +87,7 @@ private:
 
     std::shared_ptr<const ShaderResourcesGL> m_pResources;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     PipelineResourceSignatureGLImpl::TBindings m_DbgBaseBindings{};
 #endif
 };

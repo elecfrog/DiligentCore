@@ -560,7 +560,7 @@ void PipelineStateD3D12Impl::ValidateShaderResources(const ShaderD3D12Impl* pSha
     const auto&       pShaderResources = pShader->GetShaderResources();
     const SHADER_TYPE ShaderType       = pShader->GetDesc().ShaderType;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     m_ShaderResources.emplace_back(pShaderResources);
 #endif
 
@@ -568,7 +568,7 @@ void PipelineStateD3D12Impl::ValidateShaderResources(const ShaderD3D12Impl* pSha
     pShaderResources->ProcessResources(
         [&](const D3DShaderResourceAttribs& Attribs, UInt32) //
         {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             m_ResourceAttibutions.emplace_back();
             ResourceAttribution& ResAttribution = m_ResourceAttibutions.back();
 #else
@@ -622,7 +622,7 @@ void PipelineStateD3D12Impl::ValidateShaderResources(const ShaderD3D12Impl* pSha
     );
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void PipelineStateD3D12Impl::DvpVerifySRBResources(const DeviceContextD3D12Impl*       pDeviceCtx,
                                                    const ShaderResourceCacheArrayType& ResourceCaches) const
 {
@@ -648,7 +648,7 @@ void PipelineStateD3D12Impl::DvpVerifySRBResources(const DeviceContextD3D12Impl*
     VERIFY_EXPR(attrib_it == m_ResourceAttibutions.end());
 }
 
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
 
 template <typename PSOCreateInfoType>

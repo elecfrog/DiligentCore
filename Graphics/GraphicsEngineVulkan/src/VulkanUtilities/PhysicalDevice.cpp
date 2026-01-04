@@ -460,7 +460,7 @@ HardwareQueueIndex PhysicalDevice::FindQueueFamily(VkQueueFlags QueueFlags) cons
     {
         if (QueueFlags & (VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_COMPUTE_BIT))
         {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
             const VkQueueFamilyProperties& Props = m_QueueFamilyProperties[FamilyInd];
             // Queues supporting graphics and/or compute operations must report (1,1,1)
             // in minImageTransferGranularity, meaning that there are no additional restrictions

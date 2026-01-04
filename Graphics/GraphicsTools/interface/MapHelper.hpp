@@ -119,7 +119,7 @@ public:
     {
         VERIFY(!m_pBuffer && !m_pMappedData && !m_pContext, "Object already mapped");
         Unmap();
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         {
             auto& BuffDesc = pBuffer->GetDesc();
             VERIFY(sizeof(DataType) <= BuffDesc.Size, "Data type size exceeds buffer size");

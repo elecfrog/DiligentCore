@@ -121,7 +121,7 @@ public:
         const PipelineResourceLayoutDesc& ResourceLayout,
         UInt32                            SRBAllocationGranularity);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Performs validation of SRB resource parameters that are not possible to validate
     // when resource is bound.
     using ShaderResourceCacheArrayType = std::array<ShaderResourceCacheWebGPU*, MAX_RESOURCE_SIGNATURES>;
@@ -153,7 +153,7 @@ private:
 
     RefCntAutoPtr<AsyncPipelineBuilder> m_AsyncBuilder;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Shader resources for all shaders in all shader stages
     TShaderResources m_ShaderResources;
     // Resource attributions for every resource in m_ShaderResources, in the same order

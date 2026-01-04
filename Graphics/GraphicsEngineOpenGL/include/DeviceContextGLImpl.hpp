@@ -327,7 +327,7 @@ private:
     using TBindings = PipelineResourceSignatureGLImpl::TBindings;
     void BindProgramResources(UInt32 BindSRBMask);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     void DvpValidateCommittedShaderResources();
 #endif
 
@@ -336,7 +336,7 @@ private:
 
     struct BindInfo : CommittedShaderResources
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         // Binding offsets that were used in the last BindProgramResources() call.
         std::array<TBindings, MAX_RESOURCE_SIGNATURES> BaseBindings = {};
 #endif

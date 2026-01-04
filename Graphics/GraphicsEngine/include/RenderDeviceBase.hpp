@@ -365,7 +365,7 @@ public:
         {
             UInt32 Id = m_RecycledDynamicBufferIds.back();
             m_RecycledDynamicBufferIds.pop_back();
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
             m_DbgRecycledDynamicBufferIds.erase(Id);
 #endif
             return Id;
@@ -380,7 +380,7 @@ public:
     {
         Threading::SpinLockGuard Guard{m_RecycledDynamicBufferIdsLock};
         m_RecycledDynamicBufferIds.push_back(Id);
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         VERIFY(m_DbgRecycledDynamicBufferIds.emplace(Id).second, "Dynamic buffer ID ", Id, " has already been recycled. This appears to be a bug.");
 #endif
     }
@@ -729,7 +729,7 @@ protected:
     std::atomic<UInt32> m_NextDynamicBufferId{0};
     Threading::SpinLock m_RecycledDynamicBufferIdsLock;
     std::vector<UInt32> m_RecycledDynamicBufferIds;
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     std::unordered_set<UInt32> m_DbgRecycledDynamicBufferIds;
 #endif
 };

@@ -43,7 +43,7 @@ public:
     template <typename DefinitionType>
     ShaderMacroHelper& AddShaderMacro(const Char* Name, DefinitionType Definition)
     {
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
         for (size_t i = 0; i < m_Macros.size() && m_Macros[i].Definition != nullptr; ++i)
         {
             if (strcmp(m_Macros[i].Name, Name) == 0)

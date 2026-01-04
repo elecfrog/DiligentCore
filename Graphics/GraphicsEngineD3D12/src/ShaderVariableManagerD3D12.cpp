@@ -292,7 +292,7 @@ BindResourceHelper::BindResourceHelper(const PipelineResourceSignatureD3D12Impl&
                 RootParamGroup, m_RootIndex, m_OffsetFromTableStart);
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     if (m_CacheType == ResourceCacheContentType::Signature)
     {
         VERIFY(m_DstTableCPUDescriptorHandle.ptr == 0, "Static shader resource cache should never be assigned descriptor space.");
@@ -326,7 +326,7 @@ void BindResourceHelper::CacheCB(const BindResourceInfo& BindInfo) const
 
     // We cannot use ClassPtrCast<> here as the resource can be of wrong type
     RefCntAutoPtr<BufferD3D12Impl> pBuffD3D12{BindInfo.pObject, IID_BufferD3D12};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     VerifyConstantBufferBinding(m_ResDesc, BindInfo, pBuffD3D12.RawPtr(), m_DstRes.pObject.RawPtr(),
                                 m_DstRes.BufferBaseOffset, m_DstRes.BufferRangeSize, m_Signature.GetDesc().Name);
     if (m_ResDesc.ArraySize != 1 && pBuffD3D12 && pBuffD3D12->GetDesc().Usage == USAGE_DYNAMIC && pBuffD3D12->GetD3D12Resource() == nullptr)
@@ -392,7 +392,7 @@ void BindResourceHelper::CacheSampler(const BindResourceInfo& BindInfo) const
     VERIFY(BindInfo.pObject != nullptr, "Setting sampler to null is handled by BindResourceHelper::operator()");
 
     RefCntAutoPtr<ISamplerD3D12> pSamplerD3D12{BindInfo.pObject, IID_SamplerD3D12};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     VerifySamplerBinding(m_ResDesc, BindInfo, pSamplerD3D12.RawPtr(), m_DstRes.pObject, m_Signature.GetDesc().Name);
 #endif
     if (pSamplerD3D12)
@@ -419,7 +419,7 @@ void BindResourceHelper::CacheAccelStruct(const BindResourceInfo& BindInfo) cons
     VERIFY(BindInfo.pObject != nullptr, "Setting TLAS to null is handled by BindResourceHelper::operator()");
 
     RefCntAutoPtr<ITopLevelASD3D12> pTLASD3D12{BindInfo.pObject, IID_TopLevelASD3D12};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     VerifyTLASResourceBinding(m_ResDesc, BindInfo, pTLASD3D12.RawPtr(), m_DstRes.pObject.RawPtr(), m_Signature.GetDesc().Name);
 #endif
     if (pTLASD3D12)
@@ -495,7 +495,7 @@ void BindResourceHelper::CacheResourceView(const BindResourceInfo& BindInfo,
 
     // We cannot use ClassPtrCast<> here as the resource can be of wrong type
     RefCntAutoPtr<TResourceViewType> pViewD3D12{BindInfo.pObject, ResourceViewTraits<TResourceViewType>::IID};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     VerifyResourceViewBinding(m_ResDesc, BindInfo, pViewD3D12.RawPtr(),
                               {dbgExpectedViewType},
                               ResourceViewTraits<TResourceViewType>::ExpectedResDimension,
@@ -658,7 +658,7 @@ void ShaderVariableManagerD3D12::SetBufferDynamicOffset(UInt32 ResIndex,
     const UInt32                   RootIndex            = Attribs.RootIndex(CacheType);
     const UInt32                   OffsetFromTableStart = Attribs.OffsetFromTableStart(CacheType) + ArrayIndex;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const PipelineResourceDesc&               ResDesc = m_pSignature->GetResourceDesc(ResIndex);
         const ShaderResourceCacheD3D12::Resource& DstRes  = const_cast<const ShaderResourceCacheD3D12&>(m_ResourceCache).GetRootTable(RootIndex).GetResource(OffsetFromTableStart);

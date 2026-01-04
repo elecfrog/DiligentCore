@@ -493,7 +493,7 @@ void ShaderResourcesGL::LoadUniforms(const LoadUniformsAttribs& Attribs)
     GLint activeUniformBlockMaxLength = 0;
     // On Intel driver, this call might fail:
     glGetProgramiv(GLProgram, GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH, &activeUniformBlockMaxLength);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (glGetError() != GL_NO_ERROR)
     {
         LOG_WARNING_MESSAGE("Unable to get the maximum uniform block name length.");
@@ -744,7 +744,7 @@ void ShaderResourcesGL::LoadUniforms(const LoadUniformsAttribs& Attribs)
                 }
                 else
                 {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
                     for (const UniformBufferInfo& ub : UniformBlocks)
                         VERIFY(strcmp(ub.Name, Name.data()) != 0, "Uniform block with the name '", ub.Name, "' has already been enumerated");
 #endif
@@ -796,7 +796,7 @@ void ShaderResourcesGL::LoadUniforms(const LoadUniformsAttribs& Attribs)
                 }
                 else
                 {
-#    ifdef DILIGENT_DEBUG
+#    ifdef SPW_DEBUG
                     for (const StorageBlockInfo& sb : StorageBlocks)
                         VERIFY(strcmp(sb.Name, Name.data()) != 0, "Storage block with the name \"", sb.Name, "\" has already been enumerated");
 #    endif

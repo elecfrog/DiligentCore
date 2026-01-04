@@ -320,7 +320,7 @@ void PipelineResourceSignatureD3D11Impl::CopyStaticResources(ShaderResourceCache
                         }
                     }
                 }
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
                 else if (DstCacheType == ResourceCacheContentType::SRB)
                 {
                     for (UInt32 ArrInd = 0; ArrInd < ResDesc.ArraySize; ++ArrInd)
@@ -346,7 +346,7 @@ void PipelineResourceSignatureD3D11Impl::CopyStaticResources(ShaderResourceCache
         }
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     DstResourceCache.DbgVerifyDynamicBufferMasks();
 #endif
 }
@@ -429,7 +429,7 @@ void PipelineResourceSignatureD3D11Impl::UpdateShaderResourceBindingMap(Resource
                 };
 
             auto it_inserted = ResourceMap.emplace(HashMapStringKey{SampName}, BindInfo);
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
             if (!it_inserted.second)
             {
                 const ResourceBinding::BindInfo& ExistingBindInfo = it_inserted.first->second;
@@ -445,7 +445,7 @@ void PipelineResourceSignatureD3D11Impl::UpdateShaderResourceBindingMap(Resource
     }
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 bool PipelineResourceSignatureD3D11Impl::DvpValidateCommittedResource(const D3DShaderResourceAttribs& D3DAttribs,
                                                                       UInt32                          ResIndex,
                                                                       const ShaderResourceCacheD3D11& ResourceCache,
@@ -545,7 +545,7 @@ bool PipelineResourceSignatureD3D11Impl::DvpValidateCommittedResource(const D3DS
 
     return BindingsOK;
 }
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
 
 PipelineResourceSignatureD3D11Impl::PipelineResourceSignatureD3D11Impl(IReferenceCounters*                               pRefCounters,

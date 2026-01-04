@@ -108,7 +108,7 @@ private:
     std::mutex        m_AvailablePagesMtx;
     std::vector<Page> m_AvailablePages;
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
     std::atomic<uint32_t> m_DbgPageCounter{0};
 #endif
 };

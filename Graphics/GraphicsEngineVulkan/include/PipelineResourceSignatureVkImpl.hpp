@@ -134,7 +134,7 @@ public:
     void CommitDynamicResources(const ShaderResourceCacheVk& ResourceCache,
                                 VkDescriptorSet              vkDynamicDescriptorSet) const;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     /// Verifies committed resource using the SPIRV resource attributes from the PSO.
     bool DvpValidateCommittedResource(const DeviceContextVkImpl*        pDeviceCtx,
                                       const SPIRVShaderResourceAttribs& SPIRVAttribs,

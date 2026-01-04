@@ -217,7 +217,7 @@ void ShaderResourceCacheGL::BindResources(GLContextState&              GLState,
                 WritableTextures.push_back(pTextureGL);
             }
 
-#    ifdef DILIGENT_DEBUG
+#    ifdef SPW_DEBUG
             // Check that the texture being bound has immutable storage
             {
                 GLState.BindTexture(-1, pTexViewGL->GetBindTarget(), pTexViewGL->GetHandle());
@@ -336,7 +336,7 @@ void ShaderResourceCacheGL::BindDynamicBuffers(GLContextState&              GLSt
     }
 }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 void ShaderResourceCacheGL::DbgVerifyDynamicBufferMasks() const
 {
     for (UInt32 ub = 0; ub < GetUBCount(); ++ub)

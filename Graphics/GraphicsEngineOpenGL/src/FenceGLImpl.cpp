@@ -52,7 +52,7 @@ FenceGLImpl::FenceGLImpl(IReferenceCounters* pRefCounters,
 
 FenceGLImpl::~FenceGLImpl()
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (m_MaxPendingFences > 10)
         LOG_WARNING_MESSAGE("Max queue size of pending fences is too big. This may indicate that none of GetCompletedValue(), HostWait() or DeviceWait() have been used.");
 #endif

@@ -422,7 +422,7 @@ const TextureFormatAttribs& GetTextureFormatAttribs(TEXTURE_FORMAT Format)
             // clang-format on
             static_assert(TEX_FORMAT_NUM_FORMATS == 106, "Not all texture formats initialized.");
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
             for (UInt32 Fmt = TEX_FORMAT_UNKNOWN; Fmt < TEX_FORMAT_NUM_FORMATS; ++Fmt)
                 VERIFY(FmtAttribs[Fmt].Format == static_cast<TEXTURE_FORMAT>(Fmt), "Uninitialized format");
 #endif

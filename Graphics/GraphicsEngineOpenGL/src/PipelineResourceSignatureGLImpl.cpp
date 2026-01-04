@@ -249,7 +249,7 @@ inline void ApplyImageBindings(GLuint glProg, const char* ImgName, UInt32 BaseBi
         // glProgramUniform1i is not available in GLES3.0
         const UInt32 ImgBinding = BaseBinding + ArrInd;
         glUniform1i(UniformLocation + ArrInd, ImgBinding);
-#    ifdef DILIGENT_DEVELOPMENT
+#    ifdef SPW_PROFILE
         if (glGetError() != GL_NO_ERROR)
         {
             if (ArraySize > 1)
@@ -499,11 +499,11 @@ void PipelineResourceSignatureGLImpl::CopyStaticResources(ShaderResourceCacheGL&
         }
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (DstCacheType == ResourceCacheContentType::SRB)
         DstResourceCache.SetStaticResourcesInitialized();
 #endif
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     DstResourceCache.DbgVerifyDynamicBufferMasks();
 #endif
 }
@@ -533,7 +533,7 @@ void PipelineResourceSignatureGLImpl::InitSRBResourceCache(ShaderResourceCacheGL
     }
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 bool PipelineResourceSignatureGLImpl::DvpValidateCommittedResource(const ShaderResourcesGL::GLResourceAttribs& GLAttribs,
                                                                    RESOURCE_DIMENSION                          ResourceDim,
                                                                    bool                                        IsMultisample,
@@ -634,7 +634,7 @@ bool PipelineResourceSignatureGLImpl::DvpValidateCommittedResource(const ShaderR
 
     return BindingsOK;
 }
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
 
 PipelineResourceSignatureGLImpl::PipelineResourceSignatureGLImpl(IReferenceCounters*                            pRefCounters,

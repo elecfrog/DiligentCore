@@ -184,7 +184,7 @@ void TextureCubeArray_GL::UpdateData(GLContextState&          ContextState,
                ((DstBox.MaxY % 4) == 0 || DstBox.MaxY == MipHeight),
                "Compressed texture update region must be 4 pixel-aligned");
         // clang-format on
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         {
             const TextureFormatAttribs& FmtAttribs      = GetTextureFormatAttribs(m_Desc.Format);
             UInt32                      BlockBytesInRow = ((DstBox.Width() + 3) / 4) * UInt32{FmtAttribs.ComponentSize};

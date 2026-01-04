@@ -671,7 +671,7 @@ void PipelineStateGLImpl::ValidateShaderResources(std::shared_ptr<const ShaderRe
     {
         const ResourceAttribution ResAttribution = GetResourceAttribution(Attribs.Name, ShaderStages);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         m_ResourceAttibutions.emplace_back(ResAttribution);
 #endif
 
@@ -721,13 +721,13 @@ void PipelineStateGLImpl::ValidateShaderResources(std::shared_ptr<const ShaderRe
 
     pShaderResources->ProcessConstResources(HandleUB, HandleTexture, HandleImage, HandleSB);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     m_ShaderResources.emplace_back(std::move(pShaderResources));
     m_ShaderNames.emplace_back(ShaderName);
 #endif
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void PipelineStateGLImpl::DvpVerifySRBResources(const ShaderResourceCacheArrayType& ResourceCaches,
                                                 const BaseBindingsArrayType&        BaseBindings) const
 {
@@ -790,6 +790,6 @@ void PipelineStateGLImpl::DvpVerifySRBResources(const ShaderResourceCacheArrayTy
     }
     VERIFY_EXPR(HandleResource.attrib_it == m_ResourceAttibutions.end());
 }
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
 } // namespace Diligent

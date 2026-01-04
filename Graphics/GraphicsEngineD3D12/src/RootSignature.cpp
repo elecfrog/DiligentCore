@@ -201,7 +201,7 @@ RootSignatureD3D12::RootSignatureD3D12(IReferenceCounters*                      
     }
     m_TotalSpacesUsed = BaseRegisterSpace;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (size_t i = 0; i < d3d12Parameters.size(); ++i)
     {
         VERIFY(d3d12Parameters[i].ParameterType != -1, "Root parameter at index ", i, " has not been initialized");

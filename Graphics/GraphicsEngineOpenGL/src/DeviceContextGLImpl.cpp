@@ -175,7 +175,7 @@ void DeviceContextGLImpl::CommitShaderResources(IShaderResourceBinding* pShaderR
 
     m_BindInfo.Set(SRBIndex, pShaderResBindingGL);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     pShaderResBindingGL->GetResourceCache().DbgVerifyDynamicBufferMasks();
 #endif
 }
@@ -562,7 +562,7 @@ void DeviceContextGLImpl::EndSubpass()
     const SubpassDesc& SubpassDesc = RPDesc.pSubpasses[m_SubpassIndex];
 
     const FramebufferGLImpl::SubpassFramebuffers& SubpassFBOs = m_pBoundFramebuffer->GetSubpassFramebuffer(m_SubpassIndex);
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     {
         GLint glCurrReadFB = 0;
         glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &glCurrReadFB);
@@ -685,7 +685,7 @@ void DeviceContextGLImpl::EndRenderPass()
     m_AttachmentClearValues.clear();
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void DeviceContextGLImpl::DvpValidateCommittedShaderResources()
 {
     if (m_BindInfo.ResourcesValidated)
@@ -715,7 +715,7 @@ void DeviceContextGLImpl::BindProgramResources(UInt32 BindSRBMask)
         UInt32 sign    = PlatformMisc::GetLSB(SignBit);
         VERIFY_EXPR(sign < m_pPipelineState->GetResourceSignatureCount());
         const PipelineStateGLImpl::TBindings& BaseBindings = m_pPipelineState->GetBaseBindings(sign);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         m_BindInfo.BaseBindings[sign] = BaseBindings;
 #endif
 
@@ -790,7 +790,7 @@ void DeviceContextGLImpl::PrepareForDraw(DRAW_FLAGS Flags, bool IsIndexed, GLenu
         m_DrawBuffersCommitted = true;
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpVerifyRenderTargets();
 #endif
 
@@ -802,7 +802,7 @@ void DeviceContextGLImpl::PrepareForDraw(DRAW_FLAGS Flags, bool IsIndexed, GLenu
         BindProgramResources(BindSRBMask);
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Must be called after BindProgramResources as it needs BaseBindings
     DvpValidateCommittedShaderResources();
 #endif
@@ -1367,7 +1367,7 @@ void DeviceContextGLImpl::DispatchCompute(const DispatchComputeAttribs& Attribs)
         BindProgramResources(BindSRBMask);
     }
 
-#    ifdef DILIGENT_DEVELOPMENT
+#    ifdef SPW_PROFILE
     // Must be called after BindProgramResources as it needs BaseBindings
     DvpValidateCommittedShaderResources();
 #    endif
@@ -1397,7 +1397,7 @@ void DeviceContextGLImpl::DispatchComputeIndirect(const DispatchComputeIndirectA
         BindProgramResources(BindSRBMask);
     }
 
-#    ifdef DILIGENT_DEVELOPMENT
+#    ifdef SPW_PROFILE
     // Must be called after BindProgramResources as it needs BaseBindings
     DvpValidateCommittedShaderResources();
 #    endif

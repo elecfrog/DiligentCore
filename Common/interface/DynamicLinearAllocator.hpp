@@ -84,7 +84,7 @@ public:
         }
     }
 
-    NODISCARD void* Allocate(size_t size, size_t align)
+    [[nodiscard]] void* Allocate(size_t size, size_t align)
     {
         if (size == 0)
             return nullptr;
@@ -113,13 +113,13 @@ public:
     }
 
     template <typename T>
-    NODISCARD T* Allocate(size_t count = 1)
+    [[nodiscard]] T* Allocate(size_t count = 1)
     {
         return reinterpret_cast<T*>(Allocate(sizeof(T) * count, alignof(T)));
     }
 
     template <typename T, typename... Args>
-    NODISCARD T* Construct(Args&&... args)
+    [[nodiscard]] T* Construct(Args&&... args)
     {
         T* Ptr = Allocate<T>(1);
         new (Ptr) T{std::forward<Args>(args)...};
@@ -127,7 +127,7 @@ public:
     }
 
     template <typename T, typename... Args>
-    NODISCARD T* ConstructArray(size_t count, const Args&... args)
+    [[nodiscard]] T* ConstructArray(size_t count, const Args&... args)
     {
         T* Ptr = Allocate<T>(count);
         for (size_t i = 0; i < count; ++i)
@@ -138,7 +138,7 @@ public:
     }
 
     template <typename T>
-    NODISCARD T* CopyArray(const T* Src, size_t count)
+    [[nodiscard]] T* CopyArray(const T* Src, size_t count)
     {
         T* Dst = Allocate<T>(count);
         for (size_t i = 0; i < count; ++i)
@@ -148,7 +148,7 @@ public:
         return Dst;
     }
 
-    NODISCARD Char* CopyString(const Char* Str, size_t len = 0)
+    [[nodiscard]] Char* CopyString(const Char* Str, size_t len = 0)
     {
         if (Str == nullptr)
             return nullptr;
@@ -164,7 +164,7 @@ public:
         return Dst;
     }
 
-    NODISCARD wchar_t* CopyWString(const char* Str, size_t len = 0)
+    [[nodiscard]] wchar_t* CopyWString(const char* Str, size_t len = 0)
     {
         if (Str == nullptr)
             return nullptr;
@@ -183,12 +183,12 @@ public:
         return Dst;
     }
 
-    NODISCARD Char* CopyString(const String& Str)
+    [[nodiscard]] Char* CopyString(const String& Str)
     {
         return CopyString(Str.c_str(), Str.length());
     }
 
-    NODISCARD wchar_t* CopyWString(const String& Str)
+    [[nodiscard]] wchar_t* CopyWString(const String& Str)
     {
         return CopyWString(Str.c_str(), Str.length());
     }

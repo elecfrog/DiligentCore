@@ -93,7 +93,7 @@ FenceVkImpl::~FenceVkImpl()
         Wait(UINT64_MAX);
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (m_MaxSyncPoints > RequiredArraySize * 2)
         LOG_WARNING_MESSAGE("Max queue size of pending fences is too big. This may indicate that none of the GetCompletedValue(), Wait() or ExtractSignalSemaphore() have been used.");
 #endif
@@ -247,7 +247,7 @@ VulkanUtilities::RecycledSemaphore FenceVkImpl::ExtractSignalSemaphore(SoftwareQ
 
     VulkanUtilities::RecycledSemaphore Result;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const UInt64 LastValue = m_SyncPoints.empty() ? m_LastCompletedFenceValue.load() : m_SyncPoints.back().Value;
         DEV_CHECK_ERR(Value <= LastValue,
@@ -288,7 +288,7 @@ void FenceVkImpl::AddPendingSyncPoint(SoftwareQueueIndex CommandQueueId, UInt64 
 
     std::lock_guard<std::mutex> Lock{m_SyncPointsGuard};
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const UInt64 LastValue = m_SyncPoints.empty() ? m_LastCompletedFenceValue.load() : m_SyncPoints.back().Value;
         DEV_CHECK_ERR(Value > LastValue,

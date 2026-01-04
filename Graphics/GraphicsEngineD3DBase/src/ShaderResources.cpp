@@ -168,7 +168,7 @@ void ShaderResources::AllocateMemory(IMemoryAllocator&                Allocator,
     }
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void ShaderResources::DvpVerifyResourceLayout(const PipelineResourceLayoutDesc& ResourceLayout,
                                               const ShaderResources* const      pShaderResources[],
                                               UInt32                            NumShaders,

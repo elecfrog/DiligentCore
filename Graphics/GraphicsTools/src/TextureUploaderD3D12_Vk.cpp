@@ -233,7 +233,7 @@ struct TextureUploaderD3D12_Vk::InternalData
 
         std::lock_guard<std::mutex> CacheLock(m_UploadTexturesCacheMtx);
         auto&                       Deque = m_UploadTexturesCache[pUploadTexture->GetDesc()];
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         VERIFY(std::find(Deque.begin(), Deque.end(), pUploadTexture) == Deque.end(),
                "Upload texture is already in the cache");
 #endif

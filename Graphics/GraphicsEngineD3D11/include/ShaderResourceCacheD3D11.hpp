@@ -266,7 +266,7 @@ public:
         VERIFY(FirstStageBinding < GetResourceCount<ResRange>(FirstStageInd), "Resource slot is out of range");
         const auto  FirstStageResArrays = GetConstResourceArrays<ResRange>(FirstStageInd);
         const auto& CachedRes           = FirstStageResArrays.first[FirstStageBinding];
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         {
             const auto* pd3d11Res = FirstStageResArrays.second[FirstStageBinding];
             for (SHADER_TYPE ActiveStages = BindPoints.GetActiveStages(); ActiveStages != SHADER_TYPE_UNKNOWN;)
@@ -299,7 +299,7 @@ public:
         const Int32 FirstShaderInd = ExtractFirstShaderStageIndex(ActiveStages);
         const bool  IsBound        = IsResourceBound<ResRange>(FirstShaderInd, BindPoints[FirstShaderInd]);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         while (ActiveStages != SHADER_TYPE_UNKNOWN)
         {
             const UInt32 ShaderInd = ExtractFirstShaderStageIndex(ActiveStages);
@@ -392,7 +392,7 @@ public:
         return false;
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     void DbgVerifyDynamicBufferMasks() const;
 #endif
 

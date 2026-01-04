@@ -364,7 +364,7 @@ public:
         return *m_QueryMgr;
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     void DvpVerifyDynamicAllocation(const BufferD3D12Impl* pBuffer) const;
 #endif
     __forceinline D3D12_GPU_VIRTUAL_ADDRESS GetBufferGPUAddress(const BufferD3D12Impl* pBuffer, bool VerifyDynamicAllocation = true) const;
@@ -428,7 +428,7 @@ private:
     template <bool IsCompute>
     __forceinline void CommitRootTablesAndViews(RootTableInfo& RootInfo, UInt32 CommitSRBMask, CommandContext& CmdCtx) const;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     void DvpValidateCommittedShaderResources(RootTableInfo& RootInfo) const;
 #endif
 
@@ -523,7 +523,7 @@ private:
     struct MappedBuffer
     {
         D3D12DynamicAllocation Allocation;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         UniqueIdentifier DvpBufferUID = -1;
 #endif
     };
@@ -551,7 +551,7 @@ __forceinline D3D12_GPU_VIRTUAL_ADDRESS DeviceContextD3D12Impl::GetBufferGPUAddr
         return pBuffer->GetD3D12Resource()->GetGPUVirtualAddress();
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (VerifyDynamicAllocation)
     {
         DvpVerifyDynamicAllocation(pBuffer);

@@ -97,7 +97,7 @@ void ShaderResourceCacheWebGPU::InitializeGroups(IMemoryAllocator& MemAllocator,
         m_TotalResources * sizeof(Resource) +
         m_TotalResources * sizeof(WGPUBindGroupEntry);
     VERIFY_EXPR(MemorySize == GetRequiredMemorySize(NumGroups, GroupSizes));
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     m_DbgInitializedResources.resize(m_NumBindGroups);
 #endif
 
@@ -130,7 +130,7 @@ void ShaderResourceCacheWebGPU::InitializeGroups(IMemoryAllocator& MemAllocator,
             pCurrResPtr += GroupSize;
             pCurrWGPUEntryPtr += GroupSize;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
             m_DbgInitializedResources[t].resize(GroupSize);
 #endif
         }
@@ -145,7 +145,7 @@ void ShaderResourceCacheWebGPU::Resource::SetUniformBuffer(RefCntAutoPtr<IDevice
     pObject = std::move(_pBuffer);
 
     const BufferWebGPUImpl* pBuffWGPU = pObject.ConstPtr<BufferWebGPUImpl>();
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     if (pBuffWGPU != nullptr)
     {
         VERIFY_EXPR((pBuffWGPU->GetDesc().BindFlags & BIND_UNIFORM_BUFFER) != 0);
@@ -186,7 +186,7 @@ void ShaderResourceCacheWebGPU::Resource::SetStorageBuffer(RefCntAutoPtr<IDevice
     BufferBaseOffset = ViewDesc.ByteOffset;
     BufferRangeSize  = ViewDesc.ByteWidth;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     {
         const BufferWebGPUImpl* pBuffWGPU = pBuffViewWGPU->GetBuffer<const BufferWebGPUImpl>();
         const BufferDesc&       BuffDesc  = pBuffWGPU->GetDesc();
@@ -258,7 +258,7 @@ void ShaderResourceCacheWebGPU::InitializeResources(UInt32 GroupIdx, UInt32 Offs
     for (UInt32 res = 0; res < ArraySize; ++res)
     {
         new (&Group.GetResource(Offset + res)) Resource{Type, HasImmutableSampler};
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         m_DbgInitializedResources[GroupIdx][size_t{Offset} + res] = true;
 #endif
     }
@@ -524,7 +524,7 @@ bool ShaderResourceCacheWebGPU::GetDynamicBufferOffsets(const DeviceContextWebGP
             break;
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (; res < GroupSize; ++res)
     {
         const Resource& Res = Group.GetResource(res);
@@ -542,7 +542,7 @@ bool ShaderResourceCacheWebGPU::GetDynamicBufferOffsets(const DeviceContextWebGP
     return OffsetsChanged;
 }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 void ShaderResourceCacheWebGPU::DbgVerifyResourceInitialization() const
 {
     for (const std::vector<bool>& SetFlags : m_DbgInitializedResources)

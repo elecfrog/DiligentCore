@@ -44,7 +44,7 @@ struct ResourceBinding
         UInt32 Space     = ~0u;
         UInt32 ArraySize = 0;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         SHADER_RESOURCE_TYPE ResType = SHADER_RESOURCE_TYPE_UNKNOWN;
 #endif
 
@@ -56,7 +56,7 @@ struct ResourceBinding
             BindPoint{_BindPoint},
             Space    {_Space    },
             ArraySize{_ArraySize}
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             , ResType{_ResType  }
 #endif
         // clang-format on

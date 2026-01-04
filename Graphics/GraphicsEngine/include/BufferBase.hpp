@@ -88,7 +88,7 @@ public:
                const BufferDesc&      BuffDesc,
                bool                   bIsDeviceInternal) :
         TDeviceObjectBase{pRefCounters, pDevice, BuffDesc, bIsDeviceInternal},
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         m_dbgBuffViewAllocator{BuffViewObjAllocator},
 #endif
         m_pDefaultUAV{nullptr, STDDeleter<BufferViewImplType, TBuffViewObjAllocator>(BuffViewObjAllocator)},
@@ -253,7 +253,7 @@ protected:
     void DvpVerifyFlushMappedRangeArguments(UInt64 StartOffset,
                                             UInt64 Size) const
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         DEV_CHECK_ERR((GetMemoryProperties() & MEMORY_PROPERTY_HOST_COHERENT) == 0, "Coherent memory does not need to be flushed.");
         DEV_CHECK_ERR(this->GetDesc().Usage != USAGE_DYNAMIC, "Dynamic buffer mapped memory must never be flushed.");
         DEV_CHECK_ERR(StartOffset + Size <= this->GetDesc().Size, "Memory range is out of buffer bounds.");
@@ -263,7 +263,7 @@ protected:
     void DvpVerifyInvalidateMappedRangeArguments(UInt64 StartOffset,
                                                  UInt64 Size) const
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         DEV_CHECK_ERR((GetMemoryProperties() & MEMORY_PROPERTY_HOST_COHERENT) == 0, "Coherent memory does not need to be invalidated.");
         DEV_CHECK_ERR(this->GetDesc().Usage != USAGE_DYNAMIC, "Dynamic buffer mapped memory must never be invalidated.");
         DEV_CHECK_ERR(StartOffset + Size <= this->GetDesc().Size, "Memory range is out of buffer bounds.");
@@ -271,7 +271,7 @@ protected:
     }
 
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     TBuffViewObjAllocator& m_dbgBuffViewAllocator;
 #endif
 

@@ -105,7 +105,7 @@ public:
                                 UInt32            Size) :
         m_AllocationsMgr{Size, Allocator}
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         m_MasterBlockCounter = 0;
 #endif
     }
@@ -155,7 +155,7 @@ public:
                 if (Mgr != nullptr)
                 {
                     std::lock_guard<std::mutex> Lock{Mgr->m_AllocationsMgrMtx};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
                     --Mgr->m_MasterBlockCounter;
 #endif
                     Mgr->m_AllocationsMgr.Free(std::move(Block));
@@ -174,7 +174,7 @@ public:
     OffsetType GetUsedSize() const { return m_AllocationsMgr.GetUsedSize();}
     // clang-format on
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     Int32 GetMasterBlockCounter() const
     {
         return m_MasterBlockCounter.load();
@@ -186,7 +186,7 @@ protected:
     {
         std::lock_guard<std::mutex> Lock{m_AllocationsMgrMtx};
         MasterBlock                 NewBlock = m_AllocationsMgr.Allocate(SizeInBytes, Alignment);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         if (NewBlock.IsValid())
         {
             ++m_MasterBlockCounter;
@@ -199,7 +199,7 @@ private:
     std::mutex                     m_AllocationsMgrMtx;
     VariableSizeAllocationsManager m_AllocationsMgr;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     std::atomic<Int32> m_MasterBlockCounter;
 #endif
 };

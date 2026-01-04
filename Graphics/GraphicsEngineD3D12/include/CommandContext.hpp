@@ -520,7 +520,7 @@ inline ComputeContext& CommandContext::AsComputeContext()
 
 inline void CommandContext::SetDescriptorHeaps(ShaderDescriptorHeaps Heaps)
 {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     VERIFY(Heaps.pSrvCbvUavHeap != nullptr || Heaps.pSamplerHeap != nullptr, "At least one heap is expected to be set");
     VERIFY(Heaps.pSrvCbvUavHeap == nullptr || Heaps.pSrvCbvUavHeap->GetDesc().Type == D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, "Invalid heap type provided in pSrvCbvUavHeap");
     VERIFY(Heaps.pSamplerHeap == nullptr || Heaps.pSamplerHeap->GetDesc().Type == D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER, "Invalid heap type provided in pSamplerHeap");

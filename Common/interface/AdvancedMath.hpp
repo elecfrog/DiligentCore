@@ -1400,7 +1400,7 @@ public:
 
                 if (m_VertTypes[Idx] == VertexType::Convexx || m_VertTypes[Idx] == VertexType::Ear)
                 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
                     // This check may fail due to floating point imprecision if there are collinear vertices.
                     if (IsPointInsideTriangle(V0, V1, V2, Polygon[Idx], /*AllowEdges = */ false))
                     {

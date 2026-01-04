@@ -184,7 +184,7 @@ void ShaderVariableManagerWebGPU::CheckResources(IResourceMapping*              
 namespace
 {
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 inline BUFFER_VIEW_TYPE DvpBindGroupEntryTypeToBufferView(BindGroupEntryType Type)
 {
     static_assert(static_cast<UInt32>(BindGroupEntryType::Count) == 12, "Please update the switch below to handle the new bind group entry type");
@@ -383,7 +383,7 @@ void BindResourceHelper::CacheUniformBuffer(const BindResourceInfo& BindInfo) co
 
     // We cannot use ClassPtrCast<> here as the resource can have wrong type
     RefCntAutoPtr<BufferWebGPUImpl> pBufferWebGPU{BindInfo.pObject, IID_BufferWebGPU};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     VerifyConstantBufferBinding(m_ResDesc, BindInfo, pBufferWebGPU.RawPtr(), m_DstRes.pObject.RawPtr(),
                                 m_DstRes.BufferBaseOffset, m_DstRes.BufferRangeSize, m_Signature.GetDesc().Name);
 #endif
@@ -401,7 +401,7 @@ void BindResourceHelper::CacheStorageBuffer(const BindResourceInfo& BindInfo) co
            "Storage buffer resource is expected");
 
     RefCntAutoPtr<BufferViewWebGPUImpl> pBufferViewWebGPU{BindInfo.pObject, IID_BufferViewWebGPU};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         // HLSL buffer SRVs are mapped to storage buffers in GLSL
         const BUFFER_VIEW_TYPE RequiredViewType = DvpBindGroupEntryTypeToBufferView(m_DstRes.Type);
@@ -431,7 +431,7 @@ void BindResourceHelper::CacheTexture(const BindResourceInfo& BindInfo) const
            "Texture or storage texture resource is expected");
 
     RefCntAutoPtr<TextureViewWebGPUImpl> pTexViewWebGPU0{BindInfo.pObject, IID_TextureViewWebGPU};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         // HLSL buffer SRVs are mapped to storage buffers in GLSL
         TEXTURE_VIEW_TYPE RequiredViewType = DvpBindGroupEntryTypeToTextureView(m_DstRes.Type);
@@ -491,7 +491,7 @@ void BindResourceHelper::CacheSampler(const BindResourceInfo& BindInfo) const
     VERIFY(!m_Attribs.IsImmutableSamplerAssigned(), "This separate sampler is assigned an immutable sampler");
 
     RefCntAutoPtr<SamplerWebGPUImpl> pSamplerWebGPU{BindInfo.pObject, IID_Sampler};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     VerifySamplerBinding(m_ResDesc, BindInfo, pSamplerWebGPU.RawPtr(), m_DstRes.pObject, m_Signature.GetDesc().Name);
 #endif
 
@@ -518,7 +518,7 @@ void ShaderVariableManagerWebGPU::SetBufferDynamicOffset(UInt32 ResIndex,
 {
     const PipelineResourceAttribsWebGPU& Attribs           = m_pSignature->GetResourceAttribs(ResIndex);
     const UInt32                         DstResCacheOffset = Attribs.CacheOffset(m_ResourceCache.GetContentType()) + ArrayIndex;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const PipelineResourceDesc&                 ResDesc = m_pSignature->GetResourceDesc(ResIndex);
         const ShaderResourceCacheWebGPU::BindGroup& Group   = const_cast<const ShaderResourceCacheWebGPU&>(m_ResourceCache).GetBindGroup(Attribs.BindGroup);

@@ -81,7 +81,7 @@ BottomLevelASVkImpl::BottomLevelASVkImpl(IReferenceCounters*      pRefCounters,
 
                 MaxPrimitiveCount += src.MaxPrimitiveCount;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 #    if DILIGENT_USE_VOLK
                 {
                     VkFormatProperties2 vkProps{};

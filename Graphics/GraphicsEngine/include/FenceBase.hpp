@@ -73,7 +73,7 @@ public:
     // Validate IFence::Signal() and IDeviceContext::EnqueueSignal()
     void DvpSignal(UInt64 NewValue)
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         UInt64 EnqueuedValue = m_EnqueuedFenceValue.load();
         DEV_CHECK_ERR(NewValue >= EnqueuedValue,
                       "Fence '", this->m_Desc.Name, "' is being signaled or enqueued for signal with value ", NewValue,
@@ -90,7 +90,7 @@ public:
     // Validate IDeviceContext::DeviceWaitForFence()
     void DvpDeviceWait(UInt64 Value)
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         if (!this->GetDevice()->GetFeatures().NativeFence)
         {
             UInt64 EnqueuedValue = m_EnqueuedFenceValue.load();
@@ -113,7 +113,7 @@ protected:
 
     std::atomic<UInt64> m_LastCompletedFenceValue{0};
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     std::atomic<UInt64> m_EnqueuedFenceValue{0};
 #endif
 };

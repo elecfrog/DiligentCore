@@ -185,7 +185,7 @@ void ShaderVariableManagerVk::CheckResources(IResourceMapping*                  
 namespace
 {
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 inline BUFFER_VIEW_TYPE DvpDescriptorTypeToBufferView(DescriptorType Type)
 {
     static_assert(static_cast<UInt32>(DescriptorType::Count) == 16, "Please update the switch below to handle the new descriptor type");
@@ -289,7 +289,7 @@ BindResourceHelper::BindResourceHelper(const PipelineResourceSignatureVkImpl& Si
     VERIFY(ArrayIndex < m_ResDesc.ArraySize, "Array index is out of range, but it should've been corrected by ShaderVariableBase::SetArray()");
     VERIFY(m_DstRes.Type == m_Attribs.GetDescriptorType(), "Inconsistent types");
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     {
         VkDescriptorSet vkDescrSet = m_CachedSet.GetVkDescriptorSet();
         if (m_CacheType == ResourceCacheContentType::SRB)
@@ -432,7 +432,7 @@ void BindResourceHelper::CacheUniformBuffer(const BindResourceInfo& BindInfo) co
 
     // We cannot use ClassPtrCast<> here as the resource can have wrong type
     RefCntAutoPtr<BufferVkImpl> pBufferVk{BindInfo.pObject, IID_BufferVk};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     VerifyConstantBufferBinding(m_ResDesc, BindInfo, pBufferVk.RawPtr(), m_DstRes.pObject.RawPtr(),
                                 m_DstRes.BufferBaseOffset, m_DstRes.BufferRangeSize, m_Signature.GetDesc().Name);
 #endif
@@ -450,7 +450,7 @@ void BindResourceHelper::CacheStorageBuffer(const BindResourceInfo& BindInfo) co
            "Storage buffer resource is expected");
 
     RefCntAutoPtr<BufferViewVkImpl> pBufferViewVk{BindInfo.pObject, IID_BufferViewVk};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         // HLSL buffer SRVs are mapped to storage buffers in GLSL
         const BUFFER_VIEW_TYPE RequiredViewType = DvpDescriptorTypeToBufferView(m_DstRes.Type);
@@ -479,7 +479,7 @@ void BindResourceHelper::CacheTexelBuffer(const BindResourceInfo& BindInfo) cons
            "Uniform or storage buffer resource is expected");
 
     RefCntAutoPtr<BufferViewVkImpl> pBufferViewVk{BindInfo.pObject, IID_BufferViewVk};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         // HLSL buffer SRVs are mapped to storage buffers in GLSL
         const BUFFER_VIEW_TYPE RequiredViewType = DvpDescriptorTypeToBufferView(m_DstRes.Type);
@@ -508,7 +508,7 @@ void BindResourceHelper::CacheImage(const BindResourceInfo& BindInfo) const
            "Storage image, separate image or sampled image resource is expected");
 
     RefCntAutoPtr<TextureViewVkImpl> pTexViewVk0{BindInfo.pObject, IID_TextureViewVk};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         // HLSL buffer SRVs are mapped to storage buffers in GLSL
         TEXTURE_VIEW_TYPE RequiredViewType = DvpDescriptorTypeToTextureView(m_DstRes.Type);
@@ -524,7 +524,7 @@ void BindResourceHelper::CacheImage(const BindResourceInfo& BindInfo) const
     TextureViewVkImpl* pTexViewVk = pTexViewVk0;
     if (UpdateCachedResource(std::move(pTexViewVk0), BindInfo.Flags))
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         if (m_DstRes.Type == DescriptorType::CombinedImageSampler && !m_Attribs.IsImmutableSamplerAssigned())
         {
             if (pTexViewVk->GetSampler() == nullptr)
@@ -581,7 +581,7 @@ void BindResourceHelper::CacheSeparateSampler(const BindResourceInfo& BindInfo) 
     VERIFY(!m_Attribs.IsImmutableSamplerAssigned(), "This separate sampler is assigned an immutable sampler");
 
     RefCntAutoPtr<SamplerVkImpl> pSamplerVk{BindInfo.pObject, IID_Sampler};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     VerifySamplerBinding(m_ResDesc, BindInfo, pSamplerVk.RawPtr(), m_DstRes.pObject, m_Signature.GetDesc().Name);
 #endif
 
@@ -595,7 +595,7 @@ void BindResourceHelper::CacheInputAttachment(const BindResourceInfo& BindInfo) 
             m_DstRes.Type == DescriptorType::InputAttachment_General),
            "Input attachment resource is expected");
     RefCntAutoPtr<TextureViewVkImpl> pTexViewVk{BindInfo.pObject, IID_TextureViewVk};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     VerifyResourceViewBinding(m_ResDesc, BindInfo, pTexViewVk.RawPtr(),
                               {TEXTURE_VIEW_SHADER_RESOURCE},
                               RESOURCE_DIM_UNDEFINED,
@@ -612,7 +612,7 @@ void BindResourceHelper::CacheAccelerationStructure(const BindResourceInfo& Bind
     VERIFY(BindInfo.pObject != nullptr, "Setting acceleration structure to null is handled by BindResourceHelper::operator()");
     VERIFY(m_DstRes.Type == DescriptorType::AccelerationStructure, "Acceleration Structure resource is expected");
     RefCntAutoPtr<TopLevelASVkImpl> pTLASVk{BindInfo.pObject, IID_TopLevelASVk};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     VerifyTLASResourceBinding(m_ResDesc, BindInfo, pTLASVk.RawPtr(), m_DstRes.pObject.RawPtr(), m_Signature.GetDesc().Name);
 #endif
 
@@ -639,7 +639,7 @@ void ShaderVariableManagerVk::SetBufferDynamicOffset(UInt32 ResIndex,
 {
     const PipelineResourceAttribsVk& Attribs           = m_pSignature->GetResourceAttribs(ResIndex);
     const UInt32                     DstResCacheOffset = Attribs.CacheOffset(m_ResourceCache.GetContentType()) + ArrayIndex;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const PipelineResourceDesc&                 ResDesc = m_pSignature->GetResourceDesc(ResIndex);
         const ShaderResourceCacheVk::DescriptorSet& Set     = const_cast<const ShaderResourceCacheVk&>(m_ResourceCache).GetDescriptorSet(Attribs.DescrSet);

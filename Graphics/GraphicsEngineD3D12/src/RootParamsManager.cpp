@@ -41,7 +41,7 @@ namespace
 
 const D3D12_DESCRIPTOR_RANGE_TYPE InvalidDescriptorRangeType = static_cast<D3D12_DESCRIPTOR_RANGE_TYPE>(-1);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 void DbgValidateD3D12RootTable(const D3D12_ROOT_DESCRIPTOR_TABLE& d3d12Tbl)
 {
     VERIFY(d3d12Tbl.NumDescriptorRanges > 0, "Descriptor table must contain at least one range");
@@ -85,7 +85,7 @@ RootParameter::RootParameter(UInt32                      _RootIndex,
     VERIFY_EXPR(RootIndex == _RootIndex);
     VERIFY_EXPR(Group == Group);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     if (d3d12RootParam.ParameterType == D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE)
         DbgValidateD3D12RootTable(d3d12RootParam.DescriptorTable);
 #endif
@@ -172,7 +172,7 @@ bool RootParamsManager::operator==(const RootParamsManager& RootParams) const no
     return true;
 }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 void RootParamsManager::Validate() const
 {
     std::array<std::array<std::vector<bool>, ROOT_PARAMETER_GROUP_COUNT>, D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER + 1> DescriptorSlots;
@@ -250,7 +250,7 @@ RootParameter& RootParamsBuilder::AddRootView(D3D12_ROOT_PARAMETER_TYPE Paramete
                                               D3D12_SHADER_VISIBILITY   Visibility,
                                               ROOT_PARAMETER_GROUP      Group)
 {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     VERIFY((ParameterType == D3D12_ROOT_PARAMETER_TYPE_CBV ||
             ParameterType == D3D12_ROOT_PARAMETER_TYPE_SRV ||
             ParameterType == D3D12_ROOT_PARAMETER_TYPE_UAV),
@@ -293,7 +293,7 @@ void RootParamsBuilder::RootTableData::Extend(UInt32 NumExtraRanges)
     Ranges.resize(d3d12Tbl.NumDescriptorRanges);
     d3d12Tbl.pDescriptorRanges = Ranges.data();
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (UInt32 i = d3d12Tbl.NumDescriptorRanges - NumExtraRanges; i < d3d12Tbl.NumDescriptorRanges; ++i)
         Ranges[i].RangeType = InvalidDescriptorRangeType;
 #endif
@@ -304,7 +304,7 @@ RootParamsBuilder::RootTableData& RootParamsBuilder::AddRootTable(UInt32        
                                                                   ROOT_PARAMETER_GROUP    Group,
                                                                   UInt32                  NumRangesInNewTable)
 {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (const RootTableData& RootTbl : m_RootTables)
         VERIFY(RootTbl.RootIndex != RootIndex, "Index ", RootIndex, " is already used by another root table");
     for (const RootParameter& RootView : m_RootViews)
@@ -392,7 +392,7 @@ void RootParamsBuilder::AllocateResourceSlot(SHADER_TYPE                   Shade
         NewRange.BaseShaderRegister                = Register;             // Shader register
         NewRange.RegisterSpace                     = Space;                // Shader register space
         NewRange.OffsetInDescriptorsFromTableStart = OffsetFromTableStart; // Offset in descriptors from the table start
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         DbgValidateD3D12RootTable(d3d12RootParam.DescriptorTable);
 #endif
     }
@@ -430,7 +430,7 @@ void RootParamsBuilder::InitializeMgr(IMemoryAllocator& MemAllocator, RootParams
         STDDeleter<void, IMemoryAllocator>(MemAllocator) //
     };
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     memset(ParamsMgr.m_pMemory.get(), 0xFF, MemorySize);
 #endif
 
@@ -446,7 +446,7 @@ void RootParamsBuilder::InitializeMgr(IMemoryAllocator& MemAllocator, RootParams
         const RootTableData&               SrcTbl        = m_RootTables[rt];
         const D3D12_ROOT_PARAMETER&        d3d12SrcParam = SrcTbl.d3d12RootParam;
         const D3D12_ROOT_DESCRIPTOR_TABLE& d3d12SrcTbl   = d3d12SrcParam.DescriptorTable;
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         VERIFY(d3d12SrcParam.ParameterType == D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE,
                "Unexpected parameter type: descriptor table is expected");
         DbgValidateD3D12RootTable(d3d12SrcTbl);
@@ -487,7 +487,7 @@ void RootParamsBuilder::InitializeMgr(IMemoryAllocator& MemAllocator, RootParams
     ParamsMgr.m_pRootTables = NumRootTables != 0 ? pRootTables : nullptr;
     ParamsMgr.m_pRootViews  = NumRootViews != 0 ? pRootViews : nullptr;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     ParamsMgr.Validate();
 #endif
 }

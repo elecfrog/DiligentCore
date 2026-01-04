@@ -72,7 +72,7 @@ public:
 
     const RootSignatureD3D12& GetRootSignature() const { return *m_RootSig; }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     using ShaderResourceCacheArrayType = std::array<ShaderResourceCacheD3D12*, MAX_RESOURCE_SIGNATURES>;
     void DvpVerifySRBResources(const DeviceContextD3D12Impl*       pDeviceCtx,
                                const ShaderResourceCacheArrayType& ResourceCaches) const;
@@ -143,7 +143,7 @@ private:
     //      pipeline resource signatures in m_RootSig, because the latter may be used from the
     //      cache. While the two signatures may be compatible, they resource names may not be identical.
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Shader resources for all shaders in all shader stages in the pipeline.
     std::vector<std::shared_ptr<const ShaderResourcesD3D12>> m_ShaderResources;
 

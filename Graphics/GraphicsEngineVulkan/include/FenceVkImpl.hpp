@@ -98,7 +98,7 @@ private:
     std::mutex                m_SyncPointsGuard; // Protects access to the m_SyncPoints
     std::deque<SyncPointData> m_SyncPoints;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     size_t m_MaxSyncPoints = 0;
 #endif
 };

@@ -33,7 +33,7 @@
 namespace Diligent
 {
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 inline void FillWithDebugPattern(void* ptr, UInt8 Pattern, size_t NumBytes)
 {
     memset(ptr, Pattern, NumBytes);
@@ -86,7 +86,7 @@ void* FixedBlockMemoryAllocator::MemoryPage::GetBlockStartAddress(UInt32 BlockIn
     return reinterpret_cast<UInt8*>(m_pPageStart) + BlockIndex * m_pOwnerAllocator->m_BlockSize;
 }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 void FixedBlockMemoryAllocator::MemoryPage::dbgVerifyAddress(const void* pBlockAddr) const
 {
     size_t Delta = reinterpret_cast<const UInt8*>(pBlockAddr) - reinterpret_cast<UInt8*>(m_pPageStart);
@@ -190,7 +190,7 @@ FixedBlockMemoryAllocator::FixedBlockMemoryAllocator(IMemoryAllocator& RawMemory
 
 FixedBlockMemoryAllocator::~FixedBlockMemoryAllocator()
 {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (size_t p = 0; p < m_PagePool.size(); ++p)
     {
         VERIFY(!m_PagePool[p].HasAllocations(), "Memory leak detected: memory page has allocated block");

@@ -795,7 +795,7 @@ void TextureBaseGL::CopyData(DeviceContextGLImpl* pDeviceCtxGL,
 
 void TextureBaseGL::SetDefaultGLParameters()
 {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     {
         GLint BoundTex;
         GLint TextureBinding = 0;

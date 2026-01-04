@@ -89,7 +89,7 @@ private:
 
         void* GetBlockStartAddress(UInt32 BlockIndex) const;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         void dbgVerifyAddress(const void* pBlockAddr) const;
 #endif
 
@@ -132,7 +132,7 @@ class ObjectPool
 public:
     static void SetRawAllocator(IMemoryAllocator& Allocator)
     {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         if (m_bPoolInitialized && m_pRawAllocator != &Allocator)
         {
             LOG_WARNING_MESSAGE("Setting pool raw allocator after the pool has been initialized has no effect");
@@ -142,7 +142,7 @@ public:
     }
     static void SetPageSize(UInt32 NumAllocationsInPage)
     {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         if (m_bPoolInitialized && m_NumAllocationsInPage != NumAllocationsInPage)
         {
             LOG_WARNING_MESSAGE("Setting pool page size after the pool has been initialized has no effect");
@@ -153,7 +153,7 @@ public:
     static ObjectPool& GetPool()
     {
         static ObjectPool ThePool;
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         m_bPoolInitialized = true;
 #endif
         return ThePool;
@@ -190,7 +190,7 @@ private:
     ObjectPool() :
         m_FixedBlockAllocator(m_pRawAllocator ? *m_pRawAllocator : GetRawAllocator(), sizeof(ObjectType), m_NumAllocationsInPage)
     {}
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     static bool m_bPoolInitialized;
 #endif
     FixedBlockMemoryAllocator m_FixedBlockAllocator;
@@ -201,7 +201,7 @@ UInt32 ObjectPool<ObjectType>::m_NumAllocationsInPage = 64;
 template <typename ObjectType>
 IMemoryAllocator* ObjectPool<ObjectType>::m_pRawAllocator = nullptr;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 template <typename ObjectType>
 bool ObjectPool<ObjectType>::m_bPoolInitialized = false;
 #endif

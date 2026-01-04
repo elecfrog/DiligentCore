@@ -246,7 +246,7 @@ void PipelineStateWebGPUImpl::InitPipelineLayout(const PipelineStateCreateInfo& 
                                      BindIndexToBindGroupIndex,
                                      VerifyBindings, // VerifyOnly
                                      m_Desc.Name,
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
                                      &m_ShaderResources, &m_ResourceAttibutions
 #else
                                      nullptr, nullptr
@@ -796,7 +796,7 @@ PipelineResourceSignatureDescWrapper PipelineStateWebGPUImpl::GetDefaultResource
     return SignDesc;
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void PipelineStateWebGPUImpl::DvpVerifySRBResources(const DeviceContextWebGPUImpl* pDeviceCtx, const ShaderResourceCacheArrayType& ResourceCaches) const
 {
     auto res_info = m_ResourceAttibutions.begin();

@@ -189,7 +189,7 @@ struct TextureUploaderGL::InternalData
         std::lock_guard<std::mutex> CacheLock{m_UploadBuffCacheMtx};
 
         auto& Deque = m_UploadBufferCache[Desc];
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         VERIFY(std::find(Deque.begin(), Deque.end(), pUploadBufferGL) == Deque.end(), "Upload buffer is already in the cache");
 #endif
         Deque.emplace_back(pUploadBufferGL);

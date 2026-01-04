@@ -291,7 +291,7 @@ public:
         rhs.m_FirstCPUHandle.ptr         = 0;
         rhs.m_FirstGPUHandle.ptr         = 0;
         rhs.m_MaxAllocatedSize           = 0;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         m_AllocationsCounter.store(rhs.m_AllocationsCounter.load());
         rhs.m_AllocationsCounter      = 0;
         m_pd3d12InvalidDescriptorHeap = std::move(rhs.m_pd3d12InvalidDescriptorHeap);
@@ -317,7 +317,7 @@ public:
     size_t GetMaxAllocatedSize()       const { return m_MaxAllocatedSize;               }
     // clang-format on
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     Int32 DvpGetAllocationsCounter() const
     {
         return m_AllocationsCounter.load();
@@ -356,7 +356,7 @@ private:
 
     size_t m_MaxAllocatedSize = 0;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     std::atomic<Int32> m_AllocationsCounter{0};
     // This descriptor heap is only used to copy invalid descriptors to
     // a new allocated region. Using these descriptors will result in device
@@ -409,7 +409,7 @@ public:
     virtual void                     Free(DescriptorHeapAllocation&& Allocation, UInt64 CmdQueueMask) override final;
     virtual UInt32                   GetDescriptorSize() const override final { return m_DescriptorSize; }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     int32_t DvpGetTotalAllocationCount();
 #endif
 
@@ -508,7 +508,7 @@ public:
     UInt32                            GetMaxStaticDescriptors() const { return m_HeapAllocationManager.GetMaxDescriptors(); }
     UInt32                            GetMaxDynamicDescriptors() const { return m_DynamicAllocationsManager.GetMaxDescriptors(); }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     int32_t DvpGetTotalAllocationCount() const
     {
         return m_HeapAllocationManager.DvpGetAllocationsCounter() +

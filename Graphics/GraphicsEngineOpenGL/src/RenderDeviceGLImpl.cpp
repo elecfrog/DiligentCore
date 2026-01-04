@@ -1345,7 +1345,7 @@ void RenderDeviceGLImpl::FlagSupportedTexFormats()
     FlagFormat(TEX_FORMAT_ETC2_RGBA8_UNORM_SRGB,      bETC2,        BIND_SHADER_RESOURCE,   true);
     // clang-format on
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     const bool bGL43OrAbove = DeviceInfo.Type == RENDER_DEVICE_TYPE_GL && DeviceInfo.APIVersion >= Version{4, 3};
 
     constexpr int      TestTextureDim = 8;

@@ -36,7 +36,7 @@ namespace Diligent
 
 static const DynamicAtlasManager::Region InvalidRegion{UINT_MAX, UINT_MAX, 0, 0};
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
 void DynamicAtlasManager::Node::Validate() const
 {
     VERIFY(NumChildren == 0 || NumChildren == 2 || NumChildren == 3, "Only zero, two or three children are expected");
@@ -87,7 +87,7 @@ void DynamicAtlasManager::Node::Split(const std::initializer_list<Region>& Regio
     }
     VERIFY_EXPR(NumChildren == Regions.size());
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
     Validate();
 #endif
 }
@@ -124,7 +124,7 @@ DynamicAtlasManager::~DynamicAtlasManager()
 {
     if (m_Root)
     {
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
         DbgVerifyConsistency();
 #endif
 
@@ -319,7 +319,7 @@ DynamicAtlasManager::Region DynamicAtlasManager::Allocate(UInt32 Width, UInt32 H
     VERIFY_EXPR(m_TotalFreeArea >= UInt64{R.width} * UInt64{R.height});
     m_TotalFreeArea -= UInt64{R.width} * UInt64{R.height};
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
     DbgVerifyConsistency();
 #endif
 
@@ -329,7 +329,7 @@ DynamicAtlasManager::Region DynamicAtlasManager::Allocate(UInt32 Width, UInt32 H
 
 void DynamicAtlasManager::Free(Region&& R)
 {
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
     DbgVerifyRegion(R);
 #endif
 
@@ -362,7 +362,7 @@ void DynamicAtlasManager::Free(Region&& R)
 
     m_TotalFreeArea += UInt64{R.width} * UInt64{R.height};
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
     DbgVerifyConsistency();
 #endif
 
@@ -370,7 +370,7 @@ void DynamicAtlasManager::Free(Region&& R)
 }
 
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
 
 void DynamicAtlasManager::DbgVerifyRegion(const Region& R) const
 {
@@ -439,6 +439,6 @@ void DynamicAtlasManager::DbgVerifyConsistency() const
         VERIFY_EXPR(FreeArea == m_TotalFreeArea);
     }
 }
-#endif // DILIGENT_DEBUG
+#endif // SPW_DEBUG
 
 } // namespace Diligent

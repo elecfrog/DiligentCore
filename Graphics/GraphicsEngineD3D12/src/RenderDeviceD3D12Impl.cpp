@@ -242,7 +242,7 @@ RenderDeviceD3D12Impl::RenderDeviceD3D12Impl(IReferenceCounters*          pRefCo
             LOG_INFO_MESSAGE("Max device shader model: ", UInt32{MaxHLSLVersion.Major}, '_', UInt32{MaxHLSLVersion.Minor} & 0xF);
         }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 #    define CHECK_D3D12_DEVICE_VERSION(Version)               \
         if (CComQIPtr<ID3D12Device##Version>{m_pd3d12Device}) \
             m_MaxD3D12DeviceVersion = Version;
@@ -302,7 +302,7 @@ RenderDeviceD3D12Impl::~RenderDeviceD3D12Impl()
     IdleGPU();
     ReleaseStaleResources(true);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     for (size_t i = 0; i < _countof(m_CPUDescriptorHeaps); ++i)
     {
         DEV_CHECK_ERR(m_CPUDescriptorHeaps[i].DvpGetTotalAllocationCount() == 0, "All CPU descriptor heap allocations must be released");
@@ -341,7 +341,7 @@ void RenderDeviceD3D12Impl::FreeCommandContext(PooledCommandContext&& Ctx)
 
     std::lock_guard<std::mutex> Guard{m_ContextPoolMutex};
     m_ContextPool.emplace(CmdListType, std::move(Ctx));
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     m_AllocatedCtxCounter.fetch_add(-1);
 #endif
 }
@@ -486,7 +486,7 @@ RenderDeviceD3D12Impl::PooledCommandContext RenderDeviceD3D12Impl::AllocateComma
             m_ContextPool.erase(pool_it);
             Ctx->Reset(CmdListMngr);
             Ctx->SetID(ID);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             m_AllocatedCtxCounter.fetch_add(1);
 #endif
             return Ctx;
@@ -497,7 +497,7 @@ RenderDeviceD3D12Impl::PooledCommandContext RenderDeviceD3D12Impl::AllocateComma
     CommandContext*   pRawMem         = ALLOCATE(CmdCtxAllocator, "CommandContext instance", CommandContext, 1);
     CommandContext*   pCtx            = new (pRawMem) CommandContext(CmdListMngr);
     pCtx->SetID(ID);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     m_AllocatedCtxCounter.fetch_add(1);
 #endif
     return PooledCommandContext(pCtx, CmdCtxAllocator);

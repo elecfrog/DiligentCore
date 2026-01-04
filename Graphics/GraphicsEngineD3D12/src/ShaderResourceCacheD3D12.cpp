@@ -171,7 +171,7 @@ void ShaderResourceCacheD3D12::Initialize(IMemoryAllocator&        MemAllocator,
     const size_t MemSize = AllocateMemory(MemAllocator);
     VERIFY_EXPR(MemSize == MemReq.TotalSize);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     std::vector<bool> RootTableInitFlags(MemReq.NumTables);
 #endif
 
@@ -194,7 +194,7 @@ void ShaderResourceCacheD3D12::Initialize(IMemoryAllocator&        MemAllocator,
             RootTbl.TableOffsetInGroupAllocation};
         ResIdx += TableSize;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         RootTableInitFlags[RootTbl.RootIndex] = true;
 #endif
     }
@@ -216,13 +216,13 @@ void ShaderResourceCacheD3D12::Initialize(IMemoryAllocator&        MemAllocator,
         };
         ++ResIdx;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         RootTableInitFlags[RootView.RootIndex] = true;
 #endif
     }
     VERIFY_EXPR(ResIdx == m_TotalResourceCount);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (size_t i = 0; i < RootTableInitFlags.size(); ++i)
     {
         VERIFY(RootTableInitFlags[i], "Root table at index ", i, " has not been initialized");
@@ -336,7 +336,7 @@ const ShaderResourceCacheD3D12::Resource& ShaderResourceCacheD3D12::SetResource(
     }
     else
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         if (GetContentType() == ResourceCacheContentType::SRB)
         {
             const BufferD3D12Impl* pBuffer = nullptr;
@@ -421,7 +421,7 @@ const ShaderResourceCacheD3D12::Resource& ShaderResourceCacheD3D12::CopyResource
 }
 
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 void ShaderResourceCacheD3D12::DbgValidateDynamicBuffersMask() const
 {
     VERIFY_EXPR((m_DynamicRootBuffersMask & m_NonDynamicRootBuffersMask) == 0);
@@ -566,7 +566,7 @@ void ShaderResourceCacheD3D12::Resource::TransitionResource(CommandContext& Ctx)
 }
 
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void ShaderResourceCacheD3D12::Resource::DvpVerifyResourceState()
 {
     static_assert(SHADER_RESOURCE_TYPE_LAST == 8, "Please update this function to handle the new resource type");
@@ -680,7 +680,7 @@ void ShaderResourceCacheD3D12::Resource::DvpVerifyResourceState()
             VERIFY(pObject == nullptr && CPUDescriptorHandle.ptr == 0, "Bound resource is unexpected");
     }
 }
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
 void ShaderResourceCacheD3D12::TransitionResourceStates(CommandContext& Ctx, StateTransitionMode Mode)
 {
@@ -694,7 +694,7 @@ void ShaderResourceCacheD3D12::TransitionResourceStates(CommandContext& Ctx, Sta
                 break;
 
             case StateTransitionMode::Verify:
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
                 Res.DvpVerifyResourceState();
 #endif
                 break;

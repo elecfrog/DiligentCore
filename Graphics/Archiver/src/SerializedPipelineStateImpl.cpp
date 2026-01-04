@@ -399,13 +399,13 @@ SerializedPipelineStateImpl::SerializedPipelineStateImpl(IReferenceCounters*    
             pDevice->GetShaderCompilationThreadPool(),
             ShaderCompileTasks, // Make sure that all asynchronous shader compile tasks are completed first
             [this,
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
              Shaders,
 #endif
              CreateInfo = typename PipelineStateCreateInfoXTraits<PSOCreateInfoType>::CreateInfoXType{CreateInfo},
              ArchiveInfo](UInt32 ThreadId) mutable //
             {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
                 for (const SerializedShaderImpl* pShader : Shaders)
                 {
                     VERIFY(!pShader->IsCompiling(), "All shader compile tasks must have been completed since we used them as "
@@ -448,7 +448,7 @@ void SerializedPipelineStateImpl::SerializeShaderCreateInfo(DeviceType          
     ShaderData.Data  = SerializedShaderImpl::SerializeCreateInfo(CI);
     ShaderData.Stage = CI.Desc.ShaderType;
     ShaderData.Hash  = ShaderData.Data.GetHash();
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (const SerializedPipelineStateImpl::Data::ShaderInfo& Data : m_Data.Shaders[static_cast<size_t>(Type)])
         VERIFY(Data.Hash != ShaderData.Hash, "Shader with the same hash is already in the list.");
 #endif

@@ -106,7 +106,7 @@ public:
     // Make the base class method visible
     using TPipelineResourceSignatureBase::CopyStaticResources;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     /// Verifies committed resource using the D3D resource attributes from the PSO.
     bool DvpValidateCommittedResource(const D3DShaderResourceAttribs& D3DAttribs,
                                       UInt32                          ResIndex,

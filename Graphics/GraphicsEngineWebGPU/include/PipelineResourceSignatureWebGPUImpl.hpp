@@ -136,7 +136,7 @@ public:
     template <BIND_GROUP_ID GroupId>
     UInt32 GetBindGroupIndex() const;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     /// Verifies committed resource using the WGSL resource attributes from the PSO.
     bool DvpValidateCommittedResource(const DeviceContextWebGPUImpl*   pDeviceCtx,
                                       const WGSLShaderResourceAttribs& WGSLAttribs,

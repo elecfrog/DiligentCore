@@ -72,7 +72,7 @@ VulkanUtilities::CommandPoolWrapper CommandPoolManager::AllocateCommandPool(cons
 
     VulkanUtilities::SetCommandPoolName(m_LogicalDevice.GetVkDevice(), CmdPool, DebugName);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     ++m_AllocatedPoolCounter;
 #endif
     return CmdPool;
@@ -81,7 +81,7 @@ VulkanUtilities::CommandPoolWrapper CommandPoolManager::AllocateCommandPool(cons
 void CommandPoolManager::RecycleCommandPool(VulkanUtilities::CommandPoolWrapper&& CmdPool)
 {
     std::lock_guard<std::mutex> LockGuard{m_Mutex};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     --m_AllocatedPoolCounter;
 #endif
     m_CmdPools.emplace_back(std::move(CmdPool));

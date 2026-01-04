@@ -344,7 +344,7 @@ bool RenderStateCacheImpl::CreateShaderInternal(const ShaderCreateInfo& ShaderCI
     VERIFY_EXPR(ppShader != nullptr && *ppShader == nullptr);
 
     XXH128State Hasher;
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     constexpr bool IsDebug = true;
 #else
     constexpr bool IsDebug = false;
@@ -1024,7 +1024,7 @@ std::string GetRenderStateCacheFilePath(const char* CacheLocation, const char* A
     StateCachePath += GetRenderDeviceTypeShortString(DeviceType);
     // Use different cache files for debug and release modes.
     // This is not required, but is convenient.
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     StateCachePath += "_d";
 #else
     StateCachePath += "_r";

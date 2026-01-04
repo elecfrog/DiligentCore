@@ -101,7 +101,7 @@ public:
                 bool                     bIsDeviceInternal = false) :
         // clang-format off
         TDeviceObjectBase{pRefCounters, pDevice, Desc, bIsDeviceInternal}
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         , m_dbgTexViewObjAllocator{TexViewObjAllocator}
 #endif
     // clang-format on
@@ -396,7 +396,7 @@ protected:
     // When NumDefaultViews == 1, a TextureViewImplType* pointer to the view itself
     void* m_pDefaultViews = nullptr;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     TexViewObjAllocatorType& m_dbgTexViewObjAllocator;
 #endif
 

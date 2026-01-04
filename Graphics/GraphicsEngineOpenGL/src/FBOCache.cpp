@@ -91,7 +91,7 @@ FBOCache::FBOCache()
 
 FBOCache::~FBOCache()
 {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (const auto& fbo_it : m_Cache)
     {
         const FBOCacheKey& Key = fbo_it.first;
@@ -153,7 +153,7 @@ GLObjectWrappers::GLFrameBufferObj FBOCache::CreateFBO(GLContextState&    Contex
         if (DSVDesc.Format == TEX_FORMAT_D32_FLOAT ||
             DSVDesc.Format == TEX_FORMAT_D16_UNORM)
         {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
             {
                 const GLenum GLTexFmt = pDepthTexGL->GetGLTexFormat();
                 VERIFY(GLTexFmt == GL_DEPTH_COMPONENT32F || GLTexFmt == GL_DEPTH_COMPONENT16,
@@ -166,7 +166,7 @@ GLObjectWrappers::GLFrameBufferObj FBOCache::CreateFBO(GLContextState&    Contex
         else if (DSVDesc.Format == TEX_FORMAT_D32_FLOAT_S8X24_UINT ||
                  DSVDesc.Format == TEX_FORMAT_D24_UNORM_S8_UINT)
         {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
             {
                 const GLenum GLTexFmt = pDepthTexGL->GetGLTexFormat();
                 VERIFY(GLTexFmt == GL_DEPTH24_STENCIL8 || GLTexFmt == GL_DEPTH32F_STENCIL8,
@@ -212,7 +212,7 @@ GLObjectWrappers::GLFrameBufferObj FBOCache::CreateFBO(GLContextState&    Contex
 #endif
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if (Status != GL_FRAMEBUFFER_COMPLETE)
     {
@@ -376,7 +376,7 @@ const GLObjectWrappers::GLFrameBufferObj& FBOCache::GetFBO(TextureBaseGL*       
 
         pTex->AttachToFramebuffer(RTV0, GetFramebufferAttachmentPoint(TexDesc.Format), Targets);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         GLenum Status = glCheckFramebufferStatus(GL_READ_FRAMEBUFFER);
         if (Status != GL_FRAMEBUFFER_COMPLETE)
         {

@@ -251,7 +251,7 @@ public:
 
     ResourceCacheContentType GetContentType() const { return static_cast<ResourceCacheContentType>(m_ContentType); }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     // For debug purposes only
     void DbgVerifyResourceInitialization() const;
     void DbgVerifyDynamicBuffersCounter() const;
@@ -292,7 +292,7 @@ private:
     // Indicates what types of resources are stored in the cache
     const UInt32 m_ContentType : 1;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     // Debug array that stores flags indicating if resources in the cache have been initialized
     std::vector<std::vector<bool>> m_DbgInitializedResources;
 #endif

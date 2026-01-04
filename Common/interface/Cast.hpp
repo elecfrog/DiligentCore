@@ -34,9 +34,9 @@ namespace Diligent
 {
 
 template <typename DstType, typename SrcType>
-NODISCARD DstType* ClassPtrCast(SrcType* Ptr)
+[[nodiscard]] DstType* ClassPtrCast(SrcType* Ptr)
 {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     if (Ptr != nullptr)
     {
         CHECK_DYNAMIC_TYPE(DstType, Ptr);
@@ -47,7 +47,7 @@ NODISCARD DstType* ClassPtrCast(SrcType* Ptr)
 
 
 template <typename DstType, typename SrcType>
-NODISCARD DstType BitCast(const SrcType& Src)
+[[nodiscard]] DstType BitCast(const SrcType& Src)
 {
     static_assert(sizeof(DstType) >= sizeof(SrcType), "DstType size must be greater than or equal to SrcType size");
     DstType Dst = static_cast<DstType>(0);
@@ -57,9 +57,9 @@ NODISCARD DstType BitCast(const SrcType& Src)
 
 
 template <typename DstType, typename SrcType>
-NODISCARD DstType StaticCast(const SrcType& Src)
+[[nodiscard]] DstType StaticCast(const SrcType& Src)
 {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     using MaxType = decltype(DstType{1} + SrcType{1});
     VERIFY(static_cast<MaxType>(Src) == static_cast<MaxType>(static_cast<DstType>(Src)), "Cast will lose data");
 #endif

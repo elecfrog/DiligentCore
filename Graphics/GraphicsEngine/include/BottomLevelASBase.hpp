@@ -193,7 +193,7 @@ public:
         return (this->m_State & State) == State;
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     void DvpUpdateVersion()
     {
         this->m_DvpVersion.fetch_add(1);
@@ -203,7 +203,7 @@ public:
     {
         return this->m_DvpVersion.load();
     }
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
     void CopyGeometryDescription(const BottomLevelASBase& SrcBLAS) noexcept
     {
@@ -261,7 +261,7 @@ protected:
     UInt32             m_GeometryCount = 0;
     ScratchBufferSizes m_ScratchSize;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     std::atomic<UInt32> m_DvpVersion{0};
 #endif
 };

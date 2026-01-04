@@ -103,7 +103,7 @@ SyncPointVk::SyncPointVk(SoftwareQueueIndex                  CommandQueueId,
         std::swap(m_Semaphores[CommandQueueId], m_Semaphores[NumContexts - 1]);
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     String Name = String{"Queue ("} + std::to_string(CommandQueueId) + ") Value (" + std::to_string(dbgValue) + ")";
     VulkanUtilities::SetFenceName(vkDevice, m_Fence, Name.c_str());
 
@@ -159,7 +159,7 @@ UInt64 CommandQueueVkImpl::Submit(const VkSubmitInfo& InSubmitInfo)
     m_TempSignalSemaphores.clear();
     NewSyncPoint->GetSemaphores(m_TempSignalSemaphores);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     const VkBaseInStructure* pStruct = static_cast<const VkBaseInStructure*>(InSubmitInfo.pNext);
     for (; pStruct != nullptr;)
     {
@@ -302,7 +302,7 @@ UInt64 CommandQueueVkImpl::BindSparse(const VkBindSparseInfo& InBindInfo)
     m_TempSignalSemaphores.clear();
     NewSyncPoint->GetSemaphores(m_TempSignalSemaphores);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     const VkBaseInStructure* pStruct = static_cast<const VkBaseInStructure*>(InBindInfo.pNext);
     for (; pStruct != nullptr;)
     {

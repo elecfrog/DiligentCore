@@ -32,7 +32,7 @@
 namespace Diligent
 {
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 
 #    define CHECK_PARAMETER DEV_CHECK_ERR
 
@@ -1085,10 +1085,10 @@ bool VerifyTraceRaysAttribs(const TraceRaysAttribs& Attribs)
 #define CHECK_TRACE_RAYS_ATTRIBS(Expr, ...) CHECK_PARAMETER(Expr, "Trace rays attribs are invalid: ", __VA_ARGS__)
     CHECK_TRACE_RAYS_ATTRIBS(Attribs.pSBT != nullptr, "pSBT must not be null.");
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     CHECK_TRACE_RAYS_ATTRIBS(Attribs.pSBT->Verify(VERIFY_SBT_FLAG_SHADER_ONLY | VERIFY_SBT_FLAG_TLAS),
                              "not all shaders in SBT are bound or instance to shader mapping is incorrect.");
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
     CHECK_TRACE_RAYS_ATTRIBS(Attribs.DimensionX != 0, "DimensionX must not be zero.");
     CHECK_TRACE_RAYS_ATTRIBS(Attribs.DimensionY != 0, "DimensionY must not be zero.");
@@ -1106,10 +1106,10 @@ bool VerifyTraceRaysIndirectAttribs(const IRenderDevice* pDevice, const TraceRay
 #define CHECK_TRACE_RAYS_INDIRECT_ATTRIBS(Expr, ...) CHECK_PARAMETER(Expr, "Trace rays indirect attribs are invalid: ", __VA_ARGS__)
     CHECK_TRACE_RAYS_INDIRECT_ATTRIBS(Attribs.pSBT != nullptr, "pSBT must not be null");
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     CHECK_TRACE_RAYS_INDIRECT_ATTRIBS(Attribs.pSBT->Verify(VERIFY_SBT_FLAG_SHADER_ONLY | VERIFY_SBT_FLAG_TLAS),
                                       "not all shaders in SBT are bound or instance to shader mapping is incorrect.");
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
     CHECK_TRACE_RAYS_INDIRECT_ATTRIBS(pAttribsBuffer != nullptr, "indirect dispatch arguments buffer must not be null.");
 
@@ -1145,7 +1145,7 @@ bool VerifyBindSparseResourceMemoryAttribs(const IRenderDevice* pDevice, const B
 
     CHECK_BIND_SPARSE_ATTRIBS(Attribs.NumBufferBinds > 0 || Attribs.NumTextureBinds > 0, "One of NumBufferBinds and NumTextureBinds must not be zero");
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     const bool IsMetal = pDevice->GetDeviceInfo().IsMetalDevice();
 
     for (UInt32 i = 0; i < Attribs.NumBufferBinds; ++i)
@@ -1345,7 +1345,7 @@ bool VerifyBindSparseResourceMemoryAttribs(const IRenderDevice* pDevice, const B
             }
         }
     }
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
     if (Attribs.NumWaitFences != 0)
     {

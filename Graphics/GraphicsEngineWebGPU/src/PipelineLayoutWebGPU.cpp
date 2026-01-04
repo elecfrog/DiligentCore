@@ -87,7 +87,7 @@ void PipelineLayoutWebGPU::Create(RenderDeviceWebGPUImpl* pDeviceWebGPU, RefCntA
 
         DynamicUniformBufferCount += pSignature->GetDynamicUniformBufferCount();
         DynamicStorageBufferCount += pSignature->GetDynamicStorageBufferCount();
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         m_DbgMaxBindIndex = std::max(m_DbgMaxBindIndex, UInt32{pSignature->GetDesc().BindingIndex});
 #endif
     }

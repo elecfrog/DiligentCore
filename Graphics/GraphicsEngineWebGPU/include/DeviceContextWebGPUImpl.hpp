@@ -309,7 +309,7 @@ public:
 
     UInt64 GetCompletedFenceValue();
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     void DvpVerifyDynamicAllocation(const BufferWebGPUImpl* pBuffer) const;
 #endif
 
@@ -386,7 +386,7 @@ private:
     UploadMemoryManagerWebGPU::Allocation  AllocateUploadMemory(size_t Size, size_t Alignment = 16);
     DynamicMemoryManagerWebGPU::Allocation AllocateDynamicMemory(size_t Size, size_t Alignment = 16);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     void DvpValidateCommittedShaderResources();
 #endif
 
@@ -574,7 +574,7 @@ private:
     struct MappedBuffer
     {
         DynamicMemoryManagerWebGPU::Allocation Allocation;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         UniqueIdentifier DvpBufferUID = -1;
 #endif
     };

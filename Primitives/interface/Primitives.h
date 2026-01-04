@@ -20,32 +20,3 @@ namespace Diligent
         spw::LogSystem::Instance().SetDebugMessageCallback(callback);
     }
 }
-
-// Special Diligent version macros - these are the only ones that MUST be defined
-// Debug versions (when DILIGENT_DEBUG is defined)
-#ifdef DILIGENT_DEBUG
-#    define LOG_DBG_FATAL_ERROR_MESSAGE LOG_FATAL_ERROR_MESSAGE
-#    define LOG_DBG_ERROR_MESSAGE       LOG_ERROR_MESSAGE
-#    define LOG_DBG_WARNING_MESSAGE     LOG_WARNING_MESSAGE
-#    define LOG_DBG_INFO_MESSAGE        LOG_INFO_MESSAGE
-#else
-#    define LOG_DBG_FATAL_ERROR_MESSAGE(...)
-#    define LOG_DBG_ERROR_MESSAGE(...)
-#    define LOG_DBG_WARNING_MESSAGE(...)
-#    define LOG_DBG_INFO_MESSAGE(...)
-#endif
-
-// Development versions (when DILIGENT_DEVELOPMENT is defined)
-#ifdef DILIGENT_DEVELOPMENT
-#    define LOG_DVP_FATAL_ERROR_MESSAGE LOG_FATAL_ERROR_MESSAGE
-#    define LOG_DVP_ERROR_MESSAGE       LOG_ERROR_MESSAGE
-#    define LOG_DVP_WARNING_MESSAGE     LOG_WARNING_MESSAGE
-#    define LOG_DVP_INFO_MESSAGE        LOG_INFO_MESSAGE
-#else
-#    define LOG_DVP_FATAL_ERROR_MESSAGE(...)
-#    define LOG_DVP_ERROR_MESSAGE(...)
-#    define LOG_DVP_WARNING_MESSAGE(...)
-#    define LOG_DVP_INFO_MESSAGE(...)
-#endif
-
-// Check macros

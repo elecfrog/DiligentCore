@@ -197,7 +197,7 @@ void ShaderVariableManagerGL::UniformBuffBindInfo::BindResource(const BindResour
 
     // We cannot use ClassPtrCast<> here as the resource can be of wrong type
     RefCntAutoPtr<BufferGLImpl> pBuffGLImpl{BindInfo.pObject, IID_BufferGL};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const ShaderResourceCacheGL::CachedUB& CachedUB = ResourceCache.GetConstUB(Attr.CacheOffset + BindInfo.ArrayIndex);
         VerifyConstantBufferBinding(Desc, BindInfo, pBuffGLImpl.RawPtr(), CachedUB.pBuffer.RawPtr(),
@@ -214,7 +214,7 @@ void ShaderVariableManagerGL::UniformBuffBindInfo::SetDynamicOffset(UInt32 Array
     const ResourceAttribs&      Attr = GetAttribs();
     const PipelineResourceDesc& Desc = GetDesc();
     VERIFY_EXPR(Desc.ResourceType == SHADER_RESOURCE_TYPE_CONSTANT_BUFFER);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const ShaderResourceCacheGL::CachedUB& CachedUB = m_ParentManager.m_ResourceCache.GetConstUB(Attr.CacheOffset + ArrayIndex);
         VerifyDynamicBufferOffset<BufferGLImpl, BufferViewGLImpl>(Desc, CachedUB.pBuffer, CachedUB.BaseOffset, CachedUB.RangeSize, Offset);
@@ -239,7 +239,7 @@ void ShaderVariableManagerGL::TextureBindInfo::BindResource(const BindResourceIn
         RefCntAutoPtr<TextureViewGLImpl> pViewGL{BindInfo.pObject, IID_TextureViewGL};
 
         const bool ImmutableSamplerAssigned = (m_ParentManager.m_pSignature->GetImmutableSamplerIdx(Attr) != InvalidImmutableSamplerIndex);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         {
             const ShaderResourceCacheGL::CachedResourceView& CachedTexSampler = ResourceCache.GetConstTexture(Attr.CacheOffset + BindInfo.ArrayIndex);
             VerifyResourceViewBinding(Desc, BindInfo, pViewGL.RawPtr(),
@@ -264,7 +264,7 @@ void ShaderVariableManagerGL::TextureBindInfo::BindResource(const BindResourceIn
     {
         // We cannot use ClassPtrCast<> here as the resource can be of wrong type
         RefCntAutoPtr<BufferViewGLImpl> pViewGL{BindInfo.pObject, IID_BufferViewGL};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         {
             const ShaderResourceCacheGL::CachedResourceView& CachedBuffSampler = ResourceCache.GetConstTexture(Attr.CacheOffset + BindInfo.ArrayIndex);
             VerifyResourceViewBinding(Desc, BindInfo, pViewGL.RawPtr(),
@@ -300,7 +300,7 @@ void ShaderVariableManagerGL::ImageBindInfo::BindResource(const BindResourceInfo
     {
         // We cannot use ClassPtrCast<> here as the resource can be of wrong type
         RefCntAutoPtr<TextureViewGLImpl> pViewGL{BindInfo.pObject, IID_TextureViewGL};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         {
             const ShaderResourceCacheGL::CachedResourceView& CachedUAV = ResourceCache.GetConstImage(Attr.CacheOffset + BindInfo.ArrayIndex);
             VerifyResourceViewBinding(Desc, BindInfo, pViewGL.RawPtr(),
@@ -317,7 +317,7 @@ void ShaderVariableManagerGL::ImageBindInfo::BindResource(const BindResourceInfo
     {
         // We cannot use ClassPtrCast<> here as the resource can be of wrong type
         RefCntAutoPtr<BufferViewGLImpl> pViewGL{BindInfo.pObject, IID_BufferViewGL};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         {
             const ShaderResourceCacheGL::CachedResourceView& CachedUAV = ResourceCache.GetConstImage(Attr.CacheOffset + BindInfo.ArrayIndex);
             VerifyResourceViewBinding(Desc, BindInfo, pViewGL.RawPtr(),
@@ -354,7 +354,7 @@ void ShaderVariableManagerGL::StorageBufferBindInfo::BindResource(const BindReso
 
     // We cannot use ClassPtrCast<> here as the resource can be of wrong type
     RefCntAutoPtr<BufferViewGLImpl> pViewGL{BindInfo.pObject, IID_BufferViewGL};
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const ShaderResourceCacheGL::CachedSSBO& CachedSSBO = ResourceCache.GetConstSSBO(Attr.CacheOffset + BindInfo.ArrayIndex);
         // HLSL structured buffers are mapped to SSBOs in GLSL
@@ -379,7 +379,7 @@ void ShaderVariableManagerGL::StorageBufferBindInfo::SetDynamicOffset(UInt32 Arr
     const PipelineResourceDesc& Desc = GetDesc();
     VERIFY_EXPR(Desc.ResourceType == SHADER_RESOURCE_TYPE_BUFFER_SRV ||
                 Desc.ResourceType == SHADER_RESOURCE_TYPE_BUFFER_UAV);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const ShaderResourceCacheGL::CachedSSBO& CachedSSBO = m_ParentManager.m_ResourceCache.GetConstSSBO(Attr.CacheOffset + ArrayIndex);
         VerifyDynamicBufferOffset<BufferGLImpl, BufferViewGLImpl>(Desc, CachedSSBO.pBufferView, 0, 0, Offset);

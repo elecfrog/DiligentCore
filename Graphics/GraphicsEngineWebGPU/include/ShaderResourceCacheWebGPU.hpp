@@ -185,14 +185,14 @@ public:
                                  std::vector<uint32_t>&         Offsets,
                                  UInt32                         GroupIdx) const;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     // For debug purposes only
     void DbgVerifyResourceInitialization() const;
     void DbgVerifyDynamicBuffersCounter() const;
 #endif
 
 private:
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     const Resource* GetFirstResourcePtr() const
     {
         return reinterpret_cast<const Resource*>(reinterpret_cast<const BindGroup*>(m_pMemory.get()) + m_NumBindGroups);
@@ -222,7 +222,7 @@ private:
     // Indicates what types of resources are stored in the cache
     const UInt32 m_ContentType : 1;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     // Debug array that stores flags indicating if resources in the cache have been initialized
     std::vector<std::vector<bool>> m_DbgInitializedResources;
 #endif

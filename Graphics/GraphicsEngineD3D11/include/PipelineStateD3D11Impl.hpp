@@ -104,7 +104,7 @@ public:
         return m_NumPixelUAVs;
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     using ShaderResourceCacheArrayType = std::array<ShaderResourceCacheD3D11*, MAX_RESOURCE_SIGNATURES>;
     using BaseBindingsArrayType        = std::array<D3D11ShaderResourceCounters, MAX_RESOURCE_SIGNATURES>;
     void DvpVerifySRBResources(const ShaderResourceCacheArrayType& ResourceCaches,
@@ -176,7 +176,7 @@ private:
 
     D3D11ShaderResourceCounters* m_BaseBindings = nullptr; // [GetResourceSignatureCount()]
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Shader resources for all shaders in all shader stages in the pipeline.
     std::vector<std::shared_ptr<const ShaderResourcesD3D11>> m_ShaderResources;
 

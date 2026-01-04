@@ -314,7 +314,7 @@ private:
 
     std::mutex                                                             m_ContextPoolMutex;
     std::unordered_multimap<D3D12_COMMAND_LIST_TYPE, PooledCommandContext> m_ContextPool;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     std::atomic_int m_AllocatedCtxCounter{0};
 #endif
 
@@ -336,7 +336,7 @@ private:
 
     bool m_IsPSOCacheSupported = false;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     UInt32 m_MaxD3D12DeviceVersion = 0;
 #endif
 };

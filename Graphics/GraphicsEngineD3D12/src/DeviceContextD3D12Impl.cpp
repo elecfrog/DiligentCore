@@ -444,7 +444,7 @@ void DeviceContextD3D12Impl::CommitShaderResources(IShaderResourceBinding* pShad
     CommandContext&                     CmdCtx               = GetCmdContext();
     PipelineResourceSignatureD3D12Impl* pSignature           = pResBindingD3D12Impl->GetSignature();
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     ResourceCache.DbgValidateDynamicBuffersMask();
 #endif
 
@@ -452,7 +452,7 @@ void DeviceContextD3D12Impl::CommitShaderResources(IShaderResourceBinding* pShad
     {
         ResourceCache.TransitionResourceStates(CmdCtx, ShaderResourceCacheD3D12::StateTransitionMode::Transition);
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     else if (StateTransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
     {
         ResourceCache.TransitionResourceStates(CmdCtx, ShaderResourceCacheD3D12::StateTransitionMode::Verify);
@@ -472,7 +472,7 @@ DeviceContextD3D12Impl::RootTableInfo& DeviceContextD3D12Impl::GetRootTableInfo(
         m_ComputeResources;
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void DeviceContextD3D12Impl::DvpValidateCommittedShaderResources(RootTableInfo& RootInfo) const
 {
     if (RootInfo.ResourcesValidated)
@@ -529,7 +529,7 @@ void DeviceContextD3D12Impl::CommitD3D12IndexBuffer(GraphicsContext& GraphCtx, V
     //GraphicsCtx.AddReferencedObject(pd3d12Resource);
 
     bool IsDynamic = m_pIndexBuffer->GetDesc().Usage == USAGE_DYNAMIC;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (IsDynamic)
         DvpVerifyDynamicAllocation(m_pIndexBuffer);
 #endif
@@ -571,7 +571,7 @@ void DeviceContextD3D12Impl::CommitD3D12VertexBuffers(GraphicsContext& GraphCtx)
             if (pBufferD3D12->GetDesc().Usage == USAGE_DYNAMIC)
             {
                 DynamicBufferPresent = true;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
                 DvpVerifyDynamicAllocation(pBufferD3D12);
 #endif
             }
@@ -602,7 +602,7 @@ void DeviceContextD3D12Impl::CommitD3D12VertexBuffers(GraphicsContext& GraphCtx)
 
 void DeviceContextD3D12Impl::PrepareForDraw(GraphicsContext& GraphCtx, DRAW_FLAGS Flags)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpVerifyRenderTargets();
 #endif
 
@@ -611,7 +611,7 @@ void DeviceContextD3D12Impl::PrepareForDraw(GraphicsContext& GraphCtx, DRAW_FLAG
         CommitD3D12VertexBuffers(GraphCtx);
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if ((Flags & DRAW_FLAG_VERIFY_STATES) != 0)
     {
         for (UInt32 Buff = 0; Buff < m_NumVertexStreams; ++Buff)
@@ -626,7 +626,7 @@ void DeviceContextD3D12Impl::PrepareForDraw(GraphicsContext& GraphCtx, DRAW_FLAG
 #endif
 
     RootTableInfo& RootInfo = GetRootTableInfo(PIPELINE_TYPE_GRAPHICS);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpValidateCommittedShaderResources(RootInfo);
 #endif
     if (UInt32 CommitSRBMask = RootInfo.GetCommitMask(Flags & DRAW_FLAG_DYNAMIC_RESOURCE_BUFFERS_INTACT))
@@ -655,7 +655,7 @@ void DeviceContextD3D12Impl::PrepareForIndexedDraw(GraphicsContext& GraphCtx, DR
     {
         CommitD3D12IndexBuffer(GraphCtx, IndexType);
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if ((Flags & DRAW_FLAG_VERIFY_STATES) != 0)
     {
         DvpVerifyBufferState(*m_pIndexBuffer, RESOURCE_STATE_INDEX_BUFFER, "Indexed draw (DeviceContextD3D12Impl::Draw())");
@@ -739,7 +739,7 @@ void DeviceContextD3D12Impl::PrepareIndirectAttribsBuffer(CommandContext&       
     DEV_CHECK_ERR(pAttribsBuffer != nullptr, "Indirect draw attribs buffer must not be null");
 
     BufferD3D12Impl* pIndirectDrawAttribsD3D12 = ClassPtrCast<BufferD3D12Impl>(pAttribsBuffer);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (pIndirectDrawAttribsD3D12->GetDesc().Usage == USAGE_DYNAMIC)
         DvpVerifyDynamicAllocation(pIndirectDrawAttribsD3D12);
 #endif
@@ -874,7 +874,7 @@ void DeviceContextD3D12Impl::DrawMeshIndirect(const DrawMeshIndirectAttribs& Att
 void DeviceContextD3D12Impl::PrepareForDispatchCompute(ComputeContext& ComputeCtx)
 {
     RootTableInfo& RootInfo = GetRootTableInfo(PIPELINE_TYPE_COMPUTE);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpValidateCommittedShaderResources(RootInfo);
 #endif
     if (UInt32 CommitSRBMask = RootInfo.GetCommitMask())
@@ -886,7 +886,7 @@ void DeviceContextD3D12Impl::PrepareForDispatchCompute(ComputeContext& ComputeCt
 void DeviceContextD3D12Impl::PrepareForDispatchRays(GraphicsContext& GraphCtx)
 {
     RootTableInfo& RootInfo = GetRootTableInfo(PIPELINE_TYPE_RAY_TRACING);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpValidateCommittedShaderResources(RootInfo);
 #endif
     if (UInt32 CommitSRBMask = RootInfo.GetCommitMask())
@@ -961,7 +961,7 @@ void DeviceContextD3D12Impl::ClearRenderTarget(ITextureView* pView, const void* 
     if (RGBA == nullptr)
         RGBA = Zero;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const TEXTURE_FORMAT        RTVFormat  = pViewD3D12->GetDesc().Format;
         const TextureFormatAttribs& FmtAttribs = GetTextureFormatAttribs(RTVFormat);
@@ -1029,7 +1029,7 @@ void DeviceContextD3D12Impl::Flush(bool                 RequestNewCmdCtx,
     {
         m_pDevice->CloseAndExecuteCommandContexts(GetCommandQueueId(), static_cast<UInt32>(Contexts.size()), Contexts.data(), true, &m_SignalFences, &m_WaitFences);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         for (const RenderDeviceD3D12Impl::PooledCommandContext& Ctx : Contexts)
             VERIFY(!Ctx, "All contexts must be disposed by CloseAndExecuteCommandContexts");
 #endif
@@ -1074,7 +1074,7 @@ void DeviceContextD3D12Impl::Flush()
 
 void DeviceContextD3D12Impl::FinishFrame()
 {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     for (const auto& MappedBuffIt : m_DbgMappedBuffers)
     {
         const BufferDesc& BuffDesc = MappedBuffIt.first->GetDesc();
@@ -1742,7 +1742,7 @@ void DeviceContextD3D12Impl::MapBuffer(IBuffer* pBuffer, MAP_TYPE MapType, MAP_F
             if (m_MappedBuffers.size() <= DynamicBufferId)
                 m_MappedBuffers.resize(DynamicBufferId + 1);
             D3D12DynamicAllocation& DynamicData = m_MappedBuffers[DynamicBufferId].Allocation;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             m_MappedBuffers[DynamicBufferId].DvpBufferUID = pBufferD3D12->GetUniqueID();
 #endif
             if ((MapFlags & MAP_FLAG_DISCARD) != 0 || DynamicData.CPUAddress == nullptr)
@@ -1828,7 +1828,7 @@ ID3D12Resource* DeviceContextD3D12Impl::GetDynamicBufferD3D12ResourceAndOffset(c
 {
     VERIFY_EXPR(pBuffer->GetDesc().Usage == USAGE_DYNAMIC);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpVerifyDynamicAllocation(pBuffer);
 #endif
 
@@ -1847,7 +1847,7 @@ ID3D12Resource* DeviceContextD3D12Impl::GetDynamicBufferD3D12ResourceAndOffset(c
     }
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void DeviceContextD3D12Impl::DvpVerifyDynamicAllocation(const BufferD3D12Impl* pBuffer) const
 {
     VERIFY_EXPR(pBuffer != nullptr);
@@ -2067,7 +2067,7 @@ void DeviceContextD3D12Impl::CopyTextureRegion(ID3D12Resource*                pd
     {
         StateTransitionRequired = TextureD3D12.IsInKnownState() && !TextureD3D12.CheckState(RESOURCE_STATE_COPY_DEST);
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     else if (TextureTransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
     {
         DvpVerifyTextureState(TextureD3D12, RESOURCE_STATE_COPY_DEST, "Using texture as copy destination (DeviceContextD3D12Impl::CopyTextureRegion)");
@@ -2104,7 +2104,7 @@ void DeviceContextD3D12Impl::CopyTextureRegion(ID3D12Resource*                pd
 
     Footprint.Footprint.RowPitch = StaticCast<UINT>(SrcStride);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     {
         const TextureFormatAttribs& FmtAttribs = GetTextureFormatAttribs(TexDesc.Format);
         const UInt32                RowCount   = std::max((Footprint.Footprint.Height / FmtAttribs.BlockHeight), 1u);
@@ -2156,7 +2156,7 @@ void DeviceContextD3D12Impl::CopyTextureRegion(IBuffer*                       pS
             if (pBufferD3D12->IsInKnownState() && pBufferD3D12->GetState() != RESOURCE_STATE_GENERIC_READ)
                 GetCmdContext().TransitionResource(*pBufferD3D12, RESOURCE_STATE_GENERIC_READ);
         }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         else if (BufferTransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
         {
             DvpVerifyBufferState(*pBufferD3D12, RESOURCE_STATE_COPY_SOURCE, "Using buffer as copy source (DeviceContextD3D12Impl::CopyTextureRegion)");
@@ -2215,7 +2215,7 @@ void DeviceContextD3D12Impl::UpdateTextureRegion(const void*                    
     const TextureDesc& TexDesc           = TextureD3D12.GetDesc();
     TextureUploadSpace UploadSpace       = AllocateTextureUploadSpace(TexDesc.Format, DstBox);
     UInt32             UpdateRegionDepth = DstBox.Depth();
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     {
         VERIFY(SrcStride >= UploadSpace.RowSize, "Source data stride (", SrcStride, ") is below the image row size (", UploadSpace.RowSize, ")");
         const UInt64 PlaneSize = SrcStride * UploadSpace.RowCount;
@@ -2583,7 +2583,7 @@ void DeviceContextD3D12Impl::TransitionResourceStates(UInt32 BarrierCount, const
     CommandContext& CmdCtx = GetCmdContext();
     for (UInt32 i = 0; i < BarrierCount; ++i)
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         DvpVerifyStateTransitionDesc(pResourceBarriers[i]);
 #endif
         const StateTransitionDesc& Barrier = pResourceBarriers[i];
@@ -2618,7 +2618,7 @@ void DeviceContextD3D12Impl::TransitionOrVerifyBufferState(CommandContext&      
         if (Buffer.IsInKnownState())
             CmdCtx.TransitionResource(Buffer, RequiredState);
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     else if (TransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
     {
         DvpVerifyBufferState(Buffer, RequiredState, OperationName);
@@ -2637,7 +2637,7 @@ void DeviceContextD3D12Impl::TransitionOrVerifyTextureState(CommandContext&     
         if (Texture.IsInKnownState())
             CmdCtx.TransitionResource(Texture, RequiredState);
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     else if (TransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
     {
         DvpVerifyTextureState(Texture, RequiredState, OperationName);
@@ -2656,7 +2656,7 @@ void DeviceContextD3D12Impl::TransitionOrVerifyBLASState(CommandContext&        
         if (BLAS.IsInKnownState())
             CmdCtx.TransitionResource(BLAS, RequiredState);
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     else if (TransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
     {
         DvpVerifyBLASState(BLAS, RequiredState, OperationName);
@@ -2675,7 +2675,7 @@ void DeviceContextD3D12Impl::TransitionOrVerifyTLASState(CommandContext&        
         if (TLAS.IsInKnownState())
             CmdCtx.TransitionResource(TLAS, RequiredState);
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     else if (TransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
     {
         DvpVerifyTLASState(TLAS, RequiredState, OperationName);
@@ -2890,7 +2890,7 @@ void DeviceContextD3D12Impl::BuildBLAS(const BuildBLASAttribs& Attribs)
     CmdCtx.AsGraphicsContext4().BuildRaytracingAccelerationStructure(d3d12BuildASDesc, 0, nullptr);
     ++m_State.NumCommands;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     pBLASD3D12->DvpUpdateVersion();
 #endif
 }
@@ -3004,7 +3004,7 @@ void DeviceContextD3D12Impl::CopyBLAS(const CopyBLASAttribs& Attribs)
     CmdCtx.AsGraphicsContext4().CopyRaytracingAccelerationStructure(pDstD3D12->GetGPUAddress(), pSrcD3D12->GetGPUAddress(), Mode);
     ++m_State.NumCommands;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     pDstD3D12->DvpUpdateVersion();
 #endif
 }

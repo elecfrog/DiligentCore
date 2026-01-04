@@ -160,7 +160,7 @@ LinearTexFilterSampleInfo GetLinearTexFilterSampleInfo(UInt32 Width, float u)
     return SampleInfo;
 }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 template <TEXTURE_ADDRESS_MODE AddressMode>
 void _DbgVerifyFilterInfo(const LinearTexFilterSampleInfo& FilterInfo, UInt32 Width, const char* Direction, float u)
 {
@@ -206,7 +206,7 @@ DstType FilterTexture2DBilinear(UInt32         Width,
     LinearTexFilterSampleInfo UFilterInfo = GetLinearTexFilterSampleInfo<AddressModeU, IsNormalizedCoord>(Width, u);
     LinearTexFilterSampleInfo VFilterInfo = GetLinearTexFilterSampleInfo<AddressModeV, IsNormalizedCoord>(Height, v);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     {
         _DbgVerifyFilterInfo<AddressModeU>(UFilterInfo, Width, "horizontal", u);
         _DbgVerifyFilterInfo<AddressModeV>(VFilterInfo, Height, "horizontal", v);

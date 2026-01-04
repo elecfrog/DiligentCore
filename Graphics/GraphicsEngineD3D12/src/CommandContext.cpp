@@ -42,7 +42,7 @@
 
 #ifdef DILIGENT_USE_PIX
 
-#    if defined(DILIGENT_DEVELOPMENT) && !defined(USE_PIX)
+#    if defined(SPW_PROFILE) && !defined(USE_PIX)
 // PIX instrumentation is only enabled if one of the preprocessor symbols
 // USE_PIX, DBG, _DEBUG, PROFILE, or PROFILE_BUILD is defined.
 #        define USE_PIX
@@ -211,7 +211,7 @@ template <>
 void StateTransitionHelper::GetD3D12ResourceAndState<BufferD3D12Impl>(BufferD3D12Impl& Buffer)
 {
     VERIFY_EXPR(m_Barrier.pResource == &Buffer);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Dynamic buffers that have no backing d3d12 resource are suballocated in the upload heap
     // when Map() is called and must always be in D3D12_RESOURCE_STATE_GENERIC_READ state.
     if (Buffer.GetDesc().Usage == USAGE_DYNAMIC && Buffer.GetD3D12Resource() == nullptr)
@@ -286,7 +286,7 @@ void StateTransitionHelper::DiscardIfAppropriate(const TextureDesc&    TexDesc,
             for (UInt32 slice = m_Barrier.FirstArraySlice; slice < EndSlice; ++slice)
             {
                 Region.FirstSubresource = D3D12CalcSubresource(m_Barrier.FirstMipLevel, slice, 0, TexDesc.MipLevels, TexDesc.GetArraySize());
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
                 for (UINT mip = 0; mip < Region.NumSubresources; ++mip)
                     VERIFY_EXPR(D3D12CalcSubresource(m_Barrier.FirstMipLevel + mip, slice, 0, TexDesc.MipLevels, TexDesc.GetArraySize()) == Region.FirstSubresource + mip);
 #endif
@@ -354,7 +354,7 @@ void StateTransitionHelper::AddD3D12ResourceBarriers(TopLevelASD3D12Impl& TLAS, 
     if (m_OldState == RESOURCE_STATE_BUILD_AS_WRITE || m_Barrier.NewState == RESOURCE_STATE_BUILD_AS_WRITE)
         m_RequireUAVBarrier = true;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (m_Barrier.NewState & RESOURCE_STATE_RAY_TRACING)
     {
         TLAS.ValidateContent();

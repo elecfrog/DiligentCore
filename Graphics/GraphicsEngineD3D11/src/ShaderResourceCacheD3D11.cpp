@@ -334,7 +334,7 @@ void ShaderResourceCacheD3D11::TransitionResources(DeviceContextD3D11Impl& Ctx, 
     }
 }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 void ShaderResourceCacheD3D11::DbgVerifyDynamicBufferMasks() const
 {
     for (UInt32 ShaderInd = 0; ShaderInd < NumShaderTypes; ++ShaderInd)

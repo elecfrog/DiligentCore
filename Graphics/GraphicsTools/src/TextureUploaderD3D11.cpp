@@ -210,7 +210,7 @@ struct TextureUploaderD3D11::InternalData
 
         std::lock_guard<std::mutex>                   CacheLock{m_UploadBuffCacheMtx};
         std::deque<RefCntAutoPtr<UploadBufferD3D11>>& BuffersByDesc = m_UploadBufferCache[Desc];
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         VERIFY(std::find(BuffersByDesc.begin(), BuffersByDesc.end(), pUploadBuffer) == BuffersByDesc.end(),
                "Trying to recycle an upload buffer that is already in the cache");
 #endif

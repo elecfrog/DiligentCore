@@ -355,7 +355,7 @@ private:
         //                                      |       - Increment m_NumStrongReferences
         //                                      |   5. Decrement m_NumStrongReferences
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         {
             ReferenceCounterValueType NumStrongRefs = m_NumStrongReferences.load();
             VERIFY(NumStrongRefs == 0 || NumStrongRefs == 1, "Num strong references (", NumStrongRefs, ") is expected to be 0 or 1");
@@ -618,7 +618,7 @@ public:
         // clang-format off
         m_pAllocator{&Allocator},
         m_pOwner{pOwner}
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
       , m_dvpDescription{Description}
       , m_dvpFileName   {FileName   }
       , m_dvpLineNumber {LineNumber }
@@ -631,7 +631,7 @@ public:
         // clang-format off
         m_pAllocator    {nullptr},
         m_pOwner        {pOwner }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
       , m_dvpDescription{nullptr}
       , m_dvpFileName   {nullptr}
       , m_dvpLineNumber {0      }
@@ -663,7 +663,7 @@ public:
         ObjectType* pObj = nullptr;
         try
         {
-#ifndef DILIGENT_DEVELOPMENT
+#ifndef SPW_PROFILE
             static constexpr const char* m_dvpDescription = "<Unavailable in release build>";
             static constexpr const char* m_dvpFileName    = "<Unavailable in release build>";
             static constexpr Int32       m_dvpLineNumber  = -1;
@@ -690,7 +690,7 @@ private:
     AllocatorType* const m_pAllocator;
     IObject* const       m_pOwner;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     const Char* const m_dvpDescription;
     const char* const m_dvpFileName;
     Int32 const       m_dvpLineNumber;

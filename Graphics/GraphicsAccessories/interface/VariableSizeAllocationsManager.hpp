@@ -110,7 +110,7 @@ public:
         , m_FreeBlocksBySize  {STD_ALLOCATOR_RAW_MEM(TFreeBlocksBySizeMap::value_type,   CI.Allocator, "Allocator for multimap<OffsetType, TFreeBlocksByOffsetMap::iterator>")}
         , m_MaxSize {CI.MaxSize}
         , m_FreeSize{CI.MaxSize}
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         , m_DbgDisableDebugValidation{CI.DbgDisableDebugValidation}
 #endif
     // clang-format on
@@ -119,7 +119,7 @@ public:
         AddNewBlock(0, m_MaxSize);
         ResetCurrAlignment();
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         DbgVerifyList();
 #endif
     }
@@ -130,7 +130,7 @@ public:
 
     ~VariableSizeAllocationsManager()
     {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         if (!m_FreeBlocksByOffset.empty() || !m_FreeBlocksBySize.empty())
         {
             VERIFY(m_FreeBlocksByOffset.size() == 1, "Single free block is expected");
@@ -153,7 +153,7 @@ public:
         , m_MaxSize           {rhs.m_MaxSize      }
         , m_FreeSize          {rhs.m_FreeSize     }
         , m_CurrAlignment     {rhs.m_CurrAlignment}
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         , m_DbgDisableDebugValidation{rhs.m_DbgDisableDebugValidation}
 #endif
     {
@@ -262,7 +262,7 @@ public:
             }
         }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         VERIFY_EXPR(m_FreeBlocksByOffset.size() == m_FreeBlocksBySize.size());
         if (!m_DbgDisableDebugValidation)
             DbgVerifyList();
@@ -285,7 +285,7 @@ public:
         // upper_bound() returns an iterator pointing to the first element in the
         // container whose key is considered to go after k.
         auto NextBlockIt = m_FreeBlocksByOffset.upper_bound(Offset);
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         {
             auto LowBnd = m_FreeBlocksByOffset.lower_bound(Offset); // First element whose offset is  >=
             // Since zero-size allocations are not allowed, lower bound must always be equal to the upper bound
@@ -368,7 +368,7 @@ public:
             ResetCurrAlignment();
         }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         VERIFY_EXPR(m_FreeBlocksByOffset.size() == m_FreeBlocksBySize.size());
         if (!m_DbgDisableDebugValidation)
             DbgVerifyList();
@@ -423,7 +423,7 @@ public:
         m_MaxSize += ExtraSize;
         m_FreeSize += ExtraSize;
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         VERIFY_EXPR(m_FreeBlocksByOffset.size() == m_FreeBlocksBySize.size());
         if (!m_DbgDisableDebugValidation)
             DbgVerifyList();
@@ -445,7 +445,7 @@ private:
         {}
     }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     void DbgVerifyList()
     {
         OffsetType TotalFreeSize = 0;
@@ -490,7 +490,7 @@ private:
     OffsetType m_MaxSize       = 0;
     OffsetType m_FreeSize      = 0;
     OffsetType m_CurrAlignment = 0;
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     bool m_DbgDisableDebugValidation = false;
 #endif
     // When adding new members, do not forget to update move ctor

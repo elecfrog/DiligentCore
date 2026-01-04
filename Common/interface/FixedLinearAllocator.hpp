@@ -64,7 +64,7 @@ public:
         m_ReservedSize{DataSize},
         m_CurrAlignment{sizeof(void*)}
     {
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
         m_DbgUsingExternalMemory = true;
 #endif
     }
@@ -76,7 +76,7 @@ public:
         m_ReservedSize {Other.m_ReservedSize },
         m_CurrAlignment{Other.m_CurrAlignment},
         m_pAllocator   {Other.m_pAllocator   }
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
         , m_DbgCurrAllocation{Other.m_DbgCurrAllocation}
         , m_DbgAllocations{std::move(Other.m_DbgAllocations)}
         , m_DbgUsingExternalMemory{Other.m_DbgUsingExternalMemory}
@@ -95,7 +95,7 @@ public:
         m_ReservedSize  = Rhs.m_ReservedSize;
         m_CurrAlignment = Rhs.m_CurrAlignment;
         m_pAllocator    = Rhs.m_pAllocator;
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
         m_DbgCurrAllocation      = Rhs.m_DbgCurrAllocation;
         m_DbgAllocations         = std::move(Rhs.m_DbgAllocations);
         m_DbgUsingExternalMemory = Rhs.m_DbgUsingExternalMemory;
@@ -119,26 +119,26 @@ public:
         Reset();
     }
 
-    NODISCARD void* Release()
+    [[nodiscard]] void* Release()
     {
         void* Ptr = m_pDataStart;
         Reset();
         return Ptr;
     }
 
-    NODISCARD void* ReleaseOwnership() noexcept
+    [[nodiscard]] void* ReleaseOwnership() noexcept
     {
         m_pAllocator = nullptr;
         return GetDataPtr();
     }
 
-    NODISCARD void* GetDataPtr() const noexcept
+    [[nodiscard]] void* GetDataPtr() const noexcept
     {
         return m_pDataStart;
     }
 
     template <typename Type>
-    NODISCARD Type* GetDataPtr() const noexcept
+    [[nodiscard]] Type* GetDataPtr() const noexcept
     {
         VERIFY(AlignDown(m_pDataStart, alignof(Type)) == m_pDataStart, "Data pointer is not aligned for the requested type");
         return reinterpret_cast<Type*>(m_pDataStart);
@@ -168,7 +168,7 @@ public:
         size = AlignUp(size, alignment);
         m_ReservedSize += size;
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
         m_DbgAllocations.emplace_back(size, alignment, m_ReservedSize);
 #endif
     }
@@ -219,7 +219,7 @@ public:
         m_CurrAlignment = sizeof(void*);
     }
 
-    NODISCARD void* Allocate(size_t size, size_t alignment = 1)
+    [[nodiscard]] void* Allocate(size_t size, size_t alignment = 1)
     {
         VERIFY(size == 0 || m_pDataStart != nullptr, "Memory has not been allocated");
         VERIFY(IsPowerOfTwo(alignment), "Alignment is not a power of two!");
@@ -229,7 +229,7 @@ public:
 
         size = AlignUp(size, alignment);
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
         size_t dbgReservedSize = 0;
         if (!m_DbgUsingExternalMemory)
         {
@@ -262,13 +262,13 @@ public:
     }
 
     template <typename T>
-    NODISCARD T* Allocate(size_t count = 1)
+    [[nodiscard]] T* Allocate(size_t count = 1)
     {
         return reinterpret_cast<T*>(Allocate(sizeof(T) * count, alignof(T)));
     }
 
     template <typename T, typename... Args>
-    NODISCARD T* Construct(Args&&... args)
+    [[nodiscard]] T* Construct(Args&&... args)
     {
         T* Ptr = Allocate<T>();
         new (Ptr) T{std::forward<Args>(args)...};
@@ -276,7 +276,7 @@ public:
     }
 
     template <typename T, typename... Args>
-    NODISCARD T* ConstructArray(size_t count, const Args&... args)
+    [[nodiscard]] T* ConstructArray(size_t count, const Args&... args)
     {
         T* Ptr = Allocate<T>(count);
         for (size_t i = 0; i < count; ++i)
@@ -287,7 +287,7 @@ public:
     }
 
     template <typename T>
-    NODISCARD T* Copy(const T& Src)
+    [[nodiscard]] T* Copy(const T& Src)
     {
         return Construct<T>(Src);
     }
@@ -300,7 +300,7 @@ public:
     }
 
     template <typename T, typename ArgType>
-    NODISCARD T* CopyConstructArray(const ArgType* Src, size_t count)
+    [[nodiscard]] T* CopyConstructArray(const ArgType* Src, size_t count)
     {
         T* Dst = Allocate<T>(count);
         for (size_t i = 0; i < count; ++i)
@@ -311,12 +311,12 @@ public:
     }
 
     template <typename T>
-    NODISCARD T* CopyArray(const T* Src, size_t count)
+    [[nodiscard]] T* CopyArray(const T* Src, size_t count)
     {
         return CopyConstructArray<T, T>(Src, count);
     }
 
-    NODISCARD const Char* CopyString(const char* Str, size_t StrLen = 0)
+    [[nodiscard]] const Char* CopyString(const char* Str, size_t StrLen = 0)
     {
         if (Str == nullptr)
             return nullptr;
@@ -331,23 +331,23 @@ public:
         return Ptr;
     }
 
-    NODISCARD const Char* CopyString(const std::string& Str)
+    [[nodiscard]] const Char* CopyString(const std::string& Str)
     {
         return CopyString(Str.c_str());
     }
 
-    NODISCARD size_t GetCurrentSize() const
+    [[nodiscard]] size_t GetCurrentSize() const
     {
         VERIFY(m_pDataStart != nullptr, "Memory has not been allocated");
         return static_cast<size_t>(m_pCurrPtr - m_pDataStart);
     }
 
-    NODISCARD size_t GetReservedSize() const
+    [[nodiscard]] size_t GetReservedSize() const
     {
         return m_ReservedSize;
     }
 
-    NODISCARD bool IsEmpty() const
+    [[nodiscard]] bool IsEmpty() const
     {
         return m_ReservedSize == 0;
     }
@@ -361,7 +361,7 @@ private:
         m_CurrAlignment = 0;
         m_pAllocator    = nullptr;
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
         m_DbgCurrAllocation = 0;
         m_DbgAllocations.clear();
         m_DbgUsingExternalMemory = false;
@@ -374,7 +374,7 @@ private:
     size_t            m_CurrAlignment = 0;
     IMemoryAllocator* m_pAllocator    = nullptr;
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
     size_t m_DbgCurrAllocation = 0;
     struct DbgAllocationInfo
     {

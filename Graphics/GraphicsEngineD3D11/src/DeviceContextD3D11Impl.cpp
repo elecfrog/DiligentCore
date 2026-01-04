@@ -59,7 +59,7 @@ DeviceContextD3D11Impl::DeviceContextD3D11Impl(IReferenceCounters*      pRefCoun
         Desc
     },
     m_pd3d11DeviceContext {pd3d11DeviceContext},
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     m_D3D11ValidationFlags{pDevice->GetProperties().D3D11ValidationFlags},
 #endif
     m_CmdListAllocator    {GetRawAllocator(), sizeof(CommandListD3D11Impl), 64}
@@ -222,14 +222,14 @@ void DeviceContextD3D11Impl::CommitShaderResources(IShaderResourceBinding* pShad
     {
         ResourceCache.TransitionResourceStates<ShaderResourceCacheD3D11::StateTransitionMode::Transition>(*this);
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     else if (StateTransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
     {
         ResourceCache.TransitionResourceStates<ShaderResourceCacheD3D11::StateTransitionMode::Verify>(*this);
     }
 #endif
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     ResourceCache.DbgVerifyDynamicBufferMasks();
 #endif
 }
@@ -258,7 +258,7 @@ void DeviceContextD3D11Impl::BindCacheResources(const ShaderResourceCacheD3D11& 
                                                        NumConstants + Slots.MinSlot);
                 m_CommittedRes.NumCBs[ShaderInd] = std::max(m_CommittedRes.NumCBs[ShaderInd], static_cast<UInt8>(Slots.MaxSlot + 1));
             }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             if (m_D3D11ValidationFlags & D3D11_VALIDATION_FLAG_VERIFY_COMMITTED_RESOURCE_RELEVANCE)
             {
                 DvpVerifyCommittedCBs(ShaderType);
@@ -276,7 +276,7 @@ void DeviceContextD3D11Impl::BindCacheResources(const ShaderResourceCacheD3D11& 
                 (m_pd3d11DeviceContext->*SetSRVMethod)(Slots.MinSlot, Slots.MaxSlot - Slots.MinSlot + 1, d3d11SRVs + Slots.MinSlot);
                 m_CommittedRes.NumSRVs[ShaderInd] = std::max(m_CommittedRes.NumSRVs[ShaderInd], static_cast<UInt8>(Slots.MaxSlot + 1));
             }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             if (m_D3D11ValidationFlags & D3D11_VALIDATION_FLAG_VERIFY_COMMITTED_RESOURCE_RELEVANCE)
             {
                 DvpVerifyCommittedSRVs(ShaderType);
@@ -293,7 +293,7 @@ void DeviceContextD3D11Impl::BindCacheResources(const ShaderResourceCacheD3D11& 
                 (m_pd3d11DeviceContext->*SetSamplerMethod)(Slots.MinSlot, Slots.MaxSlot - Slots.MinSlot + 1, d3d11Samplers + Slots.MinSlot);
                 m_CommittedRes.NumSamplers[ShaderInd] = std::max(m_CommittedRes.NumSamplers[ShaderInd], static_cast<UInt8>(Slots.MaxSlot + 1));
             }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             if (m_D3D11ValidationFlags & D3D11_VALIDATION_FLAG_VERIFY_COMMITTED_RESOURCE_RELEVANCE)
             {
                 DvpVerifyCommittedSamplers(ShaderType);
@@ -379,7 +379,7 @@ void DeviceContextD3D11Impl::BindCacheResources(const ShaderResourceCacheD3D11& 
                     UNEXPECTED("UAV is not supported in shader that is not pixel or compute");
                 }
             }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             if ((m_D3D11ValidationFlags & D3D11_VALIDATION_FLAG_VERIFY_COMMITTED_RESOURCE_RELEVANCE) != 0 && ShaderInd == CSInd)
             {
                 DvpVerifyCommittedUAVs(ShaderType);
@@ -412,7 +412,7 @@ void DeviceContextD3D11Impl::BindDynamicCBs(const ShaderResourceCacheD3D11&    R
                                          (m_pd3d11DeviceContext->*SetCB1Method)(Slot, 1, d3d11CBs + Slot, FirstConstants + Slot, NumConstants + Slot);
                                      });
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         if (m_D3D11ValidationFlags & D3D11_VALIDATION_FLAG_VERIFY_COMMITTED_RESOURCE_RELEVANCE)
         {
             const SHADER_TYPE ShaderType = GetShaderTypeFromIndex(ShaderInd);
@@ -439,7 +439,7 @@ void DeviceContextD3D11Impl::BindShaderResources(UInt32 BindSRBMask)
         VERIFY_EXPR(SignIdx < m_pPipelineState->GetResourceSignatureCount());
         const D3D11ShaderResourceCounters& BaseBindings = m_pPipelineState->GetBaseBindings(SignIdx);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         m_BindInfo.BaseBindings[SignIdx] = BaseBindings;
 #endif
         const ShaderResourceCacheD3D11* pResourceCache = m_BindInfo.ResourceCaches[SignIdx];
@@ -539,7 +539,7 @@ void DeviceContextD3D11Impl::BindShaderResources(UInt32 BindSRBMask)
     }
 }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 void DeviceContextD3D11Impl::DvpValidateCommittedShaderResources()
 {
     if (m_BindInfo.ResourcesValidated)
@@ -658,7 +658,7 @@ void DeviceContextD3D11Impl::CommitD3D11VertexBuffers(PipelineStateD3D11Impl* pP
 
 void DeviceContextD3D11Impl::PrepareForDraw(DRAW_FLAGS Flags)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DvpVerifyRenderTargets();
 #endif
 
@@ -674,7 +674,7 @@ void DeviceContextD3D11Impl::PrepareForDraw(DRAW_FLAGS Flags)
         BindShaderResources(BindSRBMask);
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Must be called after BindShaderResources as it needs BaseBindings
     DvpValidateCommittedShaderResources();
 
@@ -717,7 +717,7 @@ void DeviceContextD3D11Impl::PrepareForIndexedDraw(DRAW_FLAGS Flags, VALUE_TYPE 
     {
         CommitD3D11IndexBuffer(IndexType);
     }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (Flags & DRAW_FLAG_VERIFY_STATES)
     {
         if (m_pIndexBuffer->IsInKnownState() && m_pIndexBuffer->CheckState(RESOURCE_STATE_UNORDERED_ACCESS))
@@ -909,7 +909,7 @@ void DeviceContextD3D11Impl::DispatchCompute(const DispatchComputeAttribs& Attri
         BindShaderResources(BindSRBMask);
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Must be called after BindShaderResources as it needs BaseBindings
     DvpValidateCommittedShaderResources();
 
@@ -939,7 +939,7 @@ void DeviceContextD3D11Impl::DispatchComputeIndirect(const DispatchComputeIndire
         BindShaderResources(BindSRBMask);
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Must be called after BindShaderResources as it needs BaseBindings
     DvpValidateCommittedShaderResources();
 
@@ -993,7 +993,7 @@ void DeviceContextD3D11Impl::ClearRenderTarget(ITextureView* pView, const void* 
     if (RGBA == nullptr)
         RGBA = Zero;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     {
         const TEXTURE_FORMAT        RTVFormat  = pViewD3D11->GetDesc().Format;
         const TextureFormatAttribs& FmtAttribs = GetTextureFormatAttribs(RTVFormat);
@@ -1241,7 +1241,7 @@ void DeviceContextD3D11Impl::SetVertexBuffers(UInt32                         Sta
                     pBuffD3D11Impl->ClearState(RESOURCE_STATE_UNORDERED_ACCESS);
                 }
             }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             else if (StateTransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
             {
                 if (pBuffD3D11Impl->IsInKnownState() && pBuffD3D11Impl->CheckState(RESOURCE_STATE_UNORDERED_ACCESS))
@@ -1271,7 +1271,7 @@ void DeviceContextD3D11Impl::SetIndexBuffer(IBuffer* pIndexBuffer, UInt64 ByteOf
                 m_pIndexBuffer->ClearState(RESOURCE_STATE_UNORDERED_ACCESS);
             }
         }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         else if (StateTransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
         {
             if (m_pIndexBuffer->IsInKnownState() && m_pIndexBuffer->CheckState(RESOURCE_STATE_UNORDERED_ACCESS))
@@ -1605,7 +1605,7 @@ void DeviceContextD3D11Impl::ResetRenderTargets()
 
 void DeviceContextD3D11Impl::SetRenderTargetsExt(const SetRenderTargetsAttribs& Attribs)
 {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (m_pActiveRenderPass != nullptr)
     {
         LOG_ERROR_MESSAGE("Calling SetRenderTargets inside active render pass is invalid. End the render pass first");
@@ -1626,7 +1626,7 @@ void DeviceContextD3D11Impl::SetRenderTargetsExt(const SetRenderTargetsAttribs& 
                     if (pTex->IsInKnownState())
                         pTex->SetState(RESOURCE_STATE_RENDER_TARGET);
                 }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
                 else if (Attribs.StateTransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
                 {
                     DvpVerifyTextureState(*pTex, RESOURCE_STATE_RENDER_TARGET, "Setting render targets (DeviceContextD3D11Impl::SetRenderTargets)");
@@ -1650,7 +1650,7 @@ void DeviceContextD3D11Impl::SetRenderTargetsExt(const SetRenderTargetsAttribs& 
                 if (pTex->IsInKnownState())
                     pTex->SetState(NewState);
             }
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             else if (Attribs.StateTransitionMode == RESOURCE_STATE_TRANSITION_MODE_VERIFY)
             {
                 DvpVerifyTextureState(*pTex, NewState, "Setting depth-stencil buffer (DeviceContextD3D11Impl::SetRenderTargets)");
@@ -1888,7 +1888,7 @@ void DeviceContextD3D11Impl::ReleaseCommittedShaderResources()
         m_CommittedRes.NumUAVs[ShaderType]     = 0;
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (m_D3D11ValidationFlags & D3D11_VALIDATION_FLAG_VERIFY_COMMITTED_RESOURCE_RELEVANCE)
     {
         constexpr SHADER_TYPE AllStages = SHADER_TYPE_ALL_GRAPHICS | SHADER_TYPE_COMPUTE;
@@ -1925,7 +1925,7 @@ void DeviceContextD3D11Impl::FinishCommandList(ICommandList** ppCommandList)
     // Device context is now in default state
     InvalidateState();
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (m_D3D11ValidationFlags & D3D11_VALIDATION_FLAG_VERIFY_COMMITTED_RESOURCE_RELEVANCE)
     {
         // Verify bindings
@@ -1969,7 +1969,7 @@ void DeviceContextD3D11Impl::ExecuteCommandLists(UInt32               NumCommand
     // Device context is now in default state
     InvalidateState();
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (m_D3D11ValidationFlags & D3D11_VALIDATION_FLAG_VERIFY_COMMITTED_RESOURCE_RELEVANCE)
     {
         // Verify bindings
@@ -2207,7 +2207,7 @@ void DeviceContextD3D11Impl::TransitionResourceStates(UInt32 BarrierCount, const
     for (UInt32 i = 0; i < BarrierCount; ++i)
     {
         const StateTransitionDesc& Barrier = pResourceBarriers[i];
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         DvpVerifyStateTransitionDesc(Barrier);
 #endif
 
@@ -2504,7 +2504,7 @@ void DeviceContextD3D11Impl::InsertDebugLabel(const Char* Label, const float* pC
 }
 
 // clang-format off
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     DEFINE_D3D11CTX_FUNC_POINTERS(GetCBMethods,      GetConstantBuffers)
     DEFINE_D3D11CTX_FUNC_POINTERS(GetSRVMethods,     GetShaderResources)
     DEFINE_D3D11CTX_FUNC_POINTERS(GetSamplerMethods, GetSamplers)
@@ -2711,6 +2711,6 @@ void DeviceContextD3D11Impl::DvpVerifyCommittedShaders()
     VERIFY_SHADER(COMPUTE, Compute, C);
 }
 
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
 } // namespace Diligent

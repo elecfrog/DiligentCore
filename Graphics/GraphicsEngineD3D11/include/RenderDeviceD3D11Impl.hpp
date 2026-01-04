@@ -209,7 +209,7 @@ private:
     /// D3D11 device
     CComPtr<ID3D11Device> m_pd3d11Device;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     UInt32 m_MaxD3D11DeviceVersion = 0;
 #endif
 };

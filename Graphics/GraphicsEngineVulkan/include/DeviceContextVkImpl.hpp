@@ -408,7 +408,7 @@ public:
 
     __forceinline size_t GetDynamicBufferOffset(const BufferVkImpl* pBuffer, bool VerifyAllocation = true);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     void DvpVerifyDynamicAllocation(const BufferVkImpl* pBuffer) const;
 #endif
 
@@ -538,7 +538,7 @@ private:
             // Note that this is not the actual number of dynamic buffers in the resource cache.
             UInt32 DynamicOffsetCount = 0;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             // The descriptor set base index that was used in the last BindDescriptorSets() call
             UInt32 LastBoundBaseInd = ~0u;
 #endif
@@ -555,7 +555,7 @@ private:
     __forceinline ResourceBindInfo& GetBindInfo(PIPELINE_TYPE Type);
 
     __forceinline void CommitDescriptorSets(ResourceBindInfo& BindInfo, UInt32 CommitSRBMask);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     void DvpValidateCommittedShaderResources(ResourceBindInfo& BindInfo);
 #endif
 
@@ -628,7 +628,7 @@ private:
     struct MappedBuffer
     {
         VulkanDynamicAllocation Allocation;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         UniqueIdentifier DvpBufferUID = -1;
 #endif
     };
@@ -663,7 +663,7 @@ __forceinline size_t DeviceContextVkImpl::GetDynamicBufferOffset(const BufferVkI
     if (pBuffer->m_VulkanBuffer != VK_NULL_HANDLE)
         return 0;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     if (VerifyAllocation)
     {
         DvpVerifyDynamicAllocation(pBuffer);

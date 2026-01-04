@@ -61,7 +61,7 @@ public:
     // allocator
     void FreeAllocator(CComPtr<ID3D12CommandAllocator>&& Allocator);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     Int32 GetAllocatorCounter() const
     {
         return m_AllocatorCounter.load();
@@ -83,7 +83,7 @@ private:
 
     std::atomic<Int32> m_NumAllocators{0}; // For logging only
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     std::atomic<Int32> m_AllocatorCounter{0};
 #endif
 };

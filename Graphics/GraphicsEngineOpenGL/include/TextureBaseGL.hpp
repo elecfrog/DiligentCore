@@ -153,7 +153,7 @@ DEFINE_FLAG_ENUM_OPERATORS(TextureBaseGL::FRAMEBUFFER_TARGET_FLAGS);
 void TextureBaseGL::TextureMemoryBarrier(MEMORY_BARRIER RequiredBarriers, GLContextState& GLContextState)
 {
 #if GL_ARB_shader_image_load_store
-#    ifdef DILIGENT_DEBUG
+#    ifdef SPW_DEBUG
     {
         constexpr UInt32 TextureBarriers = MEMORY_BARRIER_ALL_TEXTURE_BARRIERS;
         VERIFY((RequiredBarriers & TextureBarriers) != 0, "At least one texture memory barrier flag should be set");

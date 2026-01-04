@@ -56,7 +56,7 @@ public:
         size_t     Offset     = 0;
         size_t     Size       = 0;
         UInt8*     pData      = nullptr;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         UInt64 dvpFrameNumber = 0;
 #endif
     };

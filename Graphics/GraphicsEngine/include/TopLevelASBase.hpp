@@ -67,7 +67,7 @@ private:
         UInt32                               ContributionToHitGroupIndex = 0;
         UInt32                               InstanceIndex               = 0;
         RefCntAutoPtr<BottomLevelASImplType> pBLAS;
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         UInt32 dvpVersion = 0;
 #endif
     };
@@ -130,7 +130,7 @@ public:
                 Desc.InstanceIndex               = i;
                 CalculateHitGroupIndex(Desc, InstanceOffset, HitGroupStride, BindingMode);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
                 Desc.dvpVersion = Desc.pBLAS->DvpGetVersion();
 #endif
                 bool IsUniqueName = this->m_Instances.emplace(NameCopy, Desc).second;
@@ -148,14 +148,14 @@ public:
             this->m_BuildInfo.BindingMode                      = BindingMode;
             this->m_BuildInfo.InstanceCount                    = InstanceCount;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             this->m_DvpVersion.fetch_add(1);
 #endif
             return true;
         }
         catch (...)
         {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             this->m_DvpVersion.fetch_add(1);
 #endif
             ClearInstanceData();
@@ -170,7 +170,7 @@ public:
                          const HIT_GROUP_BINDING_MODE BindingMode) noexcept
     {
         VERIFY_EXPR(this->m_BuildInfo.InstanceCount == InstanceCount);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         bool Changed = false;
 #endif
         UInt32 InstanceOffset = BaseContributionToHitGroupIndex;
@@ -195,7 +195,7 @@ public:
             //Desc.InstanceIndex             = i; // keep Desc.InstanceIndex unmodified
             CalculateHitGroupIndex(Desc, InstanceOffset, HitGroupStride, BindingMode);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
             Changed         = Changed || (pPrevBLAS != Desc.pBLAS);
             Changed         = Changed || (PrevIndex != Desc.ContributionToHitGroupIndex);
             Desc.dvpVersion = Desc.pBLAS->DvpGetVersion();
@@ -204,7 +204,7 @@ public:
 
         InstanceOffset = InstanceOffset + (BindingMode == HIT_GROUP_BINDING_MODE_PER_TLAS ? HitGroupStride : 0) - 1;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         Changed = Changed || (this->m_BuildInfo.HitGroupStride != HitGroupStride);
         Changed = Changed || (this->m_BuildInfo.FirstContributionToHitGroupIndex != BaseContributionToHitGroupIndex);
         Changed = Changed || (this->m_BuildInfo.LastContributionToHitGroupIndex != InstanceOffset);
@@ -235,7 +235,7 @@ public:
 
         VERIFY_EXPR(this->m_StringPool.GetRemainingSize() == 0);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         this->m_DvpVersion.fetch_add(1);
 #endif
     }
@@ -303,7 +303,7 @@ public:
         return (this->m_State & State) == State;
     }
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     bool ValidateContent() const
     {
         bool result = true;
@@ -341,7 +341,7 @@ public:
     {
         return this->m_DvpVersion.load();
     }
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 
 private:
     void ClearInstanceData()
@@ -391,7 +391,7 @@ protected:
 
     StringPool m_StringPool;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     std::atomic<UInt32> m_DvpVersion{0};
 #endif
 };

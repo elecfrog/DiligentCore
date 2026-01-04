@@ -70,7 +70,7 @@ UInt64 CommandQueueD3D12Impl::Submit(UInt32                    NumCommandLists,
     // discard all resources.
     if (NumCommandLists != 0 && ppCommandLists != nullptr)
     {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         for (UInt32 i = 0; i < NumCommandLists; ++i)
         {
             VERIFY(ppCommandLists[i] != nullptr, "Command list must not be null");

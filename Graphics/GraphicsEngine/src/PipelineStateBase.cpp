@@ -915,7 +915,7 @@ ShaderResourceVariableDesc FindPipelineResourceLayoutVariable(
         const ShaderResourceVariableDesc& Var = LayoutDesc.Variables[i];
         if ((Var.ShaderStages & ShaderStage) != 0 && StreqSuff(Name, Var.Name, CombinedSamplerSuffix))
         {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
             for (UInt32 j = i + 1; j < LayoutDesc.NumVariables; ++j)
             {
                 const ShaderResourceVariableDesc& Var2 = LayoutDesc.Variables[j];

@@ -161,7 +161,7 @@ UploadMemoryManagerWebGPU::Page UploadMemoryManagerWebGPU::GetPage(size_t Size)
         }
     }
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
     m_DbgPageCounter.fetch_add(1);
 #endif
     return Page{*this, PageSize};

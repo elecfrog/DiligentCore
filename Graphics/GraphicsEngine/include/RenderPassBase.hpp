@@ -124,7 +124,7 @@ public:
         m_AttachmentStates       = nullptr;
         m_AttachmentFirstLastUse = nullptr;
 
-#if DILIGENT_DEBUG
+#if SPW_DEBUG
         m_IsDestructed = true;
 #endif
     }
@@ -308,7 +308,7 @@ private:
     // The index of the subpass where the attachment is first used
     const std::pair<UInt32, UInt32>* m_AttachmentFirstLastUse = nullptr; // [m_Desc.AttachmentCount]
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     bool m_IsDestructed = false;
 #endif
 };

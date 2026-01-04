@@ -87,7 +87,7 @@ public:
         const PipelineResourceLayoutDesc& ResourceLayout,
         UInt32                            SRBAllocationGranularity) noexcept(false);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     using ShaderResourceCacheArrayType = std::array<ShaderResourceCacheGL*, MAX_RESOURCE_SIGNATURES>;
     using BaseBindingsArrayType        = std::array<TBindings, MAX_RESOURCE_SIGNATURES>;
     void DvpVerifySRBResources(const ShaderResourceCacheArrayType& ResourceCaches,
@@ -141,7 +141,7 @@ private:
     class PipelineBuilder;
     std::unique_ptr<PipelineBuilderBase> m_Builder;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     // Shader resources for all shaders in all shader stages in the pipeline.
     std::vector<std::shared_ptr<const ShaderResourcesGL>> m_ShaderResources;
     std::vector<String>                                   m_ShaderNames;

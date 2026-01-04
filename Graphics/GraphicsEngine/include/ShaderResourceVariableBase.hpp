@@ -151,7 +151,7 @@ struct BindResourceInfo
     {}
 };
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
 #    define RESOURCE_VALIDATION_FAILURE UNEXPECTED
 #else
 #    define RESOURCE_VALIDATION_FAILURE LOG_ERROR_MESSAGE
@@ -699,7 +699,7 @@ struct ShaderVariableBase : public ResourceVariableBaseInterface
     virtual void DG_CALL_TYPE SetBufferOffset(UInt32 Offset,
                                                     UInt32 ArrayIndex) override final
     {
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         {
             const PipelineResourceDesc& Desc = GetDesc();
             DEV_CHECK_ERR((Desc.Flags & PIPELINE_RESOURCE_FLAG_NO_DYNAMIC_BUFFERS) == 0,
@@ -843,7 +843,7 @@ protected:
             m_pVariables  = reinterpret_cast<VariableType*>(pRawMem);
         }
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         m_pDbgAllocator = &Allocator;
 #endif
     }
@@ -856,7 +856,7 @@ protected:
             Allocator.Free(m_pVariables);
             m_pVariables = nullptr;
         }
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         m_pDbgAllocator = nullptr;
 #endif
     }
@@ -909,7 +909,7 @@ protected:
     VariableType* m_pVariables = nullptr;
 
 private:
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     // Memory allocator that was used to allocate memory for m_pVariables (for debug purposes only).
     IMemoryAllocator* m_pDbgAllocator = nullptr;
 #endif

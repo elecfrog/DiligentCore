@@ -60,7 +60,7 @@ struct D3D11ResourceBindPoints
 
     D3D11ResourceBindPoints() noexcept
     {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         for (UInt8 BindPoint : Bindings)
             VERIFY_EXPR(BindPoint == InvalidBindPoint);
 #endif
@@ -190,7 +190,7 @@ struct D3D11ResourceRangeCounters
 
     D3D11ResourceRangeCounters& operator+=(const D3D11ResourceRangeCounters& rhs)
     {
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         for (UInt32 s = 0; s < NumShaderTypes; ++s)
         {
             const UInt32 val0 = static_cast<const D3D11ResourceRangeCounters&>(*this)[s];

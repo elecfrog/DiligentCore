@@ -72,7 +72,7 @@ private:
     const VkPipelineStageFlags  m_SupportedStagesMask;
     const VkAccessFlags         m_SupportedAccessMask;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     std::atomic<int32_t> m_BuffCounter{0};
 #endif
 };

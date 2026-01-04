@@ -284,7 +284,7 @@ protected:
     {
         const D3D_FEATURE_LEVEL FeatureLevel = static_cast<D3D_FEATURE_LEVEL>((UInt32{MinVersion.Major} << 12u) | (UInt32{MinVersion.Minor} << 8u));
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
         switch (MinVersion.Major)
         {
             case 10:

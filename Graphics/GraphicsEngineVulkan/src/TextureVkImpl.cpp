@@ -111,7 +111,7 @@ VkImageCreateInfo TextureDescToVkImageCreateInfo(const TextureDesc& Desc, const 
     if (Desc.MiscFlags & MISC_TEXTURE_FLAG_GENERATE_MIPS)
     {
         VERIFY_EXPR(!IsMemoryless);
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         {
             const VulkanUtilities::PhysicalDevice& PhysicalDevice = pRenderDeviceVk->GetPhysicalDevice();
             const VkFormatProperties               FmtProperties  = PhysicalDevice.GetPhysicalDeviceFormatProperties(ImageCI.format);
@@ -358,7 +358,7 @@ bool TextureVkImpl::InitializeContentOnHost(const TextureData&          InitData
                 UInt32{FmtAttribs.ComponentSize} * UInt32{FmtAttribs.NumComponents};
             if ((SubResData.Stride % PixelSize) != 0)
             {
-                LOG_DVP_WARNING_MESSAGE("Unable to initialize texture '", m_Desc.Name, "' on host: subresource ", subres, " has stride ", SubResData.Stride,
+                LOG_WARNING_MESSAGE("Unable to initialize texture '", m_Desc.Name, "' on host: subresource ", subres, " has stride ", SubResData.Stride,
                                         " that is not multiple of pixel size ", PixelSize, ". The content will be initialized on device.");
                 return false;
             }
@@ -368,7 +368,7 @@ bool TextureVkImpl::InitializeContentOnHost(const TextureData&          InitData
 
             if ((SubResData.DepthStride % SubResData.Stride) != 0)
             {
-                LOG_DVP_WARNING_MESSAGE("Unable to initialize texture '", m_Desc.Name, "' on host: subresource ", subres, " has depth stride ", SubResData.DepthStride,
+                LOG_WARNING_MESSAGE("Unable to initialize texture '", m_Desc.Name, "' on host: subresource ", subres, " has depth stride ", SubResData.DepthStride,
                                         " that is not multiple of row stride ", SubResData.Stride, ". The content will be initialized on device.");
                 return false;
             }
@@ -1020,7 +1020,7 @@ void TextureVkImpl::InitSparseProperties() noexcept(false)
     Props.AddressSpaceSize = MemReq.size;
     Props.BlockSize        = StaticCast<UInt32>(MemReq.alignment);
 
-#ifdef DILIGENT_DEBUG
+#ifdef SPW_DEBUG
     const TextureFormatAttribs& FmtAttribs    = GetTextureFormatAttribs(m_Desc.Format);
     const UInt32                BytesPerBlock = FmtAttribs.GetElementSize();
     const UInt32                BytesPerTile =

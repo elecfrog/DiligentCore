@@ -118,7 +118,7 @@ std::vector<uint32_t> OptimizeSPIRV(const std::vector<uint32_t>& SrcSPIRV, spv_t
     SpirvOptimizer.SetMessageConsumer(SpvOptimizerMessageConsumer);
 
     spvtools::OptimizerOptions Options;
-#ifndef DILIGENT_DEVELOPMENT
+#ifndef SPW_PROFILE
     // Do not run validator in release build
     Options.set_run_validator(false);
 #endif

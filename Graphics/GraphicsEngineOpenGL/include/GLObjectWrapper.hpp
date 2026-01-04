@@ -130,7 +130,7 @@ public:
             if (MaxLabelLen == 0)
             {
                 glGetIntegerv(GL_MAX_LABEL_LENGTH, &MaxLabelLen);
-#    ifdef DILIGENT_DEVELOPMENT
+#    ifdef SPW_PROFILE
                 glGetError(); // Ignore GL error
 #    endif
                 if (MaxLabelLen <= 0)
@@ -149,7 +149,7 @@ public:
                 Length = MaxLabelLen;
 
             glObjectLabel(m_CreateReleaseHelper.Type, m_uiHandle, Length, Name);
-#    ifdef DILIGENT_DEVELOPMENT
+#    ifdef SPW_PROFILE
             glGetError(); // Ignore GL error
 #    endif
         }

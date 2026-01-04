@@ -436,7 +436,7 @@ private:
     void BindDynamicCBs(const ShaderResourceCacheD3D11&    ResourceCache,
                         const D3D11ShaderResourceCounters& BaseBindings);
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     void DvpValidateCommittedShaderResources();
 #endif
 
@@ -449,7 +449,7 @@ private:
         // Shader stages that are active in current PSO.
         SHADER_TYPE ActiveStages = SHADER_TYPE_UNKNOWN;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
         // Base bindings that were used in the last BindShaderResources() call.
         std::array<D3D11ShaderResourceCounters, MAX_RESOURCE_SIGNATURES> BaseBindings = {};
 #endif
@@ -496,7 +496,7 @@ private:
     /// Strong references to committed D3D11 shaders
     CComPtr<ID3D11DeviceChild> m_CommittedD3DShaders[NumShaderTypes];
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
     const D3D11_VALIDATION_FLAGS m_D3D11ValidationFlags;
 #endif
 
@@ -507,7 +507,7 @@ private:
 
     std::vector<OptimizedClearValue> m_AttachmentClearValues;
 
-#ifdef DILIGENT_DEVELOPMENT
+#ifdef SPW_PROFILE
 
     /// Helper template function used to facilitate context verification
     template <UINT MaxResources, typename TD3D11ResourceType, typename TGetD3D11ResourcesType>
@@ -556,7 +556,7 @@ private:
     /// device context
     void DvpVerifyCommittedShaders();
 
-#endif // DILIGENT_DEVELOPMENT
+#endif // SPW_PROFILE
 };
 
 } // namespace Diligent
