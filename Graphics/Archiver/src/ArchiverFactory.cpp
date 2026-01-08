@@ -92,58 +92,52 @@ public:
         m_RefCounters{*this}
     {}
 
-    virtual void DG_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
+    virtual void QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final;
 
-    virtual ReferenceCounterValueType DG_CALL_TYPE AddRef() override final
+    virtual ReferenceCounterValueType AddRef() override final
     {
         return m_RefCounters.AddStrongRef();
     }
 
-    virtual ReferenceCounterValueType DG_CALL_TYPE Release() override final
+    virtual ReferenceCounterValueType Release() override final
     {
         return m_RefCounters.ReleaseStrongRef();
     }
 
-    virtual IReferenceCounters* DG_CALL_TYPE GetReferenceCounters() const override final
+    virtual IReferenceCounters* GetReferenceCounters() const override final
     {
         return const_cast<IReferenceCounters*>(static_cast<const IReferenceCounters*>(&m_RefCounters));
     }
 
-    virtual void DG_CALL_TYPE CreateArchiver(
-        ISerializationDevice* pDevice,
-        IArchiver**           ppArchiver) override final;
+    virtual void CreateArchiver(ISerializationDevice* pDevice,
+                                IArchiver**           ppArchiver) override final;
 
-    virtual void DG_CALL_TYPE CreateSerializationDevice(
-        const SerializationDeviceCreateInfo& CreateInfo,
-        ISerializationDevice**               ppDevice) override final;
+    virtual void CreateSerializationDevice(const SerializationDeviceCreateInfo& CreateInfo,
+                                           ISerializationDevice**               ppDevice) override final;
 
-    virtual void DG_CALL_TYPE CreateDefaultShaderSourceStreamFactory(
-        const Char*                              SearchDirectories,
-        struct IShaderSourceInputStreamFactory** ppShaderSourceFactory) const override final;
+    virtual void CreateDefaultShaderSourceStreamFactory(const Char*                              SearchDirectories,
+                                                        struct IShaderSourceInputStreamFactory** ppShaderSourceFactory) const override final;
 
-    virtual Bool DG_CALL_TYPE RemoveDeviceData(
-        const IDataBlob*          pSrcArchive,
-        ARCHIVE_DEVICE_DATA_FLAGS DeviceFlags,
-        IDataBlob**               ppDstArchive) const override final;
+    virtual Bool RemoveDeviceData(const IDataBlob*          pSrcArchive,
+                                  ARCHIVE_DEVICE_DATA_FLAGS DeviceFlags,
+                                  IDataBlob**               ppDstArchive) const override final;
 
-    virtual Bool DG_CALL_TYPE AppendDeviceData(
-        const IDataBlob*          pSrcArchive,
-        ARCHIVE_DEVICE_DATA_FLAGS DeviceFlags,
-        const IDataBlob*          pDeviceArchive,
-        IDataBlob**               ppDstArchive) const override final;
+    virtual Bool AppendDeviceData(const IDataBlob*          pSrcArchive,
+                                  ARCHIVE_DEVICE_DATA_FLAGS DeviceFlags,
+                                  const IDataBlob*          pDeviceArchive,
+                                  IDataBlob**               ppDstArchive) const override final;
 
-    virtual Bool DG_CALL_TYPE MergeArchives(
-        const IDataBlob* ppSrcArchives[],
-        UInt32           NumSrcArchives,
-        IDataBlob**      ppDstArchive) const override final;
+    virtual Bool MergeArchives(const IDataBlob* ppSrcArchives[],
+                               UInt32           NumSrcArchives,
+                               IDataBlob**      ppDstArchive) const override final;
 
-    virtual Bool DG_CALL_TYPE PrintArchiveContent(const IDataBlob* pArchive) const override final;
+    virtual Bool PrintArchiveContent(const IDataBlob* pArchive) const override final;
 
-    virtual void DG_CALL_TYPE SetMessageCallback(DebugMessageCallbackType MessageCallback) const override final;
+    virtual void SetMessageCallback(spw::DebugMessageCallbackType MessageCallback) const override final;
 
-    virtual void DG_CALL_TYPE SetBreakOnError(bool BreakOnError) const override final;
+    virtual void SetBreakOnError(bool BreakOnError) const override final;
 
-    virtual void DG_CALL_TYPE SetMemoryAllocator(IMemoryAllocator* pAllocator) const override final;
+    virtual void SetMemoryAllocator(IMemoryAllocator* pAllocator) const override final;
 
 private:
     DummyReferenceCounters<ArchiverFactoryImpl> m_RefCounters;

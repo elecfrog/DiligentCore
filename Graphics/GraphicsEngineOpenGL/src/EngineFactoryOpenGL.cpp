@@ -89,23 +89,23 @@ public:
         TBase{IID_EngineFactoryOpenGL}
     {}
 
-    virtual void DG_CALL_TYPE CreateDeviceAndSwapChainGL(const EngineGLCreateInfo& EngineCI,
+    virtual void  CreateDeviceAndSwapChainGL(const EngineGLCreateInfo& EngineCI,
                                                                IRenderDevice**           ppDevice,
                                                                IDeviceContext**          ppImmediateContext,
                                                                const SwapChainDesc&      SCDesc,
                                                                ISwapChain**              ppSwapChain) override final;
 
-    virtual void DG_CALL_TYPE CreateHLSL2GLSLConverter(IHLSL2GLSLConverter** ppConverter) override final;
+    virtual void  CreateHLSL2GLSLConverter(IHLSL2GLSLConverter** ppConverter) override final;
 
-    virtual void DG_CALL_TYPE AttachToActiveGLContext(const EngineGLCreateInfo& EngineCI,
+    virtual void  AttachToActiveGLContext(const EngineGLCreateInfo& EngineCI,
                                                             IRenderDevice**           ppDevice,
                                                             IDeviceContext**          ppImmediateContext) override final;
 
-    virtual void DG_CALL_TYPE EnumerateAdapters(Version              MinVersion,
+    virtual void  EnumerateAdapters(Version              MinVersion,
                                                       UInt32&              NumAdapters,
                                                       GraphicsAdapterInfo* Adapters) const override final;
 
-    virtual void DG_CALL_TYPE CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
+    virtual void  CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
                                                      IDearchiver**               ppDearchiver) const override final
     {
         TBase::CreateDearchiver<DearchiverGLImpl>(CreateInfo, ppDearchiver);

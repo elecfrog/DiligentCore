@@ -117,7 +117,7 @@ struct IShaderResourceBinding : public IObject
     ///
     /// \note  This operation may potentially be expensive. If the variable will be used often, it is
     ///        recommended to store and reuse the pointer as it never changes.
-    virtual IShaderResourceVariable* DG_CALL_TYPE GetVariableByName(SHADER_TYPE ShaderType, const Char* Name) = 0;
+    virtual IShaderResourceVariable*  GetVariableByName(SHADER_TYPE ShaderType, const Char* Name) = 0;
 
 
     /// Returns the total variable count for the specific shader stage.

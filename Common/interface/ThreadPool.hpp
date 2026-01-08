@@ -93,12 +93,12 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_AsyncTask, TBase)
 
-    virtual void DG_CALL_TYPE Cancel() override
+    virtual void Cancel() override
     {
         m_bSafelyCancel.store(true);
     }
 
-    virtual void DG_CALL_TYPE SetStatus(ASYNC_TASK_STATUS TaskStatus) override final
+    virtual void SetStatus(ASYNC_TASK_STATUS TaskStatus) override final
     {
 #ifdef SPW_PROFILE
         if (TaskStatus != m_TaskStatus)
@@ -138,35 +138,35 @@ public:
         m_TaskStatus.store(TaskStatus);
     }
 
-    virtual ASYNC_TASK_STATUS DG_CALL_TYPE GetStatus() const override final
+    virtual ASYNC_TASK_STATUS GetStatus() const override final
     {
         return m_TaskStatus.load();
     }
 
-    virtual void DG_CALL_TYPE SetPriority(float fPriority) override final
+    virtual void SetPriority(float fPriority) override final
     {
         m_fPriority.store(fPriority);
     }
 
-    virtual float DG_CALL_TYPE GetPriority() const override final
+    virtual float GetPriority() const override final
     {
         return m_fPriority.load();
     }
 
-    virtual bool DG_CALL_TYPE IsFinished() const override final
+    virtual bool IsFinished() const override final
     {
         static_assert(ASYNC_TASK_STATUS_COMPLETE > ASYNC_TASK_STATUS_CANCELLED && ASYNC_TASK_STATUS_CANCELLED > ASYNC_TASK_STATUS_RUNNING,
                       "Unexpected enum values");
         return m_TaskStatus.load() >= ASYNC_TASK_STATUS_CANCELLED;
     }
 
-    virtual void DG_CALL_TYPE WaitForCompletion() const override final
+    virtual void WaitForCompletion() const override final
     {
         while (!IsFinished())
             std::this_thread::yield();
     }
 
-    virtual void DG_CALL_TYPE WaitUntilRunning() const override final
+    virtual void WaitUntilRunning() const override final
     {
         while (GetStatus() == ASYNC_TASK_STATUS_NOT_STARTED)
             std::this_thread::yield();
@@ -201,7 +201,7 @@ RefCntAutoPtr<IAsyncTask> EnqueueAsyncWork(IThreadPool* pThreadPool,
             m_Handler{std::move(Handler)}
         {}
 
-        virtual ASYNC_TASK_STATUS DG_CALL_TYPE Run(UInt32 ThreadId) override final
+        virtual ASYNC_TASK_STATUS Run(UInt32 ThreadId) override final
         {
             return !m_bSafelyCancel.load() ?
                 m_Handler(ThreadId) :

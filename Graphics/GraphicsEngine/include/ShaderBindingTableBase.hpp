@@ -99,7 +99,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_ShaderBindingTable, TDeviceObjectBase)
 
 
-    void DG_CALL_TYPE Reset(IPipelineState* pPSO) override final
+    void Reset(IPipelineState* pPSO) override final
     {
 #ifdef SPW_PROFILE
         this->m_DbgHitGroupBindings.clear();
@@ -129,7 +129,7 @@ public:
     }
 
 
-    void DG_CALL_TYPE ResetHitGroups() override final
+    void ResetHitGroups() override final
     {
 #ifdef SPW_PROFILE
         this->m_DbgHitGroupBindings.clear();
@@ -139,7 +139,7 @@ public:
     }
 
 
-    void DG_CALL_TYPE BindRayGenShader(const char* pShaderGroupName, const void* pData, UInt32 DataSize) override final
+    void BindRayGenShader(const char* pShaderGroupName, const void* pData, UInt32 DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
@@ -153,7 +153,7 @@ public:
     }
 
 
-    void DG_CALL_TYPE BindMissShader(const char* pShaderGroupName, UInt32 MissIndex, const void* pData, UInt32 DataSize) override final
+    void BindMissShader(const char* pShaderGroupName, UInt32 MissIndex, const void* pData, UInt32 DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
@@ -169,10 +169,10 @@ public:
     }
 
 
-    void DG_CALL_TYPE BindHitGroupByIndex(UInt32      BindingIndex,
-                                                const char* pShaderGroupName,
-                                                const void* pData,
-                                                UInt32      DataSize) override final
+    void BindHitGroupByIndex(UInt32      BindingIndex,
+                             const char* pShaderGroupName,
+                             const void* pData,
+                             UInt32      DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
@@ -193,13 +193,13 @@ public:
     }
 
 
-    void DG_CALL_TYPE BindHitGroupForGeometry(ITopLevelAS* pTLAS,
-                                                    const char*  pInstanceName,
-                                                    const char*  pGeometryName,
-                                                    UInt32       RayOffsetInHitGroupIndex,
-                                                    const char*  pShaderGroupName,
-                                                    const void*  pData,
-                                                    UInt32       DataSize) override final
+    void BindHitGroupForGeometry(ITopLevelAS* pTLAS,
+                                 const char*  pInstanceName,
+                                 const char*  pGeometryName,
+                                 UInt32       RayOffsetInHitGroupIndex,
+                                 const char*  pShaderGroupName,
+                                 const void*  pData,
+                                 UInt32       DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
@@ -236,12 +236,12 @@ public:
     }
 
 
-    void DG_CALL_TYPE BindHitGroupForInstance(ITopLevelAS* pTLAS,
-                                                    const char*  pInstanceName,
-                                                    UInt32       RayOffsetInHitGroupIndex,
-                                                    const char*  pShaderGroupName,
-                                                    const void*  pData,
-                                                    UInt32       DataSize) override final
+    void BindHitGroupForInstance(ITopLevelAS* pTLAS,
+                                 const char*  pInstanceName,
+                                 UInt32       RayOffsetInHitGroupIndex,
+                                 const char*  pShaderGroupName,
+                                 const void*  pData,
+                                 UInt32       DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
@@ -262,7 +262,7 @@ public:
 
         switch (Info.BindingMode)
         {
-            // clang-format off
+                // clang-format off
             case HIT_GROUP_BINDING_MODE_PER_GEOMETRY:     GeometryCount = Desc.pBLAS->GetActualGeometryCount(); break;
             case HIT_GROUP_BINDING_MODE_PER_INSTANCE:     GeometryCount = 1;                                    break;
             default:                                      UNEXPECTED("unknown binding mode");
@@ -293,11 +293,11 @@ public:
     }
 
 
-    void DG_CALL_TYPE BindHitGroupForTLAS(ITopLevelAS* pTLAS,
-                                                UInt32       RayOffsetInHitGroupIndex,
-                                                const char*  pShaderGroupName,
-                                                const void*  pData,
-                                                UInt32       DataSize) override final
+    void BindHitGroupForTLAS(ITopLevelAS* pTLAS,
+                             UInt32       RayOffsetInHitGroupIndex,
+                             const char*  pShaderGroupName,
+                             const void*  pData,
+                             UInt32       DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
@@ -330,10 +330,10 @@ public:
     }
 
 
-    void DG_CALL_TYPE BindCallableShader(const char* pShaderGroupName,
-                                               UInt32      CallableIndex,
-                                               const void* pData,
-                                               UInt32      DataSize) override final
+    void BindCallableShader(const char* pShaderGroupName,
+                            UInt32      CallableIndex,
+                            const void* pData,
+                            UInt32      DataSize) override final
     {
         VERIFY_EXPR((pData == nullptr) == (DataSize == 0));
         VERIFY_EXPR((pData == nullptr) || (DataSize == this->m_ShaderRecordSize));
@@ -348,7 +348,7 @@ public:
     }
 
 
-    Bool DG_CALL_TYPE Verify(VERIFY_SBT_FLAGS Flags) const override final
+    Bool Verify(VERIFY_SBT_FLAGS Flags) const override final
     {
 #ifdef SPW_PROFILE
         static_assert(EmptyElem != 0, "must not be zero");

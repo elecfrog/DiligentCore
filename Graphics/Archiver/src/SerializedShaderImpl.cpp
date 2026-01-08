@@ -134,7 +134,7 @@ SerializedShaderImpl::~SerializedShaderImpl()
     GetStatus(/*WaitForCompletion = */ true);
 }
 
-void DG_CALL_TYPE SerializedShaderImpl::QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface)
+void SerializedShaderImpl::QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface)
 {
     if (ppInterface == nullptr)
         return;

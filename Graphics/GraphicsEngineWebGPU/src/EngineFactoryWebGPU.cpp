@@ -69,31 +69,31 @@ public:
         TBase{IID_EngineFactoryWebGPU}
     {}
 
-    void DG_CALL_TYPE EnumerateAdapters(Version              MinVersion,
+    void  EnumerateAdapters(Version              MinVersion,
                                               UInt32&              NumAdapters,
                                               GraphicsAdapterInfo* Adapters) const override final;
 
-    void DG_CALL_TYPE CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
+    void  CreateDearchiver(const DearchiverCreateInfo& CreateInfo,
                                              IDearchiver**               ppDearchiver) const override final;
 
-    void DG_CALL_TYPE CreateDeviceAndContextsWebGPU(const EngineWebGPUCreateInfo& EngineCI,
+    void  CreateDeviceAndContextsWebGPU(const EngineWebGPUCreateInfo& EngineCI,
                                                           IRenderDevice**               ppDevice,
                                                           IDeviceContext**              ppContexts) override final;
 
-    void DG_CALL_TYPE CreateSwapChainWebGPU(IRenderDevice*       pDevice,
+    void  CreateSwapChainWebGPU(IRenderDevice*       pDevice,
                                                   IDeviceContext*      pImmediateContext,
                                                   const SwapChainDesc& SCDesc,
                                                   const NativeWindow&  Window,
                                                   ISwapChain**         ppSwapChain) override final;
 
-    void DG_CALL_TYPE AttachToWebGPUDevice(void*                         wgpuInstance,
+    void  AttachToWebGPUDevice(void*                         wgpuInstance,
                                                  void*                         wgpuAdapter,
                                                  void*                         wgpuDevice,
                                                  const EngineWebGPUCreateInfo& EngineCI,
                                                  IRenderDevice**               ppDevice,
                                                  IDeviceContext**              ppContexts) override final;
 
-    const void* DG_CALL_TYPE GetProcessTable() const override final;
+    const void*  GetProcessTable() const override final;
 };
 
 namespace

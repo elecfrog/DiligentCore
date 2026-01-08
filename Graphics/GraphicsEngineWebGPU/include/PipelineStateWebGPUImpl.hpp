@@ -67,11 +67,11 @@ public:
     IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_PipelineStateWebGPU, IID_InternalImpl, TPipelineStateBase)
 
     /// Implementation of IPipelineState::GetStatus().
-    virtual PIPELINE_STATE_STATUS DG_CALL_TYPE GetStatus(bool WaitForCompletion = false) override final;
+    virtual PIPELINE_STATE_STATUS  GetStatus(bool WaitForCompletion = false) override final;
 
-    WGPURenderPipeline DG_CALL_TYPE GetWebGPURenderPipeline() const override final;
+    WGPURenderPipeline  GetWebGPURenderPipeline() const override final;
 
-    WGPUComputePipeline DG_CALL_TYPE GetWebGPUComputePipeline() const override final;
+    WGPUComputePipeline  GetWebGPUComputePipeline() const override final;
 
     void Destruct();
 

@@ -486,7 +486,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_PipelineState, TDeviceObjectBase)
 
-    virtual const PipelineStateDesc& DG_CALL_TYPE GetDesc() const override final
+    virtual const PipelineStateDesc& GetDesc() const override final
     {
         CheckPipelineReady();
         return this->m_Desc;
@@ -518,7 +518,7 @@ public:
         return m_pGraphicsPipelineData->pRenderPass;
     }
 
-    virtual const GraphicsPipelineDesc& DG_CALL_TYPE GetGraphicsPipelineDesc() const override final
+    virtual const GraphicsPipelineDesc& GetGraphicsPipelineDesc() const override final
     {
         CheckPipelineReady();
         VERIFY_EXPR(this->m_Desc.IsAnyGraphicsPipeline());
@@ -526,7 +526,7 @@ public:
         return m_pGraphicsPipelineData->Desc;
     }
 
-    virtual const RayTracingPipelineDesc& DG_CALL_TYPE GetRayTracingPipelineDesc() const override final
+    virtual const RayTracingPipelineDesc& GetRayTracingPipelineDesc() const override final
     {
         CheckPipelineReady();
         VERIFY_EXPR(this->m_Desc.IsRayTracingPipeline());
@@ -534,7 +534,7 @@ public:
         return m_pRayTracingPipelineData->Desc;
     }
 
-    virtual const TilePipelineDesc& DG_CALL_TYPE GetTilePipelineDesc() const override final
+    virtual const TilePipelineDesc& GetTilePipelineDesc() const override final
     {
         CheckPipelineReady();
         VERIFY_EXPR(this->m_Desc.IsTilePipeline());
@@ -567,8 +567,8 @@ public:
         UNEXPECTED("Can't find shader group '", Name, "'.");
     }
 
-    virtual void DG_CALL_TYPE CreateShaderResourceBinding(IShaderResourceBinding** ppShaderResourceBinding,
-                                                                bool                     InitStaticResources) override final
+    virtual void CreateShaderResourceBinding(IShaderResourceBinding** ppShaderResourceBinding,
+                                             bool                     InitStaticResources) override final
     {
         if (ppShaderResourceBinding == nullptr)
         {
@@ -591,8 +591,8 @@ public:
         return this->GetResourceSignature(0)->CreateShaderResourceBinding(ppShaderResourceBinding, InitStaticResources);
     }
 
-    virtual IShaderResourceVariable* DG_CALL_TYPE GetStaticVariableByName(SHADER_TYPE ShaderType,
-                                                                                const Char* Name) override final
+    virtual IShaderResourceVariable* GetStaticVariableByName(SHADER_TYPE ShaderType,
+                                                             const Char* Name) override final
     {
         CheckPipelineReady();
 
@@ -613,8 +613,8 @@ public:
         return this->GetResourceSignature(0)->GetStaticVariableByName(ShaderType, Name);
     }
 
-    virtual IShaderResourceVariable* DG_CALL_TYPE GetStaticVariableByIndex(SHADER_TYPE ShaderType,
-                                                                                 UInt32      Index) override final
+    virtual IShaderResourceVariable* GetStaticVariableByIndex(SHADER_TYPE ShaderType,
+                                                              UInt32      Index) override final
     {
         CheckPipelineReady();
 
@@ -635,7 +635,7 @@ public:
         return this->GetResourceSignature(0)->GetStaticVariableByIndex(ShaderType, Index);
     }
 
-    virtual UInt32 DG_CALL_TYPE GetStaticVariableCount(SHADER_TYPE ShaderType) const override final
+    virtual UInt32 GetStaticVariableCount(SHADER_TYPE ShaderType) const override final
     {
         CheckPipelineReady();
 
@@ -656,9 +656,9 @@ public:
         return this->GetResourceSignature(0)->GetStaticVariableCount(ShaderType);
     }
 
-    virtual void DG_CALL_TYPE BindStaticResources(SHADER_TYPE                 ShaderStages,
-                                                        IResourceMapping*           pResourceMapping,
-                                                        BIND_SHADER_RESOURCES_FLAGS Flags) override final
+    virtual void BindStaticResources(SHADER_TYPE                 ShaderStages,
+                                     IResourceMapping*           pResourceMapping,
+                                     BIND_SHADER_RESOURCES_FLAGS Flags) override final
     {
         CheckPipelineReady();
 
@@ -672,7 +672,7 @@ public:
         return this->GetResourceSignature(0)->BindStaticResources(ShaderStages, pResourceMapping, Flags);
     }
 
-    virtual void DG_CALL_TYPE InitializeStaticSRBResources(IShaderResourceBinding* pSRB) const override final
+    virtual void InitializeStaticSRBResources(IShaderResourceBinding* pSRB) const override final
     {
         CheckPipelineReady();
 
@@ -686,7 +686,7 @@ public:
         return this->GetResourceSignature(0)->InitializeStaticSRBResources(pSRB);
     }
 
-    virtual void DG_CALL_TYPE CopyStaticResources(IPipelineState* pDstPipeline) const override final
+    virtual void CopyStaticResources(IPipelineState* pDstPipeline) const override final
     {
         CheckPipelineReady();
 
@@ -714,14 +714,14 @@ public:
     }
 
     /// Implementation of IPipelineState::GetResourceSignatureCount().
-    virtual UInt32 DG_CALL_TYPE GetResourceSignatureCount() const override final
+    virtual UInt32 GetResourceSignatureCount() const override final
     {
         CheckPipelineReady();
         return m_SignatureCount;
     }
 
     /// Implementation of IPipelineState::GetResourceSignature().
-    virtual PipelineResourceSignatureImplType* DG_CALL_TYPE GetResourceSignature(UInt32 Index) const override final
+    virtual PipelineResourceSignatureImplType* GetResourceSignature(UInt32 Index) const override final
     {
         CheckPipelineReady();
         VERIFY_EXPR(Index < m_SignatureCount);
@@ -729,7 +729,7 @@ public:
     }
 
     /// Implementation of IPipelineState::IsCompatibleWith().
-    virtual bool DG_CALL_TYPE IsCompatibleWith(const IPipelineState* pPSO) const override // May be overridden
+    virtual bool IsCompatibleWith(const IPipelineState* pPSO) const override // May be overridden
     {
         CheckPipelineReady();
         DEV_CHECK_ERR(pPSO != nullptr, "pPSO must not be null");
@@ -758,7 +758,7 @@ public:
         return true;
     }
 
-    virtual PIPELINE_STATE_STATUS DG_CALL_TYPE GetStatus(bool WaitForCompletion = false) override
+    virtual PIPELINE_STATE_STATUS GetStatus(bool WaitForCompletion = false) override
     {
         VERIFY_EXPR(m_Status.load() != PIPELINE_STATE_STATUS_UNINITIALIZED);
         ASYNC_TASK_STATUS InitTaskStatus = AsyncInitializer::Update(m_AsyncInitializer, WaitForCompletion);

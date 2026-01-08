@@ -155,12 +155,12 @@ public:
     }
 
     /// Implementation of IShaderResourceBinding::GetPipelineResourceSignature().
-    virtual IPipelineResourceSignature* DG_CALL_TYPE GetPipelineResourceSignature() const override final
+    virtual IPipelineResourceSignature* GetPipelineResourceSignature() const override final
     {
         return GetSignature();
     }
 
-    virtual bool DG_CALL_TYPE StaticResourcesInitialized() const override final
+    virtual bool StaticResourcesInitialized() const override final
     {
         return m_bStaticResourcesInitialized;
     }
@@ -177,7 +177,7 @@ public:
     }
 
     /// Implementation of IShaderResourceBinding::GetVariableByName().
-    virtual IShaderResourceVariable* DG_CALL_TYPE GetVariableByName(SHADER_TYPE ShaderType, const char* Name) override final
+    virtual IShaderResourceVariable* GetVariableByName(SHADER_TYPE ShaderType, const char* Name) override final
     {
         const PIPELINE_TYPE PipelineType = GetPipelineType();
         if (!IsConsistentShaderType(ShaderType, PipelineType))
@@ -197,7 +197,7 @@ public:
     }
 
     /// Implementation of IShaderResourceBinding::GetVariableCount().
-    virtual UInt32 DG_CALL_TYPE GetVariableCount(SHADER_TYPE ShaderType) const override final
+    virtual UInt32 GetVariableCount(SHADER_TYPE ShaderType) const override final
     {
         const PIPELINE_TYPE PipelineType = GetPipelineType();
         if (!IsConsistentShaderType(ShaderType, PipelineType))
@@ -217,7 +217,7 @@ public:
     }
 
     /// Implementation of IShaderResourceBinding::GetVariableByIndex().
-    virtual IShaderResourceVariable* DG_CALL_TYPE GetVariableByIndex(SHADER_TYPE ShaderType, UInt32 Index) override final
+    virtual IShaderResourceVariable* GetVariableByIndex(SHADER_TYPE ShaderType, UInt32 Index) override final
     {
         const PIPELINE_TYPE PipelineType = GetPipelineType();
         if (!IsConsistentShaderType(ShaderType, PipelineType))
@@ -237,9 +237,9 @@ public:
     }
 
     /// Implementation of IShaderResourceBinding::BindResources().
-    virtual void DG_CALL_TYPE BindResources(SHADER_TYPE                 ShaderStages,
-                                                  IResourceMapping*           pResMapping,
-                                                  BIND_SHADER_RESOURCES_FLAGS Flags) override final
+    virtual void BindResources(SHADER_TYPE                 ShaderStages,
+                               IResourceMapping*           pResMapping,
+                               BIND_SHADER_RESOURCES_FLAGS Flags) override final
     {
         ProcessVariables(ShaderStages,
                          [pResMapping, Flags](ShaderVariableManagerImplType& Mgr) //
@@ -250,7 +250,7 @@ public:
     }
 
     /// Implementation of IShaderResourceBinding::CheckResources().
-    virtual SHADER_RESOURCE_VARIABLE_TYPE_FLAGS DG_CALL_TYPE CheckResources(
+    virtual SHADER_RESOURCE_VARIABLE_TYPE_FLAGS CheckResources(
         SHADER_TYPE                 ShaderStages,
         IResourceMapping*           pResMapping,
         BIND_SHADER_RESOURCES_FLAGS Flags) const override final

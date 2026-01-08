@@ -63,38 +63,33 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_Dearchiver, TObjectBase)
 
     /// Implementation of IDearchiver::LoadArchive().
-    virtual bool DG_CALL_TYPE LoadArchive(const IDataBlob* pArchiveData, UInt32 ContentVersion, bool MakeCopy) override final;
+    virtual bool LoadArchive(const IDataBlob* pArchiveData, UInt32 ContentVersion, bool MakeCopy) override final;
 
     /// Implementation of IDearchiver::UnpackShader().
-    virtual void DG_CALL_TYPE UnpackShader(const ShaderUnpackInfo& UnpackInfo,
-                                                 IShader**               ppShader) override final;
+    virtual void UnpackShader(const ShaderUnpackInfo& UnpackInfo, IShader** ppShader) override final;
 
     /// Implementation of IDearchiver::UnpackPipelineState().
-    virtual void DG_CALL_TYPE UnpackPipelineState(const PipelineStateUnpackInfo& DeArchiveInfo,
-                                                        IPipelineState**               ppPSO) override final;
+    virtual void UnpackPipelineState(const PipelineStateUnpackInfo& DeArchiveInfo, IPipelineState** ppPSO) override final;
 
     /// Implementation of IDearchiver::UnpackResourceSignature().
-    virtual void DG_CALL_TYPE UnpackResourceSignature(const ResourceSignatureUnpackInfo& DeArchiveInfo,
-                                                            IPipelineResourceSignature**       ppSignature) override final;
+    virtual void UnpackResourceSignature(const ResourceSignatureUnpackInfo& DeArchiveInfo, IPipelineResourceSignature** ppSignature) override final;
 
     /// Implementation of IDearchiver::UnpackRenderPass().
-    virtual void DG_CALL_TYPE UnpackRenderPass(const RenderPassUnpackInfo& DeArchiveInfo,
-                                                     IRenderPass**               ppRP) override final;
+    virtual void UnpackRenderPass(const RenderPassUnpackInfo& DeArchiveInfo,
+                                  IRenderPass**               ppRP) override final;
 
     /// Implementation of IDearchiver::Store().
-    virtual bool DG_CALL_TYPE Store(IDataBlob** ppArchive) const override final;
+    virtual bool Store(IDataBlob** ppArchive) const override final;
 
     /// Implementation of IDearchiver::Reset().
-    virtual void DG_CALL_TYPE Reset() override final;
+    virtual void Reset() override final;
 
     /// Implementation of IDearchiver::GetContentVersion().
-    virtual UInt32 DG_CALL_TYPE GetContentVersion() const override final;
+    virtual UInt32 GetContentVersion() const override final;
 
 protected:
     template <typename RenderDeviceImplType, typename PRSSerializerType>
-    RefCntAutoPtr<IPipelineResourceSignature> UnpackResourceSignatureImpl(
-        const ResourceSignatureUnpackInfo& DeArchiveInfo,
-        bool                               IsImplicit);
+    RefCntAutoPtr<IPipelineResourceSignature> UnpackResourceSignatureImpl(const ResourceSignatureUnpackInfo& DeArchiveInfo, bool IsImplicit);
 
     virtual RefCntAutoPtr<IPipelineResourceSignature> UnpackResourceSignature(const ResourceSignatureUnpackInfo& DeArchiveInfo,
                                                                               bool                               IsImplicit) = 0;

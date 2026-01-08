@@ -75,7 +75,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_TextureAtlasSuballocation, TBase)
 
-    virtual ReferenceCounterValueType DG_CALL_TYPE Release() override final
+    virtual ReferenceCounterValueType  Release() override final
     {
         RefCntAutoPtr<DynamicTextureAtlasImpl> pAtlas;
         return TBase::Release(

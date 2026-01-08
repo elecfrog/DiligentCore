@@ -50,21 +50,21 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_FileStream, TBase)
 
     /// Reads data from the stream
-    virtual void DG_CALL_TYPE ReadBlob(IDataBlob* pData) override final;
+    virtual void  ReadBlob(IDataBlob* pData) override final;
 
     /// Reads data from the stream
-    virtual bool DG_CALL_TYPE Read(void* Data, size_t Size) override final;
+    virtual bool  Read(void* Data, size_t Size) override final;
 
     /// Writes data to the stream
-    virtual bool DG_CALL_TYPE Write(const void* Data, size_t Size) override final;
+    virtual bool  Write(const void* Data, size_t Size) override final;
 
-    virtual size_t DG_CALL_TYPE GetSize() override final;
+    virtual size_t  GetSize() override final;
 
-    virtual size_t DG_CALL_TYPE GetPos() override;
+    virtual size_t  GetPos() override;
 
-    virtual bool DG_CALL_TYPE SetPos(size_t Offset, int Origin) override;
+    virtual bool  SetPos(size_t Offset, int Origin) override;
 
-    virtual bool DG_CALL_TYPE IsValid() override final;
+    virtual bool  IsValid() override final;
 
     static RefCntAutoPtr<MemoryFileStream> Create(IDataBlob* pData);
 

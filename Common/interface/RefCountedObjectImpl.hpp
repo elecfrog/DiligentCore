@@ -537,13 +537,13 @@ public:
         //        "There remain strong references to the object being destroyed" );
     }
 
-    inline virtual IReferenceCounters* DG_CALL_TYPE GetReferenceCounters() const override final
+    inline virtual IReferenceCounters*  GetReferenceCounters() const override final
     {
         VERIFY_EXPR(m_pRefCounters != nullptr);
         return m_pRefCounters;
     }
 
-    inline virtual ReferenceCounterValueType DG_CALL_TYPE AddRef() override final
+    inline virtual ReferenceCounterValueType  AddRef() override final
     {
         VERIFY_EXPR(m_pRefCounters != nullptr);
         // Since type of m_pRefCounters is RefCountersImpl,
@@ -551,7 +551,7 @@ public:
         return m_pRefCounters->AddStrongRef();
     }
 
-    inline virtual ReferenceCounterValueType DG_CALL_TYPE Release() override
+    inline virtual ReferenceCounterValueType  Release() override
     {
         VERIFY_EXPR(m_pRefCounters != nullptr);
         // Since type of m_pRefCounters is RefCountersImpl,

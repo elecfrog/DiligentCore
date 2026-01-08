@@ -67,7 +67,7 @@ public:
 
     virtual ~EngineFactoryBase() = default;
 
-    virtual void DG_CALL_TYPE QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final
+    virtual void QueryInterface(const INTERFACE_ID& IID, IObject** ppInterface) override final
     {
         if (ppInterface == nullptr)
             return;
@@ -82,49 +82,49 @@ public:
 
     using IObject::QueryInterface;
 
-    virtual ReferenceCounterValueType DG_CALL_TYPE AddRef() override final
+    virtual ReferenceCounterValueType AddRef() override final
     {
         return m_RefCounters.AddStrongRef();
     }
 
-    virtual ReferenceCounterValueType DG_CALL_TYPE Release() override final
+    virtual ReferenceCounterValueType Release() override final
     {
         return m_RefCounters.ReleaseStrongRef();
     }
 
-    virtual IReferenceCounters* DG_CALL_TYPE GetReferenceCounters() const override final
+    virtual IReferenceCounters* GetReferenceCounters() const override final
     {
         return const_cast<IReferenceCounters*>(static_cast<const IReferenceCounters*>(&m_RefCounters));
     }
 
-    virtual const APIInfo& DG_CALL_TYPE GetAPIInfo() const override final
+    virtual const APIInfo& GetAPIInfo() const override final
     {
         return Diligent::GetAPIInfo();
     }
 
-    virtual void DG_CALL_TYPE CreateDataBlob(size_t InitialSize, const void* pData, IDataBlob** ppDataBlob) const override final
+    virtual void CreateDataBlob(size_t InitialSize, const void* pData, IDataBlob** ppDataBlob) const override final
     {
         if (RefCntAutoPtr<DataBlobImpl> pDataBlob = DataBlobImpl::Create(InitialSize, pData))
             pDataBlob->QueryInterface(IID_DataBlob, ppDataBlob);
     }
 
-    virtual void DG_CALL_TYPE CreateDefaultShaderSourceStreamFactory(const Char*                       SearchDirectories,
-                                                                           IShaderSourceInputStreamFactory** ppShaderSourceFactory) const override final
+    virtual void CreateDefaultShaderSourceStreamFactory(const Char*                       SearchDirectories,
+                                                        IShaderSourceInputStreamFactory** ppShaderSourceFactory) const override final
     {
         Diligent::CreateDefaultShaderSourceStreamFactory(SearchDirectories, ppShaderSourceFactory);
     }
 
-    virtual void DG_CALL_TYPE SetMessageCallback(spw::DebugMessageCallbackType MessageCallback) const override final
+    virtual void SetMessageCallback(spw::DebugMessageCallbackType MessageCallback) const override final
     {
         SetDebugMessageCallback(MessageCallback);
     }
 
-    virtual void DG_CALL_TYPE SetBreakOnError(bool BreakOnError) const override final
+    virtual void SetBreakOnError(bool BreakOnError) const override final
     {
         PlatformDebug::SetBreakOnError(BreakOnError);
     }
 
-    virtual void DG_CALL_TYPE SetMemoryAllocator(IMemoryAllocator* pAllocator) const override final
+    virtual void SetMemoryAllocator(IMemoryAllocator* pAllocator) const override final
     {
         SetRawAllocator(pAllocator);
     }

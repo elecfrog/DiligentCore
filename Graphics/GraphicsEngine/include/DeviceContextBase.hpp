@@ -175,27 +175,27 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DeviceContext, TObjectBase)
 
     /// Implementation of IDeviceContext::GetDesc().
-    virtual const DeviceContextDesc& DG_CALL_TYPE GetDesc() const override final { return m_Desc; }
+    virtual const DeviceContextDesc& GetDesc() const override final { return m_Desc; }
 
     /// Implementation of IDeviceContext::SetRenderTargets().
-    virtual void DG_CALL_TYPE SetRenderTargets(UInt32                         NumRenderTargets,
-                                                     ITextureView*                  ppRenderTargets[],
-                                                     ITextureView*                  pDepthStencil,
-                                                     RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final
+    virtual void SetRenderTargets(UInt32                         NumRenderTargets,
+                                  ITextureView*                  ppRenderTargets[],
+                                  ITextureView*                  pDepthStencil,
+                                  RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final
     {
         return this->SetRenderTargetsExt({NumRenderTargets, ppRenderTargets, pDepthStencil, StateTransitionMode});
     }
 
     /// Base implementation of IDeviceContext::SetVertexBuffers(); validates parameters and
     /// caches references to the buffers.
-    inline virtual void DG_CALL_TYPE SetVertexBuffers(UInt32                         StartSlot,
-                                                            UInt32                         NumBuffersSet,
-                                                            IBuffer* const*                ppBuffers,
-                                                            const UInt64*                  pOffsets,
-                                                            RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
-                                                            SET_VERTEX_BUFFERS_FLAGS       Flags) override = 0;
+    inline virtual void SetVertexBuffers(UInt32                         StartSlot,
+                                         UInt32                         NumBuffersSet,
+                                         IBuffer* const*                ppBuffers,
+                                         const UInt64*                  pOffsets,
+                                         RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
+                                         SET_VERTEX_BUFFERS_FLAGS       Flags) override = 0;
 
-    inline virtual void DG_CALL_TYPE InvalidateState() override = 0;
+    inline virtual void InvalidateState() override = 0;
 
     /// Base implementation of IDeviceContext::CommitShaderResources(); validates parameters.
     inline void CommitShaderResources(IShaderResourceBinding*        pShaderResourceBinding,
@@ -203,9 +203,9 @@ public:
                                       int);
 
     /// Base implementation of IDeviceContext::SetIndexBuffer(); caches the strong reference to the index buffer
-    inline virtual void DG_CALL_TYPE SetIndexBuffer(IBuffer*                       pIndexBuffer,
-                                                          UInt64                         ByteOffset,
-                                                          RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override = 0;
+    inline virtual void SetIndexBuffer(IBuffer*                       pIndexBuffer,
+                                       UInt64                         ByteOffset,
+                                       RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override = 0;
 
     /// Caches the viewports
     inline void SetViewports(UInt32 NumViewports, const Viewport* pViewports, UInt32& RTWidth, UInt32& RTHeight);
@@ -213,104 +213,104 @@ public:
     /// Caches the scissor rects
     inline void SetScissorRects(UInt32 NumRects, const Rect* pRects, UInt32& RTWidth, UInt32& RTHeight);
 
-    virtual void DG_CALL_TYPE BeginRenderPass(const BeginRenderPassAttribs& Attribs) override = 0;
+    virtual void BeginRenderPass(const BeginRenderPassAttribs& Attribs) override = 0;
 
-    virtual void DG_CALL_TYPE NextSubpass() override = 0;
+    virtual void NextSubpass() override = 0;
 
-    virtual void DG_CALL_TYPE EndRenderPass() override = 0;
+    virtual void EndRenderPass() override = 0;
 
     /// Base implementation of IDeviceContext::UpdateBuffer(); validates input parameters.
-    virtual void DG_CALL_TYPE UpdateBuffer(IBuffer*                       pBuffer,
-                                                 UInt64                         Offset,
-                                                 UInt64                         Size,
-                                                 const void*                    pData,
-                                                 RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override = 0;
+    virtual void UpdateBuffer(IBuffer*                       pBuffer,
+                              UInt64                         Offset,
+                              UInt64                         Size,
+                              const void*                    pData,
+                              RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override = 0;
 
     /// Base implementation of IDeviceContext::CopyBuffer(); validates input parameters.
-    virtual void DG_CALL_TYPE CopyBuffer(IBuffer*                       pSrcBuffer,
-                                               UInt64                         SrcOffset,
-                                               RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
-                                               IBuffer*                       pDstBuffer,
-                                               UInt64                         DstOffset,
-                                               UInt64                         Size,
-                                               RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) override = 0;
+    virtual void CopyBuffer(IBuffer*                       pSrcBuffer,
+                            UInt64                         SrcOffset,
+                            RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
+                            IBuffer*                       pDstBuffer,
+                            UInt64                         DstOffset,
+                            UInt64                         Size,
+                            RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) override = 0;
 
     /// Base implementation of IDeviceContext::MapBuffer(); validates input parameters.
-    virtual void DG_CALL_TYPE MapBuffer(IBuffer*  pBuffer,
-                                              MAP_TYPE  MapType,
-                                              MAP_FLAGS MapFlags,
-                                              PVoid&    pMappedData) override = 0;
+    virtual void MapBuffer(IBuffer*  pBuffer,
+                           MAP_TYPE  MapType,
+                           MAP_FLAGS MapFlags,
+                           PVoid&    pMappedData) override = 0;
 
     /// Base implementation of IDeviceContext::UnmapBuffer()
-    virtual void DG_CALL_TYPE UnmapBuffer(IBuffer* pBuffer, MAP_TYPE MapType) override = 0;
+    virtual void UnmapBuffer(IBuffer* pBuffer, MAP_TYPE MapType) override = 0;
 
     /// Base implementation of IDeviceContext::UpdateData(); validates input parameters
-    virtual void DG_CALL_TYPE UpdateTexture(ITexture*                      pTexture,
-                                                  UInt32                         MipLevel,
-                                                  UInt32                         Slice,
-                                                  const Box&                     DstBox,
-                                                  const TextureSubResData&       SubresData,
-                                                  RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
-                                                  RESOURCE_STATE_TRANSITION_MODE TextureTransitionMode) override = 0;
+    virtual void UpdateTexture(ITexture*                      pTexture,
+                               UInt32                         MipLevel,
+                               UInt32                         Slice,
+                               const Box&                     DstBox,
+                               const TextureSubResData&       SubresData,
+                               RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
+                               RESOURCE_STATE_TRANSITION_MODE TextureTransitionMode) override = 0;
 
     /// Base implementation of IDeviceContext::CopyTexture(); validates input parameters
-    virtual void DG_CALL_TYPE CopyTexture(const CopyTextureAttribs& CopyAttribs) override = 0;
+    virtual void CopyTexture(const CopyTextureAttribs& CopyAttribs) override = 0;
 
     /// Base implementation of IDeviceContext::MapTextureSubresource()
-    virtual void DG_CALL_TYPE MapTextureSubresource(ITexture*                 pTexture,
-                                                          UInt32                    MipLevel,
-                                                          UInt32                    ArraySlice,
-                                                          MAP_TYPE                  MapType,
-                                                          MAP_FLAGS                 MapFlags,
-                                                          const Box*                pMapRegion,
-                                                          MappedTextureSubresource& MappedData) override = 0;
+    virtual void MapTextureSubresource(ITexture*                 pTexture,
+                                       UInt32                    MipLevel,
+                                       UInt32                    ArraySlice,
+                                       MAP_TYPE                  MapType,
+                                       MAP_FLAGS                 MapFlags,
+                                       const Box*                pMapRegion,
+                                       MappedTextureSubresource& MappedData) override = 0;
 
     /// Base implementation of IDeviceContext::UnmapTextureSubresource()
-    virtual void DG_CALL_TYPE UnmapTextureSubresource(ITexture* pTexture,
-                                                            UInt32    MipLevel,
-                                                            UInt32    ArraySlice) override = 0;
+    virtual void UnmapTextureSubresource(ITexture* pTexture,
+                                         UInt32    MipLevel,
+                                         UInt32    ArraySlice) override = 0;
 
-    virtual void DG_CALL_TYPE GenerateMips(ITextureView* pTexView) override = 0;
+    virtual void GenerateMips(ITextureView* pTexView) override = 0;
 
-    virtual void DG_CALL_TYPE ResolveTextureSubresource(ITexture*                               pSrcTexture,
-                                                              ITexture*                               pDstTexture,
-                                                              const ResolveTextureSubresourceAttribs& ResolveAttribs) override = 0;
+    virtual void ResolveTextureSubresource(ITexture*                               pSrcTexture,
+                                           ITexture*                               pDstTexture,
+                                           const ResolveTextureSubresourceAttribs& ResolveAttribs) override = 0;
 
-    virtual UInt64 DG_CALL_TYPE GetFrameNumber() const override final
+    virtual UInt64 GetFrameNumber() const override final
     {
         return m_FrameNumber;
     }
 
     /// Implementation of IDeviceContext::SetUserData.
-    virtual void DG_CALL_TYPE SetUserData(IObject* pUserData) override final
+    virtual void SetUserData(IObject* pUserData) override final
     {
         m_pUserData = pUserData;
     }
 
     /// Implementation of IDeviceContext::GetUserData.
-    virtual IObject* DG_CALL_TYPE GetUserData() const override final
+    virtual IObject* GetUserData() const override final
     {
         return m_pUserData;
     }
 
     /// Base implementation of IDeviceContext::DispatchTile.
-    virtual void DG_CALL_TYPE DispatchTile(const DispatchTileAttribs& Attribs) override
+    virtual void DispatchTile(const DispatchTileAttribs& Attribs) override
     {
         UNSUPPORTED("Tile pipeline is not supported by this device. Please check DeviceFeatures.TileShaders feature.");
     }
 
     /// Base implementation of IDeviceContext::GetTileSize.
-    virtual void DG_CALL_TYPE GetTileSize(UInt32& TileSizeX, UInt32& TileSizeY) override
+    virtual void GetTileSize(UInt32& TileSizeX, UInt32& TileSizeY) override
     {
         UNSUPPORTED("Tile pipeline is not supported by this device. Please check DeviceFeatures.TileShaders feature.");
     }
 
-    virtual void DG_CALL_TYPE ClearStats() override final
+    virtual void ClearStats() override final
     {
         m_Stats = {};
     }
 
-    virtual const DeviceContextStats& DG_CALL_TYPE GetStats() const override final
+    virtual const DeviceContextStats& GetStats() const override final
     {
         return m_Stats;
     }
@@ -1609,9 +1609,9 @@ inline void DeviceContextBase<ImplementationTraits>::ClearDepthStencil(ITextureV
             else
             {
                 LOG_WARNING_MESSAGE("Depth-stencil view '", ViewDesc.Name,
-                                        "' is not bound to the device context. "
-                                        "ClearDepthStencil command is more efficient when depth-stencil "
-                                        "view is bound to the context. In OpenGL, Metal and WebGPU backends this is required.");
+                                    "' is not bound to the device context. "
+                                    "ClearDepthStencil command is more efficient when depth-stencil "
+                                    "view is bound to the context. In OpenGL, Metal and WebGPU backends this is required.");
             }
         }
     }
@@ -1655,8 +1655,8 @@ inline void DeviceContextBase<ImplementationTraits>::ClearRenderTarget(ITextureV
             else
             {
                 LOG_WARNING_MESSAGE("Render target view '", ViewDesc.Name,
-                                        "' is not bound to the device context. ClearRenderTarget command is more efficient "
-                                        "if render target view is bound to the device context. In OpenGL, Metal and WebGPU backends this is required.");
+                                    "' is not bound to the device context. ClearRenderTarget command is more efficient "
+                                    "if render target view is bound to the device context. In OpenGL, Metal and WebGPU backends this is required.");
             }
         }
     }

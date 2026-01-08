@@ -62,233 +62,233 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DeviceContextD3D11, TDeviceContextBase)
 
     /// Implementation of IDeviceContext::Begin() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE Begin(UInt32 ImmediateContextId) override final;
+    virtual void Begin(UInt32 ImmediateContextId) override final;
 
     /// Implementation of IDeviceContext::SetPipelineState() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE SetPipelineState(IPipelineState* pPipelineState) override final;
+    virtual void SetPipelineState(IPipelineState* pPipelineState) override final;
 
     /// Implementation of IDeviceContext::TransitionShaderResources() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE TransitionShaderResources(IShaderResourceBinding* pShaderResourceBinding) override final;
+    virtual void TransitionShaderResources(IShaderResourceBinding* pShaderResourceBinding) override final;
 
     /// Implementation of IDeviceContext::CommitShaderResources() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE CommitShaderResources(IShaderResourceBinding*        pShaderResourceBinding,
-                                                          RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
+    virtual void CommitShaderResources(IShaderResourceBinding*        pShaderResourceBinding,
+                                       RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::SetStencilRef() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE SetStencilRef(UInt32 StencilRef) override final;
+    virtual void SetStencilRef(UInt32 StencilRef) override final;
 
     /// Implementation of IDeviceContext::SetBlendFactors() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE SetBlendFactors(const float* pBlendFactors = nullptr) override final;
+    virtual void SetBlendFactors(const float* pBlendFactors = nullptr) override final;
 
     /// Implementation of IDeviceContext::SetVertexBuffers() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE SetVertexBuffers(UInt32                         StartSlot,
-                                                     UInt32                         NumBuffersSet,
-                                                     IBuffer* const*                ppBuffers,
-                                                     const UInt64*                  pOffsets,
-                                                     RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
-                                                     SET_VERTEX_BUFFERS_FLAGS       Flags) override final;
+    virtual void SetVertexBuffers(UInt32                         StartSlot,
+                                  UInt32                         NumBuffersSet,
+                                  IBuffer* const*                ppBuffers,
+                                  const UInt64*                  pOffsets,
+                                  RESOURCE_STATE_TRANSITION_MODE StateTransitionMode,
+                                  SET_VERTEX_BUFFERS_FLAGS       Flags) override final;
 
     /// Implementation of IDeviceContext::InvalidateState() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE InvalidateState() override final;
+    virtual void InvalidateState() override final;
 
     /// Implementation of IDeviceContext::SetIndexBuffer() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE SetIndexBuffer(IBuffer*                       pIndexBuffer,
-                                                   UInt64                         ByteOffset,
-                                                   RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
+    virtual void SetIndexBuffer(IBuffer*                       pIndexBuffer,
+                                UInt64                         ByteOffset,
+                                RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::SetViewports() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE SetViewports(UInt32          NumViewports,
-                                                 const Viewport* pViewports,
-                                                 UInt32          RTWidth,
-                                                 UInt32          RTHeight) override final;
+    virtual void SetViewports(UInt32          NumViewports,
+                              const Viewport* pViewports,
+                              UInt32          RTWidth,
+                              UInt32          RTHeight) override final;
 
     /// Implementation of IDeviceContext::SetScissorRects() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE SetScissorRects(UInt32      NumRects,
-                                                    const Rect* pRects,
-                                                    UInt32      RTWidth,
-                                                    UInt32      RTHeight) override final;
+    virtual void SetScissorRects(UInt32      NumRects,
+                                 const Rect* pRects,
+                                 UInt32      RTWidth,
+                                 UInt32      RTHeight) override final;
 
     /// Implementation of IDeviceContext::SetRenderTargetsExt() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE SetRenderTargetsExt(const SetRenderTargetsAttribs& Attribs) override final;
+    virtual void SetRenderTargetsExt(const SetRenderTargetsAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::BeginRenderPass() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE BeginRenderPass(const BeginRenderPassAttribs& Attribs) override final;
+    virtual void BeginRenderPass(const BeginRenderPassAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::NextSubpass() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE NextSubpass() override final;
+    virtual void NextSubpass() override final;
 
     /// Implementation of IDeviceContext::EndRenderPass() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE EndRenderPass() override final;
+    virtual void EndRenderPass() override final;
 
     /// Implementation of IDeviceContext::Draw() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE Draw(const DrawAttribs& Attribs) override final;
+    virtual void Draw(const DrawAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::DrawIndexed() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE DrawIndexed(const DrawIndexedAttribs& Attribs) override final;
+    virtual void DrawIndexed(const DrawIndexedAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::DrawIndirect() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE DrawIndirect(const DrawIndirectAttribs& Attribs) override final;
+    virtual void DrawIndirect(const DrawIndirectAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::DrawIndexedIndirect() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE DrawIndexedIndirect(const DrawIndexedIndirectAttribs& Attribs) override final;
+    virtual void DrawIndexedIndirect(const DrawIndexedIndirectAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::DrawMesh() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE DrawMesh(const DrawMeshAttribs& Attribs) override final;
+    virtual void DrawMesh(const DrawMeshAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::DrawMeshIndirect() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE DrawMeshIndirect(const DrawMeshIndirectAttribs& Attribs) override final;
+    virtual void DrawMeshIndirect(const DrawMeshIndirectAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::MultiDraw() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE MultiDraw(const MultiDrawAttribs& Attribs) override final;
+    virtual void MultiDraw(const MultiDrawAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::MultiDrawIndexed() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE MultiDrawIndexed(const MultiDrawIndexedAttribs& Attribs) override final;
+    virtual void MultiDrawIndexed(const MultiDrawIndexedAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::DispatchCompute() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE DispatchCompute(const DispatchComputeAttribs& Attribs) override final;
+    virtual void DispatchCompute(const DispatchComputeAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::DispatchComputeIndirect() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE DispatchComputeIndirect(const DispatchComputeIndirectAttribs& Attribs) override final;
+    virtual void DispatchComputeIndirect(const DispatchComputeIndirectAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::ClearDepthStencil() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE ClearDepthStencil(ITextureView*                  pView,
-                                                      CLEAR_DEPTH_STENCIL_FLAGS      ClearFlags,
-                                                      float                          fDepth,
-                                                      UInt8                          Stencil,
-                                                      RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
+    virtual void ClearDepthStencil(ITextureView*                  pView,
+                                   CLEAR_DEPTH_STENCIL_FLAGS      ClearFlags,
+                                   float                          fDepth,
+                                   UInt8                          Stencil,
+                                   RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::ClearRenderTarget() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE ClearRenderTarget(ITextureView* pView, const void* RGBA, RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
+    virtual void ClearRenderTarget(ITextureView* pView, const void* RGBA, RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::UpdateBuffer() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE UpdateBuffer(IBuffer*                       pBuffer,
-                                                 UInt64                         Offset,
-                                                 UInt64                         Size,
-                                                 const void*                    pData,
-                                                 RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
+    virtual void UpdateBuffer(IBuffer*                       pBuffer,
+                              UInt64                         Offset,
+                              UInt64                         Size,
+                              const void*                    pData,
+                              RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::CopyBuffer() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE CopyBuffer(IBuffer*                       pSrcBuffer,
-                                               UInt64                         SrcOffset,
-                                               RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
-                                               IBuffer*                       pDstBuffer,
-                                               UInt64                         DstOffset,
-                                               UInt64                         Size,
-                                               RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) override final;
+    virtual void CopyBuffer(IBuffer*                       pSrcBuffer,
+                            UInt64                         SrcOffset,
+                            RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
+                            IBuffer*                       pDstBuffer,
+                            UInt64                         DstOffset,
+                            UInt64                         Size,
+                            RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) override final;
 
     /// Implementation of IDeviceContext::MapBuffer() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE MapBuffer(IBuffer* pBuffer, MAP_TYPE MapType, MAP_FLAGS MapFlags, PVoid& pMappedData) override final;
+    virtual void MapBuffer(IBuffer* pBuffer, MAP_TYPE MapType, MAP_FLAGS MapFlags, PVoid& pMappedData) override final;
 
     /// Implementation of IDeviceContext::UnmapBuffer() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE UnmapBuffer(IBuffer* pBuffer, MAP_TYPE MapType) override final;
+    virtual void UnmapBuffer(IBuffer* pBuffer, MAP_TYPE MapType) override final;
 
     /// Implementation of IDeviceContext::UpdateTexture() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE UpdateTexture(ITexture*                      pTexture,
-                                                  UInt32                         MipLevel,
-                                                  UInt32                         Slice,
-                                                  const Box&                     DstBox,
-                                                  const TextureSubResData&       SubresData,
-                                                  RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
-                                                  RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
+    virtual void UpdateTexture(ITexture*                      pTexture,
+                               UInt32                         MipLevel,
+                               UInt32                         Slice,
+                               const Box&                     DstBox,
+                               const TextureSubResData&       SubresData,
+                               RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
+                               RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::CopyTexture() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE CopyTexture(const CopyTextureAttribs& CopyAttribs) override final;
+    virtual void CopyTexture(const CopyTextureAttribs& CopyAttribs) override final;
 
     /// Implementation of IDeviceContext::MapTextureSubresource() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE MapTextureSubresource(ITexture*                 pTexture,
-                                                          UInt32                    MipLevel,
-                                                          UInt32                    ArraySlice,
-                                                          MAP_TYPE                  MapType,
-                                                          MAP_FLAGS                 MapFlags,
-                                                          const Box*                pMapRegion,
-                                                          MappedTextureSubresource& MappedData) override final;
+    virtual void MapTextureSubresource(ITexture*                 pTexture,
+                                       UInt32                    MipLevel,
+                                       UInt32                    ArraySlice,
+                                       MAP_TYPE                  MapType,
+                                       MAP_FLAGS                 MapFlags,
+                                       const Box*                pMapRegion,
+                                       MappedTextureSubresource& MappedData) override final;
 
     /// Implementation of IDeviceContext::UnmapTextureSubresource() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE UnmapTextureSubresource(ITexture* pTexture, UInt32 MipLevel, UInt32 ArraySlice) override final;
+    virtual void UnmapTextureSubresource(ITexture* pTexture, UInt32 MipLevel, UInt32 ArraySlice) override final;
 
     /// Implementation of IDeviceContext::GenerateMips() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE GenerateMips(ITextureView* pTextureView) override final;
+    virtual void GenerateMips(ITextureView* pTextureView) override final;
 
     /// Implementation of IDeviceContext::FinishFrame() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE FinishFrame() override final;
+    virtual void FinishFrame() override final;
 
     /// Implementation of IDeviceContext::TransitionResourceStates() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE TransitionResourceStates(UInt32 BarrierCount, const StateTransitionDesc* pResourceBarriers) override final;
+    virtual void TransitionResourceStates(UInt32 BarrierCount, const StateTransitionDesc* pResourceBarriers) override final;
 
     /// Implementation of IDeviceContext::ResolveTextureSubresource() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE ResolveTextureSubresource(ITexture*                               pSrcTexture,
-                                                              ITexture*                               pDstTexture,
-                                                              const ResolveTextureSubresourceAttribs& ResolveAttribs) override final;
+    virtual void ResolveTextureSubresource(ITexture*                               pSrcTexture,
+                                           ITexture*                               pDstTexture,
+                                           const ResolveTextureSubresourceAttribs& ResolveAttribs) override final;
 
     /// Implementation of IDeviceContext::FinishCommandList() in Direct3D11 backend.
-    void DG_CALL_TYPE FinishCommandList(ICommandList** ppCommandList) override final;
+    void FinishCommandList(ICommandList** ppCommandList) override final;
 
     /// Implementation of IDeviceContext::ExecuteCommandLists() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE ExecuteCommandLists(UInt32               NumCommandLists,
-                                                        ICommandList* const* ppCommandLists) override final;
+    virtual void ExecuteCommandLists(UInt32               NumCommandLists,
+                                     ICommandList* const* ppCommandLists) override final;
 
     /// Implementation of IDeviceContext::EnqueueSignal() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE EnqueueSignal(IFence* pFence, UInt64 Value) override final;
+    virtual void EnqueueSignal(IFence* pFence, UInt64 Value) override final;
 
     /// Implementation of IDeviceContext::DeviceWaitForFence() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE DeviceWaitForFence(IFence* pFence, UInt64 Value) override final;
+    virtual void DeviceWaitForFence(IFence* pFence, UInt64 Value) override final;
 
     /// Implementation of IDeviceContext::WaitForIdle() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE WaitForIdle() override final;
+    virtual void WaitForIdle() override final;
 
     /// Implementation of IDeviceContext::BeginQuery() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE BeginQuery(IQuery* pQuery) override final;
+    virtual void BeginQuery(IQuery* pQuery) override final;
 
     /// Implementation of IDeviceContext::EndQuery() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE EndQuery(IQuery* pQuery) override final;
+    virtual void EndQuery(IQuery* pQuery) override final;
 
     /// Implementation of IDeviceContext::Flush() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE Flush() override final;
+    virtual void Flush() override final;
 
     /// Implementation of IDeviceContext::BuildBLAS() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE BuildBLAS(const BuildBLASAttribs& Attribs) override final;
+    virtual void BuildBLAS(const BuildBLASAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::BuildTLAS() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE BuildTLAS(const BuildTLASAttribs& Attribs) override final;
+    virtual void BuildTLAS(const BuildTLASAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::CopyBLAS() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE CopyBLAS(const CopyBLASAttribs& Attribs) override final;
+    virtual void CopyBLAS(const CopyBLASAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::CopyTLAS() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE CopyTLAS(const CopyTLASAttribs& Attribs) override final;
+    virtual void CopyTLAS(const CopyTLASAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::WriteBLASCompactedSize() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE WriteBLASCompactedSize(const WriteBLASCompactedSizeAttribs& Attribs) override final;
+    virtual void WriteBLASCompactedSize(const WriteBLASCompactedSizeAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::WriteTLASCompactedSize() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE WriteTLASCompactedSize(const WriteTLASCompactedSizeAttribs& Attribs) override final;
+    virtual void WriteTLASCompactedSize(const WriteTLASCompactedSizeAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::TraceRays() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE TraceRays(const TraceRaysAttribs& Attribs) override final;
+    virtual void TraceRays(const TraceRaysAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::TraceRaysIndirect() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE TraceRaysIndirect(const TraceRaysIndirectAttribs& Attribs) override final;
+    virtual void TraceRaysIndirect(const TraceRaysIndirectAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::UpdateSBT() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE UpdateSBT(IShaderBindingTable* pSBT, const UpdateIndirectRTBufferAttribs* pUpdateIndirectBufferAttribs) override final;
+    virtual void UpdateSBT(IShaderBindingTable* pSBT, const UpdateIndirectRTBufferAttribs* pUpdateIndirectBufferAttribs) override final;
 
     /// Implementation of IDeviceContext::BeginDebugGroup() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE BeginDebugGroup(const Char* Name, const float* pColor) override final;
+    virtual void BeginDebugGroup(const Char* Name, const float* pColor) override final;
 
     /// Implementation of IDeviceContext::EndDebugGroup() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE EndDebugGroup() override final;
+    virtual void EndDebugGroup() override final;
 
     /// Implementation of IDeviceContext::InsertDebugLabel() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE InsertDebugLabel(const Char* Label, const float* pColor) override final;
+    virtual void InsertDebugLabel(const Char* Label, const float* pColor) override final;
 
     /// Implementation of IDeviceContext::LockCommandQueue() in Direct3D11 backend.
-    virtual ICommandQueue* DG_CALL_TYPE LockCommandQueue() override final { return nullptr; }
+    virtual ICommandQueue* LockCommandQueue() override final { return nullptr; }
 
     /// Implementation of IDeviceContext::UnlockCommandQueue() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE UnlockCommandQueue() override final {}
+    virtual void UnlockCommandQueue() override final {}
 
     /// Implementation of IDeviceContext::SetShadingRate() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE SetShadingRate(SHADING_RATE          BaseRate,
-                                                   SHADING_RATE_COMBINER PrimitiveCombiner,
-                                                   SHADING_RATE_COMBINER TextureCombiner) override final;
+    virtual void SetShadingRate(SHADING_RATE          BaseRate,
+                                SHADING_RATE_COMBINER PrimitiveCombiner,
+                                SHADING_RATE_COMBINER TextureCombiner) override final;
 
     /// Implementation of IDeviceContext::BindSparseResourceMemory() in Direct3D11 backend.
-    virtual void DG_CALL_TYPE BindSparseResourceMemory(const BindSparseResourceMemoryAttribs& Attribs) override final;
+    virtual void BindSparseResourceMemory(const BindSparseResourceMemoryAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContextD3D11::GetD3D11DeviceContext().
-    virtual ID3D11DeviceContext* DG_CALL_TYPE GetD3D11DeviceContext() override final { return m_pd3d11DeviceContext; }
+    virtual ID3D11DeviceContext* GetD3D11DeviceContext() override final { return m_pd3d11DeviceContext; }
 
     void CommitRenderTargets();
 

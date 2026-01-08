@@ -65,30 +65,28 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_BufferVk, TBufferBase)
 
     /// Implementation of IBufferVk::GetVkBuffer().
-    virtual VkBuffer DG_CALL_TYPE GetVkBuffer() const override final;
+    virtual VkBuffer GetVkBuffer() const override final;
 
     /// Implementation of IBuffer::GetNativeHandle() in Vulkan backend.
-    virtual UInt64 DG_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetVkBuffer()); }
+    virtual UInt64 GetNativeHandle() override final { return BitCast<UInt64>(GetVkBuffer()); }
 
     /// Implementation of IBufferVk::SetAccessFlags().
-    virtual void DG_CALL_TYPE SetAccessFlags(VkAccessFlags AccessFlags) override final;
+    virtual void SetAccessFlags(VkAccessFlags AccessFlags) override final;
 
     /// Implementation of IBufferVk::GetAccessFlags().
-    virtual VkAccessFlags DG_CALL_TYPE GetAccessFlags() const override final;
+    virtual VkAccessFlags GetAccessFlags() const override final;
 
     /// Implementation of IBufferVk::GetVkDeviceAddress().
-    virtual VkDeviceAddress DG_CALL_TYPE GetVkDeviceAddress() const override final;
+    virtual VkDeviceAddress GetVkDeviceAddress() const override final;
 
     /// Implementation of IBuffer::FlushMappedRange().
-    virtual void DG_CALL_TYPE FlushMappedRange(UInt64 StartOffset,
-                                                     UInt64 Size) override final;
+    virtual void FlushMappedRange(UInt64 StartOffset, UInt64 Size) override final;
 
     /// Implementation of IBuffer::InvalidateMappedRange().
-    virtual void DG_CALL_TYPE InvalidateMappedRange(UInt64 StartOffset,
-                                                          UInt64 Size) override final;
+    virtual void InvalidateMappedRange(UInt64 StartOffset, UInt64 Size) override final;
 
     /// Implementation of IBuffer::GetSparseProperties().
-    virtual SparseBufferProperties DG_CALL_TYPE GetSparseProperties() const override final;
+    virtual SparseBufferProperties GetSparseProperties() const override final;
 
     bool CheckAccessFlags(VkAccessFlags AccessFlags) const
     {

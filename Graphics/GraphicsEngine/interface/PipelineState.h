@@ -1035,22 +1035,22 @@ static constexpr struct INTERFACE_ID IID_PipelineState =
 struct IPipelineState : public IDeviceObject
 {
     /// Returns the pipeline description used to create the object
-    virtual const PipelineStateDesc& DG_CALL_TYPE GetDesc() const override = 0;
+    virtual const PipelineStateDesc& GetDesc() const override = 0;
 
     /// Returns the graphics pipeline description used to create the object.
 
     /// This method must only be called for a graphics or mesh pipeline.
-    virtual const GraphicsPipelineDesc& DG_CALL_TYPE GetGraphicsPipelineDesc() const = 0;
+    virtual const GraphicsPipelineDesc& GetGraphicsPipelineDesc() const = 0;
 
     /// Returns the ray tracing pipeline description used to create the object.
 
     /// This method must only be called for a ray tracing pipeline.
-    virtual const RayTracingPipelineDesc& DG_CALL_TYPE GetRayTracingPipelineDesc() const = 0;
+    virtual const RayTracingPipelineDesc& GetRayTracingPipelineDesc() const = 0;
 
     /// Returns the tile pipeline description used to create the object.
 
     /// This method must only be called for a tile pipeline.
-    virtual const TilePipelineDesc& DG_CALL_TYPE GetTilePipelineDesc() const = 0;
+    virtual const TilePipelineDesc& GetTilePipelineDesc() const = 0;
 
     /// Binds resources for all shaders in the pipeline state.
 
@@ -1063,7 +1063,7 @@ struct IPipelineState : public IDeviceObject
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::BindStaticResources() method.
-    virtual void DG_CALL_TYPE BindStaticResources(SHADER_TYPE ShaderStages, IResourceMapping* pResourceMapping, BIND_SHADER_RESOURCES_FLAGS Flags) = 0;
+    virtual void BindStaticResources(SHADER_TYPE ShaderStages, IResourceMapping* pResourceMapping, BIND_SHADER_RESOURCES_FLAGS Flags) = 0;
 
 
     /// Returns the number of static shader resource variables.
@@ -1095,7 +1095,7 @@ struct IPipelineState : public IDeviceObject
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::GetStaticVariableByName() method.
-    virtual IShaderResourceVariable* DG_CALL_TYPE GetStaticVariableByName(SHADER_TYPE ShaderType, const Char* Name) = 0;
+    virtual IShaderResourceVariable* GetStaticVariableByName(SHADER_TYPE ShaderType, const Char* Name) = 0;
 
 
     /// Returns static shader resource variable by its index.
@@ -1114,7 +1114,7 @@ struct IPipelineState : public IDeviceObject
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::GetStaticVariableByIndex() method.
-    virtual IShaderResourceVariable* DG_CALL_TYPE GetStaticVariableByIndex(SHADER_TYPE ShaderType, UInt32 Index) = 0;
+    virtual IShaderResourceVariable* GetStaticVariableByIndex(SHADER_TYPE ShaderType, UInt32 Index) = 0;
 
 
     /// Creates a shader resource binding object.
@@ -1129,7 +1129,7 @@ struct IPipelineState : public IDeviceObject
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::CreateShaderResourceBinding() method.
-    virtual void DG_CALL_TYPE CreateShaderResourceBinding(IShaderResourceBinding** ppShaderResourceBinding, Bool InitStaticResources = false) = 0;
+    virtual void CreateShaderResourceBinding(IShaderResourceBinding** ppShaderResourceBinding, Bool InitStaticResources = false) = 0;
 
 
 
@@ -1151,7 +1151,7 @@ struct IPipelineState : public IDeviceObject
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::InitializeStaticSRBResources() method.
-    virtual void DG_CALL_TYPE InitializeStaticSRBResources(IShaderResourceBinding* pShaderResourceBinding) const = 0;
+    virtual void InitializeStaticSRBResources(IShaderResourceBinding* pShaderResourceBinding) const = 0;
 
 
     /// Copies static resource bindings to the destination pipeline.
@@ -1164,7 +1164,7 @@ struct IPipelineState : public IDeviceObject
     /// (e.g. shader resources are defined through ResourceLayout member of the pipeline desc).
     /// For pipelines that use explicit resource signatures, use
     /// IPipelineResourceSignature::CopyStaticResources() method.
-    virtual void DG_CALL_TYPE CopyStaticResources(IPipelineState* pDstPipeline) const = 0;
+    virtual void CopyStaticResources(IPipelineState* pDstPipeline) const = 0;
 
 
     /// Checks if this pipeline state object is compatible with another PSO
@@ -1193,7 +1193,7 @@ struct IPipelineState : public IDeviceObject
     /// while switching partially compatible PSOs still requires re-binding all resource bindings from all signatures.
     /// In other backends the behavior is emulated. Usually, the bindings from the first N compatible resource signatures
     /// may be preserved.
-    virtual bool DG_CALL_TYPE IsCompatibleWith(const struct IPipelineState* pPSO) const = 0;
+    virtual bool IsCompatibleWith(const struct IPipelineState* pPSO) const = 0;
 
 
     /// Returns the number of pipeline resource signatures used by this pipeline.
@@ -1201,13 +1201,13 @@ struct IPipelineState : public IDeviceObject
     /// After the PSO is created, pipeline resource signatures are arranged by their binding indices.
     /// The value returned by this function is given by the maximum signature binding index plus one,
     /// and thus may not be equal to PipelineStateCreateInfo::ResourceSignaturesCount.
-    virtual UInt32 DG_CALL_TYPE GetResourceSignatureCount() const = 0;
+    virtual UInt32 GetResourceSignatureCount() const = 0;
 
     /// Returns pipeline resource signature at the give index.
 
     /// \param [in] Index - Index of the resource signature, same as BindingIndex in PipelineResourceSignatureDesc.
     /// \return     A pointer to the pipeline resource signature interface.
-    virtual IPipelineResourceSignature* DG_CALL_TYPE GetResourceSignature(UInt32 Index) const = 0;
+    virtual IPipelineResourceSignature* GetResourceSignature(UInt32 Index) const = 0;
 
     /// Returns the pipeline state status, see Diligent::PIPELINE_STATE_STATUS.
 
@@ -1215,6 +1215,6 @@ struct IPipelineState : public IDeviceObject
     ///                                 If false, the method will return the pipeline state status without waiting.
     /// 							    This parameter is ignored if the pipeline state was compiled synchronously.
     /// \return     The pipeline state status.
-    virtual PIPELINE_STATE_STATUS DG_CALL_TYPE GetStatus(bool WaitForCompletion = false) = 0;
+    virtual PIPELINE_STATE_STATUS GetStatus(bool WaitForCompletion = false) = 0;
 };
 }

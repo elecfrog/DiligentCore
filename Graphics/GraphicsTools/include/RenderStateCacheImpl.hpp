@@ -54,58 +54,58 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_RenderStateCache, TBase);
 
-    virtual bool DG_CALL_TYPE Load(const IDataBlob* pArchive,
+    virtual bool  Load(const IDataBlob* pArchive,
                                          UInt32           ContentVersion,
                                          bool             MakeCopy) override final
     {
         return m_pDearchiver->LoadArchive(pArchive, ContentVersion, MakeCopy);
     }
 
-    virtual bool DG_CALL_TYPE CreateShader(const ShaderCreateInfo& ShaderCI,
+    virtual bool  CreateShader(const ShaderCreateInfo& ShaderCI,
                                                  IShader**               ppShader) override final;
 
-    virtual bool DG_CALL_TYPE CreateGraphicsPipelineState(
+    virtual bool  CreateGraphicsPipelineState(
         const GraphicsPipelineStateCreateInfo& PSOCreateInfo,
         IPipelineState**                       ppPipelineState) override final
     {
         return CreatePipelineState(PSOCreateInfo, ppPipelineState);
     }
 
-    virtual bool DG_CALL_TYPE CreateComputePipelineState(
+    virtual bool  CreateComputePipelineState(
         const ComputePipelineStateCreateInfo& PSOCreateInfo,
         IPipelineState**                      ppPipelineState) override final
     {
         return CreatePipelineState(PSOCreateInfo, ppPipelineState);
     }
 
-    virtual bool DG_CALL_TYPE CreateRayTracingPipelineState(
+    virtual bool  CreateRayTracingPipelineState(
         const RayTracingPipelineStateCreateInfo& PSOCreateInfo,
         IPipelineState**                         ppPipelineState) override final
     {
         return CreatePipelineState(PSOCreateInfo, ppPipelineState);
     }
 
-    virtual bool DG_CALL_TYPE CreateTilePipelineState(
+    virtual bool  CreateTilePipelineState(
         const TilePipelineStateCreateInfo& PSOCreateInfo,
         IPipelineState**                   ppPipelineState) override final
     {
         return CreatePipelineState(PSOCreateInfo, ppPipelineState);
     }
 
-    virtual Bool DG_CALL_TYPE WriteToBlob(UInt32 ContentVersion, IDataBlob** ppBlob) override final;
+    virtual Bool  WriteToBlob(UInt32 ContentVersion, IDataBlob** ppBlob) override final;
 
-    virtual Bool DG_CALL_TYPE WriteToStream(UInt32 ContentVersion, IFileStream* pStream) override final;
+    virtual Bool  WriteToStream(UInt32 ContentVersion, IFileStream* pStream) override final;
 
-    virtual void DG_CALL_TYPE Reset() override final;
+    virtual void  Reset() override final;
 
-    virtual UInt32 DG_CALL_TYPE Reload(ReloadGraphicsPipelineCallbackType ReloadGraphicsPipeline, void* pUserData) override final;
+    virtual UInt32  Reload(ReloadGraphicsPipelineCallbackType ReloadGraphicsPipeline, void* pUserData) override final;
 
-    virtual UInt32 DG_CALL_TYPE GetContentVersion() const override final
+    virtual UInt32  GetContentVersion() const override final
     {
         return m_pDearchiver ? m_pDearchiver->GetContentVersion() : ~0u;
     }
 
-    virtual UInt32 DG_CALL_TYPE GetReloadVersion() const override final
+    virtual UInt32  GetReloadVersion() const override final
     {
         return m_ReloadVersion;
     }

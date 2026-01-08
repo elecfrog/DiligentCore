@@ -54,13 +54,13 @@ public:
     ~BottomLevelASVkImpl();
 
     /// Implementation of IBottomLevelAS::GetNativeHandle() in Vulkan backend.
-    virtual UInt64 DG_CALL_TYPE GetNativeHandle() override final { return BitCast<UInt64>(GetVkBLAS()); }
+    virtual UInt64  GetNativeHandle() override final { return BitCast<UInt64>(GetVkBLAS()); }
 
     /// Implementation of IBottomLevelASVk::GetVkBLAS().
-    virtual VkAccelerationStructureKHR DG_CALL_TYPE GetVkBLAS() const override { return m_VulkanBLAS; }
+    virtual VkAccelerationStructureKHR  GetVkBLAS() const override { return m_VulkanBLAS; }
 
     /// Implementation of IBottomLevelASVk::GetVkDeviceAddress().
-    virtual VkDeviceAddress DG_CALL_TYPE GetVkDeviceAddress() const override { return m_DeviceAddress; }
+    virtual VkDeviceAddress  GetVkDeviceAddress() const override { return m_DeviceAddress; }
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_BottomLevelASVk, TBottomLevelASBase)
 

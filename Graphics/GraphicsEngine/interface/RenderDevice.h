@@ -1,34 +1,5 @@
-/*
- *  Copyright 2019-2025 Diligent Graphics LLC
- *  Copyright 2015-2019 Egor Yusov
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- *  In no event and under no legal theory, whether in tort (including negligence),
- *  contract, or otherwise, unless required by applicable law (such as deliberate
- *  and grossly negligent acts) or agreed to in writing, shall any Contributor be
- *  liable for any damages, including any direct, indirect, special, incidental,
- *  or consequential damages of any character arising as a result of this License or
- *  out of the use or inability to use the software (including but not limited to damages
- *  for loss of goodwill, work stoppage, computer failure or malfunction, or any and
- *  all other commercial damages or losses), even if such Contributor has been advised
- *  of the possibility of such damages.
- */
-
 #pragma once
 
-/// \file
-/// Definition of the Diligent::IRenderDevice interface and related data structures
 
 #include "../../../Primitives/interface/Object.h"
 #include "EngineFactory.h"
@@ -59,7 +30,8 @@
 #include "RasterizerState.h"
 #include "BlendState.h"
 
-namespace Diligent {
+namespace Diligent
+{
 
 // {F0E9B607-AE33-4B2B-B1AF-A8B2C3104022}
 static constexpr INTERFACE_ID IID_RenderDevice =
@@ -70,8 +42,6 @@ static constexpr INTERFACE_ID IID_RenderDevice =
 #define IRenderDeviceInclusiveMethods \
     IObjectInclusiveMethods;          \
     IRenderDeviceMethods RenderDevice
-
-// clang-format off
 
 /// Render device interface
 struct IRenderDevice : public IObject
@@ -92,9 +62,9 @@ struct IRenderDevice : public IObject
     /// Stride of a formatted buffer will be computed automatically from the format if
     /// ElementByteStride member of buffer description is set to default value (0).
     virtual void METHOD(CreateBuffer)(
-                                      const BufferDesc  & BuffDesc,
-                                      const BufferData*    pBuffData,
-                                      IBuffer**            ppBuffer) =0;
+        const BufferDesc& BuffDesc,
+        const BufferData* pBuffData,
+        IBuffer**         ppBuffer) = 0;
 
     /// Creates a new shader object
 
@@ -112,9 +82,9 @@ struct IRenderDevice : public IObject
     /// shader source code including definitions added by the engine. The data blob
     /// object must be released by the client.
     virtual void METHOD(CreateShader)(
-                                      const ShaderCreateInfo  & ShaderCI,
-                                      IShader**                  ppShader,
-                                      IDataBlob**                ppCompilerOutput DEFAULT_VALUE(nullptr)) =0;
+        const ShaderCreateInfo&      ShaderCI,
+        IShader**                    ppShader,
+        IDataBlob** ppCompilerOutput DEFAULT_VALUE(nullptr)) = 0;
 
     /// Creates a new texture object
 
@@ -139,14 +109,11 @@ struct IRenderDevice : public IObject
     /// provided:
     ///
     ///     15x6, 7x3, 3x1, 1x1, 15x6, 7x3, 3x1, 1x1.
-    /// 
+    ///
     /// For a 15 x 6 x 4 3D texture, the following array of subresources should be provided:
     ///
     ///     15x6x4, 7x3x2, 3x1x1, 1x1x1
-    virtual void METHOD(CreateTexture)(
-                                       const TextureDesc  & TexDesc,
-                                       const TextureData*    pData,
-                                       ITexture**            ppTexture) =0;
+    virtual void CreateTexture(const TextureDesc& TexDesc, const TextureData* pData, ITexture** ppTexture) = 0;
 
     /// Creates a new sampler object
 
@@ -160,9 +127,7 @@ struct IRenderDevice : public IObject
     /// as an existing interface, the same interface will be returned.
     ///
     /// In D3D11, 4096 unique sampler state objects can be created on a device at a time.
-    virtual void METHOD(CreateSampler)(
-                                       const SamplerDesc  & SamDesc,
-                                       ISampler**            ppSampler) =0;
+    virtual void CreateSampler(const SamplerDesc& SamDesc, ISampler** ppSampler) = 0;
 
     /// Creates a new resource mapping
 
@@ -171,9 +136,7 @@ struct IRenderDevice : public IObject
     ///                             resource mapping interface will be written.
     ///                             The function calls AddRef(), so that the new object will have
     ///                             one reference.
-    virtual void METHOD(CreateResourceMapping)(
-                                               const ResourceMappingCreateInfo  & ResMappingCI,
-                                               IResourceMapping**                  ppMapping) =0;
+    virtual void CreateResourceMapping(const ResourceMappingCreateInfo& ResMappingCI, IResourceMapping** ppMapping) = 0;
 
     /// Creates a new graphics pipeline state object
 
@@ -182,9 +145,7 @@ struct IRenderDevice : public IObject
     ///                                pipeline state interface will be written.
     ///                                The function calls AddRef(), so that the new object will have
     ///                                one reference.
-    virtual void METHOD(CreateGraphicsPipelineState)(
-                                                     const GraphicsPipelineStateCreateInfo  & PSOCreateInfo,
-                                                     IPipelineState**                          ppPipelineState) =0;
+    virtual void CreateGraphicsPipelineState(const GraphicsPipelineStateCreateInfo& PSOCreateInfo, IPipelineState** ppPipelineState) = 0;
 
     /// Creates a new compute pipeline state object
 
@@ -193,9 +154,7 @@ struct IRenderDevice : public IObject
     ///                                pipeline state interface will be written.
     ///                                The function calls AddRef(), so that the new object will have
     ///                                one reference.
-    virtual void METHOD(CreateComputePipelineState)(
-                                                    const ComputePipelineStateCreateInfo  & PSOCreateInfo,
-                                                    IPipelineState**                         ppPipelineState) =0;
+    virtual void CreateComputePipelineState(const ComputePipelineStateCreateInfo& PSOCreateInfo, IPipelineState** ppPipelineState) = 0;
 
     /// Creates a new ray tracing pipeline state object
 
@@ -204,9 +163,7 @@ struct IRenderDevice : public IObject
     ///                                pipeline state interface will be written.
     ///                                The function calls AddRef(), so that the new object will have
     ///                                one reference.
-    virtual void METHOD(CreateRayTracingPipelineState)(
-                                                       const RayTracingPipelineStateCreateInfo  & PSOCreateInfo,
-                                                       IPipelineState**                            ppPipelineState) =0;
+    virtual void CreateRayTracingPipelineState(const RayTracingPipelineStateCreateInfo& PSOCreateInfo, IPipelineState** ppPipelineState) = 0;
 
     /// Creates a new tile pipeline state object
 
@@ -216,8 +173,8 @@ struct IRenderDevice : public IObject
     ///                                The function calls AddRef(), so that the new object will have
     ///                                one reference.
     virtual void METHOD(CreateTilePipelineState)(
-                                                 const TilePipelineStateCreateInfo  & PSOCreateInfo,
-                                                 IPipelineState**                      ppPipelineState) =0;
+        const TilePipelineStateCreateInfo& PSOCreateInfo,
+        IPipelineState**                   ppPipelineState) = 0;
 
     /// Creates a new fence object
 
@@ -227,8 +184,8 @@ struct IRenderDevice : public IObject
     ///                        The function calls AddRef(), so that the new object will have
     ///                        one reference.
     virtual void METHOD(CreateFence)(
-                                     const FenceDesc  & Desc,
-                                     IFence**            ppFence) =0;
+        const FenceDesc& Desc,
+        IFence**         ppFence) = 0;
 
 
     /// Creates a new query object
@@ -239,8 +196,8 @@ struct IRenderDevice : public IObject
     ///                        The function calls AddRef(), so that the new object will have
     ///                        one reference.
     virtual void METHOD(CreateQuery)(
-                                     const QueryDesc  & Desc,
-                                     IQuery**            ppQuery) =0;
+        const QueryDesc& Desc,
+        IQuery**         ppQuery) = 0;
 
 
     /// Creates a render pass object
@@ -251,8 +208,8 @@ struct IRenderDevice : public IObject
     ///                             The function calls AddRef(), so that the new object will have
     ///                             one reference.
     virtual void METHOD(CreateRenderPass)(
-                                          const RenderPassDesc  & Desc,
-                                          IRenderPass**            ppRenderPass) =0;
+        const RenderPassDesc& Desc,
+        IRenderPass**         ppRenderPass) = 0;
 
 
 
@@ -264,8 +221,8 @@ struct IRenderDevice : public IObject
     ///                              The function calls AddRef(), so that the new object will have
     ///                              one reference.
     virtual void METHOD(CreateFramebuffer)(
-                                           const FramebufferDesc  & Desc,
-                                           IFramebuffer**            ppFramebuffer) =0;
+        const FramebufferDesc& Desc,
+        IFramebuffer**         ppFramebuffer) = 0;
 
 
     /// Creates a bottom-level acceleration structure object (BLAS).
@@ -276,8 +233,8 @@ struct IRenderDevice : public IObject
     ///                        The function calls AddRef(), so that the new object will have
     ///                        one reference.
     virtual void METHOD(CreateBLAS)(
-                                    const BottomLevelASDesc  & Desc,
-                                    IBottomLevelAS**            ppBLAS) =0;
+        const BottomLevelASDesc& Desc,
+        IBottomLevelAS**         ppBLAS) = 0;
 
 
     /// Creates a top-level acceleration structure object (TLAS).
@@ -288,8 +245,8 @@ struct IRenderDevice : public IObject
     ///                        The function calls AddRef(), so that the new object will have
     ///                        one reference.
     virtual void METHOD(CreateTLAS)(
-                                    const TopLevelASDesc  & Desc,
-                                    ITopLevelAS**            ppTLAS) =0;
+        const TopLevelASDesc& Desc,
+        ITopLevelAS**         ppTLAS) = 0;
 
 
     /// Creates a shader resource binding table object (SBT).
@@ -300,8 +257,8 @@ struct IRenderDevice : public IObject
     ///                        The function calls AddRef(), so that the new object will have
     ///                        one reference.
     virtual void METHOD(CreateSBT)(
-                                   const ShaderBindingTableDesc  & Desc,
-                                   IShaderBindingTable**            ppSBT) =0;
+        const ShaderBindingTableDesc& Desc,
+        IShaderBindingTable**         ppSBT) = 0;
 
     /// Creates a pipeline resource signature object.
 
@@ -311,8 +268,8 @@ struct IRenderDevice : public IObject
     ///                             The function calls AddRef(), so that the new object will have
     ///                             one reference.
     virtual void METHOD(CreatePipelineResourceSignature)(
-                                                         const PipelineResourceSignatureDesc  & Desc,
-                                                         IPipelineResourceSignature**            ppSignature) =0;
+        const PipelineResourceSignatureDesc& Desc,
+        IPipelineResourceSignature**         ppSignature) = 0;
 
 
     /// Creates a device memory object.
@@ -323,8 +280,8 @@ struct IRenderDevice : public IObject
     ///                           The function calls AddRef(), so that the new object will have
     ///                           one reference.
     virtual void METHOD(CreateDeviceMemory)(
-                                            const DeviceMemoryCreateInfo  & CreateInfo,
-                                            IDeviceMemory**                  ppMemory) =0;
+        const DeviceMemoryCreateInfo& CreateInfo,
+        IDeviceMemory**               ppMemory) = 0;
 
 
     /// Creates a pipeline state cache object.
@@ -338,24 +295,24 @@ struct IRenderDevice : public IObject
     /// On devices that don't support pipeline state caches (e.g. Direct3D11, OpenGL),
     /// the method will silently do nothing.
     virtual void METHOD(CreatePipelineStateCache)(
-                                                  const PipelineStateCacheCreateInfo  & CreateInfo,
-                                                  IPipelineStateCache**                  ppPSOCache) =0;
+        const PipelineStateCacheCreateInfo& CreateInfo,
+        IPipelineStateCache**               ppPSOCache) = 0;
 
 
     /// Creates a deferred context.
 
     /// \param [out] ppContext - Address of the memory location where a pointer to the
     ///                          deferred context interface will be written.
-    /// 
+    ///
     /// \remarks    Deferred contexts are not supported in OpenGL and WebGPU backends.
     virtual void METHOD(CreateDeferredContext)(
-                                               IDeviceContext** ppContext) =0;
+        IDeviceContext** ppContext) = 0;
 
     /// Returns the device information, see Diligent::RenderDeviceInfo for details.
-    virtual const RenderDeviceInfo  & METHOD(GetDeviceInfo)( ) const =0;
+    virtual const RenderDeviceInfo& METHOD(GetDeviceInfo)() const = 0;
 
     /// Returns the graphics adapter information, see Diligent::GraphicsAdapterInfo for details.
-    virtual const GraphicsAdapterInfo  & METHOD(GetAdapterInfo)( ) const =0;
+    virtual const GraphicsAdapterInfo& METHOD(GetAdapterInfo)() const = 0;
 
     /// Returns the basic texture format information.
 
@@ -365,8 +322,8 @@ struct IRenderDevice : public IObject
     ///         texture format description.
     ///
     /// \remarks This method must be externally synchronized.
-    virtual const TextureFormatInfo  & METHOD(GetTextureFormatInfo)(
-                                                                     TEXTURE_FORMAT TexFormat) const =0;
+    virtual const TextureFormatInfo& METHOD(GetTextureFormatInfo)(
+        TEXTURE_FORMAT TexFormat) const = 0;
 
 
     /// Returns the extended texture format information.
@@ -382,15 +339,15 @@ struct IRenderDevice : public IObject
     /// extended information, call GetTextureFormatInfo() instead.
     ///
     /// \remarks This method must be externally synchronized.
-    virtual const TextureFormatInfoExt  & METHOD(GetTextureFormatInfoExt)(
-                                                                           TEXTURE_FORMAT TexFormat) =0;
+    virtual const TextureFormatInfoExt& METHOD(GetTextureFormatInfoExt)(
+        TEXTURE_FORMAT TexFormat) = 0;
 
 
     /// Returns the sparse texture format info for the given texture format, resource dimension and sample count.
     virtual SparseTextureFormatInfo METHOD(GetSparseTextureFormatInfo)(
-                                                                       TEXTURE_FORMAT     TexFormat,
-                                                                       RESOURCE_DIMENSION Dimension,
-                                                                       UInt32             SampleCount) const =0;
+        TEXTURE_FORMAT     TexFormat,
+        RESOURCE_DIMENSION Dimension,
+        UInt32             SampleCount) const = 0;
 
     /// Purges device release queues and releases all stale resources.
     /// This method is automatically called by ISwapChain::Present() of the primary swap chain.
@@ -398,7 +355,7 @@ struct IRenderDevice : public IObject
     ///                             great care only if you are sure the resources are not
     ///                             in use by the GPU (such as when the device has just been idled).
     virtual void METHOD(ReleaseStaleResources)(
-                                               Bool ForceRelease DEFAULT_VALUE(false)) =0;
+        Bool ForceRelease DEFAULT_VALUE(false)) = 0;
 
 
     /// Waits until all outstanding operations on the GPU are complete.
@@ -409,21 +366,21 @@ struct IRenderDevice : public IObject
     /// the contexts using IDeviceContext::Flush() if it needs to make sure all recorded commands
     /// have been previously submitted for execution. An application should explicitly flush
     /// are complete when the method returns.
-    virtual void METHOD(IdleGPU)( ) =0;
+    virtual void METHOD(IdleGPU)() = 0;
 
 
     /// Returns engine factory this device was created from.
 
     /// This method does not increment the reference counter of the returned interface,
     /// so an application must not call Release().
-    virtual IEngineFactory* METHOD(GetEngineFactory)( ) const =0;
+    virtual IEngineFactory* METHOD(GetEngineFactory)() const = 0;
 
 
     /// Returns a pointer to the shader compilation thread pool.
 
     /// This method does not increment the reference counter of the returned interface,
     /// so an application must not call Release().
-    virtual IThreadPool* METHOD(GetShaderCompilationThreadPool)( ) const =0;
+    virtual IThreadPool* METHOD(GetShaderCompilationThreadPool)() const = 0;
 
 #if DILIGENT_CPP_INTERFACE
     /// Overloaded alias for CreateGraphicsPipelineState.
@@ -487,4 +444,4 @@ struct IRenderDevice : public IObject
 
 #endif
 
- } // namespace Diligent
+} // namespace Diligent

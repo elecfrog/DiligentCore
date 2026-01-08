@@ -40,13 +40,6 @@
 #    endif
 #endif
 
-#ifdef _MSC_VER
-// Note that MSVC x86 compiler by default uses __this call for class member functions
-#    define DG_CALL_TYPE __cdecl
-#else
-#    define DG_CALL_TYPE
-#endif
-
 #if UINTPTR_MAX == UINT64_MAX
 #    define DILIGENT_PLATFORM_64 1
 #elif UINTPTR_MAX == UINT32_MAX

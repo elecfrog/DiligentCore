@@ -81,7 +81,7 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_TextureView, TDeviceObjectBase)
 
     /// Implementation of ITextureView::SetSampler()
-    virtual void DG_CALL_TYPE SetSampler(ISampler* pSampler) override final
+    virtual void  SetSampler(ISampler* pSampler) override final
     {
 #ifdef SPW_PROFILE
         if (this->m_Desc.ViewType != TEXTURE_VIEW_SHADER_RESOURCE)
@@ -91,7 +91,7 @@ public:
     }
 
     /// Implementation of ITextureView::GetSampler()
-    virtual ISampler* DG_CALL_TYPE GetSampler() override final
+    virtual ISampler*  GetSampler() override final
     {
         return m_pSampler;
     }
@@ -102,12 +102,12 @@ public:
     }
 
     /// Implementation of ITextureView::GetTexture()
-    virtual ITexture* DG_CALL_TYPE GetTexture() override final
+    virtual ITexture*  GetTexture() override final
     {
         return m_pTexture;
     }
 
-    const ITexture* DG_CALL_TYPE GetTexture() const
+    const ITexture*  GetTexture() const
     {
         return m_pTexture;
     }

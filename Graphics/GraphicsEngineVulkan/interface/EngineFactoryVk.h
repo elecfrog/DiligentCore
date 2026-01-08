@@ -74,7 +74,7 @@ struct IEngineFactoryVk : public IEngineFactory
     ///                           the contexts will be written. Immediate context goes at
     ///                           position 0. If EngineCI.NumDeferredContexts > 0,
     ///                           pointers to the deferred contexts are written afterwards.
-    virtual void DG_CALL_TYPE CreateDeviceAndContextsVk(const EngineVkCreateInfo& EngineCI,
+    virtual void  CreateDeviceAndContextsVk(const EngineVkCreateInfo& EngineCI,
                                                     IRenderDevice**           ppDevice,
                                                     IDeviceContext**          ppContexts) = 0;
 
@@ -90,7 +90,7 @@ struct IEngineFactoryVk : public IEngineFactory
     ///
     /// \param [out] ppSwapChain    - Address of the memory location where pointer to the new
     ///                               swap chain will be written
-    virtual void DG_CALL_TYPE CreateSwapChainVk(
+    virtual void  CreateSwapChainVk(
         IRenderDevice*       pDevice,
         IDeviceContext*      pImmediateContext,
         const SwapChainDesc& SwapChainDesc,
@@ -103,13 +103,13 @@ struct IEngineFactoryVk : public IEngineFactory
     /// Use VK_DEVSIM_FILENAME environment variable to define the path to the .json file.
     ///
     /// \remarks Use this function before calling EnumerateAdapters() and CreateDeviceAndContextsVk().
-    virtual void DG_CALL_TYPE EnableDeviceSimulation() = 0;
+    virtual void  EnableDeviceSimulation() = 0;
 
 
     /// Returns the supported Vulkan version. If Vulkan is not supported, returns 0.
 
     /// This function can be used to check whether Vulkan is supported on the platform.
-    virtual Version DG_CALL_TYPE GetVulkanVersion() const = 0;
+    virtual Version  GetVulkanVersion() const = 0;
 };
 
 typedef struct IEngineFactoryVk* (*GetEngineFactoryVkType)();

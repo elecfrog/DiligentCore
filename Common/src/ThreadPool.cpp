@@ -76,7 +76,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_ThreadPool, TBase)
 
-    virtual bool DG_CALL_TYPE ProcessTask(UInt32 ThreadId, bool WaitForTask) override final
+    virtual bool ProcessTask(UInt32 ThreadId, bool WaitForTask) override final
     {
         QueuedTaskInfo TaskInfo;
         {
@@ -175,9 +175,7 @@ public:
         return true;
     }
 
-    virtual void DG_CALL_TYPE EnqueueTask(IAsyncTask*  pTask,
-                                                IAsyncTask** ppPrerequisites,
-                                                UInt32       NumPrerequisites) override final
+    virtual void EnqueueTask(IAsyncTask* pTask, IAsyncTask** ppPrerequisites, UInt32 NumPrerequisites) override final
     {
         VERIFY_EXPR(pTask != nullptr);
         if (pTask == nullptr)
@@ -212,7 +210,7 @@ public:
         m_NextTaskCond.notify_one();
     }
 
-    virtual void DG_CALL_TYPE WaitForAllTasks() override final
+    virtual void WaitForAllTasks() override final
     {
         std::unique_lock<std::mutex> lock{m_TasksQueueMtx};
         if (!m_TasksQueue.empty() || m_NumRunningTasks.load() > 0)
@@ -226,7 +224,7 @@ public:
         }
     }
 
-    virtual void DG_CALL_TYPE StopThreads() override final
+    virtual void StopThreads() override final
     {
         {
             std::unique_lock<std::mutex> lock{m_TasksQueueMtx};
@@ -244,7 +242,7 @@ public:
         m_WorkerThreads.clear();
     }
 
-    virtual bool DG_CALL_TYPE RemoveTask(IAsyncTask* pTask) override final
+    virtual bool RemoveTask(IAsyncTask* pTask) override final
     {
         std::unique_lock<std::mutex> lock{m_TasksQueueMtx};
 
@@ -260,7 +258,7 @@ public:
         return false;
     }
 
-    virtual bool DG_CALL_TYPE ReprioritizeTask(IAsyncTask* pTask) override final
+    virtual bool ReprioritizeTask(IAsyncTask* pTask) override final
     {
         const float Priority = pTask->GetPriority();
 
@@ -283,7 +281,7 @@ public:
         return false;
     }
 
-    virtual void DG_CALL_TYPE ReprioritizeAllTasks() override final
+    virtual void ReprioritizeAllTasks() override final
     {
         std::unique_lock<std::mutex> lock{m_TasksQueueMtx};
 
@@ -311,13 +309,13 @@ public:
         m_ReprioritizationList.clear();
     }
 
-    UInt32 DG_CALL_TYPE GetQueueSize() override final
+    UInt32 GetQueueSize() override final
     {
         std::unique_lock<std::mutex> lock{m_TasksQueueMtx};
         return StaticCast<UInt32>(m_TasksQueue.size());
     }
 
-    virtual UInt32 DG_CALL_TYPE GetRunningTaskCount() const override final
+    virtual UInt32 GetRunningTaskCount() const override final
     {
         return m_NumRunningTasks.load();
     }

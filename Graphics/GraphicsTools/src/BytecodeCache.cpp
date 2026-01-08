@@ -82,7 +82,7 @@ public:
 
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_BytecodeCache, TBase);
 
-    virtual bool DG_CALL_TYPE Load(IDataBlob* pDataBlob) override final
+    virtual bool  Load(IDataBlob* pDataBlob) override final
     {
         if (pDataBlob == nullptr)
         {
@@ -119,7 +119,7 @@ public:
         return true;
     }
 
-    virtual void DG_CALL_TYPE GetBytecode(const ShaderCreateInfo& ShaderCI, IDataBlob** ppByteCode) override final
+    virtual void  GetBytecode(const ShaderCreateInfo& ShaderCI, IDataBlob** ppByteCode) override final
     {
         DEV_CHECK_ERR(ppByteCode != nullptr, "ppByteCode must not be null.");
         DEV_CHECK_ERR(*ppByteCode == nullptr, "*ppByteCode is not null. Make sure you are not overwriting reference to an existing object as this may result in memory leaks.");
@@ -133,7 +133,7 @@ public:
         }
     }
 
-    virtual void DG_CALL_TYPE AddBytecode(const ShaderCreateInfo& ShaderCI, IDataBlob* pByteCode) override final
+    virtual void  AddBytecode(const ShaderCreateInfo& ShaderCI, IDataBlob* pByteCode) override final
     {
         DEV_CHECK_ERR(pByteCode != nullptr, "pByteCode must not be null.");
         const XXH128Hash Hash = ComputeHash(ShaderCI);
@@ -143,13 +143,13 @@ public:
             Iter.first->second = pByteCode;
     }
 
-    virtual void DG_CALL_TYPE RemoveBytecode(const ShaderCreateInfo& ShaderCI) override final
+    virtual void  RemoveBytecode(const ShaderCreateInfo& ShaderCI) override final
     {
         const XXH128Hash Hash = ComputeHash(ShaderCI);
         m_HashMap.erase(Hash);
     }
 
-    virtual void DG_CALL_TYPE Store(IDataBlob** ppDataBlob) override final
+    virtual void  Store(IDataBlob** ppDataBlob) override final
     {
         DEV_CHECK_ERR(ppDataBlob != nullptr, "ppDataBlob must not be null.");
         DEV_CHECK_ERR(*ppDataBlob == nullptr, "*ppDataBlob is not null. Make sure you are not overwriting reference to an existing object as this may result in memory leaks.");
@@ -185,7 +185,7 @@ public:
         *ppDataBlob = DataBlobImpl::Create(Memory.Size(), Memory.Ptr()).Detach();
     }
 
-    virtual void DG_CALL_TYPE Clear() override final
+    virtual void  Clear() override final
     {
         m_HashMap.clear();
     }

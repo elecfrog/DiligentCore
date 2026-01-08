@@ -152,7 +152,7 @@ public:
     ShaderVariableVkImpl& operator= (ShaderVariableVkImpl&&)      = delete;
     // clang-format on
 
-    virtual IDeviceObject* DG_CALL_TYPE Get(UInt32 ArrayIndex) const override final
+    virtual IDeviceObject*  Get(UInt32 ArrayIndex) const override final
     {
         return m_ParentManager.Get(ArrayIndex, m_ResIndex);
     }

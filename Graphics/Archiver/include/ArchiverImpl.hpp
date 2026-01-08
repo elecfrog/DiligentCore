@@ -63,32 +63,32 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_Archiver, TBase)
 
     /// Implementation of IArchiver::SerializeToBlob().
-    virtual Bool DG_CALL_TYPE SerializeToBlob(UInt32 ContentVersion, IDataBlob** ppBlob) override final;
+    virtual Bool SerializeToBlob(UInt32 ContentVersion, IDataBlob** ppBlob) override final;
 
     /// Implementation of IArchiver::SerializeToStream().
-    virtual Bool DG_CALL_TYPE SerializeToStream(UInt32 ContentVersion, IFileStream* pStream) override final;
+    virtual Bool SerializeToStream(UInt32 ContentVersion, IFileStream* pStream) override final;
 
     /// Implementation of IArchiver::AddShader().
-    virtual Bool DG_CALL_TYPE AddShader(IShader* pShader) override final;
+    virtual Bool AddShader(IShader* pShader) override final;
 
     /// Implementation of IArchiver::AddPipelineState().
-    virtual Bool DG_CALL_TYPE AddPipelineState(IPipelineState* pPSO) override final;
+    virtual Bool AddPipelineState(IPipelineState* pPSO) override final;
 
     /// Implementation of IArchiver::AddPipelineResourceSignature().
-    virtual Bool DG_CALL_TYPE AddPipelineResourceSignature(IPipelineResourceSignature* pSignature) override final;
+    virtual Bool AddPipelineResourceSignature(IPipelineResourceSignature* pSignature) override final;
 
     /// Implementation of IArchiver::Reset().
-    virtual void DG_CALL_TYPE Reset() override final;
+    virtual void Reset() override final;
 
     /// Implementation of IArchiver::GetShader().
-    virtual IShader* DG_CALL_TYPE GetShader(const char* Name) override final;
+    virtual IShader* GetShader(const char* Name) override final;
 
     /// Implementation of IArchiver::GetPipelineState().
-    virtual IPipelineState* DG_CALL_TYPE GetPipelineState(PIPELINE_TYPE PSOType,
-                                                                const char*   PSOName) override final;
+    virtual IPipelineState* GetPipelineState(PIPELINE_TYPE PSOType,
+                                             const char*   PSOName) override final;
 
     /// Implementation of IArchiver::GetPipelineResourceSignature().
-    virtual IPipelineResourceSignature* DG_CALL_TYPE GetPipelineResourceSignature(const char* PRSName) override final;
+    virtual IPipelineResourceSignature* GetPipelineResourceSignature(const char* PRSName) override final;
 
 private:
     bool AddRenderPass(IRenderPass* pRP);

@@ -224,13 +224,13 @@ public:
 
     // It is important to have final implementation of Release() method to avoid
     // virtual calls
-    inline virtual ReferenceCounterValueType DG_CALL_TYPE Release() override final
+    inline virtual ReferenceCounterValueType  Release() override final
     {
         return TObjectBase::Release();
     }
 
     /// Implementation of IRenderDevice::CreateResourceMapping().
-    virtual void DG_CALL_TYPE CreateResourceMapping(const ResourceMappingCreateInfo& ResMappingCI, IResourceMapping** ppMapping) override final
+    virtual void  CreateResourceMapping(const ResourceMappingCreateInfo& ResMappingCI, IResourceMapping** ppMapping) override final
     {
         DEV_CHECK_ERR(ppMapping != nullptr, "Null pointer provided");
         if (ppMapping == nullptr)
@@ -255,19 +255,19 @@ public:
 
 
     /// Implementation of IRenderDevice::GetDeviceInfo().
-    virtual const RenderDeviceInfo& DG_CALL_TYPE GetDeviceInfo() const override final
+    virtual const RenderDeviceInfo&  GetDeviceInfo() const override final
     {
         return m_DeviceInfo;
     }
 
     /// Implementation of IRenderDevice::GetAdapterInfo().
-    virtual const GraphicsAdapterInfo& DG_CALL_TYPE GetAdapterInfo() const override final
+    virtual const GraphicsAdapterInfo&  GetAdapterInfo() const override final
     {
         return m_AdapterInfo;
     }
 
     /// Implementation of IRenderDevice::GetTextureFormatInfo().
-    virtual const TextureFormatInfo& DG_CALL_TYPE GetTextureFormatInfo(TEXTURE_FORMAT TexFormat) const override final
+    virtual const TextureFormatInfo&  GetTextureFormatInfo(TEXTURE_FORMAT TexFormat) const override final
     {
         VERIFY(TexFormat >= TEX_FORMAT_UNKNOWN && TexFormat < TEX_FORMAT_NUM_FORMATS, "Texture format out of range");
         const TextureFormatInfoExt& TexFmtInfo = m_TextureFormatsInfo[TexFormat];
@@ -276,7 +276,7 @@ public:
     }
 
     /// Implementation of IRenderDevice::GetTextureFormatInfoExt().
-    virtual const TextureFormatInfoExt& DG_CALL_TYPE GetTextureFormatInfoExt(TEXTURE_FORMAT TexFormat) override final
+    virtual const TextureFormatInfoExt&  GetTextureFormatInfoExt(TEXTURE_FORMAT TexFormat) override final
     {
         VERIFY(TexFormat >= TEX_FORMAT_UNKNOWN && TexFormat < TEX_FORMAT_NUM_FORMATS, "Texture format out of range");
         const TextureFormatInfoExt& TexFmtInfo = m_TextureFormatsInfo[TexFormat];
@@ -290,13 +290,13 @@ public:
         return TexFmtInfo;
     }
 
-    virtual IEngineFactory* DG_CALL_TYPE GetEngineFactory() const override final
+    virtual IEngineFactory*  GetEngineFactory() const override final
     {
         return m_pEngineFactory;
     }
 
     /// Base implementation of IRenderDevice::CreateTilePipelineState().
-    virtual void DG_CALL_TYPE CreateTilePipelineState(const TilePipelineStateCreateInfo& PSOCreateInfo,
+    virtual void  CreateTilePipelineState(const TilePipelineStateCreateInfo& PSOCreateInfo,
                                                             IPipelineState**                   ppPipelineState) override
     {
         UNSUPPORTED("Tile pipeline is not supported by this device. Please check DeviceFeatures.TileShaders feature.");
@@ -353,7 +353,7 @@ public:
         return m_UniqueId.fetch_add(1) + 1;
     }
 
-    virtual IThreadPool* DG_CALL_TYPE GetShaderCompilationThreadPool() const override final
+    virtual IThreadPool*  GetShaderCompilationThreadPool() const override final
     {
         return m_pShaderCompilationThreadPool;
     }

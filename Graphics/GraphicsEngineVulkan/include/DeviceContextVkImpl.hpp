@@ -79,26 +79,26 @@ public:
     IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_DeviceContextVk, TDeviceContextBase)
 
     /// Implementation of IDeviceContext::Begin() in Vulkan backend.
-    virtual void DG_CALL_TYPE Begin(UInt32 ImmediateContextId) override final;
+    virtual void  Begin(UInt32 ImmediateContextId) override final;
 
     /// Implementation of IDeviceContext::SetPipelineState() in Vulkan backend.
-    virtual void DG_CALL_TYPE SetPipelineState(IPipelineState* pPipelineState) override final;
+    virtual void  SetPipelineState(IPipelineState* pPipelineState) override final;
 
     /// Implementation of IDeviceContext::TransitionShaderResources() in Vulkan backend.
-    virtual void DG_CALL_TYPE TransitionShaderResources(IShaderResourceBinding* pShaderResourceBinding) override final;
+    virtual void  TransitionShaderResources(IShaderResourceBinding* pShaderResourceBinding) override final;
 
     /// Implementation of IDeviceContext::CommitShaderResources() in Vulkan backend.
-    virtual void DG_CALL_TYPE CommitShaderResources(IShaderResourceBinding*        pShaderResourceBinding,
+    virtual void  CommitShaderResources(IShaderResourceBinding*        pShaderResourceBinding,
                                                           RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::SetStencilRef() in Vulkan backend.
-    virtual void DG_CALL_TYPE SetStencilRef(UInt32 StencilRef) override final;
+    virtual void  SetStencilRef(UInt32 StencilRef) override final;
 
     /// Implementation of IDeviceContext::SetBlendFactors() in Vulkan backend.
-    virtual void DG_CALL_TYPE SetBlendFactors(const float* pBlendFactors = nullptr) override final;
+    virtual void  SetBlendFactors(const float* pBlendFactors = nullptr) override final;
 
     /// Implementation of IDeviceContext::SetVertexBuffers() in Vulkan backend.
-    virtual void DG_CALL_TYPE SetVertexBuffers(UInt32                         StartSlot,
+    virtual void  SetVertexBuffers(UInt32                         StartSlot,
                                                      UInt32                         NumBuffersSet,
                                                      IBuffer* const*                ppBuffers,
                                                      const UInt64*                  pOffsets,
@@ -106,85 +106,85 @@ public:
                                                      SET_VERTEX_BUFFERS_FLAGS       Flags) override final;
 
     /// Implementation of IDeviceContext::InvalidateState() in Vulkan backend.
-    virtual void DG_CALL_TYPE InvalidateState() override final;
+    virtual void  InvalidateState() override final;
 
     /// Implementation of IDeviceContext::SetIndexBuffer() in Vulkan backend.
-    virtual void DG_CALL_TYPE SetIndexBuffer(IBuffer*                       pIndexBuffer,
+    virtual void  SetIndexBuffer(IBuffer*                       pIndexBuffer,
                                                    UInt64                         ByteOffset,
                                                    RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::SetViewports() in Vulkan backend.
-    virtual void DG_CALL_TYPE SetViewports(UInt32          NumViewports,
+    virtual void  SetViewports(UInt32          NumViewports,
                                                  const Viewport* pViewports,
                                                  UInt32          RTWidth,
                                                  UInt32          RTHeight) override final;
 
     /// Implementation of IDeviceContext::SetScissorRects() in Vulkan backend.
-    virtual void DG_CALL_TYPE SetScissorRects(UInt32      NumRects,
+    virtual void  SetScissorRects(UInt32      NumRects,
                                                     const Rect* pRects,
                                                     UInt32      RTWidth,
                                                     UInt32      RTHeight) override final;
 
     /// Implementation of IDeviceContext::SetRenderTargetsExt() in Vulkan backend.
-    virtual void DG_CALL_TYPE SetRenderTargetsExt(const SetRenderTargetsAttribs& Attribs) override final;
+    virtual void  SetRenderTargetsExt(const SetRenderTargetsAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::BeginRenderPass() in Vulkan backend.
-    virtual void DG_CALL_TYPE BeginRenderPass(const BeginRenderPassAttribs& Attribs) override final;
+    virtual void  BeginRenderPass(const BeginRenderPassAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::NextSubpass() in Vulkan backend.
-    virtual void DG_CALL_TYPE NextSubpass() override final;
+    virtual void  NextSubpass() override final;
 
     /// Implementation of IDeviceContext::EndRenderPass() in Vulkan backend.
-    virtual void DG_CALL_TYPE EndRenderPass() override final;
+    virtual void  EndRenderPass() override final;
 
     // clang-format off
     /// Implementation of IDeviceContext::Draw() in Vulkan backend.
-    virtual void DG_CALL_TYPE Draw               (const DrawAttribs& Attribs) override final;
+    virtual void  Draw               (const DrawAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::DrawIndexed() in Vulkan backend.
-    virtual void DG_CALL_TYPE DrawIndexed        (const DrawIndexedAttribs& Attribs) override final;
+    virtual void  DrawIndexed        (const DrawIndexedAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::DrawIndirect() in Vulkan backend.
-    virtual void DG_CALL_TYPE DrawIndirect       (const DrawIndirectAttribs& Attribs) override final;
+    virtual void  DrawIndirect       (const DrawIndirectAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::DrawIndexedIndirect() in Vulkan backend.
-    virtual void DG_CALL_TYPE DrawIndexedIndirect(const DrawIndexedIndirectAttribs& Attribs) override final;
+    virtual void  DrawIndexedIndirect(const DrawIndexedIndirectAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::DrawMesh() in Vulkan backend.
-    virtual void DG_CALL_TYPE DrawMesh           (const DrawMeshAttribs& Attribs) override final;
+    virtual void  DrawMesh           (const DrawMeshAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::DrawMeshIndirect() in Vulkan backend.
-    virtual void DG_CALL_TYPE DrawMeshIndirect   (const DrawMeshIndirectAttribs& Attribs) override final;
+    virtual void  DrawMeshIndirect   (const DrawMeshIndirectAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::MultiDraw() in Vulkan backend.
-    virtual void DG_CALL_TYPE MultiDraw          (const MultiDrawAttribs& Attribs) override final;
+    virtual void  MultiDraw          (const MultiDrawAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::MultiDrawIndexed() in Vulkan backend.
-    virtual void DG_CALL_TYPE MultiDrawIndexed   (const MultiDrawIndexedAttribs& Attribs) override final;
+    virtual void  MultiDrawIndexed   (const MultiDrawIndexedAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::DispatchCompute() in Vulkan backend.
-    virtual void DG_CALL_TYPE DispatchCompute        (const DispatchComputeAttribs& Attribs) override final;
+    virtual void  DispatchCompute        (const DispatchComputeAttribs& Attribs) override final;
     /// Implementation of IDeviceContext::DispatchComputeIndirect() in Vulkan backend.
-    virtual void DG_CALL_TYPE DispatchComputeIndirect(const DispatchComputeIndirectAttribs& Attribs) override final;
+    virtual void  DispatchComputeIndirect(const DispatchComputeIndirectAttribs& Attribs) override final;
     // clang-format on
 
     /// Implementation of IDeviceContext::GetTileSize() in Vulkan backend.
-    virtual void DG_CALL_TYPE GetTileSize(UInt32& TileSizeX, UInt32& TileSizeY) override final;
+    virtual void  GetTileSize(UInt32& TileSizeX, UInt32& TileSizeY) override final;
 
     /// Implementation of IDeviceContext::ClearDepthStencil() in Vulkan backend.
-    virtual void DG_CALL_TYPE ClearDepthStencil(ITextureView*                  pView,
+    virtual void  ClearDepthStencil(ITextureView*                  pView,
                                                       CLEAR_DEPTH_STENCIL_FLAGS      ClearFlags,
                                                       float                          fDepth,
                                                       UInt8                          Stencil,
                                                       RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::ClearRenderTarget() in Vulkan backend.
-    virtual void DG_CALL_TYPE ClearRenderTarget(ITextureView*                  pView,
+    virtual void  ClearRenderTarget(ITextureView*                  pView,
                                                       const void*                    RGBA,
                                                       RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::UpdateBuffer() in Vulkan backend.
-    virtual void DG_CALL_TYPE UpdateBuffer(IBuffer*                       pBuffer,
+    virtual void  UpdateBuffer(IBuffer*                       pBuffer,
                                                  UInt64                         Offset,
                                                  UInt64                         Size,
                                                  const void*                    pData,
                                                  RESOURCE_STATE_TRANSITION_MODE StateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::CopyBuffer() in Vulkan backend.
-    virtual void DG_CALL_TYPE CopyBuffer(IBuffer*                       pSrcBuffer,
+    virtual void  CopyBuffer(IBuffer*                       pSrcBuffer,
                                                UInt64                         SrcOffset,
                                                RESOURCE_STATE_TRANSITION_MODE SrcBufferTransitionMode,
                                                IBuffer*                       pDstBuffer,
@@ -193,16 +193,16 @@ public:
                                                RESOURCE_STATE_TRANSITION_MODE DstBufferTransitionMode) override final;
 
     /// Implementation of IDeviceContext::MapBuffer() in Vulkan backend.
-    virtual void DG_CALL_TYPE MapBuffer(IBuffer*  pBuffer,
+    virtual void  MapBuffer(IBuffer*  pBuffer,
                                               MAP_TYPE  MapType,
                                               MAP_FLAGS MapFlags,
                                               PVoid&    pMappedData) override final;
 
     /// Implementation of IDeviceContext::UnmapBuffer() in Vulkan backend.
-    virtual void DG_CALL_TYPE UnmapBuffer(IBuffer* pBuffer, MAP_TYPE MapType) override final;
+    virtual void  UnmapBuffer(IBuffer* pBuffer, MAP_TYPE MapType) override final;
 
     /// Implementation of IDeviceContext::UpdateTexture() in Vulkan backend.
-    virtual void DG_CALL_TYPE UpdateTexture(ITexture*                      pTexture,
+    virtual void  UpdateTexture(ITexture*                      pTexture,
                                                   UInt32                         MipLevel,
                                                   UInt32                         Slice,
                                                   const Box&                     DstBox,
@@ -211,10 +211,10 @@ public:
                                                   RESOURCE_STATE_TRANSITION_MODE TextureStateTransitionMode) override final;
 
     /// Implementation of IDeviceContext::CopyTexture() in Vulkan backend.
-    virtual void DG_CALL_TYPE CopyTexture(const CopyTextureAttribs& CopyAttribs) override final;
+    virtual void  CopyTexture(const CopyTextureAttribs& CopyAttribs) override final;
 
     /// Implementation of IDeviceContext::MapTextureSubresource() in Vulkan backend.
-    virtual void DG_CALL_TYPE MapTextureSubresource(ITexture*                 pTexture,
+    virtual void  MapTextureSubresource(ITexture*                 pTexture,
                                                           UInt32                    MipLevel,
                                                           UInt32                    ArraySlice,
                                                           MAP_TYPE                  MapType,
@@ -223,76 +223,76 @@ public:
                                                           MappedTextureSubresource& MappedData) override final;
 
     /// Implementation of IDeviceContext::UnmapTextureSubresource() in Vulkan backend.
-    virtual void DG_CALL_TYPE UnmapTextureSubresource(ITexture* pTexture, UInt32 MipLevel, UInt32 ArraySlice) override final;
+    virtual void  UnmapTextureSubresource(ITexture* pTexture, UInt32 MipLevel, UInt32 ArraySlice) override final;
 
     /// Implementation of IDeviceContext::FinishCommandList() in Vulkan backend.
-    virtual void DG_CALL_TYPE FinishCommandList(ICommandList** ppCommandList) override final;
+    virtual void  FinishCommandList(ICommandList** ppCommandList) override final;
 
     /// Implementation of IDeviceContext::ExecuteCommandLists() in Vulkan backend.
-    virtual void DG_CALL_TYPE ExecuteCommandLists(UInt32               NumCommandLists,
+    virtual void  ExecuteCommandLists(UInt32               NumCommandLists,
                                                         ICommandList* const* ppCommandLists) override final;
 
     /// Implementation of IDeviceContext::EnqueueSignal() in Vulkan backend.
-    virtual void DG_CALL_TYPE EnqueueSignal(IFence* pFence, UInt64 Value) override final;
+    virtual void  EnqueueSignal(IFence* pFence, UInt64 Value) override final;
 
     /// Implementation of IDeviceContext::DeviceWaitForFence() in Vulkan backend.
-    virtual void DG_CALL_TYPE DeviceWaitForFence(IFence* pFence, UInt64 Value) override final;
+    virtual void  DeviceWaitForFence(IFence* pFence, UInt64 Value) override final;
 
     /// Implementation of IDeviceContext::WaitForIdle() in Vulkan backend.
-    virtual void DG_CALL_TYPE WaitForIdle() override final;
+    virtual void  WaitForIdle() override final;
 
     /// Implementation of IDeviceContext::BeginQuery() in Vulkan backend.
-    virtual void DG_CALL_TYPE BeginQuery(IQuery* pQuery) override final;
+    virtual void  BeginQuery(IQuery* pQuery) override final;
 
     /// Implementation of IDeviceContext::EndQuery() in Vulkan backend.
-    virtual void DG_CALL_TYPE EndQuery(IQuery* pQuery) override final;
+    virtual void  EndQuery(IQuery* pQuery) override final;
 
     /// Implementation of IDeviceContext::Flush() in Vulkan backend.
-    virtual void DG_CALL_TYPE Flush() override final;
+    virtual void  Flush() override final;
 
     /// Implementation of IDeviceContext::BuildBLAS() in Vulkan backend.
-    virtual void DG_CALL_TYPE BuildBLAS(const BuildBLASAttribs& Attribs) override final;
+    virtual void  BuildBLAS(const BuildBLASAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::BuildTLAS() in Vulkan backend.
-    virtual void DG_CALL_TYPE BuildTLAS(const BuildTLASAttribs& Attribs) override final;
+    virtual void  BuildTLAS(const BuildTLASAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::CopyBLAS() in Vulkan backend.
-    virtual void DG_CALL_TYPE CopyBLAS(const CopyBLASAttribs& Attribs) override final;
+    virtual void  CopyBLAS(const CopyBLASAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::CopyTLAS() in Vulkan backend.
-    virtual void DG_CALL_TYPE CopyTLAS(const CopyTLASAttribs& Attribs) override final;
+    virtual void  CopyTLAS(const CopyTLASAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::WriteBLASCompactedSize() in Vulkan backend.
-    virtual void DG_CALL_TYPE WriteBLASCompactedSize(const WriteBLASCompactedSizeAttribs& Attribs) override final;
+    virtual void  WriteBLASCompactedSize(const WriteBLASCompactedSizeAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::WriteTLASCompactedSize() in Vulkan backend.
-    virtual void DG_CALL_TYPE WriteTLASCompactedSize(const WriteTLASCompactedSizeAttribs& Attribs) override final;
+    virtual void  WriteTLASCompactedSize(const WriteTLASCompactedSizeAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::TraceRays() in Vulkan backend.
-    virtual void DG_CALL_TYPE TraceRays(const TraceRaysAttribs& Attribs) override final;
+    virtual void  TraceRays(const TraceRaysAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::TraceRaysIndirect() in Vulkan backend.
-    virtual void DG_CALL_TYPE TraceRaysIndirect(const TraceRaysIndirectAttribs& Attribs) override final;
+    virtual void  TraceRaysIndirect(const TraceRaysIndirectAttribs& Attribs) override final;
 
     /// Implementation of IDeviceContext::UpdateSBT() in Vulkan backend.
-    virtual void DG_CALL_TYPE UpdateSBT(IShaderBindingTable* pSBT, const UpdateIndirectRTBufferAttribs* pUpdateIndirectBufferAttribs) override final;
+    virtual void  UpdateSBT(IShaderBindingTable* pSBT, const UpdateIndirectRTBufferAttribs* pUpdateIndirectBufferAttribs) override final;
 
     /// Implementation of IDeviceContext::BeginDebugGroup() in Vulkan backend.
-    virtual void DG_CALL_TYPE BeginDebugGroup(const Char* Name, const float* pColor) override final;
+    virtual void  BeginDebugGroup(const Char* Name, const float* pColor) override final;
 
     /// Implementation of IDeviceContext::EndDebugGroup() in Vulkan backend.
-    virtual void DG_CALL_TYPE EndDebugGroup() override final;
+    virtual void  EndDebugGroup() override final;
 
     /// Implementation of IDeviceContext::InsertDebugLabel() in Vulkan backend.
-    virtual void DG_CALL_TYPE InsertDebugLabel(const Char* Label, const float* pColor) override final;
+    virtual void  InsertDebugLabel(const Char* Label, const float* pColor) override final;
 
     /// Implementation of IDeviceContext::SetShadingRate() in Vulkan backend.
-    virtual void DG_CALL_TYPE SetShadingRate(SHADING_RATE          BaseRate,
+    virtual void  SetShadingRate(SHADING_RATE          BaseRate,
                                                    SHADING_RATE_COMBINER PrimitiveCombiner,
                                                    SHADING_RATE_COMBINER TextureCombiner) override final;
 
     /// Implementation of IDeviceContext::BindSparseResourceMemory() in Vulkan backend.
-    virtual void DG_CALL_TYPE BindSparseResourceMemory(const BindSparseResourceMemoryAttribs& Attribs) override final;
+    virtual void  BindSparseResourceMemory(const BindSparseResourceMemoryAttribs& Attribs) override final;
 
     // Transitions texture subresources from OldState to NewState, and optionally updates
     // internal texture state.
@@ -304,7 +304,7 @@ public:
                                 VkImageSubresourceRange* pSubresRange = nullptr);
 
     /// Implementation of IDeviceContextVk::TransitionImageLayout().
-    virtual void DG_CALL_TYPE TransitionImageLayout(ITexture* pTexture, VkImageLayout NewLayout) override final;
+    virtual void  TransitionImageLayout(ITexture* pTexture, VkImageLayout NewLayout) override final;
 
 
     // Transitions buffer state from OldState to NewState, and optionally updates
@@ -316,10 +316,10 @@ public:
                                bool           UpdateBufferState);
 
     /// Implementation of IDeviceContextVk::BufferMemoryBarrier().
-    virtual void DG_CALL_TYPE BufferMemoryBarrier(IBuffer* pBuffer, VkAccessFlags NewAccessFlags) override final;
+    virtual void  BufferMemoryBarrier(IBuffer* pBuffer, VkAccessFlags NewAccessFlags) override final;
 
     /// Implementation of IDeviceContextVk::GetVkCommandBuffer().
-    virtual VkCommandBuffer DG_CALL_TYPE GetVkCommandBuffer() override final;
+    virtual VkCommandBuffer  GetVkCommandBuffer() override final;
 
     // Transitions BLAS state from OldState to NewState, and optionally updates internal state.
     // If OldState == RESOURCE_STATE_UNKNOWN, internal BLAS state is used as old state.
@@ -374,7 +374,7 @@ public:
                              const Box&                     DstBox,
                              RESOURCE_STATE_TRANSITION_MODE TextureTransitionMode);
 
-    virtual void DG_CALL_TYPE GenerateMips(ITextureView* pTexView) override final;
+    virtual void  GenerateMips(ITextureView* pTexView) override final;
 
     size_t GetNumCommandsInCtx() const { return m_State.NumCommands; }
 
@@ -385,11 +385,11 @@ public:
         return m_CommandBuffer;
     }
 
-    virtual void DG_CALL_TYPE FinishFrame() override final;
+    virtual void  FinishFrame() override final;
 
-    virtual void DG_CALL_TYPE TransitionResourceStates(UInt32 BarrierCount, const StateTransitionDesc* pResourceBarriers) override final;
+    virtual void  TransitionResourceStates(UInt32 BarrierCount, const StateTransitionDesc* pResourceBarriers) override final;
 
-    virtual void DG_CALL_TYPE ResolveTextureSubresource(ITexture*                               pSrcTexture,
+    virtual void  ResolveTextureSubresource(ITexture*                               pSrcTexture,
                                                               ITexture*                               pDstTexture,
                                                               const ResolveTextureSubresourceAttribs& ResolveAttribs) override final;
 

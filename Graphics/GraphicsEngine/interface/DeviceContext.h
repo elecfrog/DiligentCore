@@ -2604,7 +2604,7 @@ struct IDeviceContext : public IObject
     /// explicitly manage the states using TransitionResourceStates() method.
     ///
     /// \remarks Supported contexts: graphics.
-    virtual void DG_CALL_TYPE SetVertexBuffers(UInt32                         StartSlot,
+    virtual void  SetVertexBuffers(UInt32                         StartSlot,
                                                UInt32                         NumBuffersSet,
                                                IBuffer* const*                ppBuffers,
                                                const UInt64*                  pOffsets,
@@ -3543,10 +3543,10 @@ struct IDeviceContext : public IObject
     /// \param [in] pColor - Region color.
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
-    virtual void DG_CALL_TYPE BeginDebugGroup(const Char* Name, const float* pColor = nullptr) = 0;
+    virtual void  BeginDebugGroup(const Char* Name, const float* pColor = nullptr) = 0;
 
     /// Ends a debug group that was previously started with BeginDebugGroup().
-    virtual void DG_CALL_TYPE EndDebugGroup() = 0;
+    virtual void  EndDebugGroup() = 0;
 
 
     /// Inserts a debug label with name and color.
@@ -3558,7 +3558,7 @@ struct IDeviceContext : public IObject
     ///
     /// \remarks Supported contexts: graphics, compute, transfer.
     ///          Not supported in Metal backend.
-    virtual void DG_CALL_TYPE InsertDebugLabel(const Char* Label, const float* pColor DEFAULT_INITIALIZER(nullptr)) = 0;
+    virtual void  InsertDebugLabel(const Char* Label, const float* pColor DEFAULT_INITIALIZER(nullptr)) = 0;
 
     /// Locks the internal mutex and returns a pointer to the command queue that is associated with this device context.
 

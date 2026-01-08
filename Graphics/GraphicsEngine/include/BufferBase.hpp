@@ -120,7 +120,7 @@ public:
 
     /// Implementation of IBuffer::CreateView(); calls CreateViewInternal() virtual function
     /// that creates buffer view for the specific engine implementation.
-    virtual void DG_CALL_TYPE CreateView(const struct BufferViewDesc& ViewDesc, IBufferView** ppView) override
+    virtual void CreateView(const struct BufferViewDesc& ViewDesc, IBufferView** ppView) override
     {
         DEV_CHECK_ERR(ViewDesc.ViewType != BUFFER_VIEW_UNDEFINED, "Buffer view type is not specified");
         if (ViewDesc.ViewType == BUFFER_VIEW_SHADER_RESOURCE)
@@ -135,7 +135,7 @@ public:
 
 
     /// Implementation of IBuffer::GetDefaultView().
-    virtual IBufferView* DG_CALL_TYPE GetDefaultView(BUFFER_VIEW_TYPE ViewType) override
+    virtual IBufferView* GetDefaultView(BUFFER_VIEW_TYPE ViewType) override
     {
         switch (ViewType)
         {
@@ -201,29 +201,27 @@ public:
         }
     }
 
-    virtual void DG_CALL_TYPE SetState(RESOURCE_STATE State) override final
+    virtual void SetState(RESOURCE_STATE State) override final
     {
         this->m_State = State;
     }
 
-    virtual RESOURCE_STATE DG_CALL_TYPE GetState() const override final
+    virtual RESOURCE_STATE GetState() const override final
     {
         return this->m_State;
     }
 
-    virtual MEMORY_PROPERTIES DG_CALL_TYPE GetMemoryProperties() const override final
+    virtual MEMORY_PROPERTIES GetMemoryProperties() const override final
     {
         return this->m_MemoryProperties;
     }
 
-    virtual void DG_CALL_TYPE FlushMappedRange(UInt64 StartOffset,
-                                                     UInt64 Size) override
+    virtual void FlushMappedRange(UInt64 StartOffset, UInt64 Size) override
     {
         DvpVerifyFlushMappedRangeArguments(StartOffset, Size);
     }
 
-    virtual void DG_CALL_TYPE InvalidateMappedRange(UInt64 StartOffset,
-                                                          UInt64 Size) override
+    virtual void InvalidateMappedRange(UInt64 StartOffset, UInt64 Size) override
     {
         DvpVerifyInvalidateMappedRangeArguments(StartOffset, Size);
     }
