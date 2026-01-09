@@ -132,7 +132,7 @@ struct WindowsMisc : public BasicPlatformMisc
     template <typename Type>
     static typename std::enable_if<sizeof(Type) == 8, Type>::type SwapBytes(Type Val)
     {
-        auto SwappedBytes = _byteswap_uint64(reinterpret_cast<unsigned __int64&>(Val));
+        auto SwappedBytes = _byteswap_uint64(reinterpret_cast<unsigned long long&>(Val));
         return reinterpret_cast<const Type&>(SwappedBytes);
     }
 

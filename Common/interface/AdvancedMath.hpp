@@ -558,7 +558,7 @@ inline BoxVisibility GetBoxVisibility(const ViewFrustumExt& ViewFrustumExt,
             for (int iCorner = 0; iCorner < 8; iCorner++)
             {
                 // Pick the frustum corner coordinate
-                float CurrCornerCoord = ViewFrustumExt.FrustumCorners[iCorner][iCoordOrder];
+                float CurrCornerCoord = ViewFrustumExt.FrustumCorners[iCorner][static_cast<size_t>(iCoordOrder)];
                 // Dot product is simply the coordinate difference multiplied by the sign
                 if (fSign * (CurrPlaneCoord - CurrCornerCoord) > 0)
                 {

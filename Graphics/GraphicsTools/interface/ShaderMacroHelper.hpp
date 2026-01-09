@@ -121,7 +121,7 @@ public:
         {
             if (strcmp(m_Macros[i].Name, Name) == 0)
             {
-                m_Macros.erase(m_Macros.begin() + i);
+                m_Macros.erase(m_Macros.begin() + static_cast<std::ptrdiff_t>(i));
                 break;
             }
             else

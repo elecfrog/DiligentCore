@@ -605,7 +605,7 @@ inline Int32 GetShaderTypeIndex(SHADER_TYPE Type)
     VERIFY(Type > SHADER_TYPE_UNKNOWN && Type <= SHADER_TYPE_LAST, "Value ", UInt32{Type}, " is not a valid SHADER_TYPE enum value");
     VERIFY(((UInt32{Type} & (UInt32{Type} - 1)) == 0), "Only single shader stage should be provided");
 
-    return PlatformMisc::GetLSB(Type);
+    return static_cast<Int32>(PlatformMisc::GetLSB(Type));
 }
 
 inline Int32 GetFirstShaderStageIndex(SHADER_TYPE Stages)
@@ -615,7 +615,7 @@ inline Int32 GetFirstShaderStageIndex(SHADER_TYPE Stages)
 
     VERIFY(Stages > SHADER_TYPE_UNKNOWN && Stages < SHADER_TYPE_LAST * 2, "Value ", UInt32{Stages}, " is not a valid SHADER_TYPE enum value");
 
-    return PlatformMisc::GetLSB(Stages);
+    return static_cast<Int32>(PlatformMisc::GetLSB(Stages));
 }
 
 inline Int32 ExtractFirstShaderStageIndex(SHADER_TYPE& Stages)
@@ -627,7 +627,7 @@ inline Int32 ExtractFirstShaderStageIndex(SHADER_TYPE& Stages)
 
     const UInt32 StageIndex = PlatformMisc::GetLSB(Stages);
     Stages &= ~static_cast<SHADER_TYPE>(1u << StageIndex);
-    return StageIndex;
+    return static_cast<Int32>(StageIndex);
 }
 
 

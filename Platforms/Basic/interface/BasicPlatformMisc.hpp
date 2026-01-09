@@ -117,7 +117,7 @@ struct BasicPlatformMisc
 private:
     static void SwapBytes16(UInt16& Val)
     {
-        Val = (Val << 8u) | (Val >> 8u);
+        Val = static_cast<UInt16>((Val << 8u) | (Val >> 8u));
     }
 
     static void SwapBytes32(UInt32& Val)

@@ -784,7 +784,7 @@ struct PipelineResourceSignatureDescX : DeviceObjectAttribsX<PipelineResourceSig
     PipelineResourceSignatureDescX& RemoveResource(size_t Idx)
     {
         VERIFY_EXPR(Idx < ResCopy.size());
-        ResCopy.erase(ResCopy.begin() + Idx);
+        ResCopy.erase(ResCopy.begin() + static_cast<std::ptrdiff_t>(Idx));
         return SyncDesc();
     }
 
@@ -804,7 +804,7 @@ struct PipelineResourceSignatureDescX : DeviceObjectAttribsX<PipelineResourceSig
     PipelineResourceSignatureDescX& RemoveImmutableSampler(size_t Idx)
     {
         VERIFY_EXPR(Idx < ImtblSamCopy.size());
-        ImtblSamCopy.erase(ImtblSamCopy.begin() + Idx);
+        ImtblSamCopy.erase(ImtblSamCopy.begin() + static_cast<std::ptrdiff_t>(Idx));
         return SyncDesc();
     }
 

@@ -41,7 +41,7 @@ namespace Diligent
 namespace
 {
 
-VkImageCreateInfo TextureDescToVkImageCreateInfo(const TextureDesc& Desc, const RenderDeviceVkImpl* pRenderDeviceVk) noexcept
+VkImageCreateInfo TextureDescToVkImageCreateInfo(const TextureDesc& Desc, const RenderDeviceVkImpl* pRenderDeviceVk)
 {
     const bool                  IsMemoryless         = (Desc.MiscFlags & MISC_TEXTURE_FLAG_MEMORYLESS) != 0;
     const TextureFormatAttribs& FmtAttribs           = GetTextureFormatAttribs(Desc.Format);
