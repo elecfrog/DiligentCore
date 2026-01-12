@@ -30,52 +30,31 @@
 #include "Primitives.h"
 #include "BasicPlatformDebug.hpp"
 
+// Use Sparrow's assertion system (Sparrow implementation takes priority)
+#include <core/assertions.hpp>
+
 #ifdef SPW_DEBUG
 
 #    include <typeinfo>
 
-#    define ASSERTION_FAILED(Message, ...)                                                 \
-        do                                                                                 \
-        {                                                                                  \
-            auto msg = spw::LogSystem::FormatString(Message __VA_OPT__(, ) __VA_ARGS__);   \
-            Diligent::DebugAssertionFailed(msg.c_str(), __FUNCTION__, __FILE__, __LINE__); \
-        } while (false)
 
-#    define VERIFY(Expr, Message, ...)                                \
-        do                                                            \
-        {                                                             \
-            if (!(Expr))                                              \
-            {                                                         \
-                ASSERTION_FAILED(Message __VA_OPT__(, ) __VA_ARGS__); \
-            }                                                         \
-        } while (false)
-
-#    define UNEXPECTED  ASSERTION_FAILED
-#    define UNSUPPORTED ASSERTION_FAILED
-
-#    define VERIFY_EXPR(Expr) VERIFY((Expr), "Debug expression failed:\n", #Expr)
-
-
+// CheckDynamicType - Diligent-specific dynamic type checking utility
 template <typename DstType, typename SrcType>
 void CheckDynamicType(SrcType* pSrcPtr)
 {
     VERIFY(pSrcPtr == nullptr || dynamic_cast<DstType*>(pSrcPtr) != nullptr, "Dynamic type cast failed. Src typeid: \'", typeid(*pSrcPtr).name(), "\' Dst typeid: \'", typeid(DstType).name(), '\'');
 }
+
 #    define CHECK_DYNAMIC_TYPE(DstType, pSrcPtr) \
         do                                       \
         {                                        \
             CheckDynamicType<DstType>(pSrcPtr);  \
         } while (false)
 
-
 #else
 
 // clang-format off
 #    define CHECK_DYNAMIC_TYPE(...) do{}while(false)
-#    define VERIFY(...)do{}while(false)
-#    define UNEXPECTED(...)do{}while(false)
-#    define UNSUPPORTED(...)do{}while(false)
-#    define VERIFY_EXPR(...)do{}while(false)
 // clang-format on
 
 #endif

@@ -108,7 +108,7 @@ MemoryAllocation MemoryPage::Allocate(VkDeviceSize size, VkDeviceSize alignment)
     {
         // Offset may not necessarily be aligned, but the allocation is guaranteed to be large enough
         // to accommodate requested alignment
-        VERIFY_EXPR(Diligent::AlignUp(VkDeviceSize{Allocation.UnalignedOffset}, alignment) - Allocation.UnalignedOffset + size <= Allocation.Size);
+        VERIFY_EXPR(AlignUp(VkDeviceSize{Allocation.UnalignedOffset}, alignment) - Allocation.UnalignedOffset + size <= Allocation.Size);
         return MemoryAllocation{this, Allocation.UnalignedOffset, Allocation.Size};
     }
     else
@@ -202,7 +202,7 @@ MemoryAllocation MemoryManager::Allocate(VkDeviceSize Size, VkDeviceSize Alignme
 
     if (Allocation.Page != nullptr)
     {
-        VERIFY_EXPR(Size + Diligent::AlignUp(Allocation.UnalignedOffset, Alignment) - Allocation.UnalignedOffset <= Allocation.Size);
+        VERIFY_EXPR(Size + AlignUp(Allocation.UnalignedOffset, Alignment) - Allocation.UnalignedOffset <= Allocation.Size);
     }
 
     m_CurrUsedSize[stat_ind].fetch_add(Allocation.Size);
